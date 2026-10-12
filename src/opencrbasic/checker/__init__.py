@@ -127,6 +127,30 @@ def _run_pass(fn, *args) -> None:
             raise
 
 
+# Instructions whose compile function rejects the placement (`TimerInput must be used within a
+# Scan...NextScan.`, `MenuItem must be used within DisplayMenu..EndMenu.`) before resolving their own
+# arguments: an undeclared name in them is not reported (oracle, CR6/CR1000X, 2026-10-12, `docs/checker.md`
+# "Round 14 placement before arguments"). `PulseCount` resolves its arguments first and is not listed.
+_PLACEMENT_FIRST = {"TIMERINPUT": "a Scan...NextScan.", "MENUITEM": "DisplayMenu..EndMenu.",
+                    "MENURECOMPILE": "DisplayMenu..EndMenu."}
+
+
+def _placement_rejected(program: S.Program, profile, diags: Diagnostics) -> frozenset:
+    """`id()`s of the `_PLACEMENT_FIRST` statements that already carry their placement error."""
+    if profile.single_pass:
+        return frozenset()
+    found = set()
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _PLACEMENT_FIRST:
+            continue
+        kw = stmt.keyword.upper()
+        text = f"{profile.instructions[kw]['name']} must be used within {_PLACEMENT_FIRST[kw]}"
+        if any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file
+               and d.message == text for d in diags.items):
+            found.add(id(stmt))
+    return frozenset(found)
+
+
 def _with_inline(program: S.Program) -> S.Program:
     """A copy of `program` whose statement list also holds each one-line `If`'s statements, right
     after the `If`."""
@@ -374,7 +398,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             return links.positions.get((diagnostic.file, diagnostic.line), stop_at) <= stop_at
 
         n_generic = len(diags.items)
-        _run_pass(expressions.check, flat, profile, diags, env)
+        _run_pass(expressions.check, flat, profile, diags, env, _placement_rejected(flat, profile, diags))
         _run_pass(expressions.check_table_members, flat, profile, diags)
         _run_pass(expressions.check_digit_members, flat, profile, diags)
         generic_errors += diags.items[n_generic:]

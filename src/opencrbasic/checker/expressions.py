@@ -1197,7 +1197,8 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
                               families="const")
 
 
-def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
+          skip: frozenset = frozenset()) -> None:
     """Undefined-symbol checking at every `Instruction` argument position whose declared type code
     routes through the real expression/named-constant resolver (`_position_kinds`) -- a full
     expression-tree walk (`_undefined_names`), not restricted to a direct bare `Name` argument
@@ -1223,7 +1224,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
 
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction):
+        if not isinstance(stmt, S.Instruction) or id(stmt) in skip:
             continue
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:

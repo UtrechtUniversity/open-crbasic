@@ -1,0 +1,443 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-placefirst_timerinput_outside_undeclared",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-placefirst_timerinput_outside_undeclared",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr300-placefirst_timerinput_outside_undeclared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(Zq0,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr350-placefirst_timerinput_outside_undeclared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(Zq0,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr6-placefirst_timerinput_outside_declared",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  TimerInput(A,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-placefirst_timerinput_outside_declared",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  TimerInput(A,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr300-placefirst_timerinput_outside_declared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  TimerInput(A,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(A,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr350-placefirst_timerinput_outside_declared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  TimerInput(A,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(A,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr6-placefirst_timerinput_outside_two",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  TimerInput(Zq1,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-placefirst_timerinput_outside_two",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  TimerInput(Zq1,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr300-placefirst_timerinput_outside_two",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  TimerInput(Zq1,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(Zq0,C1,0,2,0,usec)\n.\nline 4: TimerInput is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:   TimerInput(Zq1,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr350-placefirst_timerinput_outside_two",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  TimerInput(Zq1,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(Zq0,C1,0,2,0,usec)\n.\nline 4: TimerInput is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:   TimerInput(Zq1,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr6-placefirst_timerinput_then_assign",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  A = Zq1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-placefirst_timerinput_then_assign",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  A = Zq1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr300-placefirst_timerinput_then_assign",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  A = Zq1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(Zq0,C1,0,2,0,usec)\n.\nline 4: Zq1 is not defined."
+  },
+  {
+   "id": "cr350-placefirst_timerinput_then_assign",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  TimerInput(Zq0,C1,0,2,0,usec)\n  A = Zq1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   TimerInput(Zq0,C1,0,2,0,usec)\n.\nline 4: Zq1 is not defined."
+  },
+  {
+   "id": "cr6-placefirst_timerinput_in_scan_undeclared",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr1000x-placefirst_timerinput_in_scan_undeclared",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr300-placefirst_timerinput_in_scan_undeclared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimerInput is not defined.\nline 4: Zq0 is not defined.\nline 4: Invalid, or out of place expression:     TimerInput(Zq0,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr350-placefirst_timerinput_in_scan_undeclared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimerInput is not defined.\nline 4: Zq0 is not defined.\nline 4: Invalid, or out of place expression:     TimerInput(Zq0,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr6-placefirst_menurecompile_outside",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  MenuRecompile(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuRecompile must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr1000x-placefirst_menurecompile_outside",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  MenuRecompile(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuRecompile must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr300-placefirst_menurecompile_outside",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  MenuRecompile(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuRecompile is not defined.\nline 3: Zq1 is not defined.\nline 3: Invalid, or out of place expression:   MenuRecompile(\"x\",Zq1)\n."
+  },
+  {
+   "id": "cr350-placefirst_menurecompile_outside",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  MenuRecompile(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuRecompile is not defined.\nline 3: Zq1 is not defined.\nline 3: Invalid, or out of place expression:   MenuRecompile(\"x\",Zq1)\n."
+  },
+  {
+   "id": "cr6-placefirst_menurecompile_outside_in_scan",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr1000x-placefirst_menurecompile_outside_in_scan",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr300-placefirst_menurecompile_outside_in_scan",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuRecompile(\"x\",Zq1)\n."
+  },
+  {
+   "id": "cr350-placefirst_menurecompile_outside_in_scan",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuRecompile(\"x\",Zq1)\n."
+  },
+  {
+   "id": "cr6-placefirst_menurecompile_then_next_stmt",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile must be used within DisplayMenu..EndMenu.\nline 5: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr1000x-placefirst_menurecompile_then_next_stmt",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile must be used within DisplayMenu..EndMenu.\nline 5: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr300-placefirst_menurecompile_then_next_stmt",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuRecompile(\"x\",Zq1)\n.\nline 5: TimerInput is not defined.\nline 5: Zq0 is not defined.\nline 5: Invalid, or out of place expression:     TimerInput(Zq0,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr350-placefirst_menurecompile_then_next_stmt",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    MenuRecompile(\"x\",Zq1)\n    TimerInput(Zq0,C1,0,2,0,usec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MenuRecompile is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuRecompile(\"x\",Zq1)\n.\nline 5: TimerInput is not defined.\nline 5: Zq0 is not defined.\nline 5: Invalid, or out of place expression:     TimerInput(Zq0,C1,0,2,0,usec)\n."
+  },
+  {
+   "id": "cr6-placefirst_menuitem_outside",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr1000x-placefirst_menuitem_outside",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr300-placefirst_menuitem_outside",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem is not defined.\nline 3: Zq1 is not defined.\nline 3: Invalid, or out of place expression:   MenuItem(\"x\",Zq1)\n."
+  },
+  {
+   "id": "cr350-placefirst_menuitem_outside",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem is not defined.\nline 3: Zq1 is not defined.\nline 3: Invalid, or out of place expression:   MenuItem(\"x\",Zq1)\n."
+  },
+  {
+   "id": "cr6-placefirst_menuitem_name_undeclared",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  MenuItem(Zq0,A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr1000x-placefirst_menuitem_name_undeclared",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  MenuItem(Zq0,A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr300-placefirst_menuitem_name_undeclared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  MenuItem(Zq0,A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   MenuItem(Zq0,A)\n."
+  },
+  {
+   "id": "cr350-placefirst_menuitem_name_undeclared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  MenuItem(Zq0,A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression:   MenuItem(Zq0,A)\n."
+  },
+  {
+   "id": "cr6-placefirst_menuitem_declared",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr1000x-placefirst_menuitem_declared",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr300-placefirst_menuitem_declared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem is not defined.\nline 3: Invalid, or out of place expression:   MenuItem(\"x\",A)\n."
+  },
+  {
+   "id": "cr350-placefirst_menuitem_declared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  MenuItem(\"x\",A)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MenuItem is not defined.\nline 3: Invalid, or out of place expression:   MenuItem(\"x\",A)\n."
+  },
+  {
+   "id": "cr300-placefirst_menu_inside_undeclared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuItem(\"x\",Zq1)\n  EndMenu\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DisplayMenu is not defined.\nline 3: Invalid, or out of place expression:   DisplayMenu(\"m\",-1)\n.\nline 4: MenuItem is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuItem(\"x\",Zq1)\n.\nline 5: EndMenu is not defined.\nline 5: Invalid, or out of place expression:   EndMenu\n."
+  },
+  {
+   "id": "cr350-placefirst_menu_inside_undeclared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuItem(\"x\",Zq1)\n  EndMenu\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DisplayMenu is not defined.\nline 3: Invalid, or out of place expression:   DisplayMenu(\"m\",-1)\n.\nline 4: MenuItem is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuItem(\"x\",Zq1)\n.\nline 5: EndMenu is not defined.\nline 5: Invalid, or out of place expression:   EndMenu\n."
+  },
+  {
+   "id": "cr6-placefirst_menurecompile_inside_undeclared",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuRecompile(\"x\",Zq1)\n  EndMenu\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq1."
+  },
+  {
+   "id": "cr1000x-placefirst_menurecompile_inside_undeclared",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuRecompile(\"x\",Zq1)\n  EndMenu\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq1."
+  },
+  {
+   "id": "cr300-placefirst_menurecompile_inside_undeclared",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuRecompile(\"x\",Zq1)\n  EndMenu\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DisplayMenu is not defined.\nline 3: Invalid, or out of place expression:   DisplayMenu(\"m\",-1)\n.\nline 4: MenuRecompile is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuRecompile(\"x\",Zq1)\n.\nline 5: EndMenu is not defined.\nline 5: Invalid, or out of place expression:   EndMenu\n."
+  },
+  {
+   "id": "cr350-placefirst_menurecompile_inside_undeclared",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuRecompile(\"x\",Zq1)\n  EndMenu\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DisplayMenu is not defined.\nline 3: Invalid, or out of place expression:   DisplayMenu(\"m\",-1)\n.\nline 4: MenuRecompile is not defined.\nline 4: Zq1 is not defined.\nline 4: Invalid, or out of place expression:     MenuRecompile(\"x\",Zq1)\n.\nline 5: EndMenu is not defined.\nline 5: Invalid, or out of place expression:   EndMenu\n."
+  },
+  {
+   "id": "cr6-placefirst_menu_after_endmenu",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuItem(\"x\",A)\n  EndMenu\n  MenuItem(\"y\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr1000x-placefirst_menu_after_endmenu",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuItem(\"x\",A)\n  EndMenu\n  MenuItem(\"y\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: MenuItem must be used within DisplayMenu..EndMenu."
+  },
+  {
+   "id": "cr300-placefirst_menu_after_endmenu",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuItem(\"x\",A)\n  EndMenu\n  MenuItem(\"y\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DisplayMenu is not defined.\nline 3: Invalid, or out of place expression:   DisplayMenu(\"m\",-1)\n.\nline 4: MenuItem is not defined.\nline 4: Invalid, or out of place expression:     MenuItem(\"x\",A)\n.\nline 5: EndMenu is not defined.\nline 5: Invalid, or out of place expression:   EndMenu\n.\nline 6: MenuItem is not defined.\nline 6: Zq1 is not defined.\nline 6: Invalid, or out of place expression:   MenuItem(\"y\",Zq1)\n."
+  },
+  {
+   "id": "cr350-placefirst_menu_after_endmenu",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  DisplayMenu(\"m\",-1)\n    MenuItem(\"x\",A)\n  EndMenu\n  MenuItem(\"y\",Zq1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DisplayMenu is not defined.\nline 3: Invalid, or out of place expression:   DisplayMenu(\"m\",-1)\n.\nline 4: MenuItem is not defined.\nline 4: Invalid, or out of place expression:     MenuItem(\"x\",A)\n.\nline 5: EndMenu is not defined.\nline 5: Invalid, or out of place expression:   EndMenu\n.\nline 6: MenuItem is not defined.\nline 6: Zq1 is not defined.\nline 6: Invalid, or out of place expression:   MenuItem(\"y\",Zq1)\n."
+  },
+  {
+   "id": "cr6-placefirst_inline_if_timerinput",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  If A = 1 Then TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-placefirst_inline_if_timerinput",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  If A = 1 Then TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr300-placefirst_inline_if_timerinput",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  If A = 1 Then TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression: TimerInput(Zq0,C1,0,2,0,usec)."
+  },
+  {
+   "id": "cr350-placefirst_inline_if_timerinput",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  If A = 1 Then TimerInput(Zq0,C1,0,2,0,usec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput is not defined.\nline 3: Zq0 is not defined.\nline 3: Invalid, or out of place expression: TimerInput(Zq0,C1,0,2,0,usec)."
+  },
+  {
+   "id": "cr6-placefirst_timerinput_in_sub",
+   "logger": "cr6",
+   "source": "Public A\nSub S\n  TimerInput(Zq0,C1,0,2,0,usec)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-placefirst_timerinput_in_sub",
+   "logger": "cr1000x",
+   "source": "Public A\nSub S\n  TimerInput(Zq0,C1,0,2,0,usec)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimerInput must be used within a Scan...NextScan."
+  }
+ ]
+}

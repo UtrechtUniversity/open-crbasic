@@ -5927,3 +5927,21 @@ subset; a position missing from an entry is not reported by the real compiler):
   AVW200 and `TimedControl` timing messages): the cases that carry them are not in the fixture.
 - CR300/CR350: the same sweep found no ordering difference besides `MQTTPublishTable` (`Zq5` then
   `Too many parameters:  Zq6.`) and `CovSpa` (an extra `Dimensions not declared` for an undeclared array).
+
+## Round 14 placement before arguments (`TimerInput`, `MenuItem`, `MenuRecompile`; CR6/CR1000X)
+
+Oracle, 2026-10-12, CR6 and CR1000X (`tests/fixtures/r14_placement_before_args.json`; message tracer `trace_errors.py
+cr6`: the `... must be used within ...` message is emitted from inside the instruction's compile function, called by
+the pass-2 statement dispatcher). `TimerInput` outside a `Scan` and `MenuItem`/`MenuRecompile` outside
+`DisplayMenu..EndMenu` reject the placement **before** resolving their arguments, so an undeclared name in the same
+statement gets no `Invalid symbol in expression` (opencrbasic printed it after the placement error; 13 fuzz
+reproducers, mostly `MenuRecompile("x",Undeclared)`). Later statements are reported as before (a `MenuRecompile` in a
+`Scan` does not stop pass 2; `TimerInput` does, as already modelled). `PulseCount` is different: it resolves its
+arguments first, then prints a port/channel error, then the placement message (`Zq0` / `Invalid port 1 ...` /
+`PulseCount must be used ...`; not modelled, opencrbasic prints the placement message first). `Quadrature` with an
+undeclared first argument gives only `Too many parameters:  1.0.` on CR6/CR1000X (matches) but `... 1.` on CR300/CR350
+(float echoed whole, not modelled). A one-line `If ... Then TimerInput(...)` outside a `Scan` also gets the placement
+error and stops pass 2 (opencrbasic missed it). CR300/CR350 are unaffected (`TimerInput is not defined.` and
+`Nope is not defined.` both print).
+Implementation: `checker.__init__._placement_rejected` gives `expressions.check` a skip set;
+`structure.scan_only_outside`/`check_stray_controls` now walk a one-line `If`'s statements.

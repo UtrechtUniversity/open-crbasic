@@ -656,7 +656,12 @@ def scan_only_outside(program: S.Program) -> dict[int, str]:
     found: dict[int, str] = {}
     scans = 0
     in_sub = False
-    for stmt in program.statements:
+    statements: list[S.Stmt] = []
+    for stmt in program.statements:   # a one-line `If`'s statements count too (oracle, 2026-10-12)
+        statements.append(stmt)
+        if isinstance(stmt, S.If):
+            statements.extend((stmt.inline or []) + (stmt.inline_else or []))
+    for stmt in statements:
         kw = _keyword(stmt)
         if isinstance(stmt, S.SubDef):
             in_sub = True
@@ -678,7 +683,12 @@ def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int
         return None
     found = stray_controls(program)
     found.update({k: (m, True) for k, m in scan_only_outside(program).items()})
+    statements: list[S.Stmt] = []
     for stmt in program.statements:
+        statements.append(stmt)
+        if isinstance(stmt, S.If):
+            statements.extend((stmt.inline or []) + (stmt.inline_else or []))
+    for stmt in statements:
         if id(stmt) in found:
             message, stops = found[id(stmt)]
             diags.error(stmt.line, message, stmt.file)
