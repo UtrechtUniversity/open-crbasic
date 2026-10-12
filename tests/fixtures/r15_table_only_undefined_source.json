@@ -1,0 +1,331 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-table_only_undefined_source-0-sample-undef",
+   "logger": "cr6",
+   "source": "Sample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-0-sample-undef",
+   "logger": "cr1000x",
+   "source": "Sample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-0-sample-undef",
+   "logger": "cr300",
+   "source": "Sample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-0-sample-undef",
+   "logger": "cr350",
+   "source": "Sample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-1-sample-undef-endtable",
+   "logger": "cr6",
+   "source": "Sample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration.\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-1-sample-undef-endtable",
+   "logger": "cr1000x",
+   "source": "Sample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration.\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-1-sample-undef-endtable",
+   "logger": "cr300",
+   "source": "Sample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration.\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-1-sample-undef-endtable",
+   "logger": "cr350",
+   "source": "Sample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration.\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-2-sample-two",
+   "logger": "cr6",
+   "source": "Public x\nSample(1,Foo,FP2)\nSample(1,Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-2-sample-two",
+   "logger": "cr1000x",
+   "source": "Public x\nSample(1,Foo,FP2)\nSample(1,Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-2-sample-two",
+   "logger": "cr300",
+   "source": "Public x\nSample(1,Foo,FP2)\nSample(1,Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-2-sample-two",
+   "logger": "cr350",
+   "source": "Public x\nSample(1,Foo,FP2)\nSample(1,Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-3-average-undef",
+   "logger": "cr6",
+   "source": "Average(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-3-average-undef",
+   "logger": "cr1000x",
+   "source": "Average(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-3-average-undef",
+   "logger": "cr300",
+   "source": "Average(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-3-average-undef",
+   "logger": "cr350",
+   "source": "Average(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-4-maximum-undef",
+   "logger": "cr6",
+   "source": "Maximum(1,Tangent,FP2,False,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-4-maximum-undef",
+   "logger": "cr1000x",
+   "source": "Maximum(1,Tangent,FP2,False,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-4-maximum-undef",
+   "logger": "cr300",
+   "source": "Maximum(1,Tangent,FP2,False,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-4-maximum-undef",
+   "logger": "cr350",
+   "source": "Maximum(1,Tangent,FP2,False,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-5-totalize-undef",
+   "logger": "cr6",
+   "source": "Totalize(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-5-totalize-undef",
+   "logger": "cr1000x",
+   "source": "Totalize(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-5-totalize-undef",
+   "logger": "cr300",
+   "source": "Totalize(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-5-totalize-undef",
+   "logger": "cr350",
+   "source": "Totalize(1,Tangent,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-6-sample-expr",
+   "logger": "cr6",
+   "source": "Sample(1,Foo+Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-6-sample-expr",
+   "logger": "cr1000x",
+   "source": "Sample(1,Foo+Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-6-sample-expr",
+   "logger": "cr300",
+   "source": "Sample(1,Foo+Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-6-sample-expr",
+   "logger": "cr350",
+   "source": "Sample(1,Foo+Bar,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-7-sample-in-table",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nSample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Tangent."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-7-sample-in-table",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nSample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Tangent."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-7-sample-in-table",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\nSample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Tangent is not defined."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-7-sample-in-table",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\nSample(1,Tangent,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Tangent is not defined."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-8-sample-undef-later-error",
+   "logger": "cr6",
+   "source": "Public x\nSample(1,Tangent,FP2)\nx = Nope\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: Invalid symbol in expression: x = Nope.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-8-sample-undef-later-error",
+   "logger": "cr1000x",
+   "source": "Public x\nSample(1,Tangent,FP2)\nx = Nope\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: Invalid symbol in expression: x = Nope.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-8-sample-undef-later-error",
+   "logger": "cr300",
+   "source": "Public x\nSample(1,Tangent,FP2)\nx = Nope\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-8-sample-undef-later-error",
+   "logger": "cr350",
+   "source": "Public x\nSample(1,Tangent,FP2)\nx = Nope\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-9-sample-undef-earlier-error",
+   "logger": "cr6",
+   "source": "Public x\nx = Nope\nSample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: x = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-9-sample-undef-earlier-error",
+   "logger": "cr1000x",
+   "source": "Public x\nx = Nope\nSample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: x = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-9-sample-undef-earlier-error",
+   "logger": "cr300",
+   "source": "Public x\nx = Nope\nSample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 3: Too many parameters:  Tangent."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-9-sample-undef-earlier-error",
+   "logger": "cr350",
+   "source": "Public x\nx = Nope\nSample(1,Tangent,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 3: Too many parameters:  Tangent."
+  },
+  {
+   "id": "cr6-table_only_undefined_source-10-sample-undef-reps",
+   "logger": "cr6",
+   "source": "Public x\nSample(Foo,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr1000x-table_only_undefined_source-10-sample-undef-reps",
+   "logger": "cr1000x",
+   "source": "Public x\nSample(Foo,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr300-table_only_undefined_source-10-sample-undef-reps",
+   "logger": "cr300",
+   "source": "Public x\nSample(Foo,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo is not defined.\nline 2: Variable illegal in Parameter: Foo."
+  },
+  {
+   "id": "cr350-table_only_undefined_source-10-sample-undef-reps",
+   "logger": "cr350",
+   "source": "Public x\nSample(Foo,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo is not defined.\nline 2: Variable illegal in Parameter: Foo."
+  }
+ ]
+}

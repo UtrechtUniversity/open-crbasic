@@ -874,11 +874,13 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
     reported = False
     tables = symbols.scope_tables(program, env)
     known = expressions._known_names(program, profile) if not destinations else set()
+    in_table = False
     for st in program.statements:
         if not isinstance(st, S.Instruction):
             continue
         dims = tables(st).dims
         kw = st.keyword.upper()
+        in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
         record = profile.instructions.get(kw)
         if not record:
             continue
@@ -900,7 +902,7 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if reps is not None and reps < 1:
                 diags.error(st.line, f"Illegal Reps {reps}", st.file)
                 return True
-            if not destinations and _report_undefined_source(st, record, known, profile, diags):
+            if not destinations and in_table and _report_undefined_source(st, record, known, profile, diags):
                 return True
             source = st.args[1]
             if reps is not None and reps > 1 and not isinstance(source, (S.Name, S.Index)):

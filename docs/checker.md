@@ -6536,3 +6536,16 @@ message-only pairs): follow-up of "unclosed `Abs`-like groups beyond the flat `A
   of `Incomplete expression:` for the second expression (`Y = Abs(X Q,`, `Y = Abs(X Q) `, `Y = Abs(X Q Then`,
   `Y = Abs(X Q(1)`, `Y = LineNum(X Q`); `Y = Abs(X (Q)` adds `Dimensions not declared:`.
 
+
+## Round 15 message-diff families (oracle, 2026-10-12)
+
+### CR300/CR350: a table-only instruction outside a table does not resolve its source (`tests/fixtures/r15_table_only_undefined_source.json`)
+
+`Sample(1,Tangent,FP2)`, `Average(1,Tangent,FP2,False)`, `Maximum(...)`, `Totalize(...)` outside any
+`DataTable ... EndTable`, with `Tangent` undeclared, give only `<Instruction> must be used inside a table
+declaration.` on all four loggers; CR300/CR350 no longer print `Tangent is not defined.` first (CR6/CR1000X already
+did not). Several statements each get their placement line, `EndTable without DataTable.` follows as before, and an
+earlier error elsewhere (`x = Nope`) still hides the placement lines and leaves `Tangent` unreported (the existing
+`Too many parameters:  Tangent.` cascade line on CR300/CR350 is unchanged). Inside a table the undefined source is
+still `Tangent is not defined.`. `instr_data._check_stage2a` reports an undefined table source on CR300/CR350 only
+inside a `DataTable` body.
