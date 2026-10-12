@@ -2070,3 +2070,28 @@ compilers and were false rejects here).
   `SNMPVariable` after a cascade is never rewritten to `Too many parameters:  <arg>.`. Not modelled: the
   `Miss match of types` / `Too many parameters` ordering when both occur. Fuzz reproducers cr1000x
   `false_accept/e3a11f6b9adc`, cr6 `f2f6e5d8b8e6`.
+
+### `FieldCal` argument rules (all four loggers, round 15)
+
+Fixture `r15_fieldcal_args.json` (template: `Public Voltages(2), CMult(2), COff(2), Meter(2), Mv, Mode, Str As
+String * 20`). Extends "FieldCal Mult and Offset arguments"; `instr_rules.check_fieldcal_variable_args`.
+Statement order of the messages: `MeasVar`, `Illegal Reps`, `Mult`, `Offset`, `Mode`, `KnownVar`, then the size line.
+
+- `Option` (constant, truncated: `2.5` and `1+1` are fine) outside 0..4, or a string or `TRUE`: `Invalid
+  function option.` alone.
+- `Reps` (arg 3, truncated; `2.5` is 2, `0.5`, `TRUE` and NAN are not): outside 1..2 -> `Illegal Reps: must be
+  1 or 2.`, every option; not printed when `MeasVar` is bad.
+- `MeasVar` / `Mode` (args 2 and 6) written as an element with a string subscript (`Meter("fuzz")`) ->
+  `FieldCal MeasVar|Mode must be a declared public variable that can be resolved during compilation.`, every
+  option. (A literal or a string variable there differs per logger, not modelled.)
+- `KnownVar` (arg 7), options 1, 2 and 3 only (0 and 4 never resolve it, so `Meter(3)` of `Meter(2)` compiles
+  there, which used to be a false `Variable Meter out of bounds.`): a string, any number, `-1`, an expression,
+  a String variable, an element with a string subscript, or an out-of-range element (`Meter(3)`, after
+  `Variable Meter out of bounds.`) -> `FieldCal KnownVar must be a declared public variable that can be
+  resolved during compilation.`
+- CR300/CR350 print only the first of `MeasVar`/`Reps`/`Mult`/`Offset` for a statement (`Mode` and `KnownVar`
+  still follow).
+- Options 1-3: `KnownVar` and `MeasVar` one-dimensional or scalar of different declared sizes (`Mv` against
+  `Voltages(2)`; elements count as their array) -> `<KnownVar name> and <MeasVar name> must be declared the
+  same size.`, only for a statement with no other message, and once per distinct text in the program.
+Reproducer cr1000x `false_accept/a93fa575340a`.

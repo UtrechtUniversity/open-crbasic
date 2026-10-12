@@ -2492,7 +2492,11 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
         elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() not in _BOUNDS_UNCHECKED \
                 and (record := profile.instructions.get(stmt.keyword.upper())):
             candidates = [(record["params"][i] if i < len(record["params"]) else None, arg)
-                          for i, arg in enumerate(stmt.args)]
+                          for i, arg in enumerate(stmt.args)
+                          # (`FieldCal` options 0 and 4 never resolve `KnownVar`, oracle 2026-10-12:
+                          # `Meter(3)` of `Meter(2)` compiles)
+                          if not (stmt.keyword.upper() == "FIELDCAL" and i == 6 and stmt.args
+                                  and isinstance(stmt.args[0], S.Number) and stmt.args[0].value in (0, 4))]
         else:
             continue
         scope = tables(stmt)

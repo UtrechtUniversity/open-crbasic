@@ -2199,27 +2199,93 @@ def _delay_option(stmt: S.Instruction, env):
         return None
 
 
-def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics) -> None:
-    """`FieldCal` `Mult` (argument 4) and `Offset` (argument 5) must name a variable the compiler can
+def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics, env=None) -> None:
+    """`FieldCal` argument checks (oracle, all four loggers, 2026-10-11 and 2026-10-12;
+    docs/instructions.md "FieldCal Mult and Offset arguments", "FieldCal argument rules").
+
+    `Mult` (argument 4) and `Offset` (argument 5) must name a variable the compiler can
     resolve: `FieldCal Mult must be a declared variable that can be resolved during compilation.` for
     a string, a non-negative number (`1`, `1.5`, `0`) or an operator expression (`CMult(1)+1`), on
     all four loggers, but only for some `Option` values: `Mult` for 2 and 3, `Offset` for 0, 1, 2 and
-    4 (oracle, 2026-10-11; `Option` 5 and up is `Invalid function option.`, not modelled). A declared variable, an array element (`CMult(1)`) and a
-    negative literal (`CMult(-1)`) compile. The real compiler also prints `Table <name> declared with
-    no output fields.` at the `EndTable` of a table whose only field is `SampleFieldCal` when a
-    `FieldCal` argument is bad; not modelled here (`docs/instructions.md`)."""
+    4. A declared variable, an array element (`CMult(1)`) and a negative literal (`CMult(-1)`)
+    compile. `Option` outside 0..4 is `Invalid function option.` alone; `Reps` (truncated) outside
+    1..2 is `Illegal Reps: must be 1 or 2.`; a `MeasVar` or `Mode` element with a string subscript
+    gives `FieldCal MeasVar|Mode must be a declared public variable that can be resolved during
+    compilation.`, and `KnownVar` (options 1, 2 and 3 only) gives the same text for a string, a number, an
+    expression, a String variable or an element with a string subscript. The real compiler also
+    prints `Table <name> declared with no output fields.` at the `EndTable` of a table whose only
+    field is `SampleFieldCal` when a `FieldCal` argument is bad; not modelled here."""
+    types = symbols.declared_variable_types(program)
+    dims = symbols.declared_all_dims(program, env) if env is not None else None
+    conv = None
+    if env is not None:
+        conv = (env, profile, longconv.float_names(program.statements),
+                longconv.literal_names(program.statements))
+
+    def number(arg):
+        return _dnp_long(arg, conv) if conv is not None else None
+
+    size_reported: set[str] = set()
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "FIELDCAL" or not stmt.args:
             continue
-        option = stmt.args[0]
-        if not isinstance(option, S.Number) or isinstance(option.value, float):
+        args = stmt.args
+        before = len(diags.items)
+        option = number(args[0])
+        if option is None:
+            option = args[0].value if isinstance(args[0], S.Number) and not isinstance(args[0].value, float) else None
+        if option is None:
             continue
+        if not 0 <= option <= 4:
+            diags.error(stmt.line, "Invalid function option.", stmt.file)
+            continue
+        earlier = False   # a MeasVar or Reps error (CR300/CR350 then print no Mult/Offset line)
+        meas = len(args) > 1 and _fieldcal_string_subscript(args[1])
+        if meas:
+            earlier = True
+            diags.error(stmt.line, "FieldCal MeasVar must be a declared public variable that can be "
+                                   "resolved during compilation.", stmt.file)
+        reps = number(args[2]) if len(args) > 2 else None
+        if reps is not None and reps not in (1, 2) and not meas:
+            earlier = True
+            diags.error(stmt.line, "Illegal Reps: must be 1 or 2.", stmt.file)
         for index, label, options in ((3, "Mult", (2, 3)), (4, "Offset", (0, 1, 2, 4))):
             # which `Option` values check which argument (oracle, all four loggers, 2026-10-11)
-            if option.value in options and index < len(stmt.args) and \
-                    _fieldcal_bad_variable(stmt.args[index]):
+            if option in options and index < len(args) and _fieldcal_bad_variable(args[index]) \
+                    and not (earlier and profile.single_pass):
                 diags.error(stmt.line, f"FieldCal {label} must be a declared variable that can be "
                                        "resolved during compilation.", stmt.file)
+                earlier = True
+        if len(args) > 5 and _fieldcal_string_subscript(args[5]):
+            diags.error(stmt.line, "FieldCal Mode must be a declared public variable that can be "
+                                   "resolved during compilation.", stmt.file)
+        if option in (1, 2, 3) and len(args) > 6:
+            known = args[6]
+            shape = dims.get(known.name.upper()) if dims is not None and isinstance(known, S.Index) else None
+            outside = bool(shape) and len(shape) == 1 and len(known.args) == 1 and \
+                isinstance(known.args[0], S.Number) and isinstance(known.args[0].value, int) and \
+                not 1 <= known.args[0].value <= shape[0]     # (printed after `Variable K out of bounds.`)
+            bad = outside or _fieldcal_bad_variable(known) or isinstance(known, S.Unary) or (
+                isinstance(known, (S.Name, S.Index))
+                and types.get(known.name.upper()) == "STRING")
+            if bad:
+                diags.error(stmt.line, "FieldCal KnownVar must be a declared public variable that can "
+                                       "be resolved during compilation.", stmt.file)
+        if option in (1, 2, 3) and len(args) > 6 and dims is not None and len(diags.items) == before:
+            known, measure = args[6], args[1]
+            sizes = []
+            for var in (known, measure):
+                shape = dims.get(var.name.upper()) if isinstance(var, (S.Name, S.Index)) else None
+                sizes.append(None if shape is None or len(shape) > 1 or
+                             types.get(var.name.upper()) == "STRING" else shape[0])
+            text = f"{known.name} and {measure.name} must be declared the same size."
+            if None not in sizes and sizes[0] != sizes[1] and text not in size_reported:
+                size_reported.add(text)     # (printed once per program, oracle 2026-10-12)
+                diags.error(stmt.line, text, stmt.file)
+
+
+def _fieldcal_string_subscript(arg) -> bool:
+    return isinstance(arg, S.Index) and any(isinstance(a, S.String) for a in arg.args)
 
 
 def check_matrix_destination(program: S.Program, profile, diags: Diagnostics) -> None:
