@@ -3228,6 +3228,8 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         if link_ctx.has_routines:
             link_ctx.links.calls.append(link)
         if link.upper() not in link_ctx.subs:
+            if known is not None:   # the arguments are resolved first (oracle, 2026-10-12)
+                _report_call_arg_names(stmt, known, profile, diags, is_function=False, ds=ds)
             return _unlinked_call(stmt, link, profile, diags, before_beginprog, link_ctx)
     if sub_params and name in sub_params:
         # names first; CR300/CR350 then print no argument-count error (oracle, 2026-10-04)

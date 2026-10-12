@@ -6011,3 +6011,14 @@ Oracle, 2026-10-12, all four loggers (`tests/fixtures/r14_declaration_tails.json
 - Not fixed (found while probing): `Const Pi = (1` prints `No Matching, or out of place ) in expression: (1.`
   (opencrbasic: `Const with no assignment.`, all four loggers); CR6/CR1000X `Const Pi = 1 / 0` is
   `Divide by zero in expression: 1 / 0.` (opencrbasic compiles it, CR300/CR350 accept it).
+
+## Round 14 `Call` of an undefined `Sub`: arguments first
+
+Oracle, 2026-10-12, all four loggers (`tests/fixtures/r14_call_undefined_sub.json`, 92 cases). `Call Nosub(Zq0,Zq1)` with
+undeclared arguments resolves the arguments before the link step: CR6/CR1000X print `Invalid symbol in expression: <arg>.`
+for each undeclared argument (the argument's whole text: `1+Zq0`, `Zq0(1)`, `Zq1()`), then `Sub Nosub not defined.` (a program
+without any `Sub`), or the link-time `Nosub is not declared as a Subroutine.` at the end; CR300/CR350 print `Zq0 is not defined.`
+per name (and `Dimensions not declared: Zq0(1).`) and then no `Sub ... not defined.` at all (name resolution is a pass-1
+error there, which skips the link step). Declared arguments still give just the `Sub` message. Implemented by calling
+`_report_call_arg_names` (the same reporter used for a call of a declared `Sub`) before `_unlinked_call` (6 fuzz
+reproducers: `Call  Table (SerialT)`, `Call run(X_max_sub,X,X_ID)`).
