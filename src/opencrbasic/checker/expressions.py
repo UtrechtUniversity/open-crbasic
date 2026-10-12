@@ -1368,8 +1368,19 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
             continue  # `ComPort 0 illegal.` replaces every `Invalid symbol` (`cr3xx.check`)
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
+            reported = len(diags.items)
             _report_statement(stmt, positions, known, variable_names, profile, diags,
                               families="general", dim_counts=dim_counts, ds=ds)
+            if stmt.keyword.upper() == "MATRIX" and profile.name in ("cr6", "cr1000x") and \
+                    len(diags.items) > reported and all(
+                        d.message.startswith("Invalid symbol in expression: ")
+                        for d in diags.items[reported:]):
+                from . import instr_rules
+                rewritten = instr_rules.matrix_undefined_operands(stmt, program, env, known, profile)
+                if rewritten is not None:
+                    del diags.items[reported:]
+                    for message in rewritten:
+                        diags.error(stmt.line, message, stmt.file)
 
             # `_VARIABLE_REQUIRED_KINDS` (`Invalid Variable or Array: %s.`) is intentionally not
             # applied here despite oracle evidence that it is a real rule for *some* instructions

@@ -1980,3 +1980,12 @@ numeric literals and `Const` names. `AddPrecise("fuzz",.1)`, `MovePrecise("",1)`
 (a unary minus makes it numeric), `"a" = "b"`, `5`, `NAN`, `KN+KN`. `"a"*2` gives `Illegal String operand`
 (not modelled). R15, `tests/fixtures/r15_addprecise_string_arg.json` (audited 0 differing), fuzz false
 reject `cr1000x/false_reject/bea2207a74da`.
+### `Matrix` with undefined operand names, CR6/CR1000X (oracle, 2026-10-12; `tests/fixtures/r15_matrix_undefined_operands.json`)
+
+`Matrix (Option, A, B, Dest)` with an operand that is an undefined bare name prints, for each such operand in order,
+`Invalid symbol in expression: <name>.` and `Illegal Matrix`, then the dimension messages (a name that resolves to nothing has
+the uninitialised shape `-842150451,-842150451`): options 1, 2, 4, 5 `Illegal Matrix dimensioned`; option 3
+`multiply A columns and B rows must be the same` when exactly one of `A`/`B` is undefined, and `multiply result illegal
+dimensioned, must be m,q` (`m` = rows of A, `q` = columns of B, either may print as `-842150451`) when `Dest` is undefined.
+`Matrix(Zork,X,X,Add)` (the option undefined) and an indexed operand are unchanged. CR300/CR350 are unchanged (`Zork is not
+defined.` then the cascade). `instr_rules.matrix_undefined_operands`.

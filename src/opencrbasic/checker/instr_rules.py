@@ -1441,6 +1441,56 @@ def _matrix_shapes(program: S.Program, env: consteval.Env) -> dict[str, tuple[in
 _ILLEGAL_MATRIX = (-1, -1)
 
 
+# An operand name that resolves to nothing has a shape of uninitialised memory in the real compiler
+# (oracle, CR6/CR1000X, 2026-10-12: `multiply result illegal dimensioned, must be -842150451,3`).
+_UNDEFINED_MATRIX = (-842150451, -842150451)
+
+
+def matrix_undefined_operands(stmt, program: S.Program, env, known, profile) -> list[str] | None:
+    """CR6/CR1000X `Matrix (Option, A, B, Dest)` with undefined bare names as operands: for each
+    one `Invalid symbol in expression: <name>.` and `Illegal Matrix`, then the dimension messages
+    its uninitialised shape causes (oracle, 2026-10-12, `docs/instructions.md`). `None`: not this
+    shape (an option that is not a constant 1-5, an operand that is neither a bare name nor of a
+    known shape, a name inside an indexed operand)."""
+    from . import longconv
+    args = list(stmt.args)
+    if len(args) != 4 or any(a is None for a in args):
+        return None
+    names = longconv.float_names(program.statements)
+    option = longconv.long_value(args[0], env, profile, names, longconv.literal_names(program.statements))
+    if option is None or not 1 <= option & 0x7FFFFFFF <= 5:
+        return None
+    option &= 0x7FFFFFFF
+    ops = [args[1], args[2], args[3]] if option <= 3 else [args[1], args[3]]
+    if option > 3 and not isinstance(args[2], (S.Number, S.Name)):
+        return None
+    shapes = _matrix_shapes(program, env)
+    out, shape = [], []
+    for a in ops:
+        if not isinstance(a, S.Name):
+            return None
+        up = a.name.upper()
+        if up in known:
+            if up not in shapes:
+                return None
+            shape.append(shapes[up])
+        else:
+            out += [f"Invalid symbol in expression: {a.name}.", "Illegal Matrix"]
+            shape.append(_UNDEFINED_MATRIX)
+    if not out:
+        return None
+    result = shape[-1]
+    if option == 3:
+        (m, n), (p, q) = shape[0], shape[1]
+        if n != p:
+            out.append("multiply A columns and B rows must be the same")
+        if result == _UNDEFINED_MATRIX or (result[0] != m and result[1] != q):
+            out.append(f"multiply result illegal dimensioned, must be {m},{q}")
+    else:
+        out.append("Illegal Matrix dimensioned")
+    return out
+
+
 def _matrix_dimension_errors(option: int, args, shapes) -> list[str]:
     """`Matrix` operand dimension messages (oracle 2026-10-03, all four loggers,
     `docs/instructions.md` "Matrix dimensions"); empty unless every checked operand is a bare
