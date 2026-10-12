@@ -6131,10 +6131,11 @@ parentheses of `PortSet(C1 ;,1)`, `PortSet(C1,1 ;)`, `PortSet(102 ;,1)`, `Delay(
 `Battery(X ;)`, `PanelTemp(X,60 ;)`, `X = Sin(1 ;)`, `SerialOpen(ComRS232 ;,9600,0,0,50)`,
 `Scan (1 ;,Sec,3,0)`, `Sample(1,X ;,FP2)` and `DataTable (T,1 ;,-1)` / `(T,1,-1 ;)` (CR6 and CR1000X,
 all compile), so the blank model holds for them; the fixture's `SerialOpen(Com1 ;,...)` ->
-`ComPort 0 illegal.` stays the exception. Not modelled: the `DataTable` name slot. `DataTable (T ;,1,-1)`
-(also `( T ;` and with a fourth argument) is `Invalid, or out of place expression: ;.` then `Too
-many parameters:  -1.`, and a glued `DataTable (T;,1,-1)` declares a table named `T;`, so
-`CallTable T` is `Could not find DataTable T.`; we accept both. Simply keeping the `;` for every
-`DataTable` header turns the accepted later-argument shapes into false rejects, so the name slot
-needs its own handling. CR300/CR350 reject a `;` inside instruction arguments with `Invalid symbol
-in expression: <argument> ;.` (`Sample(1,X ;,FP2)` -> `... X ;.`), which we do not model either.
+`ComPort 0 illegal.` stays the exception. The `DataTable` name slot differs and is modelled
+(`parser._drop_semicolons` keeps only that `;`, `_parse_segment` handles it):
+`DataTable (T ;,1,-1)` (also `( T ;` and with a fourth argument) is `Invalid, or out of place
+expression: ;.` then `Too many parameters:  -1.` (the `;` takes a parameter slot, like the second
+word of `DataTable (Ten Sec,...)`), and a glued `DataTable (T;,1,-1)` declares a table named `T;`,
+so `CallTable T` is `Could not find DataTable T.` (cases `*-r14c2-*` in
+`tests/fixtures/r14_semicolon.json`). Not modelled: CR300/CR350 reject a `;` inside instruction
+arguments with `Invalid symbol in expression: <argument> ;.` (`Sample(1,X ;,FP2)` -> `... X ;.`).

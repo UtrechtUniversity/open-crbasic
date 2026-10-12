@@ -264,11 +264,14 @@ def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
     if ok:
         return body + eof
     if profile.name in ("cr6", "cr1000x") and head not in ("SUB", "FUNCTION"):
+        # (the table name slot keeps its `;`: `DataTable (T ;,1,-1)`, see `_parse_segment`)
+        name_slot = 3 if head == "DATATABLE" and len(real) > 3 and real[1].text == "(" \
+            and real[2].kind == "IDENT" else -1
         depth, kept = 0, []
-        for t in real:
+        for i, t in enumerate(real):
             if t.kind == "OP" and t.text in "()":
                 depth += 1 if t.text == "(" else -1
-            if not (semi(t) and depth > 0):
+            if not (semi(t) and depth > 0 and i != name_slot):
                 kept.append(t)
         if len(kept) < len(real):
             return kept + eof
@@ -623,6 +626,20 @@ class _Parser:
         return line_text
 
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
+        if (len(seg) > 3 and seg[0].upper == "DATATABLE" and seg[1].text == "("
+                and seg[2].kind == "IDENT" and seg[3].kind == "OP" and seg[3].text == ";"):
+            # CR6/CR1000X (`_drop_semicolons` keeps only this `;`): a glued `T;` is the table name
+            # `T;` (`CallTable T` is then `Could not find DataTable T.`); `T ;` makes the `;` the
+            # next parameter (`Invalid, or out of place expression: ;.`, `Too many parameters:
+            # -1.`), like a second word below (oracle, 2026-10-12)
+            if seg[3].col == seg[2].col + len(seg[2].text):
+                name = seg[2].text + ";"
+                seg = seg[:2] + [lexer.Token("IDENT", name, name.upper(), seg[2].col,
+                                             seg[2].line)] + seg[4:]
+            else:
+                self.diags.error(line, "Invalid, or out of place expression: ;.", file)
+                seg = seg[:3] + [lexer.Token("OP", ",", ",", seg[3].col, seg[3].line),
+                                 lexer.Token("NUMBER", "0", "0", seg[3].col, seg[3].line, 0)] + seg[4:]
         if (len(seg) > 3 and seg[0].kind == "IDENT" and seg[0].upper in _RAW_NAME_FIRST
                 and seg[1].kind == "OP" and seg[1].text == "(" and seg[2].kind == "IDENT"
                 and seg[3].kind == "IDENT"):
