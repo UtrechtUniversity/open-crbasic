@@ -1,0 +1,155 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-cascade_inline_if-0-two_inline_if",
+   "logger": "cr6",
+   "source": "Public X\nSub S\nIf X Then X = 1\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-cascade_inline_if-0-two_inline_if",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S\nIf X Then X = 1\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-cascade_inline_if-0-two_inline_if",
+   "logger": "cr300",
+   "source": "Public X\nSub S\nIf X Then X = 1\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cascade_inline_if-0-two_inline_if",
+   "logger": "cr350",
+   "source": "Public X\nSub S\nIf X Then X = 1\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cascade_inline_if-1-one_inline_if",
+   "logger": "cr6",
+   "source": "Public X\nSub S\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-cascade_inline_if-1-one_inline_if",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-cascade_inline_if-1-one_inline_if",
+   "logger": "cr300",
+   "source": "Public X\nSub S\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cascade_inline_if-1-one_inline_if",
+   "logger": "cr350",
+   "source": "Public X\nSub S\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cascade_inline_if-2-inline_if_else",
+   "logger": "cr6",
+   "source": "Public X\nSub S\nIf X Then X = 1 Else X = 2\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-cascade_inline_if-2-inline_if_else",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S\nIf X Then X = 1 Else X = 2\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-cascade_inline_if-2-inline_if_else",
+   "logger": "cr300",
+   "source": "Public X\nSub S\nIf X Then X = 1 Else X = 2\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cascade_inline_if-2-inline_if_else",
+   "logger": "cr350",
+   "source": "Public X\nSub S\nIf X Then X = 1 Else X = 2\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Include file x.txt must have valid program file extension.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cascade_inline_if-3-no_inline",
+   "logger": "cr6",
+   "source": "Public X\nSub S\nX = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-cascade_inline_if-3-no_inline",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S\nX = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-cascade_inline_if-3-no_inline",
+   "logger": "cr300",
+   "source": "Public X\nSub S\nX = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cascade_inline_if-3-no_inline",
+   "logger": "cr350",
+   "source": "Public X\nSub S\nX = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Include file x.txt must have valid program file extension.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cascade_inline_if-4-block_if",
+   "logger": "cr6",
+   "source": "Public X\nSub S\nIf X Then\nX = 1\nEndIf\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-cascade_inline_if-4-block_if",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S\nIf X Then\nX = 1\nEndIf\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-cascade_inline_if-4-block_if",
+   "logger": "cr300",
+   "source": "Public X\nSub S\nIf X Then\nX = 1\nEndIf\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Include file x.txt must have valid program file extension.\nline 13: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cascade_inline_if-4-block_if",
+   "logger": "cr350",
+   "source": "Public X\nSub S\nIf X Then\nX = 1\nEndIf\nIf X Then X = 1\nEndSub\nDataTable(T,1,-1)\nSample(1,X,IEEE4)\nEndTable\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Include file x.txt must have valid program file extension.\nline 13: Too many parameters:  Sec."
+  }
+ ]
+}

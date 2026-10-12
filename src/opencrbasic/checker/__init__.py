@@ -131,11 +131,18 @@ def _with_inline(program: S.Program) -> S.Program:
     """A copy of `program` whose statement list also holds each one-line `If`'s statements, right
     after the `If`."""
     statements: list[S.Stmt] = []
+    flat_at: list[int] = []  # raw statement index -> index in the flattened list
     for stmt in program.statements:
+        flat_at.append(len(statements))
         statements.append(stmt)
         if isinstance(stmt, S.If):
             statements.extend((stmt.inline or []) + (stmt.inline_else or []))
-    return dataclasses.replace(program, statements=statements)
+    flat_at.append(len(statements))
+    # (`include_error_at` indexes the raw list: re-index it, or each earlier one-line `If` body
+    # would shift the CR300/CR350 cascade start too early)
+    return dataclasses.replace(program, statements=statements,
+                               include_error_at=[flat_at[min(i, len(flat_at) - 1)]
+                                                 for i in program.include_error_at])
 
 
 def _run_pass_capture(fn, *args):
