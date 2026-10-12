@@ -63,10 +63,10 @@ def _f32(x: float) -> float:
     return struct.unpack("f", struct.pack("f", x))[0]
 
 
-def _f32_safe(x: float) -> float:
+def _f32_safe(x) -> float:
     """float32 rounding that overflows to +-inf (CPython 3.13 raises on some builds)."""
     try:
-        return _f32(x)
+        return _f32(float(x))
     except OverflowError:
         return float("inf") if x > 0 else float("-inf")
 
@@ -78,27 +78,32 @@ _TWO31 = 2147483648.0
 def size_class(raw):
     """How the real compiler reads a `DataTable` size argument (oracle, all four loggers,
     `docs/tdf-rules.md` "DataTable size argument"): the constant is rounded to float32 and
-    truncated toward zero. Returns `("auto",)` for -1, `("fixed", N, flagged)` for any other
+    truncated toward zero (an integer constant that fits in 32 bits is kept exactly). Returns `("auto",)` for -1, `("fixed", N, flagged)` for any other
     integer (`flagged`: it was negative, `N = -size`; zero is 1), `("edge", sign)` when the
-    float32 is exactly +-2^31 or `+inf`, `("toxic",)` beyond it (and `-inf`), `None` when the
-    value is not a number."""
+    float32 is exactly +-2^31, `("inf",)` for `+inf`, `("toxic",)` beyond it (and `-inf`), `None`
+    when the value is not a number."""
     if isinstance(raw, bool) or not isinstance(raw, (int, float)):
         return None
-    f = _f32_safe(float(raw))
-    if f != f:
-        return None
-    if f == float("inf") or f == _TWO31:
-        return ("edge", 1)
-    if f == -_TWO31:
-        return ("edge", -1)
-    if abs(f) > _TWO31:
-        return ("toxic",)
-    v = int(f)
+    if isinstance(raw, int) and -_TWO31 <= raw < _TWO31:
+        v = raw                                  # an integer literal that fits is kept exactly
+    else:
+        f = _f32_safe(raw)
+        if f != f:
+            return None
+        if f == float("inf"):
+            return ("inf",)
+        if f == _TWO31:
+            return ("edge", 1)
+        if f == -_TWO31:
+            return ("edge", -1)
+        if abs(f) > _TWO31:
+            return ("toxic",)
+        v = int(f)
     if v == -1:
         return ("auto",)
     if v == 0:
         return ("fixed", 1, False)
-    return ("fixed", -v, True) if v < -1 else ("fixed", v, False)
+    return ("fixed", min(-v, _INT32_MAX), True) if v < -1 else ("fixed", v, False)
 
 
 def declared_size(raw, cr3xx: bool, bytes_per_record: int) -> int | None:
@@ -110,8 +115,7 @@ def declared_size(raw, cr3xx: bool, bytes_per_record: int) -> int | None:
     c = size_class(raw)
     if c is None or c[0] == "auto":
         return None
-    f = _f32_safe(float(raw))
-    if f == float("inf"):
+    if c[0] == "inf":
         return _INT32_MAX
     if cr3xx:
         if c[0] == "edge":

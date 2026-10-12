@@ -110,8 +110,8 @@ def check(program: S.Program, profile, result, diags) -> None:
         if not m["called"]:
             continue
         cls = T.size_class(m["size_raw"])
-        if cls is not None and cls[0] == "edge":     # +-2^31 / +inf: INT32_MAX, the negative one flagged
-            cls = ("fixed", 2147483647, cls[1] < 0)
+        if cls is not None and cls[0] in ("edge", "inf"):   # +-2^31 / +inf: INT32_MAX, -2^31 flagged
+            cls = ("fixed", 2147483647, cls[0] == "edge" and cls[1] < 0)
         classes.append((t, m, cls))
     autos = [m for _, m, cls in classes if cls == ("auto",) and m["scans"]]
     if autos and any(cls == ('toxic',) and m["scans"] for _, m, cls in classes):

@@ -946,3 +946,23 @@ uncalled table, negative size, 100 ms scan, five second scan, one hour scan, `Da
 tables, strings, `Maximum` with time, three tables, and random programs near the boundary
 (450 programs, no false reject; remaining false accepts all have an auto-sized table or a
 `DataEvent`/`AcceptDataRecords` table).
+
+## DataTable size argument (all four loggers; round 15)
+
+TDF `size` of a called table, one FP2 table in a `Scan` (oracle, `tools/tdf_probe.py --exe`;
+`tests/test_r15_table_sizes.py` holds 136 observed values). The argument is a constant rounded
+to float32 and truncated toward zero (`100.99999999` is 101, `578673.99` is 578674, `99.99999` is
+99); an integer constant that fits in 32 bits is kept exactly (`2147483000`, `2147483647`).
+Zero and `-0.5` give 1; `-1` (and `-1.5`) is auto.
+
+- CR6/CR1000X: every other negative size, any size beyond 2^31 as float32 (including exactly
+  2^31) and `-inf` is auto-sized (232674 for one FP2 table); `+inf` (`1e39`) is 2147483647.
+- CR300/CR350: `-N` (N >= 2) is a fixed `N` (so `-2.5` is 2); float32 +-2^31 and `+inf` give
+  2147483647; beyond 2^31 (and `-inf`) gives the minimum `(12288 // R) - (4096 // R + 1)`,
+  `R = bytes + 16` (454 for FP2; checked for FP2, IEEE4, String, `Maximum` with time stamps and
+  arrays, with and without `DataInterval`), the table `checker/storage.py` calls "toxic".
+
+Before round 15 a negative size other than -1, or one beyond 32 bits, reached `tdf.serialize`
+as a negative or oversized `I` (`struct.error` from `crbc -z`), and fractional sizes were rounded
+(101, and 0 for `0.5`) instead of truncated. The CR300/CR350 `-1` auto size still uses the
+CR6 constants (580038 for one FP2 CR300 table, 2910207 on the CR350; unmodelled).
