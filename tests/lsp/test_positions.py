@@ -182,12 +182,12 @@ def test_double_include_section_keeps_distinct_occurrences(tmp_path):
     assert pieces == {1, 2}
 
 
-def test_nested_include_section_records_the_chain(tmp_path):
+def test_nested_include_section_is_not_loaded(tmp_path):
     path = _write(tmp_path, 'IncludeSection("A", "CPU:A.crb")\nBeginProg\nEndProg\n',
                   **{"A.crb": '\nIncludeSection("B", "CPU:B.crb")\n', "B.crb": "Public V\n"})
-    prog, _ = parser.parse_file(path)
-    by_file = {o.file: o for o in prog.occurrences}
-    assert by_file["CPU:B.crb"].parent == by_file["CPU:A.crb"].id and by_file["CPU:B.crb"].site == (2, 2)
+    prog, diags = parser.parse_file(path)
+    assert [o.file for o in prog.occurrences if o.file.startswith("CPU:")] == ["CPU:A.crb"]
+    assert any("within an Include file" in d.message for d in diags.errors)
 
 
 def test_analysis_diagnostic_span_in_include_and_entry(tmp_path):

@@ -358,7 +358,7 @@ def test_self_including_entry_is_reported_and_the_server_stays_usable(make_clien
     client = started(make_client, root)
     ok, cycle = root / "Ok.CR6", root / "Cycle.CR6"
     params = client.wait_diagnostics(cycle, lambda d: bool(d))
-    assert all(d["source"] == "opencrbasic (internal)" for d in params["diagnostics"])
+    assert any("within an Include file" in d["message"] for d in params["diagnostics"])
     client.wait_diagnostics(ok, has("y"))
     client.open(ok, bad(SMALL))
     client.change(ok, SMALL, 2)
