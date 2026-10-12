@@ -229,7 +229,7 @@ def _repo(path: Path) -> str:
     run = lambda *a: subprocess.run(["git", "-C", str(path), *a], check=True,  # noqa: E731
                                     capture_output=True, text=True).stdout.strip()
     run("init", "-q")
-    run("-c", "user.email=t@example.invalid", "-c", "user.name=t", "commit", "-q",
+    run("-c", "user.email=t@example.invalid", "-c", "user.name=t", "-c", "commit.gpgsign=false", "commit", "-q",
         "--allow-empty", "-m", "x")
     return run("rev-parse", "--short", "HEAD")
 

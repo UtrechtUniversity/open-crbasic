@@ -184,3 +184,22 @@ def test_sweep_with_real_help_and_timing(analyses):
     assert elapsed < 10, elapsed
     for p, res in analyses.items():
         I.parameter_hints(res, p, 0, 100_000, "cr6", real)
+
+
+UNITS_STATEMENT = ('Public Value As String * 8\nUnits Value = "abc"\nDataTable(T,True,1)\n'
+                   "  Sample(1,Value,String)\nEndTable\nBeginProg\n  Value = Left(\"abc\",2)\nEndProg\n")
+UNITS_PREFIX = ('Public UnitsValue As String * 8\nBeginProg\n  UnitsValue = Left("abc",2)\nEndProg\n')
+
+
+def test_units_prefixed_name_still_gets_hints(tmp_path):
+    assert [h[2] for h in hints(tmp_path, UNITS_PREFIX)] == ["SearchString:", "NumChars:"]
+
+
+def test_plain_name_baseline_gets_hints(tmp_path):
+    assert [h[2] for h in hints(tmp_path, UNITS_PREFIX.replace("UnitsValue", "Value"))] == [
+        "SearchString:", "NumChars:"]
+
+
+def test_units_statement_is_excluded_but_later_calls_are_hinted(tmp_path):
+    got = hints(tmp_path, UNITS_STATEMENT.replace('"abc"\nDataTable', '"Left(1,2)"\nDataTable'))
+    assert {h[0] for h in got} == {3, 6}, got      # the Sample and Left lines, not the Units line

@@ -8,6 +8,8 @@ See `docs/lsp-api.md` "Inlay hints (LSP-09a)".
 
 from __future__ import annotations
 
+import re
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -15,6 +17,8 @@ from . import lexer, positions
 from . import syntax as S
 from .hover import declarations, signature_help
 from .navigation import path_keys
+
+_UNITS_STATEMENT = re.compile(r"\s*Units\s+\w", re.I)
 
 __all__ = ["InlayHint", "parameter_hints"]
 
@@ -92,7 +96,7 @@ def _hints(result, path, start_line, end_line, profile, help_provider) -> list[I
     for stmt in statements:
         text = getattr(stmt, "text", "")
         origin = getattr(stmt, "origin", None)
-        if origin is None or "(" not in text or text.lstrip()[:5].upper() == "UNITS":
+        if origin is None or "(" not in text or _UNITS_STATEMENT.match(text):
             continue
         ll, seg = origin
         shift = _shift(stmt, ll, seg)

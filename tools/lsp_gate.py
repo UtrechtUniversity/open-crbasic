@@ -137,8 +137,10 @@ def classify(paths, includes=()) -> list[tuple[str, str]]:
         gates.append(("pyrefly (LSP modules; error count not judged here)",
                       "uv run --no-sync pyrefly check"))
     if tiers["docs"] and not (tiers["compiler"] or tiers["lsp"] or tiers["vscode"]):
-        docs = " ".join(sorted(p for p in local if matches(p, DOCS)))
-        gates.append(("documentation links", f"uv run --no-sync python tools/lsp_gate.py --check-links {docs}"))
+        markdown = sorted(p for p in local if matches(p, DOCS) and p.endswith(".md"))
+        if markdown:    # evidence assets (images, JSON, logs) are docs but have no links to read
+            gates.append(("documentation links", "uv run --no-sync python tools/lsp_gate.py "
+                          f"--check-links {' '.join(markdown)}"))
     return gates
 
 

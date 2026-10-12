@@ -1226,7 +1226,8 @@ InlayHint(line, column, label, kind="parameter", padding_right=True)
   (case-insensitive); for an argument past the parameter count; for a name declared in the program
   (declared names win, as in hover); for a member call after `.`; for a paren-less statement call
   (`Foo a, b`) or an instruction that is not first in its statement (the body of an inline `If`);
-  for a statement the lexer cannot tokenize.
+  for a statement the lexer cannot tokenize; for a `Units` statement (the keyword `Units` followed by
+  a name, matched at a word boundary: an assignment to `UnitsValue` is hinted; LSP-R5b).
 - Positions come from the AST, not from text search: the statement's own text is tokenized, and a
   token's logical offset (`stmt.origin` segment offset plus the token column) is mapped through
   `positions.exact_range`. A hint needs the argument's first token in one physical piece; an argument
@@ -1537,5 +1538,7 @@ returned result is shared: tests must not mutate it.
 `git diff --name-only <base>...HEAD` plus the working tree: compiler or unclassified files -> full
 suite and selfdiff; LSP-only files -> selfdiff and `tests/lsp`; `vscode/**` -> `npm test`; files in
 `[tool.pyrefly].project-includes` or `pyproject.toml` -> `pyrefly check`; documentation only -> a
-relative-link check (`--check-links FILE...`). Its classification is unit-tested in
+relative-link check (`--check-links FILE...`) of the changed Markdown files only: evidence assets under
+`docs/` (images, JSON, logs) are documentation but are not passed to the link reader (LSP-R5b). Its
+classification is unit-tested in
 `tests/lsp/test_lsp_gate.py`.

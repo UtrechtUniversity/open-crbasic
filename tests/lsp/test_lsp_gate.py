@@ -116,3 +116,22 @@ def test_link_check(tmp_path):
                    encoding="utf-8")
     broken = G.check_links([str(doc)])
     assert len(broken) == 2 and "missing.md" in broken[0] and "nope" in broken[1]
+
+
+def test_docs_with_evidence_assets_check_only_the_markdown(tmp_path, monkeypatch, capsys):
+    report = tmp_path / "docs" / "RESULTS.md"
+    report.parent.mkdir()
+    report.write_text("[gone](missing.md)\n", encoding="utf-8")
+    (report.parent / "shot.png").write_bytes(b"\xff\xd8\xff\x00not utf-8")
+    (report.parent / "data.json").write_bytes(b"\xff\xfe{}")
+    changed = ["opencrbasic/docs/RESULTS.md", "opencrbasic/docs/shot.png", "opencrbasic/docs/data.json"]
+    gates = G.classify(changed)
+    assert [c for _l, c in gates] == [
+        "uv run --no-sync python tools/lsp_gate.py --check-links docs/RESULTS.md"]
+    monkeypatch.chdir(tmp_path)
+    assert G.main(["--check-links", *gates[0][1].split("--check-links ", 1)[1].split()]) == 1
+    assert "missing.md (no such file)" in capsys.readouterr().out
+
+
+def test_assets_alone_select_no_link_gate():
+    assert G.classify(["opencrbasic/docs/shot.png", "opencrbasic/docs/data.json"]) == []
