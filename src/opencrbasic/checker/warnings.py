@@ -14,9 +14,9 @@ import re
 
 from .. import consteval
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import instr_rules, structure
+from . import instr_rules, structure, symbols
 
 
 def _table_arg_name(stmt: S.Instruction) -> str | None:
@@ -411,3 +411,67 @@ def _check_fnotch(program: S.Program, profile: Profile, diags: Diagnostics, env:
             continue
         if value not in valid:
             diags.warning(stmt.line, message, stmt.file)
+
+
+_TRUNCATE_CALLS = {"IFTIME": 3, "TIMEINTOINTERVAL": 3}
+_TRUNCATE_CALL_RE = re.compile(r"(?i)\b(IfTime|TimeIntoInterval)\s*\(")
+_ARITY_ERROR_PREFIXES = ("Expression expects , :", "No Matching, or out of place )", "Invalid, or out of place expression:")
+
+
+def _call_args(text: str, start: int) -> list[str] | None:
+    """The top-level argument texts of the call whose `(` ends just before `start`."""
+    depth, args, cur, i = 1, [], "", start
+    while i < len(text):
+        ch = text[i]
+        if ch == '"':
+            j = text.find('"', i + 1)
+            if j < 0:
+                return None
+            cur += text[i:j + 1]
+            i = j + 1
+            continue
+        if ch in "({":
+            depth += 1
+        elif ch in ")}":
+            depth -= 1
+            if depth == 0:
+                args.append(cur)
+                return [x for x in args] if any(x.strip() for x in args) else []
+        elif ch == "," and depth == 1:
+            args.append(cur)
+            cur = ""
+            i += 1
+            continue
+        cur += ch
+        i += 1
+    return None
+
+
+def add_truncate_warnings(program: S.Program, profile, diags: Diagnostics) -> None:
+    """All four loggers (oracle, 2026-10-12, `docs/checker.md` "Round 14 truncate warnings"): an
+    `IfTime`/`TimeIntoInterval` call that fails its argument count prints `Warning: Parameter will
+    truncate to the nearest integer.` once per missing argument and once per argument that holds a
+    variable, at its line before the arity error (`Expression expects , :`, `No Matching, or out of
+    place )`, or the empty-call `Invalid, or out of place expression:`). Not modelled: the same warnings
+    of a valid call with a variable argument (printed twice, in both passes)."""
+    variables = symbols.declared_variable_names(program)
+    for stmt in program.statements:
+        text = getattr(stmt, "text", None) or ""
+        m = _TRUNCATE_CALL_RE.search(text)
+        if not m:
+            continue
+        args = _call_args(text, m.end())
+        if args is None:
+            continue
+        need = _TRUNCATE_CALLS[m.group(1).upper()]
+        if len(args) == need:
+            continue
+        with_vars = sum(1 for a in args if any(w.upper() in variables for w in re.findall(r"[A-Za-z_]\w*", re.sub(r'"[^"]*"', "", a))))
+        count = max(need - len(args), 0) + with_vars
+        key = (stmt.file, stmt.line)
+        at = next((j for j, d in enumerate(diags.items) if (d.file, d.line) == key and d.severity == "error"
+                   and d.message.startswith(_ARITY_ERROR_PREFIXES) and m.group(1).lower() in d.message.lower()), None)
+        if at is None or not count:
+            continue
+        diags.items[at:at] = [Diagnostic("warning", stmt.line, "Parameter will truncate to the nearest integer.", stmt.file)
+                              for _ in range(count)]

@@ -6022,3 +6022,13 @@ per name (and `Dimensions not declared: Zq0(1).`) and then no `Sub ... not defin
 error there, which skips the link step). Declared arguments still give just the `Sub` message. Implemented by calling
 `_report_call_arg_names` (the same reporter used for a call of a declared `Sub`) before `_unlinked_call` (6 fuzz
 reproducers: `Call  Table (SerialT)`, `Call run(X_max_sub,X,X_ID)`).
+
+## Round 14 truncate warnings (`IfTime`, `TimeIntoInterval`)
+
+Oracle, 2026-10-12, all four loggers (`tests/fixtures/r14_truncate_warnings.json`, 104 cases). An `IfTime`/`TimeIntoInterval`
+call that fails its argument count (3 are required) prints `line N: Warning: Parameter will truncate to the nearest integer.`
+first: once per missing argument and once per argument holding a variable, then the arity error. `A = IfTime(0)`: two,
+`If IfTime(0,Hr) Then`: one, `A = IfTime(A,Hr)`: two, `A = IfTime(A,B)`: three, `A = IfTime()`: three (then the empty-call
+`Invalid, or out of place expression:`), `A = IfTime(A,B,Min,3)`: two (then `No Matching, or out of place )`). A valid call is
+quiet unless an argument is a variable: `If IfTime(A,1,Min) Then` compiles with two of these warnings per variable
+(both passes); not modelled (the order against other output is unprobed). 9 fuzz reproducers. `warnings.add_truncate_warnings`.

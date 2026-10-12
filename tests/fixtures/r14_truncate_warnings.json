@@ -1,0 +1,751 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-truncwarn_c19_0",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_0",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr300-truncwarn_c19_0",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr350-truncwarn_c19_0",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr6-truncwarn_c19_1",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then\nA = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_1",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then\nA = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr300-truncwarn_c19_1",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then\nA = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr350-truncwarn_c19_1",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Hr) Then\nA = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Hr) ."
+  },
+  {
+   "id": "cr6-truncwarn_c19_2",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_2",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-truncwarn_c19_2",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-truncwarn_c19_2",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-truncwarn_c19_3",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_3",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr)."
+  },
+  {
+   "id": "cr300-truncwarn_c19_3",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c19_3",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c19_4",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Min) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_4",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Min) ."
+  },
+  {
+   "id": "cr300-truncwarn_c19_4",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Min) ."
+  },
+  {
+   "id": "cr350-truncwarn_c19_4",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Min) ."
+  },
+  {
+   "id": "cr6-truncwarn_c19_5",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,24,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_5",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,24,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-truncwarn_c19_5",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,24,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-truncwarn_c19_5",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,24,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-truncwarn_c19_6",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,1) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_6",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,1) ."
+  },
+  {
+   "id": "cr300-truncwarn_c19_6",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,1) ."
+  },
+  {
+   "id": "cr350-truncwarn_c19_6",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,1) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,1) ."
+  },
+  {
+   "id": "cr6-truncwarn_c19_7",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Sec) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Sec) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_7",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Sec) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Sec) ."
+  },
+  {
+   "id": "cr300-truncwarn_c19_7",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Sec) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Sec) ."
+  },
+  {
+   "id": "cr350-truncwarn_c19_7",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(0,Sec) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IFTime(0,Sec) ."
+  },
+  {
+   "id": "cr6-truncwarn_c19_8",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : TimeIntoInterval(0,Hr) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_8",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : TimeIntoInterval(0,Hr) ."
+  },
+  {
+   "id": "cr300-truncwarn_c19_8",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : TimeIntoInterval(0,Hr) ."
+  },
+  {
+   "id": "cr350-truncwarn_c19_8",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : TimeIntoInterval(0,Hr) ."
+  },
+  {
+   "id": "cr6-truncwarn_c19_9",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_9",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-truncwarn_c19_9",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-truncwarn_c19_9",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,1,Hr) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-truncwarn_c19_10",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(Hr,1,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (1) must be > 0 and TimeInto Interval (4) must be < Interval."
+  },
+  {
+   "id": "cr1000x-truncwarn_c19_10",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(Hr,1,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (1) must be > 0 and TimeInto Interval (4) must be < Interval."
+  },
+  {
+   "id": "cr300-truncwarn_c19_10",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(Hr,1,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (1) must be > 0 and TimeInto Interval (4) must be < Interval."
+  },
+  {
+   "id": "cr350-truncwarn_c19_10",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IFTime(Hr,1,Min) Then A = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (1) must be > 0 and TimeInto Interval (4) must be < Interval."
+  },
+  {
+   "id": "cr6-truncwarn_c20_0",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_0",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_0",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_0",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_1",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Invalid, or out of place expression:     A = IfTime()."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_1",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Invalid, or out of place expression:     A = IfTime()."
+  },
+  {
+   "id": "cr300-truncwarn_c20_1",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Invalid, or out of place expression:     A = IfTime()\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_1",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Invalid, or out of place expression:     A = IfTime()\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_2",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,Hr)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_2",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,Hr)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_2",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,Hr)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_2",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,Hr)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_3",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,1,Hr,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     A = IfTime(0,1,Hr,5)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_3",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,1,Hr,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     A = IfTime(0,1,Hr,5)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_3",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,1,Hr,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     A = IfTime(0,1,Hr,5)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_3",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,1,Hr,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     A = IfTime(0,1,Hr,5)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_4",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,Hr) Then A = 1 Else A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IfTime(0,Hr) ."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_4",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,Hr) Then A = 1 Else A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IfTime(0,Hr) ."
+  },
+  {
+   "id": "cr300-truncwarn_c20_4",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,Hr) Then A = 1 Else A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IfTime(0,Hr) ."
+  },
+  {
+   "id": "cr350-truncwarn_c20_4",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,Hr) Then A = 1 Else A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , : IfTime(0,Hr) ."
+  },
+  {
+   "id": "cr6-truncwarn_c20_5",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr) + IfTime(0,1,Min)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr) + IfTime(0,1,Min)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_5",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr) + IfTime(0,1,Min)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr) + IfTime(0,1,Min)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_5",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr) + IfTime(0,1,Min)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr) + IfTime(0,1,Min)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_5",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr) + IfTime(0,1,Min)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr) + IfTime(0,1,Min)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_6",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = 1 + IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = 1 + IfTime(0,Hr)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_6",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = 1 + IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = 1 + IfTime(0,Hr)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_6",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = 1 + IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = 1 + IfTime(0,Hr)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_6",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = 1 + IfTime(0,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = 1 + IfTime(0,Hr)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_7",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = TimeIntoInterval(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = TimeIntoInterval(0)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_7",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = TimeIntoInterval(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = TimeIntoInterval(0)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_7",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = TimeIntoInterval(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = TimeIntoInterval(0)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_7",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = TimeIntoInterval(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = TimeIntoInterval(0)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c20_8",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\nA = IfTime(1,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr).\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Expression expects , : A = IfTime(1,Hr)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c20_8",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\nA = IfTime(1,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr).\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Expression expects , : A = IfTime(1,Hr)."
+  },
+  {
+   "id": "cr300-truncwarn_c20_8",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\nA = IfTime(1,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr)\n.\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Expression expects , : A = IfTime(1,Hr)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c20_8",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,Hr)\nA = IfTime(1,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,Hr)\n.\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Expression expects , : A = IfTime(1,Hr)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c21_2",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0.5,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-truncwarn_c21_2",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0.5,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr300-truncwarn_c21_2",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0.5,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr350-truncwarn_c21_2",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0.5,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr6-truncwarn_c21_3",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-truncwarn_c21_3",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-truncwarn_c21_3",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-truncwarn_c21_3",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(0,1,Min) Then B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-truncwarn_c21_4",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,B)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c21_4",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,B)."
+  },
+  {
+   "id": "cr300-truncwarn_c21_4",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,B)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c21_4",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(A,B)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c21_5",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0.5,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0.5,Hr)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c21_5",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0.5,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0.5,Hr)."
+  },
+  {
+   "id": "cr300-truncwarn_c21_5",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0.5,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0.5,Hr)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c21_5",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0.5,Hr)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0.5,Hr)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c21_6",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B,Min,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: No Matching, or out of place ) in expression:     A = IfTime(A,B,Min,3)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c21_6",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B,Min,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: No Matching, or out of place ) in expression:     A = IfTime(A,B,Min,3)."
+  },
+  {
+   "id": "cr300-truncwarn_c21_6",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B,Min,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: No Matching, or out of place ) in expression:     A = IfTime(A,B,Min,3)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c21_6",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(A,B,Min,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: No Matching, or out of place ) in expression:     A = IfTime(A,B,Min,3)\n."
+  },
+  {
+   "id": "cr6-truncwarn_c21_7",
+   "logger": "cr6",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,A)."
+  },
+  {
+   "id": "cr1000x-truncwarn_c21_7",
+   "logger": "cr1000x",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,A)."
+  },
+  {
+   "id": "cr300-truncwarn_c21_7",
+   "logger": "cr300",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,A)\n."
+  },
+  {
+   "id": "cr350-truncwarn_c21_7",
+   "logger": "cr350",
+   "source": "Public A,B\nBeginProg\n  Scan(1,Sec,0,0)\n    A = IfTime(0,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Warning: Parameter will truncate to the nearest integer.\nline 4: Expression expects , :     A = IfTime(0,A)\n."
+  }
+ ]
+}
