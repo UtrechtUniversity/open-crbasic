@@ -67,12 +67,13 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
         by_instr.setdefault(rule["instr"], []).append(rule)
     if not by_instr:
         return
-    from .instr_rules import cdm_null_module
+    from .instr_rules import cdm_null_module, cdm_unsupported_module
     names = longconv.float_names(flat), longconv.literal_names(flat)
     for stmt in flat:
         if not isinstance(stmt, S.Instruction):
             continue
-        if stmt.keyword.upper().startswith("CDM_") and cdm_null_module(stmt, env):
+        if stmt.keyword.upper().startswith("CDM_") and (cdm_null_module(stmt, env)
+                                                         or cdm_unsupported_module(stmt, env)):
             continue
         tccomp = bool(stmt.args) and stmt.keyword.upper() == "CDM_TCCOMP" and \
             _int_value(stmt.args[0], env) == 224
@@ -126,7 +127,12 @@ def _apply_const_rule(stmt, rule, env, profile, names, diags) -> None:
     if value in rule.get("warn_values", ()):
         diags.warning(stmt.line, rule["warn_message"], stmt.file)
         return
-    if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
+    if "by_module" in rule:
+        # a per-device port set (oracle 2026-10-12); a module outside the table is left alone
+        allowed = rule["by_module"].get(str(_int_value(stmt.args[0], env)), rule.get("values"))
+        if allowed is None or value in allowed:
+            return
+    elif value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
         return
     shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
     if shown is not None:

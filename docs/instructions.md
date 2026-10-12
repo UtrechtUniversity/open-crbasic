@@ -2095,3 +2095,23 @@ Statement order of the messages: `MeasVar`, `Illegal Reps`, `Mult`, `Offset`, `M
   `Voltages(2)`; elements count as their array) -> `<KnownVar name> and <MeasVar name> must be declared the
   same size.`, only for a statement with no other message, and once per distinct text in the program.
 Reproducer cr1000x `false_accept/a93fa575340a`.
+
+### CDM port sets per device (CR6/CR1000X, round 15)
+
+Fixture `r15_cdm_ports.json` (CR300/CR350 have no CDM instructions). `CDM_SW12`, `CDM_SW5` and
+`CDM_PulsePort` carry only the CDM-A108 (220), CDM-A116 (221), VOLT108 (222) and VOLT116 (223); their `Port`
+(argument 3, truncated; a string, `TRUE`, 0 and negatives never pass) must be in the device's set else
+`Unrecognized port!`:
+
+| Module | `CDM_SW12` | `CDM_SW5`, `CDM_PulsePort` |
+|---|---|---|
+| CDM_A108, VOLT108 | 1 | 1, 2 |
+| CDM_A116, VOLT116 | 1, 2 | 1, 2, 3, 4 |
+
+(`measure.json` `const_ranges` `by_module`; the old rule allowed 1 and 2 for every module, a false reject for
+A116/VOLT116 ports 3 and 4.) Any other constant named module prints only `SW instruction not supported by
+module <name>.` (`CDM_PulsePort instruction ...` for that one) with no port line: names `EC100`(100), `CSAT3B`,
+`TGA300`, `IRGASON2`, `EC155UNH`, `IRGASONHP`(105), `CDM-VW300`(200), `CDM-VW305`, `VWIRE305`, `TEMP120`(224),
+`VOLT408V1`, `VOLT408V10`, `VOLT408V60`, `TEMP408J`, `TEMP408K`, `TEMP408T`, `CURRENT408`(231), `SPECTRUM103`
+(260), `SPECTRUM109`; unnamed values are `NULL` as before. The same support matrix for the other CDM
+instructions is not modelled. Fuzz reproducers cr1000x `false_accept/496cca6dbced`, cr6 `05c461af995f`.

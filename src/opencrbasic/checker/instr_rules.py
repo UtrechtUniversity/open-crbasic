@@ -2191,6 +2191,31 @@ _CDM_NULL_MODULE = {
 }
 
 
+# Names the compiler prints for the named `CDMType` values (oracle, CR6, 2026-10-12, `CDM_SW12(<id>,...)`).
+_CDM_MODULE_NAMES = {
+    100: "EC100", 101: "CSAT3B", 102: "TGA300", 103: "IRGASON2", 104: "EC155UNH", 105: "IRGASONHP",
+    200: "CDM-VW300", 201: "CDM-VW305", 202: "VWIRE305", 224: "TEMP120", 225: "VOLT408V1",
+    226: "VOLT408V10", 227: "VOLT408V60", 228: "TEMP408J", 229: "TEMP408K", 230: "TEMP408T",
+    231: "CURRENT408", 260: "SPECTRUM103", 261: "SPECTRUM109",
+}
+# Instructions only the CDM-A108/A116/VOLT108/VOLT116 (220..223) carry; any other named module gives
+# `<SW|CDM_PulsePort> instruction not supported by module <name>.` and nothing else on the line.
+_CDM_PORT_INSTRUCTIONS = frozenset({"CDM_SW12", "CDM_SW5", "CDM_PULSEPORT"})
+_CDM_PORT_MODULES = frozenset({220, 221, 222, 223})
+
+
+def cdm_unsupported_module(stmt: S.Instruction, env) -> str | None:
+    """The name of a constant named `CDMType` that does not carry this port instruction."""
+    kw = stmt.keyword.upper()
+    if kw not in _CDM_PORT_INSTRUCTIONS or not stmt.args:
+        return None
+    try:
+        kind = _cdm_type_value(consteval.value_of(stmt.args[0], env))
+    except consteval.NotConstant:
+        return None
+    return _CDM_MODULE_NAMES.get(kind) if kind not in _CDM_PORT_MODULES else None
+
+
 def _delay_option(stmt: S.Instruction, env):
     """`CDM_Delay`'s constant `Option` (only option 0, the measurement delay, needs the module)."""
     try:
@@ -2399,6 +2424,9 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
         elif cdm_null_module(stmt, env):
             for name in _CDM_NULL_MODULE.get(kw, ()):
                 diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
+        elif (module := cdm_unsupported_module(stmt, env)) is not None:
+            for name in _CDM_NULL_MODULE.get(kw, ()):
+                diags.error(stmt.line, f"{name} instruction not supported by module {module}.", stmt.file)
 
 
 def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env) -> None:

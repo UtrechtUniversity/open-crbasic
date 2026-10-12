@@ -1,0 +1,3291 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_cdm_ports-0",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-1",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-2",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-3",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-4",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-5",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-6",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-7",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-8",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-9",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-10",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-11",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-12",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-13",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-14",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-15",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-16",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-17",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-18",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-19",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-20",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-21",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-22",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-23",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-24",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-25",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-26",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-27",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-28",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-29",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-30",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-31",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-32",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-33",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-34",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-35",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-36",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-37",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-38",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-39",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-40",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-41",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-42",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-43",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-44",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-45",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-46",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-47",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-48",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT408V1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-49",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT408V1,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-50",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT408V1,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-51",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_VW300,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-52",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_VW300,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-53",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_VW300,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-54",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(TEMP120,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-55",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(TEMP120,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-56",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(TEMP120,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-57",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(SPECTRUM103,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-58",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(SPECTRUM103,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-59",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(SPECTRUM103,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-60",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(100,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-61",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(100,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-62",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(100,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-63",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(228,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-64",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(228,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-65",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(228,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-66",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(0,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-67",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(0,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-68",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(0,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-69",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(262,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-70",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(262,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-71",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(262,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-72",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(1.5,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-73",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(1.5,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-74",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(1.5,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-75",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(\"fuzz\",1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-76",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(\"fuzz\",1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-77",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(\"fuzz\",1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-78",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-79",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-80",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-81",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-82",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-83",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-84",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-85",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-86",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-87",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-88",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-89",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-90",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-91",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-92",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-93",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-94",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-95",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-96",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-97",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-98",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-99",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-100",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-101",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-102",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-103",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-104",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-105",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-106",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-107",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-108",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-109",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-110",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-111",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-112",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-113",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-114",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-115",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-116",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-117",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-118",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-119",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-120",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-121",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-122",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-123",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-124",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-125",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-126",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT408V1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-127",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT408V1,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-128",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT408V1,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-129",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_VW300,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-130",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_VW300,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-131",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_VW300,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-132",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(TEMP120,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-133",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(TEMP120,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-134",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(TEMP120,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-135",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(SPECTRUM103,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-136",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(SPECTRUM103,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-137",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(SPECTRUM103,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-138",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(100,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-139",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(100,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-140",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(100,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-141",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(228,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-142",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(228,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-143",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(228,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-144",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(0,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-145",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(0,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-146",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(0,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-147",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(262,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-148",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(262,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-149",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(262,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-150",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(1.5,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-151",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(1.5,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-152",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(1.5,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-153",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(\"fuzz\",1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-154",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(\"fuzz\",1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-155",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(\"fuzz\",1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-156",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-157",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-158",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-159",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-160",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-161",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-162",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-163",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-164",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-165",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-166",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-167",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-168",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-169",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-170",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-171",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-172",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-173",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-174",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-175",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-176",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-177",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-178",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-179",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-180",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-181",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-182",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-183",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-184",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-185",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-186",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-187",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-188",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-189",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-190",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-191",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-192",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-193",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-194",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-195",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-196",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-197",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-198",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-199",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-200",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-201",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-202",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-203",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr6-r15_cdm_ports-204",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT408V1,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-205",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT408V1,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-206",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT408V1,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-207",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_VW300,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-208",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_VW300,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-209",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_VW300,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-210",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(TEMP120,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-211",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(TEMP120,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-212",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(TEMP120,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-213",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(SPECTRUM103,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-214",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(SPECTRUM103,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-215",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(SPECTRUM103,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-216",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(100,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-217",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(100,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-218",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(100,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module EC100."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-219",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(228,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-220",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(228,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-221",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(228,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-222",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(0,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-223",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(0,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-224",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(0,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-225",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(262,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-226",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(262,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-227",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(262,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-228",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(1.5,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-229",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(1.5,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-230",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(1.5,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-231",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(\"fuzz\",1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-232",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(\"fuzz\",1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-r15_cdm_ports-233",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(\"fuzz\",1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-0",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-1",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-2",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-3",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-4",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-5",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-6",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-7",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-8",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-9",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-10",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-11",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-12",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-13",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-14",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-15",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-16",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-17",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-18",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-19",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-20",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-21",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-22",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-23",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_A116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-24",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-25",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-26",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-27",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-28",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-29",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-30",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-31",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-32",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-33",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-34",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-35",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-36",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-37",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-38",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-39",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-40",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-41",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-42",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-43",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-44",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-45",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-46",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-47",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-48",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT408V1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-49",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT408V1,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-50",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(VOLT408V1,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-51",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_VW300,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-52",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_VW300,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-53",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(CDM_VW300,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-54",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(TEMP120,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-55",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(TEMP120,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-56",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(TEMP120,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-57",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(SPECTRUM103,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-58",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(SPECTRUM103,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-59",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(SPECTRUM103,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-60",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(100,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-61",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(100,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-62",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(100,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-63",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(228,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-64",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(228,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-65",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(228,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-66",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(0,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-67",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(0,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-68",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(0,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-69",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(262,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-70",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(262,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-71",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(262,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-72",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(1.5,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-73",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(1.5,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-74",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(1.5,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-75",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(\"fuzz\",1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-76",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(\"fuzz\",1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-77",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW12(\"fuzz\",1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-78",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-79",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-80",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-81",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-82",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-83",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-84",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-85",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-86",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-87",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-88",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-89",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-90",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-91",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-92",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-93",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-94",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-95",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-96",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-97",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-98",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-99",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-100",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-101",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_A116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-102",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-103",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-104",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-105",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-106",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-107",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-108",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-109",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-110",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-111",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-112",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-113",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT108,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-114",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-115",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-116",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-117",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-118",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-119",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-120",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-121",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-122",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,4.9,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-123",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-124",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,(1+2),1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-125",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT116,1,TRUE,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-126",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT408V1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-127",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT408V1,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-128",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(VOLT408V1,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-129",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_VW300,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-130",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_VW300,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-131",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(CDM_VW300,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-132",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(TEMP120,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-133",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(TEMP120,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-134",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(TEMP120,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-135",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(SPECTRUM103,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-136",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(SPECTRUM103,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-137",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(SPECTRUM103,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-138",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(100,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-139",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(100,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-140",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(100,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-141",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(228,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-142",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(228,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-143",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(228,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-144",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(0,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-145",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(0,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-146",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(0,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-147",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(262,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-148",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(262,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-149",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(262,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-150",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(1.5,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-151",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(1.5,1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-152",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(1.5,1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-153",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(\"fuzz\",1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-154",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(\"fuzz\",1,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-155",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_SW5(\"fuzz\",1,\"x\",1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-156",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-157",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-158",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-159",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-160",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-161",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-162",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-163",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-164",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-165",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-166",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-167",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A108,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-168",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-169",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-170",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-171",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-172",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-173",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-174",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-175",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-176",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-177",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-178",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-179",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_A116,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-180",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-181",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-182",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-183",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-184",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-185",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-186",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-187",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-188",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-189",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-190",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-191",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT108,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-192",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-193",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-194",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,2,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-195",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-196",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,4,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-197",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-198",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,-1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-199",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,1.5,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-200",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,4.9,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-201",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-202",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,(1+2),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-203",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT116,1,TRUE,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-204",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT408V1,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-205",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT408V1,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-206",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(VOLT408V1,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module VOLT408V1."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-207",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_VW300,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-208",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_VW300,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-209",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(CDM_VW300,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-210",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(TEMP120,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-211",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(TEMP120,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-212",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(TEMP120,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-213",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(SPECTRUM103,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-214",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(SPECTRUM103,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-215",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(SPECTRUM103,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module SPECTRUM103."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-216",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(100,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-217",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(100,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-218",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(100,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module EC100."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-219",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(228,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-220",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(228,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-221",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(228,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module TEMP408J."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-222",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(0,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-223",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(0,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-224",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(0,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-225",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(262,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-226",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(262,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-227",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(262,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-228",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(1.5,1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-229",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(1.5,1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-230",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(1.5,1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-231",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(\"fuzz\",1,1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-232",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(\"fuzz\",1,3,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-r15_cdm_ports-233",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(5,Sec,1,0)\n    CDM_PulsePort(\"fuzz\",1,\"x\",10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_PulsePort instruction not supported by module NULL."
+  }
+ ]
+}
