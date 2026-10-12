@@ -5555,3 +5555,25 @@ expression`). The subscript scan of `name(...) text` stopped at the first comma 
 argument; `_later_arg_unknown` scans each later argument for an unknown symbol. Not done: the same `&`
 inside an `If` condition (`If x = & 6 Then`, `If cv(4, & 6) Then`) is silent in the real compiler and
 still printed here.
+
+## Round 13, CR6/CR1000X: an unresolved name in a constant-family argument of an unparsable instruction is pass 1 (`chm/mqttpublishtable_1`; fixture `r13_const_symbol_pass1.json`)
+
+Oracle and message-tracer runs of 2026-10-12, CR6 and CR1000X. The tracer shows one `%s: %s.` message
+for `MQTTPublishTable(MQTT QoS, 5)` and nothing else, so the CHM example's following prose line
+(`Note: Longitude, Latitude, ...`, two pass-2 fallbacks for us) is hidden because the first line is
+a pass-1 error. The rule is the one of `expressions.check_const_family_args`, applied to the
+unparsable form (`_instruction_arg_findings`): when the first argument whose name does not resolve
+sits at a constant-family parameter (`const_expr`, `const_expr_only`, `datatype_kw`: `MQTT QoS`, the
+second argument of `PanelTemp(x, Zork Y)`, the datatype of `Sample(1,x,FP  2)`, the units of
+`Scan (1,S  ec,3,1)`), `Invalid symbol in expression: <arg>.` is reported in pass 1 (stage 4,
+printed with the stage 1 and 3 findings) and hides the generic fallback lines before and after it.
+At any other position (`PanelTemp(Zork Y, 15000)`, `Battery(Zork Y)`) it stays a pass-2 message
+that does not hide earlier or later fallbacks. A table-output source (code 11, stage 6) such as
+`Sample (1,Zork Y,FP2)` inside a `DataTable` ends pass 2 like the existing `_undefined_table_source`
+(a later `Foo Bar` is silent; an earlier one is printed). A shortfall (pass 1) hides a pass-2
+symbol at any position, not only at a destination (`Sample (1,Zork Y)`, `Minimum (1,Zork Y,FP2,False)`
+are `Invalid or missing parameter.`); a const-family symbol still wins over the shortfall
+(`MQTTPublishTable(Zork Y)`). Not done: `MQTTPublishTable(1, Zork)` (plain name, an instruction the parser
+accepts) prints the symbol, real prints the shortfall; an extra argument with adjacent operands
+(`PanelTemp (x, 15000, Zork Y)`, `3 4`) is `Too many parameters:  <first token>.` in the real compiler;
+`PanelTemp (x y, 15000, 3 4)` page-faults the real CR6Comp (no verdict).

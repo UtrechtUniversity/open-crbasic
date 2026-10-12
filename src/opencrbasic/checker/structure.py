@@ -1063,8 +1063,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     if stage == 1:
                         diags.error(stmt.line, _pass1_message(profile, S.Unparsed(
                             stmt.line, stmt.file, text=arg_text), kind), stmt.file, show_file=False)
-                    elif stage == 3:
+                    elif stage == 3 or stage == 5 and findings[0][0] == 4:
                         diags.error(stmt.line, kind, stmt.file)
+                    elif stage == 4:
+                        diags.error(stmt.line, f"Invalid symbol in expression: {arg_text}.", stmt.file)
                 # a name declared further down is not yet known here: that statement is pass 2
                 # (oracle, CR6/CR1000X, 2026-10-08: `If TCTemp is <26` above `Public TCTemp`)
                 earlier = pass1_operands(dataclasses.replace(program, statements=program.statements[:pos]),
@@ -1577,10 +1579,12 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                                                       profile, symbols.declared_variable_names(program))
                             if profile.known_first_word_pass1 else [])
                 if findings:
-                    # stage-1 and stage-3 findings were reported in pass 1 (`check_pass1`)
-                    if findings[0][0] == 2:
+                    # stage-1, -3 and -4 findings were reported in pass 1 (`check_pass1`)
+                    if findings[0][0] in (2, 6):
                         diags.error(stmt.line, f"Invalid symbol in expression: {findings[0][2]}.",
                                     stmt.file, show_file=False)
+                        if findings[0][0] == 6 and in_table:
+                            return stmt.line  # like `_undefined_table_source`: a source ends pass 2
                         for stage, message, _ in findings[1:]:
                             if stage == 5:
                                 diags.error(stmt.line, message, stmt.file)
@@ -2349,16 +2353,16 @@ def _instruction_arg_findings(text: str, operands: set[str], profile,
         code = params[i] % 100 if i < len(params) else None
         if _scan_expr(arg_toks, 0, operands, profile.functions, assign=True,
                       start_operand=False) == ("pass2", "symbol"):
-            if short and not out and code in _DEFERRED_DEST_CODES:
-                return [(3, short, "")]     # a destination is resolved after the arity check
-            return out or [(2, "symbol", arg_text)]
+            if short and not out and (code in _DEFERRED_DEST_CODES or _symbol_stage(code) != 4):
+                return [(3, short, "")]     # pass 2 resolves names after the (pass-1) arity check
+            return out or [(_symbol_stage(code), "symbol", arg_text)]
         if v is not None and v[1] != "fallback" and not out and code in _CONST_ONLY_CODES and any(
                 t.kind == "IDENT" and t.upper not in operands and t.upper not in profile.functions
                 and t.upper not in _BINARY_WORDS and t.upper != "NOT" for t in arg_toks):
             # a constant-only argument resolves every name first: `Invalid symbol`, not `Incomplete`
             after = [(5, f"Variable illegal in Parameter: {arg_text}.", "")] if any(
                 t.kind == "IDENT" and t.upper in variables for t in arg_toks) else []
-            return [(2, "symbol", arg_text)] + after
+            return [(_symbol_stage(code), "symbol", arg_text)] + after
         if v is not None:
             out.append((1, v[1], arg_text))
             # the parameter's own kind rejects the malformed argument too (oracle, 2026-10-10)
@@ -2373,6 +2377,18 @@ def _instruction_arg_findings(text: str, operands: set[str], profile,
 _STATEMENT_FORM_EXCLUDED = frozenset({"IF", "ELSEIF", "WHILE", "DO", "LOOP", "SELECT", "CASE", "FOR",
                                       "NEXT", "CALL", "RETURN", "EXIT"})
 _DEFERRED_DEST_CODES = frozenset({8, 27, 29})
+
+
+def _symbol_stage(code: int | None) -> int:
+    """Stage of an unresolved name in an argument: 4 (pass 1, with the other const-family
+    positions folded while the statement is parsed, `expressions.check_const_family_args`) for a
+    constant-family parameter, else 2 (pass 2). Oracle, CR6/CR1000X, 2026-10-12: `PanelTemp(x,
+    Zork Y)`, `MQTTPublishTable(MQTT QoS, 5)`, `Scan (1,S  ec,3,1)` hide the generic fallback
+    lines before and after them; `PanelTemp(Zork Y, 15000)` does not."""
+    kind = expressions._type_code_kinds().get(code - 100 if code and code >= 100 else code)
+    if kind == "deferred_text":
+        return 6    # a table-output source: pass 2, and inside a table it ends pass 2
+    return 4 if kind in expressions._CONST_FAMILY_KINDS else 2
 _CONST_ONLY_CODES = frozenset({1, 5, 20, 38})
 
 
