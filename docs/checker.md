@@ -6337,3 +6337,16 @@ CR6/CR1000X, only the second on CR300/CR350); `If X Then SubScan(1,uSec,3)` outs
 or EndSelect.`, `Case outside Select.`; `If X Then Sub` is `Too few parameters in instruction.`) are
 accepted; a short body on CR300/CR350 after an earlier undefined name loses its
 `Invalid or missing parameter.` line (real keeps it).
+
+## Round 15: one-line `ElseIf c Then <anything>` (2026-10-12)
+
+Oracle, all four loggers (fixture `tests/fixtures/r15_oneline_elseif.json`, 15 shapes x 4): everything
+after the `Then` of an `ElseIf` is ignored by the compiler. `ElseIf C Then Z = 1`, `... Then Z = Q Q Q`
+(an undeclared or malformed body), `... Then CallTable T`, `... Then Scan(1,Sec,0,0)`, `... Then Then
+Then`, `... Then Z = 1 Else Y = 2` all compile, so an undeclared name in the body is not reported
+(`... Then Z = 1 : Y = Q` reports only the `Y = Q` after the colon, a separate statement). A body of
+`EndIf` is just more ignored text (the `If` stays open: `IF or SELECT without EndIf or EndSelect.`).
+The condition before `Then` is checked as always (`ElseIf Q Then Z = 1` -> `Invalid symbol in
+expression: Q .` / `Q is not defined.`), a stray one-line `ElseIf` is `Case with no Select.`.
+Implementation: `parser._parse_elseif` drops the tokens after `Then`. (Closes the "one-line
+`ElseIf c Then Z = 1`" false reject.)

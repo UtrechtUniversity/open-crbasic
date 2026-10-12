@@ -1,0 +1,443 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_oneline_elseif-0",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-0",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-0",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-1",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    Else\n      Z = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    Else\n      Z = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-1",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    Else\n      Z = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-1",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1\n    Else\n      Z = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-2",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-2",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-2",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-3",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 Else Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 Else Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-3",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 Else Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-3",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 Else Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-4",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = Q Q Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = Q Q Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-4",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = Q Q Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-4",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = Q Q Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-5",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then CallTable T\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then CallTable T\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-5",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then CallTable T\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-5",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then CallTable T\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-6",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Scan(1,Sec,0,0)\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Scan(1,Sec,0,0)\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-6",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Scan(1,Sec,0,0)\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-6",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Scan(1,Sec,0,0)\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-7",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Then Then\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Then Then\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-7",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Then Then\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-7",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Then Then\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-8",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:  Y = Q."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:  Y = Q."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-8",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-8",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Y = Q\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-9",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Else\n      Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Else\n      Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-9",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Else\n      Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-9",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then Z = 1 : Else\n      Y = 2\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-10",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-10",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-10",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-11",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Q Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression: Q ."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Q Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression: Q ."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-11",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Q Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-11",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Q Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-12",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Z = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Case with no Select."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Z = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Case with no Select."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-12",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Z = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Case with no Select."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-12",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Z = 1\n    ElseIf C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Case with no Select."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-13",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    ElseIf C Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Case with no Select."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    ElseIf C Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Case with no Select."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-13",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    ElseIf C Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Case with no Select."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-13",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    ElseIf C Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Case with no Select."
+  },
+  {
+   "id": "cr6-r15_oneline_elseif-14",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Abs(C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_oneline_elseif-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Abs(C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_oneline_elseif-14",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Abs(C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_oneline_elseif-14",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then\n      Y = 1\n    ElseIf Abs(C Then Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

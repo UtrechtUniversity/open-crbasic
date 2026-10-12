@@ -1280,6 +1280,7 @@ class _Parser:
             self._to_ok = outer
         if p.is_ident("THEN"):
             p.next()
+            p.i = len(p.toks) - 1   # whatever follows `Then` on the line is ignored (oracle, 2026-10-12)
         return S.ElseIf(line, file, cond=cond)
 
     # ---- For --------------------------------------------------------
