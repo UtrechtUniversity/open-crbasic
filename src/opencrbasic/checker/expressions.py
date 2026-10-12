@@ -411,13 +411,16 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
         return []
     if isinstance(expr, S.Name):
         upper = expr.name.upper()
+        if id(expr) in getattr(known, "out_of_scope", ()):
+            return [expr.name]
         return [] if upper in known and upper not in getattr(known, "tables", ()) else [expr.name]
     if isinstance(expr, S.Unary):
         return _undefined_names_walk(expr.operand, known)
     if isinstance(expr, S.Binary):
         return _undefined_names_walk(expr.left, known) + _undefined_names_walk(expr.right, known)
     if isinstance(expr, S.Index):
-        head = [] if expr.name.upper() in known else [expr.name]
+        head = [] if expr.name.upper() in known and id(expr) not in getattr(
+            known, "out_of_scope", ()) else [expr.name]
         for a in expr.args:
             head += _undefined_names_walk(a, known)
         return head
@@ -425,7 +428,8 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
         # ... but its index arguments are (`Status.TimeStamp(Nope,1)`, oracle 2026-09-28). A
         # table name is fine as the base (`T.Field`).
         base = expr.base
-        out = [] if isinstance(base, S.Name) and base.name.upper() in known else \
+        out = [] if isinstance(base, S.Name) and base.name.upper() in known \
+            and id(base) not in getattr(known, "out_of_scope", ()) else \
             _undefined_names_walk(base, known)
         if out and isinstance(base, S.Name) and getattr(known, "dotted_tables", False):
             out = [DottedName(base.name)]
@@ -540,16 +544,17 @@ def _dims_walk(expr: S.Expr | None, known, var_dims: dict, state: list) -> bool:
     declared variables (`var_dims`) move the state: that is the simulation mode."""
     if expr is None:
         return False
+    oos = id(expr) in getattr(known, "out_of_scope", ())  # another routine's `Dim`: undefined here
     if isinstance(expr, S.Name):
         upper = expr.name.upper()
-        if upper in var_dims:
+        if upper in var_dims and not oos:
             state[0] = var_dims[upper]
         return False
     if isinstance(expr, S.Index):
         upper = expr.name.upper()
-        if upper in var_dims:
+        if upper in var_dims and not oos:
             state[0] = var_dims[upper]
-        elif upper not in known and known is not _NO_NAMES:
+        elif (upper not in known or oos) and known is not _NO_NAMES:
             count = sum(1 for a in expr.args if a is not None)
             if state[0] is not None and count > state[0]:
                 return True
@@ -596,17 +601,18 @@ def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, 
     def walk(e: S.Expr | None) -> bool:
         if e is None:
             return False
+        oos = id(e) in getattr(known, "out_of_scope", ())
         if isinstance(e, S.Name):
-            if e.name.upper() in var_dims:
+            if e.name.upper() in var_dims and not oos:
                 state[0] = var_dims[e.name.upper()]
-            if e.name.upper() not in known or e.name.upper() in getattr(known, "tables", ()):
+            if e.name.upper() not in known or oos or e.name.upper() in getattr(known, "tables", ()):
                 out.append(e.name)
             return False
         if isinstance(e, S.Index):
             upper = e.name.upper()
-            if upper in var_dims:
+            if upper in var_dims and not oos:
                 state[0] = var_dims[upper]
-            if upper not in known:
+            if upper not in known or oos:
                 out.append(e.name)
                 count = sum(1 for a in e.args if a is not None)
                 if state[0] is not None and count > state[0]:
@@ -723,15 +729,15 @@ def _known_names(program: S.Program, profile) -> set[str]:
     the program declares `ESSVariables`, whichever `ess`-prefixed names it actually references
     (`symbols.ess_variable_names` -- round 5, `docs/checker.md`).
     """
-    known = (
-        symbols.declared_names(program)
-        | set(profile.symbols)
+    resolvable = (
+        set(profile.symbols)
         | set(profile.functions)
         | (set(profile.instructions) & _CONTROL_KEYWORDS)
         | symbols.system_table_names(program)
         | symbols.ess_variable_names(program)
         | _EXTRA_PREDEFINED_SYMBOLS
     )
+    known = symbols.declared_names(program) | resolvable
     if any(isinstance(st, S.Instruction) and st.keyword.upper() == "CH400STATUS"
            for st in program.statements):
         known.add("CH400STATUS")  # the instruction names the table `Sample(1, CH400Status, ...)` reads
@@ -758,7 +764,8 @@ def _known_names(program: S.Program, profile) -> set[str]:
             (failed if bad else valid).add(st.args[1].name.upper())
         known -= failed - valid
     return KnownNames(known, tables=_value_less_tables(program, profile),
-                      dotted_tables=profile.single_pass)
+                      dotted_tables=profile.single_pass,
+                      out_of_scope=symbols.out_of_scope_nodes(program, resolvable))
 
 
 def _unclosed_structure_variables(program: S.Program) -> set[str]:
@@ -784,8 +791,10 @@ class KnownNames(set):
     """`_known_names`, plus the `DataTable` names that are known only as table references: a bare
     `T` used as a value is undefined (`X = T`, `Battery(T)`, `Foo(X, T)`; oracle, all four
     loggers, 2026-09-28) while `T.Field` and `CallTable T` resolve."""
-    def __init__(self, names=(), tables: frozenset = frozenset(), dotted_tables: bool = False):
+    def __init__(self, names=(), tables: frozenset = frozenset(), dotted_tables: bool = False,
+                 out_of_scope: frozenset = frozenset()):
         super().__init__(names)
+        self.out_of_scope = out_of_scope  # `symbols.out_of_scope_nodes`: ids of other-routine `Dim` uses
         self.tables = tables
         self.dotted_tables = dotted_tables  # CR300/CR350: `Undeclared.member` names a table
 

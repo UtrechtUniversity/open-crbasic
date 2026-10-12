@@ -920,6 +920,28 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     if not (profile.single_pass and const_shadow_reported):
                         diags.error(stmt.line, f"{name} is already declared as a CONST.", stmt.file)
                     const_shadow_reported = True
+                if (isinstance(stmt, S.Declaration) and stmt.kind == "PUBLIC") or \
+                        isinstance(stmt, S.ConstDecl):
+                    # `Public` and `Const` inside a routine declare globals: they conflict with, and
+                    # are conflicted by, every other global of the name, even from an earlier routine
+                    # (oracle, all four loggers, 2026-10-12, `docs/checker.md` "Routine-body
+                    # `Public` and `Const`"); a `Dim` stays local
+                    dup = Diagnostics()
+                    if isinstance(stmt, S.ConstDecl):
+                        prior = declared_kinds.get(stmt.name.upper())
+                        if prior in ("VAR", "ALIAS"):
+                            dup.error(stmt.line, f"{stmt.name} already declared as a variable.", stmt.file)
+                        elif prior is None and not symbols.is_reserved_predefined_name(stmt.name, profile) \
+                                and stmt.name.upper() not in profile.functions:
+                            declared_kinds[stmt.name.upper()] = "CONST"
+                    else:
+                        _check_duplicate_declaration(stmt, declared_kinds, dup, None)
+                    for item in dup.items:
+                        if "is already declared as a CONST" in item.message:
+                            if profile.single_pass and const_shadow_reported:
+                                continue
+                            const_shadow_reported = True
+                        diags.error(item.line, item.message, item.file)
         if in_struct and isinstance(stmt, S.Declaration) and stmt.kind == "STRUCTUREMEMBER":
             struct_members.update(v.name.upper() for v in stmt.vars)
             _check_member_types(stmt, structs_seen, profile, diags)

@@ -1,0 +1,1171 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-routine_local-0-dim_in_sub_used_in_main",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Z = Y + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:   Z = Y + 1."
+  },
+  {
+   "id": "cr1000x-routine_local-0-dim_in_sub_used_in_main",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Z = Y + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:   Z = Y + 1."
+  },
+  {
+   "id": "cr300-routine_local-0-dim_in_sub_used_in_main",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Z = Y + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-0-dim_in_sub_used_in_main",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Z = Y + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-1-dim_assign_target_main",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y As Long\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:   Y = 2."
+  },
+  {
+   "id": "cr1000x-routine_local-1-dim_assign_target_main",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y As Long\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:   Y = 2."
+  },
+  {
+   "id": "cr300-routine_local-1-dim_assign_target_main",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y As Long\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-1-dim_assign_target_main",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y As Long\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-2-dim_used_in_other_sub",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr1000x-routine_local-2-dim_used_in_other_sub",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr300-routine_local-2-dim_used_in_other_sub",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-2-dim_used_in_other_sub",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-3-dim_used_before_sub",
+   "logger": "cr6",
+   "source": "Public Z\nSub Bar\n  Z = Y\nEndSub\nSub Foo\n  Dim Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr1000x-routine_local-3-dim_used_before_sub",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Bar\n  Z = Y\nEndSub\nSub Foo\n  Dim Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr300-routine_local-3-dim_used_before_sub",
+   "logger": "cr300",
+   "source": "Public Z\nSub Bar\n  Z = Y\nEndSub\nSub Foo\n  Dim Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-3-dim_used_before_sub",
+   "logger": "cr350",
+   "source": "Public Z\nSub Bar\n  Z = Y\nEndSub\nSub Foo\n  Dim Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-4-dim_in_function_used_in_main",
+   "logger": "cr6",
+   "source": "Public Z\nFunction Foo\n  Dim Y\n  Return 1\nEndFunction\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr1000x-routine_local-4-dim_in_function_used_in_main",
+   "logger": "cr1000x",
+   "source": "Public Z\nFunction Foo\n  Dim Y\n  Return 1\nEndFunction\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr300-routine_local-4-dim_in_function_used_in_main",
+   "logger": "cr300",
+   "source": "Public Z\nFunction Foo\n  Dim Y\n  Return 1\nEndFunction\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-4-dim_in_function_used_in_main",
+   "logger": "cr350",
+   "source": "Public Z\nFunction Foo\n  Dim Y\n  Return 1\nEndFunction\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-5-dim_in_scan",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Z = Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     Z = Y."
+  },
+  {
+   "id": "cr1000x-routine_local-5-dim_in_scan",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Z = Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     Z = Y."
+  },
+  {
+   "id": "cr300-routine_local-5-dim_in_scan",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Z = Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-5-dim_in_scan",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Z = Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-6-dim_in_if",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  If Y > 1 Then Z = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Y > 1 ."
+  },
+  {
+   "id": "cr1000x-routine_local-6-dim_in_if",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  If Y > 1 Then Z = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Y > 1 ."
+  },
+  {
+   "id": "cr300-routine_local-6-dim_in_if",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  If Y > 1 Then Z = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-6-dim_in_if",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  If Y > 1 Then Z = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-7-dim_array_element",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y(3)\nEndSub\nBeginProg\n  Z = Y(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:   Z = Y(2)."
+  },
+  {
+   "id": "cr1000x-routine_local-7-dim_array_element",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y(3)\nEndSub\nBeginProg\n  Z = Y(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:   Z = Y(2)."
+  },
+  {
+   "id": "cr300-routine_local-7-dim_array_element",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y(3)\nEndSub\nBeginProg\n  Z = Y(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined.\nline 6: Dimensions not declared:   Z = Y(2)\n."
+  },
+  {
+   "id": "cr350-routine_local-7-dim_array_element",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y(3)\nEndSub\nBeginProg\n  Z = Y(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined.\nline 6: Dimensions not declared:   Z = Y(2)\n."
+  },
+  {
+   "id": "cr6-routine_local-8-dim_in_const",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nConst K = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr1000x-routine_local-8-dim_in_const",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nConst K = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr300-routine_local-8-dim_in_const",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nConst K = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-8-dim_in_const",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nConst K = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-9-dim_in_datatable",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nDataTable(T,1,-1)\n  Sample(1,Y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr1000x-routine_local-9-dim_in_datatable",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nDataTable(T,1,-1)\n  Sample(1,Y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr300-routine_local-9-dim_in_datatable",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nDataTable(T,1,-1)\n  Sample(1,Y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-9-dim_in_datatable",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nDataTable(T,1,-1)\n  Sample(1,Y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-10-param_used_in_main",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr1000x-routine_local-10-param_used_in_main",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr300-routine_local-10-param_used_in_main",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-10-param_used_in_main",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-11-param_used_in_other_sub",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr1000x-routine_local-11-param_used_in_other_sub",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:   Z = Y."
+  },
+  {
+   "id": "cr300-routine_local-11-param_used_in_other_sub",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined."
+  },
+  {
+   "id": "cr350-routine_local-11-param_used_in_other_sub",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo(Y)\nEndSub\nSub Bar\n  Z = Y\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined."
+  },
+  {
+   "id": "cr6-routine_local-12-ok_used_in_own_sub",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\n  Y = 1\n  Z = Y\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-12-ok_used_in_own_sub",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\n  Y = 1\n  Z = Y\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-12-ok_used_in_own_sub",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\n  Y = 1\n  Z = Y\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-12-ok_used_in_own_sub",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\n  Y = 1\n  Z = Y\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-13-ok_global_of_same_name",
+   "logger": "cr6",
+   "source": "Public Z, Y\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-13-ok_global_of_same_name",
+   "logger": "cr1000x",
+   "source": "Public Z, Y\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-13-ok_global_of_same_name",
+   "logger": "cr300",
+   "source": "Public Z, Y\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-13-ok_global_of_same_name",
+   "logger": "cr350",
+   "source": "Public Z, Y\nSub Foo\n  Dim Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-14-ok_global_declared_later",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nPublic Y\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-14-ok_global_declared_later",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nPublic Y\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-14-ok_global_declared_later",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nPublic Y\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-14-ok_global_declared_later",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nPublic Y\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-15-ok_same_dim_in_two_subs",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Dim Y\n  Y = 1\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-15-ok_same_dim_in_two_subs",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Dim Y\n  Y = 1\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-15-ok_same_dim_in_two_subs",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Dim Y\n  Y = 1\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-15-ok_same_dim_in_two_subs",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Dim Y\nEndSub\nSub Bar\n  Dim Y\n  Y = 1\nEndSub\nBeginProg\n  Z = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-16-ok_param_of_other_sub_as_dim",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo(P)\nEndSub\nSub Bar\n  Dim P\n  Z = P\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-16-ok_param_of_other_sub_as_dim",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo(P)\nEndSub\nSub Bar\n  Dim P\n  Z = P\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-16-ok_param_of_other_sub_as_dim",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo(P)\nEndSub\nSub Bar\n  Dim P\n  Z = P\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-16-ok_param_of_other_sub_as_dim",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo(P)\nEndSub\nSub Bar\n  Dim P\n  Z = P\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-17-ok_public_in_sub_is_global",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Public Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-17-ok_public_in_sub_is_global",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Public Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-17-ok_public_in_sub_is_global",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Public Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-17-ok_public_in_sub_is_global",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Public Y\nEndSub\nBeginProg\n  Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-18-ok_const_in_sub_is_global",
+   "logger": "cr6",
+   "source": "Public Z\nSub Foo\n  Const Y = 2\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-18-ok_const_in_sub_is_global",
+   "logger": "cr1000x",
+   "source": "Public Z\nSub Foo\n  Const Y = 2\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-18-ok_const_in_sub_is_global",
+   "logger": "cr300",
+   "source": "Public Z\nSub Foo\n  Const Y = 2\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-18-ok_const_in_sub_is_global",
+   "logger": "cr350",
+   "source": "Public Z\nSub Foo\n  Const Y = 2\nEndSub\nBeginProg\n  Z = Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-19-ok_predefined_dim_refused",
+   "logger": "cr6",
+   "source": "Sub Probe\n  Dim Sec\nEndSub\nBeginProg\n  Scan(1,Sec,3,1)\n    Call Probe\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-19-ok_predefined_dim_refused",
+   "logger": "cr1000x",
+   "source": "Sub Probe\n  Dim Sec\nEndSub\nBeginProg\n  Scan(1,Sec,3,1)\n    Call Probe\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr300-routine_local-19-ok_predefined_dim_refused",
+   "logger": "cr300",
+   "source": "Sub Probe\n  Dim Sec\nEndSub\nBeginProg\n  Scan(1,Sec,3,1)\n    Call Probe\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-routine_local-19-ok_predefined_dim_refused",
+   "logger": "cr350",
+   "source": "Sub Probe\n  Dim Sec\nEndSub\nBeginProg\n  Scan(1,Sec,3,1)\n    Call Probe\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-routine_local-20-a9_sub_const_vs_later_param",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-20-a9_sub_const_vs_later_param",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-20-a9_sub_const_vs_later_param",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-20-a9_sub_const_vs_later_param",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-21-a9_sub_const_vs_later_dim",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-21-a9_sub_const_vs_later_dim",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-21-a9_sub_const_vs_later_dim",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-21-a9_sub_const_vs_later_dim",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-22-a9_sub_const_vs_global_public",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-22-a9_sub_const_vs_global_public",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-22-a9_sub_const_vs_global_public",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-22-a9_sub_const_vs_global_public",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-23-a9_sub_const_vs_global_const",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-23-a9_sub_const_vs_global_const",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-23-a9_sub_const_vs_global_const",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-23-a9_sub_const_vs_global_const",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-24-a9_sub_const_vs_sub_const",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Const N=2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-24-a9_sub_const_vs_sub_const",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Const N=2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-24-a9_sub_const_vs_sub_const",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Const N=2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-24-a9_sub_const_vs_sub_const",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Const N=2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-25-a9_function_const_vs_param",
+   "logger": "cr6",
+   "source": "Function Foo\n  Const N=1\n  Return 1\nEndFunction\nSub Bar(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-25-a9_function_const_vs_param",
+   "logger": "cr1000x",
+   "source": "Function Foo\n  Const N=1\n  Return 1\nEndFunction\nSub Bar(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-25-a9_function_const_vs_param",
+   "logger": "cr300",
+   "source": "Function Foo\n  Const N=1\n  Return 1\nEndFunction\nSub Bar(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-25-a9_function_const_vs_param",
+   "logger": "cr350",
+   "source": "Function Foo\n  Const N=1\n  Return 1\nEndFunction\nSub Bar(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-26-a9_global_const_vs_sub_public",
+   "logger": "cr6",
+   "source": "Const N=2\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-26-a9_global_const_vs_sub_public",
+   "logger": "cr1000x",
+   "source": "Const N=2\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-26-a9_global_const_vs_sub_public",
+   "logger": "cr300",
+   "source": "Const N=2\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-26-a9_global_const_vs_sub_public",
+   "logger": "cr350",
+   "source": "Const N=2\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-27-a9_global_const_vs_sub_public_list",
+   "logger": "cr6",
+   "source": "Const N=2\nSub Foo\n  Public N, M\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-27-a9_global_const_vs_sub_public_list",
+   "logger": "cr1000x",
+   "source": "Const N=2\nSub Foo\n  Public N, M\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-27-a9_global_const_vs_sub_public_list",
+   "logger": "cr300",
+   "source": "Const N=2\nSub Foo\n  Public N, M\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-27-a9_global_const_vs_sub_public_list",
+   "logger": "cr350",
+   "source": "Const N=2\nSub Foo\n  Public N, M\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-28-a9_sub_const_vs_sub_public",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-28-a9_sub_const_vs_sub_public",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-28-a9_sub_const_vs_sub_public",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-28-a9_sub_const_vs_sub_public",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nSub B\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-29-a9_const_then_public_in_sub",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Const N=1\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-29-a9_const_then_public_in_sub",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Const N=1\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-29-a9_const_then_public_in_sub",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Const N=1\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-29-a9_const_then_public_in_sub",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Const N=1\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-30-a9_sub_const_vs_main_dim",
+   "logger": "cr6",
+   "source": "Sub A\n  Const N=1\nEndSub\nBeginProg\n  Dim N\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-routine_local-30-a9_sub_const_vs_main_dim",
+   "logger": "cr1000x",
+   "source": "Sub A\n  Const N=1\nEndSub\nBeginProg\n  Dim N\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr300-routine_local-30-a9_sub_const_vs_main_dim",
+   "logger": "cr300",
+   "source": "Sub A\n  Const N=1\nEndSub\nBeginProg\n  Dim N\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr350-routine_local-30-a9_sub_const_vs_main_dim",
+   "logger": "cr350",
+   "source": "Sub A\n  Const N=1\nEndSub\nBeginProg\n  Dim N\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N is already declared as a CONST."
+  },
+  {
+   "id": "cr6-routine_local-31-pub_sub_vs_global_public",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Public N\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-31-pub_sub_vs_global_public",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Public N\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-31-pub_sub_vs_global_public",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Public N\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-31-pub_sub_vs_global_public",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Public N\nEndSub\nPublic N\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-32-pub_sub_vs_pub_sub",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-32-pub_sub_vs_pub_sub",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-32-pub_sub_vs_pub_sub",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-32-pub_sub_vs_pub_sub",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-33-pub_sub_vs_global_const",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Public N\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-33-pub_sub_vs_global_const",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Public N\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-33-pub_sub_vs_global_const",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Public N\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-33-pub_sub_vs_global_const",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Public N\nEndSub\nConst N=2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-34-pub_sub_vs_later_param_ok",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-34-pub_sub_vs_later_param_ok",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-34-pub_sub_vs_later_param_ok",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-34-pub_sub_vs_later_param_ok",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Public N\nEndSub\nSub B(N)\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-35-pub_global_vs_sub_const",
+   "logger": "cr6",
+   "source": "Public N\nSub Foo\n  Const N=1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-35-pub_global_vs_sub_const",
+   "logger": "cr1000x",
+   "source": "Public N\nSub Foo\n  Const N=1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-35-pub_global_vs_sub_const",
+   "logger": "cr300",
+   "source": "Public N\nSub Foo\n  Const N=1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-35-pub_global_vs_sub_const",
+   "logger": "cr350",
+   "source": "Public N\nSub Foo\n  Const N=1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-36-pub_global_vs_sub_public",
+   "logger": "cr6",
+   "source": "Public N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-36-pub_global_vs_sub_public",
+   "logger": "cr1000x",
+   "source": "Public N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-36-pub_global_vs_sub_public",
+   "logger": "cr300",
+   "source": "Public N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-36-pub_global_vs_sub_public",
+   "logger": "cr350",
+   "source": "Public N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-37-dim_global_vs_sub_public",
+   "logger": "cr6",
+   "source": "Dim N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-37-dim_global_vs_sub_public",
+   "logger": "cr1000x",
+   "source": "Dim N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-37-dim_global_vs_sub_public",
+   "logger": "cr300",
+   "source": "Dim N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-37-dim_global_vs_sub_public",
+   "logger": "cr350",
+   "source": "Dim N\nSub Foo\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-38-pub_sub_twice_in_list",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Public N, N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: N already declared as a variable."
+  },
+  {
+   "id": "cr1000x-routine_local-38-pub_sub_twice_in_list",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Public N, N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: N already declared as a variable."
+  },
+  {
+   "id": "cr300-routine_local-38-pub_sub_twice_in_list",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Public N, N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: N already declared as a variable."
+  },
+  {
+   "id": "cr350-routine_local-38-pub_sub_twice_in_list",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Public N, N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: N already declared as a variable."
+  },
+  {
+   "id": "cr6-routine_local-39-ok_pub_global_with_sub_dim",
+   "logger": "cr6",
+   "source": "Public N\nSub Foo\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-39-ok_pub_global_with_sub_dim",
+   "logger": "cr1000x",
+   "source": "Public N\nSub Foo\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-39-ok_pub_global_with_sub_dim",
+   "logger": "cr300",
+   "source": "Public N\nSub Foo\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-39-ok_pub_global_with_sub_dim",
+   "logger": "cr350",
+   "source": "Public N\nSub Foo\n  Dim N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-routine_local-40-ok_sub_dim_then_other_sub_public",
+   "logger": "cr6",
+   "source": "Sub Foo\n  Dim N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routine_local-40-ok_sub_dim_then_other_sub_public",
+   "logger": "cr1000x",
+   "source": "Sub Foo\n  Dim N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-routine_local-40-ok_sub_dim_then_other_sub_public",
+   "logger": "cr300",
+   "source": "Sub Foo\n  Dim N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routine_local-40-ok_sub_dim_then_other_sub_public",
+   "logger": "cr350",
+   "source": "Sub Foo\n  Dim N\nEndSub\nSub Bar\n  Public N\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

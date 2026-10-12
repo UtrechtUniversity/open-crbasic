@@ -5347,9 +5347,9 @@ several passes did not recognise, so everything after the routine was treated as
 `BeginProg` was not reported (`Expr`/`Delay illegally occurs before BeginProg.`); the
 `Delay never reached at run time.` warning was lost; a routine-local `Dim` shadowed a global in
 `GPS`'s NMEA-string check. All now use `syntax.ends_routine` (one definition, also behind
-`bindings.closes_routine`). Unrelated and closer-independent (not fixed): a variable declared
-inside a `Sub` and used in the main program is accepted by `crbc` while the real compiler reports
-it undefined (`Y = 2` -> `Invalid, or out of place expression` / CR300 `Y is not defined.`).
+`bindings.closes_routine`). Closer-independent and fixed separately: a variable declared inside a
+`Sub` and used in the main program ("Routine-local names", below).
+
 ### Digit-led members of a declared name (2026-10-12)
 
 `ident.digits` lexes as a member (`Tmp.001`, see "Undeclared dotted names"), so `X = X.5`,
@@ -5753,3 +5753,38 @@ PROGRESS item 13 (CR300/CR350): no divergence. All
   `Too many parameters:  Sec.` cascade for a `Scan (1,Sec,0,0)` in the program and the table
   field cascade), matching `analyze`; fixture `r13_include_dupdecl.json` (56 cases). The item was
   not a defect of `crbc`. `Duplicate Sub A` in an include prints without the prefix on all four.
+
+
+## Routine-local names and routine-body `Public`/`Const` (2026-10-12, review r13-A item A9)
+
+Oracle, all four loggers (probes in `scratch/r13s/`; fixture `r14_routine_local_scope.json`, 41 cases on each of the four loggers, including the accepted boundaries: global declared before/after the Sub, `Public`/`Const` inside a routine used in main, the same local name in two routines).
+
+- A `Dim` inside a `Sub`/`Function` is visible only in that routine; a Sub/Function parameter likewise
+  (and it is not a Sub-local `Dim` of an earlier routine that hides, only a later parameter list or
+  `Dim` may reuse the name). Used anywhere else it is an undefined name, reported exactly like any
+  other: CR6/CR1000X `Invalid, or out of place expression:   Y = 2.` / `Invalid symbol in expression:
+  <text>.` (assignment target / any other position), CR300/CR350 `Y is not defined.` (an indexed use
+  `Y(2)` also prints `Dimensions not declared`). Observed in main code, a `Scan`, an `If` condition,
+  another Sub, a position before the declaring Sub, a global `Const` value, a `Public` dimension and
+  a `DataTable` `Sample`. Names that stay visible: a name also declared outside any routine (before or
+  after the Sub), a `Public`/`Const` inside a routine (both are global, below), a name declared by
+  another routine's `Dim` of its own, a use before the `Dim` inside the same Sub, and a predefined
+  name whose `Dim` was refused (`Dim Sec` -> `Sec is a predefined CONST.`, `Sec` still resolves).
+  Implementation: `symbols.out_of_scope_nodes` (ids of the offending `Name`/`Index` nodes) carried by
+  `expressions.KnownNames.out_of_scope` and honoured by `_undefined_names_walk`, `_dims_walk` and
+  `_names_and_dims`. Not done: a Sub-local name used in a position that does not go through the
+  generic undefined-name walk (the same positions that already under-report any undefined name);
+  `PortSet(1, Y)` prints the `Invalid port` line after the undefined-name line, as for any undefined `Y`
+  (the real order is the reverse; pre-existing).
+- `Public` and `Const` inside a routine declare **globals** (`Z = Y` in main code compiles after
+  `Sub Foo` / `Public Y`), so they take part in every duplicate check as a global declaration would:
+  an earlier routine's `Const N` conflicts with a later `Sub B(N)`, `Dim N` (in a routine or in
+  `BeginProg`), global `Public N`, global `Const N` or another routine's `Const N`/`Public N` (`N is
+  already declared as a CONST.`); a routine-body `Public N` conflicts with an earlier global `Const N`
+  or with `Const N` in an earlier routine (`... CONST.`), with an earlier or later `Public`/`Dim N`
+  (also in another routine) and with a later global `Const N` (`N already declared as a variable.`);
+  `Public N, N` in one Sub reports the second. A routine `Dim N` and a parameter `N` coexist with a
+  routine-body `Public N` (no message). Implementation: `structure.check_pass1` registers and checks
+  them through `_check_duplicate_declaration` (without the name-collision reports `symbols.
+  check_local_name_collision` already makes) and keeps the CR300/CR350 "first CONST conflict only" rule.
+

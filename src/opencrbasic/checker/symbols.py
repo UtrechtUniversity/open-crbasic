@@ -5,6 +5,7 @@ bare (no-`Call`-keyword) name is a legal statement. Rules and oracle evidence: `
 from __future__ import annotations
 
 import re
+from dataclasses import replace
 from types import SimpleNamespace
 
 from .. import consteval
@@ -89,6 +90,104 @@ def _walk_names(expr: S.Expr | None):
     elif isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
             yield from _walk_names(item)
+
+
+def _stmt_exprs(stmt: S.Stmt):
+    """Every expression a statement holds (declaration dimensions/initialisers, `Const` value,
+    assignment, condition, loop bounds, `Case` items, call/instruction arguments, parameter
+    defaults, and those of a one-line `If`'s bodies)."""
+    if isinstance(stmt, S.Declaration):
+        for v in stmt.vars:
+            yield from v.dims
+            yield from v.init or ()
+            yield v.string_size
+    elif isinstance(stmt, S.ConstDecl):
+        yield stmt.value
+    elif isinstance(stmt, S.Assignment):
+        yield stmt.target
+        yield stmt.value
+    elif isinstance(stmt, (S.Instruction, S.Call)):
+        yield from stmt.args
+    elif isinstance(stmt, S.If):
+        yield stmt.cond
+        for s2 in [*(stmt.inline or ()), *(stmt.inline_else or ())]:
+            yield from _stmt_exprs(s2)
+    elif isinstance(stmt, (S.ElseIf, S.DoLoop)):
+        yield stmt.cond
+    elif isinstance(stmt, S.For):
+        yield from (stmt.var, stmt.start, stmt.end, stmt.step)
+    elif isinstance(stmt, S.Case):
+        for item in stmt.items:
+            yield from (part for part in item if isinstance(part, S.Expr))
+    elif isinstance(stmt, S.SubDef):
+        for p in stmt.params:
+            yield p.default
+            yield p.string_size
+
+
+def _name_nodes(expr: S.Expr | None):
+    """The `Name`/`Index` nodes and `Member` bases inside `expr` that `expressions._undefined_names`
+    looks a bare name up for."""
+    if expr is None:
+        return
+    if isinstance(expr, (S.Name, S.Index)):
+        yield expr
+        if isinstance(expr, S.Index):
+            for a in expr.args:
+                yield from _name_nodes(a)
+    elif isinstance(expr, S.Unary):
+        yield from _name_nodes(expr.operand)
+    elif isinstance(expr, S.Binary):
+        yield from _name_nodes(expr.left)
+        yield from _name_nodes(expr.right)
+    elif isinstance(expr, S.Member):
+        yield from _name_nodes(expr.base)
+        for a in getattr(expr, "args", None) or ():
+            yield from _name_nodes(a)
+    elif isinstance(expr, S.ArrayLiteral):
+        for item in expr.items:
+            yield from _name_nodes(item)
+
+
+def out_of_scope_nodes(program: S.Program, resolvable: frozenset | set = frozenset()) -> frozenset[int]:
+    """`id`s of the `Name`/`Index` nodes that name a `Dim` or parameter local to some other `Sub`/
+    `Function` and nothing visible where they stand: the real compilers report them undefined (oracle, all
+    four loggers, 2026-10-12: `Dim Y` in a Sub, `Y = 2` in main code or in another Sub ->
+    `Invalid, or out of place expression`, CR300/CR350 `Y is not defined.`). A name that is also
+    declared outside a routine, or `Public`/`Const` inside one (both global), stays visible, and so
+    does one that resolves without any declaration (`resolvable`: a predefined symbol, function...,
+    so a refused `Dim Sec` in a Sub leaves every `Sec` valid)."""
+    locals_: dict[int, set[str]] = {}
+    owners: list[tuple[S.Stmt, S.SubDef | None]] = []
+    cur = None
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            cur = st
+            locals_[id(cur)] = {p.name.upper() for p in st.params}
+        owners.append((st, cur))
+        if S.ends_routine(st):
+            cur = None
+        elif cur is not None and isinstance(st, S.Declaration) and st.kind == "DIM":
+            locals_[id(cur)].update(v.name.upper() for v in st.vars)
+    every = set().union(*locals_.values()) if locals_ else set()
+    if not every:
+        return frozenset()
+    outer = declared_names(SimpleNamespace(statements=[
+        replace(st, params=[]) if isinstance(st, S.SubDef) else st for st, r in owners
+        if not (r is not None and isinstance(st, S.Declaration) and st.kind == "DIM")]))
+    hidden_all = every - outer - set(resolvable)
+    if not hidden_all:
+        return frozenset()
+    out: set[int] = set()
+    for st, r in owners:
+        hidden = hidden_all - (locals_[id(r)] if r is not None else set())
+        if r is st:
+            continue  # the header itself
+        for e in _stmt_exprs(st):
+            for node in _name_nodes(e):
+                if node.name.upper() in hidden:
+                    out.add(id(node))
+    return frozenset(out)
 
 
 def ess_variable_names(program: S.Program) -> set[str]:
