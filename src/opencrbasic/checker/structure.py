@@ -539,6 +539,9 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
             in_table = True
         elif kw == "ENDTABLE":
             in_table = False
+        elif kw == "SLOWSEQUENCE" and scans:
+            diags.error(stmt.line, "Missing NextScan.", stmt.file)   # (oracle, 2026-10-12)
+            return stmt.file, stmt.line
         elif kw == "SCAN":
             if scans:
                 diags.error(stmt.line, NESTED_SCAN, stmt.file)
@@ -1511,6 +1514,11 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             in_beginprog = True
         elif kw == "ENDPROG":
             in_beginprog = False
+        if kw == "SLOWSEQUENCE" and pass2_scans and not profile.single_pass:
+            # a `Scan` still open at `SlowSequence`: `Missing NextScan.` there, and pass 2 ends
+            # (oracle, CR6/CR1000X, 2026-10-12; CR300/CR350: `check_scan_placement_late`)
+            diags.error(stmt.line, "Missing NextScan.", stmt.file)
+            return stmt.line
         if kw == "SCAN":
             if pass2_scans and not profile.single_pass:
                 diags.error(stmt.line, NESTED_SCAN, stmt.file)

@@ -1,0 +1,219 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-slowseq-a1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr1000x-slowseq-a1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-a1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr350-slowseq-a1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr6-slowseq-a2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr1000x-slowseq-a2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-a2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr350-slowseq-a2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr6-slowseq-a3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing NextScan."
+  },
+  {
+   "id": "cr1000x-slowseq-a3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-a3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing NextScan."
+  },
+  {
+   "id": "cr350-slowseq-a3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing NextScan."
+  },
+  {
+   "id": "cr6-slowseq-a4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n    X = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr1000x-slowseq-a4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n    X = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-a4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n    X = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr350-slowseq-a4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n    X = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr6-slowseq-a5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr1000x-slowseq-a5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-a5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr350-slowseq-a5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\n  Scan (10,Sec,0,0)\nSlowSequence\n    X = 2\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Scan never reached at run time.\nline 7: Missing NextScan."
+  },
+  {
+   "id": "cr6-slowseq-b1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    Randomize(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-b1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    Randomize(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr6-slowseq-b2",
+   "logger": "cr6",
+   "source": "Public X\nDim Z banana\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-slowseq-b2",
+   "logger": "cr300",
+   "source": "Public X\nDim Z banana\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration banana.\nline 4: Too many parameters:  Sec.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-slowseq-b3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    Randomize(Nope)\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-b3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    Randomize(Nope)\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-slowseq-b4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\nfoo bar\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  },
+  {
+   "id": "cr300-slowseq-b4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\nSlowSequence\n  Scan (10,Sec,0,0)\n    X = 2\n  NextScan\nEndProg\nfoo bar\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing NextScan."
+  }
+ ]
+}

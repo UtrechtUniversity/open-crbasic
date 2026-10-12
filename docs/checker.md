@@ -6239,3 +6239,14 @@ Oracle, all four loggers unless noted (cases in `tests/fixtures/r14_bounds_condi
 
 All are reported like the index bounds (with pass 2 on CR6/CR1000X, in an otherwise clean file on
 CR300/CR350).
+
+## `SlowSequence` with a `Scan` still open (2026-10-12, fuzz false accepts)
+
+A `SlowSequence` reached while a `Scan` is open is `Missing NextScan.` on the `SlowSequence` line
+(oracle, all four loggers), with no `Scan without NextScan` for it afterwards. On CR6/CR1000X it ends
+pass 2 like a placement error (an earlier `Invalid symbol` stays, a later one is not reported, and a
+pass-1 error hides it: `structure.check_pass2`); on CR300/CR350 it ends the late placement walk
+(`check_scan_placement_late`). The `Scan never reached at run time.` warning of an earlier, unclosed
+scan is still printed by the real compilers next to the error, which is not modelled when the file
+has other errors (fuzz `cr6/false_accept/46663179c624`). Cases in
+`tests/fixtures/r14_slowsequence_open_scan.json`.
