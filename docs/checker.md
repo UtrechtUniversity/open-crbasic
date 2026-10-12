@@ -6218,3 +6218,24 @@ modelled: 0, 16, 29, 30 and values above 30 (some add `Table T declared with no 
 pattern not worked out: 255 prints only that line, 256 and 263 differ by family); 1, 17 (`Reps 1
 illegal; with BOOL8 and UINT1 data types ...`), 14/23 (`Float to NSEC expects source array size >= 7`);
 a string `DataType` crashes all four real compilers. Cases in `tests/fixtures/r14_output_datatype.json`.
+
+## More compile-time bounds (2026-10-12, fuzz false accepts)
+
+Oracle, all four loggers unless noted (cases in `tests/fixtures/r14_bounds_conditions.json`):
+
+- A condition that is exactly one Float array element with literal subscripts is bounds-checked like
+  an instruction argument: `If A(3) Then`, `If A(0) Then`, `ElseIf A(5) Then`, `While A(3)`,
+  `Do While A(3)`, `Loop Until A(0)` -> `Variable A out of bounds.`; `If A(3) > 1 Then`, `If A(1+2)`,
+  a Long array and `Y = A(3)` compile. An array declared `B()` is one element (`If B(2)` out of
+  bounds on CR6/CR1000X; CR300/CR350 `Dimensions not declared: B(2) .` as before).
+- Type code 24 arguments (`SDMIO16`'s second, `PortPairConfig`'s second) are bounds-checked for
+  Float and Long arrays.
+- `SplitStr(F(i),...,Reps,...)` into an element of a one-dimensional non-String array is out of
+  bounds when `i + Reps - 1` exceeds the size, whatever the option; a String array compiles
+  (`expressions.check_splitstr_element_reps`). A parenthesised dimension (`G((1+2)) As String * 10`)
+  makes a Float array, so it is checked.
+- `Calibrate(Dest)` needs at least 6 elements from `Dest` to the end of the array on CR6/CR1000X and
+  51 on CR300/CR350, else `Variable Dest out of bounds.` (`expressions.check_calibrate_size`).
+
+All are reported like the index bounds (with pass 2 on CR6/CR1000X, in an otherwise clean file on
+CR300/CR350).

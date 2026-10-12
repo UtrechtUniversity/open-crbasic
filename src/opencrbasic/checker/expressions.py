@@ -2367,10 +2367,11 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
 
 # Parameter codes whose plain array-element argument is bounds-checked, and instructions whose own
 # compile function takes that argument over (oracle, 2026-10-01: `AddPrecise(X,A(9))` compiles).
-_BOUNDS_CHECKED_CODES = frozenset({2, 8, 27, 28, 29, 41})
+_BOUNDS_CHECKED_CODES = frozenset({2, 8, 24, 27, 28, 29, 41})
 _BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
 # Codes 27/29 only for oracle-probed instructions (2026-10-02, docs/checker.md "Destination bounds").
 _BOUNDS_PROBED = {
+    24: frozenset({"SDMIO16", "PORTPAIRCONFIG"}),   # (Float and Long, oracle 2026-10-12)
     27: frozenset({"MOVE", "ERASE", "GETRECORD", "SPLITSTR", "MOVEBYTES"}),
     29: frozenset({"REALTIME", "READIO", "PORTGET", "AVGSPA", "MAXSPA", "MINSPA", "RMSSPA",
                    "STDDEVSPA", "SORTSPA", "SORTSPAINDEXED"}),
@@ -2390,15 +2391,23 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
     padded = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     tables = symbols.scope_tables(program, env, scalars=padded)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() in _BOUNDS_UNCHECKED:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "WHILE" and \
+                len(stmt.args) == 1 and isinstance(stmt.args[0], S.Index):
+            candidates = [(2, stmt.args[0])]
+        elif isinstance(stmt, (S.If, S.ElseIf, S.DoLoop)) and isinstance(stmt.cond, S.Index):
+            # a condition that is one element (`If A(3) Then`, `While A(0)`, `ElseIf A(5) Then`):
+            # checked like a code-2 argument (oracle, all four loggers, 2026-10-12; `If A(3) > 1`
+            # and `Y = A(3)` compile)
+            candidates = [(2, stmt.cond)]
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() not in _BOUNDS_UNCHECKED \
+                and (record := profile.instructions.get(stmt.keyword.upper())):
+            candidates = [(record["params"][i] if i < len(record["params"]) else None, arg)
+                          for i, arg in enumerate(stmt.args)]
+        else:
             continue
         scope = tables(stmt)
         dims, types, arrays = scope.dims, scope.types, scope.arrays
-        record = profile.instructions.get(stmt.keyword.upper())
-        if not record:
-            continue
-        for i, arg in enumerate(stmt.args):
-            code = record["params"][i] if i < len(record["params"]) else None
+        for code, arg in candidates:
             if code not in _BOUNDS_CHECKED_CODES or not isinstance(arg, S.Index) or not arg.args:
                 continue
             if code in _BOUNDS_PROBED and stmt.keyword.upper() not in _BOUNDS_PROBED[code]:
@@ -2408,7 +2417,7 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
             # Code 27 (Move/Erase/GetRecord/SplitStr destinations) also checks Long and String
             # arrays (oracle, 2026-10-02); the other codes are only probed for Float.
             if not shape or (types.get(name) != "FLOAT" and not (code == 27 and name in arrays) and
-                             not (code == 29 and types.get(name) == "LONG")) or \
+                             not (code in (24, 29) and types.get(name) == "LONG")) or \
                     not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args):
                 continue
             index = [a.value for a in arg.args]
@@ -2424,6 +2433,68 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                 continue
             if bad:
                 diags.error(stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
+
+
+def check_splitstr_element_reps(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """`SplitStr(F(i),...,Reps,...)` into an element of a one-dimensional non-String array:
+    `Variable F out of bounds.` when `i + Reps - 1` exceeds its size, whatever the option (oracle,
+    all four loggers, 2026-10-12: `Public F(3)` with `F(1)`/Reps 6 or `F(2)`/Reps 3, Long arrays too,
+    and `G((1+2)) As String * 10`, a parenthesised dimension making a Float array; a String array
+    `T(3)` compiles with Reps 6)."""
+    strings = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
+               for v in st.vars if (v.type or "").upper() == "STRING" and not v.paren_dim}
+    tables = symbols.scope_tables(program, env)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SPLITSTR" \
+                or len(stmt.args) < 4:
+            continue
+        dest = stmt.args[0]
+        if not isinstance(dest, S.Index) or len(dest.args) != 1 or \
+                not isinstance(dest.args[0], S.Number) or not isinstance(dest.args[0].value, int):
+            continue
+        name = dest.name.upper()
+        shape = tables(stmt).dims.get(name)
+        if not shape or len(shape) != 1 or name in strings or name not in tables(stmt).arrays:
+            continue
+        try:
+            reps = consteval.value_of(stmt.args[3], env)
+        except (consteval.NotConstant, consteval.DivideByZero):
+            continue
+        if isinstance(reps, bool) or not isinstance(reps, (int, float)) or reps != int(reps) or reps < 1:
+            continue
+        if dest.args[0].value + int(reps) - 1 > shape[0]:
+            diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+
+
+_CALIBRATE_MIN = {"cr6": 6, "cr1000x": 6, "cr300": 51, "cr350": 51}
+
+
+def check_calibrate_size(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """`Calibrate(Dest)` needs at least 6 Float elements from `Dest` to the end of its array on
+    CR6/CR1000X, 51 on CR300/CR350 (whole array, `Dest()` or `Dest(i)`), else `Variable Dest out of
+    bounds.` (oracle, 2026-10-12: sizes 1..5 fail and 6..100 compile on CR6; 1..50 fail and 51..100
+    compile on CR300/CR350; `Public K()` is one element)."""
+    need = _CALIBRATE_MIN.get(profile.name)
+    if need is None:
+        return
+    tables = symbols.scope_tables(program, env, scalars=True)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "CALIBRATE" or not stmt.args:
+            continue
+        dest = stmt.args[0]
+        if not isinstance(dest, (S.Name, S.Index)):
+            continue
+        shape = tables(stmt).dims.get(dest.name.upper())
+        if not shape or len(shape) != 1:
+            continue
+        start = 1
+        if isinstance(dest, S.Index) and dest.args:
+            if len(dest.args) != 1 or not isinstance(dest.args[0], S.Number) or \
+                    not isinstance(dest.args[0].value, int):
+                continue
+            start = dest.args[0].value
+        if shape[0] - start + 1 < need:
+            diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
 
 
 def check_splitstr_whole_array(program: S.Program, profile, diags: Diagnostics, env) -> None:

@@ -1,0 +1,2011 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-bounds-ob8-p1",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p1",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p1",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ob8-p1",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ob8-p10",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) > 1 Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p10",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) > 1 Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p10",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) > 1 Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-ob8-p10",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(3) > 1 Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-ob8-p11",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2) Then\n      Y = 1\n    ElseIf A(5) Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p11",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2) Then\n      Y = 1\n    ElseIf A(5) Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p11",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2) Then\n      Y = 1\n    ElseIf A(5) Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ob8-p11",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2) Then\n      Y = 1\n    ElseIf A(5) Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ob8-p12",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = B(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p12",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = B(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p12",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = B(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:     Y = B(2)\n."
+  },
+  {
+   "id": "cr350-bounds-ob8-p12",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = B(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:     Y = B(2)\n."
+  },
+  {
+   "id": "cr6-bounds-ob8-p13",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do While A(3)\n      Y = 1\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p13",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do While A(3)\n      Y = 1\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p13",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do While A(3)\n      Y = 1\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ob8-p13",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do While A(3)\n      Y = 1\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ob8-p14",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      Y = 1\n    Loop Until A(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p14",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      Y = 1\n    Loop Until A(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p14",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      Y = 1\n    Loop Until A(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ob8-p14",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      Y = 1\n    Loop Until A(0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ob8-p15",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then\n      Y = 1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable B out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p15",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then\n      Y = 1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p15",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then\n      Y = 1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(2) ."
+  },
+  {
+   "id": "cr350-bounds-ob8-p15",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then\n      Y = 1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(2) ."
+  },
+  {
+   "id": "cr6-bounds-ob8-p16",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2,1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p16",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2,1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p16",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2,1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: A(2,1) ."
+  },
+  {
+   "id": "cr350-bounds-ob8-p16",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(2,1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: A(2,1) ."
+  },
+  {
+   "id": "cr6-bounds-ob8-p2",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(0) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p2",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(0) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p2",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(0) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ob8-p2",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(0) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ob8-p3",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p3",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p3",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-ob8-p3",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-ob8-p4",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable B out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p4",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p4",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(2) ."
+  },
+  {
+   "id": "cr350-bounds-ob8-p4",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(2) ."
+  },
+  {
+   "id": "cr6-bounds-ob8-p5",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(B(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable B out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p5",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(B(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p5",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(B(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(2)."
+  },
+  {
+   "id": "cr350-bounds-ob8-p5",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(B(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(2)."
+  },
+  {
+   "id": "cr6-bounds-ob8-p6",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p6",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p6",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(1) ."
+  },
+  {
+   "id": "cr350-bounds-ob8-p6",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If B(1) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: B(1) ."
+  },
+  {
+   "id": "cr6-bounds-ob8-p7",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(1+2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p7",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(1+2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p7",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(1+2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-ob8-p7",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If A(1+2) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-ob8-p8",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    While A(3)\n      Y = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p8",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    While A(3)\n      Y = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ob8-p8",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    While A(3)\n      Y = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ob8-p8",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    While A(3)\n      Y = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ob8-p9",
+   "logger": "cr6",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If L(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ob8-p9",
+   "logger": "cr1000x",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If L(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ob8-p9",
+   "logger": "cr300",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If L(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-ob8-p9",
+   "logger": "cr350",
+   "source": "Public A(2), B(), Y, L(2) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    If L(3) Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-ss2-a1",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a1",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a1",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a1",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ss2-a2",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a2",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ss2-a2",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-ss2-a2",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-ss2-a3",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(2),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a3",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(2),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a3",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(2),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a3",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(2),Src,\",\",3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ss2-a4",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(G(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable G out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a4",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(G(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable G out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a4",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(G(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable G out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a4",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(G(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable G out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ss2-a5",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(T(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a5",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(T(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-ss2-a5",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(T(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-ss2-a5",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(T(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-ss2-a6",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(L(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a6",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(L(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a6",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(L(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a6",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(L(1),Src,\",\",6,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ss2-a7",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a7",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a7",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a7",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ss2-a8",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a8",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a8",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a8",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr6-bounds-ss2-a9",
+   "logger": "cr6",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-ss2-a9",
+   "logger": "cr1000x",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr300-bounds-ss2-a9",
+   "logger": "cr300",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr350-bounds-ss2-a9",
+   "logger": "cr350",
+   "source": "Public F(3), G((1+2)) As String * 10, T(3) As String * 10, L(3) As Long, Src As String * 40\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(F(1),Src,\",\",6,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k0",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K2 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k0",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K2 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-k0",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K2 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k0",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K2 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k1",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k1",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-k1",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k1",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k10",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(10), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k10",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(10), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-c24-k10",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(10), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k10",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(10), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k2",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(2), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k2",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(2), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-k2",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(2), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k2",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(2), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k20",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(20), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k20",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(20), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-c24-k20",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(20), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k20",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(20), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k3",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(3), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k3",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(3), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-k3",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(3), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k3",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(3), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k4",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(4), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k4",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(4), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-k4",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(4), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k4",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(4), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k5",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(5), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k5",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(5), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-k5",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(5), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k5",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(5), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k8",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(8), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k8",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(8), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-c24-k8",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(8), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k8",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(8), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-k9",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(9), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-c24-k9",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(9), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-c24-k9",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(9), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-c24-k9",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(9), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-c24-s1",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-s1",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-s1",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,A(3),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr350-bounds-c24-s1",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,A(3),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr6-bounds-c24-s2",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-bounds-c24-s2",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-bounds-c24-s2",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,A(2),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr350-bounds-c24-s2",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,A(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,A(2),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr6-bounds-c24-s3",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    PortPairConfig(C1,A(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-s3",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    PortPairConfig(C1,A(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-s3",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    PortPairConfig(C1,A(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: PortPairConfig is not defined.\nline 4: Invalid, or out of place expression:     PortPairConfig(C1,A(3))\n."
+  },
+  {
+   "id": "cr350-bounds-c24-s3",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    PortPairConfig(C1,A(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: PortPairConfig is not defined.\nline 4: Invalid, or out of place expression:     PortPairConfig(C1,A(3))\n."
+  },
+  {
+   "id": "cr6-bounds-c24-s4",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,L(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-s4",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,L(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-s4",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,L(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,L(3),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr350-bounds-c24-s4",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,L(3),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,L(3),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr6-bounds-c24-s5",
+   "logger": "cr6",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,K2(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K2 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-c24-s5",
+   "logger": "cr1000x",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,K2(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K2 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-c24-s5",
+   "logger": "cr300",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,K2(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,K2(2),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr350-bounds-c24-s5",
+   "logger": "cr350",
+   "source": "Public V, A(2), L(2) As Long, K1(1), K2()\nBeginProg\n  Scan (1,Sec,3,0)\n    SDMIO16(V,K2(2),0,99,0,0,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMIO16 is not defined.\nline 4: Invalid, or out of place expression:     SDMIO16(V,K2(2),0,99,0,0,0,0,1,0)\n."
+  },
+  {
+   "id": "cr6-bounds-cal-e8",
+   "logger": "cr6",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-e8",
+   "logger": "cr1000x",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-e8",
+   "logger": "cr300",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-e8",
+   "logger": "cr350",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-i8",
+   "logger": "cr6",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-i8",
+   "logger": "cr1000x",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-i8",
+   "logger": "cr300",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-i8",
+   "logger": "cr350",
+   "source": "Public K1(8)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-k100",
+   "logger": "cr6",
+   "source": "Public K1(100)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k100",
+   "logger": "cr1000x",
+   "source": "Public K1(100)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k100",
+   "logger": "cr300",
+   "source": "Public K1(100)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal-k100",
+   "logger": "cr350",
+   "source": "Public K1(100)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal-k21",
+   "logger": "cr6",
+   "source": "Public K1(21)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k21",
+   "logger": "cr1000x",
+   "source": "Public K1(21)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k21",
+   "logger": "cr300",
+   "source": "Public K1(21)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-k21",
+   "logger": "cr350",
+   "source": "Public K1(21)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-k30",
+   "logger": "cr6",
+   "source": "Public K1(30)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k30",
+   "logger": "cr1000x",
+   "source": "Public K1(30)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k30",
+   "logger": "cr300",
+   "source": "Public K1(30)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-k30",
+   "logger": "cr350",
+   "source": "Public K1(30)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-k40",
+   "logger": "cr6",
+   "source": "Public K1(40)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k40",
+   "logger": "cr1000x",
+   "source": "Public K1(40)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k40",
+   "logger": "cr300",
+   "source": "Public K1(40)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-k40",
+   "logger": "cr350",
+   "source": "Public K1(40)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-k50",
+   "logger": "cr6",
+   "source": "Public K1(50)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k50",
+   "logger": "cr1000x",
+   "source": "Public K1(50)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k50",
+   "logger": "cr300",
+   "source": "Public K1(50)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-k50",
+   "logger": "cr350",
+   "source": "Public K1(50)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-k6",
+   "logger": "cr6",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k6",
+   "logger": "cr1000x",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k6",
+   "logger": "cr300",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-k6",
+   "logger": "cr350",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-k64",
+   "logger": "cr6",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k64",
+   "logger": "cr1000x",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k64",
+   "logger": "cr300",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal-k64",
+   "logger": "cr350",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal-k7",
+   "logger": "cr6",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-k7",
+   "logger": "cr1000x",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-k7",
+   "logger": "cr300",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-k7",
+   "logger": "cr350",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal-o8",
+   "logger": "cr6",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal-o8",
+   "logger": "cr1000x",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal-o8",
+   "logger": "cr300",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal-o8",
+   "logger": "cr350",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal2-k51",
+   "logger": "cr6",
+   "source": "Public K1(51)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k51",
+   "logger": "cr1000x",
+   "source": "Public K1(51)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k51",
+   "logger": "cr300",
+   "source": "Public K1(51)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k51",
+   "logger": "cr350",
+   "source": "Public K1(51)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k52",
+   "logger": "cr6",
+   "source": "Public K1(52)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k52",
+   "logger": "cr1000x",
+   "source": "Public K1(52)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k52",
+   "logger": "cr300",
+   "source": "Public K1(52)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k52",
+   "logger": "cr350",
+   "source": "Public K1(52)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k53",
+   "logger": "cr6",
+   "source": "Public K1(53)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k53",
+   "logger": "cr1000x",
+   "source": "Public K1(53)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k53",
+   "logger": "cr300",
+   "source": "Public K1(53)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k53",
+   "logger": "cr350",
+   "source": "Public K1(53)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k54",
+   "logger": "cr6",
+   "source": "Public K1(54)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k54",
+   "logger": "cr1000x",
+   "source": "Public K1(54)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k54",
+   "logger": "cr300",
+   "source": "Public K1(54)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k54",
+   "logger": "cr350",
+   "source": "Public K1(54)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k55",
+   "logger": "cr6",
+   "source": "Public K1(55)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k55",
+   "logger": "cr1000x",
+   "source": "Public K1(55)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k55",
+   "logger": "cr300",
+   "source": "Public K1(55)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k55",
+   "logger": "cr350",
+   "source": "Public K1(55)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k56",
+   "logger": "cr6",
+   "source": "Public K1(56)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k56",
+   "logger": "cr1000x",
+   "source": "Public K1(56)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k56",
+   "logger": "cr300",
+   "source": "Public K1(56)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k56",
+   "logger": "cr350",
+   "source": "Public K1(56)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k57",
+   "logger": "cr6",
+   "source": "Public K1(57)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k57",
+   "logger": "cr1000x",
+   "source": "Public K1(57)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k57",
+   "logger": "cr300",
+   "source": "Public K1(57)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k57",
+   "logger": "cr350",
+   "source": "Public K1(57)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k58",
+   "logger": "cr6",
+   "source": "Public K1(58)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k58",
+   "logger": "cr1000x",
+   "source": "Public K1(58)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k58",
+   "logger": "cr300",
+   "source": "Public K1(58)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k58",
+   "logger": "cr350",
+   "source": "Public K1(58)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k60",
+   "logger": "cr6",
+   "source": "Public K1(60)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k60",
+   "logger": "cr1000x",
+   "source": "Public K1(60)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k60",
+   "logger": "cr300",
+   "source": "Public K1(60)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k60",
+   "logger": "cr350",
+   "source": "Public K1(60)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k62",
+   "logger": "cr6",
+   "source": "Public K1(62)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k62",
+   "logger": "cr1000x",
+   "source": "Public K1(62)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k62",
+   "logger": "cr300",
+   "source": "Public K1(62)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k62",
+   "logger": "cr350",
+   "source": "Public K1(62)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-k63",
+   "logger": "cr6",
+   "source": "Public K1(63)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-k63",
+   "logger": "cr1000x",
+   "source": "Public K1(63)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-k63",
+   "logger": "cr300",
+   "source": "Public K1(63)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-k63",
+   "logger": "cr350",
+   "source": "Public K1(63)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-o59",
+   "logger": "cr6",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-o59",
+   "logger": "cr1000x",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-o59",
+   "logger": "cr300",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-o59",
+   "logger": "cr350",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal2-o60",
+   "logger": "cr6",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal2-o60",
+   "logger": "cr1000x",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal2-o60",
+   "logger": "cr300",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal2-o60",
+   "logger": "cr350",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal3-q50",
+   "logger": "cr6",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(15))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-q50",
+   "logger": "cr1000x",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(15))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal3-q50",
+   "logger": "cr300",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(15))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal3-q50",
+   "logger": "cr350",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(15))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal3-q51",
+   "logger": "cr6",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(14))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-q51",
+   "logger": "cr1000x",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(14))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal3-q51",
+   "logger": "cr300",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(14))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds-cal3-q51",
+   "logger": "cr350",
+   "source": "Public K1(64)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(14))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-bounds-cal3-r5",
+   "logger": "cr6",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-r5",
+   "logger": "cr1000x",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-cal3-r5",
+   "logger": "cr300",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal3-r5",
+   "logger": "cr350",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal3-r6",
+   "logger": "cr6",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-r6",
+   "logger": "cr1000x",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal3-r6",
+   "logger": "cr300",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal3-r6",
+   "logger": "cr350",
+   "source": "Public K1(10)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1(5))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal3-x5",
+   "logger": "cr6",
+   "source": "Public K1(5)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-x5",
+   "logger": "cr1000x",
+   "source": "Public K1(5)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr300-bounds-cal3-x5",
+   "logger": "cr300",
+   "source": "Public K1(5)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal3-x5",
+   "logger": "cr350",
+   "source": "Public K1(5)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal3-x6",
+   "logger": "cr6",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-x6",
+   "logger": "cr1000x",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal3-x6",
+   "logger": "cr300",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal3-x6",
+   "logger": "cr350",
+   "source": "Public K1(6)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr6-bounds-cal3-x7",
+   "logger": "cr6",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds-cal3-x7",
+   "logger": "cr1000x",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds-cal3-x7",
+   "logger": "cr300",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  },
+  {
+   "id": "cr350-bounds-cal3-x7",
+   "logger": "cr350",
+   "source": "Public K1(7)\nBeginProg\n  Scan (1,Sec,3,0)\n    Calibrate(K1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable K1 out of bounds."
+  }
+ ]
+}
