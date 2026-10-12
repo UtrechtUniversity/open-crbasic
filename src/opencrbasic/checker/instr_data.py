@@ -515,6 +515,9 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         elif in_const_table and isinstance(st, S.ConstDecl):
             table_consts.add(st.name.upper())
     item_const: str | None = None  # the current `MenuItem`'s ConstTable constant, if it is one
+    item_plain = False             # the current `MenuItem` names a `Const` outside the ConstTable
+    has_const_table = any(isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE"
+                          for st in program.statements)
     item_bool = False              # the current `MenuItem`/`MenuRecompile` variable is Boolean
     item_kind: str | None = None   # "int" / "float" / "string": what its `MenuPick` values must be
     first_is_const = False
@@ -572,6 +575,9 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                 target = st.args[1] if kw == "MENUITEM" and len(st.args) > 1 else None
                 item_const = target.name.upper() if isinstance(target, S.Name) and \
                     target.name.upper() in table_consts else None
+                item_plain = isinstance(target, S.Name) and target.name.upper() not in table_consts \
+                    and target.name.upper() in {str(c).upper() for c in program.consts} \
+                    and target.name.upper() not in variables
                 target = st.args[1] if kw in ("MENUITEM", "MENURECOMPILE") and len(st.args) > 1 \
                     else None
                 item_bool = isinstance(target, (S.Name, S.Index)) and \
@@ -600,6 +606,15 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                 after_item = bool(levels[-1]) and levels[-1][-1] == "MENUITEM"
                 if not levels[-1] or levels[-1][-1] not in ("MENUITEM", "MENURECOMPILE"):
                     diags.error(st.line, "MenuPick must follow a MenuItem instruction.", st.file)
+                elif levels[-1][-1] == "MENUITEM" and item_plain:
+                    # the item names a `Const` outside the ConstTable (oracle, CR6/CR1000X,
+                    # 2026-10-12): with a ConstTable anywhere in the program every pick list is
+                    # the ConstTable message, even `MenuPick(D,1,2)`; without one, its own message
+                    diags.error(st.line, "When using a ConstTable constant in MenuPick, the constant "
+                                "name must be the first parameter." if has_const_table else
+                                "Value in preceding MenuItem must be a variable or a Const within "
+                                "ConstTable..EndConstTable.", st.file)
+                    continue
                 elif levels[-1][-1] == "MENUITEM" and item_const:
                     first = st.args[0] if st.args else None
                     first_is_const = isinstance(first, S.Name) and first.name.upper() in table_consts

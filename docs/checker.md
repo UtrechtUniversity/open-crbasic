@@ -6260,3 +6260,17 @@ four loggers (`cr3xx.check`, next to the baud rate). `ArgosError`'s argument mus
 on CR6/CR1000X: a literal or an expression (`ArgosError("fuzz")`, `ArgosError((1+2))`) is `A string
 variable destination is required` like a Float or Long variable (`var_types`). Cases in
 `tests/fixtures/r14_serialopen_txdelay_argos.json`.
+
+## `MenuPick` after a `MenuItem` naming a plain `Const` (2026-10-12, fuzz false accepts)
+
+CR6/CR1000X (oracle; CR300/CR350 have no menus): when the preceding `MenuItem` names a `Const`
+declared outside `ConstTable..EndConstTable`, every `MenuPick` for it fails. With a `ConstTable`
+anywhere in the program (before or after) it is `When using a ConstTable constant in MenuPick, the
+constant name must be the first parameter.`, even for `MenuPick(D,1,2)`; with none it is `Value in
+preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable.` (both on the
+`MenuPick` line; `instr_data.check_table_and_menu_placement`). Cases in
+`tests/fixtures/r14_menupick_plain_const.json`.
+
+Not modelled: CDM port arguments (`CDM_PulsePort`, `CDM_SW12`) give `Unrecognized port!` by a
+per-device port set (`CDM_A108` takes ports 1 and 2 for `CDM_PulsePort` and none for `CDM_SW12`; a
+string, `0` and `-1` always fail); two fuzz false accepts stay open.
