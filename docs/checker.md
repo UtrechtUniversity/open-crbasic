@@ -6567,3 +6567,29 @@ pass-2 walk, so:
   `Could not find DataTable X.` of the later statement is not printed. `Could not find` and a placement error: the
   textually first one wins.
 - Not modelled: a nested `Scan` still loses the warning (`Scan without NextScan or nested Scans.` then the warning).
+
+### CR300/CR350: an argument with adjacent operands in any position of an instruction call (oracle, 2026-10-12; `tests/fixtures/r15_cr3xx_call_adjacent_arg.json`)
+
+Found with a sweep of every CR300 instruction at every parameter position (`Instr(valid, x y, valid)`; CR350 identical).
+`Instr(a, b c, d)` reads the arguments before the bad one normally, looks up the first two operands of the bad argument
+(`Zork Zork2 Zork3` names two, `x Zork Zork` one), prints `Incomplete expression: <argument>.` (leading blanks dropped,
+trailing ones kept before a comma) and then, by the parameter's type code:
+
+- constant-only parameters (codes 1, 5, 20, 38, 39): `Variable illegal in Parameter: <argument>.` when one of those two
+  operands is a variable or an undefined name (`PanelTemp(x,1 x)`, `Abs(x) 2`; not `1 2`, `1 2 x`, `K 2`, `True 2`,
+  `2 Abs(1)`, `Pi 2` is an undefined name here); never `Too many parameters`;
+- every other resolved parameter (codes 2, 8, 24-29, 33, 40, 41, 47, 48): `Too many parameters:  <first token of the next
+  argument>.` when an argument follows (`"a b"` gives `"a`, `Sin(x)` `Sin`, `x+1` `x+1`), else nothing;
+- the arguments after it are never read; an earlier argument with an undefined name or adjacent operands of its own is the
+  existing abort/cascade path (not this shape).
+
+Not modelled: the deferred source parameter of a table instruction (code 11, `Sample (1,Str  ing,String)`), name
+parameters (code 6), `)` closing early, and the same statements on CR6/CR1000X (`Move(x,x y,` unterminated, `PanelTemp(x,1 2 x)`
+differ there). `cr3xx._call_adjacent_arg_messages`.
+
+### CR300/CR350: `Variable illegal in Parameter` hides the shortfall (oracle, 2026-10-12; same fixture)
+
+`Sample(x,FP2)` (the `Reps` argument dropped), `Delay(y)`, `VoltDiff(x,y)`, `Average(x,y,FP2)` print only `Variable illegal in
+Parameter: x.`, not `Invalid or missing parameter.`/`Too few parameters in instruction.` first (CR6/CR1000X already so),
+and, like an undefined name, it hides the shortfalls of the later statements too (`Delay(y)` then `PanelTemp(x)`; the
+earlier one is kept). Implemented by `drop_shortfall_with_names` counting these lines as names.

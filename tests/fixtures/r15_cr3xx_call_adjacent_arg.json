@@ -1,0 +1,2865 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-0-c10-0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-0-c10-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-0-c10-0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-0-c10-0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-1-c10-1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x y,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-1-c10-1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x y,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-2-c10-2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x Zork,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: x Zork.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-2-c10-2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x Zork,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: x Zork.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-3-c10-3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-3-c10-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-3-c10-3",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-3-c10-3",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-4-c10-4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y W,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y W."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-4-c10-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y W,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y W."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-4-c10-4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y W,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y W.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-4-c10-4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(Zork Y W,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y W.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-5-c10-5",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-5-c10-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-5-c10-5",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y.\nline 5: Variable illegal in Parameter: Zork Y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-5-c10-5",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y.\nline 5: Variable illegal in Parameter: Zork Y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-6-c10-6",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Variable illegal in Parameter: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-6-c10-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Variable illegal in Parameter: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-6-c10-6",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Variable illegal in Parameter: x y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-6-c10-6",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Variable illegal in Parameter: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-7-c10-7",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-7-c10-7",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-8-c10-8",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-8-c10-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-8-c10-8",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-8-c10-8",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-9-c10-9",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,2 3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-9-c10-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,2 3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-9-c10-9",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,2 3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3.\nline 5: Too many parameters:  4."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-9-c10-9",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,2 3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3.\nline 5: Too many parameters:  4."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-10-c10-10",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,Zork Y,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-10-c10-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,Zork Y,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-10-c10-10",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,Zork Y,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y.\nline 5: Too many parameters:  4."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-10-c10-10",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,Zork Y,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Y.\nline 5: Too many parameters:  4."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-11-c10-11",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-11-c10-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-11-c10-11",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-11-c10-11",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-12-c10-12",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-12-c10-12",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-12-c10-12",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-12-c10-12",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-13-c10-15",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: y z.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-13-c10-15",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: y z.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-13-c10-15",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: z is not defined.\nline 5: Incomplete expression: y z."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-13-c10-15",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: z is not defined.\nline 5: Incomplete expression: y z."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-14-c10-16",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-14-c10-16",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-15-c10-17",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(Zork y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-15-c10-17",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(Zork y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-15-c10-17",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(Zork y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-15-c10-17",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(Zork y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-16-c10-18",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-16-c10-18",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-16-c10-18",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-16-c10-18",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-17-c10-19",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Q,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-17-c10-19",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Q,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-17-c10-19",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Q,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Q is not defined.\nline 5: Incomplete expression: Zork Q.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-17-c10-19",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Q,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Q is not defined.\nline 5: Incomplete expression: Zork Q.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-18-c10-20",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-18-c10-20",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-18-c10-20",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: mV5000 is not defined.\nline 5: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-18-c10-20",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: mV5000 is not defined.\nline 5: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-19-c10-21",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1 2,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-19-c10-21",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1 2,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-19-c10-21",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1 2,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-19-c10-21",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1 2,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-20-c10-23",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x y,1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-20-c10-23",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x y,1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-21-c10-24",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV  5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: mV  5000."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-21-c10-24",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV  5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: mV  5000."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-21-c10-24",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV  5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: mV is not defined.\nline 5: Incomplete expression: mV  5000.\nline 5: Variable illegal in Parameter: mV  5000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-21-c10-24",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV  5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: mV is not defined.\nline 5: Incomplete expression: mV  5000.\nline 5: Variable illegal in Parameter: mV  5000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-22-c11-0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-22-c11-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-22-c11-0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-22-c11-0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,1 2,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-23-c11-1",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x+1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-23-c11-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x+1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-23-c11-1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x+1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  x+1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-23-c11-1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x+1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  x+1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-24-c11-2",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,\"a b\",y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-24-c11-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,\"a b\",y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-24-c11-2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,\"a b\",y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  \"a."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-24-c11-2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,\"a b\",y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  \"a."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-25-c11-3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Sin(x),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-25-c11-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Sin(x),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-25-c11-3",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Sin(x),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  Sin."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-25-c11-3",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Sin(x),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  Sin."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-26-c11-4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,-1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-26-c11-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,-1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-26-c11-4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,-1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  -1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-26-c11-4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,-1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  -1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-27-c11-5",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y , 1 ,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y ."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-27-c11-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y , 1 ,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y ."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-27-c11-5",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y , 1 ,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y .\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-27-c11-5",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y , 1 ,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y .\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-28-c11-6",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x  y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-28-c11-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x  y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-28-c11-6",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x  y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x  y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-28-c11-6",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x  y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x  y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-29-c11-7",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y ,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y ."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-29-c11-7",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y ,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y ."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-29-c11-7",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y ,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y .\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-29-c11-7",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y ,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y .\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-30-c11-8",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x, x y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-30-c11-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x, x y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-30-c11-8",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x, x y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-30-c11-8",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x, x y,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-31-c11-9",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-31-c11-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-31-c11-9",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-31-c11-9",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-32-c11-10",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-32-c11-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-32-c11-10",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-32-c11-10",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,x(1),y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-33-c11-11",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-33-c11-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-33-c11-11",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-33-c11-11",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-34-c11-12",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,&H10,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-34-c11-12",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,&H10,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-34-c11-12",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,&H10,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  &H10."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-34-c11-12",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,&H10,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  &H10."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-35-c11-13",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-35-c11-13",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-35-c11-13",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-35-c11-13",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-36-c11-14",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-36-c11-14",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-36-c11-14",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-36-c11-14",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-37-c11-15",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-37-c11-15",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-38-c11-16",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,1,y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-38-c11-16",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y,1,y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-39-c11-18",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Q."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-39-c11-18",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Q."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-39-c11-18",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Q is not defined.\nline 5: Incomplete expression: Zork Q.\nline 5: Variable illegal in Parameter: Zork Q."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-39-c11-18",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Q is not defined.\nline 5: Incomplete expression: Zork Q.\nline 5: Variable illegal in Parameter: Zork Q."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-40-c11-19",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-40-c11-19",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-40-c11-19",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-40-c11-19",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-41-c11-20",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1.\nline 5: Variable illegal in Parameter: x 1."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-41-c11-20",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1.\nline 5: Variable illegal in Parameter: x 1."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-41-c11-20",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1.\nline 5: Variable illegal in Parameter: x 1."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-41-c11-20",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1.\nline 5: Variable illegal in Parameter: x 1."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-42-c11-21",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: 1 Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-42-c11-21",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: 1 Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-42-c11-21",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: 1 Zork.\nline 5: Variable illegal in Parameter: 1 Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-42-c11-21",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: 1 Zork.\nline 5: Variable illegal in Parameter: 1 Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-43-c11-22",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,15000 15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 15000 15000."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-43-c11-22",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,15000 15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 15000 15000."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-43-c11-22",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,15000 15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 15000 15000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-43-c11-22",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,15000 15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 15000 15000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-44-c11-23",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,\"a\" \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-44-c11-23",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,\"a\" \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-44-c11-23",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,\"a\" \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-44-c11-23",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,\"a\" \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-45-c11-24",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-45-c11-24",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-45-c11-24",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork x.\nline 5: Variable illegal in Parameter: Zork x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-45-c11-24",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork x.\nline 5: Variable illegal in Parameter: Zork x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-46-c11-25",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: x Zork.\nline 5: Variable illegal in Parameter: x Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-46-c11-25",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: x Zork.\nline 5: Variable illegal in Parameter: x Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-46-c11-25",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: x Zork.\nline 5: Variable illegal in Parameter: x Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-46-c11-25",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,x Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: x Zork.\nline 5: Variable illegal in Parameter: x Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-47-c11-26",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-47-c11-26",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-47-c11-26",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Variable illegal in Parameter: Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-47-c11-26",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Variable illegal in Parameter: Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-48-c11-27",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x 1,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-48-c11-27",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x 1,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-48-c11-27",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x 1,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-48-c11-27",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x 1,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x 1.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-49-c11-28",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 x,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-49-c11-28",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 x,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-49-c11-28",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 x,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-49-c11-28",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 x,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-50-c11-29",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,\"a\" \"b\",y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-50-c11-29",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,\"a\" \"b\",y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-50-c11-29",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,\"a\" \"b\",y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\".\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-50-c11-29",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,\"a\" \"b\",y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: \"a\" \"b\".\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-51-c11-30",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: (x) y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-51-c11-30",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: (x) y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-51-c11-30",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: (x) y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-51-c11-30",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: (x) y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-52-c11-31",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Abs(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-52-c11-31",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Abs(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-52-c11-31",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Abs(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-52-c11-31",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Abs(x) y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-53-c11-34",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y z,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y z."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-53-c11-34",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y z,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y z."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-53-c11-34",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y z,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y z.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-53-c11-34",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x y z,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y z.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-54-c11-35",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork2 Zork3,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Zork2 Zork3."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-54-c11-35",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork2 Zork3,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Zork2 Zork3."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-54-c11-35",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork2 Zork3,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Zork2 is not defined.\nline 5: Incomplete expression: Zork Zork2 Zork3.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-54-c11-35",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork2 Zork3,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Zork2 is not defined.\nline 5: Incomplete expression: Zork Zork2 Zork3.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-55-c11-36",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x Zork Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-55-c11-36",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x Zork Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-55-c11-36",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: x Zork Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-55-c11-36",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,x Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: x Zork Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-56-c11-37",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-56-c11-37",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-56-c11-37",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-56-c11-37",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-57-c11-40",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-57-c11-40",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-57-c11-40",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2.\nline 5: Too many parameters:  Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-57-c11-40",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1 2,Zork,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2.\nline 5: Too many parameters:  Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-58-c12-0",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2 x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-58-c12-0",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2 x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-59-c12-1",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2 Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2 Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-59-c12-1",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,1 2 Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 2 Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-60-c12-2",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(1) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(1) 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-60-c12-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(1) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(1) 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-60-c12-2",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(1) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(1) 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-60-c12-2",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(1) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(1) 2."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-61-c12-3",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Pi 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Pi 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-61-c12-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Pi 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Pi 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-61-c12-3",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Pi 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pi is not defined.\nline 5: Incomplete expression: Pi 2.\nline 5: Variable illegal in Parameter: Pi 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-61-c12-3",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Pi 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pi is not defined.\nline 5: Incomplete expression: Pi 2.\nline 5: Variable illegal in Parameter: Pi 2."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-62-c12-4",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,K 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-62-c12-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,K 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-62-c12-4",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,K 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-62-c12-4",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,K 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-63-c12-5",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 K."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-63-c12-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 K."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-63-c12-5",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 K."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-63-c12-5",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 K."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-64-c12-6",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(x) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) 2.\nline 5: Variable illegal in Parameter: Abs(x) 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-64-c12-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(x) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) 2.\nline 5: Variable illegal in Parameter: Abs(x) 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-64-c12-6",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(x) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) 2.\nline 5: Variable illegal in Parameter: Abs(x) 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-64-c12-6",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,Abs(x) 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Abs(x) 2.\nline 5: Variable illegal in Parameter: Abs(x) 2."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-65-c12-7",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Abs(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Abs(1)."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-65-c12-7",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Abs(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Abs(1)."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-65-c12-7",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Abs(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Abs(1)."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-65-c12-7",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Abs(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Abs(1)."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-66-c12-8",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,True 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: True 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-66-c12-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,True 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: True 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-66-c12-8",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,True 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: True 2."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-66-c12-8",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,True 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: True 2."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-67-c12-9",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Sec."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-67-c12-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Sec."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-67-c12-9",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Sec."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-67-c12-9",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x,2 Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Sec."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-68-c12-10",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-68-c12-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-68-c12-10",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-68-c12-10",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: x y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-69-c12-11",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 K."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-69-c12-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 K."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-69-c12-11",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 K."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-69-c12-11",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 K."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-70-c12-12",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 Pi)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: 1 Pi."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-70-c12-12",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 Pi)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: 1 Pi."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-70-c12-12",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 Pi)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pi is not defined.\nline 5: Incomplete expression: 1 Pi.\nline 5: Variable illegal in Parameter: 1 Pi."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-70-c12-12",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 Pi)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pi is not defined.\nline 5: Incomplete expression: 1 Pi.\nline 5: Variable illegal in Parameter: 1 Pi."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-71-c12-13",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-71-c12-13",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-71-c12-13",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-71-c12-13",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1 x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 1 x.\nline 5: Variable illegal in Parameter: 1 x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-72-c12-14",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,K 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-72-c12-14",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,K 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-72-c12-14",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,K 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-72-c12-14",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,K 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: K 2.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-73-c12-15",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Pi 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Pi 2."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-73-c12-15",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Pi 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Pi 2."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-73-c12-15",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Pi 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pi is not defined.\nline 5: Incomplete expression: Pi 2.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-73-c12-15",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Pi 2,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pi is not defined.\nline 5: Incomplete expression: Pi 2.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-74-c12-16",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork 2 y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork 2 y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-74-c12-16",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork 2 y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork 2 y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-74-c12-16",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork 2 y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork 2 y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-74-c12-16",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,Zork 2 y,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: Zork 2 y.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-75-c12-17",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-75-c12-17",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-75-c12-17",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: 2 Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-75-c12-17",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined.\nline 5: Incomplete expression: 2 Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-76-c12-18",
+   "logger": "cr6",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 3 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3 Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-76-c12-18",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 3 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3 Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-76-c12-18",
+   "logger": "cr300",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 3 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3 Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-76-c12-18",
+   "logger": "cr350",
+   "source": "Public x, y\nConst K = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,2 3 Zork,y,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 2 3 Zork.\nline 5: Too many parameters:  y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-77-c13-0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-77-c13-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-77-c13-0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-77-c13-0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-78-c13-1",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-78-c13-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-78-c13-1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-78-c13-1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-79-c13-2",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-79-c13-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-79-c13-2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-79-c13-2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-80-c13-3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-80-c13-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-80-c13-3",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Variable illegal in Parameter: Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-80-c13-3",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Variable illegal in Parameter: Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-81-c13-4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-81-c13-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-81-c13-4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-81-c13-4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-82-c13-5",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too few parameters in instruction."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-82-c13-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too few parameters in instruction."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-82-c13-5",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too few parameters in instruction."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-82-c13-5",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(1)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too few parameters in instruction."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-83-c13-6",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-83-c13-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-83-c13-6",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-83-c13-6",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-84-c13-7",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,s,String)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-84-c13-7",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,s,String)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-84-c13-7",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,s,String)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-84-c13-7",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,s,String)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-85-c13-8",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-85-c13-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-85-c13-8",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-85-c13-8",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-86-c13-9",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-86-c13-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-86-c13-9",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-86-c13-9",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Average(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-87-c13-10",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Maximum(x,y,FP2,False)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-87-c13-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Maximum(x,y,FP2,False)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-87-c13-10",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Maximum(x,y,FP2,False)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-87-c13-10",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Maximum(x,y,FP2,False)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-88-c13-11",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Totalize(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-88-c13-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Totalize(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-88-c13-11",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Totalize(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-88-c13-11",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Totalize(x,y,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-89-c13-12",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-89-c13-12",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-89-c13-12",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-89-c13-12",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,FP2,y)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-90-c13-13",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,Zork2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-90-c13-13",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,Zork2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-90-c13-13",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,Zork2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Variable illegal in Parameter: Zork."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-90-c13-13",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(Zork,Zork2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Variable illegal in Parameter: Zork."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-91-c13-14",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,\"a\")\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-91-c13-14",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,\"a\")\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-91-c13-14",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,\"a\")\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-91-c13-14",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nDataTable(T,True,-1)\n  Sample(x,\"a\")\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-92-c14-0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-92-c14-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-92-c14-0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-92-c14-0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-93-c14-1",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-93-c14-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-93-c14-1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-93-c14-1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-94-c14-2",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-94-c14-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-94-c14-2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: mV5000 is not defined.\nline 5: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-94-c14-2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x,1,mV5000,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: mV5000 is not defined.\nline 5: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-95-c14-3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-95-c14-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-95-c14-3",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-95-c14-3",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-96-c14-4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-96-c14-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-96-c14-4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-96-c14-4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-97-c14-5",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-97-c14-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-97-c14-5",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-97-c14-5",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-98-c14-6",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-98-c14-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-98-c14-6",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-98-c14-6",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-99-c14-8",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-99-c14-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-99-c14-8",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-99-c14-8",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,1,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-100-c14-9",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-100-c14-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-100-c14-9",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-100-c14-9",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(x,y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-101-c15-0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-101-c15-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-101-c15-0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-101-c15-0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-102-c15-1",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n        Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-102-c15-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n        Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-102-c15-1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n        Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-102-c15-1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x)\n        Delay(y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-103-c15-2",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-103-c15-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-103-c15-2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-103-c15-2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-104-c15-3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x,15000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-104-c15-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x,15000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-104-c15-3",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x,15000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-104-c15-3",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        PanelTemp(x,15000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y.\nline 6: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-cr3xx_call_adjacent_arg-105-c15-4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-cr3xx_call_adjacent_arg-105-c15-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-cr3xx_call_adjacent_arg-105-c15-4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-cr3xx_call_adjacent_arg-105-c15-4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(y)\n        x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: y."
+  }
+ ]
+}

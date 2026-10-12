@@ -1160,6 +1160,88 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
     return [w for w in words if w.upper() not in known]
 
 
+# `Instruction(a, b c, d)`: the first argument with adjacent operands (oracle, CR300/CR350,
+# 2026-10-12, a sweep of every instruction and position, `tests/fixtures/r15_cr3xx_call_adjacent_arg.json`):
+# the arguments before it are read normally; its own first two operands are looked up, then
+# `Incomplete expression: <arg>.`. A constant-only parameter (codes 1, 5, 20, 38, 39) adds
+# `Variable illegal in Parameter: <arg>.` when one of those two operands is a variable or an
+# undefined name; any other parameter is followed by `Too many parameters:  <first token of the
+# next argument>.` when an argument follows. The arguments after it are never read.
+_CALL_ADJACENT_EXCLUDED = frozenset({"DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION", "IF", "ELSEIF",
+                                     "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "DO", "LOOP"})
+_ADJACENT_CONST_CODES = frozenset({1, 5, 20, 38, 39})
+_ADJACENT_EXPR_CODES = frozenset({2, 8, 24, 25, 26, 27, 28, 29, 33, 40, 41, 47, 48})
+_ADJACENT_RE = re.compile(r"[\w\")]\s+[\w\"]")
+_ADJACENT_OP_WORD_RE = re.compile(r"(?i)\b(?:and|or|xor|eqv|imp|mod|is|to|not)\b")
+
+
+def _split_args_quoted(text: str) -> list[str] | None:
+    """The top-level comma-separated arguments of a call's text after the `(` (the call's own
+    closing parenthesis stays on the last one); `None` when the parentheses do not balance as one
+    call would."""
+    parts, depth, cur, quoted = [], 0, "", False
+    for ch in text:
+        if ch == '"':
+            quoted = not quoted
+        elif not quoted:
+            if ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+                if depth < -1:
+                    return None
+            elif ch == "," and depth == 0:
+                parts.append(cur)
+                cur = ""
+                continue
+        cur += ch
+    parts.append(cur)
+    if quoted:
+        return None
+    return parts
+
+
+def _adjacent_operands(arg: str) -> bool:
+    stripped = re.sub(r'"[^"]*"', '"', arg)
+    return bool(_ADJACENT_RE.search(stripped)) and not _ADJACENT_OP_WORD_RE.search(arg)
+
+
+def _call_adjacent_arg_messages(inner: str, params: list[int], here: set[str], variables: frozenset,
+                                profile) -> list[str] | None:
+    args = _split_args_quoted(inner)
+    if args is None:
+        return None
+    for k, arg in enumerate(args):
+        last = k == len(args) - 1
+        if last and arg.rstrip().endswith(")") and arg.count("(") < arg.count(")"):
+            arg = arg.rstrip()[:-1]
+        if _adjacent_operands(arg):
+            break
+        if not arg.strip() or arg.count("(") != arg.count(")") or _leading_unknown_words(arg, here):
+            return None     # an earlier argument with problems of its own: not this shape
+    else:
+        return None
+    if k >= len(params):
+        return None
+    code = params[k] % 100
+    if code not in _ADJACENT_CONST_CODES and code not in _ADJACENT_EXPR_CODES:
+        return None
+    carg = arg.strip() if last else arg.lstrip()
+    out = [profile.unresolved_symbol_message.format(name=w) for w in _leading_unknown_words(carg, here)]
+    out.append(f"Incomplete expression: {carg}.")
+    if code in _ADJACENT_CONST_CODES:
+        chain = _leading_unknown_words(carg, set(), frozenset(profile.functions))
+        if any(w.upper() in variables or w.upper() not in here for w in chain
+               if w.upper() not in profile.functions):
+            out.append(f"Variable illegal in Parameter: {carg}.")
+    elif not last:
+        token = instr_rules._next_simple_token(",".join(args[k + 1:]))
+        if token:
+            out.append(f"Too many parameters:  {token}.")
+    return out
+
+
+
 # `check_undefined_call_args` (this round): a `Name(args)`/`Name args` call whose own name never
 # resolves to a `Sub`, a built-in function or an instruction gets, on CR6/CR1000X, only the generic
 # `Invalid, or out of place expression: %s.` fallback (`structure._check_call_pass2`'s "resolving
@@ -1339,6 +1421,11 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
         return
     named = {(d.line, d.file) for d in diags.items
              if d.severity == "error" and d.message.endswith(_UNRESOLVED_SUFFIX)}
+    # `Variable illegal in Parameter` ends the statement like an undefined name does, and hides the
+    # shortfalls of the statement and of the later ones (oracle, CR300, 2026-10-12: `Delay(y)`)
+    illegal = {(d.line, d.file) for d in diags.items
+               if d.severity == "error" and d.message.startswith(_VARIABLE_ILLEGAL_PREFIX)}
+    named |= illegal
     if not named:
         return
     stmts = program.statements
@@ -1347,6 +1434,8 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     def has_names(stmt) -> bool:
         exprs = (stmt.args if isinstance(stmt, S.Instruction)
                  else [stmt.target, stmt.value] if isinstance(stmt, S.Assignment) else [])
+        if isinstance(stmt, S.Instruction) and (stmt.line, stmt.file) in illegal:
+            return True
         return any(expressions._undefined_names(e, known) for e in exprs)
 
     def is_short(stmt) -> bool:
@@ -1549,6 +1638,14 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 continue
             call = re.match(r"\s*([A-Za-z_]\w*)\s*\((.*)$", bare, re.S)
             cinfo = profile.instructions.get(call.group(1).upper()) if call else None
+            if cinfo and cinfo["params"] and call.group(1).upper() not in _CALL_ADJACENT_EXCLUDED and (
+                    found := _call_adjacent_arg_messages(call.group(2), cinfo["params"], here,
+                                                         symbols.declared_variable_names(program),
+                                                         profile)) is not None:
+                for message in found:
+                    new_items.append(Diagnostic("error", d.line, message, d.file))
+                changed = True
+                continue
             if cinfo and cinfo["params"] and cinfo["params"][0] % 100 not in (6, 11) and call.group(
                     1).upper() not in ("DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION", "IF", "ELSEIF",
                                       "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "DO", "LOOP") and \
