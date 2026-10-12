@@ -305,13 +305,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
 
 def given_count(stmt: S.Instruction, profile) -> int:
     """The arguments actually given: a trailing comma leaves an empty last slot that is the
-    missing parameter, not a given one. CR6/CR1000X also drop every further trailing empty."""
+    missing parameter, not a given one. Every further trailing empty is dropped too, on all four
+    loggers (oracle, 2026-10-12, `Sample(1,x,,)`, `Sample(1,,,)`, `PanelTemp(x,,,)`)."""
     given = len(stmt.args)
-    if profile.name in ("cr6", "cr1000x"):
-        while given and stmt.args[given - 1] is None:
-            given -= 1
-    else:
-        given -= bool(given and stmt.args[given - 1] is None)
+    while given and stmt.args[given - 1] is None:
+        given -= 1
     return given
 
 

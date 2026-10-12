@@ -5328,3 +5328,8 @@ Oracle runs of 2026-10-12 (fixtures `r13_cr3xx_tcpopen_handle_types`, `r13_trail
   `Too many parameters:  Sec.` and a following `Delay(1,1,Sec)` prints `Too many parameters:  1.`.
   `check_tcpopen_handle_early` adds the line before the cascade pass; `check_tcpopen_handle` still
   runs afterwards (names the cascade dropped, lines the cascade rewrote).
+- Trailing empty arguments: all four loggers drop every trailing empty argument (`Sample(1,x,,)`,
+  `Sample(1,,,)`, `PanelTemp(x,,,)`, `Totalize(1,x,FP2,,)`: the shortfall message of the last real
+  argument; on CR300/CR350 each starts the `Too many parameters` cascade). `given_count` is one loop.
+  Not fixed (all four loggers, older): `Sample(1,,x)` prints `Invalid or missing parameter.`, we print
+  `Variable illegal in Parameter: x.`.
