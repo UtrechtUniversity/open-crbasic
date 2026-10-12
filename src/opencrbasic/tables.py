@@ -63,6 +63,68 @@ def _f32(x: float) -> float:
     return struct.unpack("f", struct.pack("f", x))[0]
 
 
+def _f32_safe(x: float) -> float:
+    """float32 rounding that overflows to +-inf (CPython 3.13 raises on some builds)."""
+    try:
+        return _f32(x)
+    except OverflowError:
+        return float("inf") if x > 0 else float("-inf")
+
+
+_INT32_MAX = 2147483647
+_TWO31 = 2147483648.0
+
+
+def size_class(raw):
+    """How the real compiler reads a `DataTable` size argument (oracle, all four loggers,
+    `docs/tdf-rules.md` "DataTable size argument"): the constant is rounded to float32 and
+    truncated toward zero. Returns `("auto",)` for -1, `("fixed", N, flagged)` for any other
+    integer (`flagged`: it was negative, `N = -size`; zero is 1), `("edge", sign)` when the
+    float32 is exactly +-2^31 or `+inf`, `("toxic",)` beyond it (and `-inf`), `None` when the
+    value is not a number."""
+    if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+        return None
+    f = _f32_safe(float(raw))
+    if f != f:
+        return None
+    if f == float("inf") or f == _TWO31:
+        return ("edge", 1)
+    if f == -_TWO31:
+        return ("edge", -1)
+    if abs(f) > _TWO31:
+        return ("toxic",)
+    v = int(f)
+    if v == -1:
+        return ("auto",)
+    if v == 0:
+        return ("fixed", 1, False)
+    return ("fixed", -v, True) if v < -1 else ("fixed", v, False)
+
+
+def declared_size(raw, cr3xx: bool, bytes_per_record: int) -> int | None:
+    """The TDF size of a called table with this size argument, or `None` when it is auto-sized
+    (the caller computes it). CR6/CR1000X auto-size every negative or out-of-range size and keep
+    only `+inf` as `INT32_MAX`; CR300/CR350 keep `-N` as a fixed `N`, saturate +-2^31, and give
+    a beyond-range size ("toxic", `checker/storage.py`) the minimum a table can get, three pages
+    less the first block: `(12288 // R) - (4096 // R + 1)` records, `R = bytes + 16`."""
+    c = size_class(raw)
+    if c is None or c[0] == "auto":
+        return None
+    f = _f32_safe(float(raw))
+    if f == float("inf"):
+        return _INT32_MAX
+    if cr3xx:
+        if c[0] == "edge":
+            return _INT32_MAX
+        if c[0] == "toxic":
+            rec = bytes_per_record + 16
+            return max(12288 // rec - (4096 // rec + 1), 1)
+        return c[1]
+    if c[0] in ("edge", "toxic") or c[2]:
+        return None
+    return c[1]
+
+
 def _fold(expr: S.Expr | None, env: consteval.Env, default=None):
     if expr is None:
         return default
@@ -363,6 +425,30 @@ def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
         elif kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack:
             weights[s.args[0].name.upper()] = stack[-1]
     return weights
+
+
+def _scan_calls(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, list[float | None]]:
+    """Maps each table name (upper) to the interval (seconds, None when not a plain constant) of
+    every enclosing `Scan` of each of its `CallTable` statements that is lexically inside one;
+    a call in a `Sub` or outside any `Scan` adds nothing (`checker/storage.py`)."""
+    stack: list[float | None] = []
+    calls: dict[str, list[float | None]] = {}
+    for s in stmts:
+        kw = _kw(s)
+        if kw == "SCAN":
+            secs = None
+            if s.args:
+                val = _fold(s.args[0], env, None)
+                if isinstance(val, (int, float)) and not isinstance(val, bool) and val > 0:
+                    unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
+            stack.append(secs)
+        elif kw == "NEXTSCAN":
+            if stack:
+                stack.pop()
+        elif kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack:
+            calls.setdefault(s.args[0].name.upper(), []).append(stack[-1])
+    return calls
 
 
 # ---------------------------------------------------------------- Status table (§4)
@@ -1219,16 +1305,19 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         fields.append(TdfField(of.type_code, of.read_only, of.name, [], of.processing, of.units,
                                 of.processing, of.begin, of.dim, of.subdims))
 
-    size_val = _fold(dt.size_expr, env, -1)
-    size_val = _as_int(size_val, -1)
+    size_raw = _fold(dt.size_expr, env, -1)
 
     bytes_per_record = sum(_field_record_bytes(of) for of in out_fields if not of.name_only)
+    size_val = declared_size(size_raw, env.profile.name in ("cr300", "cr350"), bytes_per_record)
+    size_val = -1 if size_val is None else size_val
 
     if interval_seconds is not None and 2 * bytes_per_record > _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD:
         # fewer than 2 records fit the 1008-byte probe buffer: sized and stamped like a no-interval table
         into, interval, interval_seconds = (0, 0), (0, 0), None
 
-    meta = dict(own_weight=own_weight, lapses=lapses, zero_interval=zero_interval, size_val=size_val, bytes_per_record=bytes_per_record,
+    meta = dict(own_weight=own_weight, lapses=lapses, zero_interval=zero_interval, size_val=size_val, size_raw=size_raw,
+                bytes_per_record=bytes_per_record,
+                has_event=any(_kw(s) == "DATAEVENT" for s in dt.body),
                 interval_seconds=interval_seconds, has_card=has_card,
                 display_interval=display_interval, called=dt.name.upper() in called)
 
@@ -1329,6 +1418,7 @@ def build_tables(program: S.Program, profile, consts: dict):
     env = consteval.Env(profile, dict(consts))
     scanned = _scan_program(program)
     scan_weights = _scan_weights(program.statements, env)
+    scan_calls = _scan_calls(program.statements, env)
 
     var_info: dict[str, VarInfo] = {}
     for v in scanned["all_vars"]:
@@ -1371,6 +1461,8 @@ def build_tables(program: S.Program, profile, consts: dict):
         tables.append(public_table)
 
     _apply_sizes(data_table_metas, scan_weights)
+    for table, meta in data_table_metas:
+        table._storage = dict(meta, scans=scan_calls.get(table.name.upper(), []))  # type: ignore[attr-defined]
 
     table_list_text = render_table_list(tables)
     return tables, table_list_text, None

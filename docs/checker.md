@@ -4133,9 +4133,10 @@ All rules observed on the real compilers; "all four" means CR6, CR1000X, CR300, 
   conditions (`Dimensions not declared: Q(1) .`, `If` echo keeps the blank before `Then`), and it
   starts the `Too many parameters` cascade like the other declaration-class errors.
 
-Not done: the CR300/CR350 storage limit (`Unable to allocate enough data table space`), and the
-CR300/CR350 `Cannot autoallocate memory for DataTable` that appears when a scan interval
-overflows (timing family, owned elsewhere).
+Not done: the CR300/CR350 `Cannot autoallocate memory for DataTable` that appears when a scan
+interval overflows (timing family, owned elsewhere). The CR300/CR350 storage limit
+(`Unable to allocate enough data table space`) is `checker/storage.py`, `docs/tdf-rules.md`
+"Storage limit" (round 15).
 
 ## Round 7 message families (oracle, 2026-10-10; `tests/fixtures/r7_cr3xx_*.json`)
 

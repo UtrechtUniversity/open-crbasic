@@ -103,7 +103,7 @@ from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
 from . import (
     cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
-    structs, structure, var_types, warnings,
+    storage, structs, structure, var_types, warnings,
 )
 
 
@@ -713,5 +713,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             # above (`checker/instr_data.py`, `docs/checker.md` "Duplicate field names"). Its
             # errors suppress the "declared but never called" warning.
             _run_pass(instr_data.check_duplicate_fields, program, result, diags)
+            if not diags.errors:
+                _run_pass(storage.check, program, profile, result, diags)
             if not diags.errors:
                 _run_pass(warnings.check, program, result, diags)

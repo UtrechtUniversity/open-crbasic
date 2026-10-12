@@ -125,3 +125,20 @@ overhead directly (78 CR6 / 16 CR1000X, `FUN_00522ec0` / `FUN_0051d5e0`), invisi
 rules; `FUN_00524f90` (cr1000x `FUN_0051f300`) the shared analog time formula; the instruction
 table at 0x60c310 (16 bytes per entry, name first) maps ids to code generators through the thunk
 at entry+8. docs/instructions.md "Scan time budget" has the resulting model.
+
+## Data table allocator (cr300comp / cr350comp, round 15)
+
+Decompiled with Ghidra 12 (`scratch/re/cr300comp.decomp.c`, `cr350comp.decomp.c`, untracked;
+regenerate with `tools/ghidra/DumpAll.java`). The tracer frames of `Unable to allocate enough
+data table space ...` / `Not enough storage area for DataTables.` (0x5af9c3, 0x5afb17 on
+cr300comp) land in `FUN_005ae6e0` (cr350comp `FUN_005ad9b0`, same code), the end-of-program
+table allocator; the rules read from it are in `docs/tdf-rules.md` "Storage limit". Landmarks
+(cr300comp): `FUN_005ab6b0` creates a `DataTable` (the size argument is an `int` already; below
+-1 it is negated and flag `+0x186` set), `FUN_005ac830` closes it (size 0 becomes 1; size below
+the DataEvent minimum is raised), `FUN_005b7d00` fixes a table's block (`+0x24` records per
+block = `0x1f0 / bytes`, `+0x20 = k * bytes + 16`), `FUN_005b50c0` is the flash-wear minimum
+record count per pass (floats `0x68d7d4` = 3.6e6, `0x68d7cc` = 24, `0x6a8800` = 1e5, `0x6903c0`
+= 365, `0x6a880c` = 2.592e9, `0x6a8808` = 8.64e7), `FUN_005d4660` rounds up to 4096. The pool is
+`local_f0 = 0xA00000` (cr350comp `0x3200000`), `local_84 = local_f0 - (n - 2) * 0x4000` with n the
+internal table count (user tables + 3 with a `Public` variable), the table area starts at
+`0x600000` (cr350comp `0x4780000`). The loop runs 26 passes (`local_cc < 0x1a`).

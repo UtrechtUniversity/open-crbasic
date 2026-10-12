@@ -1,0 +1,449 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-one-580266",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,580266)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-one-580267",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,580267)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-one-2910435",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,2910435)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-one-2910436",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,2910436)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-two-578673",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,578673)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-two-578674",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,578674)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-two-2908842",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,2908842)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-two-2908843",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,2908843)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-uncalled-579356",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,579356)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table A, is declared but never called."
+  },
+  {
+   "id": "cr300-uncalled-579357",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,579357)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-uncalled-2909525",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,2909525)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table A, is declared but never called."
+  },
+  {
+   "id": "cr350-uncalled-2909526",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,2909526)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-neg-578673",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,-578673)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-neg-578674",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,-578674)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-neg-2908842",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,-2908842)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-neg-2908843",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,-2908843)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-wear100ms-576170",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,10)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,576170)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (100,mSec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-wear100ms-576171",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,10)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,576171)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (100,mSec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-wear100ms-2906339",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,10)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,2906339)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (100,mSec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wear100ms-2906340",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,10)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,2906340)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (100,mSec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-interval-5059161",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,5059161)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-interval-5059162",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,5059162)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-interval-25375321",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,25375321)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-interval-25375322",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,25375322)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-maxtime-1011451",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,1011451)\n  DataInterval (0,60,Sec,10)\n  Maximum (1,X,FP2,False,True)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-maxtime-1011452",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,1011452)\n  DataInterval (0,60,Sec,10)\n  Maximum (1,X,FP2,False,True)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-maxtime-5073129",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,5073129)\n  DataInterval (0,60,Sec,10)\n  Maximum (1,X,FP2,False,True)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-maxtime-5073130",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,5073130)\n  DataInterval (0,60,Sec,10)\n  Maximum (1,X,FP2,False,True)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-string-261120",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,261120)\n  Sample (1,Y,String)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-string-261121",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,261121)\n  Sample (1,Y,String)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-string-1309696",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,1309696)\n  Sample (1,Y,String)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-string-1309697",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,1309697)\n  Sample (1,Y,String)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-sub-only",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,True,700000)\n  Sample (1,X,FP2)\nEndTable\nSub S\n  CallTable T\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-sub-and-scan",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,True,700000)\n  Sample (1,X,FP2)\nEndTable\nSub S\n  CallTable T\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-sub-only",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,True,3000000)\n  Sample (1,X,FP2)\nEndTable\nSub S\n  CallTable T\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sub-and-scan",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,True,3000000)\n  Sample (1,X,FP2)\nEndTable\nSub S\n  CallTable T\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-overflow-119304187",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,119304187)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-overflow-119304188",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,119304188)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-toxic-auto-3000000000",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-toxic-auto-3000000000",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-toxic-auto--999999999999",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-999999999999)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-toxic-auto--999999999999",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-999999999999)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-toxic-auto-2147483777",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,2147483777)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-toxic-auto-2147483777",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,2147483777)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-toxic-auto--2147483777",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-2147483777)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-toxic-auto--2147483777",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-2147483777)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-edge-auto-2147483776",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,2147483776)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-edge-auto--2147483776",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-2147483776)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-edge-auto-2147483648",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,2147483648)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-toxic-alone",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-toxic-twice",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-toxic-fixed",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,100)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-toxic-weight",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-2)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-toxic-interval-auto",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-toxic-uncalled",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,3000000000)\n  Sample (1,X,FP2)\nEndTable\nDataTable (U,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable U\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-named-consttable-579356",
+   "logger": "cr300",
+   "source": "Public X\nConstTable(CT1)\n  Const AA=1\nEndConstTable\nDataTable (T,True,579356)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-consttable-579357",
+   "logger": "cr300",
+   "source": "Public X\nConstTable(CT1)\n  Const AA=1\nEndConstTable\nDataTable (T,True,579357)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-no-public-581176",
+   "logger": "cr300",
+   "source": "Dim X\nDataTable (T,True,581176)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-no-public-581177",
+   "logger": "cr300",
+   "source": "Dim X\nDataTable (T,True,581177)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-const-size",
+   "logger": "cr300",
+   "source": "Public X\nConst SZ = 580267\nDataTable (T,True,SZ)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-fraction-578673.9",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,578673.9)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-fraction-578673.99",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (A,True,100)\n  Sample (1,X,FP2)\nEndTable\nDataTable (T,True,578673.99)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable A\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  }
+ ]
+}

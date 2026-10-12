@@ -886,23 +886,63 @@ keywords, so questions about their TDF encoding are moot.
   this table as an exact lookup for these four widths and the `overhead=16`/`Pool2=4,188,120`
   formula only as a fallback for an unseen width.
 
-## Storage limit (observed 2026-10-03, not implemented)
+## Storage limit (CR300/CR350; decompiled and modelled in round 15)
 
-CR300 `Unable to allocate enough data table space to manage flash write cycle limits.` /
-`Not enough storage area for DataTables.` (oracle, `cr300comp.exe`; reproducer
-`tests/corpus/fuzz/cr300/false_accept/80cdb831bd9a.CR6`). Not modelled because the rule below is
-incomplete and a partial model would false-reject.
+`Unable to allocate enough data table space to manage flash write cycle limits.` followed by
+`Not enough storage area for DataTables.` (two lines, no line number; the second only when the
+last pass left the pool negative, which is the only case observed). Emitted by the table
+allocator after a clean parse (`cr300comp` `FUN_005ae6e0`, `cr350comp` `FUN_005ad9b0`; tracer
+frames 0x5af9c3 / 0x5afb17). Nothing is reported when any other error was found, and the
+"declared but never called" warnings are skipped once it fires. Implemented in
+`checker/storage.py`; evidence `tests/fixtures/r15_storage_limit.json` (62 oracle cases) and
+threshold sweeps on both loggers (below). CR6/CR1000X use a different allocator (`Out of memory.`
+for large tables, unimplemented).
 
-- One called table with fixed `N` records and no `DataInterval` fails when
-  `N * (16 + payload) > 10,444,800`; payload FP2 2, IEEE4/Long 4, `String*n` `(n div 4 + 1) * 4`.
-  Boundaries: one FP2 field 580266/580267, two FP2 fields 522240/522241, `String*4` 435200/435201.
-  Independent of scan interval (100 mSec to 1 Hr).
-- Not monotonic: one FP2 field fails from 580267 to 119304187 and passes again from 119304188
-  (`N * 18` within ~8300 bytes of 2^31); `-999999999999` alone passes.
-- Shared budget with an unmeasured per-table overhead (~12-24 KB): two FP2 tables of 290133
-  records fail; a fixed table plus a `-1` table also failed.
-- A table with `DataInterval` has a much larger budget (5,059,161 records passed); a table never
-  called is not checked; `Maximum` with time stamps failed at 580266 (record size has terms not
-  listed above).
-- CR350 thresholds are roughly five times larger (not pinned). CR6/CR1000X report `Out of
-  memory.` for large tables instead (separate, unimplemented family).
+Allocator, as read from the decompilation and confirmed by the sweeps:
+
+- One pool, `0xA00000` bytes (2560 pages of 4096) on the CR300 and `0x3200000` (12800 pages) on
+  the CR350, less 16 KB per declared table beyond the first: a program's pool is
+  `pages - 4 * (tables + 1)` with `tables` = declared `DataTable`s (called or not), plus one
+  more for a named `ConstTable`; a program with no `Public` variable has 4 pages more (the
+  `Public` table is one of the internal tables the count includes; `DataTableInfo` is the other).
+  CR300 single table 2552 pages, two tables 2548, three 2544, four 2540 (bisected).
+- Up to 26 passes try to fit every table; the last (index 25) has the smallest flash-wear minimum,
+  so a program fits iff it fits there. A table is charged
+  `roundup4096(a + int(R * (N / k)) + 0x2000)` bytes with all products float32 and `int` the
+  truncating convert (out of range gives INT_MIN, so a table whose `R * N` reaches 2^31, about
+  N >= 119,304,188 for FP2, is charged nothing and passes again). `R = k * B + 16` with `B` the
+  record bytes (the `_field_record_bytes` sum; confirmed equal for FP2, IEEE4, Long, Boolean,
+  UINT2, IEEE8, String, `Maximum`/`Minimum` with time stamps, arrays), `k = 1` without a
+  `DataInterval`; with one `k = min(496 // B, a + N)` (a record block of at most 496 bytes) and
+  `k = 1` when that is below 2, and `a = (Lapses * 16) // B + 1` (0 when Lapses is 0 or `k = 1`).
+  That reproduces the CR300 thresholds to the record: FP2 580266/580267, IEEE4 522240/522241,
+  `String*4` 435200/435201, interval FP2 5059161/5059162; CR350 2910435/2910436 and
+  25375321/25375322.
+- Flash-wear minimum: the charge is raised to `minrecs * R` when `used / R < minrecs`, with
+  `minrecs = int(((3.6e6 / T) * 24 / k) / (1e5 / 365))` (`FUN_005b50c0`, last pass). `T` is
+  86,400,000 ms for a negative-size table, `floor(DataInterval seconds) * 1000` for a
+  `DataInterval` of a second or more, otherwise the enclosing `Scan` interval in ms. A 100 ms
+  scan makes a one-record FP2 table cost 14 pages; the 1 s case (315 records) never exceeds the
+  8 KB base.
+- Fixed size only counts when the `CallTable` is lexically inside a `Scan` (the table's call
+  interval is known); a table called only from a `Sub` is sized like an auto table and charges
+  nothing here (`Sub` + `Scan` call charges). Size `-N` (N >= 2) is a fixed `N` (flagged), not
+  an auto weight, on these loggers.
+- Auto-sized (`-1`) tables share what is left after every other table; they are not modelled
+  (a fixed table that leaves them too little is a remaining false accept).
+- `DataEvent`, `CardOut`, `DataInterval(0,0)` and `AcceptDataRecords`-only tables are not
+  charged by the model (their fixed `N` fails at the same order of size in the oracle, not
+  pinned), so the check never rejects more than the real compiler.
+
+Size literal beyond +-2^31 ("toxic", float32 magnitude above 2^31 including `-inf`; exactly
++-2^31 and `+inf` are the benign INT_MAX case): a called table with such a size makes the
+program fail whenever any called table is auto-sized (`-1`), with the same two messages, on
+both loggers (3000000000, -999999999999, 2147483777, -2147483777 fail; 2147483648/2147483776
+and their negatives pass). Alone, or beside fixed/weighted (`-2`) tables, it compiles and its
+TDF size is the minimum `(12288 // R) - (4096 // R + 1)` records (454 for FP2).
+
+Sweeps (oracle thresholds vs `checker/storage.py`, CR300 and CR350): one table, two tables,
+uncalled table, negative size, 100 ms scan, five second scan, one hour scan, `DataInterval`
+tables, strings, `Maximum` with time, three tables, and random programs near the boundary
+(450 programs, no false reject; remaining false accepts all have an auto-sized table or a
+`DataEvent`/`AcceptDataRecords` table).
