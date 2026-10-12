@@ -1,0 +1,583 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-include_dupdecl-0-dup-var",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-0-dup-var",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-0-dup-var",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-include_dupdecl-0-dup-var",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr6-include_dupdecl-1-dup-var-include",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-1-dup-var-include",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-1-dup-var-include",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-include_dupdecl-1-dup-var-include",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr6-include_dupdecl-2-dup-var-main-too",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic X\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-2-dup-var-main-too",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic X\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-2-dup-var-main-too",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic X\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-include_dupdecl-2-dup-var-main-too",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic X\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable."
+  },
+  {
+   "id": "cr6-include_dupdecl-3-dup-var-use",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-3-dup-var-use",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-3-dup-var-use",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_dupdecl-3-dup-var-use",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_dupdecl-4-dup-var-nosc",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nx=1\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-4-dup-var-nosc",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nx=1\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-4-dup-var-nosc",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nx=1\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr350-include_dupdecl-4-dup-var-nosc",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nx=1\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr6-include_dupdecl-5-dup-const",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Const X=1\nConst X=2\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-5-dup-const",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Const X=1\nConst X=2\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X is already declared as a CONST."
+  },
+  {
+   "id": "cr300-include_dupdecl-5-dup-const",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Const X=1\nConst X=2\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X is already declared as a CONST."
+  },
+  {
+   "id": "cr350-include_dupdecl-5-dup-const",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Const X=1\nConst X=2\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X is already declared as a CONST."
+  },
+  {
+   "id": "cr6-include_dupdecl-6-dup-dim-dim",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Dim x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-6-dup-dim-dim",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Dim x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-6-dup-dim-dim",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Dim x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_dupdecl-6-dup-dim-dim",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Dim x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_dupdecl-7-dup-pub-dim",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-7-dup-pub-dim",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-7-dup-pub-dim",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_dupdecl-7-dup-pub-dim",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nDim x\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_dupdecl-8-dup-array",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx(1)=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x(2)\nPublic x(3)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-8-dup-array",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx(1)=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x(2)\nPublic x(3)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-8-dup-array",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx(1)=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x(2)\nPublic x(3)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_dupdecl-8-dup-array",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx(1)=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x(2)\nPublic x(3)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_dupdecl-9-dup-alias",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nAlias x=z\nPublic z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 3: z already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-9-dup-alias",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nAlias x=z\nPublic z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 3: z already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-9-dup-alias",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nAlias x=z\nPublic z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 3: z already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_dupdecl-9-dup-alias",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nAlias x=z\nPublic z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 3: z already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_dupdecl-10-dup-undef-use",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nz=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-10-dup-undef-use",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nz=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-10-dup-undef-use",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nz=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec.\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-include_dupdecl-10-dup-undef-use",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nz=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 3: Too many parameters:  Sec.\nline 4: z is not defined."
+  },
+  {
+   "id": "cr6-include_dupdecl-11-dup-main-var-after",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic y\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable.\nline 2: y already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-11-dup-main-var-after",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic y\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable.\nline 2: y already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-11-dup-main-var-after",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic y\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 4: Too many parameters:  Sec.\nline 5: y is not defined."
+  },
+  {
+   "id": "cr350-include_dupdecl-11-dup-main-var-after",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nPublic y\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 4: Too many parameters:  Sec.\nline 5: y is not defined."
+  },
+  {
+   "id": "cr6-include_dupdecl-12-dup-table",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nDataTable(T,1,-1)\nSample(1,x,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_dupdecl-12-dup-table",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nDataTable(T,1,-1)\nSample(1,x,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: x already declared as a variable."
+  },
+  {
+   "id": "cr300-include_dupdecl-12-dup-table",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nDataTable(T,1,-1)\nSample(1,x,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 2: Too many parameters:  1.\nline 3: Too many parameters:  x.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_dupdecl-12-dup-table",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nDataTable(T,1,-1)\nSample(1,x,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public x\nPublic x\nPublic y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: x already declared as a variable.\nline 2: Too many parameters:  1.\nline 3: Too many parameters:  x.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_dupdecl-13-dup-sub",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Sub A"
+  },
+  {
+   "id": "cr1000x-include_dupdecl-13-dup-sub",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Sub A"
+  },
+  {
+   "id": "cr300-include_dupdecl-13-dup-sub",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Sub A"
+  },
+  {
+   "id": "cr350-include_dupdecl-13-dup-sub",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Sub A"
+  }
+ ]
+}

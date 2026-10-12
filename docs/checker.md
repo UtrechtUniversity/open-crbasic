@@ -5745,3 +5745,11 @@ alone and pairing artefacts of the harness); fixtures `tests/fixtures/r13_includ
   A new family is added to the list only after a probe shows it unprefixed.
 - Still mixed and left as before: `Invalid symbol in expression` in a statement body (prefixed in
   some positions, not in others), `Warning:` lines (never prefixed in `cr6comp`).
+
+## Duplicate declaration inside an include (oracle, 2026-10-12)
+
+PROGRESS item 13 (CR300/CR350): no divergence. All
+  loggers print `<file> line 2: X already declared as a variable.` (CR3xx also the genuine
+  `Too many parameters:  Sec.` cascade for a `Scan (1,Sec,0,0)` in the program and the table
+  field cascade), matching `analyze`; fixture `r13_include_dupdecl.json` (56 cases). The item was
+  not a defect of `crbc`. `Duplicate Sub A` in an include prints without the prefix on all four.
