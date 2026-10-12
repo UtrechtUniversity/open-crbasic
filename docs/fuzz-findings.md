@@ -569,7 +569,6 @@ Causes behind the rows, by what was done about them:
   doubled `DataInterval`; `Could not find DataTable` hidden by a CR300 cascade. All open.
 - Found while probing, outside this ranking (false rejects fixed): an unmatched `)`/`}` after a `Const`/`Public`/`Dim` value,
   `SDMSIO4`/`MonitorComms`/`ModemCallBack` first argument and `NewFile` third argument (CR6/CR1000X) naming an undeclared
-  variable. False accepts left: CR6/CR1000X `Const Pi = 1 / 0` (`Divide by zero in expression: 1 / 0.`), `TotalRun` condition
-  with an undeclared name was a false accept (fixed with the multi-report order), `SendData(...,T1)` etc. counted as calling
+  variable. False accepts left: CR6/CR1000X `Const Pi = 1 / 0` (`Divide by zero in expression: 1 / 0.`), `SendData(...,T1)` etc. counted as calling
   `T1` for the "declared but never called" warning, and `PulseCount` outside a `Scan` (argument errors come before the
   placement message).
