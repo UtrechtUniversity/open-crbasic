@@ -6614,3 +6614,11 @@ dimensions, an undefined name among them) print the undefined names and then `In
 <statement>.`, and the names stop after the first over-indexed subscript (`x = R(4,Zork) + R(5,Zork2)` names `Zork`).
 CR6/CR1000X: unchanged (the generic fallback / `Invalid symbol`). `structure._over_indexed_target`,
 `expressions._names_through_over_index`.
+
+### A continuation line at the end of the file (oracle, 2026-10-12; `tests/fixtures/r15_eof_continuation.json`)
+
+A statement whose last physical line ends with ` _` and is the last line of the file (with or without a final newline) is not
+read at all, on all four loggers: `Public x` / `x = Nope + _` gives only `line 2: No BeginProg in Program.`, and
+`BeginProg` / `x = 1 + _` compiles. The line still counts for the end-of-program messages (`line 2`, the file's last line).
+A further line after the `_` (even an empty one) is joined as before and the statement is read, reported on that line.
+`source.load_text`; `tests/lsp/test_positions.py` no longer expects the underscore to be dropped from a kept statement.

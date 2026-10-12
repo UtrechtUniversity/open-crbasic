@@ -335,6 +335,8 @@ class _Loader:
         out: list[LogicalLine] = []
         i = 0
         n = len(physical)
+        # the empty piece after a final newline is no line: a continuation into it joins nothing
+        real_n = n - 1 if n > 1 and physical[-1] == "" else n
         shift = 0
         while i < n:
             start_line = i + 1
@@ -351,6 +353,10 @@ class _Loader:
             last_line = start_line
             while True:
                 cont, prefix = _is_continuation(text)
+                if cont and i + 1 >= real_n:
+                    text = ""   # a continuation into the end of the file: the statement is not read
+                    pieces = []
+                    break
                 if not cont or i + 1 >= n:
                     text = prefix if cont else text
                     pieces = _clip(pieces, len(text)) if prov else pieces

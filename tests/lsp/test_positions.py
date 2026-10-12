@@ -68,9 +68,12 @@ def test_continuation_three_lines_blank_and_lone_underscore():
     assert r.line == 3
 
 
-def test_continuation_at_end_of_file_drops_underscore():
-    ll = _load("x = 1 _")[0]
-    assert ll.text == "x = 1" and ll.pieces[-1].end == len(ll.text)
+def test_continuation_at_end_of_file_drops_the_statement():
+    # the real compilers read nothing of a statement whose last line ends with `_` at the end of
+    # the file (oracle, 2026-10-12, tests/fixtures/r15_eof_continuation.json)
+    assert _load("x = 1 _") == []
+    assert _load("x = 1 _\n") == []
+    assert [ll.text for ll in _load("x = 1 _\n\n")] == ["x = 1 "]
 
 
 # ------------------------------------------------------------------ colon segments
