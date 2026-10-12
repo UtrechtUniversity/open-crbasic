@@ -1938,9 +1938,14 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     except lexer.LexError as e:
         # an unterminated string: the left-to-right scan has already failed on what precedes it
         # (`X here " + 1`, `string here "`; oracle, CR6/CR1000X, 2026-10-10)
+        if e.message.startswith("unrecognised character") and not text[:e.col].strip():
+            # a line that starts with `%`, `[` or `]` (the CHM's `%3.2f %c", ...` wrap line)
+            return ("pass1", "fallback") if text[e.col:e.col + 1] in "%[]" else None
         if e.message != "unterminated string" or text[e.col:e.col + 1] != '"':
             return None
         head = [t for t in lexer.tokenize(text[:e.col], 0) if t.kind != "EOF"]
+        if head and head[0].kind == "OP" and head[0].text in _LEADING_OPS - {";"}:
+            return ("pass1", "fallback")  # `,x", x)`, `)"x`: the leading operator fails first
         if len(head) < 2 or head[0].kind != "IDENT" or head[1].kind != "IDENT" \
                 or head[0].upper not in operands or head[1].upper in _BINARY_WORDS \
                 or head[0].upper in profile.functions or head[0].upper in profile.instructions \

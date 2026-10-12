@@ -5526,3 +5526,20 @@ operand, closed groups), `cr3xx._order_arith_string_lines`. Not done: junk insid
 (`X = (S AND 1 foo` lacks its string line), CR300/CR350 `X AND "a" * 2 .` (we print
 `Illegal String operand` twice), CR6/CR1000X `X = 1 AND "b" AND X .` (we print `Invalid symbol`
 instead of the strings and `Incomplete expression`).
+
+## Round 13, CR6/CR1000X: a wrapped line that starts with an operator or `%`, after an unterminated string (`chm/sprintf_1`; fixture `r13_unterminated_leading_op.json`)
+
+Oracle runs of 2026-10-12, CR6 and CR1000X (the tracer shows the generic `%s: %s.` message of the
+continuation line emitted by the same pass as the `Invalid or missing parameter.` lines, i.e. pass 1).
+A line that follows an unterminated-string line and starts with `%`, `[` or `]` (lexer-level
+failures), or with one of `, . ) ^ * / < > = \\` (a leading operator, with or without a quote later in
+the line: `,x", x)`, `)"x`), is a pass-1 error: its `Invalid, or out of place expression: <line>.`
+is printed after `String without end quote` (`SprintF ( s, "...` / `%3.2f %c", x,10)`). We printed
+nothing for it because the scan (`structure._pass1_scan`) gave up at the lex error and left the line
+to pass 2, which an earlier pass-1 error hides. Lines that start with `?`, `@`, `$`, `` ` ``, `~`, `|`,
+`{`, `+`, `-`, `(`, `&`, `:` or a letter stay silent (and `#` is `Unknown instruction`, `!` a pointer
+error). Not done: `;a x` and `{a x` print the line here but are silent in the real compiler after an
+unterminated string; a line starting with a number then a name and a quote (`.5 x", x)`) is also
+a real pass-1 error that we do not print; the echo of a line that fails at an unrecognised character
+keeps its indentation and trailing blanks in the real compiler on all four loggers (`   %3.2f x   `)
+and ours strips them.
