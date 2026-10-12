@@ -1,0 +1,233 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-string-port-s1",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"fuzz\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-string-port-s1",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"fuzz\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C8."
+  },
+  {
+   "id": "cr300-string-port-s1",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"fuzz\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr350-string-port-s1",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"fuzz\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr6-string-port-s2",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"102\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-string-port-s2",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"102\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C8."
+  },
+  {
+   "id": "cr300-string-port-s2",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"102\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr350-string-port-s2",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"102\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr6-string-port-s3",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"C2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-string-port-s3",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"C2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C8."
+  },
+  {
+   "id": "cr300-string-port-s3",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"C2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr350-string-port-s3",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"C2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr1000x-string-port-s4",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,\"abc\",True,0,15000,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr300-string-port-s4",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,\"abc\",True,0,15000,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+  },
+  {
+   "id": "cr350-string-port-s4",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,\"abc\",True,0,15000,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+  },
+  {
+   "id": "cr6-string-port-s5",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SW12(\"x\",0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SW12 port -2147483648."
+  },
+  {
+   "id": "cr300-string-port-s5",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SW12(\"x\",0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-string-port-s5",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SW12(\"x\",0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SW12 port -2147483648."
+  },
+  {
+   "id": "cr6-string-port-s6",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-string-port-s6",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C8."
+  },
+  {
+   "id": "cr300-string-port-s6",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr350-string-port-s6",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr6-string-port-s7",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"1.5E2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-string-port-s7",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"1.5E2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C8."
+  },
+  {
+   "id": "cr300-string-port-s7",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"1.5E2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr350-string-port-s7",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(\"1.5E2\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port specified -2147483648"
+  },
+  {
+   "id": "cr6-string-port-s8",
+   "logger": "cr6",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SPIOpen(\"x\",100000,&H60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-string-port-s8",
+   "logger": "cr1000x",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SPIOpen(\"x\",100000,&H60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C8.\nline 4: SPI Port must be C1, U1, U5, or U9."
+  },
+  {
+   "id": "cr300-string-port-s8",
+   "logger": "cr300",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SPIOpen(\"x\",100000,&H60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen is not defined.\nline 4: Invalid, or out of place expression:     SPIOpen(\"x\",100000,&H60)\n."
+  },
+  {
+   "id": "cr350-string-port-s8",
+   "logger": "cr350",
+   "source": "Public X, VA(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    SPIOpen(\"x\",100000,&H60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen is not defined.\nline 4: Invalid, or out of place expression:     SPIOpen(\"x\",100000,&H60)\n."
+  }
+ ]
+}

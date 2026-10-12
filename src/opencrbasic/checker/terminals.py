@@ -139,6 +139,18 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
     arg = stmt.args[idx]
+    if isinstance(arg, S.String) and kind.get("string_int_min"):
+        # a string literal (`PortSet("fuzz",1)`, `"102"`, `""`) folds to INT_MIN (oracle, all
+        # four loggers, 2026-10-12)
+        value = -2147483648
+        in_range, odd_ok, _ = _evaluate(value, kind)
+        shown = value   # (`abs` of INT_MIN is INT_MIN in C: CR1000X `VoltSe(X,1,mV1000,"abc",...)`)
+        if not in_range:
+            diags.error(stmt.line, kind["message"].format(v=shown), stmt.file)
+            if kind.get("secondary_when_invalid") and (not odd_ok or "allowed" in kind):
+                diags.error(stmt.line, (kind["odd_message"] if not odd_ok else kind["allowed_message"]
+                                        ).format(v=shown), stmt.file)
+        return
     if not consteval.is_constant(arg, env):
         return  # a variable here is already rejected by the generic const-expr parameter (type
         # code 1's own "Variable illegal in Parameter" -- docs/type-codes.md); not our job.

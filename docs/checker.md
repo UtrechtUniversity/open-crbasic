@@ -6189,3 +6189,16 @@ Probed on all four loggers (cases `*-r13c-*` in `tests/fixtures/r14_review_r13c.
   the second line (with the line terminator). `Const N = 3.0` as the count matches already.
 - **R13C-7** (`For I = 1 To 10 Step`) and **R13C-8** (`X = C.5` with `Const C`, `X = Ya.5` with an
   `Alias`): match the real compilers. Not defects.
+
+## String literal as a constant port (2026-10-12, fuzz false accepts)
+
+A string literal where a constant port is expected folds to INT_MIN on all four loggers, whatever
+its text (`"fuzz"`, `"102"`, `"C2"`, `""`, `"1.5E2"`): `PortSet("fuzz",1)` is `Invalid port
+-2147483648, use C1..C4 or U1..U12.` (CR1000X `... use C1..C8.`, CR300/CR350 `Invalid port specified
+-2147483648`), `SPIOpen("x",...)` the same (CR1000X adds its SPI line), `SW12("x",0)` is `Invalid SW12
+port -2147483648.` on CR6/CR350, and a CR1000X `VoltSe` channel is `Invalid channel -2147483648, must
+use 1..16.` (the `abs` of INT_MIN stays negative). Modelled with the `string_int_min` flag on the
+probed terminal kinds (`checker/terminals.py`) and `string_port_int_min` in `measure.json`. Not
+modelled: CR6 `VoltSe(X,1,mV1000,"abc",...)` is `Invalid port, must be C1..C4 or U1..U12.`; CR300
+`SW12("x",0)` is `Too many parameters:  0.`; CR1000X `SW12("x",0)` crashes the real compiler.
+Cases in `tests/fixtures/r14_string_ports.json`.

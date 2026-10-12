@@ -18,5 +18,6 @@
   {"instr": "STATICROUTE", "pos": 2, "wrap16": true, "overflow": null, "min": 1, "max": 4094, "message": "Illegal neighbor address {value}, range 1..4095"},
   {"instr": "STATICROUTE", "pos": 3, "show": 2, "wrap16": true, "overflow": null, "min": 1, "max": 4094, "message": "Illegal PakBus address {value}, range 1..4095"},
   {"instr": "DNP", "pos": 1, "invalid_raw": {"strings": true, "nan": true}, "message": "ComPort {value} illegal."}
- ]
+ ],
+ "string_port_int_min": true
 }

@@ -12,13 +12,15 @@
    "max": 16,
    "transform": "abs",
    "skip_nonpositive": false,
-   "message": "Invalid channel {v}, must use 1..16."
+   "message": "Invalid channel {v}, must use 1..16.",
+   "string_int_min": true
   },
   "port_c1c8": {
    "ranges": [[101, 108]],
    "transform": "none",
    "skip_nonpositive": false,
-   "message": "Invalid port {v}, use C1..C8."
+   "message": "Invalid port {v}, use C1..C8.",
+   "string_int_min": true
   },
   "sdi_port_cr1000x": {
    "ranges": [[101, 107]],
@@ -50,7 +52,8 @@
    "message": "Invalid port {v}, use C1..C8.",
    "allowed": [101, 105],
    "allowed_message": "SPI Port must be C1, U1, U5, or U9.",
-   "secondary_when_invalid": true
+   "secondary_when_invalid": true,
+   "string_int_min": true
   },
   "spi_port_cr1000x": {
    "ranges": [[101, 108]],

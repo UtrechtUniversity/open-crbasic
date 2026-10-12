@@ -15,6 +15,7 @@
    "message": "Channel {v} exceeds number of valid channels."
   },
   "port_gap8_12": {
+   "string_int_min": true,
    "ranges": [
     [
      1,

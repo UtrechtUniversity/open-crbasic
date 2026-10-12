@@ -473,6 +473,8 @@ def _check_sw12(stmt: S.Instruction, measure: dict, env: consteval.Env, diags: D
     if not stmt.args:
         return
     value = _int_value(stmt.args[0], env)
+    if isinstance(stmt.args[0], S.String) and measure.get("string_port_int_min"):
+        value = -2147483648   # (`SW12("x",0)`, oracle CR6/CR350 2026-10-12: a string folds to INT_MIN)
     if value is None:
         return
     if value not in measure["sw12_ports"]:

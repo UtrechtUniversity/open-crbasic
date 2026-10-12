@@ -31,7 +31,8 @@
    "port_wrap": true,
    "transform": "none",
    "skip_nonpositive": false,
-   "message": "Invalid port {v}, use C1..C4 or U1..U12."
+   "message": "Invalid port {v}, use C1..C4 or U1..U12.",
+   "string_int_min": true
   },
   "sdi_port": {
    "ranges": [[101, 103], [201, 211]],
@@ -55,7 +56,8 @@
    "skip_nonpositive": false,
    "message": "Invalid port {v}, use C1..C4 or U1..U12.",
    "allowed": [101, 105, 109, 113, 201, 205, 209],
-   "allowed_message": "SPI Port must be C1, U1, U5, or U9."
+   "allowed_message": "SPI Port must be C1, U1, U5, or U9.",
+   "string_int_min": true
   },
   "timer_port": {
    "ranges": [[101, 116], [201, 212]],

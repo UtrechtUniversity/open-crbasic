@@ -15,6 +15,7 @@
    "message": "Channel {v} exceeds number of valid channels."
   },
   "port_1_102": {
+   "string_int_min": true,
    "min": 1,
    "max": 102,
    "transform": "none",

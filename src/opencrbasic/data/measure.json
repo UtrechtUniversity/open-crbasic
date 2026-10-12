@@ -66,5 +66,6 @@
   {"instr": "SDMSW8A", "pos": 5, "string_zero": true, "min": 1, "max": 8, "message": "Invalid Start Channel: {value}, must be 1-8."},
   {"instr": "TDR200", "pos": 7, "min": 100, "max": 10112, "message": "Points {value} is illegal: range is 100..10112."},
   {"instr": "DNP", "pos": 1, "invalid_raw": {"strings": true, "nan": true, "outside_long": true, "values": [-2147483648]}, "message": "ComPort {value} illegal."}
- ]
+ ],
+ "string_port_int_min": true
 }
