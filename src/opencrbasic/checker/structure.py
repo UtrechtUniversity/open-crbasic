@@ -601,7 +601,7 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and word in ("SUB", "FUNCTION")):
             if not in_sub:
                 message = "EndSub without Sub or nested subs."  # `EndFunction` too (oracle, 2026-10-03)
-            elif opens and kw in ("ENDSUB", "ENDFUNCTION"):
+            elif opens:
                 message = "If without EndIf inside of Sub."  # one per Sub end (oracle, 2026-10-11)
             in_sub = False
         elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
