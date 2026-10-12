@@ -5891,7 +5891,7 @@ function and are not modelled): `While F(X Then` (the `Then` is swallowed), nest
 is `Incomplete expression: Abs(X, 1 .` (we say `No Matching`).
 ## Round 14 multi-report order (undeclared arguments of one instruction, CR6/CR1000X)
 
-Oracle, 2026-10-12, CR6 and CR1000X (`tests/fixtures/r14_multi_undeclared_args.json`, 185 cases): when an
+Oracle, 2026-10-12, CR6 and CR1000X (`tests/fixtures/r14_multi_undeclared_args.json` 185 cases and `r14_multi_undeclared_args_b.json` 70 cases): when an
 instruction call names more than one undeclared variable, the real compiler reports every one of them
 (`Invalid symbol in expression: <arg>.`, one line each), not only the first; opencrbasic stopped at the first
 position (`_report_statement`). The order is per instruction, not left to right: `SplitStr(a,b,...)` reports `b`
@@ -5909,9 +5909,14 @@ subset; a position missing from an entry is not reported by the real compiler):
   `TimedControl (4,5)`, `SDMCD16Mask`, `SDMGeneric (4,0)`, `SDMIO16`, `WetDryBulb`, `SerialInRecord (1,5)`,
   `SortSpa`, `SortSpaIndexed`, `SplitStr (1,0)`, `TCPActiveConnections`, `TotalRun (0,2)`, `VaporPressure`,
   `ModbusClient (0,5)`, `PortBridge (1,0)`, `SDMAO4A`.
-- **Positions never checked for an undeclared name (accepted by the real compiler)**: `SDMSIO4` and
-  `MonitorComms` position 0 (`SDMSIO4(Nope,1,0,4,...)` compiles clean; opencrbasic rejected it, a false reject), and
-  `ModemCallBack` position 0 (only position 8 is reported). Entries with an empty or short tuple.
+- Also (second sweep with expression arguments and up to five call shapes per instruction): `TotalRun (0,2,4)`
+  (position 4 is a condition, reported whole: `Invalid symbol in expression: Nope OR X>=200.`), `StdDevRun`/`AvgRun`
+  `(0,2,4,5)`, `TCDiff (5,0)`, `FFTSpa (2,0)`. A position missing from an entry is not checked at all in the
+  multi path, so an entry must list every position the old first-only rule could report.
+- **Positions never checked for an undeclared name (CR6/CR1000X compile clean)**: `SDMSIO4`, `MonitorComms` and
+  `ModemCallBack` position 0 and `NewFile` position 2 (`NewFile(A,"CRD:p.crb",Nope)` compiles; opencrbasic rejected
+  it: false rejects). CR300/CR350 still report the `NewFile` one (`Nope is not defined.`), hence
+  `expressions._EXEMPT_WHOLE_ECHO`.
 - Left out (the same sweep disagrees or follow-ups differ): `CovSpa` (position 0 is reported alone but dropped when
   3 or 4 is also undeclared), `FieldCal`/`FieldCalStrain` (array positions; also `... must be a declared
   variable` follow-ups), `WindVector` in a table (positions 2 then 1; CR300/CR350 report only the first and

@@ -200,21 +200,28 @@ _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
     # Round 14 (oracle sweep, `docs/checker.md` "Round 14 multi-report order"): positions listed
     # are those the real compiler reports, in its order; a replaced position missing here is not
     # reported (or not before another one).
-    "ARGOSDATAREPEAT": (0, 3), "AVGRUN": (0, 2), "AVW200": (4, 0), "PRT": (0, 2),
+    "ARGOSDATAREPEAT": (0, 3), "AVGRUN": (0, 2, 4, 5), "AVW200": (4, 0), "PRT": (0, 2),
     "STRAINCALC": (0, 2, 3), "CDM_TCSE": (7, 2), "DEBUG": (2, 3, 4),
     "DEWPOINT": (0, 1, 2), "SENDVARIABLES": (0, 1, 8), "EC100CONFIGURE": (0, 3),
     "GETVARIABLES": (0, 8), "GPS": (4, 0), "HYDRAPROBE": (0, 1), "MATRIX": (1, 2, 3),
     "PEAKVALLEY": (0, 1, 3), "SATVP": (0, 1), "TIMEDCONTROL": (4, 5),
     "SDMCD16MASK": (0, 1), "SDMGENERIC": (4, 0), "SDMIO16": (0, 1), "WETDRYBULB": (0, 1, 2, 3),
     "SERIALINRECORD": (1, 5), "SORTSPA": (0, 2), "SORTSPAINDEXED": (0, 2), "SPLITSTR": (1, 0),
-    "TCPACTIVECONNECTIONS": (0, 1), "TOTALRUN": (0, 2), "VAPORPRESSURE": (0, 1, 2),
-    "MODBUSCLIENT": (0, 5), "PORTBRIDGE": (1, 0),
-    "SDMAO4A": (0, 1), "MODEMCALLBACK": (8,), "MONITORCOMMS": (), "SDMSIO4": (),
+    "TCPACTIVECONNECTIONS": (0, 1), "TOTALRUN": (0, 2, 4), "VAPORPRESSURE": (0, 1, 2),
+    "MODBUSCLIENT": (0, 5), "STDDEVRUN": (0, 2, 4, 5), "TCDIFF": (5, 0), "PORTBRIDGE": (1, 0),
+    "SDMAO4A": (0, 1), "FFTSPA": (2, 0),
 }
 
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
     "ADDPRECISE": frozenset({0}),
     "MOVEPRECISE": frozenset({0}),
+}
+
+# Round 14 (oracle, CR6/CR1000X only, `docs/checker.md` "Round 14 multi-report order"): an undeclared
+# name here compiles clean (CR300/CR350 still report `NewFile(A,"x",Nope)`: `Nope is not defined.`).
+_EXEMPT_WHOLE_ECHO: dict[str, frozenset[int]] = {
+    "SDMSIO4": frozenset({0}), "MONITORCOMMS": frozenset({0}), "MODEMCALLBACK": frozenset({0}),
+    "NEWFILE": frozenset({2}),
 }
 
 # Built-in function call arity (this session, oracle-confirmed against `CR6Comp.exe`, byte-for-byte
@@ -383,12 +390,14 @@ def _type_code_kinds() -> dict[int, str]:
     return {int(code): entry["kind"] for code, entry in data.items()}
 
 
-def _position_kinds(params: list[int], keyword: str = "") -> dict[int, str]:
+def _position_kinds(params: list[int], keyword: str = "", profile=None) -> dict[int, str]:
     """0-based argument index -> `type_codes.json` `kind`, for every position whose type code
     routes through the general symbol/expression compiler (`_RESOLVED_KINDS`), minus any position
     `_UNDEFINED_CHECK_EXEMPT_POSITIONS` names for this instruction's own keyword."""
     kinds = _type_code_kinds()
     exempt = _UNDEFINED_CHECK_EXEMPT_POSITIONS.get(keyword.upper(), frozenset())
+    if profile is not None and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+        exempt = exempt | _EXEMPT_WHOLE_ECHO.get(keyword.upper(), frozenset())
     out = {}
     for i, code in enumerate(params):
         if i in exempt:
@@ -1182,7 +1191,7 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
                _find_bare_function_ref(a, profile, frozenset(variable_names))
                for a in stmt.args if a is not None):
             continue  # a parse error inside an argument owns the statement (`check_function_arity`)
-        positions = _position_kinds(record["params"], stmt.keyword)
+        positions = _position_kinds(record["params"], stmt.keyword, profile)
         if positions:
             _report_statement(stmt, positions, known, variable_names, profile, diags,
                               families="const")
@@ -1221,7 +1230,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue
         if stmt.keyword.upper() == "SLOWSEQUENCE" and profile.name in ("cr6", "cr1000x"):
             continue  # `SlowSequence junk` compiles: its argument is never resolved (oracle, 2026-10-10)
-        positions = _position_kinds(record["params"], stmt.keyword)
+        positions = _position_kinds(record["params"], stmt.keyword, profile)
         if (positions and stmt.keyword.upper() == "SERIALOPEN" and stmt.args and stmt.args[0]
                 and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
                 and _undefined_names(stmt.args[0], known)):

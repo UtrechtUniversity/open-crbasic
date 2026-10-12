@@ -1,0 +1,513 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-multi2_tcdiff_0",
+   "logger": "cr6",
+   "source": "Public RefT\nBeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(Zq0(),1,mv200C,1,TypeT,RefT,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0().\nline 4: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-multi2_tcdiff_0",
+   "logger": "cr1000x",
+   "source": "Public RefT\nBeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(Zq0(),1,mv200C,1,TypeT,RefT,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0()."
+  },
+  {
+   "id": "cr6-multi2_tcdiff_5",
+   "logger": "cr6",
+   "source": "Public TCT(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(TCT,1,mv200C,1,TypeT,Zq5,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq5.\nline 4: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-multi2_tcdiff_5",
+   "logger": "cr1000x",
+   "source": "Public TCT(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(TCT,1,mv200C,1,TypeT,Zq5,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr6-multi2_tcdiff_0_5",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(Zq0(),1,mv200C,1,TypeT,Zq5,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq5.\nline 3: Invalid symbol in expression: Zq0().\nline 3: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-multi2_tcdiff_0_5",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(Zq0(),1,mv200C,1,TypeT,Zq5,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq5.\nline 3: Invalid symbol in expression: Zq0()."
+  },
+  {
+   "id": "cr6-multi2_totalrun_0",
+   "logger": "cr6",
+   "source": "Public Cnt, Rst, Rt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Cnt,100,Rst<>Rt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_0",
+   "logger": "cr1000x",
+   "source": "Public Cnt, Rst, Rt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Cnt,100,Rst<>Rt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr6-multi2_totalrun_2",
+   "logger": "cr6",
+   "source": "Public Rt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Rt,1,Zq2,100,Rst<>Rt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_2",
+   "logger": "cr1000x",
+   "source": "Public Rt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Rt,1,Zq2,100,Rst<>Rt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr6-multi2_totalrun_4",
+   "logger": "cr6",
+   "source": "Public Rt, Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Rt,1,Cnt,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_4",
+   "logger": "cr1000x",
+   "source": "Public Rt, Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Rt,1,Cnt,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_totalrun_0_2",
+   "logger": "cr6",
+   "source": "Public Rst, Rt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Zq2,100,Rst<>Rt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_0_2",
+   "logger": "cr1000x",
+   "source": "Public Rst, Rt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Zq2,100,Rst<>Rt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr6-multi2_totalrun_0_4",
+   "logger": "cr6",
+   "source": "Public Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Cnt,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_0_4",
+   "logger": "cr1000x",
+   "source": "Public Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Cnt,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_totalrun_2_4",
+   "logger": "cr6",
+   "source": "Public Rt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Rt,1,Zq2,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_2_4",
+   "logger": "cr1000x",
+   "source": "Public Rt\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Rt,1,Zq2,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_totalrun_0_2_4",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Zq2,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0.\nline 3: Invalid symbol in expression: Zq2.\nline 3: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_totalrun_0_2_4",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(Zq0,1,Zq2,100,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0.\nline 3: Invalid symbol in expression: Zq2.\nline 3: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_0",
+   "logger": "cr6",
+   "source": "Public Cnt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Cnt,9,Rst)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_0",
+   "logger": "cr1000x",
+   "source": "Public Cnt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Cnt,9,Rst)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_2",
+   "logger": "cr6",
+   "source": "Public Sd, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Sd,1,Zq2,9,Rst)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_2",
+   "logger": "cr1000x",
+   "source": "Public Sd, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Sd,1,Zq2,9,Rst)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_4",
+   "logger": "cr6",
+   "source": "Public Sd, Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Sd,1,Cnt,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_4",
+   "logger": "cr1000x",
+   "source": "Public Sd, Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Sd,1,Cnt,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_0_2",
+   "logger": "cr6",
+   "source": "Public Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Zq2,9,Rst)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_0_2",
+   "logger": "cr1000x",
+   "source": "Public Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Zq2,9,Rst)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_0_4",
+   "logger": "cr6",
+   "source": "Public Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Cnt,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_0_4",
+   "logger": "cr1000x",
+   "source": "Public Cnt\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Cnt,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_2_4",
+   "logger": "cr6",
+   "source": "Public Sd\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Sd,1,Zq2,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_2_4",
+   "logger": "cr1000x",
+   "source": "Public Sd\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Sd,1,Zq2,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_stddevrun5_0_2_4",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Zq2,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0.\nline 3: Invalid symbol in expression: Zq2.\nline 3: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr1000x-multi2_stddevrun5_0_2_4",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(Zq0,1,Zq2,9,Zq4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0.\nline 3: Invalid symbol in expression: Zq2.\nline 3: Invalid symbol in expression: Zq4."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0",
+   "logger": "cr6",
+   "source": "Public Cnt, Rst, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Cnt,9,Rst,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0",
+   "logger": "cr1000x",
+   "source": "Public Cnt, Rst, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Cnt,9,Rst,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_2",
+   "logger": "cr6",
+   "source": "Public Av, Rst, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Zq2,9,Rst,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_2",
+   "logger": "cr1000x",
+   "source": "Public Av, Rst, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Zq2,9,Rst,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_4",
+   "logger": "cr6",
+   "source": "Public Av, Cnt, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Cnt,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_4",
+   "logger": "cr1000x",
+   "source": "Public Av, Cnt, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Cnt,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_5",
+   "logger": "cr6",
+   "source": "Public Av, Cnt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Cnt,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_5",
+   "logger": "cr1000x",
+   "source": "Public Av, Cnt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Cnt,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0_2",
+   "logger": "cr6",
+   "source": "Public Rst, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Rst,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0_2",
+   "logger": "cr1000x",
+   "source": "Public Rst, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Rst,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0_4",
+   "logger": "cr6",
+   "source": "Public Cnt, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Cnt,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0_4",
+   "logger": "cr1000x",
+   "source": "Public Cnt, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Cnt,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0_5",
+   "logger": "cr6",
+   "source": "Public Cnt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Cnt,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0_5",
+   "logger": "cr1000x",
+   "source": "Public Cnt, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Cnt,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_2_4",
+   "logger": "cr6",
+   "source": "Public Av, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Zq2,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_2_4",
+   "logger": "cr1000x",
+   "source": "Public Av, Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Zq2,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_2_5",
+   "logger": "cr6",
+   "source": "Public Av, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Zq2,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_2_5",
+   "logger": "cr1000x",
+   "source": "Public Av, Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Av,1,Zq2,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0_2_4",
+   "logger": "cr6",
+   "source": "Public Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0_2_4",
+   "logger": "cr1000x",
+   "source": "Public Sid\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Zq4,Sid)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq4.\nline 4: Optional Count parameter must be type long."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0_2_5",
+   "logger": "cr6",
+   "source": "Public Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0_2_5",
+   "logger": "cr1000x",
+   "source": "Public Rst\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Rst,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq0.\nline 4: Invalid symbol in expression: Zq2.\nline 4: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr6-multi2_avgrun5_0_2_4_5",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Zq4,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0.\nline 3: Invalid symbol in expression: Zq2.\nline 3: Invalid symbol in expression: Zq4.\nline 3: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr1000x-multi2_avgrun5_0_2_4_5",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Zq0,1,Zq2,9,Zq4,Zq5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0.\nline 3: Invalid symbol in expression: Zq2.\nline 3: Invalid symbol in expression: Zq4.\nline 3: Invalid symbol in expression: Zq5."
+  },
+  {
+   "id": "cr6-multi2_newfile_arg2_undeclared",
+   "logger": "cr6",
+   "source": "Public A\nBeginProg\n  Scan(1,Sec,0,0)\n    NewFile(A,\"CRD:p.crb\",Zq2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-multi2_newfile_arg2_undeclared",
+   "logger": "cr1000x",
+   "source": "Public A\nBeginProg\n  Scan(1,Sec,0,0)\n    NewFile(A,\"CRD:p.crb\",Zq2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-multi2_newfile_arg0_2_undeclared",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    NewFile(Zq0,\"CRD:p.crb\",Zq2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr1000x-multi2_newfile_arg0_2_undeclared",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    NewFile(Zq0,\"CRD:p.crb\",Zq2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Zq0."
+  },
+  {
+   "id": "cr6-multi2_fftspa_0_2",
+   "logger": "cr6",
+   "source": "Public S(8),T(8)\nBeginProg\n  Scan(1,Sec,0,0)\n    FFTSpa(Zq0(),8,Zq2(),1,mSec,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2().\nline 4: Invalid symbol in expression: Zq0()."
+  },
+  {
+   "id": "cr1000x-multi2_fftspa_0_2",
+   "logger": "cr1000x",
+   "source": "Public S(8),T(8)\nBeginProg\n  Scan(1,Sec,0,0)\n    FFTSpa(Zq0(),8,Zq2(),1,mSec,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2().\nline 4: Invalid symbol in expression: Zq0()."
+  },
+  {
+   "id": "cr6-multi2_fftspa_2",
+   "logger": "cr6",
+   "source": "Public S(8),T(8)\nBeginProg\n  Scan(1,Sec,0,0)\n    FFTSpa(S(),8,Zq2(),1,mSec,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2()."
+  },
+  {
+   "id": "cr1000x-multi2_fftspa_2",
+   "logger": "cr1000x",
+   "source": "Public S(8),T(8)\nBeginProg\n  Scan(1,Sec,0,0)\n    FFTSpa(S(),8,Zq2(),1,mSec,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq2()."
+  },
+  {
+   "id": "cr6-multi2_modemcallback_0_8",
+   "logger": "cr6",
+   "source": "Public R\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Zq0,COMSDC7,115200,0,\"97550000\",\"\",40,60,Zq8)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq8."
+  },
+  {
+   "id": "cr1000x-multi2_modemcallback_0_8",
+   "logger": "cr1000x",
+   "source": "Public R\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Zq0,COMSDC7,115200,0,\"97550000\",\"\",40,60,Zq8)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Zq8."
+  },
+  {
+   "id": "cr6-multi2_monitorcomms_0",
+   "logger": "cr6",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    MonitorComms(Zq0,COMC1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-multi2_monitorcomms_0",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  Scan(1,Sec,0,0)\n    MonitorComms(Zq0,COMC1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}
