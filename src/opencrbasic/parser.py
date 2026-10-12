@@ -281,10 +281,68 @@ def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
     return tokens
 
 
-_SELF_CLOSING_CALLS = frozenset({"ABS", "ABSLONG", "ARRAYLENGTH", "TYPEOF", "LINENUM", "SIGNATURE"})
+_S1_CALLS = frozenset({"ABS", "ABSLONG", "ARRAYLENGTH", "TYPEOF"})
+_S2_CALLS = frozenset({"LINENUM", "SIGNATURE"})
+_SELF_CLOSING_CALLS = _S1_CALLS | _S2_CALLS
+_BIN_OPS = frozenset({"+", "-", "*", "/", "^", "&", "=", "<>", "<", ">", "<=", ">=", "\\"})
+_BIN_WORDS = frozenset({"AND", "OR", "XOR", "MOD", "EQV", "IMP"})
 
 
-def _close_open_call(tokens: list[Token], profile) -> list[Token]:
+def _match_paren(toks: list[Token], i: int) -> int | None:
+    depth = 0
+    for j in range(i, len(toks)):
+        if toks[j].kind == "OP" and toks[j].text == "(":
+            depth += 1
+        elif toks[j].kind == "OP" and toks[j].text == ")":
+            depth -= 1
+            if depth == 0:
+                return j
+    return None
+
+
+def _is_binary(t: Token) -> bool:
+    return (t.kind == "OP" and t.text in _BIN_OPS) or (t.kind == "IDENT" and t.upper in _BIN_WORDS)
+
+
+def _expr_end(toks: list[Token], i: int = 0) -> int | None:
+    """Index just past the simple expression (operands, binary operators, closed groups, member
+    chains) starting at `toks[i]`, or None when there is none."""
+    n = len(toks)
+    while True:
+        while i < n and (toks[i].kind == "OP" and toks[i].text in "+-"
+                         or toks[i].kind == "IDENT" and toks[i].upper == "NOT"):
+            i += 1
+        if i >= n:
+            return None
+        t = toks[i]
+        if t.kind in ("NUMBER", "STRING"):
+            i += 1
+        elif t.kind == "IDENT":
+            i += 1
+            while i < n:
+                if toks[i].kind == "OP" and toks[i].text == "." and i + 1 < n and toks[i + 1].kind == "IDENT":
+                    i += 2
+                elif toks[i].kind == "OP" and toks[i].text == "(":
+                    j = _match_paren(toks, i)
+                    if j is None:
+                        return None
+                    i = j + 1
+                else:
+                    break
+        elif t.kind == "OP" and t.text == "(":
+            j = _match_paren(toks, i)
+            if j is None:
+                return None
+            i = j + 1
+        else:
+            return None
+        if i < n and _is_binary(toks[i]):
+            i += 1
+            continue
+        return i
+
+
+def _close_open_flat(tokens: list[Token], profile) -> list[Token]:
     """`X = Abs(X`, `If Abs(X + 1 Then`, `Do While AbsLong(X`: these six built-ins accept their
     one argument without the closing parenthesis, which the end of the statement (or the `Then` of
     an `If`/`ElseIf`) supplies, when it is the only open group and holds a single argument
@@ -317,6 +375,131 @@ def _close_open_call(tokens: list[Token], profile) -> list[Token]:
         return tokens
     close = lexer.Token("OP", ")", ")", real[end - 1].col + len(real[end - 1].text), real[end - 1].line)
     return real[:end] + [close] + real[end:] + tokens[len(real):]
+
+
+def _close_open_call(tokens: list[Token], profile) -> list[Token]:
+    """Unclosed groups the real compilers accept (oracle, all four loggers, 2026-10-12,
+    `tests/fixtures/r14_abs_unclosed.json`, `r15_abs_unclosed.json`; `docs/checker.md` "Round 15").
+    The `Then` and everything after it in a `While`/`Do While|Until`/`Loop While|Until` condition
+    is ignored; then the flat `Abs(X`, and the nested / trailing-comma / juxtaposed / empty and
+    `LineNum(X)`-in-an-open-group shapes of `_close_open_extra`."""
+    real = [t for t in tokens if t.kind != "EOF"]
+    original = tokens
+    if real and real[0].kind == "IDENT" and (
+            real[0].upper == "WHILE" or real[0].upper in ("DO", "LOOP") and len(real) > 1
+            and real[1].kind == "IDENT" and real[1].upper in ("WHILE", "UNTIL")):
+        cut = next((i for i, t in enumerate(real) if t.kind == "IDENT" and t.upper == "THEN"), None)
+        if cut is not None:
+            tokens = real[:cut] + tokens[len(real):]
+    out = _close_open_extra(tokens, profile)
+    if out is tokens:
+        out = _close_open_flat(tokens, profile)
+    if out is tokens and tokens is not original:
+        depth = sum(1 if t.text == "(" else -1 if t.text == ")" else 0 for t in tokens if t.kind == "OP")
+        if depth > 0:   # still unclosed after the cut (`While (C Then`): keep the old rejection
+            return original
+    return out
+
+
+def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
+    real = [t for t in tokens if t.kind != "EOF"]
+    eof = tokens[len(real):]
+    head = real[0].upper if real and real[0].kind == "IDENT" else ""
+    stack: list[int] = []
+    end = len(real)
+    for i, t in enumerate(real):
+        if t.kind == "OP" and t.text == "(":
+            stack.append(i)
+        elif t.kind == "OP" and t.text == ")":
+            if not stack:
+                return tokens
+            stack.pop()
+        elif t.kind == "IDENT" and t.upper == "THEN" and stack and head in ("IF", "ELSEIF"):
+            end = i
+            break
+    if not stack or any(t.kind == "OP" and t.text in "{}" for t in real[:end]):
+        return tokens
+    last = real[end - 1]
+
+    def mk(kind: str, text: str, value=None) -> Token:
+        return lexer.Token(kind, text, text, last.col + len(last.text), last.line, value)
+
+    def call_name(o: int) -> str:
+        return real[o - 1].upper if o and real[o - 1].kind == "IDENT" and not (o > 1 and real[o - 2].text == ".") \
+            else ""
+
+    names = [call_name(o) for o in stack]
+    n = len(stack)
+    inner = stack[-1]
+    content = real[inner + 1:end]
+    if head in ("IF", "ELSEIF") and any(t.kind == "IDENT" and t.upper == "THEN" for t in real[:end]):
+        return tokens
+
+    def closed(body: list[Token]) -> list[Token]:
+        return real[:inner + 1] + body + [mk("OP", ")")] * n + real[end:] + eof
+
+    # ---- calls of the self-closing family, possibly nested in one another ----
+    if all(nm in _S1_CALLS for nm in names[:-1]) and names[-1] in _SELF_CLOSING_CALLS:
+        for k in range(1, n):   # what stands between an outer `(` and the next call: nothing or `... op`
+            prefix = real[stack[k - 1] + 1:stack[k] - 1]
+            if any(t.kind == "OP" and t.text == "," for t in prefix) or (
+                    prefix and not _is_binary(prefix[-1])):
+                return tokens
+        if names[-1] in _S1_CALLS and content:
+            e1 = _expr_end(content, 0)
+            if e1 is None:
+                return tokens
+            if e1 == len(content):
+                return closed(content) if n > 1 and not any(t.text == "," for t in content) else tokens
+            rest = content[e1:]
+            if any(t.kind == "OP" and t.text == "," for t in content[:e1]):
+                return tokens
+            if rest == [content[-1]] and content[-1].text == ",":
+                return closed(content[:e1])
+            e2 = _expr_end(rest, 0)
+            if e2 == len(rest) and not any(t.text == "," for t in rest):
+                return closed(content[:e1])
+            if n > 1 and e2 is not None and rest[e2:] == [rest[-1]] and rest[-1].text == "," \
+                    and not any(t.text == "," for t in rest[:e2]):
+                return closed(content[:e1])
+            return tokens
+        if names[-1] in _S2_CALLS and (not content or n == 1 and [t.text for t in content] == [","]) \
+                and not any(t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[:inner - 1]):
+            return closed([mk("NUMBER", "0", 0)])
+        if names[-1] in _S2_CALLS and n > 1 and content:
+            e1 = _expr_end(content, 0)
+            if e1 == len(content) and not any(t.text == "," for t in content):
+                return closed(content)
+        return tokens
+    # ---- `Y = A(LineNum(X) + 1`: a closed LineNum/Signature call inside one other open group ----
+    simple_assign = len(real) > 2 and real[0].kind == "IDENT" and real[1].kind == "OP" and real[1].text == "="
+    if n == 1 and simple_assign and head not in profile.instructions and end == len(real) \
+            and names[0] not in _SELF_CLOSING_CALLS:
+        if any(t.text == "," for t in content) or any(
+                t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[:inner - 1]):
+            return tokens
+        calls = [i for i, t in enumerate(content) if t.kind == "IDENT" and t.upper in _S2_CALLS]
+        if len(calls) != 1 or calls[0] + 1 >= len(content) or content[calls[0] + 1].text != "(":
+            return tokens
+        c = calls[0]
+        close = _match_paren(content, c + 1)
+        pre, post = content[:c], content[close + 1:] if close is not None else None
+        if close is None:
+            return tokens
+        if pre and not _is_binary(pre[-1]):
+            return tokens
+        if post and not (_is_binary(post[0]) and _expr_end(post, 1) == len(post)):
+            return tokens
+        return real[:end] + [mk("OP", ")")] + real[end:] + eof
+    # ---- statement `A(LineNum(X) = 1`: the call closes the index too ----
+    if n == 1 and stack[0] == 1 and len(real) > 5 and real[0].kind == "IDENT" and real[2].kind == "IDENT" \
+            and real[2].upper in _S2_CALLS and real[3].text == "(" and head not in profile.instructions:
+        close = _match_paren(real, 3)
+        if close is not None and close + 1 < len(real) and real[close + 1].kind == "OP" \
+                and real[close + 1].text == "=" and close + 2 < len(real):
+            one = lexer.Token("NUMBER", "1", "1", real[2].col, real[2].line, 1)
+            return real[:2] + [one, lexer.Token("OP", ")", ")", real[2].col, real[2].line)] + real[close + 1:] + eof
+    return tokens
 
 
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:

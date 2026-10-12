@@ -6350,3 +6350,47 @@ The condition before `Then` is checked as always (`ElseIf Q Then Z = 1` -> `Inva
 expression: Q .` / `Q is not defined.`), a stray one-line `ElseIf` is `Case with no Select.`.
 Implementation: `parser._parse_elseif` drops the tokens after `Then`. (Closes the "one-line
 `ElseIf c Then Z = 1`" false reject.)
+
+## Round 15: unclosed `Abs`-like groups beyond the flat `Abs(X` (2026-10-12)
+
+Oracle, all four loggers unless noted (fixture `tests/fixtures/r15_abs_unclosed.json`, 81 shapes x 4;
+~190 shapes probed, `parser._close_open_call` / `_close_open_extra`). Groups of `Abs`, `AbsLong`,
+`ArrayLength`, `TypeOf` ("S1") and `LineNum`, `Signature` ("S2"); `E` is an expression (operands,
+binary operators, closed groups):
+
+- **Condition keywords**: in `While`, `Do While|Until`, `Loop While|Until` the first `Then` and
+  everything after it is ignored: `While C Then`, `While Abs(C) Then`, `While Abs(C Then Z = 1`,
+  `Do While C Then` compile (CR6/CR1000X too; the stray `Then` is not even a name on CR300/CR350).
+  Other functions keep their own errors (`While Round(C Then` -> `Expression expects , : Round(C .`).
+  A group still open after the cut (`While (C Then`) stays `No Matching ...` (we echo the `Then`;
+  the real echo is `(C `, not modelled). `While (C` alone is a pre-existing false accept.
+- **S1, one open group**: `Abs(E`, `Abs(E,` (trailing comma), `Abs(E1 E2` (two expressions side by
+  side: `Abs(X Z`, `Abs(1 2`, `Abs(X + 1 Z`, `Abs(X Z + 1`) compile; `Abs(E1 E2,`, `Abs(X, Z`,
+  `Abs(X,,`, `Abs(X Z W`, `Abs(,X`, `Abs(X Abs(Z` do not (`Incomplete expression: <stmt>.`, or
+  `Invalid, or out of place expression` for `Abs(,X` on CR6/CR1000X). A closed call inside is just
+  part of `E`: `Abs(Abs(X) Z`, `Abs(Abs(X),` compile, `Abs(Abs(X),Z` does not. On CR6/CR1000X the
+  second expression is not resolved at all (`Abs(X Q`, undeclared `Q`, compiles); CR300/CR350 name
+  it (`Q is not defined.`, also for `Abs(X Then`) -- not modelled, we drop it (false accept).
+- **S1 nested**: `Abs(Abs(X`, `Abs(Abs(Abs(X`, `Abs(X + Abs(Z`, `Abs(LineNum(X`, `Abs(Signature(`,
+  `AbsLong(Abs(X`, `TypeOf(LineNum(X`, `ArrayLength(Abs(X` compile (also with the trailing comma or
+  second expression of the innermost group: `Abs(Abs(X Z,`, in `If`/`While`/`Select Case`
+  conditions too: `If Abs(Abs(C Then Y = 1`, `While Abs(Abs(C Then`); `Abs(Abs(`, `Abs(X Abs(`,
+  `Abs((X`, `(Abs(X`, `Round(Abs(X` (`Expression expects ,`), `Abs(Round(X` do not; an S2 call that
+  contains an S1/S2 one (`LineNum(Abs(X`, `LineNum(LineNum(X`, `Signature(Abs(`) is
+  `Incomplete expression` (messages only; they already were rejected).
+- **S2 empty**: `LineNum(`, `Signature(`, `LineNum(,`, `1 + LineNum(`, `Abs(LineNum(` compile
+  (`Y = Abs(` and `Y = Abs(Abs(` stay `Invalid, or out of place expression`); `LineNum( + 1`,
+  `LineNum(X,`, `LineNum(X) + LineNum(` are `Incomplete expression` (`LineNum( + 1` is a
+  pre-existing false accept).
+- **`LineNum(X)` closes the group around it**: `Y = A(LineNum(X)`, `Y = Sin(LineNum(X)`,
+  `Y = (LineNum(X)`, `Y = A(1 + LineNum(X)`, `Y = A(LineNum(X) + 1`, `Y = A(Signature(X)` compile
+  (one open group, one call, no comma, no juxtaposed operand), and the statement
+  `A(LineNum(X) = 1` (also `= Y`, `= Z + 1`, `Signature`) compiles; `A(LineNum(X))` / `A(LineNum(X)) = 1` /
+  `Y = A(LineNum(X)) ` (properly closed!) and `A(LineNum(X) + 1 = 1` do not (the last is `Invalid
+  assignment in expression`). The same with `Abs` instead of `LineNum` is `No Matching ...` /
+  `Invalid assignment in expression`. Implemented by closing the group at the end (or, for the
+  statement form, reading it as `A(1) = ...`).
+- Message-only differences left (both sides reject): `If Abs(X, 1 Then Y = 1` is
+  `Incomplete expression: Abs(X, 1 .` (condition echo), `A(Abs(X) = 1`, `A(Sin(X) = 1`, `A(1 = 1`,
+  `A(X = 1` are `Invalid assignment in expression: <stmt>.` on CR6/CR1000X, `Y = Abs(X, Z` and
+  `Y = Abs(X,Z,Z` are `Incomplete expression`.

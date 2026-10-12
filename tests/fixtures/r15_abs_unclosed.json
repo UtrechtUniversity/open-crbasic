@@ -1,0 +1,2291 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_abs_unclosed-0",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = 1 = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = 1 = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-0",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = 1 = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-0",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = 1 = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-1",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-1",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-1",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(1) = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-2",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(Abs(X)."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(Abs(X)."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-2",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(Abs(X)\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-2",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(Abs(X)\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-3",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(1) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(1) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-3",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(1) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-3",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(1) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-4",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(LineNum(X)."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(LineNum(X)."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-4",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(LineNum(X)\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-4",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A(LineNum(X)\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-5",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-5",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-5",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-6",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-6",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-6",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-7",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-7",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-7",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(LineNum(X) = Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-8",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Signature(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Signature(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-8",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Signature(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-8",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    A(Signature(X) = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-9",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do Until Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do Until Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-9",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do Until Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-9",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do Until Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-10",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-10",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-10",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Abs(C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-11",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-11",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-11",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While C Then\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-12",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-12",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-12",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-13",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then\n      Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then\n      Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-13",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then\n      Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-13",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If Abs(Abs(C Then\n      Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-14",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If LineNum( Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If LineNum( Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-14",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If LineNum( Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-14",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If LineNum( Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-15",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop Until Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop Until Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-15",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop Until Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-15",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop Until Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-16",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop While Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop While Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-16",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop While Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-16",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Loop While Abs(C Then\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: LOOP statement illegally has SCAN without NEXT SCAN.\nline 9: LOOP without DO."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-17",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case Abs(Abs(X\n    Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case Abs(Abs(X\n    Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-17",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case Abs(Abs(X\n    Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-17",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case Abs(Abs(X\n    Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-18",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-18",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-18",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-19",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-19",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-19",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-20",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-20",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-20",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-21",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C) Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C) Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-21",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C) Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-21",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While Abs(C) Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-22",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-22",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-22",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-23",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-23",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-23",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While C Then\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-24",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = (Abs(X."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = (Abs(X."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-24",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = (Abs(X\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-24",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = (Abs(X\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-25",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-25",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-25",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = (LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-26",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = 1 + LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = 1 + LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-26",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = 1 + LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-26",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = 1 + LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-27",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(1."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(1."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-27",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(1\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-27",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(1\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-28",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1 + LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1 + LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-28",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1 + LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-28",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(1 + LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-29",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(Abs(X)."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-29",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(Abs(X)."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-29",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(Abs(X)\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-29",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(Abs(X)\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-30",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(LineNum(X."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-30",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(LineNum(X."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-30",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(LineNum(X\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-30",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = A(LineNum(X\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-31",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-31",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-31",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-31",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-32",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-32",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-32",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-32",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-33",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(LineNum(X) Z."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-33",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(LineNum(X) Z."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-33",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(LineNum(X) Z\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-33",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(LineNum(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(LineNum(X) Z\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-34",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Signature(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-34",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Signature(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-34",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Signature(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-34",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = A(Signature(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-35",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-35",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-35",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-35",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-36",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs((X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Abs((X."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-36",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs((X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Abs((X."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-36",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs((X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Abs((X\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-36",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs((X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Abs((X\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-37",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(1 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-37",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(1 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-37",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(1 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-37",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(1 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-38",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(Abs(."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-38",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(Abs(."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-38",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(Abs(\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-38",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Y = Abs(Abs(\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-39",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-39",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-39",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-39",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-40",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-40",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-40",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-40",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-41",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-41",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-41",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-41",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-42",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-42",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-42",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-42",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-43",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-43",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-43",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-43",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-44",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) \n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-44",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) \n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-44",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) \n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-44",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) \n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-45",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-45",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-45",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-45",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-46",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)) )\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(Abs(X)) )."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-46",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)) )\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(Abs(X)) )."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-46",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)) )\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(Abs(X)) )\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-46",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X)) )\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(Abs(X)) )\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-47",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X),\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-47",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X),\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-47",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X),\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-47",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X),\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-48",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-48",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-48",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-48",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-49",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-49",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-49",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-49",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-50",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-50",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-50",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-50",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-51",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Round(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Abs(Round(X."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-51",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Round(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Abs(Round(X."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-51",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Round(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Abs(Round(X\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-51",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Round(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Abs(Round(X\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-52",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-52",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-52",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-52",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-53",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + 1 Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-53",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + 1 Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-53",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + 1 Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-53",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + 1 Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-54",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-54",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-54",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-54",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X + Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-55",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-55",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-55",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-55",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-56",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(Z."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-56",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(Z."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-56",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(Z\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-56",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Abs(Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Abs(Z\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-57",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-57",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-57",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-57",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-58",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-58",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-58",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-58",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-59",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Z,."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-59",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Z,."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-59",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Z,\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-59",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X Z,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X Z,\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-60",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X) Z."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-60",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X) Z."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-60",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X) Z\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-60",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X) Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = Abs(X) Z\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-61",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-61",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-61",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-61",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Abs(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-62",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-62",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-62",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-62",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-63",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-63",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-63",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-63",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-64",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-64",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-64",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-64",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = AbsLong(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-65",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-65",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-65",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-65",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-66",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-66",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-66",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-66",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(A,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-67",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-67",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-67",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-67",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = ArrayLength(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-68",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-68",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-68",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-68",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-69",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-69",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-69",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-69",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-70",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-70",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-70",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-70",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-71",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-71",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-71",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-71",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-72",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = LineNum(X Z."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-72",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = LineNum(X Z."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-72",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = LineNum(X Z\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-72",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = LineNum(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = LineNum(X Z\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-73",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Round(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Round(LineNum(X)."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-73",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Round(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Round(LineNum(X)."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-73",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Round(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Round(LineNum(X)\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-73",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Round(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Expression expects , :     Y = Round(LineNum(X)\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-74",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-74",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-74",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-74",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Signature(\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-75",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Sin(Abs(X)."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-75",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Sin(Abs(X)."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-75",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Sin(Abs(X)\n."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-75",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(Abs(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Matching, or out of place ) in expression:     Y = Sin(Abs(X)\n."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-76",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-76",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-76",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-76",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = Sin(LineNum(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-77",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-77",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-77",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-77",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(Abs(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-78",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-78",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-78",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-78",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(LineNum(X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-79",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-79",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-79",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-79",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X Z\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_abs_unclosed-80",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_abs_unclosed-80",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_abs_unclosed-80",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_abs_unclosed-80",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X,\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
