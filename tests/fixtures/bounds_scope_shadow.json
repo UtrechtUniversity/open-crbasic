@@ -550,6 +550,300 @@
    "source": "Public r\nSub S1(v)\n  r = v\nEndSub\nSub A\n  Dim Q(20)\n  S1(Q(15))\nEndSub\nSub B\n  Dim Q(5)\n  Q(1) = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    A\n    B\n  NextScan\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-divzero0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 1/0."
+  },
+  {
+   "id": "cr1000x-divzero0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 1/0."
+  },
+  {
+   "id": "cr300-divzero0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero1",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1 / 0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 1 / 0."
+  },
+  {
+   "id": "cr1000x-divzero1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1 / 0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 1 / 0."
+  },
+  {
+   "id": "cr300-divzero1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1 / 0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1 / 0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero2",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",(1/0),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: (1/0)."
+  },
+  {
+   "id": "cr1000x-divzero2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",(1/0),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: (1/0)."
+  },
+  {
+   "id": "cr300-divzero2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",(1/0),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",(1/0),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0+1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 1/0+1."
+  },
+  {
+   "id": "cr1000x-divzero3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0+1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 1/0+1."
+  },
+  {
+   "id": "cr6-divzero4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: -1/0."
+  },
+  {
+   "id": "cr1000x-divzero4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: -1/0."
+  },
+  {
+   "id": "cr300-divzero4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-divzero4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-1/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-divzero5",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",0/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 0/0."
+  },
+  {
+   "id": "cr1000x-divzero5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",0/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 0/0."
+  },
+  {
+   "id": "cr300-divzero5",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",0/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-divzero5",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",0/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-divzero6",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",K/(K-3),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: K/(K-3)."
+  },
+  {
+   "id": "cr1000x-divzero6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",K/(K-3),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: K/(K-3)."
+  },
+  {
+   "id": "cr300-divzero6",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",K/(K-3),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero6",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",K/(K-3),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero7",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 5/0."
+  },
+  {
+   "id": "cr1000x-divzero7",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Divide by zero in expression: 5/0."
+  },
+  {
+   "id": "cr300-divzero7",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero7",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero8",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr1000x-divzero8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr300-divzero8",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero8",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero9",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr1000x-divzero9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr300-divzero9",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-divzero9",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",1/0.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-divzero10",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-divzero10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-divzero10",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-divzero10",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic S(5) As String * 20, src As String * 100\nConst K = 3\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(S(),src,\",\",-2.5/0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
   }
  ]
 }

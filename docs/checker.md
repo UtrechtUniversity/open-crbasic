@@ -5471,3 +5471,14 @@ declarations visible at the statement (a routine's own locals over the globals, 
 routine parameter hides the name, so the check is skipped (a scalar parameter indexed `P(15)` is out of
 bounds on the real compiler, `Dimensions not declared` on CR300/CR350; not modelled).
 `_matrix_shapes` (declared exactly once only) and `structure.py`'s alias check were left as they are.
+
+`SplitStr(S(),src,",",1/0,0)` (a whole-array destination whose `Reps` divides by zero) crashed the
+checker (`ZeroDivisionError`, printed as `Internal error`); `consteval` now raises `DivideByZero`
+(a `NotConstant`) for a division by a zero divisor. Oracle (same fixture, `*-divzero*`): CR6/CR1000X print
+`Divide by zero in expression: <Reps text>.` for `1/0`, `1 / 0`, `(1/0)`, `1/0+1`, `-1/0`, `0/0`,
+`K/(K-3)` (`Const K = 3`); with a decimal point (`2.5/0`, `1/0.0`, `-2.5/0`) it is a plus or minus
+infinity: `Variable S out of bounds.` when positive, accepted when negative, on all four loggers.
+CR300/CR350 treat every integer form as infinity too (`1/0`, `5/0`, `K/(K-3)`: out of bounds; `0/0`,
+`-1/0`: accepted). Not modelled: `1/0+1` on CR300/CR350 (out of bounds on the real compiler, accepted
+here) and `SplitStr(S(1),...,1/0,...)` / other instructions' constant arguments (`x = 1/0` compiles).
+`5 MOD 0` page-faults the real compiler (no verdict).

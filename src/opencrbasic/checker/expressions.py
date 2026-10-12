@@ -2351,6 +2351,19 @@ def check_splitstr_whole_array(program: S.Program, profile, diags: Diagnostics, 
             continue
         try:
             reps = consteval.value_of(stmt.args[3], env)
+        except consteval.DivideByZero as exc:
+            # oracle, 2026-10-12: with integer operands CR6/CR1000X name the Reps expression (`1/0`,
+            # `1 / 0`, `(1/0)`, `1/0+1`, `-1/0`, `0/0`, `K/(K-3)`); every other case is a plus
+            # infinity (out of bounds, all four loggers: CR6/CR1000X `2.5/0`, `1/0.0`; CR300/CR350
+            # also `1/0`, `5/0`) when the Reps is itself `positive/0`, and `0/0`, `-1/0` compile on
+            # CR300/CR350. `1/0+1` on CR300/CR350 is out of bounds too (not modelled).
+            text = _arg_text(stmt, 3).strip()
+            if "." not in text and not profile.single_pass:
+                diags.error(stmt.line, f"Divide by zero in expression: {text}.", stmt.file)
+            elif isinstance(stmt.args[3], S.Binary) and stmt.args[3].op == "/" and \
+                    isinstance(exc.numerator, (int, float)) and exc.numerator > 0:
+                diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+            continue
         except consteval.NotConstant:
             continue
         if not isinstance(reps, int) or isinstance(reps, bool):

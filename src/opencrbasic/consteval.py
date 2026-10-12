@@ -25,6 +25,12 @@ class NotConstant(Exception):
     """Raised when an expression (or a name within it) has no compile-time value."""
 
 
+class DivideByZero(NotConstant):
+    """A `/` whose divisor folds to 0; `numerator` is the folded dividend. Every folded value is a
+    float, so a caller that must tell `1/0` from `1/0.0` looks at the source text."""
+    numerator: object = None
+
+
 class CFloat(float):
     """A `Const` value known to be float-typed."""
 
@@ -142,7 +148,17 @@ def value_of(expr: S.Expr | None, env: Env) -> object:
             return _truth(not _bool(v))
         raise NotConstant(f"unsupported unary operator {expr.op!r}")
     if isinstance(expr, S.Binary):
-        return _binary(expr.op, value_of(expr.left, env), value_of(expr.right, env))
+        left, right = value_of(expr.left, env), value_of(expr.right, env)
+        try:
+            return _binary(expr.op, left, right)
+        except (ZeroDivisionError, OverflowError) as exc:
+            # not foldable; only `/` is modelled (the real compiler reports it where an instruction
+            # argument is folded, `checker/expressions.py` `check_splitstr_whole_array`)
+            err = DivideByZero(f"{expr.op!r} cannot be folded: {exc}") if expr.op == "/" and \
+                isinstance(exc, ZeroDivisionError) else NotConstant(f"{expr.op!r}: {exc}")
+            if isinstance(err, DivideByZero):
+                err.numerator = left
+            raise err from exc
     if isinstance(expr, S.Index):
         fn = _BUILTINS.get(expr.name.upper())
         if fn is None:
