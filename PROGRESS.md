@@ -169,17 +169,11 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `r14_serialopen_txdelay_argos.json`, `r14_menupick_plain_const.json`,
   `r14_movebytes_cdm_insttimes_mqtt.json`, `r14_goes_argos_tcpopen.json` (and additions to
   `r14_semicolon.json`, `r14_trailing_dot_members.json`, `r14_abs_unclosed.json`).
-- In progress when the session ended (probed, NOT implemented): `Status.X` / `Public.X` member
-  READS of an unknown field are `Could not find Status.X(1).` (index echoed as its first
-  subscript, `(1)` when none; `Public.Nope(2)` likewise) on all four loggers, in assignments,
-  conditions and instruction arguments, once per access. Known-good reads: `Status.PakBusAddress`,
-  `StationName`, `SkippedSlowScan`, `SW12Volts(1)`, `LastSlowScan(1)` (all four);
-  `Status.CalGain(1)` compiles on CR6/CR1000X but not CR300/CR350; `Status.IPAddressEth` fails on
-  CR350 only. So the valid read set is the `SetStatus` list plus settings, per logger, with
-  exceptions: build it per logger from the compiler tables (`data/**/settings_fields.json` holds
-  the SetStatus/SetSetting names) and probe before enabling (false-reject risk). Also probed:
-  `RoutersNeighbors(D("fuzz"))` is `Destination variable cannot be indexed` on all four loggers.
-
+- Done after the hand-off: unknown `Status.X` / `Public.X` member reads (`docs/checker.md`
+  "Unknown `Status.X` / `Public.X` field reads", per-logger names `data/**/status_members.json`
+  from an oracle sweep; fixture `r14_status_public_reads.json`); `fuzz_replay` 2,016 exact, 33
+  false accepts. Probed, not implemented: `RoutersNeighbors(D("fuzz"))` is `Destination variable
+  cannot be indexed` on all four loggers.
 - Round 14 (2026-10-12) is integrated and pushed (`eaebfddd..6ca00592`). Reviews: local Opus
   `scratch/reviews/review-r14.md` (all HIGH findings fixed) and cloud reviewer
   `origin/reviews/r13-cloud` = `scratch/reviews/review-r13-cloud.md` (R13C-1..8 open, see Next
@@ -279,7 +273,7 @@ are in `docs/lsp-rounds/`.
    (it passed in the cloud container on 14072c8).
 2. Integrate `ocb-r14-followups/2330aa24` (see Resume here; the branch exists only on the Mac).
 3. Done in the cloud session: R13C-3..8 and R14C-1..6 (see Resume here).
-4. Status/Public member reads (see "In progress" in Resume here), then the 34 remaining fuzz false
+4. The 33 remaining fuzz false
    accepts (`fuzz_replay` "still false_accept" lines): storage limits and autoallocate (CR300/
    CR350), DNP3 rules, SNMP object ids, CDM port sets per device, FieldCal/Debug parameters,
    `RoutersNeighbors` string index.

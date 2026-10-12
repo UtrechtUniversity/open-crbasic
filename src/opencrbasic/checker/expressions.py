@@ -1143,6 +1143,44 @@ def _dotted_members(expr: S.Expr | None) -> list[tuple[str, S.Member | None]]:
     return []
 
 
+_TABLE_FIELDS = frozenset({"TIMESTAMP", "RECORD", "RECNUM"})
+
+
+def _unknown_status_member(m, profile) -> bool:
+    return not m.member[:1].isdigit() and bool(profile.status_members) and \
+        m.member.upper() not in profile.status_members
+
+
+def _unknown_public_member(m, variables: set[str]) -> bool:
+    return not m.member[:1].isdigit() and m.member.upper() not in variables | _TABLE_FIELDS
+
+
+def check_status_member_reads_late(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: an unknown `Status.X` / `Public.X` read (see `check_digit_members`) is reported
+    only in an otherwise clean file (oracle, 2026-10-12: a later `WatchdogTimer is not defined.`
+    hides `Status.CardBytesFree`); run from the late stage."""
+    if not profile.single_pass:
+        return
+    variables = {n for n in symbols.declared_variable_names(program)
+                 if not symbols.is_reserved_predefined_name(n, profile)}
+    for stmt in program.statements:
+        if isinstance(stmt, S.Assignment):
+            exprs, target = [stmt.target, stmt.value], len(_dotted_members(stmt.target))
+        elif isinstance(stmt, S.If):
+            exprs, target = [stmt.cond], 0
+        elif isinstance(stmt, (S.Instruction, S.Call)):
+            exprs, target = stmt.args, 0
+        else:
+            continue
+        for k, (base, m) in enumerate(mm for e in exprs for mm in _dotted_members(e)):
+            if m is None or k < target:
+                continue
+            if base.upper() == "STATUS" and _unknown_status_member(m, profile) or \
+                    base.upper() == "PUBLIC" and _unknown_public_member(m, variables):
+                diags.error(stmt.line, f"Could not find {base}.{m.member}{_member_index_text(m.args)}.",
+                            stmt.file)
+
+
 def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None:
     """A member of a declared name that no variable, data table or `Status` has (oracle, all four
     loggers, 2026-10-12, `docs/checker.md` "Digit-led members", "Letter-led members"):
@@ -1206,9 +1244,18 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
                 if upper not in data_tables:
                     lines.append(f"Could not find DataTable {base}." if profile.single_pass
                                  else f"Could not find {base}.")
+            elif upper == "STATUS" and k >= target and not profile.single_pass and \
+                    _unknown_status_member(m, profile):
+                # an unknown Status field read (`Y = Status.Nope`, `If Status.Nope`): oracle, all
+                # four loggers, 2026-10-12; the names: data/**/status_members.json
+                lines.append(f"Could not find Status.{m.member}{_member_index_text(m.args)}.")
             elif upper in data_tables:
                 if m.member[:1].isdigit():
                     lines.append(f"Could not find {base}.{m.member}{_member_index_text(m.args)}.")
+            elif upper == "PUBLIC" and k >= target and not profile.single_pass and \
+                    _unknown_public_member(m, variables):
+                # `Y = Public.Nope(2)` -> `Could not find Public.Nope(2).` (oracle, all four, 2026-10-12)
+                lines.append(f"Could not find Public.{m.member}{_member_index_text(m.args)}.")
             elif upper in variables:
                 lines.append(f"Could not find DataTable {base}." if profile.single_pass
                              else f"Could not find {base}.")

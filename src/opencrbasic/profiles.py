@@ -114,6 +114,12 @@ class Profile:
         return {r["name"].upper(): r for r in self._load("symbols")}
 
     @cached_property
+    def status_members(self) -> frozenset[str]:
+        """Upper-case `Status.<name>` read names (`data/**/status_members.json`); empty: unchecked."""
+        path = self.data_dir / "status_members.json"
+        return frozenset(json.loads(path.read_text())["names"]) if path.exists() else frozenset()
+
+    @cached_property
     def mode_rules(self) -> dict:
         """Sequential/PipelineMode trigger lists (`mode.py`, `docs/modes.md`)."""
         return json.loads((self.data_dir / "mode.json").read_text())

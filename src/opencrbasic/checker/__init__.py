@@ -500,6 +500,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, program, profile, bounds, env)
             _run_pass(instr_data.check_output_datatype, program, profile, bounds, env)
+            _run_pass(expressions.check_status_member_reads_late, program, profile, bounds)
             _run_pass(expressions.check_splitstr_whole_array, program, profile, bounds, env)
             _run_pass(expressions.check_splitstr_element_reps, program, profile, bounds, env)
             _run_pass(expressions.check_calibrate_size, program, profile, bounds, env)

@@ -1,0 +1,597 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-statusread-st-a1",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.PakBusAddress\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a1",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.PakBusAddress\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a1",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.PakBusAddress\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a1",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.PakBusAddress\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-st-a10",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope + Status.Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1).\nline 4: Could not find Status.Nope2(1)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a10",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope + Status.Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1).\nline 4: Could not find Status.Nope2(1)."
+  },
+  {
+   "id": "cr300-statusread-st-a10",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope + Status.Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1).\nline 4: Could not find Status.Nope2(1)."
+  },
+  {
+   "id": "cr350-statusread-st-a10",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope + Status.Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1).\nline 4: Could not find Status.Nope2(1)."
+  },
+  {
+   "id": "cr6-statusread-st-a11",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    If Status.Nope Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a11",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    If Status.Nope Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr300-statusread-st-a11",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    If Status.Nope Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr350-statusread-st-a11",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    If Status.Nope Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr6-statusread-st-a12",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Status.Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a12",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Status.Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr6-statusread-st-a13",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SW12Volts(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a13",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SW12Volts(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a13",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SW12Volts(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a13",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SW12Volts(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-st-a14",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.IPAddressEth\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a14",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.IPAddressEth\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a14",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.IPAddressEth\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a14",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.IPAddressEth\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.IPAddressEth(1)."
+  },
+  {
+   "id": "cr6-statusread-st-a15",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.LastSlowScan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a15",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.LastSlowScan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a15",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.LastSlowScan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a15",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.LastSlowScan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-st-a2",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.StationName\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a2",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.StationName\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a2",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.StationName\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a2",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.StationName\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-st-a3",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SkippedSlowScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a3",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SkippedSlowScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a3",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SkippedSlowScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a3",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.SkippedSlowScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-st-a4",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.CalGain(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a4",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.CalGain(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a4",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.CalGain(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.CalGain(1)."
+  },
+  {
+   "id": "cr350-statusread-st-a4",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.CalGain(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.CalGain(1)."
+  },
+  {
+   "id": "cr6-statusread-st-a5",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a5",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr300-statusread-st-a5",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr350-statusread-st-a5",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr6-statusread-st-a6",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a6",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr300-statusread-st-a6",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr350-statusread-st-a6",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(3,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(3)."
+  },
+  {
+   "id": "cr6-statusread-st-a7",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.nope(1)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a7",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.nope(1)."
+  },
+  {
+   "id": "cr300-statusread-st-a7",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.nope(1)."
+  },
+  {
+   "id": "cr350-statusread-st-a7",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.nope(1)."
+  },
+  {
+   "id": "cr6-statusread-st-a8",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-st-a8",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-st-a8",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-st-a8",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-st-a9",
+   "logger": "cr6",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(2)."
+  },
+  {
+   "id": "cr1000x-statusread-st-a9",
+   "logger": "cr1000x",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(2)."
+  },
+  {
+   "id": "cr300-statusread-st-a9",
+   "logger": "cr300",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(2)."
+  },
+  {
+   "id": "cr350-statusread-st-a9",
+   "logger": "cr350",
+   "source": "Public Y, S As String * 30, Z\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(2)."
+  },
+  {
+   "id": "cr6-statusread-rn-s1",
+   "logger": "cr6",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.TimeStampX(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.TimeStampX(1)."
+  },
+  {
+   "id": "cr1000x-statusread-rn-s1",
+   "logger": "cr1000x",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.TimeStampX(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.TimeStampX(1)."
+  },
+  {
+   "id": "cr300-statusread-rn-s1",
+   "logger": "cr300",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.TimeStampX(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.TimeStampX(1)."
+  },
+  {
+   "id": "cr350-statusread-rn-s1",
+   "logger": "cr350",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    S = Status.TimeStampX(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.TimeStampX(1)."
+  },
+  {
+   "id": "cr6-statusread-rn-s2",
+   "logger": "cr6",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr1000x-statusread-rn-s2",
+   "logger": "cr1000x",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr300-statusread-rn-s2",
+   "logger": "cr300",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr350-statusread-rn-s2",
+   "logger": "cr350",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr6-statusread-rn-s3",
+   "logger": "cr6",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr1000x-statusread-rn-s3",
+   "logger": "cr1000x",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr300-statusread-rn-s3",
+   "logger": "cr300",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr350-statusread-rn-s3",
+   "logger": "cr350",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Status.Nope(1)."
+  },
+  {
+   "id": "cr6-statusread-rn-s4",
+   "logger": "cr6",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-statusread-rn-s4",
+   "logger": "cr1000x",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-statusread-rn-s4",
+   "logger": "cr300",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-statusread-rn-s4",
+   "logger": "cr350",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-statusread-rn-s5",
+   "logger": "cr6",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(1)."
+  },
+  {
+   "id": "cr1000x-statusread-rn-s5",
+   "logger": "cr1000x",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(1)."
+  },
+  {
+   "id": "cr300-statusread-rn-s5",
+   "logger": "cr300",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(1)."
+  },
+  {
+   "id": "cr350-statusread-rn-s5",
+   "logger": "cr350",
+   "source": "Public D(4) As Long, S As String * 30, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Public.Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Public.Nope(1)."
+  },
+  {
+   "id": "cr6-statusread-sw-all",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n    Y = Status.Baudrate\n    Y = Status.BaudrateCOM1\n    Y = Status.BaudrateCOM2\n    Y = Status.BaudrateCOM3\n    Y = Status.BaudrateRS232\n    Y = Status.Beacon\n    Y = Status.BeaconCOM1\n    Y = Status.BeaconCOM2\n    Y = Status.BeaconCOM3\n    Y = Status.BeaconCOMRF\n    Y = Status.BeaconIP\n    Y = Status.BeaconRS232\n    Y = Status.BuffDepth\n    Y = Status.CalCurrent\n    Y = Status.CalGain\n    Y = Status.CalGainFast2500\n    Y = Status.CalGainFast34\n    Y = Status.CalGainMed2500\n    Y = Status.CalGainMed34\n    Y = Status.CalGainSlow2500\n    Y = Status.CalGainSlow34\n    Y = Status.CalOffset\n    Y = Status.CalRefOffset\n    Y = Status.CalRefSlope\n    Y = Status.CalVolts\n    Y = Status.CampbellCloudEnable\n    Y = Status.CardBytesFree\n    Y = Status.CardStatus\n    Y = Status.CellAPN\n    Y = Status.CellBillingDay\n    Y = Status.CellDiversity\n    Y = Status.CellECIO\n    Y = Status.CellEnabled\n    Y = Status.CellGNSS\n    Y = Status.CellInfo\n    Y = Status.CellIPProtocol\n    Y = Status.CellKeepAlive\n    Y = Status.CellKeepAliveTime\n    Y = Status.CellListNetOperators\n    Y = Status.CellModOTAUpdate\n    Y = Status.CellNetAccessTech\n    Y = Status.CellNetBand\n    Y = Status.CellNetCellID\n    Y = Status.CellNetOperator\n    Y = Status.CellOSUpdate\n    Y = Status.CellPDPAuth\n    Y = Status.CellPDPPassword\n    Y = Status.CellPDPUsername\n    Y = Status.CellPwrDuration\n    Y = Status.CellPwrRepeat\n    Y = Status.CellPwrStartTime\n    Y = Status.CellRoaming\n    Y = Status.CellRSRP\n    Y = Status.CellRSRQ\n    Y = Status.CellRSSI\n    Y = Status.CellState\n    Y = Status.CellStateInt\n    Y = Status.CellStatus\n    Y = Status.CellUsageLastMonth\n    Y = Status.CellUsageMonth\n    Y = Status.CellUsageToday\n    Y = Status.CellUsageYesterday\n    Y = Status.CentralRouters\n    Y = Status.CH400BatteryACapacity\n    Y = Status.CH400BatteryADoDReset\n    Y = Status.CH400BatteryAFamily\n    Y = Status.CH400BatteryAParallel\n    Y = Status.CH400BatteryBCapacity\n    Y = Status.CH400BatteryBDoDReset\n    Y = Status.CH400BatteryBFamily\n    Y = Status.CH400BatteryBParallel\n    Y = Status.CH400BoardRev\n    Y = Status.CH400EnableBatteryA\n    Y = Status.CH400EnableBatteryB\n    Y = Status.CH400EnableChargeA\n    Y = Status.CH400EnableChargeAMPPT\n    Y = Status.CH400EnableChargeB\n    Y = Status.CH400EnableChargeBMPPT\n    Y = Status.CH400InputCurrentLimit\n    Y = Status.CH400OSDate\n    Y = Status.CH400OSVersion\n    Y = Status.CH400SerialNumber\n    Y = Status.ChargeBatteryType\n    Y = Status.ChargeInput\n    Y = Status.ChargeState\n    Y = Status.CloudConfigURL\n    Y = Status.CommsMemAlloc\n    Y = Status.CommsMemFree\n    Y = Status.CompileDate\n    Y = Status.CompileResults\n    Y = Status.ConfigCom1\n    Y = Status.ConfigCom2\n    Y = Status.ConfigCom3\n    Y = Status.ConfigComC1\n    Y = Status.ConfigComC3\n    Y = Status.ConfigComC5\n    Y = Status.ConfigComC7\n    Y = Status.CPUDriveFree\n    Y = Status.CSIO1netEnable\n    Y = Status.CSIO2netEnable\n    Y = Status.CSIOInfo\n    Y = Status.DataStorageFree\n    Y = Status.DataStorageSize\n    Y = Status.DeleteCardFilesOnMismatch\n    Y = Status.DisableLithium\n    Y = Status.DNS\n    Y = Status.ErrorCalib\n    Y = Status.EthernetEnable\n    Y = Status.EthernetInfo\n    Y = Status.EthernetPower\n    Y = Status.FilesManager\n    Y = Status.FTPEnabled\n    Y = Status.FTPPassword\n    Y = Status.FTPPort\n    Y = Status.FTPUserName\n    Y = Status.FullMemReset\n    Y = Status.GNSSAlt\n    Y = Status.GNSSFix\n    Y = Status.GNSSLat\n    Y = Status.GNSSLon\n    Y = Status.GNSSNumSat\n    Y = Status.GNSSSuccessCnt\n    Y = Status.GNSSTime\n    Y = Status.GOESAltitude\n    Y = Status.GOESAntennaGain\n    Y = Status.GOESbatteryBeforeTx\n    Y = Status.GOESbatteryDuringTx\n    Y = Status.GOESComport\n    Y = Status.GOESCurrentbattery\n    Y = Status.GOESCurrenttemperature\n    Y = Status.GOESCurrentTxState\n    Y = Status.GOESdateTime\n    Y = Status.GOESDurationOfTransmit\n    Y = Status.GOESEnabled\n    Y = Status.GOESFailSafeIndicator\n    Y = Status.GOESForwardTxPower\n    Y = Status.GOESGainSetting\n    Y = Status.GOESGPSAcquisitionStatus\n    Y = Status.GOESGPSAntennaStatus\n    Y = Status.GOESid\n    Y = Status.GOESLastDatalength\n    Y = Status.GOESLastHDRFlagWord\n    Y = Status.GOESLastTxChannel\n    Y = Status.GOESLastTxControlFlags\n    Y = Status.GOESLastTxStartTime\n    Y = Status.GOESLastTypeCode\n    Y = Status.GOESLatitude\n    Y = Status.GOESLongitude\n    Y = Status.GOESMsgWindow\n    Y = Status.GOESNumberOfMissedGPS\n    Y = Status.GOESPlatformID\n    Y = Status.GOESReflectedRfPower\n    Y = Status.GOESRepeatCount\n    Y = Status.GOESRTBaudRate\n    Y = Status.GOESRTChannel\n    Y = Status.GOESRTInterval\n    Y = Status.GOESSTBaudRate\n    Y = Status.GOESSTChannel\n    Y = Status.GOESSTInterval\n    Y = Status.GOESSTOffset\n    Y = Status.GOEStemperatureBeforeTx\n    Y = Status.GOESTimeLastGPSPosition\n    Y = Status.GOESTimeLastMissedGPSFix\n    Y = Status.GOESTxResultCode\n    Y = Status.GOESversion\n    Y = Status.GOESVSWR\n    Y = Status.HTTPEnabled\n    Y = Status.HTTPHeader\n    Y = Status.HTTPPort\n    Y = Status.HTTPSEnabled\n    Y = Status.HTTPSPort\n    Y = Status.IncludeFile\n    Y = Status.IPAddressCSIO\n    Y = Status.IPAddressEth\n    Y = Status.IPAddressUSB\n    Y = Status.IPAddressWiFi\n    Y = Status.IPGateway\n    Y = Status.IPGatewayCSIO\n    Y = Status.IPGatewayWiFi\n    Y = Status.IPInfo\n    Y = Status.IPMaskCSIO\n    Y = Status.IPMaskEth\n    Y = Status.IPMaskEthWiFi\n    Y = Status.IPMaskWiFi\n    Y = Status.IPTraceCode\n    Y = Status.IPTraceComport\n    Y = Status.IsRouter\n    Y = Status.IxResistor\n    Y = Status.KeepAliveMin\n    Y = Status.KeepAliveURL\n    Y = Status.LastSlowScan\n    Y = Status.LastSystemScan\n    Y = Status.LithiumBattery\n    Y = Status.Low12VCount\n    Y = Status.MaxBuffDepth\n    Y = Status.MaxPacketSize\n    Y = Status.MaxProcTime\n    Y = Status.MaxSlowProcTime\n    Y = Status.MaxSystemProcTime\n    Y = Status.MeasureOps\n    Y = Status.MeasureTime\n    Y = Status.MemoryFree\n    Y = Status.MemorySize\n    Y = Status.Messages\n    Y = Status.Model\n    Y = Status.MQTTAutoPublish\n    Y = Status.MQTTBackfillMode\n    Y = Status.MQTTBaseTopic\n    Y = Status.MQTTCleanSession\n    Y = Status.MQTTClientID\n    Y = Status.MQTTEnable\n    Y = Status.MQTTEndpoint\n    Y = Status.MQTTKeepAlive\n    Y = Status.MQTTPassword\n    Y = Status.MQTTPortNumber\n    Y = Status.MQTTState\n    Y = Status.MQTTStateInterval\n    Y = Status.MQTTStatusInterval\n    Y = Status.MQTTUserName\n    Y = Status.MQTTWillMessage\n    Y = Status.MQTTWillQoS\n    Y = Status.MQTTWillRetain\n    Y = Status.MQTTWillTopic\n    Y = Status.Neighbors\n    Y = Status.Nope\n    Y = Status.NTPServer\n    Y = Status.OSDate\n    Y = Status.OSSignature\n    Y = Status.OSUpdate\n    Y = Status.OSVersion\n    Y = Status.PakBusAddress\n    Y = Status.PakBusEncryptionKey\n    Y = Status.PakBusNodes\n    Y = Status.PakBusPort\n    Y = Status.PakBusRoutes\n    Y = Status.PakBusTCPClients\n    Y = Status.PakBusTCPEnabled\n    Y = Status.PakBusTCPPassword\n    Y = Status.PakbusWebEnabled\n    Y = Status.PakBusWebHandle\n    Y = Status.PakBusWebHost\n    Y = Status.PakBusWebURL\n    Y = Status.PanelTemp\n    Y = Status.PCAP\n    Y = Status.PingEnabled\n    Y = Status.PortConfig\n    Y = Status.PortStatus\n    Y = Status.PowerSource\n    Y = Status.pppDial\n    Y = Status.pppDialResponse\n    Y = Status.PPPInfo\n    Y = Status.pppInterface\n    Y = Status.pppIPAddr\n    Y = Status.pppIPMask\n    Y = Status.pppPassword\n    Y = Status.pppUsername\n    Y = Status.ProcessTime\n    Y = Status.ProgErrors\n    Y = Status.ProgName\n    Y = Status.ProgSignature\n    Y = Status.RadioAvailFreq\n    Y = Status.RadioCarrier\n    Y = Status.RadioChanMask\n    Y = Status.RadioDataRate\n    Y = Status.RadioDiag\n    Y = Status.RadioEnable\n    Y = Status.RadioEnabled\n    Y = Status.RadioEndPointRepeat\n    Y = Status.RadioEndPointRetry\n    Y = Status.RadioFirmwareVer\n    Y = Status.RadioFreqKey\n    Y = Status.RadioFreqRepeat\n    Y = Status.RadioFreqZone\n    Y = Status.RadioHopSeq\n    Y = Status.RadioHopSize\n    Y = Status.RadioHopVersion\n    Y = Status.RadioLowPwr\n    Y = Status.RadioMAC\n    Y = Status.RadioMaxPacket\n    Y = Status.RadioMGSync\n    Y = Status.RadioMinPacket\n    Y = Status.RadioModel\n    Y = Status.RadioModOS\n    Y = Status.RadioModuleVer\n    Y = Status.RadioNetID\n    Y = Status.RadioOpMode\n    Y = Status.RadioOS\n    Y = Status.RadioPacketRepeat\n    Y = Status.RadioProtocol\n    Y = Status.RadioPwrMode\n    Y = Status.RadioRepeaters\n    Y = Status.RadioRetries\n    Y = Status.RadioRetryOdds\n    Y = Status.RadioRetryTimeout\n    Y = Status.RadioRSSI\n    Y = Status.RadioRSSIAddr\n    Y = Status.RadioRxSubID\n    Y = Status.RadioSerialNum\n    Y = Status.RadioStats\n    Y = Status.RadioTxLevel\n    Y = Status.RadioTxPwr\n    Y = Status.RadioTxRate\n    Y = Status.RadioTxSubID\n    Y = Status.RadioVersion\n    Y = Status.RecipeStatus\n    Y = Status.RecNum\n    Y = Status.Record\n    Y = Status.RevBoard\n    Y = Status.RouteFilters\n    Y = Status.RS232Handshaking\n    Y = Status.RS232Power\n    Y = Status.RS232Timeout\n    Y = Status.RunSignature\n    Y = Status.SDCInfo\n    Y = Status.Security\n    Y = Status.SerialFlashErrors\n    Y = Status.SerialNumber\n    Y = Status.SFTPPrivateKey\n    Y = Status.SFTPPublicKey\n    Y = Status.SkipPakBusRing\n    Y = Status.SkippedScan\n    Y = Status.SkippedSlowScan\n    Y = Status.SkippedSystemScan\n    Y = Status.SlowProcTime\n    Y = Status.StartTime\n    Y = Status.StartUpCode\n    Y = Status.StationName\n    Y = Status.SW12CSIO\n    Y = Status.SW12Volts\n    Y = Status.SystemProcTime\n    Y = Status.TCPMSS\n    Y = Status.TCPPort\n    Y = Status.TelnetEnabled\n    Y = Status.Timestamp\n    Y = Status.TLSCertificate\n    Y = Status.TLSConnections\n    Y = Status.TLSPassword\n    Y = Status.TLSPrivateKey\n    Y = Status.TLSRootCA\n    Y = Status.TLSstatus\n    Y = Status.TrustedHosts\n    Y = Status.UDPBroadcastFilter\n    Y = Status.UID\n    Y = Status.USBconfig\n    Y = Status.USBDisable\n    Y = Status.USBEnumerate\n    Y = Status.USBNotTrusted\n    Y = Status.USBVCPOnly\n    Y = Status.UserStr\n    Y = Status.UserVal\n    Y = Status.USRDriveFree\n    Y = Status.USRDriveSize\n    Y = Status.UTCOffset\n    Y = Status.VarOutOfBound\n    Y = Status.Verify\n    Y = Status.VerifyCOM1\n    Y = Status.VerifyCOM2\n    Y = Status.VerifyCOM3\n    Y = Status.VerifyCOMRF\n    Y = Status.VerifyIP\n    Y = Status.VerifyRS232\n    Y = Status.Version\n    Y = Status.WatchdogErrors\n    Y = Status.WiFiChannel\n    Y = Status.WiFiConfig\n    Y = Status.WiFiEapMethod\n    Y = Status.WiFiEapPassword\n    Y = Status.WiFiEapUser\n    Y = Status.WiFiFwdCode\n    Y = Status.WiFiNetworks\n    Y = Status.WiFiPassword\n    Y = Status.WiFiPowerMode\n    Y = Status.WiFiRegion\n    Y = Status.WiFiSSID\n    Y = Status.WiFiStatus\n    Y = Status.WiFiTxPowerLevel\n    Y = Status.WiFiUpdateReq\n    Y = Status.WLANDomainName\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find Status.BaudrateCOM1(1).\nline 7: Could not find Status.BaudrateCOM2(1).\nline 8: Could not find Status.BaudrateCOM3(1).\nline 9: Could not find Status.BaudrateRS232(1).\nline 11: Could not find Status.BeaconCOM1(1).\nline 12: Could not find Status.BeaconCOM2(1).\nline 13: Could not find Status.BeaconCOM3(1).\nline 14: Could not find Status.BeaconCOMRF(1).\nline 15: Could not find Status.BeaconIP(1).\nline 16: Could not find Status.BeaconRS232(1).\nline 20: Could not find Status.CalGainFast2500(1).\nline 21: Could not find Status.CalGainFast34(1).\nline 22: Could not find Status.CalGainMed2500(1).\nline 23: Could not find Status.CalGainMed34(1).\nline 24: Could not find Status.CalGainSlow2500(1).\nline 25: Could not find Status.CalGainSlow34(1).\nline 37: Could not find Status.CellEnabled(1).\nline 38: Could not find Status.CellGNSS(1).\nline 41: Could not find Status.CellKeepAlive(1).\nline 42: Could not find Status.CellKeepAliveTime(1).\nline 43: Could not find Status.CellListNetOperators(1).\nline 45: Could not find Status.CellNetAccessTech(1).\nline 48: Could not find Status.CellNetOperator(1).\nline 50: Could not find Status.CellPDPAuth(1).\nline 51: Could not find Status.CellPDPPassword(1).\nline 52: Could not find Status.CellPDPUsername(1).\nline 87: Could not find Status.ChargeBatteryType(1).\nline 93: Could not find Status.CompileDate(1).\nline 95: Could not find Status.ConfigCom1(1).\nline 96: Could not find Status.ConfigCom2(1).\nline 97: Could not find Status.ConfigCom3(1).\nline 100: Could not find Status.ConfigComC5(1).\nline 101: Could not find Status.ConfigComC7(1).\nline 106: Could not find Status.DataStorageFree(1).\nline 107: Could not find Status.DataStorageSize(1).\nline 121: Could not find Status.GNSSAlt(1).\nline 122: Could not find Status.GNSSFix(1).\nline 123: Could not find Status.GNSSLat(1).\nline 124: Could not find Status.GNSSLon(1).\nline 125: Could not find Status.GNSSNumSat(1).\nline 126: Could not find Status.GNSSSuccessCnt(1).\nline 127: Could not find Status.GNSSTime(1).\nline 184: Could not find Status.IPInfo(1).\nline 187: Could not find Status.IPMaskEthWiFi(1).\nline 209: Could not find Status.Model(1).\nline 229: Could not find Status.Nope(1).\nline 233: Could not find Status.OSUpdate(1).\nline 237: Could not find Status.PakBusNodes(1).\nline 241: Could not find Status.PakBusTCPEnabled(1).\nline 271: Could not find Status.RadioEnabled(1).\nline 310: Could not find Status.RecNum(1).\nline 320: Could not find Status.SerialFlashErrors(1).\nline 332: Could not find Status.SW12CSIO(1).\nline 336: Could not find Status.TCPPort(1).\nline 348: Could not find Status.USBconfig(1).\nline 353: Could not find Status.UserStr(1).\nline 354: Could not find Status.UserVal(1).\nline 360: Could not find Status.VerifyCOM1(1).\nline 361: Could not find Status.VerifyCOM2(1).\nline 362: Could not find Status.VerifyCOM3(1).\nline 363: Could not find Status.VerifyCOMRF(1).\nline 364: Could not find Status.VerifyIP(1).\nline 365: Could not find Status.VerifyRS232(1).\nline 366: Could not find Status.Version(1).\nline 381: Could not find Status.WiFiUpdateReq(1)."
+  },
+  {
+   "id": "cr1000x-statusread-sw-all",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n    Y = Status.Baudrate\n    Y = Status.BaudrateCOM1\n    Y = Status.BaudrateCOM2\n    Y = Status.BaudrateCOM3\n    Y = Status.BaudrateRS232\n    Y = Status.Beacon\n    Y = Status.BeaconCOM1\n    Y = Status.BeaconCOM2\n    Y = Status.BeaconCOM3\n    Y = Status.BeaconCOMRF\n    Y = Status.BeaconIP\n    Y = Status.BeaconRS232\n    Y = Status.BuffDepth\n    Y = Status.CalCurrent\n    Y = Status.CalGain\n    Y = Status.CalGainFast2500\n    Y = Status.CalGainFast34\n    Y = Status.CalGainMed2500\n    Y = Status.CalGainMed34\n    Y = Status.CalGainSlow2500\n    Y = Status.CalGainSlow34\n    Y = Status.CalOffset\n    Y = Status.CalRefOffset\n    Y = Status.CalRefSlope\n    Y = Status.CalVolts\n    Y = Status.CampbellCloudEnable\n    Y = Status.CardBytesFree\n    Y = Status.CardStatus\n    Y = Status.CellAPN\n    Y = Status.CellBillingDay\n    Y = Status.CellDiversity\n    Y = Status.CellECIO\n    Y = Status.CellEnabled\n    Y = Status.CellGNSS\n    Y = Status.CellInfo\n    Y = Status.CellIPProtocol\n    Y = Status.CellKeepAlive\n    Y = Status.CellKeepAliveTime\n    Y = Status.CellListNetOperators\n    Y = Status.CellModOTAUpdate\n    Y = Status.CellNetAccessTech\n    Y = Status.CellNetBand\n    Y = Status.CellNetCellID\n    Y = Status.CellNetOperator\n    Y = Status.CellOSUpdate\n    Y = Status.CellPDPAuth\n    Y = Status.CellPDPPassword\n    Y = Status.CellPDPUsername\n    Y = Status.CellPwrDuration\n    Y = Status.CellPwrRepeat\n    Y = Status.CellPwrStartTime\n    Y = Status.CellRoaming\n    Y = Status.CellRSRP\n    Y = Status.CellRSRQ\n    Y = Status.CellRSSI\n    Y = Status.CellState\n    Y = Status.CellStateInt\n    Y = Status.CellStatus\n    Y = Status.CellUsageLastMonth\n    Y = Status.CellUsageMonth\n    Y = Status.CellUsageToday\n    Y = Status.CellUsageYesterday\n    Y = Status.CentralRouters\n    Y = Status.CH400BatteryACapacity\n    Y = Status.CH400BatteryADoDReset\n    Y = Status.CH400BatteryAFamily\n    Y = Status.CH400BatteryAParallel\n    Y = Status.CH400BatteryBCapacity\n    Y = Status.CH400BatteryBDoDReset\n    Y = Status.CH400BatteryBFamily\n    Y = Status.CH400BatteryBParallel\n    Y = Status.CH400BoardRev\n    Y = Status.CH400EnableBatteryA\n    Y = Status.CH400EnableBatteryB\n    Y = Status.CH400EnableChargeA\n    Y = Status.CH400EnableChargeAMPPT\n    Y = Status.CH400EnableChargeB\n    Y = Status.CH400EnableChargeBMPPT\n    Y = Status.CH400InputCurrentLimit\n    Y = Status.CH400OSDate\n    Y = Status.CH400OSVersion\n    Y = Status.CH400SerialNumber\n    Y = Status.ChargeBatteryType\n    Y = Status.ChargeInput\n    Y = Status.ChargeState\n    Y = Status.CloudConfigURL\n    Y = Status.CommsMemAlloc\n    Y = Status.CommsMemFree\n    Y = Status.CompileDate\n    Y = Status.CompileResults\n    Y = Status.ConfigCom1\n    Y = Status.ConfigCom2\n    Y = Status.ConfigCom3\n    Y = Status.ConfigComC1\n    Y = Status.ConfigComC3\n    Y = Status.ConfigComC5\n    Y = Status.ConfigComC7\n    Y = Status.CPUDriveFree\n    Y = Status.CSIO1netEnable\n    Y = Status.CSIO2netEnable\n    Y = Status.CSIOInfo\n    Y = Status.DataStorageFree\n    Y = Status.DataStorageSize\n    Y = Status.DeleteCardFilesOnMismatch\n    Y = Status.DisableLithium\n    Y = Status.DNS\n    Y = Status.ErrorCalib\n    Y = Status.EthernetEnable\n    Y = Status.EthernetInfo\n    Y = Status.EthernetPower\n    Y = Status.FilesManager\n    Y = Status.FTPEnabled\n    Y = Status.FTPPassword\n    Y = Status.FTPPort\n    Y = Status.FTPUserName\n    Y = Status.FullMemReset\n    Y = Status.GNSSAlt\n    Y = Status.GNSSFix\n    Y = Status.GNSSLat\n    Y = Status.GNSSLon\n    Y = Status.GNSSNumSat\n    Y = Status.GNSSSuccessCnt\n    Y = Status.GNSSTime\n    Y = Status.GOESAltitude\n    Y = Status.GOESAntennaGain\n    Y = Status.GOESbatteryBeforeTx\n    Y = Status.GOESbatteryDuringTx\n    Y = Status.GOESComport\n    Y = Status.GOESCurrentbattery\n    Y = Status.GOESCurrenttemperature\n    Y = Status.GOESCurrentTxState\n    Y = Status.GOESdateTime\n    Y = Status.GOESDurationOfTransmit\n    Y = Status.GOESEnabled\n    Y = Status.GOESFailSafeIndicator\n    Y = Status.GOESForwardTxPower\n    Y = Status.GOESGainSetting\n    Y = Status.GOESGPSAcquisitionStatus\n    Y = Status.GOESGPSAntennaStatus\n    Y = Status.GOESid\n    Y = Status.GOESLastDatalength\n    Y = Status.GOESLastHDRFlagWord\n    Y = Status.GOESLastTxChannel\n    Y = Status.GOESLastTxControlFlags\n    Y = Status.GOESLastTxStartTime\n    Y = Status.GOESLastTypeCode\n    Y = Status.GOESLatitude\n    Y = Status.GOESLongitude\n    Y = Status.GOESMsgWindow\n    Y = Status.GOESNumberOfMissedGPS\n    Y = Status.GOESPlatformID\n    Y = Status.GOESReflectedRfPower\n    Y = Status.GOESRepeatCount\n    Y = Status.GOESRTBaudRate\n    Y = Status.GOESRTChannel\n    Y = Status.GOESRTInterval\n    Y = Status.GOESSTBaudRate\n    Y = Status.GOESSTChannel\n    Y = Status.GOESSTInterval\n    Y = Status.GOESSTOffset\n    Y = Status.GOEStemperatureBeforeTx\n    Y = Status.GOESTimeLastGPSPosition\n    Y = Status.GOESTimeLastMissedGPSFix\n    Y = Status.GOESTxResultCode\n    Y = Status.GOESversion\n    Y = Status.GOESVSWR\n    Y = Status.HTTPEnabled\n    Y = Status.HTTPHeader\n    Y = Status.HTTPPort\n    Y = Status.HTTPSEnabled\n    Y = Status.HTTPSPort\n    Y = Status.IncludeFile\n    Y = Status.IPAddressCSIO\n    Y = Status.IPAddressEth\n    Y = Status.IPAddressUSB\n    Y = Status.IPAddressWiFi\n    Y = Status.IPGateway\n    Y = Status.IPGatewayCSIO\n    Y = Status.IPGatewayWiFi\n    Y = Status.IPInfo\n    Y = Status.IPMaskCSIO\n    Y = Status.IPMaskEth\n    Y = Status.IPMaskEthWiFi\n    Y = Status.IPMaskWiFi\n    Y = Status.IPTraceCode\n    Y = Status.IPTraceComport\n    Y = Status.IsRouter\n    Y = Status.IxResistor\n    Y = Status.KeepAliveMin\n    Y = Status.KeepAliveURL\n    Y = Status.LastSlowScan\n    Y = Status.LastSystemScan\n    Y = Status.LithiumBattery\n    Y = Status.Low12VCount\n    Y = Status.MaxBuffDepth\n    Y = Status.MaxPacketSize\n    Y = Status.MaxProcTime\n    Y = Status.MaxSlowProcTime\n    Y = Status.MaxSystemProcTime\n    Y = Status.MeasureOps\n    Y = Status.MeasureTime\n    Y = Status.MemoryFree\n    Y = Status.MemorySize\n    Y = Status.Messages\n    Y = Status.Model\n    Y = Status.MQTTAutoPublish\n    Y = Status.MQTTBackfillMode\n    Y = Status.MQTTBaseTopic\n    Y = Status.MQTTCleanSession\n    Y = Status.MQTTClientID\n    Y = Status.MQTTEnable\n    Y = Status.MQTTEndpoint\n    Y = Status.MQTTKeepAlive\n    Y = Status.MQTTPassword\n    Y = Status.MQTTPortNumber\n    Y = Status.MQTTState\n    Y = Status.MQTTStateInterval\n    Y = Status.MQTTStatusInterval\n    Y = Status.MQTTUserName\n    Y = Status.MQTTWillMessage\n    Y = Status.MQTTWillQoS\n    Y = Status.MQTTWillRetain\n    Y = Status.MQTTWillTopic\n    Y = Status.Neighbors\n    Y = Status.Nope\n    Y = Status.NTPServer\n    Y = Status.OSDate\n    Y = Status.OSSignature\n    Y = Status.OSUpdate\n    Y = Status.OSVersion\n    Y = Status.PakBusAddress\n    Y = Status.PakBusEncryptionKey\n    Y = Status.PakBusNodes\n    Y = Status.PakBusPort\n    Y = Status.PakBusRoutes\n    Y = Status.PakBusTCPClients\n    Y = Status.PakBusTCPEnabled\n    Y = Status.PakBusTCPPassword\n    Y = Status.PakbusWebEnabled\n    Y = Status.PakBusWebHandle\n    Y = Status.PakBusWebHost\n    Y = Status.PakBusWebURL\n    Y = Status.PanelTemp\n    Y = Status.PCAP\n    Y = Status.PingEnabled\n    Y = Status.PortConfig\n    Y = Status.PortStatus\n    Y = Status.PowerSource\n    Y = Status.pppDial\n    Y = Status.pppDialResponse\n    Y = Status.PPPInfo\n    Y = Status.pppInterface\n    Y = Status.pppIPAddr\n    Y = Status.pppIPMask\n    Y = Status.pppPassword\n    Y = Status.pppUsername\n    Y = Status.ProcessTime\n    Y = Status.ProgErrors\n    Y = Status.ProgName\n    Y = Status.ProgSignature\n    Y = Status.RadioAvailFreq\n    Y = Status.RadioCarrier\n    Y = Status.RadioChanMask\n    Y = Status.RadioDataRate\n    Y = Status.RadioDiag\n    Y = Status.RadioEnable\n    Y = Status.RadioEnabled\n    Y = Status.RadioEndPointRepeat\n    Y = Status.RadioEndPointRetry\n    Y = Status.RadioFirmwareVer\n    Y = Status.RadioFreqKey\n    Y = Status.RadioFreqRepeat\n    Y = Status.RadioFreqZone\n    Y = Status.RadioHopSeq\n    Y = Status.RadioHopSize\n    Y = Status.RadioHopVersion\n    Y = Status.RadioLowPwr\n    Y = Status.RadioMAC\n    Y = Status.RadioMaxPacket\n    Y = Status.RadioMGSync\n    Y = Status.RadioMinPacket\n    Y = Status.RadioModel\n    Y = Status.RadioModOS\n    Y = Status.RadioModuleVer\n    Y = Status.RadioNetID\n    Y = Status.RadioOpMode\n    Y = Status.RadioOS\n    Y = Status.RadioPacketRepeat\n    Y = Status.RadioProtocol\n    Y = Status.RadioPwrMode\n    Y = Status.RadioRepeaters\n    Y = Status.RadioRetries\n    Y = Status.RadioRetryOdds\n    Y = Status.RadioRetryTimeout\n    Y = Status.RadioRSSI\n    Y = Status.RadioRSSIAddr\n    Y = Status.RadioRxSubID\n    Y = Status.RadioSerialNum\n    Y = Status.RadioStats\n    Y = Status.RadioTxLevel\n    Y = Status.RadioTxPwr\n    Y = Status.RadioTxRate\n    Y = Status.RadioTxSubID\n    Y = Status.RadioVersion\n    Y = Status.RecipeStatus\n    Y = Status.RecNum\n    Y = Status.Record\n    Y = Status.RevBoard\n    Y = Status.RouteFilters\n    Y = Status.RS232Handshaking\n    Y = Status.RS232Power\n    Y = Status.RS232Timeout\n    Y = Status.RunSignature\n    Y = Status.SDCInfo\n    Y = Status.Security\n    Y = Status.SerialFlashErrors\n    Y = Status.SerialNumber\n    Y = Status.SFTPPrivateKey\n    Y = Status.SFTPPublicKey\n    Y = Status.SkipPakBusRing\n    Y = Status.SkippedScan\n    Y = Status.SkippedSlowScan\n    Y = Status.SkippedSystemScan\n    Y = Status.SlowProcTime\n    Y = Status.StartTime\n    Y = Status.StartUpCode\n    Y = Status.StationName\n    Y = Status.SW12CSIO\n    Y = Status.SW12Volts\n    Y = Status.SystemProcTime\n    Y = Status.TCPMSS\n    Y = Status.TCPPort\n    Y = Status.TelnetEnabled\n    Y = Status.Timestamp\n    Y = Status.TLSCertificate\n    Y = Status.TLSConnections\n    Y = Status.TLSPassword\n    Y = Status.TLSPrivateKey\n    Y = Status.TLSRootCA\n    Y = Status.TLSstatus\n    Y = Status.TrustedHosts\n    Y = Status.UDPBroadcastFilter\n    Y = Status.UID\n    Y = Status.USBconfig\n    Y = Status.USBDisable\n    Y = Status.USBEnumerate\n    Y = Status.USBNotTrusted\n    Y = Status.USBVCPOnly\n    Y = Status.UserStr\n    Y = Status.UserVal\n    Y = Status.USRDriveFree\n    Y = Status.USRDriveSize\n    Y = Status.UTCOffset\n    Y = Status.VarOutOfBound\n    Y = Status.Verify\n    Y = Status.VerifyCOM1\n    Y = Status.VerifyCOM2\n    Y = Status.VerifyCOM3\n    Y = Status.VerifyCOMRF\n    Y = Status.VerifyIP\n    Y = Status.VerifyRS232\n    Y = Status.Version\n    Y = Status.WatchdogErrors\n    Y = Status.WiFiChannel\n    Y = Status.WiFiConfig\n    Y = Status.WiFiEapMethod\n    Y = Status.WiFiEapPassword\n    Y = Status.WiFiEapUser\n    Y = Status.WiFiFwdCode\n    Y = Status.WiFiNetworks\n    Y = Status.WiFiPassword\n    Y = Status.WiFiPowerMode\n    Y = Status.WiFiRegion\n    Y = Status.WiFiSSID\n    Y = Status.WiFiStatus\n    Y = Status.WiFiTxPowerLevel\n    Y = Status.WiFiUpdateReq\n    Y = Status.WLANDomainName\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find Status.BaudrateCOM1(1).\nline 7: Could not find Status.BaudrateCOM2(1).\nline 8: Could not find Status.BaudrateCOM3(1).\nline 9: Could not find Status.BaudrateRS232(1).\nline 11: Could not find Status.BeaconCOM1(1).\nline 12: Could not find Status.BeaconCOM2(1).\nline 13: Could not find Status.BeaconCOM3(1).\nline 14: Could not find Status.BeaconCOMRF(1).\nline 15: Could not find Status.BeaconIP(1).\nline 16: Could not find Status.BeaconRS232(1).\nline 20: Could not find Status.CalGainFast2500(1).\nline 21: Could not find Status.CalGainFast34(1).\nline 22: Could not find Status.CalGainMed2500(1).\nline 23: Could not find Status.CalGainMed34(1).\nline 24: Could not find Status.CalGainSlow2500(1).\nline 25: Could not find Status.CalGainSlow34(1).\nline 37: Could not find Status.CellEnabled(1).\nline 38: Could not find Status.CellGNSS(1).\nline 41: Could not find Status.CellKeepAlive(1).\nline 42: Could not find Status.CellKeepAliveTime(1).\nline 43: Could not find Status.CellListNetOperators(1).\nline 45: Could not find Status.CellNetAccessTech(1).\nline 48: Could not find Status.CellNetOperator(1).\nline 50: Could not find Status.CellPDPAuth(1).\nline 51: Could not find Status.CellPDPPassword(1).\nline 52: Could not find Status.CellPDPUsername(1).\nline 87: Could not find Status.ChargeBatteryType(1).\nline 88: Could not find Status.ChargeInput(1).\nline 89: Could not find Status.ChargeState(1).\nline 93: Could not find Status.CompileDate(1).\nline 95: Could not find Status.ConfigCom1(1).\nline 96: Could not find Status.ConfigCom2(1).\nline 97: Could not find Status.ConfigCom3(1).\nline 106: Could not find Status.DataStorageFree(1).\nline 107: Could not find Status.DataStorageSize(1).\nline 121: Could not find Status.GNSSAlt(1).\nline 122: Could not find Status.GNSSFix(1).\nline 123: Could not find Status.GNSSLat(1).\nline 124: Could not find Status.GNSSLon(1).\nline 125: Could not find Status.GNSSNumSat(1).\nline 126: Could not find Status.GNSSSuccessCnt(1).\nline 127: Could not find Status.GNSSTime(1).\nline 184: Could not find Status.IPInfo(1).\nline 187: Could not find Status.IPMaskEthWiFi(1).\nline 192: Could not find Status.IxResistor(1).\nline 209: Could not find Status.Model(1).\nline 229: Could not find Status.Nope(1).\nline 233: Could not find Status.OSUpdate(1).\nline 237: Could not find Status.PakBusNodes(1).\nline 241: Could not find Status.PakBusTCPEnabled(1).\nline 252: Could not find Status.PowerSource(1).\nline 271: Could not find Status.RadioEnabled(1).\nline 310: Could not find Status.RecNum(1).\nline 320: Could not find Status.SerialFlashErrors(1).\nline 336: Could not find Status.TCPPort(1).\nline 348: Could not find Status.USBconfig(1).\nline 353: Could not find Status.UserStr(1).\nline 354: Could not find Status.UserVal(1).\nline 360: Could not find Status.VerifyCOM1(1).\nline 361: Could not find Status.VerifyCOM2(1).\nline 362: Could not find Status.VerifyCOM3(1).\nline 363: Could not find Status.VerifyCOMRF(1).\nline 364: Could not find Status.VerifyIP(1).\nline 365: Could not find Status.VerifyRS232(1).\nline 366: Could not find Status.Version(1).\nline 381: Could not find Status.WiFiUpdateReq(1)."
+  },
+  {
+   "id": "cr300-statusread-sw-all",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n    Y = Status.Baudrate\n    Y = Status.BaudrateCOM1\n    Y = Status.BaudrateCOM2\n    Y = Status.BaudrateCOM3\n    Y = Status.BaudrateRS232\n    Y = Status.Beacon\n    Y = Status.BeaconCOM1\n    Y = Status.BeaconCOM2\n    Y = Status.BeaconCOM3\n    Y = Status.BeaconCOMRF\n    Y = Status.BeaconIP\n    Y = Status.BeaconRS232\n    Y = Status.BuffDepth\n    Y = Status.CalCurrent\n    Y = Status.CalGain\n    Y = Status.CalGainFast2500\n    Y = Status.CalGainFast34\n    Y = Status.CalGainMed2500\n    Y = Status.CalGainMed34\n    Y = Status.CalGainSlow2500\n    Y = Status.CalGainSlow34\n    Y = Status.CalOffset\n    Y = Status.CalRefOffset\n    Y = Status.CalRefSlope\n    Y = Status.CalVolts\n    Y = Status.CampbellCloudEnable\n    Y = Status.CardBytesFree\n    Y = Status.CardStatus\n    Y = Status.CellAPN\n    Y = Status.CellBillingDay\n    Y = Status.CellDiversity\n    Y = Status.CellECIO\n    Y = Status.CellEnabled\n    Y = Status.CellGNSS\n    Y = Status.CellInfo\n    Y = Status.CellIPProtocol\n    Y = Status.CellKeepAlive\n    Y = Status.CellKeepAliveTime\n    Y = Status.CellListNetOperators\n    Y = Status.CellModOTAUpdate\n    Y = Status.CellNetAccessTech\n    Y = Status.CellNetBand\n    Y = Status.CellNetCellID\n    Y = Status.CellNetOperator\n    Y = Status.CellOSUpdate\n    Y = Status.CellPDPAuth\n    Y = Status.CellPDPPassword\n    Y = Status.CellPDPUsername\n    Y = Status.CellPwrDuration\n    Y = Status.CellPwrRepeat\n    Y = Status.CellPwrStartTime\n    Y = Status.CellRoaming\n    Y = Status.CellRSRP\n    Y = Status.CellRSRQ\n    Y = Status.CellRSSI\n    Y = Status.CellState\n    Y = Status.CellStateInt\n    Y = Status.CellStatus\n    Y = Status.CellUsageLastMonth\n    Y = Status.CellUsageMonth\n    Y = Status.CellUsageToday\n    Y = Status.CellUsageYesterday\n    Y = Status.CentralRouters\n    Y = Status.CH400BatteryACapacity\n    Y = Status.CH400BatteryADoDReset\n    Y = Status.CH400BatteryAFamily\n    Y = Status.CH400BatteryAParallel\n    Y = Status.CH400BatteryBCapacity\n    Y = Status.CH400BatteryBDoDReset\n    Y = Status.CH400BatteryBFamily\n    Y = Status.CH400BatteryBParallel\n    Y = Status.CH400BoardRev\n    Y = Status.CH400EnableBatteryA\n    Y = Status.CH400EnableBatteryB\n    Y = Status.CH400EnableChargeA\n    Y = Status.CH400EnableChargeAMPPT\n    Y = Status.CH400EnableChargeB\n    Y = Status.CH400EnableChargeBMPPT\n    Y = Status.CH400InputCurrentLimit\n    Y = Status.CH400OSDate\n    Y = Status.CH400OSVersion\n    Y = Status.CH400SerialNumber\n    Y = Status.ChargeBatteryType\n    Y = Status.ChargeInput\n    Y = Status.ChargeState\n    Y = Status.CloudConfigURL\n    Y = Status.CommsMemAlloc\n    Y = Status.CommsMemFree\n    Y = Status.CompileDate\n    Y = Status.CompileResults\n    Y = Status.ConfigCom1\n    Y = Status.ConfigCom2\n    Y = Status.ConfigCom3\n    Y = Status.ConfigComC1\n    Y = Status.ConfigComC3\n    Y = Status.ConfigComC5\n    Y = Status.ConfigComC7\n    Y = Status.CPUDriveFree\n    Y = Status.CSIO1netEnable\n    Y = Status.CSIO2netEnable\n    Y = Status.CSIOInfo\n    Y = Status.DataStorageFree\n    Y = Status.DataStorageSize\n    Y = Status.DeleteCardFilesOnMismatch\n    Y = Status.DisableLithium\n    Y = Status.DNS\n    Y = Status.ErrorCalib\n    Y = Status.EthernetEnable\n    Y = Status.EthernetInfo\n    Y = Status.EthernetPower\n    Y = Status.FilesManager\n    Y = Status.FTPEnabled\n    Y = Status.FTPPassword\n    Y = Status.FTPPort\n    Y = Status.FTPUserName\n    Y = Status.FullMemReset\n    Y = Status.GNSSAlt\n    Y = Status.GNSSFix\n    Y = Status.GNSSLat\n    Y = Status.GNSSLon\n    Y = Status.GNSSNumSat\n    Y = Status.GNSSSuccessCnt\n    Y = Status.GNSSTime\n    Y = Status.GOESAltitude\n    Y = Status.GOESAntennaGain\n    Y = Status.GOESbatteryBeforeTx\n    Y = Status.GOESbatteryDuringTx\n    Y = Status.GOESComport\n    Y = Status.GOESCurrentbattery\n    Y = Status.GOESCurrenttemperature\n    Y = Status.GOESCurrentTxState\n    Y = Status.GOESdateTime\n    Y = Status.GOESDurationOfTransmit\n    Y = Status.GOESEnabled\n    Y = Status.GOESFailSafeIndicator\n    Y = Status.GOESForwardTxPower\n    Y = Status.GOESGainSetting\n    Y = Status.GOESGPSAcquisitionStatus\n    Y = Status.GOESGPSAntennaStatus\n    Y = Status.GOESid\n    Y = Status.GOESLastDatalength\n    Y = Status.GOESLastHDRFlagWord\n    Y = Status.GOESLastTxChannel\n    Y = Status.GOESLastTxControlFlags\n    Y = Status.GOESLastTxStartTime\n    Y = Status.GOESLastTypeCode\n    Y = Status.GOESLatitude\n    Y = Status.GOESLongitude\n    Y = Status.GOESMsgWindow\n    Y = Status.GOESNumberOfMissedGPS\n    Y = Status.GOESPlatformID\n    Y = Status.GOESReflectedRfPower\n    Y = Status.GOESRepeatCount\n    Y = Status.GOESRTBaudRate\n    Y = Status.GOESRTChannel\n    Y = Status.GOESRTInterval\n    Y = Status.GOESSTBaudRate\n    Y = Status.GOESSTChannel\n    Y = Status.GOESSTInterval\n    Y = Status.GOESSTOffset\n    Y = Status.GOEStemperatureBeforeTx\n    Y = Status.GOESTimeLastGPSPosition\n    Y = Status.GOESTimeLastMissedGPSFix\n    Y = Status.GOESTxResultCode\n    Y = Status.GOESversion\n    Y = Status.GOESVSWR\n    Y = Status.HTTPEnabled\n    Y = Status.HTTPHeader\n    Y = Status.HTTPPort\n    Y = Status.HTTPSEnabled\n    Y = Status.HTTPSPort\n    Y = Status.IncludeFile\n    Y = Status.IPAddressCSIO\n    Y = Status.IPAddressEth\n    Y = Status.IPAddressUSB\n    Y = Status.IPAddressWiFi\n    Y = Status.IPGateway\n    Y = Status.IPGatewayCSIO\n    Y = Status.IPGatewayWiFi\n    Y = Status.IPInfo\n    Y = Status.IPMaskCSIO\n    Y = Status.IPMaskEth\n    Y = Status.IPMaskEthWiFi\n    Y = Status.IPMaskWiFi\n    Y = Status.IPTraceCode\n    Y = Status.IPTraceComport\n    Y = Status.IsRouter\n    Y = Status.IxResistor\n    Y = Status.KeepAliveMin\n    Y = Status.KeepAliveURL\n    Y = Status.LastSlowScan\n    Y = Status.LastSystemScan\n    Y = Status.LithiumBattery\n    Y = Status.Low12VCount\n    Y = Status.MaxBuffDepth\n    Y = Status.MaxPacketSize\n    Y = Status.MaxProcTime\n    Y = Status.MaxSlowProcTime\n    Y = Status.MaxSystemProcTime\n    Y = Status.MeasureOps\n    Y = Status.MeasureTime\n    Y = Status.MemoryFree\n    Y = Status.MemorySize\n    Y = Status.Messages\n    Y = Status.Model\n    Y = Status.MQTTAutoPublish\n    Y = Status.MQTTBackfillMode\n    Y = Status.MQTTBaseTopic\n    Y = Status.MQTTCleanSession\n    Y = Status.MQTTClientID\n    Y = Status.MQTTEnable\n    Y = Status.MQTTEndpoint\n    Y = Status.MQTTKeepAlive\n    Y = Status.MQTTPassword\n    Y = Status.MQTTPortNumber\n    Y = Status.MQTTState\n    Y = Status.MQTTStateInterval\n    Y = Status.MQTTStatusInterval\n    Y = Status.MQTTUserName\n    Y = Status.MQTTWillMessage\n    Y = Status.MQTTWillQoS\n    Y = Status.MQTTWillRetain\n    Y = Status.MQTTWillTopic\n    Y = Status.Neighbors\n    Y = Status.Nope\n    Y = Status.NTPServer\n    Y = Status.OSDate\n    Y = Status.OSSignature\n    Y = Status.OSUpdate\n    Y = Status.OSVersion\n    Y = Status.PakBusAddress\n    Y = Status.PakBusEncryptionKey\n    Y = Status.PakBusNodes\n    Y = Status.PakBusPort\n    Y = Status.PakBusRoutes\n    Y = Status.PakBusTCPClients\n    Y = Status.PakBusTCPEnabled\n    Y = Status.PakBusTCPPassword\n    Y = Status.PakbusWebEnabled\n    Y = Status.PakBusWebHandle\n    Y = Status.PakBusWebHost\n    Y = Status.PakBusWebURL\n    Y = Status.PanelTemp\n    Y = Status.PCAP\n    Y = Status.PingEnabled\n    Y = Status.PortConfig\n    Y = Status.PortStatus\n    Y = Status.PowerSource\n    Y = Status.pppDial\n    Y = Status.pppDialResponse\n    Y = Status.PPPInfo\n    Y = Status.pppInterface\n    Y = Status.pppIPAddr\n    Y = Status.pppIPMask\n    Y = Status.pppPassword\n    Y = Status.pppUsername\n    Y = Status.ProcessTime\n    Y = Status.ProgErrors\n    Y = Status.ProgName\n    Y = Status.ProgSignature\n    Y = Status.RadioAvailFreq\n    Y = Status.RadioCarrier\n    Y = Status.RadioChanMask\n    Y = Status.RadioDataRate\n    Y = Status.RadioDiag\n    Y = Status.RadioEnable\n    Y = Status.RadioEnabled\n    Y = Status.RadioEndPointRepeat\n    Y = Status.RadioEndPointRetry\n    Y = Status.RadioFirmwareVer\n    Y = Status.RadioFreqKey\n    Y = Status.RadioFreqRepeat\n    Y = Status.RadioFreqZone\n    Y = Status.RadioHopSeq\n    Y = Status.RadioHopSize\n    Y = Status.RadioHopVersion\n    Y = Status.RadioLowPwr\n    Y = Status.RadioMAC\n    Y = Status.RadioMaxPacket\n    Y = Status.RadioMGSync\n    Y = Status.RadioMinPacket\n    Y = Status.RadioModel\n    Y = Status.RadioModOS\n    Y = Status.RadioModuleVer\n    Y = Status.RadioNetID\n    Y = Status.RadioOpMode\n    Y = Status.RadioOS\n    Y = Status.RadioPacketRepeat\n    Y = Status.RadioProtocol\n    Y = Status.RadioPwrMode\n    Y = Status.RadioRepeaters\n    Y = Status.RadioRetries\n    Y = Status.RadioRetryOdds\n    Y = Status.RadioRetryTimeout\n    Y = Status.RadioRSSI\n    Y = Status.RadioRSSIAddr\n    Y = Status.RadioRxSubID\n    Y = Status.RadioSerialNum\n    Y = Status.RadioStats\n    Y = Status.RadioTxLevel\n    Y = Status.RadioTxPwr\n    Y = Status.RadioTxRate\n    Y = Status.RadioTxSubID\n    Y = Status.RadioVersion\n    Y = Status.RecipeStatus\n    Y = Status.RecNum\n    Y = Status.Record\n    Y = Status.RevBoard\n    Y = Status.RouteFilters\n    Y = Status.RS232Handshaking\n    Y = Status.RS232Power\n    Y = Status.RS232Timeout\n    Y = Status.RunSignature\n    Y = Status.SDCInfo\n    Y = Status.Security\n    Y = Status.SerialFlashErrors\n    Y = Status.SerialNumber\n    Y = Status.SFTPPrivateKey\n    Y = Status.SFTPPublicKey\n    Y = Status.SkipPakBusRing\n    Y = Status.SkippedScan\n    Y = Status.SkippedSlowScan\n    Y = Status.SkippedSystemScan\n    Y = Status.SlowProcTime\n    Y = Status.StartTime\n    Y = Status.StartUpCode\n    Y = Status.StationName\n    Y = Status.SW12CSIO\n    Y = Status.SW12Volts\n    Y = Status.SystemProcTime\n    Y = Status.TCPMSS\n    Y = Status.TCPPort\n    Y = Status.TelnetEnabled\n    Y = Status.Timestamp\n    Y = Status.TLSCertificate\n    Y = Status.TLSConnections\n    Y = Status.TLSPassword\n    Y = Status.TLSPrivateKey\n    Y = Status.TLSRootCA\n    Y = Status.TLSstatus\n    Y = Status.TrustedHosts\n    Y = Status.UDPBroadcastFilter\n    Y = Status.UID\n    Y = Status.USBconfig\n    Y = Status.USBDisable\n    Y = Status.USBEnumerate\n    Y = Status.USBNotTrusted\n    Y = Status.USBVCPOnly\n    Y = Status.UserStr\n    Y = Status.UserVal\n    Y = Status.USRDriveFree\n    Y = Status.USRDriveSize\n    Y = Status.UTCOffset\n    Y = Status.VarOutOfBound\n    Y = Status.Verify\n    Y = Status.VerifyCOM1\n    Y = Status.VerifyCOM2\n    Y = Status.VerifyCOM3\n    Y = Status.VerifyCOMRF\n    Y = Status.VerifyIP\n    Y = Status.VerifyRS232\n    Y = Status.Version\n    Y = Status.WatchdogErrors\n    Y = Status.WiFiChannel\n    Y = Status.WiFiConfig\n    Y = Status.WiFiEapMethod\n    Y = Status.WiFiEapPassword\n    Y = Status.WiFiEapUser\n    Y = Status.WiFiFwdCode\n    Y = Status.WiFiNetworks\n    Y = Status.WiFiPassword\n    Y = Status.WiFiPowerMode\n    Y = Status.WiFiRegion\n    Y = Status.WiFiSSID\n    Y = Status.WiFiStatus\n    Y = Status.WiFiTxPowerLevel\n    Y = Status.WiFiUpdateReq\n    Y = Status.WLANDomainName\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.BaudrateCOM2(1).\nline 8: Could not find Status.BaudrateCOM3(1).\nline 12: Could not find Status.BeaconCOM2(1).\nline 13: Could not find Status.BeaconCOM3(1).\nline 17: Could not find Status.BuffDepth(1).\nline 18: Could not find Status.CalCurrent(1).\nline 19: Could not find Status.CalGain(1).\nline 27: Could not find Status.CalRefOffset(1).\nline 28: Could not find Status.CalRefSlope(1).\nline 29: Could not find Status.CalVolts(1).\nline 31: Could not find Status.CardBytesFree(1).\nline 32: Could not find Status.CardStatus(1).\nline 38: Could not find Status.CellGNSS(1).\nline 68: Could not find Status.CH400BatteryACapacity(1).\nline 69: Could not find Status.CH400BatteryADoDReset(1).\nline 70: Could not find Status.CH400BatteryAFamily(1).\nline 71: Could not find Status.CH400BatteryAParallel(1).\nline 72: Could not find Status.CH400BatteryBCapacity(1).\nline 73: Could not find Status.CH400BatteryBDoDReset(1).\nline 74: Could not find Status.CH400BatteryBFamily(1).\nline 75: Could not find Status.CH400BatteryBParallel(1).\nline 76: Could not find Status.CH400BoardRev(1).\nline 77: Could not find Status.CH400EnableBatteryA(1).\nline 78: Could not find Status.CH400EnableBatteryB(1).\nline 79: Could not find Status.CH400EnableChargeA(1).\nline 80: Could not find Status.CH400EnableChargeAMPPT(1).\nline 81: Could not find Status.CH400EnableChargeB(1).\nline 82: Could not find Status.CH400EnableChargeBMPPT(1).\nline 83: Could not find Status.CH400InputCurrentLimit(1).\nline 84: Could not find Status.CH400OSDate(1).\nline 85: Could not find Status.CH400OSVersion(1).\nline 86: Could not find Status.CH400SerialNumber(1).\nline 88: Could not find Status.ChargeInput(1).\nline 89: Could not find Status.ChargeState(1).\nline 93: Could not find Status.CompileDate(1).\nline 95: Could not find Status.ConfigCom1(1).\nline 96: Could not find Status.ConfigCom2(1).\nline 97: Could not find Status.ConfigCom3(1).\nline 98: Could not find Status.ConfigComC1(1).\nline 99: Could not find Status.ConfigComC3(1).\nline 100: Could not find Status.ConfigComC5(1).\nline 101: Could not find Status.ConfigComC7(1).\nline 103: Could not find Status.CSIO1netEnable(1).\nline 104: Could not find Status.CSIO2netEnable(1).\nline 105: Could not find Status.CSIOInfo(1).\nline 108: Could not find Status.DeleteCardFilesOnMismatch(1).\nline 109: Could not find Status.DisableLithium(1).\nline 111: Could not find Status.ErrorCalib(1).\nline 112: Could not find Status.EthernetEnable(1).\nline 121: Could not find Status.GNSSAlt(1).\nline 122: Could not find Status.GNSSFix(1).\nline 123: Could not find Status.GNSSLat(1).\nline 124: Could not find Status.GNSSLon(1).\nline 125: Could not find Status.GNSSNumSat(1).\nline 126: Could not find Status.GNSSSuccessCnt(1).\nline 127: Could not find Status.GNSSTime(1).\nline 172: Could not find Status.HTTPHeader(1).\nline 177: Could not find Status.IPAddressCSIO(1).\nline 179: Could not find Status.IPAddressUSB(1).\nline 182: Could not find Status.IPGatewayCSIO(1).\nline 185: Could not find Status.IPMaskCSIO(1).\nline 188: Could not find Status.IPMaskWiFi(1).\nline 192: Could not find Status.IxResistor(1).\nline 193: Could not find Status.KeepAliveMin(1).\nline 194: Could not find Status.KeepAliveURL(1).\nline 196: Could not find Status.LastSystemScan(1).\nline 198: Could not find Status.Low12VCount(1).\nline 199: Could not find Status.MaxBuffDepth(1).\nline 203: Could not find Status.MaxSystemProcTime(1).\nline 204: Could not find Status.MeasureOps(1).\nline 208: Could not find Status.Messages(1).\nline 209: Could not find Status.Model(1).\nline 210: Could not find Status.MQTTAutoPublish(1).\nline 211: Could not find Status.MQTTBackfillMode(1).\nline 229: Could not find Status.Nope(1).\nline 233: Could not find Status.OSUpdate(1).\nline 241: Could not find Status.PakBusTCPEnabled(1).\nline 252: Could not find Status.PowerSource(1).\nline 266: Could not find Status.RadioCarrier(1).\nline 268: Could not find Status.RadioDataRate(1).\nline 269: Could not find Status.RadioDiag(1)."
+  },
+  {
+   "id": "cr350-statusread-sw-all",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Status.Battery\n    Y = Status.Baudrate\n    Y = Status.BaudrateCOM1\n    Y = Status.BaudrateCOM2\n    Y = Status.BaudrateCOM3\n    Y = Status.BaudrateRS232\n    Y = Status.Beacon\n    Y = Status.BeaconCOM1\n    Y = Status.BeaconCOM2\n    Y = Status.BeaconCOM3\n    Y = Status.BeaconCOMRF\n    Y = Status.BeaconIP\n    Y = Status.BeaconRS232\n    Y = Status.BuffDepth\n    Y = Status.CalCurrent\n    Y = Status.CalGain\n    Y = Status.CalGainFast2500\n    Y = Status.CalGainFast34\n    Y = Status.CalGainMed2500\n    Y = Status.CalGainMed34\n    Y = Status.CalGainSlow2500\n    Y = Status.CalGainSlow34\n    Y = Status.CalOffset\n    Y = Status.CalRefOffset\n    Y = Status.CalRefSlope\n    Y = Status.CalVolts\n    Y = Status.CampbellCloudEnable\n    Y = Status.CardBytesFree\n    Y = Status.CardStatus\n    Y = Status.CellAPN\n    Y = Status.CellBillingDay\n    Y = Status.CellDiversity\n    Y = Status.CellECIO\n    Y = Status.CellEnabled\n    Y = Status.CellGNSS\n    Y = Status.CellInfo\n    Y = Status.CellIPProtocol\n    Y = Status.CellKeepAlive\n    Y = Status.CellKeepAliveTime\n    Y = Status.CellListNetOperators\n    Y = Status.CellModOTAUpdate\n    Y = Status.CellNetAccessTech\n    Y = Status.CellNetBand\n    Y = Status.CellNetCellID\n    Y = Status.CellNetOperator\n    Y = Status.CellOSUpdate\n    Y = Status.CellPDPAuth\n    Y = Status.CellPDPPassword\n    Y = Status.CellPDPUsername\n    Y = Status.CellPwrDuration\n    Y = Status.CellPwrRepeat\n    Y = Status.CellPwrStartTime\n    Y = Status.CellRoaming\n    Y = Status.CellRSRP\n    Y = Status.CellRSRQ\n    Y = Status.CellRSSI\n    Y = Status.CellState\n    Y = Status.CellStateInt\n    Y = Status.CellStatus\n    Y = Status.CellUsageLastMonth\n    Y = Status.CellUsageMonth\n    Y = Status.CellUsageToday\n    Y = Status.CellUsageYesterday\n    Y = Status.CentralRouters\n    Y = Status.CH400BatteryACapacity\n    Y = Status.CH400BatteryADoDReset\n    Y = Status.CH400BatteryAFamily\n    Y = Status.CH400BatteryAParallel\n    Y = Status.CH400BatteryBCapacity\n    Y = Status.CH400BatteryBDoDReset\n    Y = Status.CH400BatteryBFamily\n    Y = Status.CH400BatteryBParallel\n    Y = Status.CH400BoardRev\n    Y = Status.CH400EnableBatteryA\n    Y = Status.CH400EnableBatteryB\n    Y = Status.CH400EnableChargeA\n    Y = Status.CH400EnableChargeAMPPT\n    Y = Status.CH400EnableChargeB\n    Y = Status.CH400EnableChargeBMPPT\n    Y = Status.CH400InputCurrentLimit\n    Y = Status.CH400OSDate\n    Y = Status.CH400OSVersion\n    Y = Status.CH400SerialNumber\n    Y = Status.ChargeBatteryType\n    Y = Status.ChargeInput\n    Y = Status.ChargeState\n    Y = Status.CloudConfigURL\n    Y = Status.CommsMemAlloc\n    Y = Status.CommsMemFree\n    Y = Status.CompileDate\n    Y = Status.CompileResults\n    Y = Status.ConfigCom1\n    Y = Status.ConfigCom2\n    Y = Status.ConfigCom3\n    Y = Status.ConfigComC1\n    Y = Status.ConfigComC3\n    Y = Status.ConfigComC5\n    Y = Status.ConfigComC7\n    Y = Status.CPUDriveFree\n    Y = Status.CSIO1netEnable\n    Y = Status.CSIO2netEnable\n    Y = Status.CSIOInfo\n    Y = Status.DataStorageFree\n    Y = Status.DataStorageSize\n    Y = Status.DeleteCardFilesOnMismatch\n    Y = Status.DisableLithium\n    Y = Status.DNS\n    Y = Status.ErrorCalib\n    Y = Status.EthernetEnable\n    Y = Status.EthernetInfo\n    Y = Status.EthernetPower\n    Y = Status.FilesManager\n    Y = Status.FTPEnabled\n    Y = Status.FTPPassword\n    Y = Status.FTPPort\n    Y = Status.FTPUserName\n    Y = Status.FullMemReset\n    Y = Status.GNSSAlt\n    Y = Status.GNSSFix\n    Y = Status.GNSSLat\n    Y = Status.GNSSLon\n    Y = Status.GNSSNumSat\n    Y = Status.GNSSSuccessCnt\n    Y = Status.GNSSTime\n    Y = Status.GOESAltitude\n    Y = Status.GOESAntennaGain\n    Y = Status.GOESbatteryBeforeTx\n    Y = Status.GOESbatteryDuringTx\n    Y = Status.GOESComport\n    Y = Status.GOESCurrentbattery\n    Y = Status.GOESCurrenttemperature\n    Y = Status.GOESCurrentTxState\n    Y = Status.GOESdateTime\n    Y = Status.GOESDurationOfTransmit\n    Y = Status.GOESEnabled\n    Y = Status.GOESFailSafeIndicator\n    Y = Status.GOESForwardTxPower\n    Y = Status.GOESGainSetting\n    Y = Status.GOESGPSAcquisitionStatus\n    Y = Status.GOESGPSAntennaStatus\n    Y = Status.GOESid\n    Y = Status.GOESLastDatalength\n    Y = Status.GOESLastHDRFlagWord\n    Y = Status.GOESLastTxChannel\n    Y = Status.GOESLastTxControlFlags\n    Y = Status.GOESLastTxStartTime\n    Y = Status.GOESLastTypeCode\n    Y = Status.GOESLatitude\n    Y = Status.GOESLongitude\n    Y = Status.GOESMsgWindow\n    Y = Status.GOESNumberOfMissedGPS\n    Y = Status.GOESPlatformID\n    Y = Status.GOESReflectedRfPower\n    Y = Status.GOESRepeatCount\n    Y = Status.GOESRTBaudRate\n    Y = Status.GOESRTChannel\n    Y = Status.GOESRTInterval\n    Y = Status.GOESSTBaudRate\n    Y = Status.GOESSTChannel\n    Y = Status.GOESSTInterval\n    Y = Status.GOESSTOffset\n    Y = Status.GOEStemperatureBeforeTx\n    Y = Status.GOESTimeLastGPSPosition\n    Y = Status.GOESTimeLastMissedGPSFix\n    Y = Status.GOESTxResultCode\n    Y = Status.GOESversion\n    Y = Status.GOESVSWR\n    Y = Status.HTTPEnabled\n    Y = Status.HTTPHeader\n    Y = Status.HTTPPort\n    Y = Status.HTTPSEnabled\n    Y = Status.HTTPSPort\n    Y = Status.IncludeFile\n    Y = Status.IPAddressCSIO\n    Y = Status.IPAddressEth\n    Y = Status.IPAddressUSB\n    Y = Status.IPAddressWiFi\n    Y = Status.IPGateway\n    Y = Status.IPGatewayCSIO\n    Y = Status.IPGatewayWiFi\n    Y = Status.IPInfo\n    Y = Status.IPMaskCSIO\n    Y = Status.IPMaskEth\n    Y = Status.IPMaskEthWiFi\n    Y = Status.IPMaskWiFi\n    Y = Status.IPTraceCode\n    Y = Status.IPTraceComport\n    Y = Status.IsRouter\n    Y = Status.IxResistor\n    Y = Status.KeepAliveMin\n    Y = Status.KeepAliveURL\n    Y = Status.LastSlowScan\n    Y = Status.LastSystemScan\n    Y = Status.LithiumBattery\n    Y = Status.Low12VCount\n    Y = Status.MaxBuffDepth\n    Y = Status.MaxPacketSize\n    Y = Status.MaxProcTime\n    Y = Status.MaxSlowProcTime\n    Y = Status.MaxSystemProcTime\n    Y = Status.MeasureOps\n    Y = Status.MeasureTime\n    Y = Status.MemoryFree\n    Y = Status.MemorySize\n    Y = Status.Messages\n    Y = Status.Model\n    Y = Status.MQTTAutoPublish\n    Y = Status.MQTTBackfillMode\n    Y = Status.MQTTBaseTopic\n    Y = Status.MQTTCleanSession\n    Y = Status.MQTTClientID\n    Y = Status.MQTTEnable\n    Y = Status.MQTTEndpoint\n    Y = Status.MQTTKeepAlive\n    Y = Status.MQTTPassword\n    Y = Status.MQTTPortNumber\n    Y = Status.MQTTState\n    Y = Status.MQTTStateInterval\n    Y = Status.MQTTStatusInterval\n    Y = Status.MQTTUserName\n    Y = Status.MQTTWillMessage\n    Y = Status.MQTTWillQoS\n    Y = Status.MQTTWillRetain\n    Y = Status.MQTTWillTopic\n    Y = Status.Neighbors\n    Y = Status.Nope\n    Y = Status.NTPServer\n    Y = Status.OSDate\n    Y = Status.OSSignature\n    Y = Status.OSUpdate\n    Y = Status.OSVersion\n    Y = Status.PakBusAddress\n    Y = Status.PakBusEncryptionKey\n    Y = Status.PakBusNodes\n    Y = Status.PakBusPort\n    Y = Status.PakBusRoutes\n    Y = Status.PakBusTCPClients\n    Y = Status.PakBusTCPEnabled\n    Y = Status.PakBusTCPPassword\n    Y = Status.PakbusWebEnabled\n    Y = Status.PakBusWebHandle\n    Y = Status.PakBusWebHost\n    Y = Status.PakBusWebURL\n    Y = Status.PanelTemp\n    Y = Status.PCAP\n    Y = Status.PingEnabled\n    Y = Status.PortConfig\n    Y = Status.PortStatus\n    Y = Status.PowerSource\n    Y = Status.pppDial\n    Y = Status.pppDialResponse\n    Y = Status.PPPInfo\n    Y = Status.pppInterface\n    Y = Status.pppIPAddr\n    Y = Status.pppIPMask\n    Y = Status.pppPassword\n    Y = Status.pppUsername\n    Y = Status.ProcessTime\n    Y = Status.ProgErrors\n    Y = Status.ProgName\n    Y = Status.ProgSignature\n    Y = Status.RadioAvailFreq\n    Y = Status.RadioCarrier\n    Y = Status.RadioChanMask\n    Y = Status.RadioDataRate\n    Y = Status.RadioDiag\n    Y = Status.RadioEnable\n    Y = Status.RadioEnabled\n    Y = Status.RadioEndPointRepeat\n    Y = Status.RadioEndPointRetry\n    Y = Status.RadioFirmwareVer\n    Y = Status.RadioFreqKey\n    Y = Status.RadioFreqRepeat\n    Y = Status.RadioFreqZone\n    Y = Status.RadioHopSeq\n    Y = Status.RadioHopSize\n    Y = Status.RadioHopVersion\n    Y = Status.RadioLowPwr\n    Y = Status.RadioMAC\n    Y = Status.RadioMaxPacket\n    Y = Status.RadioMGSync\n    Y = Status.RadioMinPacket\n    Y = Status.RadioModel\n    Y = Status.RadioModOS\n    Y = Status.RadioModuleVer\n    Y = Status.RadioNetID\n    Y = Status.RadioOpMode\n    Y = Status.RadioOS\n    Y = Status.RadioPacketRepeat\n    Y = Status.RadioProtocol\n    Y = Status.RadioPwrMode\n    Y = Status.RadioRepeaters\n    Y = Status.RadioRetries\n    Y = Status.RadioRetryOdds\n    Y = Status.RadioRetryTimeout\n    Y = Status.RadioRSSI\n    Y = Status.RadioRSSIAddr\n    Y = Status.RadioRxSubID\n    Y = Status.RadioSerialNum\n    Y = Status.RadioStats\n    Y = Status.RadioTxLevel\n    Y = Status.RadioTxPwr\n    Y = Status.RadioTxRate\n    Y = Status.RadioTxSubID\n    Y = Status.RadioVersion\n    Y = Status.RecipeStatus\n    Y = Status.RecNum\n    Y = Status.Record\n    Y = Status.RevBoard\n    Y = Status.RouteFilters\n    Y = Status.RS232Handshaking\n    Y = Status.RS232Power\n    Y = Status.RS232Timeout\n    Y = Status.RunSignature\n    Y = Status.SDCInfo\n    Y = Status.Security\n    Y = Status.SerialFlashErrors\n    Y = Status.SerialNumber\n    Y = Status.SFTPPrivateKey\n    Y = Status.SFTPPublicKey\n    Y = Status.SkipPakBusRing\n    Y = Status.SkippedScan\n    Y = Status.SkippedSlowScan\n    Y = Status.SkippedSystemScan\n    Y = Status.SlowProcTime\n    Y = Status.StartTime\n    Y = Status.StartUpCode\n    Y = Status.StationName\n    Y = Status.SW12CSIO\n    Y = Status.SW12Volts\n    Y = Status.SystemProcTime\n    Y = Status.TCPMSS\n    Y = Status.TCPPort\n    Y = Status.TelnetEnabled\n    Y = Status.Timestamp\n    Y = Status.TLSCertificate\n    Y = Status.TLSConnections\n    Y = Status.TLSPassword\n    Y = Status.TLSPrivateKey\n    Y = Status.TLSRootCA\n    Y = Status.TLSstatus\n    Y = Status.TrustedHosts\n    Y = Status.UDPBroadcastFilter\n    Y = Status.UID\n    Y = Status.USBconfig\n    Y = Status.USBDisable\n    Y = Status.USBEnumerate\n    Y = Status.USBNotTrusted\n    Y = Status.USBVCPOnly\n    Y = Status.UserStr\n    Y = Status.UserVal\n    Y = Status.USRDriveFree\n    Y = Status.USRDriveSize\n    Y = Status.UTCOffset\n    Y = Status.VarOutOfBound\n    Y = Status.Verify\n    Y = Status.VerifyCOM1\n    Y = Status.VerifyCOM2\n    Y = Status.VerifyCOM3\n    Y = Status.VerifyCOMRF\n    Y = Status.VerifyIP\n    Y = Status.VerifyRS232\n    Y = Status.Version\n    Y = Status.WatchdogErrors\n    Y = Status.WiFiChannel\n    Y = Status.WiFiConfig\n    Y = Status.WiFiEapMethod\n    Y = Status.WiFiEapPassword\n    Y = Status.WiFiEapUser\n    Y = Status.WiFiFwdCode\n    Y = Status.WiFiNetworks\n    Y = Status.WiFiPassword\n    Y = Status.WiFiPowerMode\n    Y = Status.WiFiRegion\n    Y = Status.WiFiSSID\n    Y = Status.WiFiStatus\n    Y = Status.WiFiTxPowerLevel\n    Y = Status.WiFiUpdateReq\n    Y = Status.WLANDomainName\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 17: Could not find Status.BuffDepth(1).\nline 18: Could not find Status.CalCurrent(1).\nline 19: Could not find Status.CalGain(1).\nline 27: Could not find Status.CalRefOffset(1).\nline 28: Could not find Status.CalRefSlope(1).\nline 29: Could not find Status.CalVolts(1).\nline 31: Could not find Status.CardBytesFree(1).\nline 32: Could not find Status.CardStatus(1).\nline 41: Could not find Status.CellKeepAlive(1).\nline 42: Could not find Status.CellKeepAliveTime(1).\nline 68: Could not find Status.CH400BatteryACapacity(1).\nline 69: Could not find Status.CH400BatteryADoDReset(1).\nline 70: Could not find Status.CH400BatteryAFamily(1).\nline 71: Could not find Status.CH400BatteryAParallel(1).\nline 72: Could not find Status.CH400BatteryBCapacity(1).\nline 73: Could not find Status.CH400BatteryBDoDReset(1).\nline 74: Could not find Status.CH400BatteryBFamily(1).\nline 75: Could not find Status.CH400BatteryBParallel(1).\nline 76: Could not find Status.CH400BoardRev(1).\nline 77: Could not find Status.CH400EnableBatteryA(1).\nline 78: Could not find Status.CH400EnableBatteryB(1).\nline 79: Could not find Status.CH400EnableChargeA(1).\nline 80: Could not find Status.CH400EnableChargeAMPPT(1).\nline 81: Could not find Status.CH400EnableChargeB(1).\nline 82: Could not find Status.CH400EnableChargeBMPPT(1).\nline 83: Could not find Status.CH400InputCurrentLimit(1).\nline 84: Could not find Status.CH400OSDate(1).\nline 85: Could not find Status.CH400OSVersion(1).\nline 86: Could not find Status.CH400SerialNumber(1).\nline 88: Could not find Status.ChargeInput(1).\nline 89: Could not find Status.ChargeState(1).\nline 91: Could not find Status.CommsMemAlloc(1).\nline 98: Could not find Status.ConfigComC1(1).\nline 99: Could not find Status.ConfigComC3(1).\nline 100: Could not find Status.ConfigComC5(1).\nline 101: Could not find Status.ConfigComC7(1).\nline 103: Could not find Status.CSIO1netEnable(1).\nline 104: Could not find Status.CSIO2netEnable(1).\nline 105: Could not find Status.CSIOInfo(1).\nline 108: Could not find Status.DeleteCardFilesOnMismatch(1).\nline 109: Could not find Status.DisableLithium(1).\nline 111: Could not find Status.ErrorCalib(1).\nline 112: Could not find Status.EthernetEnable(1).\nline 113: Could not find Status.EthernetInfo(1).\nline 114: Could not find Status.EthernetPower(1).\nline 121: Could not find Status.GNSSAlt(1).\nline 122: Could not find Status.GNSSFix(1).\nline 123: Could not find Status.GNSSLat(1).\nline 124: Could not find Status.GNSSLon(1).\nline 125: Could not find Status.GNSSNumSat(1).\nline 126: Could not find Status.GNSSSuccessCnt(1).\nline 127: Could not find Status.GNSSTime(1).\nline 172: Could not find Status.HTTPHeader(1).\nline 177: Could not find Status.IPAddressCSIO(1).\nline 178: Could not find Status.IPAddressEth(1).\nline 181: Could not find Status.IPGateway(1).\nline 182: Could not find Status.IPGatewayCSIO(1).\nline 185: Could not find Status.IPMaskCSIO(1).\nline 186: Could not find Status.IPMaskEth(1).\nline 188: Could not find Status.IPMaskWiFi(1).\nline 192: Could not find Status.IxResistor(1).\nline 196: Could not find Status.LastSystemScan(1).\nline 198: Could not find Status.Low12VCount(1).\nline 199: Could not find Status.MaxBuffDepth(1).\nline 203: Could not find Status.MaxSystemProcTime(1).\nline 204: Could not find Status.MeasureOps(1).\nline 208: Could not find Status.Messages(1).\nline 210: Could not find Status.MQTTAutoPublish(1).\nline 211: Could not find Status.MQTTBackfillMode(1).\nline 229: Could not find Status.Nope(1).\nline 237: Could not find Status.PakBusNodes(1).\nline 252: Could not find Status.PowerSource(1).\nline 266: Could not find Status.RadioCarrier(1).\nline 286: Could not find Status.RadioModel(1).\nline 287: Could not find Status.RadioModOS(1).\nline 291: Could not find Status.RadioOS(1).\nline 303: Could not find Status.RadioStats(1).\nline 309: Could not find Status.RecipeStatus(1).\nline 310: Could not find Status.RecNum(1).\nline 312: Could not find Status.RevBoard(1).\nline 314: Could not find Status.RS232Handshaking(1)."
+  }
+ ]
+}

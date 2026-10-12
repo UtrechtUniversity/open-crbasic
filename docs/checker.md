@@ -6300,3 +6300,23 @@ expression is `Parameter must be a variable of type long` on CR6/CR1000X too, fi
 (`instr_rules.check_tcpopen_handle_type`; CR300/CR350 had it). Not modelled: with a non-Long handle
 and no count argument CR6/CR1000X also print `Max number of concurrent connections must be 1..1`.
 Cases in `tests/fixtures/r14_goes_argos_tcpopen.json`.
+
+## Unknown `Status.X` / `Public.X` field reads (2026-10-12)
+
+Reading a Status field the logger does not have is `Could not find Status.<name>(N).` on all four
+loggers (oracle; `N` is the first literal subscript, 1 when there is none: `Status.Nope(3,2)` ->
+`(3)`), once per access, in assignment values, conditions and instruction arguments; `Public.X` for
+an undeclared `X` is `Could not find Public.X(N).` the same way. The readable names differ per logger
+and are not simply the SetStatus/SetSetting lists: `TimeStamp` and `Record` read everywhere,
+`CardBytesFree` only on CR6/CR1000X, `RecNum` only on CR300, `CalGain(1)` not on CR300/CR350,
+`IPAddressEth` not on CR350. `data/**/status_members.json` holds each logger's accepted set from an
+oracle sweep of 379 candidates (every logger's SetSetting/SetStatus names, the minimal Status table,
+every `Status.` name in the help corpus and `crbasic/`); a name outside it is reported
+(`expressions.check_digit_members`). A valid name outside the sweep would be a false reject: extend
+the sweep when one is found. `Public.TimeStamp`, `Public.Record` (generic table fields) are valid
+reads. On CR6/CR1000X the lines come from `expressions.check_digit_members`; on CR300/CR350 they are
+reported only in an otherwise clean file (`check_status_member_reads_late`; a later `WatchdogTimer is
+not defined.` hides `Status.CardBytesFree` in `crbasic/SbdPayload_tester.CR6`). Assignment targets
+(`Status.X = ...`) are unchanged. Not modelled:
+CR300/CR350 `Battery(Status.Nope)` also prints `Illegal destination variable type, expecting Float.`
+Cases in `tests/fixtures/r14_status_public_reads.json`.
