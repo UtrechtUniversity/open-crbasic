@@ -2031,6 +2031,7 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
     if not functions:
         return
     known = _known_names(program, profile)
+    missing = [1]
 
     def problem(expr: S.Expr | None) -> str | None:
         for node in _index_nodes(expr):
@@ -2039,6 +2040,14 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                 continue
             required = sum(1 for p in fn.params if p.default is None)
             if len(node.args) < required:
+                # one message per missing required argument, nested calls in the arguments add
+                # theirs, a later sibling call adds none (oracle, 2026-10-12)
+                missing[0] = 0
+                for inner in _index_nodes(node):
+                    f2 = functions.get(inner.name.upper())
+                    if f2 is not None:
+                        missing[0] += max(0, sum(1 for p in f2.params if p.default is None)
+                                          - len(inner.args))
                 return "few"
             if len(node.args) > len(fn.params):
                 return "many"
@@ -2046,7 +2055,8 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
 
     def report(stmt: S.Stmt, kind: str, echo: str, whole: bool) -> None:
         if kind == "few":
-            diags.error(stmt.line, "Call argument required.", stmt.file)
+            for _ in range(missing[0]):   # one per missing required argument (oracle, 2026-10-12)
+                diags.error(stmt.line, "Call argument required.", stmt.file)
             text = structure._out_of_place(profile, echo, stmt.at_eol) if whole else \
                 f"Invalid, or out of place expression: {echo}."
         else:
@@ -2058,7 +2068,8 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
         if isinstance(stmt, S.Assignment):
             kind = problem(stmt.target) or problem(stmt.value)
             if kind and _undefined_names(stmt.target, known) and not (
-                    profile.single_pass and isinstance(stmt.target, S.Name)):
+                    profile.single_pass and (isinstance(stmt.target, S.Name) or (
+                        isinstance(stmt.target, S.Index) and stmt.target.name.upper() in known))):
                 kind = None  # an undefined target never reaches the value's call (oracle, all four
                 #              loggers, 2026-10-11, docs/checker.md "Function calls after an undefined target")
             if kind:
@@ -2088,6 +2099,7 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                 required = sum(1 for p in fn.params if p.default is None)
                 kind = ("few" if len(stmt.args) < required
                         else "many" if len(stmt.args) > len(fn.params) else None)
+                missing[0] = max(1, required - len(stmt.args))
                 if kind:
                     report(stmt, kind, stmt.text, True)
 

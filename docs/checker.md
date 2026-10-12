@@ -5691,3 +5691,19 @@ CR6 (probed). CR300/CR350 print nothing (unchanged). Implemented in `instr_rules
 for 5-7 arguments, a once-declared `Long` handle and a constant integer count. Not done (all probed on
 CR6): a non-constant or non-integer count (`2.5`, `3.0`, a variable) adds `Parameter must be a constant
 integer: <stmt>` (and `1..1` for a variable count), 8 arguments, trailing empty arguments.
+
+### User-function call messages after an undefined name, and their count (2026-10-12, fixture `tests/fixtures/r13_call_arity_counts.json`)
+
+Follow-up to "Function calls after an undefined target".
+- CR300/CR350 skip the value's call only when the target's base name is undefined (`Q(Z) = F2(..)`,
+  `Q = ..` is different, below). `A(Z) = F2(1,2,3)` with `A` declared reports `Z is not defined.` and then
+  the call's messages (`No Matching ...` / `Call argument required.` + fallback); CR6/CR1000X print the
+  fallback only, as before. `cr3xx.order_names_before_call_arity` puts every `X is not defined.` of such an
+  assignment ahead of the call's messages (also the bare `Q = F2(1,2,3)`: `Q is not defined.` first).
+- `Call argument required.` is printed once per missing required argument, on all four loggers: `F2()` with
+  two required parameters twice, `F3()` three times, `F2(1)` once; `Optional` parameters do not count. A call
+  nested in the arguments adds its own (`X = F2(F3())`: 1 + 3 = 4), a later sibling call adds nothing
+  (`F3() + F2()`: 3). Also for `If` conditions and a call used as a statement.
+- Not done: `A(Z,1) = F2(1,2,3)` (a two-subscript target on a one-dimensional array: real prints the
+  generic fallback instead of `No Matching`); on CR6/CR1000X an undefined name in the *value* also hides the
+  call (`X = Zz + F2()` -> `Invalid symbol in expression:` only; ours still prints `Call argument required.`).

@@ -613,6 +613,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # taint can originate from a tier-A finding that would otherwise skip tier B/C entirely.
     _run_pass(cr3xx.drop_block_closer_errors_after_errors, program, profile, diags)
     _run_pass(cr3xx.order_names_around_arity, program, profile, diags)
+    _run_pass(cr3xx.order_names_before_call_arity, program, profile, diags)
     _run_pass(cr3xx.order_email_destination, program, profile, diags)
     _run_pass(cr3xx.drop_shortfall_with_names, program, profile, diags)
     if profile.single_pass:

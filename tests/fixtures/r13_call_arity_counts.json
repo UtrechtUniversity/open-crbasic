@@ -1,0 +1,1031 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-call_arity_counts-0-t4_0",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-0-t4_0",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-0-t4_0",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: No Matching, or out of place ) in expression: A(Z) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-0-t4_0",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: No Matching, or out of place ) in expression: A(Z) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-1-t4_1",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = F2()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-1-t4_1",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-1-t4_1",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Call argument required.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = F2()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-1-t4_1",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Call argument required.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = F2()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-2-t4_2",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = F2(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-2-t4_2",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-2-t4_2",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = F2(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-2-t4_2",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = F2(1)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-3-t4_3",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = F2(1,2)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-3-t4_3",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-3-t4_3",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined."
+  },
+  {
+   "id": "cr350-call_arity_counts-3-t4_3",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined."
+  },
+  {
+   "id": "cr6-call_arity_counts-4-t4_4",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(1) = F2()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-4-t4_4",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 7: Call argument required.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(1) = F2()."
+  },
+  {
+   "id": "cr300-call_arity_counts-4-t4_4",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(1) = F2()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-4-t4_4",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(1) = F2()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-5-t4_5",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: A(1) = F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-5-t4_5",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 7: No Matching, or out of place ) in expression: A(1) = F2(1,2,3)."
+  },
+  {
+   "id": "cr300-call_arity_counts-5-t4_5",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: A(1) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-5-t4_5",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: A(1) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-6-t4_7",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z + 1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z + 1) = F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-6-t4_7",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z + 1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-6-t4_7",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z + 1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: No Matching, or out of place ) in expression: A(Z + 1) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-6-t4_7",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z + 1) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: No Matching, or out of place ) in expression: A(Z + 1) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-7-t4_8",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Q(Z) = F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-7-t4_8",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-7-t4_8",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined.\nline 7: Z is not defined.\nline 7: Invalid, or out of place expression: Q(Z) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-7-t4_8",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(Z) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined.\nline 7: Z is not defined.\nline 7: Invalid, or out of place expression: Q(Z) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-8-t4_9",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(3) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Q(3) = F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-8-t4_9",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(3) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-8-t4_9",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(3) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined.\nline 7: Invalid, or out of place expression: Q(3) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-8-t4_9",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ(3) = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined.\nline 7: Invalid, or out of place expression: Q(3) = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-9-t4_10",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Q = F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-9-t4_10",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-9-t4_10",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined.\nline 7: No Matching, or out of place ) in expression: Q = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-9-t4_10",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nQ = F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined.\nline 7: No Matching, or out of place ) in expression: Q = F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-10-t4_11",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = F2(1,2) + F2(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-10-t4_11",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-10-t4_11",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = F2(1,2) + F2(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-10-t4_11",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = F2(1,2) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = F2(1,2) + F2(1)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-11-t4_12",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = Zz + F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = Zz + F2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-11-t4_12",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = Zz + F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-11-t4_12",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = Zz + F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Zz is not defined.\nline 7: No Matching, or out of place ) in expression: A(Z) = Zz + F2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-11-t4_12",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = Zz + F2(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Zz is not defined.\nline 7: No Matching, or out of place ) in expression: A(Z) = Zz + F2(1,2,3)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-12-t4_13",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(F2(1)) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(F2(1)) = 1."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-12-t4_13",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(F2(1)) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(F2(1)) = 1."
+  },
+  {
+   "id": "cr300-call_arity_counts-12-t4_13",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(F2(1)) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(F2(1)) = 1\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-12-t4_13",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(F2(1)) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(F2(1)) = 1\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-13-t4_14",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = A(Y) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: A(Z) = A(Y) + F2(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-13-t4_14",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = A(Y) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-13-t4_14",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = A(Y) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Y is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = A(Y) + F2(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-13-t4_14",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(Z) = A(Y) + F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Z is not defined.\nline 7: Y is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression: A(Z) = A(Y) + F2(1)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-14-t6_0",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-14-t6_0",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3()."
+  },
+  {
+   "id": "cr300-call_arity_counts-14-t6_0",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-14-t6_0",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-15-t6_1",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-15-t6_1",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1)."
+  },
+  {
+   "id": "cr300-call_arity_counts-15-t6_1",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-15-t6_1",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-16-t6_2",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1,2)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-16-t6_2",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1,2)."
+  },
+  {
+   "id": "cr300-call_arity_counts-16-t6_2",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1,2)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-16-t6_2",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(1,2)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-17-t6_3",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-17-t6_3",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4()."
+  },
+  {
+   "id": "cr300-call_arity_counts-17-t6_3",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-17-t6_3",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-18-t6_4",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-18-t6_4",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-call_arity_counts-18-t6_4",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-call_arity_counts-18-t6_4",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-call_arity_counts-19-t6_5",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3() + F2()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-19-t6_5",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3() + F2()."
+  },
+  {
+   "id": "cr300-call_arity_counts-19-t6_5",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3() + F2()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-19-t6_5",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3() + F2()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-20-t6_6",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F3(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-20-t6_6",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F3(1)."
+  },
+  {
+   "id": "cr300-call_arity_counts-20-t6_6",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F3(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-20-t6_6",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F3(1)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-21-t6_7",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-21-t6_7",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3()."
+  },
+  {
+   "id": "cr300-call_arity_counts-21-t6_7",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-21-t6_7",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-22-t6_8",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-22-t6_8",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1)."
+  },
+  {
+   "id": "cr300-call_arity_counts-22-t6_8",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-22-t6_8",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF3(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1)\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-23-t6_9",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3() ."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-23-t6_9",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3() ."
+  },
+  {
+   "id": "cr300-call_arity_counts-23-t6_9",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3() ."
+  },
+  {
+   "id": "cr350-call_arity_counts-23-t6_9",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3() ."
+  },
+  {
+   "id": "cr6-call_arity_counts-24-t6_10",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3(1) = 1 Then\nX = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1) = 1 ."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-24-t6_10",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3(1) = 1 Then\nX = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1) = 1 ."
+  },
+  {
+   "id": "cr300-call_arity_counts-24-t6_10",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3(1) = 1 Then\nX = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1) = 1 ."
+  },
+  {
+   "id": "cr350-call_arity_counts-24-t6_10",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F3(1) = 1 Then\nX = 1\nEndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F3(1) = 1 ."
+  },
+  {
+   "id": "cr6-call_arity_counts-25-t6_11",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F3())."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-25-t6_11",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F3())."
+  },
+  {
+   "id": "cr300-call_arity_counts-25-t6_11",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F3())\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-25-t6_11",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F3())\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-26-t6_12",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: A(1) = F3()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-26-t6_12",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: A(1) = F3()."
+  },
+  {
+   "id": "cr300-call_arity_counts-26-t6_12",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: A(1) = F3()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-26-t6_12",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nA(1) = F3()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: A(1) = F3()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-27-t6_13",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1, F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1, F3())."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-27-t6_13",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1, F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1, F3())."
+  },
+  {
+   "id": "cr300-call_arity_counts-27-t6_13",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1, F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1, F3())\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-27-t6_13",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1, F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1, F3())\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-28-t6_14",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(F2())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(F2())."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-28-t6_14",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(F2())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(F2())."
+  },
+  {
+   "id": "cr300-call_arity_counts-28-t6_14",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(F2())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(F2())\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-28-t6_14",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F3(F2())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F3(F2())\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-29-t6_15",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F2(F2()))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F2(F2()))."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-29-t6_15",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F2(F2()))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F2(F2()))."
+  },
+  {
+   "id": "cr300-call_arity_counts-29-t6_15",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F2(F2()))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F2(F2()))\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-29-t6_15",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(F2(F2()))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(F2(F2()))\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-30-t6_16",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4(F3())."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-30-t6_16",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4(F3())."
+  },
+  {
+   "id": "cr300-call_arity_counts-30-t6_16",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4(F3())\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-30-t6_16",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F4(F3())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F4(F3())\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-31-t6b_0",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-31-t6b_0",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2()."
+  },
+  {
+   "id": "cr300-call_arity_counts-31-t6b_0",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-31-t6b_0",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-32-t6b_1",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-32-t6b_1",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2()."
+  },
+  {
+   "id": "cr300-call_arity_counts-32-t6b_1",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-32-t6b_1",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nF2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-33-t6b_2",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F2() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2() ."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-33-t6b_2",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F2() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2() ."
+  },
+  {
+   "id": "cr300-call_arity_counts-33-t6b_2",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F2() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2() ."
+  },
+  {
+   "id": "cr350-call_arity_counts-33-t6b_2",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nIf F2() Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: F2() ."
+  },
+  {
+   "id": "cr6-call_arity_counts-34-t6b_3",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F2()."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-34-t6b_3",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F2()."
+  },
+  {
+   "id": "cr300-call_arity_counts-34-t6b_3",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F2()\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-34-t6b_3",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2() + F2()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2() + F2()\n."
+  },
+  {
+   "id": "cr6-call_arity_counts-35-t6b_4",
+   "logger": "cr6",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1)."
+  },
+  {
+   "id": "cr1000x-call_arity_counts-35-t6b_4",
+   "logger": "cr1000x",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P1 is a predefined CONST.\nline 2: P2 is a predefined CONST.\nline 5: P1 is a predefined CONST.\nline 5: P2 is a predefined CONST.\nline 8: P1 is a predefined CONST.\nline 8: P2 is a predefined CONST.\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1)."
+  },
+  {
+   "id": "cr300-call_arity_counts-35-t6b_4",
+   "logger": "cr300",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1)\n."
+  },
+  {
+   "id": "cr350-call_arity_counts-35-t6b_4",
+   "logger": "cr350",
+   "source": "Public X, A(3)\nFunction F2(P1,P2)\nReturn P1\nEndFunction\nFunction F3(P1,P2,P3)\nReturn P1\nEndFunction\nFunction F4(P1,Optional P2 = 1,Optional P3 = 2)\nReturn P1\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\nX = F2(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Call argument required.\nline 13: Invalid, or out of place expression: X = F2(1)\n."
+  }
+ ]
+}

@@ -1732,6 +1732,38 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
         diags.items[:] = items
 
 
+def order_names_before_call_arity(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: an assignment that calls a user `Function` with the wrong argument count and
+    also names undefined variables reports the names first, then the call's messages (oracle,
+    2026-10-12: `A(Z) = F2(1,2,3)`, `Q = F2(1,2,3)`, `A(Z) = A(Y) + F2(1)`: `Z is not defined.`,
+    `Y is not defined.`, then `Call argument required.` / the `No Matching` or fallback line)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    functions = {st.name.upper() for st in program.statements
+                 if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"}
+    if not functions:
+        return
+    per_line = collections.Counter((st.line, st.file) for st in program.statements)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Assignment) or per_line[(stmt.line, stmt.file)] != 1:
+            continue
+        if not any(re.search(rf"(?i)\b{re.escape(f)}\s*\(", stmt.text or "") for f in functions):
+            continue
+        key = (stmt.line, stmt.file)
+        at = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+        if not at or at != list(range(at[0], at[-1] + 1)):
+            continue
+        own = [diags.items[i] for i in at]
+        names = [d for d in own if re.fullmatch(r"\w+ is not defined\.", d.message)]
+        rest = [d for d in own if d not in names]
+        if not names or not rest or not all(
+                d.message == "Call argument required." or d.message.startswith((
+                    "No Matching, or out of place ) in expression: ",
+                    "Invalid, or out of place expression: ")) for d in rest):
+            continue
+        diags.items[at[0]:at[-1] + 1] = names + rest
+
+
 _CLOSER_ERRORS = frozenset({
     "END IF without IF or END SELECT without SELECT.", "NEXT without FOR.", "LOOP without DO.",
     "IF or SELECT statement illegally has SCAN without NEXT SCAN.",
