@@ -1,0 +1,191 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-etsz-alone",
+   "logger": "cr6",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-etsz-alone",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-etsz-alone",
+   "logger": "cr300",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-etsz-alone",
+   "logger": "cr350",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-etclearsky-alone",
+   "logger": "cr6",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-etclearsky-alone",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-etclearsky-alone",
+   "logger": "cr300",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-etclearsky-alone",
+   "logger": "cr350",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-etsz-outside",
+   "logger": "cr6",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-etsz-outside",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-etsz-outside",
+   "logger": "cr300",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-etsz-outside",
+   "logger": "cr350",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-etclearsky-outside",
+   "logger": "cr6",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-etclearsky-outside",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-etclearsky-outside",
+   "logger": "cr300",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-etclearsky-outside",
+   "logger": "cr350",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Et must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-etsz-too-many",
+   "logger": "cr6",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7."
+  },
+  {
+   "id": "cr1000x-etsz-too-many",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7."
+  },
+  {
+   "id": "cr300-etsz-too-many",
+   "logger": "cr300",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-etsz-too-many",
+   "logger": "cr350",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-etclearsky-too-many",
+   "logger": "cr6",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7."
+  },
+  {
+   "id": "cr1000x-etclearsky-too-many",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7."
+  },
+  {
+   "id": "cr300-etclearsky-too-many",
+   "logger": "cr300",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-etclearsky-too-many",
+   "logger": "cr350",
+   "source": "Public X, Y, Z\nDataTable (T,True,-1)\n  ETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  7.\nline 6: Too many parameters:  Sec."
+  }
+ ]
+}

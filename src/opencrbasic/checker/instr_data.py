@@ -91,6 +91,8 @@ TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
     # fact that every corpus/fuzz use of `DataEvent` this project has seen is always correctly
     # placed inside a table.
     "TABLEHIDE": "TableHide",          # checked with the oracle
+    "ETSZ": "Et",                      # checked with the oracle, all four loggers (2026-10-12):
+    "ETCLEARSKY": "Et",                # the unlabelled `"Et"` call site; docs/instructions.md
 }
 
 # `FieldNames` was checked directly (a bare `FieldNames("X")` with no enclosing `DataTable` at all)
@@ -118,6 +120,7 @@ _FIELD_PRODUCING_INSTRUCTIONS = frozenset({
     "SAMPLE", "AVERAGE", "TOTALIZE", "STDDEV", "MAXIMUM", "MINIMUM", "MEDIAN", "MOMENT",
     "SAMPLEMAXMIN", "COVARIANCE", "WINDVECTOR", "HISTOGRAM", "HISTOGRAM4D", "RAINFLOW",
     "LEVELCROSSING", "SAMPLEFIELDCAL", "GOESTABLE", "MQTTPUBLISHTABLE", "FFT",
+    "ETSZ", "ETCLEARSKY",
 })
 
 

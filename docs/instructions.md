@@ -1842,3 +1842,22 @@ explained by the probes so far:
   do not share the wrap arithmetic, so the `Delay` rule in `checker/instr_measure.py` must not be reused.
 - `Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 3600000 ms).`
   appears with a 1-second scan and a 60-minute delay; use a long scan in probes.
+
+## `ETsz` and `ETClearSky` are table-only output instructions (2026-10-12, round 13)
+
+Found while probing the deferred-text `Too many parameters` instructions at their documented maximum
+argument count (`scratch/r13`): `ETsz` and `ETClearSky` (11 parameters each) alone in a `DataTable`
+were falsely rejected with `Table T declared with no output fields.` Oracle, all four loggers
+(`tests/fixtures/r13_et_table_only.json`): the body `ETsz(...)` / `ETClearSky(...)` alone compiles;
+outside a table both print `Et must be used inside a table declaration.` (the unlabelled `"Et"` call
+site the `TABLE_ONLY_INSTRUCTIONS` comment left unattributed); a twelfth argument gives `Too many
+parameters:  7.` Both are now in `TABLE_ONLY_INSTRUCTIONS` (display `Et`) and in the field-producing
+set. Not modelled: the output fields (`ETsz` twice in one table is really `Duplicate field name ETrs`
+and `Rso`; `tables.py` derives no ETsz fields).
+
+The same probes found no `Too many parameters` false reject for the 14 instructions 5e454911 made
+eligible (AcceptDataRecords 3, Covariance 5, ETClearSky 11, ETsz 11, FFT 6, GetDataRecord 10, Histogram 8,
+Histogram4D 17, LevelCrossing 9, Moment 5, RainFlow 9, RainFlowSample 2, SampleMaxMin 4, SendData 5):
+the documented maximum, the maximum with the optional argument omitted or empty (`SendData(...,T,)`),
+and parenthesised or array-element arguments all match on the four loggers, and max+1 gives `Too many
+parameters:  <token>.` exactly.
