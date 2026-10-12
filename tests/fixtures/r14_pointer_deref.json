@@ -1,0 +1,869 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r14_pointer_deref-0",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-1",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-2",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-3",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   !x = 1."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-4",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-5",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-6",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   !p."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-7",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 + !f\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: f must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   x = 1 + !f."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-8",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = Len(!f)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: f must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   x = Len(!f)."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-9",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x + !f\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x + !f."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-10",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p + !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !p + !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-11",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = !f\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   !x = !f."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-12",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: q must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !q."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-13",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: q must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !q(1)."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-14",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x 'comment\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x ."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-15",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 : s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:  s1 = !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-16",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x : x = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x ."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-17",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x = 1 ."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-18",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then\n    x = 2\n  EndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x = 1 ."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-19",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If x = 1 Then\n    x = 2\n  ElseIf !f = 1 Then\n    x = 3\n  EndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: f must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 6: Invalid, or out of place expression: !f = 1 ."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-20",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Randomize(!x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-21",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Delay(0,!x,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-22",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Call Zork(!x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-23",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  Foo Bar\n  x = Zork\n  Call Zork2\n  y = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-24",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Foo Bar\n  x = Zork\n  s1 = !x\n  Call Zork2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 6: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-25",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 +\n  s1 = !x\n  f = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   x = 1 +.\nline 5: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 5: Invalid, or out of place expression:   s1 = !x.\nline 6: Invalid, or out of place expression:   f = 1 +."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-26",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  For x = 1\n  s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x.\nline 5: Invalid or missing parameter.\nline 6: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 6: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-27",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  Units x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x.\nline 5: Need '=' in units definition: x\n."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-28",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  s1 = !dd\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x.\nline 5: dd must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 5: Invalid, or out of place expression:   s1 = !dd."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-29",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !(x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_pointer_deref-30",
+   "logger": "cr6",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Zork = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Zork = !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-0",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-1",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-2",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-3",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   !x = 1."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-4",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-5",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-6",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   !p."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-7",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 + !f\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: f must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   x = 1 + !f."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-8",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = Len(!f)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: f must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   x = Len(!f)."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-9",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x + !f\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x + !f."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-10",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p + !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !p + !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-11",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = !f\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   !x = !f."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-12",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: q must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !q."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-13",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: q must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !q(1)."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-14",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x 'comment\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x ."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-15",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 : s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:  s1 = !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-16",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x : x = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x ."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-17",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x = 1 ."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-18",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then\n    x = 2\n  EndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x = 1 ."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-19",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If x = 1 Then\n    x = 2\n  ElseIf !f = 1 Then\n    x = 3\n  EndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: f must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 6: Invalid, or out of place expression: !f = 1 ."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-20",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Randomize(!x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-21",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Delay(0,!x,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-22",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Call Zork(!x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression: !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-23",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  Foo Bar\n  x = Zork\n  Call Zork2\n  y = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-24",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Foo Bar\n  x = Zork\n  s1 = !x\n  Call Zork2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 6: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-25",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 +\n  s1 = !x\n  f = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   x = 1 +.\nline 5: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 5: Invalid, or out of place expression:   s1 = !x.\nline 6: Invalid, or out of place expression:   f = 1 +."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-26",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  For x = 1\n  s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x.\nline 5: Invalid or missing parameter.\nline 6: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 6: Invalid, or out of place expression:   s1 = !x."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-27",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  Units x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x.\nline 5: Need '=' in units definition: x\n."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-28",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  s1 = !dd\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:   s1 = !x.\nline 5: dd must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 5: Invalid, or out of place expression:   s1 = !dd."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-29",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !(x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_pointer_deref-30",
+   "logger": "cr1000x",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Zork = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Zork = !x."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-0",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-1",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-2",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-3",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-4",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-5",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   !x\n."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-6",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   !p\n."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-7",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 + !f\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-8",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = Len(!f)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-9",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x + !f\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-10",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p + !x\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-11",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = !f\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-12",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-13",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-14",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x 'comment\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-15",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 : s1 = !x\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-16",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x : x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-17",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then x = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-18",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then\n    x = 2\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-19",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If x = 1 Then\n    x = 2\n  ElseIf !f = 1 Then\n    x = 3\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-20",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Randomize(!x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-21",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Delay(0,!x,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-22",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Call Zork(!x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Zork not defined."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-23",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  Foo Bar\n  x = Zork\n  Call Zork2\n  y = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined.\nline 5: Bar is not defined.\nline 5: Invalid, or out of place expression:   Foo Bar\n.\nline 6: Zork is not defined.\nline 8: y is not defined.\nline 8: Invalid, or out of place expression:   y = 1 +\n."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-24",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Foo Bar\n  x = Zork\n  s1 = !x\n  Call Zork2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Foo is not defined.\nline 4: Bar is not defined.\nline 4: Invalid, or out of place expression:   Foo Bar\n.\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-25",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 +\n  s1 = !x\n  f = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   x = 1 +\n.\nline 6: Invalid, or out of place expression:   f = 1 +\n."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-26",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  For x = 1\n  s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-28",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  s1 = !dd\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-29",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !(x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_pointer_deref-30",
+   "logger": "cr300",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Zork = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-0",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-1",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-2",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-3",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-4",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-5",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   !x\n."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-6",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !p\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   !p\n."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-7",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 + !f\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-8",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = Len(!f)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-9",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x + !f\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-10",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !p + !x\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-11",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  !x = !f\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-12",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-13",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !q(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-14",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x 'comment\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-15",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 : s1 = !x\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-16",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x : x = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-17",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then x = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-18",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If !x = 1 Then\n    x = 2\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-19",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  If x = 1 Then\n    x = 2\n  ElseIf !f = 1 Then\n    x = 3\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-20",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Randomize(!x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-21",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Delay(0,!x,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-22",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Call Zork(!x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Zork not defined."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-23",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  Foo Bar\n  x = Zork\n  Call Zork2\n  y = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined.\nline 5: Bar is not defined.\nline 5: Invalid, or out of place expression:   Foo Bar\n.\nline 6: Zork is not defined.\nline 8: y is not defined.\nline 8: Invalid, or out of place expression:   y = 1 +\n."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-24",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Foo Bar\n  x = Zork\n  s1 = !x\n  Call Zork2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Foo is not defined.\nline 4: Bar is not defined.\nline 4: Invalid, or out of place expression:   Foo Bar\n.\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-25",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  x = 1 +\n  s1 = !x\n  f = 1 +\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   x = 1 +\n.\nline 6: Invalid, or out of place expression:   f = 1 +\n."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-26",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  For x = 1\n  s1 = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-28",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !x\n  s1 = !dd\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-29",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  s1 = !(x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_pointer_deref-30",
+   "logger": "cr350",
+   "source": "Public x As Long, s1 As String * 10, p As Long!, f As Float, q(3) As Float\nDim dd As Long\nBeginProg\n  Zork = !x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  }
+ ]
+}

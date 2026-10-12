@@ -244,6 +244,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-
     # confirmed the same way as the two calls just above (`docs/checker.md`).
     _run_pass(var_types.check_ctype, program, profile, diags)
+    _run_pass(var_types.check_pointer_deref, program, profile, diags)
     held_member: list = []  # compile-stage `Member` index errors, see `pass1_errors` below
     _run_pass(expressions.check_function_arity, _with_inline(program), profile, diags, held_member)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all

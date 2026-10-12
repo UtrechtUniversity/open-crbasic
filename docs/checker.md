@@ -5641,7 +5641,7 @@ the generic message. Also `(Sin(x) = 1) Then` is `Invalid assignment in expressi
 `x(1) + 1 = 2`, `x Mod 1 = 2`, `x + (1 = 2` are `Invalid assignment` (we: generic), `(x(1) = 1) y`,
 `(x) = 1 y`, `(x = 1)(y = 2) z` are `Incomplete expression:` (we: generic).
 
-## Round 13 analysis, CR6/CR1000X: `!name` on a non-pointer variable (`chm/strcomp_3`, not implemented)
+## Round 13 analysis, CR6/CR1000X: `!name` on a non-pointer variable (`chm/strcomp_3`; implemented in round 14, see the end of this file)
 
 The last remaining difference of `strcomp_3` (lines 49, 51, 61, 62). Oracle runs of 2026-10-12, CR6; we accept all of
 these (false accepts). `Public x As Long, s1 As String * 10, p As Long!, f As Float`:
@@ -5788,3 +5788,36 @@ Oracle, all four loggers (probes in `scratch/r13s/`; fixture `r14_routine_local_
   them through `_check_duplicate_declaration` (without the name-collision reports `symbols.
   check_local_name_collision` already makes) and keeps the CR300/CR350 "first CONST conflict only" rule.
 
+## Round 14: `!name` on a non-pointer variable, CR6/CR1000X (`var_types.check_pointer_deref`, fixture `tests/fixtures/r14_pointer_deref.json`)
+
+Closes the last CHM-corpus difference (`strcomp_3`; CR6 and CR1000X now 506/507, the 507th is an oracle error).
+Oracle, 2026-10-12, CR6 and CR1000X; CR300/CR350 accept every one of these programs (a bare `!x` there is only
+the generic fallback, already reproduced), so the check is off on `single_pass` profiles.
+
+- **It is a pass-1 error.** Message tracer (`trace_errors.py cr6`): `<name> must be declared as a pointer type, ...`
+  is emitted by the same statement-parse stage as the pass-1 expression errors, and the generic
+  `Invalid, or out of place expression: <echo>.` follows from the second reporter (the fallback path). That
+  settles the placement left open in round 13: the pair is an ordinary pass-1 error, printed in line order with the
+  other pass-1 errors (`For x = 1`, `Units x`, `x = 1 +` with a declared target), and, like any pass-1 error, it
+  hides all of pass 2 (`x = Zork`, `Foo Bar`, `Call Zork`, `y = 1 +` with an undeclared `y`, `EndIf` without `If`,
+  unclosed blocks, `Sample` outside a table, both before and after it). No new gating code was needed; the pass
+  runs next to `check_ctype` in `checker/__init__.py`.
+- **Which operand.** The first `!operand` in textual order (target first: `!x = !f` names `x`) whose operand is a
+  declared variable without a pointer type; an operand that already is a pointer (`p As Long!`) is skipped
+  (`s1 = !p + !x` names `x`). The name is printed as declared (`!foo` for `Foo` prints `Foo`), arrays
+  (`!q`, `!q(1)`), `String` and locals/parameters of the statement's own routine (a local shadows a global; a
+  parameter of a `Sub`/`Function`) all count; `!(x)` and `@x` are silent. An assignment whose own target is
+  unresolved (`Zork = !x`) is silent here (pass 2).
+- **Echo** is the statement's usual fallback echo: an assignment/bare statement echoes `stmt.text` with its
+  indentation and without the comment (`      str1 = !I .`); an `If`/`ElseIf` the condition up to `Then` with
+  the trailing space (`!x = 1 `); `Randomize(!x)`, `Delay(0,!x,1)`, `Move(x,1,!f,1)`, `PortSet(1,!x)`,
+  `While !x = 1` and `Call Zork(!x)` the argument or condition alone; the segment after a `:` keeps its leading space.
+  A bare `!x` / `!x y` gets the pair too.
+- **Not implemented (still wrong, documented):** `For x = !f To 3` (echo ` !f`), `Do While !x`, `Select Case !x`
+  / `Case !x` (followed by `Case outside Select.` / `EndSelect w/o Select`), `Scan(!x,...)` (the pair precedes
+  `Variable illegal in Parameter`), `CallTable !x` (only `Could not find DataTable !x.`), a one-line `If` whose
+  *body* holds the `!x`, table-declaration instructions, aliases (`!Fa` is the pointer error but `!fa` is `Illegal !
+  operation`, case-sensitive), `!x.y` (names `x`), and the undeclared forms: `!nope`/`!K` (a constant) are
+  `Illegal ! operation`, then `<destination> must be declared as a pointer type...`, then the generic. `F1 = !c`
+  with `c As Long!` assigned to a `Long` function is `Assigning a pointer to the wrong type of pointer 8000 101`
+  (not implemented). A pointer misuse inside a misplaced `DataTable` prints only the placement error.

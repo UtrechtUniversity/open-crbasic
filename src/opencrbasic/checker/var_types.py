@@ -294,3 +294,111 @@ def check_ctype(program: S.Program, profile, diags: Diagnostics) -> None:
                 if isinstance(node, S.Index) and node.name.upper() == "CTYPE" and \
                         _ctype_illegal(typer, node):
                     diags.error(stmt.line, "Illegal type", stmt.file)
+
+
+# Instructions whose arguments are plain expressions: the probed ones. `Scan`, `CallTable`,
+# `Select`/`Case` and the table declarations report other errors for the same argument.
+_POINTER_ARG_INSTRUCTIONS = frozenset({"DELAY", "MOVE", "PORTSET", "RANDOMIZE", "WHILE"})
+
+POINTER_MESSAGE = "{name} must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,..."
+
+
+def _dereference_names(top: S.Expr | None):
+    """Pre-order `!operand` nodes of an expression: the operand's name, or None when the operand is
+    not a plain name / array element."""
+    for node in _subexpressions(top):
+        if isinstance(node, S.Unary) and node.op == "!":
+            operand = node.operand
+            yield operand.name if isinstance(operand, (S.Name, S.Index)) else None
+
+
+def _routine_scopes(program: S.Program):
+    """`stmt id -> {UPPER name: (declared name, type)}` for the variables visible at a statement:
+    the globals, then the statement's own routine's locals and parameters (a local shadows)."""
+    def declarations(stmts):
+        out: dict[str, tuple[str, str]] = {}
+        clash: set[str] = set()
+        for st in stmts:
+            if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+                for v in st.vars:
+                    kind = "FLOAT" if v.paren_dim else (v.type or "FLOAT").upper()
+                    key = v.name.upper()
+                    if out.setdefault(key, (v.name, kind))[1] != kind:
+                        clash.add(key)
+        return {k: v for k, v in out.items() if k not in clash}
+
+    groups: list[tuple[S.SubDef | None, list]] = [(None, [])]
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            groups.append((st, []))
+        groups[-1][1].append(st)
+        if S.ends_routine(st):
+            groups.append((None, []))
+    glob = declarations(st for routine, stmts in groups if routine is None for st in stmts)
+    scopes: dict[int, dict] = {}
+    for routine, stmts in groups:
+        if routine is None:
+            scope = glob
+        else:
+            scope = dict(glob)
+            scope.update(declarations(stmts))
+            for prm in routine.params:
+                scope[prm.name.upper()] = (prm.name, (prm.type or "FLOAT").upper())
+            if routine.keyword.upper() == "FUNCTION":
+                scope.setdefault(routine.name.upper(), (routine.name, ""))
+        for st in stmts:
+            scopes[id(st)] = scope
+    return scopes
+
+
+def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X: `!name` on a declared variable that is not of a pointer type (`As Long!`).
+    Rules and oracle evidence: `docs/checker.md` "Round 14: `!name` on a non-pointer variable"."""
+    if profile.single_pass:
+        return
+    from . import expressions, structure
+    scopes = _routine_scopes(program)
+
+    def offender(scope, tops):
+        """Declared name of the first `!` operand without a pointer type, or None."""
+        for top in tops:
+            for operand in _dereference_names(top):
+                entry = scope.get(operand.upper()) if operand else None
+                if entry is None or not entry[1]:
+                    return None
+                if not entry[1].endswith("!"):
+                    return entry[0]
+        return None
+
+    for stmt in program.statements:
+        scope = scopes[id(stmt)]
+        name = echo = None
+        if isinstance(stmt, S.Assignment):
+            target = stmt.target
+            base = target.operand if isinstance(target, S.Unary) and target.op == "!" else target
+            if not isinstance(base, (S.Name, S.Index)) or base.name.upper() not in scope:
+                continue
+            name = offender(scope, [target, stmt.value])
+            echo = structure._out_of_place(profile, stmt.text, stmt.at_eol)
+        elif isinstance(stmt, S.Unparsed):
+            if (m := re.fullmatch(r"\s*!\s*(\w+)(?:\s+\w+)?\s*", stmt.text or "")) and \
+                    (entry := scope.get(m.group(1).upper())) and entry[1] and not entry[1].endswith("!"):
+                name, echo = entry[0], structure._out_of_place(profile, stmt.text, stmt.at_eol)
+        elif isinstance(stmt, (S.If, S.ElseIf)):
+            text = expressions._if_condition_text(stmt)
+            if text is None:
+                continue
+            name = offender(scope, [stmt.cond])
+            echo = f"Invalid, or out of place expression: {text}."
+        elif isinstance(stmt, S.Call) or (isinstance(stmt, S.Instruction) and
+                                          stmt.keyword.upper() in _POINTER_ARG_INSTRUCTIONS):
+            for i, arg in enumerate(stmt.args):
+                if (found := offender(scope, [arg])) is not None:
+                    name = found
+                    echo = "Invalid, or out of place expression: " + (
+                        expressions._arg_text(stmt, i) if isinstance(stmt, S.Instruction)
+                        else expressions._call_arg_text(stmt.text, i)) + "."
+                    break
+        if name is not None and re.search(rf"!\s*{re.escape(name)}\b", stmt.text or "", re.I):
+            diags.error(stmt.line, POINTER_MESSAGE.format(name=name), stmt.file)
+            diags.error(stmt.line, echo, stmt.file)
