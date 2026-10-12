@@ -1178,7 +1178,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if known is None:
                 known = expressions._known_names(program, profile)
                 operands = pass1_operands(program, profile)
-            _check_if_pass1(stmt, operands, profile, diags)
+            _check_if_pass1(stmt, operands, profile, diags, program)
         elif profile.single_pass and isinstance(stmt, S.If):  # CR300/CR350: only the called keyword
             for sub in (stmt.inline or []) + (stmt.inline_else or []):
                 if _block_keyword_call(sub):
@@ -2737,7 +2737,7 @@ def _mentions_then(node) -> bool:
     return isinstance(node, list) and any(_mentions_then(n) for n in node)
 
 
-def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> None:
+def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics, program=None) -> None:
     """Pass-1 messages of an `If`/`ElseIf` the parser accepted: a dangling operator before `Then`
     (`If X = Then`, parsed with `Then` as the operand) is the pass-1 expression error on the
     condition alone; an unparsable one-line `If ... Then X = Y +` reports its statement
@@ -2755,6 +2755,8 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> No
         if profile.known_first_word_pass1 and _block_keyword_call(sub):
             diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file)
         if isinstance(sub, S.Unparsed) and _is_generic_unparsed(sub):
+            if program is not None and _logical_assign_accepted(sub, program, profile):
+                continue   # `If c Then X AND Y = 1` compiles like the statement on its own line
             verdict = _pass1_scan(sub.text, operands, profile)
             if verdict and verdict[0] == "pass1":
                 diags.error(sub.line, _pass1_message(profile, sub, verdict[1]), sub.file)
