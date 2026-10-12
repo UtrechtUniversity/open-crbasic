@@ -1,0 +1,555 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-shadow0",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow0",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow0",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow0",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow1",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow1",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow1",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow1",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow2",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow2",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow2",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow2",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow3",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow3",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow3",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow3",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow4",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(0))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow4",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(0))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow4",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(0))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow4",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(0))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow5",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(5))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow5",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(5))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow5",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(5))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow5",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  S1(P(5))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow6",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow6",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow6",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow6",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(15))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow7",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow7",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow7",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow7",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(P(25))\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow8",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow8",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow8",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow8",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(6))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow9",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-shadow9",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-shadow9",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow9",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Battery(P(3))\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow10",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),20,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow10",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),20,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow10",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),20,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow10",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),20,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow11",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),21,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow11",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),21,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow11",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),21,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow11",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(1),21,r,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow12",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Move(P(1),3,r,1)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow12",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Move(P(1),3,r,1)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow12",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Move(P(1),3,r,1)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow12",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  Move(P(1),3,r,1)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow13",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",15,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow13",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",15,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow13",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",15,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow13",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",15,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow14",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",25,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow14",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",25,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow14",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",25,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow14",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  r=1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),\"a\",\",\",25,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow15",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",6,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-shadow15",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",6,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-shadow15",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",6,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-shadow15",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",6,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-shadow16",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",5,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow16",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",5,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow16",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",5,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow16",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S1(v)\n  r = v\nEndSub\nSub S2\n  Dim P(5)\n  P(1) = 1\n  SplitStr(P(),\"a\",\",\",5,0)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    r=1\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow_F2",
+   "logger": "cr6",
+   "source": "Public P(20) As String * 20\nPublic s As String * 100\nSub S2\n  Dim P(3) As String * 20\n  P(1) = \"\"\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),s,\",\",10,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow_F2",
+   "logger": "cr1000x",
+   "source": "Public P(20) As String * 20\nPublic s As String * 100\nSub S2\n  Dim P(3) As String * 20\n  P(1) = \"\"\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),s,\",\",10,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow_F2",
+   "logger": "cr300",
+   "source": "Public P(20) As String * 20\nPublic s As String * 100\nSub S2\n  Dim P(3) As String * 20\n  P(1) = \"\"\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),s,\",\",10,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow_F2",
+   "logger": "cr350",
+   "source": "Public P(20) As String * 20\nPublic s As String * 100\nSub S2\n  Dim P(3) As String * 20\n  P(1) = \"\"\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr(P(),s,\",\",10,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-shadow_other_layout",
+   "logger": "cr6",
+   "source": "Public r\nSub S1(v)\n  r = v\nEndSub\nSub A\n  Dim Q(20)\n  S1(Q(15))\nEndSub\nSub B\n  Dim Q(5)\n  Q(1) = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    A\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shadow_other_layout",
+   "logger": "cr1000x",
+   "source": "Public r\nSub S1(v)\n  r = v\nEndSub\nSub A\n  Dim Q(20)\n  S1(Q(15))\nEndSub\nSub B\n  Dim Q(5)\n  Q(1) = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    A\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-shadow_other_layout",
+   "logger": "cr300",
+   "source": "Public r\nSub S1(v)\n  r = v\nEndSub\nSub A\n  Dim Q(20)\n  S1(Q(15))\nEndSub\nSub B\n  Dim Q(5)\n  Q(1) = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    A\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-shadow_other_layout",
+   "logger": "cr350",
+   "source": "Public r\nSub S1(v)\n  r = v\nEndSub\nSub A\n  Dim Q(20)\n  S1(Q(15))\nEndSub\nSub B\n  Dim Q(5)\n  Q(1) = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    A\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

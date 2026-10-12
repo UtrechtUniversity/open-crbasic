@@ -791,11 +791,12 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                    destinations: bool) -> bool:
     from . import expressions
     reported = False
-    dims = symbols.declared_all_dims(program, env)
+    tables = symbols.scope_tables(program, env)
     known = expressions._known_names(program, profile) if not destinations else set()
     for st in program.statements:
         if not isinstance(st, S.Instruction):
             continue
+        dims = tables(st).dims
         kw = st.keyword.upper()
         record = profile.instructions.get(kw)
         if not record:

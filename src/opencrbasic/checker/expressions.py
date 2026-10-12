@@ -2290,20 +2290,13 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
     size-1 dimensions (`R(1,2)`, `X(2)`, `B(1,1,2)` are out of bounds; `R(4,1)`, `X(1,1)` compile);
     CR300/CR350 report those as `Dimensions not declared`. An expression (`A(6)+1`), `A(-1)`, a
     Long array and an assignment (`X = A(6)`, checked at run time) all compile."""
-    dims = symbols.declared_all_dims(program, env)
     padded = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
-    types: dict[str, str] = {}
-    arrays: set[str] = set()
-    for st in program.statements:
-        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
-            for v in st.vars:
-                if v.dims or padded:
-                    types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
-                if v.dims:
-                    arrays.add(v.name.upper())
+    tables = symbols.scope_tables(program, env, scalars=padded)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() in _BOUNDS_UNCHECKED:
             continue
+        scope = tables(stmt)
+        dims, types, arrays = scope.dims, scope.types, scope.arrays
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:
             continue
@@ -2343,13 +2336,11 @@ def check_splitstr_whole_array(program: S.Program, profile, diags: Diagnostics, 
     for `M(2,3)` compile; Reps 0, 1 and -1 compile). Float, Long and String arrays alike. A
     subscripted destination (`SplitStr(S(1),...,6,7)` compiles) is not this rule. Run after
     `instr_rules.check_option_values`: `SplitStr(S(),...,6,-1)` prints `Invalid option -1` first."""
-    dims = symbols.declared_all_dims(program, env)
-    arrays = {v.name.upper() for st in program.statements
-              if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM")
-              for v in st.vars if v.dims}
+    tables = symbols.scope_tables(program, env)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SPLITSTR":
             continue
+        dims, arrays = tables(stmt).dims, tables(stmt).arrays
         if not stmt.args or not isinstance(stmt.args[0], S.Index) or stmt.args[0].args \
                 or len(stmt.args) < 4:
             continue
@@ -2382,10 +2373,11 @@ def check_subcall_element_bounds(program: S.Program, profile, diags: Diagnostics
     modelled) and `P(1,1)` on a 1-D array (`Dimensions not declared` on CR300/CR350) are not this rule.
     Functions are not checked (`X = FN(P(10))`)."""
     subs = symbols.declared_subs(program)
-    dims = symbols.declared_all_dims(program, env)
+    tables = symbols.scope_tables(program, env)
     for stmt in program.statements:
         if not isinstance(stmt, S.Call) or stmt.name.upper() not in subs:
             continue
+        dims = tables(stmt).dims
         for arg in stmt.args:
             if not isinstance(arg, S.Index) or not arg.args:
                 continue

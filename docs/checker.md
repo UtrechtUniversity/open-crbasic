@@ -5455,3 +5455,19 @@ Not done: CR6/CR1000X `TCPOpen` with a handle and no connection count prints
 `Max number of concurrent connections must be 1..N` first (N = the handle array's size, 1 for a scalar;
 also a count above N, `TCPOpen(..., H1, 3)` with `H1(2)`, which we accept: a false accept). CR300/CR350
 print neither.
+### Array bounds are resolved by the scope of the use site (round 13, 2026-10-12)
+
+A `Sub`-local `Dim P(5)` shadows a `Public P(20)` inside that `Sub` only; main code and other routines
+see the global. Oracle, all four loggers (fixture `tests/fixtures/bounds_scope_shadow.json`, cases
+`*-shadow*`): with `Public P(20)` and a `Dim P(5)` in `Sub S2`, `S1(P(15))`, `Battery(P(15))`,
+`Move(P(1),20,r,1)` and `SplitStr(P(),s,",",15,0)` in main code compile; `P(25)` there is out of
+bounds; inside `S2`, `P(3)` compiles and `P(0)`, `P(6)`, `Reps` 6 are out of bounds. The reverse layout (one
+`Sub` with `Dim Q(20)` and `S1(Q(15))`, a later `Sub` with `Dim Q(5)`) compiles. The array-shape
+checks (`check_instruction_index_bounds`, `check_subcall_element_bounds`, `check_splitstr_whole_array`,
+`check_reps`, `check_dest_bounds`, `check_portbridge_array`, the `Reps`/source checks of `instr_data` and the
+`NSEC` array-size check) looked up shapes with the flat, last-declaration-wins `declared_all_dims`, which
+gave false rejects (`Variable P out of bounds.`); they now call `symbols.scope_tables`, which gives the
+declarations visible at the statement (a routine's own locals over the globals, cached per routine). A
+routine parameter hides the name, so the check is skipped (a scalar parameter indexed `P(15)` is out of
+bounds on the real compiler, `Dimensions not declared` on CR300/CR350; not modelled).
+`_matrix_shapes` (declared exactly once only) and `structure.py`'s alias check were left as they are.

@@ -758,14 +758,14 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
     if not checked:
         return
     from . import symbols
-    dims = symbols.declared_all_dims(program, env)
-    floats = {v.name.upper() for st in program.statements
-              if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM")
-              for v in st.vars if (v.type or "FLOAT").upper() == "FLOAT"}
+    tables = symbols.scope_tables(program, env, scalars=True)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or \
                 len(stmt.args) < 2:
             continue
+        scope = tables(stmt)
+        dims = scope.dims
+        floats = {n for n, t in scope.types.items() if t == "FLOAT"}
         reps = _int_value(stmt.args[1], env)
         if reps is None and profile.single_pass and isinstance(_const_value(stmt.args[1], env), str):
             reps = 0  # `Therm107(T,"fuzz",...)` (oracle, CR300)
@@ -821,15 +821,10 @@ _SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "S
 def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                       env: consteval.Env) -> None:
     from . import symbols
-    dims = symbols.declared_all_dims(program, env)
+    tables = symbols.scope_tables(program, env, scalars=True)
+    dims: dict[str, tuple[int, ...]] = {}
     types: dict[str, str] = {}
     arrays: set[str] = set()
-    for st in program.statements:
-        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
-            for v in st.vars:
-                types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
-                if v.dims:
-                    arrays.add(v.name.upper())
 
     def overruns(arg: S.Expr, need: int, negative: bool, kinds: tuple[str, ...]) -> bool:
         if not isinstance(arg, (S.Name, S.Index)):
@@ -849,6 +844,8 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
 
     names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
     for stmt in program.statements:
+        scope = tables(stmt)
+        dims, types, arrays = scope.dims, scope.types, scope.arrays
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CDM_TCCOMP" and \
                 len(stmt.args) > 3 and isinstance(stmt.args[2], (S.Name, S.Index)):
             # Reps (fourth) of the destination (third); negative Reps overruns too (oracle, CR6/

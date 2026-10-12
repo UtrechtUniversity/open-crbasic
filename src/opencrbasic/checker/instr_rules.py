@@ -1652,11 +1652,12 @@ def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env)
     docs/instructions.md. A literal or a plainly declared variable of another shape/type is flagged;
     anything not resolvable (undeclared, `B()`, `B(1,1)`, `Const`, `Alias`) is left alone."""
     types = symbols.declared_variable_types(program)
-    dims = symbols.declared_all_dims(program, env)
+    tables = symbols.scope_tables(program, env)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PORTBRIDGE" \
                 or len(stmt.args) != 2:
             continue
+        dims = tables(stmt).dims
         arg = stmt.args[1]
         if isinstance(arg, S.Number):
             bad = True

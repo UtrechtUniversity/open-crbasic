@@ -264,6 +264,62 @@ def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
     return SimpleNamespace(statements=stmts)
 
 
+class ScopeTables:
+    """`dims` (upper-case name -> full dimension tuple, as `declared_all_dims`), `types` (name -> type,
+    arrays always, scalars only when `scalars`) and `arrays` (names declared with dimensions), for the
+    declarations visible at one statement."""
+    __slots__ = ("dims", "types", "arrays")
+
+    def __init__(self, dims, types, arrays):
+        self.dims, self.types, self.arrays = dims, types, arrays
+
+
+def scope_tables(program: S.Program, env: consteval.Env, scalars: bool = False):
+    """`stmt -> ScopeTables` looking array shapes up by the scope of the use site: a `Sub`/`Function`
+    body sees its own local `Dim`s over the globals (a local shadows a global of the same name, oracle
+    2026-10-12: `Dim P(5)` in one Sub, `S1(P(15))` against `Public P(20)` in main code compiles, and
+    `P(6)` inside that Sub is out of bounds), main code sees only the globals. A routine's own
+    parameters hide the name (no entry: the caller skips it). Cached per routine."""
+    owner: dict[int, S.SubDef | None] = {}
+    cur = None
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            cur = st
+        elif isinstance(st, S.Instruction) and st.keyword.upper() in ("ENDSUB", "ENDFUNCTION"):
+            cur = None
+        owner[id(st)] = cur
+    cache: dict[int, ScopeTables] = {}
+
+    def build(routine, probe) -> ScopeTables:
+        view = scoped_view(program, probe)
+        dims = declared_all_dims(view, env)
+        types: dict[str, str] = {}
+        arrays: set[str] = set()
+        for st in view.statements:
+            if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
+                for v in st.vars:
+                    if v.dims or scalars:
+                        types[v.name.upper()] = (v.type or "FLOAT").upper()
+                    if v.dims:
+                        arrays.add(v.name.upper())
+        if routine is not None:
+            for prm in routine.params:
+                n = prm.name.upper()
+                dims.pop(n, None)
+                types.pop(n, None)
+                arrays.discard(n)
+        return ScopeTables(dims, types, arrays)
+
+    def lookup(stmt) -> ScopeTables:
+        routine = owner.get(id(stmt))
+        key = id(routine)
+        if key not in cache:
+            cache[key] = build(routine, stmt)
+        return cache[key]
+
+    return lookup
+
+
 def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, ...]]:
     """Every `Public`/`Dim`/`Static` variable's own upper-case name -> its **full** tuple of
     declared dimension sizes, `(1,)` for a scalar (matching `declared_dim0_sizes`'s own "behaves

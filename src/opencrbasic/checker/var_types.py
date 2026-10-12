@@ -174,7 +174,7 @@ def _indexed_past_first(typer: "_Typer", dest: S.Expr) -> bool:
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     typer = _Typer(program)
-    dims = None
+    tables = symbols.scope_tables(program, env)
     for stmt in program.statements:
         for text in _string_operand_messages(typer, stmt):
             diags.error(stmt.line, text, stmt.file)
@@ -213,9 +213,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 message = "Source type must be either LONG or FLOAT or NSEC for data type NSEC"
             elif source == "FLOAT" and not any((d.line, d.file) == (stmt.line, stmt.file)
                                               for d in diags.errors):
-                if dims is None:
-                    dims = symbols.declared_all_dims(program, env)
-                size = _array_size(typer, dims, args[1])
+                size = _array_size(typer, tables(stmt).dims, args[1])
                 try:
                     reps = consteval.value_of(args[0], env)
                 except consteval.NotConstant:
