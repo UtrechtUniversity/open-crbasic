@@ -6394,3 +6394,21 @@ binary operators, closed groups):
   `Incomplete expression: Abs(X, 1 .` (condition echo), `A(Abs(X) = 1`, `A(Sin(X) = 1`, `A(1 = 1`,
   `A(X = 1` are `Invalid assignment in expression: <stmt>.` on CR6/CR1000X, `Y = Abs(X, Z` and
   `Y = Abs(X,Z,Z` are `Incomplete expression`.
+
+## Round 15: block keywords in a one-line `If` body (2026-10-12)
+
+Oracle, all four loggers (fixture `tests/fixtures/r15_inline_if_block_words.json`, 40 shapes x 4):
+`Do`, `For`, `Select Case`, `While` as the body (or `Else` body) of a one-line `If` open their block like
+a statement of their own, and `Loop`, `Next`, `EndSelect`, `End Select`, `Wend` there close one:
+`If C Then Do` ... `Loop` (also `Loop Until X`, `Do While X`), `If C Then Y = 1 Else For Z = 1 To 2` ...
+`Next`, `If C Then Select Case X` ... `EndSelect`, `Do` ... `If C Then Loop`, `For` ... `If C Then Next`,
+`If C Then Do Else Y = 1` ... `Loop` all compile (false rejects before); with no partner they give the
+usual `DO without LOOP.` / `FOR without NEXT.` / `IF or SELECT without EndIf or EndSelect.` /
+`LOOP without DO.` / `NEXT without FOR.` (`SubScan used outside of Scan .. NextScan.` for a `SubScan` outside a
+`Scan`: a real reject we already give for the plain statement; `If C Then SubScan(...)` inside a `Scan`
+behaves like the plain one). A `SubScan` with no measurement (`No Measurements in SubScan.`, CR300
+`SequentialMode SubScan interval must be > 1 mS.`) is not modelled in either form.
+Implementation: `parser._hoist_block_statements` moves such body statements out of the `If` behind it.
+Still false accepts (checked, pre-existing, not block-keyword hoisting): `While X` without `Wend` and a
+stray `Wend`, `If C Then Case 1` outside a `Select`, `If C Then Exit Do` outside a loop, `If C Then Scan(...)`
+(`IF or SELECT statement illegally has SCAN without NEXT SCAN.`).

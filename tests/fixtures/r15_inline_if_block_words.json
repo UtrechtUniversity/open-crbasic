@@ -1,0 +1,1143 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_inline_if_block_words-0",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-0",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-0",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-1",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-1",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-1",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-2",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-2",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-2",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-3",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-3",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-3",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-4",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-4",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-4",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-5",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-5",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-5",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Y = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-6",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 : Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 : Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-6",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 : Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-6",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 : Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-7",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-7",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-7",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-8",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-8",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-8",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-9",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-9",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-9",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 2\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-10",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-10",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-10",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-11",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-11",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-11",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Z = 1\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-12",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-12",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-12",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Do\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-13",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-13",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-13",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-14",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      Y = 1\n      If C Then Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      Y = 1\n      If C Then Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-14",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      Y = 1\n      If C Then Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-14",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      Y = 1\n      If C Then Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-15",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Y = 1 To 3\n      If C Then Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Y = 1 To 3\n      If C Then Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-15",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Y = 1 To 3\n      If C Then Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-15",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Y = 1 To 3\n      If C Then Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-16",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-16",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-16",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-17",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-17",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-17",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then Z = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-18",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then\n      Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then\n      Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-18",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then\n      Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-18",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then If Y Then\n      Z = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-19",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-19",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-19",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Else\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-20",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-20",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-20",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-21",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-21",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-21",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndIf\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 10: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-22",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n      Z = 1\n      If C Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n      Z = 1\n      If C Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-22",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n      Z = 1\n      If C Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-22",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n      Z = 1\n      If C Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-23",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      Z = 1\n      If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      Z = 1\n      If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-23",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      Z = 1\n      If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-23",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n      Z = 1\n      If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-24",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-24",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-24",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-25",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop Until X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop Until X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-25",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop Until X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-25",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop Until X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-26",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-26",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-26",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do While X\n      Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-27",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Y = 1\n      If Z Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Y = 1\n      If Z Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-27",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Y = 1\n      If Z Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-27",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then While X\n      Y = 1\n      If Z Then Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-28",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Z = 1 To 2\n      Y = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Z = 1 To 2\n      Y = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-28",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Z = 1 To 2\n      Y = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-28",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else For Z = 1 To 2\n      Y = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-29",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-29",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-29",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-29",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Y = 1\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-30",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-30",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-30",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-30",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-31",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-31",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-31",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-31",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then For Y = 1 To 3\n      Z = 1\n    Next Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-32",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: LOOP statement illegally has SCAN without NEXT SCAN.\nline 12: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-32",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: LOOP statement illegally has SCAN without NEXT SCAN.\nline 12: LOOP without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-32",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: LOOP statement illegally has SCAN without NEXT SCAN.\nline 12: LOOP without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-32",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      Y = 1\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: LOOP statement illegally has SCAN without NEXT SCAN.\nline 12: LOOP without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-33",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    Case Else\n      Z = 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-33",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    Case Else\n      Z = 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-33",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    Case Else\n      Z = 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-33",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    Case Else\n      Z = 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-34",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    End Select\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-34",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    End Select\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-34",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    End Select\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-34",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    Case 1\n      Z = 1\n    End Select\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-35",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do : Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-35",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do : Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-35",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do : Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-35",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do : Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: DO without LOOP."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-36",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Loop Until X\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-36",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Loop Until X\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-36",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Loop Until X\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-36",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n      If C Then Loop Until X\n    EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 11: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-37",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Do\n      Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-37",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Do\n      Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-37",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Do\n      Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-37",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do\n      If Y Then Do\n      Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-38",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Do\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-38",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Do\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-38",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Do\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-38",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Do Else Do\n    Loop\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_block_words-39",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_block_words-39",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSelect w/o Select"
+  },
+  {
+   "id": "cr300-r15_inline_if_block_words-39",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSelect w/o Select"
+  },
+  {
+   "id": "cr350-r15_inline_if_block_words-39",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nPublic S As String * 8\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSelect w/o Select"
+  }
+ ]
+}

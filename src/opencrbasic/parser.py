@@ -502,6 +502,35 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
     return tokens
 
 
+_INLINE_BLOCK_WORDS = frozenset({"SELECT", "WHILE", "NEXT", "ENDSELECT", "WEND", "SUBSCAN", "NEXTSUBSCAN"})
+
+
+def _is_block_statement(st: S.Stmt) -> bool:
+    if isinstance(st, (S.DoLoop, S.For)):
+        return True
+    if not isinstance(st, S.Instruction):
+        return False
+    word = st.keyword.upper()
+    return word in _INLINE_BLOCK_WORDS or word == "END" and bool(st.args) and isinstance(st.args[0], S.Name) \
+        and st.args[0].name.upper() == "SELECT"
+
+
+def _hoist_block_statements(stmt: S.If) -> list[S.Stmt]:
+    """`If c Then Do`, `If c Then Y = 1 Else For ...`, `If c Then Next`: a block keyword in the body
+    of a one-line `If` opens or closes its block like a statement of its own (oracle, all four
+    loggers, 2026-10-12: the `Loop`/`Next`/`EndSelect` that follows is matched, a missing one is
+    `DO without LOOP.`). The statements move out of the body, in order, behind the `If`."""
+    hoisted: list[S.Stmt] = []
+    for attr in ("inline", "inline_else"):
+        body = getattr(stmt, attr)
+        if body:
+            hoisted += [st for st in body if _is_block_statement(st)]
+            setattr(stmt, attr, [st for st in body if not _is_block_statement(st)])
+    for st in hoisted:
+        st.origin = stmt.origin
+    return hoisted
+
+
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
     """Split a fully-tokenised logical line on top-level `:` (not inside `(...)`)."""
     segments: list[list[Token]] = []
@@ -754,6 +783,8 @@ class _Parser:
             # CR300, 2026-10-01: `If X Then X = 1 : Foo(1)`).
             in_inline_if = in_inline_if or (isinstance(stmt, S.If) and stmt.inline is not None)
             self.program.statements.append(stmt)
+            if isinstance(stmt, S.If) and stmt.inline is not None:
+                self.program.statements.extend(_hoist_block_statements(stmt))
             if isinstance(stmt, S.Unparsed) and self.profile.single_pass:
                 self.program.statements.extend(self._inline_body_after_bad_condition(stmt, seg_text_raw))
             # A `Const` just parsed is folded into `self.env` inside `_parse_const` itself, so
