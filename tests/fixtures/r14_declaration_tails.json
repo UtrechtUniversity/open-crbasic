@@ -1,0 +1,1521 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-decltail_alias_0",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias_0",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias_0",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias_0",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias_1",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias_1",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias_1",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias_1",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias_2",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_alias_2",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_alias_2",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_alias_2",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_alias_3",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,1+2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_alias_3",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,1+2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_alias_3",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,1+2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_alias_3",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,1+2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_alias_4",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(0) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-decltail_alias_4",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(0) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-decltail_alias_4",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(0) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias_4",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(0) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_alias_5",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(5) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-decltail_alias_5",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(5) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-decltail_alias_5",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(5) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias_5",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(5) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_alias_6",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(1,(1+2)) = Acc2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias_6",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(1,(1+2)) = Acc2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias_6",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(1,(1+2)) = Acc2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias_6",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(1,(1+2)) = Acc2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_alias_7",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(2,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias_7",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(2,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias_7",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(2,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias_7",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum\nAlias Quad(2,(1+2)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (1+2.\nline 4: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_alias_8",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nAlias Quad(1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr1000x-decltail_alias_8",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nAlias Quad(1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr300-decltail_alias_8",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nAlias Quad(1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN().\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias_8",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nAlias Quad(1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN().\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_alias_9",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr1000x-decltail_alias_9",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr300-decltail_alias_9",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN().\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias_9",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 4*ATN().\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias_10",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     L = L + Accum."
+  },
+  {
+   "id": "cr1000x-decltail_alias_10",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     L = L + Accum."
+  },
+  {
+   "id": "cr300-decltail_alias_10",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias_10",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_0",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad() = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_0",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad() = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias2_0",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad() = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias2_0",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad() = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_1",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(\"a\") = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-decltail_alias2_1",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(\"a\") = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-decltail_alias2_1",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(\"a\") = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias2_1",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(\"a\") = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_alias2_2",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2,3) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_2",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2,3) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_alias2_2",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2,3) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_alias2_2",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,2,3) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_alias2_3",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(Nope) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_3",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(Nope) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias2_3",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(Nope) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Variable illegal in Parameter: Nope.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias2_3",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(Nope) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Variable illegal in Parameter: Nope.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_4",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_4",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias2_4",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias2_4",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1)) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_5",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_5",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias2_5",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias2_5",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Accum()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Need closing )\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_6",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_6",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_alias2_6",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_alias2_6",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_alias2_7",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Zork(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     L = L + Accum."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_7",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Zork(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     L = L + Accum."
+  },
+  {
+   "id": "cr300-decltail_alias2_7",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Zork(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias2_7",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1) = Zork(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_8",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2),1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_8",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2),1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias2_8",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2),1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr350-decltail_alias2_8",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad((1+2),1) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (1+2.\nline 3: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec.\nline 6: Accum is not defined."
+  },
+  {
+   "id": "cr6-decltail_alias2_9",
+   "logger": "cr6",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(2)) = Accum\nAlias Quad(2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-decltail_alias2_9",
+   "logger": "cr1000x",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(2)) = Accum\nAlias Quad(2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (2.\nline 3: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-decltail_alias2_9",
+   "logger": "cr300",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(2)) = Accum\nAlias Quad(2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (2.\nline 3: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decltail_alias2_9",
+   "logger": "cr350",
+   "source": "Public Quad(4), L\nUnits L=m\nAlias Quad(1,(2)) = Accum\nAlias Quad(2) = Accum\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Accum\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (2.\nline 3: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decltail_constval_0",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr1000x-decltail_constval_0",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr300-decltail_constval_0",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*ATN().\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_0",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 4*ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*ATN().\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_1",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1 +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-decltail_constval_1",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1 +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr300-decltail_constval_1",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1 +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 1 +.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_1",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1 +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 1 +.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_3",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-decltail_constval_3",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-decltail_constval_3",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_3",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_4",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_constval_4",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_constval_4",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_constval_4",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_constval_5",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: ATN()."
+  },
+  {
+   "id": "cr1000x-decltail_constval_5",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: ATN()."
+  },
+  {
+   "id": "cr300-decltail_constval_5",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: ATN().\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_5",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = ATN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: ATN().\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_6",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 4*ATN(1,2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: 4*ATN(1,2)."
+  },
+  {
+   "id": "cr1000x-decltail_constval_6",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 4*ATN(1,2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: 4*ATN(1,2)."
+  },
+  {
+   "id": "cr300-decltail_constval_6",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 4*ATN(1,2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: 4*ATN(1,2).\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_6",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 4*ATN(1,2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: 4*ATN(1,2).\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_7",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 4*SIN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*SIN()."
+  },
+  {
+   "id": "cr1000x-decltail_constval_7",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 4*SIN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*SIN()."
+  },
+  {
+   "id": "cr300-decltail_constval_7",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 4*SIN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*SIN().\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_7",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 4*SIN()\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 4*SIN().\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_8",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  Pi."
+  },
+  {
+   "id": "cr1000x-decltail_constval_8",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  Pi."
+  },
+  {
+   "id": "cr300-decltail_constval_8",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  Pi.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_8",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  Pi.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_9",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi =\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-decltail_constval_9",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi =\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-decltail_constval_9",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi =\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: .\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_9",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi =\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: .\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_10",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = \"a\" +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \"a\" +."
+  },
+  {
+   "id": "cr1000x-decltail_constval_10",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = \"a\" +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \"a\" +."
+  },
+  {
+   "id": "cr300-decltail_constval_10",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = \"a\" +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \"a\" +.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_10",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = \"a\" +\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \"a\" +.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr6-decltail_constval_11",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-decltail_constval_11",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-decltail_constval_11",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr350-decltail_constval_11",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec.\nline 5: Pi is not defined."
+  },
+  {
+   "id": "cr300-decltail_constval_12",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1 / 0\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_constval_12",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1 / 0\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_constval_13",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_constval_13",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_constval_13",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_constval_13",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 4*ATN(1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + Pi\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_0",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_0",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_0",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_0",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_1",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_1",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_1",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_1",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_2",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = (1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_2",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = (1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_2",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = (1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_2",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = (1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_3",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = (1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_3",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = (1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_3",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = (1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_3",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = (1))\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_4",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1) + 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_4",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1) + 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_4",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1) + 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_4",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1) + 2\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_5",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1 )\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_5",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1 )\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_5",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1 )\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_5",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1 )\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_6",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = (1+2)) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_6",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = (1+2)) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_6",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = (1+2)) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_6",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = (1+2)) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_7",
+   "logger": "cr6",
+   "source": "Public L\nPublic X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_7",
+   "logger": "cr1000x",
+   "source": "Public L\nPublic X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_7",
+   "logger": "cr300",
+   "source": "Public L\nPublic X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_7",
+   "logger": "cr350",
+   "source": "Public L\nPublic X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_8",
+   "logger": "cr6",
+   "source": "Public L\nDim X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_8",
+   "logger": "cr1000x",
+   "source": "Public L\nDim X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_8",
+   "logger": "cr300",
+   "source": "Public L\nDim X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_8",
+   "logger": "cr350",
+   "source": "Public L\nDim X = 1)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_9",
+   "logger": "cr6",
+   "source": "Public L\nAlias L = Pi)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_9",
+   "logger": "cr1000x",
+   "source": "Public L\nAlias L = Pi)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_9",
+   "logger": "cr300",
+   "source": "Public L\nAlias L = Pi)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_9",
+   "logger": "cr350",
+   "source": "Public L\nAlias L = Pi)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_10",
+   "logger": "cr6",
+   "source": "Public L\nUnits L = m)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_10",
+   "logger": "cr1000x",
+   "source": "Public L\nUnits L = m)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_10",
+   "logger": "cr300",
+   "source": "Public L\nUnits L = m)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_10",
+   "logger": "cr350",
+   "source": "Public L\nUnits L = m)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_11",
+   "logger": "cr6",
+   "source": "Public L\nPublic X(2) = {1,2})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_11",
+   "logger": "cr1000x",
+   "source": "Public L\nPublic X(2) = {1,2})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_11",
+   "logger": "cr300",
+   "source": "Public L\nPublic X(2) = {1,2})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_11",
+   "logger": "cr350",
+   "source": "Public L\nPublic X(2) = {1,2})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_12",
+   "logger": "cr6",
+   "source": "Public L\nPublic X(2) = {1,2}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_12",
+   "logger": "cr1000x",
+   "source": "Public L\nPublic X(2) = {1,2}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_12",
+   "logger": "cr300",
+   "source": "Public L\nPublic X(2) = {1,2}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_12",
+   "logger": "cr350",
+   "source": "Public L\nPublic X(2) = {1,2}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_13",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_13",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_13",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_13",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_14",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = {1}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_14",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = {1}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_14",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = {1}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_14",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = {1}}\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_15",
+   "logger": "cr6",
+   "source": "Public L\nPublic Y(2) = {1,2}})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_15",
+   "logger": "cr1000x",
+   "source": "Public L\nPublic Y(2) = {1,2}})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_15",
+   "logger": "cr300",
+   "source": "Public L\nPublic Y(2) = {1,2}})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_15",
+   "logger": "cr350",
+   "source": "Public L\nPublic Y(2) = {1,2}})\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_16",
+   "logger": "cr6",
+   "source": "Public L\nPublic Z = 1),W\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_16",
+   "logger": "cr1000x",
+   "source": "Public L\nPublic Z = 1),W\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_16",
+   "logger": "cr300",
+   "source": "Public L\nPublic Z = 1),W\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_16",
+   "logger": "cr350",
+   "source": "Public L\nPublic Z = 1),W\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_17",
+   "logger": "cr6",
+   "source": "Public L\nPublic Z = 1, W = 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_17",
+   "logger": "cr1000x",
+   "source": "Public L\nPublic Z = 1, W = 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_17",
+   "logger": "cr300",
+   "source": "Public L\nPublic Z = 1, W = 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_17",
+   "logger": "cr350",
+   "source": "Public L\nPublic Z = 1, W = 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_18",
+   "logger": "cr6",
+   "source": "Public L\nDim Z As Long = 1) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_18",
+   "logger": "cr1000x",
+   "source": "Public L\nDim Z As Long = 1) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_18",
+   "logger": "cr300",
+   "source": "Public L\nDim Z As Long = 1) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_18",
+   "logger": "cr350",
+   "source": "Public L\nDim Z As Long = 1) \nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-decltail_tail_19",
+   "logger": "cr6",
+   "source": "Public L\nConst Pi = 1) 'comment\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-decltail_tail_19",
+   "logger": "cr1000x",
+   "source": "Public L\nConst Pi = 1) 'comment\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-decltail_tail_19",
+   "logger": "cr300",
+   "source": "Public L\nConst Pi = 1) 'comment\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-decltail_tail_19",
+   "logger": "cr350",
+   "source": "Public L\nConst Pi = 1) 'comment\nBeginProg\n  Scan(1,Sec,0,0)\n    L = L + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

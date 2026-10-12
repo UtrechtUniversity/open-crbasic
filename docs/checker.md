@@ -5990,3 +5990,24 @@ reproducers incl. `SendData (ComRS232,0,4094,Table1)` before `BeginProg`). Messa
   WorstCase table X.`), and a table declared *after* the statement (also not found). `EditTable(Nope,1)` crashes the
   real compiler (page fault, no verdict). `SendData(...,T1)`/`GetRecord(...,T1)` do not count as a call of `T1` for
   the "declared but never called" warning (opencrbasic treats them as a call: unfixed).
+
+## Round 14 declaration tails, unregistered aliases and failed constants
+
+Oracle, 2026-10-12, all four loggers (`tests/fixtures/r14_declaration_tails.json`, 214 cases).
+
+- **False reject fixed: an unmatched closer ends a `Const`/`Public`/`Dim` line.** `Const Pi = 1)`, `Const Pi = 1) + 2`,
+  `Const Pi = {1}}`, `Public X = 1)`, `Dim X As Long = 1)`, `Public Y(2) = {1,2}})` compile clean on all four loggers (the
+  value ends at the first unmatched `)`/`}`, the rest of the line is ignored, like a top-level comma). opencrbasic printed
+  `Invalid, or out of place expression: Const Pi = 1).` (CR300/CR350: a three-line cascade). `Alias L = Pi)` and `Units L = m)`
+  were already accepted.
+- **CR300/CR350: an `Alias` that prints `Alias is illegally dimensioned.` registers no name.** Empty `Alias Q() = A`,
+  a parenthesised index item `Alias Q(1,(1+2)) = A`, `Alias Q((1)) = A`, `Alias Q((1+2),1) = A`, as the undefined-index
+  one already did; a later use of `A` is `A is not defined.` (6 fuzz reproducers, `quadrature_1`, `sdi12recorder_2`). The
+  out-of-range ones (`Alias Q(0) = A`, `Q(5)`, `Q("a")`, `Q(1,2,3)`) print `Illegally dimensioned aliased name`, or nothing,
+  and still register `A` (`expressions._known_names`).
+- **CR300/CR350: a `Const` whose value is a bad built-in call is not declared.** `Const Pi = 4*ATN()`, `ATN()`,
+  `4*ATN(1,2)`, `4*SIN()` print the pass-1 error, then every later use of `Pi` is `Pi is not defined.` (as for `Const P = Nope`,
+  `_failed_consts`). Syntax failures such as `1 +` and `1 2` were already unregistered.
+- Not fixed (found while probing): `Const Pi = (1` prints `No Matching, or out of place ) in expression: (1.`
+  (opencrbasic: `Const with no assignment.`, all four loggers); CR6/CR1000X `Const Pi = 1 / 0` is
+  `Divide by zero in expression: 1 / 0.` (opencrbasic compiles it, CR300/CR350 accept it).

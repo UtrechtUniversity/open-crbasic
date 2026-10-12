@@ -763,7 +763,7 @@ def _known_names(program: S.Program, profile) -> set[str]:
     if any(isinstance(st, S.Instruction) and st.keyword.upper() == "CH400STATUS"
            for st in program.statements):
         known.add("CH400STATUS")  # the instruction names the table `Sample(1, CH400Status, ...)` reads
-    known -= _failed_consts(program, known)
+    known -= _failed_consts(program, known, profile)
     if profile.single_pass:
         known -= _unclosed_structure_variables(program)
         # an `Alias` whose subscript names something undefined is not registered (oracle, CR300/
@@ -783,6 +783,16 @@ def _known_names(program: S.Program, profile) -> set[str]:
             bad = src.name.upper() not in declared or (
                 isinstance(src, S.Index) and any(
                     _undefined_names(a, known) for a in src.args if a is not None))
+            if not bad and src.name.upper() in declared:
+                # `Alias is illegally dimensioned.` (empty `Q()`, a parenthesised index item
+                # `Q((1+2))`) registers no name; the out-of-range
+                # `Illegally dimensioned aliased name` one does (oracle, CR300/CR350, 2026-10-12)
+                from . import structure
+                open_at = st.text.find("(")
+                items = structure._group_items(st.text, open_at) if open_at >= 0 else None
+                bad = (isinstance(src, S.Index) and not src.args) or bool(
+                    items and isinstance(src, S.Index) and any(
+                        i.strip().startswith("(") and i.strip().endswith(")") for i in items))
             (failed if bad else valid).add(st.args[1].name.upper())
         known -= failed - valid
     return KnownNames(known, tables=_value_less_tables(program, profile),
@@ -834,7 +844,7 @@ def _value_less_tables(program: S.Program, profile=None) -> frozenset:
     return frozenset(tables - others)
 
 
-def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
+def _failed_consts(program: S.Program, known: set[str], profile=None) -> set[str]:
     """`Const` names whose value does not resolve, directly or through another failed `Const`:
     the real compilers never declare them, so every later use is itself unresolved (oracle, all
     four loggers: `Const P = Nope` / `Const R = P + 1` / `PortSet(R,1)` reports `Nope`, then `P + 1`
@@ -843,6 +853,11 @@ def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
     arguments")."""
     consts = [s for s in program.statements if isinstance(s, S.ConstDecl) and s.value is not None]
     failed: set[str] = set()
+    if profile is not None:
+        # a value with a bad built-in call (`4*ATN()`, `4*ATN(1,2)`) is a pass-1 error and the
+        # constant is never declared (oracle, CR300/CR350, 2026-10-12)
+        failed |= {c.name.upper() for c in consts if _find_arity_problem(c.value, profile)
+                   or _find_bare_function_ref(c.value, profile, frozenset())}
     changed = True
     while changed:
         changed = False

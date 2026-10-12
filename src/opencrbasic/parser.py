@@ -1329,8 +1329,10 @@ class _Parser:
             finally:
                 self._to_ok = outer
             value_span = (value_start_col, p.peek().col)
-            if p.is_op(","):
-                p.i = len(p.toks) - 1  # a top-level comma ends the statement, the rest is ignored
+            if p.is_op(",") or p.is_op(")") or p.is_op("}"):
+                # a top-level comma ends the statement, the rest is ignored; so does an unmatched `)`
+                # (`Const Pi = 1) + 2` compiles on all four loggers, oracle 2026-10-12)
+                p.i = len(p.toks) - 1
         except _ParseError:
             # `Const` with no complete `Name [As Type] = value` on its own physical line -- a CHM
             # corpus example wrapped the assignment onto the next line with no `_` continuation
@@ -1388,6 +1390,8 @@ class _Parser:
                 # the same way as an unclosed paren (`expect_close`). See docs/frontend.md.
                 break
             vars_.append(self._parse_vardecl(p, line, file))
+        if p.is_op(")") or p.is_op("}"):
+            p.i = len(p.toks) - 1   # an unmatched `)`/`}` ends the declaration (oracle, round 14)
         return S.Declaration(line, file, kind=kind, vars=vars_)
 
     def _close_dims_or_raise(self, p: _TokStream, name_tok: Token) -> None:
