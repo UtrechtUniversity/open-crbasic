@@ -219,6 +219,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
     dead = False
     open_depth = 0
     sub_depth = 0
+    begun = False
     pipeline_delays = {id(st) for st, _ in structure.pipeline_task_errors(program, profile)
                        if _kw(st) == "DELAY"}
     i = 0
@@ -238,6 +239,8 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             i += 1
             continue
 
+        if kw == "BEGINPROG":
+            begun = True
         if kw == "SLOWSEQUENCE":
             # A `SlowSequence` starts a genuinely separate, concurrently-scheduled task (oracle:
             # `docs/instructions.md` -- a `SlowSequence`/`Scan`/`NextScan` right after an infinite,
@@ -258,6 +261,9 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             j, has_exit = _scan_span(statements, i)
             count_is_zero = _scan_count_is_zero(stmt, env)
             dead = bool(count_is_zero) and not has_exit
+            if not begun and profile.name in ("cr6", "cr1000x"):
+                dead = False   # `Scan illegally occurs before BeginProg.`: the scan is not
+                # compiled, so nothing after it is unreachable (oracle, 2026-10-12, fuzz R15)
             open_depth = _open_conditional(statements, i, j)
             i = j
             continue
@@ -289,7 +295,17 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
                 or _is_program_end(stmt)
             )
             if not is_declaration:
-                diags.warning(stmt.line, f"{_display_name(stmt, profile)} never reached at run time.", stmt.file)
+                name = _display_name(stmt, profile)
+                if isinstance(stmt, S.Call) and not stmt.explicit and not stmt.tail_ignored and \
+                        profile.name in ("cr6", "cr1000x"):
+                    # a bare `Nope`/`Nope(x)`/`Abs(x)` that is no Sub or Function is `Expr`; a
+                    # variable gives no warning at all (oracle, CR6/CR1000X, 2026-10-12, fuzz R15)
+                    routines = {st.name.upper() for st in statements if isinstance(st, S.SubDef)}
+                    if stmt.name.upper() not in routines:
+                        if stmt.name.upper() in symbols.declared_variable_names(program):
+                            return
+                        name = "Expr"
+                diags.warning(stmt.line, f"{name} never reached at run time.", stmt.file)
                 return
         i += 1
 

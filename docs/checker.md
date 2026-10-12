@@ -6423,3 +6423,16 @@ stray `Wend`, `If C Then Case 1` outside a `Select`, `If C Then Exit Do` outside
 - Left open (message diffs): the number of `Call argument required.` lines (`Call run(A` two, `Call run(` and `Call run` three, we print one)
   and an undeclared name in an unclosed `Call run(A,B,C,D` (`Invalid symbol in expression: D |.` / `D is not defined.` precede the count line).
 - R15, `tests/fixtures/r15_call_name_spaces.json` (audited 0 differing), fuzz false reject `cr1000x/false_reject/f4932fe73ffd`.
+
+### Round 15: `never reached at run time` after a `Scan` before `BeginProg`, and `Expr` for a bare non-Sub name (CR6, CR1000X)
+
+- A `Scan(...,0)` that comes before `BeginProg` (`Scan illegally occurs before BeginProg.`) does not start dead code:
+  `Scan (1,min,3,0)` / `NextScan` / `Foo` (also with `x = 1`, `Delay`, `CallTable`, `EndProg_Mut`, a later
+  `BeginProg`) gives only the placement error. CR300/CR350 already behaved like this because of their other errors. 11
+  `Warning: Call never reached` reproducers (`EndProg_Mut` after `NextScan`, e.g. `cr1000x/message_diff/48a8799dad3c`).
+- After a real endless `Scan` a bare statement that is no declared Sub/Function is reported `Expr never reached at run time.`
+  (`Nope`, `Nope(x)`, `Nope x`, `Abs(x)`), after its `Invalid, or out of place expression`; a bare declared variable
+  (`x`, `x(1)`) gets that error and no warning. Declared Subs keep `Call never reached`.
+- R15, `tests/fixtures/r15_unreachable_warning.json` (CR6/CR1000X only, audited 0 differing). Left on CR300/CR350
+  (pre-existing, other mechanism): `Abs(x)` is `Expr` there, `Foo(1)` (wrong argument count) and `Nope.x` still print the
+  warning, and `Foo` / `BeginProg` (second) loses it.

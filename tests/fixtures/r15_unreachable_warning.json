@@ -1,0 +1,261 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unreachable_warning-pre-call",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nFoo\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-pre-call",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nFoo\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unreachable_warning-pre-expr",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nx = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-pre-expr",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nx = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unreachable_warning-pre-delay",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nDelay(1,1,sec)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-pre-delay",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nDelay(1,1,sec)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unreachable_warning-pre-calltable",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nEndProg_Mut\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-pre-calltable",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nEndProg_Mut\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unreachable_warning-pre-beginprog-after",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nBeginProg\nFoo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-pre-beginprog-after",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nScan (1,min,3,0)\nNextScan\nBeginProg\nFoo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unreachable_warning-ok-call",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nFoo\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Call never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-ok-call",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nFoo\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Call never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-ok-expr",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nx = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-ok-expr",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nx = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-nope",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-nope",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-nope-args",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope(x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope(x).\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-nope-args",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope(x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope(x).\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-nope-arg-word",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope x.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-nope-arg-word",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope x.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-var",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nx\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: x."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-var",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nx\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: x."
+  },
+  {
+   "id": "cr6-unreachable_warning-var-index",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nx(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: x(1)."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-var-index",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nx(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: x(1)."
+  },
+  {
+   "id": "cr6-unreachable_warning-builtin",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nAbs(x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-builtin",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nAbs(x)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-explicit-call",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nCall Foo\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Call never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-explicit-call",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nCall Foo\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Call never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-assign-undeclared",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope = 1.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-assign-undeclared",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: Nope = 1.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-member",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope.x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Nope.\nline 8: Invalid, or out of place expression: Nope.x.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-member",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nScan (1,min,3,0)\nNextScan\nNope.x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Nope.\nline 8: Invalid, or out of place expression: Nope.x.\nline 8: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreachable_warning-after-endprog",
+   "logger": "cr6",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nx=1\nEndProg\nScan (1,min,3,0)\nNextScan\nFoo\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-unreachable_warning-after-endprog",
+   "logger": "cr1000x",
+   "source": "Public x\nSub Foo\n  x = 1\nEndSub\nBeginProg\nx=1\nEndProg\nScan (1,min,3,0)\nNextScan\nFoo\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}
