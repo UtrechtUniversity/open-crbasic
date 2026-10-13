@@ -6668,3 +6668,23 @@ Review r15-cloud R15C-3. `Y = F(LineNum(X) + 1` compiles for every one-argument 
 without the trailing `+ 1`. Multi-argument `Round`/`Mid` keep `Expression expects ,`, a non-function name (`A`, `ArcSin`) is
 undefined, and `Sqr(Sqr(LineNum(X) + 1` stays `No Matching, or out of place ) in expression`. All four loggers; the
 `parser._close_open_extra` rule is therefore not a false accept for these. No code change.
+## Round 16 message-diff families (2026-10-13)
+
+### Table names: over 20 characters, operator expressions, and what a bad name does not hide (fixture `tests/fixtures/r16_table_names.json`)
+
+Follow-up to "Table names starting with a digit" (all four loggers, oracle 2026-10-12, 116 cases).
+- A `DataTable` name (bare, or a string without spaces) longer than 20 characters is `DataTable name X is N chars too
+  long.` (`N` = length - 20) at the `DataTable` line; it wins over the digit messages (`123456789012345678901`,
+  `1234567890123456789.1`). Same model as the digit message: CR6/CR1000X one per table, a pass-1 error hides it;
+  CR300/CR350 only the first (`instr_data.finalize_illegal_table_names`). The table is registered under the name cut to 20
+  characters (`Table Abcdefghijklmnopqrst declared with no output fields.`; `CallTable <full name>` is then `Could not
+  find DataTable <full name>.`). Not done: that renaming of later references (ours still resolves the full name).
+- A digit-led operator expression is read as raw text: `DataTable((1+2),...)`, `(5-2)`, `(2*3)`, `(6/2)`, `(2^3)`,
+  `(1+2+3)`, `(1+x)` and unparenthesised `1+2` are `Table name 1+2 illegal, starts with a number.` (parentheses dropped).
+  Spaces or inner parentheses (`( 1 + 2 )`, `((1+2))`, `2*(1+2)`, `(1 MOD 2)`) give unrelated `Too many parameters` /
+  `Invalid, or out of place expression` lines: not done. `(x+2)` is a legal table named `x+2`.
+- CR6/CR1000X: the table-name message does not gate the tier-C checks. A bad port/channel, `Sample must be used inside a
+  table declaration.` and `Table T declared with no output fields.` (also for the illegal table itself, with the truncated
+  name) are printed after it (`checker/__init__.py` gate, `instr_data.is_table_name_diag`). On CR300/CR350 the name error
+  replaces those messages and `No BeginProg in Program.` too (they are `late` in `finalize_illegal_table_names`; the
+  cr350 `Invalid port specified N` is treated alike).

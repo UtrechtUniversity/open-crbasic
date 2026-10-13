@@ -585,7 +585,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]
     tier_c_start = len(diags.items)
     table_stop = None
-    gate = [d for d in diags.errors if profile.single_pass or not any(d is g for g in generic_errors)]
+    gate = [d for d in diags.errors if profile.single_pass or not (
+        any(d is g for g in generic_errors) or instr_data.is_table_name_diag(d))]
     if not gate:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the

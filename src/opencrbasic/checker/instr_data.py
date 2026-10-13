@@ -336,7 +336,7 @@ def check_table_structure(program: S.Program, profile: Profile,
         if kw == "DATATABLE":
             in_table = True
             has_field = False
-            table_name = _table_name(stmt) or ""
+            table_name = (_declared_table_name(stmt) or "")[:_TABLE_NAME_LIMIT]
             continue
         if kw == "ENDTABLE":
             if not in_table:
@@ -999,14 +999,53 @@ def _members(expr: S.Expr | None):
         yield from _members(expr.operand)
 
 
+_TABLE_NAME_LIMIT = 20
+_EXPR_NAME = re.compile(r"[0-9][0-9A-Za-z_]*(?:[-+*/^][0-9A-Za-z_]+)+\Z")
+
+
+def _declared_table_name(st: S.Instruction) -> str | None:
+    """The text the real compiler takes as a `DataTable` name: a bare name, a string without
+    spaces, or (r16) a digit-led operator expression read as raw text, `(1+2)` / `5-2` -> `1+2`
+    (no spaces, no inner parentheses; oracle, cr6 and cr300, 2026-10-12)."""
+    if not st.args:
+        return None
+    first = st.args[0]
+    if isinstance(first, S.Name):
+        return first.name
+    if isinstance(first, S.String) and re.fullmatch(r"[0-9A-Za-z_.]+", first.value):
+        return first.value
+    if isinstance(first, S.Binary) and st.arg_spans:
+        text = st.text[st.arg_spans[0][0]:st.arg_spans[0][1]].strip()
+        if text.startswith("(") and text.endswith(")"):
+            text = text[1:-1]
+        if _EXPR_NAME.match(text):
+            return text
+    return None
+
+
 def _illegal_table_name(st: S.Instruction) -> list[Diagnostic]:
-    """oracle, all four loggers, 2026-10-11 (docs/checker.md "Table names starting with a digit")"""
-    if st.args and isinstance(st.args[0], S.Name) and st.args[0].name[:1] in "0123456789.":
-        name = st.args[0].name
+    """oracle, all four loggers, 2026-10-11 (docs/checker.md "Table names starting with a digit");
+    a name over 20 characters is `DataTable name X is N chars too long.` and wins over the digit
+    messages (2026-10-12, docs/checker.md "Round 16 message-diff families")"""
+    name = _declared_table_name(st)
+    if name is None:
+        return []
+    if len(name) > _TABLE_NAME_LIMIT:
+        text = f"DataTable name {name} is {len(name) - _TABLE_NAME_LIMIT} chars too long."
+    elif name[:1] in "0123456789.":
         text = (f"DataTable name {name} is illegal." if "." in name
                 else f"Table name {name} illegal, starts with a number.")
-        return [Diagnostic("error", st.line, text, st.file, cascade=False)]
-    return []
+    else:
+        return []
+    return [Diagnostic("error", st.line, text, st.file, cascade=False)]
+
+
+def is_table_name_diag(d: Diagnostic) -> bool:
+    """CR6/CR1000X: a table-name error does not keep the tier-C checks (instruction channel/range
+    validation, `Sample must be used inside a table declaration.`, `Table T declared with no
+    output fields.`) from running (oracle, cr6, 2026-10-12)."""
+    return d.message.startswith(("Table name ", "DataTable name ")) and d.message.endswith(
+        ("starts with a number.", "is illegal.", "chars too long."))
 
 
 def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
@@ -1034,8 +1073,10 @@ def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Di
     unparsed = {(st.file, st.line) for st in program.statements if isinstance(st, S.Unparsed)}
 
     def late(d) -> bool:   # resolved after the table names: `CallTable T9`, an unclosed table
-        return d.message.startswith("Could not find DataTable ") or d.message == \
-            "DataTable ... EndTable not matched."
+        return d.message.startswith("Could not find DataTable ") or d.message in (
+            "DataTable ... EndTable not matched.", "No BeginProg in Program.") or \
+            d.message.endswith(("must be used inside a table declaration.", "declared with no output fields.")) or \
+            d.message.startswith("Invalid port specified ")
 
     def stage_b(d) -> bool:
         return late(d) or d.message.endswith(" is not defined.") and (d.file, d.line) not in unparsed and \

@@ -1,0 +1,835 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-table_names-long20",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrst,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table Abcdefghijklmnopqrst, is declared but never called."
+  },
+  {
+   "id": "cr1000x-table_names-long20",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrst,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table Abcdefghijklmnopqrst, is declared but never called."
+  },
+  {
+   "id": "cr300-table_names-long20",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrst,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table Abcdefghijklmnopqrst, is declared but never called."
+  },
+  {
+   "id": "cr350-table_names-long20",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrst,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table Abcdefghijklmnopqrst, is declared but never called."
+  },
+  {
+   "id": "cr6-table_names-long21",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr1000x-table_names-long21",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr300-table_names-long21",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long21",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long36",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstuvwxyz0123456789,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstuvwxyz0123456789 is 16 chars too long."
+  },
+  {
+   "id": "cr1000x-table_names-long36",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstuvwxyz0123456789,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstuvwxyz0123456789 is 16 chars too long."
+  },
+  {
+   "id": "cr300-table_names-long36",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstuvwxyz0123456789,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstuvwxyz0123456789 is 16 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long36",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstuvwxyz0123456789,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstuvwxyz0123456789 is 16 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_str",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(\"Abcdefghijklmnopqrstu\",True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr1000x-table_names-long_str",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(\"Abcdefghijklmnopqrstu\",True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr300-table_names-long_str",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(\"Abcdefghijklmnopqrstu\",True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_str",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(\"Abcdefghijklmnopqrstu\",True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_two",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstuv,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 5: DataTable name Abcdefghijklmnopqrstuv is 2 chars too long."
+  },
+  {
+   "id": "cr1000x-table_names-long_two",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstuv,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 5: DataTable name Abcdefghijklmnopqrstuv is 2 chars too long."
+  },
+  {
+   "id": "cr300-table_names-long_two",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstuv,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_two",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstuv,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_second",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 11: Could not find DataTable T."
+  },
+  {
+   "id": "cr1000x-table_names-long_second",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 11: Could not find DataTable T."
+  },
+  {
+   "id": "cr300-table_names-long_second",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_second",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_digit",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(123456789012345678901,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 123456789012345678901 is 1 chars too long."
+  },
+  {
+   "id": "cr1000x-table_names-long_digit",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(123456789012345678901,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 123456789012345678901 is 1 chars too long."
+  },
+  {
+   "id": "cr300-table_names-long_digit",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(123456789012345678901,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 123456789012345678901 is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_digit",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(123456789012345678901,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 123456789012345678901 is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_dot",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(1234567890123456789.1,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 1234567890123456789.1 is 1 chars too long."
+  },
+  {
+   "id": "cr1000x-table_names-long_dot",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(1234567890123456789.1,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 1234567890123456789.1 is 1 chars too long."
+  },
+  {
+   "id": "cr300-table_names-long_dot",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(1234567890123456789.1,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 1234567890123456789.1 is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_dot",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(1234567890123456789.1,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name 1234567890123456789.1 is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_empty",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 4: Table Abcdefghijklmnopqrst declared with no output fields."
+  },
+  {
+   "id": "cr1000x-table_names-long_empty",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 4: Table Abcdefghijklmnopqrst declared with no output fields."
+  },
+  {
+   "id": "cr300-table_names-long_empty",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_empty",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_undef",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,zz,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 3: Invalid symbol in expression: zz."
+  },
+  {
+   "id": "cr1000x-table_names-long_undef",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,zz,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 3: Invalid symbol in expression: zz."
+  },
+  {
+   "id": "cr300-table_names-long_undef",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,zz,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_undef",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,zz,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-long_pass1",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBogusCmd(1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 8: Invalid, or out of place expression: BogusCmd(1).\nline 8: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-table_names-long_pass1",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBogusCmd(1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 8: Invalid, or out of place expression: BogusCmd(1).\nline 8: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-table_names-long_pass1",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBogusCmd(1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: BogusCmd is not defined.\nline 8: Invalid, or out of place expression: BogusCmd(1)\n.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-table_names-long_pass1",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBogusCmd(1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: BogusCmd is not defined.\nline 8: Invalid, or out of place expression: BogusCmd(1)\n.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-table_names-long_calltable_full",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 8: Could not find DataTable T."
+  },
+  {
+   "id": "cr1000x-table_names-long_calltable_full",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 8: Could not find DataTable T."
+  },
+  {
+   "id": "cr300-table_names-long_calltable_full",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-long_calltable_full",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-expr_plus",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_plus",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_plus",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_plus",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_plus_bare",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(1+2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_plus_bare",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(1+2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_plus_bare",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(1+2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_plus_bare",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(1+2,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_minus",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((5-2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 5-2 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_minus",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((5-2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 5-2 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_minus",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((5-2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 5-2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_minus",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((5-2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 5-2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_mul",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((2*3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2*3 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_mul",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((2*3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2*3 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_mul",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((2*3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2*3 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_mul",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((2*3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2*3 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_div",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((6/2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 6/2 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_div",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((6/2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 6/2 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_div",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((6/2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 6/2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_div",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((6/2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 6/2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_pow",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((2^3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2^3 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_pow",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((2^3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2^3 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_pow",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((2^3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2^3 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_pow",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((2^3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 2^3 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_three",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((1+2+3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2+3 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_three",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((1+2+3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2+3 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_three",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((1+2+3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2+3 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_three",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((1+2+3),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2+3 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_var",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((1+x),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+x illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_var",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((1+x),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+x illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_var",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((1+x),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+x illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_var",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((1+x),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+x illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_empty",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((1+2),True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number.\nline 4: Table 1+2 declared with no output fields."
+  },
+  {
+   "id": "cr1000x-table_names-expr_empty",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((1+2),True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number.\nline 4: Table 1+2 declared with no output fields."
+  },
+  {
+   "id": "cr300-table_names-expr_empty",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((1+2),True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_empty",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((1+2),True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-expr_two",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable((3*4),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number.\nline 5: Table name 3*4 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-table_names-expr_two",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable((3*4),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number.\nline 5: Table name 3*4 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-table_names-expr_two",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable((3*4),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-expr_two",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((1+2),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable((3*4),True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-digit_empty",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(15Min,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 4: Table 15Min declared with no output fields."
+  },
+  {
+   "id": "cr1000x-table_names-digit_empty",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(15Min,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 4: Table 15Min declared with no output fields."
+  },
+  {
+   "id": "cr300-table_names-digit_empty",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(15Min,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-digit_empty",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(15Min,True,-1)\n\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-digit_empty_later",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 9: Table T2 declared with no output fields."
+  },
+  {
+   "id": "cr1000x-table_names-digit_empty_later",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 9: Table T2 declared with no output fields."
+  },
+  {
+   "id": "cr300-table_names-digit_empty_later",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-digit_empty_later",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-digit_sample_outside",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_names-digit_sample_outside",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_names-digit_sample_outside",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-digit_sample_outside",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-noprog_expr",
+   "logger": "cr6",
+   "source": "Public x\nDataTable((1+2),True,500)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number.\nline 3: Table 1+2 declared with no output fields."
+  },
+  {
+   "id": "cr1000x-table_names-noprog_expr",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable((1+2),True,500)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number.\nline 3: Table 1+2 declared with no output fields."
+  },
+  {
+   "id": "cr300-table_names-noprog_expr",
+   "logger": "cr300",
+   "source": "Public x\nDataTable((1+2),True,500)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-noprog_expr",
+   "logger": "cr350",
+   "source": "Public x\nDataTable((1+2),True,500)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1+2 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-noprog_long",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 6: Could not find DataTable T."
+  },
+  {
+   "id": "cr1000x-table_names-noprog_long",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long.\nline 6: Could not find DataTable T."
+  },
+  {
+   "id": "cr300-table_names-noprog_long",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr350-table_names-noprog_long",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(Abcdefghijklmnopqrstu,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataTable name Abcdefghijklmnopqrstu is 1 chars too long."
+  },
+  {
+   "id": "cr6-table_names-noprog_digit",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(1abc,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1abc illegal, starts with a number.\nline 6: Could not find DataTable T."
+  },
+  {
+   "id": "cr1000x-table_names-noprog_digit",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(1abc,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1abc illegal, starts with a number.\nline 6: Could not find DataTable T."
+  },
+  {
+   "id": "cr300-table_names-noprog_digit",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(1abc,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1abc illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-noprog_digit",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(1abc,True,-1)\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 1abc illegal, starts with a number."
+  },
+  {
+   "id": "cr6-table_names-digit_tierc_channel",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nPortSet(99,1)\nSample(1,x,FP2)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 10: Invalid port 99, use C1..C4 or U1..U12.\nline 11: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_names-digit_tierc_channel",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nPortSet(99,1)\nSample(1,x,FP2)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number.\nline 10: Invalid port 99, use C1..C8.\nline 11: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-table_names-digit_tierc_channel",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nPortSet(99,1)\nSample(1,x,FP2)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  },
+  {
+   "id": "cr350-table_names-digit_tierc_channel",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(15Min,True,-1)\nSample(1,x,FP2)\nEndTable\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nPortSet(99,1)\nSample(1,x,FP2)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table name 15Min illegal, starts with a number."
+  }
+ ]
+}
