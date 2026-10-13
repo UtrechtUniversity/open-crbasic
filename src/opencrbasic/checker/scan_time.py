@@ -215,7 +215,7 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
         if option is None or int(option) != 0 or value is None or value <= 0 or unit is None \
                 or int(unit) not in _US_PER_UNIT:
             return None
-        if int(value) < 1:
+        if int(value) < 1 or value >= 2**31:   # outside the Long range: not counted (round 16)
             return None
         micro = int(value) * _US_PER_UNIT[int(unit)]
         return (2 * (micro // 2) + 100) // 100, False, 0

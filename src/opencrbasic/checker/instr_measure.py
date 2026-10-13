@@ -585,6 +585,8 @@ def _delay_interval_us(interval_arg, units_arg, env: consteval.Env) -> float | N
     unit = _const_value(units_arg, env)
     if not isinstance(value, (int, float)) or not isinstance(unit, (int, float)) or value < 0:
         return None
+    if value >= 2**31:   # outside the Long range: no limit applies (oracle, CR6/CR1000X, round 16)
+        return None
     us_per_unit = _DELAY_US_PER_UNIT.get(int(unit))
     return value * us_per_unit if us_per_unit is not None else None
 
