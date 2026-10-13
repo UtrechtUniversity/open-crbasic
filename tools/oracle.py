@@ -35,6 +35,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 from pathlib import Path
 
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
@@ -159,8 +160,11 @@ def run_oracle(
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
         cache_path = CACHE_DIR / f"{key}.json"
         if cache_path.is_file():
-            cached = json.loads(cache_path.read_text(encoding="utf-8"))
-            if _valid_result(cached, program_path.name):
+            try:
+                cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            except ValueError:
+                cached = None
+            if cached is not None and _valid_result(cached, program_path.name):
                 return cached
 
     with tempfile.TemporaryDirectory(prefix="oracle-") as tmp:
@@ -208,7 +212,9 @@ def run_oracle(
             )
 
     if cache_path is not None:
-        cache_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+        partial = cache_path.with_suffix(f".{os.getpid()}.{threading.get_ident()}.tmp")
+        partial.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+        os.replace(partial, cache_path)
     return record
 
 
