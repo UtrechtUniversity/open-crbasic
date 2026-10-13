@@ -6782,3 +6782,15 @@ CR350 also accepted it), one line per offending argument. New in this round on C
 `Dimensions not declared` on CR6, ours `Invalid symbol`), a built-in function used as a statement on CR300/CR350
 (`SerialOut(.., B(1,1,1,1), ..)`), CR6 `Variable S3 out of bounds.` for `Call Lg(a, S3(1,2))`. Fuzz reproducers cr6
 `false_accept/bde4d924a9fc`, cr1000x `cca13e3dfce5`.
+
+### User `Function` called wrongly inside a `Sub` call argument; `SerialOpen` argument count (round 16)
+
+Fixtures `r16_sub_call_function_arity.json` (`expressions.check_function_call_counts`) and `r16_serialopen_arity.json`
+(`_ARITY_RANGE`). A user `Function` with too many arguments inside an argument of a `Sub` call (`Call Lg("a", Ok, "got=" +
+FormatLong(Fn(1,2,"fuzz"), "%d"))`, `Lg("a" + Pn(1,2,3) + "b")`, also across `_` continuations, which leave two blanks) gives
+`No Matching, or out of place ) in expression: <that argument>.` on all four loggers; too few gives `Call argument
+required.` and `Invalid, or out of place expression: <that argument>.` (no newline before the `.`). The echo is the argument
+alone, not the statement. `SerialOpen` takes 5 or 6 arguments (CR350 5 to 8): more is `No Matching, or out of place )`,
+fewer `Expression expects ,` (CR350 used to accept 4 or fewer). Fuzz reproducers cr1000x `false_accept/ee26b0ad7cda`, `8fec3d32a4c5`,
+cr6 `95e2a4d5d433`, `fe18dc272183`, `9d2dd45508e6`, `db82630bee84` (the last four need their include libraries).
+Not modelled: `SerialOpen(COMC1)` prints an extra `Internal error: unable to compile program.` here (the real CR6 does not).

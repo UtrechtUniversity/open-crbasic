@@ -1,0 +1,303 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-serialopen_arity-0",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serialopen_arity-1",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serialopen_arity-2",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(Com1,19200,3,0,400,0,0)\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-3",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(Com1,19200,3,0,400,0,0,0)\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-4",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(Com1,19200,3,0,400,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-5",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(Com1,19200,3,0,400,0,\"x\")\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-6",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(Com1,19200,3,0)\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-7",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(Com1,19200)\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-8",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(Com1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: N = SerialOpen(Com1,19200,3,0,400,0,0)\n."
+  },
+  {
+   "id": "cr300-serialopen_arity-9",
+   "logger": "cr300",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(Com1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : N = SerialOpen(Com1,19200,3,0)\n."
+  },
+  {
+   "id": "cr350-serialopen_arity-10",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_arity-11",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_arity-12",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_arity-13",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_arity-14",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(Com1,19200,3,0,400,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-serialopen_arity-15",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0,400,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_arity-16",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(Com1,19200,3,0)\n."
+  },
+  {
+   "id": "cr350-serialopen_arity-17",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(Com1,19200)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(Com1,19200)\n."
+  },
+  {
+   "id": "cr350-serialopen_arity-18",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(Com1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_arity-19",
+   "logger": "cr350",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(Com1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : N = SerialOpen(Com1,19200,3,0)\n."
+  },
+  {
+   "id": "cr6-serialopen_arity-20",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialopen_arity-21",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialopen_arity-22",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,0)."
+  },
+  {
+   "id": "cr6-serialopen_arity-23",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,0,0)."
+  },
+  {
+   "id": "cr6-serialopen_arity-24",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,0,0,0)."
+  },
+  {
+   "id": "cr6-serialopen_arity-25",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,\"x\")."
+  },
+  {
+   "id": "cr6-serialopen_arity-26",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(COMC1,19200,3,0)."
+  },
+  {
+   "id": "cr6-serialopen_arity-27",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(COMC1,19200)."
+  },
+  {
+   "id": "cr6-serialopen_arity-28",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(COMC1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: N = SerialOpen(COMC1,19200,3,0,400,0,0)."
+  },
+  {
+   "id": "cr6-serialopen_arity-29",
+   "logger": "cr6",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(COMC1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : N = SerialOpen(COMC1,19200,3,0)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-30",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-31",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-32",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,0)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-33",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,0,0)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-34",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,0,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,0,0,0)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-35",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0,400,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: SerialOpen(COMC1,19200,3,0,400,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-36",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(COMC1,19200,3,0)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-37",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nSerialOpen(COMC1,19200)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : SerialOpen(COMC1,19200)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-38",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(COMC1,19200,3,0,400,0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: N = SerialOpen(COMC1,19200,3,0,400,0,0)."
+  },
+  {
+   "id": "cr1000x-serialopen_arity-39",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nBeginProg\nScan (15,Sec,0,0)\nN = SerialOpen(COMC1,19200,3,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : N = SerialOpen(COMC1,19200,3,0)."
+  }
+ ]
+}

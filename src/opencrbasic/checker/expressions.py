@@ -376,7 +376,10 @@ _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
 # profile `nargs` (oracle, 2026-10-03, all four loggers).
 # `GZip` (table nargs 1) takes exactly 2 (`Filename, ZippedFilename`; CR6/CR1000X oracle 2026-10-13:
 # 1 -> `Expression expects ,`, 3+ -> `No Matching, or out of place )`; absent on CR300/CR350).
-_ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}, "GZIP": {1: (2, 2)}}
+# `SerialOpen` (table nargs 5, CR350 6) takes 5 or 6 arguments, CR350 5 to 8 (oracle 2026-10-13: more is
+# `No Matching, or out of place )`, 4 or fewer `Expression expects ,`; CR350 accepted 4 or fewer).
+_ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}, "GZIP": {1: (2, 2)},
+                "SERIALOPEN": {5: (5, 6), 6: (5, 8)}}
 # Argument counts a call accepts when they are not one range, keyed by profile `nargs` (oracle,
 # 2026-10-10, all four loggers): `HTTPPut` takes 4, 8 or 9 (2, 3, 5, 6, 7 are `few`, 10+ `many`).
 # `FTPClient` (table nargs 6) takes 6, 10 or 11 (oracle, all four loggers, 2026-10-11: 7-9 are
@@ -2289,15 +2292,22 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                 if kind:
                     report(stmt, kind, _arg_text(stmt, i).strip(), False)
                     break
-        elif isinstance(stmt, S.Call) and not stmt.explicit:
+        elif isinstance(stmt, S.Call):
             # `F1(1,2)` as a statement echoes the whole line like `X = F1(1,2)` (oracle,
             # 2026-10-02, all four loggers, `docs/checker.md` "Function argument counts").
-            if stmt.tail_expr is not None and (kind := problem(stmt.tail_expr)):
+            if not stmt.explicit and stmt.tail_expr is not None and (kind := problem(stmt.tail_expr)):
                 report(stmt, kind, stmt.text, True)
                 return
             fn = functions.get(stmt.name.upper())
+            if fn is None and stmt.tail_expr is None and stmt.juxtaposed is None:
+                # a `Sub` call: a user `Function` called wrongly inside one argument echoes that
+                # argument (oracle, 2026-10-13, all four loggers)
+                for i, arg in enumerate(stmt.args):
+                    if kind := problem(arg):
+                        report(stmt, kind, _call_arg_text(stmt.text, i).strip(), False)
+                        return
             bare = not stmt.args and not (stmt.text or "").lstrip()[len(stmt.name):].lstrip().startswith("(")
-            if fn is not None and not bare:  # a bare `Fn` (no parentheses) is accepted (oracle)
+            if not stmt.explicit and fn is not None and not bare:  # a bare `Fn` (no parentheses) is accepted (oracle)
                 required = sum(1 for p in fn.params if p.default is None)
                 kind = ("few" if len(stmt.args) < required
                         else "many" if len(stmt.args) > len(fn.params) else None)

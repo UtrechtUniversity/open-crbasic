@@ -1,0 +1,499 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-sub_call_function_arity-0",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-1",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,3)."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-2",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Invalid, or out of place expression: N = Fn2(1)."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-3",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,\"fuzz\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,\"fuzz\")."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-4",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-5",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-6",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-7",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3) + \"b\"."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-8",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + FormatLong(Fn2(1,2,3),\"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + FormatLong(Fn2(1,2,3),\"%d\")."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-9",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-10",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\")."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-11",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-12",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")  + \"b\"."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-13",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\" + Pn(1,2,\"fuzz\") _\n + \"c\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 20: No Matching, or out of place ) in expression: \"a\" + Pn(1,2)  + \"b\" + Pn(1,2,\"fuzz\")  + \"c\"."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-14",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-15",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: Call argument required.\nline 19: Invalid, or out of place expression: \"a\" + Pn(1)  + \"b\"."
+  },
+  {
+   "id": "cr6-sub_call_function_arity-16",
+   "logger": "cr6",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3)  + \"b\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-17",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-18",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,3)."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-19",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Invalid, or out of place expression: N = Fn2(1)."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-20",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,\"fuzz\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-21",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-22",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-23",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-24",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3) + \"b\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-25",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + FormatLong(Fn2(1,2,3),\"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + FormatLong(Fn2(1,2,3),\"%d\")."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-26",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-27",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\")."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-28",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-29",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")  + \"b\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-30",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\" + Pn(1,2,\"fuzz\") _\n + \"c\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 20: No Matching, or out of place ) in expression: \"a\" + Pn(1,2)  + \"b\" + Pn(1,2,\"fuzz\")  + \"c\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-31",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-32",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: Call argument required.\nline 19: Invalid, or out of place expression: \"a\" + Pn(1)  + \"b\"."
+  },
+  {
+   "id": "cr1000x-sub_call_function_arity-33",
+   "logger": "cr1000x",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3)  + \"b\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-34",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-35",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,3)\n."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-36",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Invalid, or out of place expression: N = Fn2(1)\n."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-37",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,\"fuzz\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,\"fuzz\")\n."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-38",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-39",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-40",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-41",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3) + \"b\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-42",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + FormatLong(Fn2(1,2,3),\"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + FormatLong(Fn2(1,2,3),\"%d\")."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-43",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-44",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\")."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-45",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-46",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")  + \"b\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-47",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\" + Pn(1,2,\"fuzz\") _\n + \"c\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 20: No Matching, or out of place ) in expression: \"a\" + Pn(1,2)  + \"b\" + Pn(1,2,\"fuzz\")  + \"c\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-48",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-49",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: Call argument required.\nline 19: Invalid, or out of place expression: \"a\" + Pn(1)  + \"b\"."
+  },
+  {
+   "id": "cr300-sub_call_function_arity-50",
+   "logger": "cr300",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3)  + \"b\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-51",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-52",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,3)\n."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-53",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Invalid, or out of place expression: N = Fn2(1)\n."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-54",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn2(1,2,\"fuzz\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: N = Fn2(1,2,\"fuzz\")\n."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-55",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-56",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-57",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-58",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3) + \"b\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-59",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + FormatLong(Fn2(1,2,3),\"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + FormatLong(Fn2(1,2,3),\"%d\")."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-60",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\" + Pn(1,2,\"fuzz\") + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\") + \"b\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-61",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: No Matching, or out of place ) in expression: \"got=\" + FormatLong(Fn2(1,2,\"fuzz\"), \"%d\")."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-62",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lr(\"a\", Ok, \"got=\" + FormatLong(Fn2(1,2), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-63",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,\"fuzz\") _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,\"fuzz\")  + \"b\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-64",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\" + Pn(1,2,\"fuzz\") _\n + \"c\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 20: No Matching, or out of place ) in expression: \"a\" + Pn(1,2)  + \"b\" + Pn(1,2,\"fuzz\")  + \"c\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-65",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-66",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: Call argument required.\nline 19: Invalid, or out of place expression: \"a\" + Pn(1)  + \"b\"."
+  },
+  {
+   "id": "cr350-sub_call_function_arity-67",
+   "logger": "cr350",
+   "source": "Public N As Long\nPublic Ok As Boolean\nPublic L As String * 60\nFunction Fn2(a, b)\n  Fn2 = a + b\nEndFunction\nFunction Pn(a, b As Long) As String\n  Pn = \"x\"\nEndFunction\nSub Lg(s As String)\n  L = s\nEndSub\nSub Lr(s As String, o As Boolean, t As String)\n  L = s\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(\"a\" + Pn(1,2,3) _\n + \"b\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 19: No Matching, or out of place ) in expression: \"a\" + Pn(1,2,3)  + \"b\"."
+  }
+ ]
+}
