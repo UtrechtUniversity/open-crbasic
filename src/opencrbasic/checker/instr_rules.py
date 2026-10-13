@@ -1724,6 +1724,75 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
         diags.items[at:at] = new
 
 
+_DEBUG_HISTORY_LIMIT = 26843544   # bytes: HistorySize*4 above this gives `Out of memory.`
+_DEBUG_ARG_TYPES = {2: frozenset({"LONG", "BOOLEAN"}), 3: frozenset({"LONG", "BOOLEAN"}),
+                    4: frozenset({"STRING"})}
+
+
+def debug_history_oom(stmt: S.Instruction, env, profile, program: S.Program) -> bool:
+    """`Debug`'s `HistorySize` (second argument) takes `(long)n * 4` as an unsigned 32-bit byte
+    count and fails with `Out of memory.` above 26,843,544 (n = 6,710,886 passes, 6,710,887 does
+    not; CR6 and CR1000X, oracle 2026-10-12, docs/instructions.md "Debug"). `n` is the 32-bit
+    `long` of `checker/longconv.py` (`NAN`, strings and floats beyond 2^31 are -2^31, which wraps to
+    0 bytes and passes; `-1`, `INF` and `&HFFFFFFFF` wrap to 4294967292 and fail). A decimal
+    literal is first rounded to a float32 (`6710886.6` passes, `6710886.9` fails; `1073741823.6`
+    becomes 2^30 and passes) and `INF` saturates to 2147483647 (fails). The error ends
+    the compile: nothing else on the line or after it is reported."""
+    if len(stmt.args) != 5 or stmt.args[1] is None:
+        return False
+    arg = stmt.args[1]
+    v = longconv.long_value(arg, env, profile, longconv.float_names(program.statements),
+                            longconv.literal_names(program.statements))
+    if v is None:
+        return False
+    if isinstance(arg, S.Name) and arg.name.upper() == "INF" and "INF" not in env.consts:
+        v = 2**31 - 1     # (saturates, unlike NAN and -INF)
+    elif isinstance(arg, S.Number) and not arg.text.startswith("&") and (
+            "." in arg.text or "E" in arg.text.upper()):
+        f = struct.unpack("<f", struct.pack("<f", arg.value))[0]   # (a decimal literal is a float32)
+        v = int(f) if -2**31 <= f < 2**31 else -2**31
+    return (v * 4) & 0xFFFFFFFF > _DEBUG_HISTORY_LIMIT
+
+
+def check_debug_args(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Debug (DebugSequence, HistorySize, Control, LineBreak, TraceHistory)`: `Control` and
+    `LineBreak` must be `Long` or `Boolean` variables (scalar, array or element), `TraceHistory`
+    a `String` variable. Any other argument -- a number, string, `Const`, expression, function
+    call, `Status` member, a `Float`/`Double`/`String` (resp. non-`String`) variable, or an
+    undeclared name -- ends the statement's findings with one `Illegal parameter(s)` (after the
+    `Invalid symbol`/`Could not find` lines the arguments themselves draw; oracle CR6 and
+    CR1000X, 2026-10-12, docs/instructions.md "Debug"). Absent on CR300/CR350."""
+    if "DEBUG" not in profile.instructions:
+        return
+    types = _serialin_types(program, profile)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "DEBUG" \
+                or len(stmt.args) != 5 or any(a is None for a in stmt.args):
+            continue
+        key = (stmt.line, stmt.file)
+        same = [d for d in diags.items if (d.line, d.file) == key]
+        bad = False
+        for i, allowed in _DEBUG_ARG_TYPES.items():
+            arg = stmt.args[i]
+            if isinstance(arg, (S.Name, S.Index)):
+                kind = types.get(arg.name.upper())
+                if kind is None:
+                    text = _arg_text(stmt, i).strip()
+                    bad |= any(d.message == f"Invalid symbol in expression: {text}." for d in same) \
+                        or (isinstance(arg, S.Name) and (arg.name.upper() in ("NAN", "INF")
+                                                           or consteval.is_constant(arg, env)))
+                else:
+                    bad |= kind not in allowed
+            elif isinstance(arg, S.Member):
+                bad |= isinstance(arg.base, S.Name) and arg.base.name.upper() == "STATUS"
+            else:
+                bad |= isinstance(arg, (S.Number, S.String, S.Binary, S.Unary))
+        if bad:
+            at = max((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
+                     default=len(diags.items) - 1) + 1
+            diags.items.insert(at, Diagnostic("error", stmt.line, "Illegal parameter(s)", stmt.file))
+
+
 _EMAIL_FUNCTIONS = ("EMAILRECV", "EMAILSEND")
 
 

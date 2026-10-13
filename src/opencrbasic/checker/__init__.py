@@ -422,6 +422,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(expressions.check, flat, profile, diags, env, _placement_rejected(flat, profile, diags))
         _run_pass(expressions.check_table_members, flat, profile, diags)
         _run_pass(expressions.check_digit_members, flat, profile, diags)
+        _run_pass(instr_rules.check_debug_args, flat, profile, diags, env)
         generic_errors += diags.items[n_generic:]
         _run_pass(instr_rules.check_mqtt_publish_payload, flat, profile, diags)
         if not profile.single_pass:

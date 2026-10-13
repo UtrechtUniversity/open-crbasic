@@ -2137,3 +2137,23 @@ standard modules (`measure.json` `const_ranges` entries with `channel_by_module`
   `Two-measurement...`, `MeasPEx`. Not modelled: `Variable TT out of bounds.` for `Reps` above the destination, and
   `When channel < 0, MeasPEx must equal Reps.` for an out-of-range `Reps` with a negative channel.
 Fuzz reproducer cr1000x `false_accept/f543da8c46ab`.
+
+### `Debug` argument types and `HistorySize` (CR6, CR1000X, round 16)
+
+Fixture `r16_debug_args.json`; `instr_rules.check_debug_args` and `debug_history_oom`. `Debug` does not exist on
+CR300/CR350 (`Debug is not defined.` cascade, unchanged).
+
+- `Control` (third) and `LineBreak` (fourth) must be a `Long` or `Boolean` variable (scalar, array, element or
+  parenthesised); `TraceHistory` (fifth) a `String` variable (any `String * N`). Anything else -- a number, string,
+  `Const`, `TRUE`/`FALSE`/`NAN`, an expression, `-X`, a function call (`Abs(1)`, `Left(..)`), a `Status` member, a
+  `Float`/`Double`/other-typed variable or alias of one, an undeclared name -- adds one `Illegal parameter(s)` to the
+  statement, after the `Invalid symbol in expression:` / `Could not find Status.X(1).` lines its arguments draw. Each
+  bad `Debug` statement prints it once. Not modelled: `Variable X out of bounds.` before it for a scalar given an
+  index (`Debug(-1,20,C,L(2),T)`).
+- `HistorySize` (second): the `long` of the argument times 4, as an unsigned 32-bit byte count, above 26,843,544 gives
+  `Out of memory.` (6,710,886 passes, 6,710,887 fails; same on CR6 and CR1000X). The `long` follows
+  `checker/longconv.py` (NAN, strings and numbers beyond 2^31 are -2^31 and wrap to 0 bytes, so they pass; `-1`,
+  `&HFFFFFFFF`, `2147483647` and `INF` wrap to 4294967292 and fail; 1073741824 wraps to 0 and passes). A decimal literal
+  is a float32 first (`6710886.6` passes, `6710886.9` fails, `1073741823.6` becomes 2^30 and passes). `Out of memory.`
+  ends the compile (no `Invalid symbol`, `Illegal parameter(s)` or later-line errors; a wrong argument count still wins).
+Fuzz reproducer cr1000x `false_accept/823848325de3`.

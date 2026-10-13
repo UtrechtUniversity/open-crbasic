@@ -1,0 +1,393 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-debug_args-0",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-1",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeB,DeBA(),DeTr2)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-2",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,(DeControl),DeBreaks(),DeS)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-3",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,vF,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-4",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,vD,DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-5",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),vL)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-6",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,aF(2),DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-7",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,5,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-8",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,TRUE,\"a\")\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-9",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),K)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-10",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,Status.StationName,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-11",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),Nope)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope.\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-12",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,vAl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr6-debug_args-13",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710886,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-14",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710887,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-15",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,7000000,Nope,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-16",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,-1,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-17",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,2147483647,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-18",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,1073741824,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-19",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,2147483648,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-20",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710886.9,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-21",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710886.6,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-22",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,1073741823.6,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-23",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,INF,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-24",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,NAN,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-debug_args-25",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,&HFFFFFFFF,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-debug_args-26",
+   "logger": "cr6",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,vF,DeBreaks(),DeTrace)\nDebug(-1,20,vS,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)\nline 9: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-27",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-28",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeB,DeBA(),DeTr2)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-29",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,(DeControl),DeBreaks(),DeS)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-30",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,vF,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-31",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,vD,DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-32",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),vL)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-33",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,aF(2),DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-34",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,5,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-35",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,TRUE,\"a\")\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-36",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),K)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-37",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,Status.StationName,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-38",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,DeControl,DeBreaks(),Nope)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope.\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-39",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,vAl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)"
+  },
+  {
+   "id": "cr1000x-debug_args-40",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710886,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-41",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710887,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-42",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,7000000,Nope,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-43",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,-1,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-44",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,2147483647,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-45",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,1073741824,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-46",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,2147483648,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-47",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710886.9,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-48",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,6710886.6,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-49",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,1073741823.6,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-50",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,INF,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-51",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,NAN,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-debug_args-52",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,&HFFFFFFFF,DeControl,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-debug_args-53",
+   "logger": "cr1000x",
+   "source": "Public PTemp, DeBreaks(5) As Long, DeControl As Long, DeTrace As String * 100\nPublic vL As Long, vB As Boolean, vF As Float, vD As Double, vS As String\nPublic aL(5) As Long, aB(5) As Boolean, aF(5), aD(5) As Double, aS(5) As String\nPublic vA\nPublic DeB As Boolean, DeBA(5) As Boolean, DeFA(5), DeTr2 As String * 100000, DeL As Long, DeS As String\nAlias vA = vAl\nConst K = 3\nDebug(-1,20,vF,DeBreaks(),DeTrace)\nDebug(-1,20,vS,DeBreaks(),DeTrace)\nBeginProg\n  Scan (2,Sec,3,0)\n    DebugBreak\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal parameter(s)\nline 9: Illegal parameter(s)"
+  }
+ ]
+}
