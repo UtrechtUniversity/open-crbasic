@@ -147,6 +147,50 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
+## Resume here (2026-10-13, round 16 interrupted by machine shutdown)
+
+- Verified and pushed on `claude/laughing-franklin-08z9vo` (full pytest 38,202+ passed, difftest
+  unchanged, replay 2,300 exact / 48 false accepts / 0 false rejects): cloud review R15C-1..3 (no
+  defects, fixtures), Debug args + GZip arity, table names / GOES fields / ApplyAndRestartSequence
+  messages, CR300/CR350 26-pass allocator port (auto sizes, squeeze rejects; tdftest CR300 113/114,
+  CR350 117/118 user-table sizes), `tools/timingtest.py` + CR1000X/CR300/CR350 timing models
+  (repo 16/16, CHM 505/507 each), `fixture_audit --no-cache --jobs` + atomic oracle cache writes
+  (uncached re-audit of all r14-r16 fixtures: 12,381 cases, 0 differing), rNN glob tests skip only
+  non-empty `siblings`. CDM excluded (human decision, PLAN.md).
+- Pushed but NOT fully verified: branch `ocb-r16-pending-fuzz` = this branch's previous head +
+  4 commits from fuzz seeds 409-412 (Delay interval >= 2^31, String * N(dims) initializer, Units
+  extra words, 235 reproducers). Its 3 fixtures pass the uncached re-audit (0 differing); the full
+  pytest on the combined tree did not finish before shutdown.
+- Stopped mid-task, pushed as-is (verify every commit before integrating):
+  - `ocb-r16-falseacc2` (W7, remaining non-CDM false accepts): 546e8e77 HTTPPut/FTPClient TimeOut
+    type, 84c70b74 unclosed Sub-call undefined names, 49c6f23c over-indexed array reads, 8afe88f8
+    Function-in-Sub-call and SerialOpen arity, 202ca4bb WIP (unverified: no docs, fixture
+    r16_function_statement_arity.json unaudited). Worker replay: false accepts 48 -> 39.
+  - `ocb-r16-msgdiff2` (W8, message diffs): db2c32f0 ESSInitialize cut-off string, bae8bab0 Alias of
+    a later-declared variable, 60eea626 unmatched EndDialSequence/EndModemHangup/EndVoice, 808fc8e8
+    table-only instructions before a stop, 4ab1b610 WIP (unverified parser change, fixture not
+    regenerated).
+
+## Next steps (round 17)
+
+1. `git checkout ocb-r16-pending-fuzz`; run the full gates (full pytest incl. `-m server`,
+   `difftest --group all` x4, `fuzz_replay`); if green, fast-forward this branch to it.
+2. Fix the known FALSE REJECTS first (probe all four loggers):
+   - `tests/corpus/fuzz/cr300/false_reject/9354d3641c2a.CR6`: 9999-record table, 15 s DataInterval;
+     we print "Unable to allocate enough data table space to manage flash write cycle limits.", the
+     real CR300 compiles. Still reproduces with the allocator port (`checker/storage.py`).
+   - `Call S(A,Z,3 : Z = 1` compiles on all four loggers; we reject (W7).
+   - `Calibrate(")` inside BeginProg compiles on the real compilers; we reject (W8).
+3. Integrate `ocb-r16-falseacc2` and `ocb-r16-msgdiff2` commit by commit (cherry-pick, gate each;
+   finish or drop the two WIP commits).
+4. Push and ask the cloud reviewer `firnmelt-datalogger-reviewer` to review round 16
+   (`ca091574..HEAD` minus round 15; it may need the human to approve the request).
+5. Remaining false accepts (non-CDM): docs/fuzz-findings.md "Round 15"/"Round 16" lists; seeds
+   405-412 value families; DebugBreak before BeginProg on CR6; nested DialSequence/ModemHangup.
+6. Message diffs: docs/fuzz-findings.md "Round 16 message-diff ranking" open items.
+7. Fresh fuzz seeds 413+.
+8. CDM is excluded (human decision 2026-10-12, PLAN.md). Publishing not planned (`docs/legal.md`).
+
 ## Resume here (2026-10-12, after round 15)
 
 - Round 15 (2026-10-12, Mac, after reboot) integrated and pushed: ~45 commits on top of the cloud
