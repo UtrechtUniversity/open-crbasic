@@ -6766,3 +6766,19 @@ tail piece: trailing blanks kept, `\n` before the `.` only at the real end of li
 Not modelled (pre-existing, separate): `Call S(A,Z,3 : Z = 1` compiles on all four loggers (the colon ends the call) but
 we reject it; `Call S(A,Z,Z_ID +`, `Call S(A,Z,Q(1`, and a trailing comma with undefined names give other messages.
 Fuzz reproducer cr1000x `false_accept/58c9cc38619c` (`Call run(Z_min_sub,Z,Z_ID` after the `Const` was deleted).
+
+### Over-indexed array reads in expressions (all four loggers, round 16)
+
+Fixture `r16_over_indexed_expr.json` (`expressions._dim_limit`, `_over_indexed`; `structure._report_call_arg_names`). A declared
+variable read with more subscripts than it may have is `Dimensions not declared: <echo>.`: CR300/CR350 beyond its declared
+dimensions (already modelled for assignments, `If`, `Do`, instruction arguments), **CR6/CR1000X beyond three** (`B(1,1,1,1)`;
+`S3(1,2)` for a 1-D `S3` compiles there). Echoes: assignment/`Fn(..)` statement the whole statement; `If`/`ElseIf`/`Do`/`Loop`/
+`While` the condition; instruction argument the argument (`Delay(1,B(1,1,1,1),mSec)`); `For` the `Start`/`End`/`Step` header
+part (` B(1,1,1,1)` keeps the leading space of `Start`); `Select Case` the selector (two spaces) and then, because the
+selector opens no block, `Case outside Select.` per `Case` and `EndSelect w/o Select`; `Case` the whole item list after
+`Case ` (`1, 2 To B(1,1,1,1)`); a `Sub`/`Function` call argument the argument alone (all four loggers; before this CR300/
+CR350 also accepted it), one line per offending argument. New in this round on CR6/CR1000X: all of the above; on all four:
+`For`, `Select`/`Case`, `Call` arguments. Not modelled: an undefined name after the extra subscript (`B(1,1,1,Undef)` is
+`Dimensions not declared` on CR6, ours `Invalid symbol`), a built-in function used as a statement on CR300/CR350
+(`SerialOut(.., B(1,1,1,1), ..)`), CR6 `Variable S3 out of bounds.` for `Call Lg(a, S3(1,2))`. Fuzz reproducers cr6
+`false_accept/bde4d924a9fc`, cr1000x `cca13e3dfce5`.

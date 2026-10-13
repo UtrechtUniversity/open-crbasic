@@ -1,0 +1,1647 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-over_indexed_expr-0",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nOk = (ASCII(B(1,1,1,1)) = 3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Ok = (ASCII(B(1,1,1,1)) = 3)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-1",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,3,4)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-2",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-3",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-4",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-5",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-6",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1) + 1."
+  },
+  {
+   "id": "cr6-over_indexed_expr-7",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = 1 + B(1,1,1,\"a\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = 1 + B(1,1,1,\"a\")."
+  },
+  {
+   "id": "cr6-over_indexed_expr-8",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Abs(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Abs(B(1,1,1,1))."
+  },
+  {
+   "id": "cr6-over_indexed_expr-9",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,1) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,1) = 3."
+  },
+  {
+   "id": "cr6-over_indexed_expr-10",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2,3,4)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-11",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-12",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-13",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nL = \"x\" + FormatLong(B(1,1,1,1), \"%d\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: L = \"x\" + FormatLong(B(1,1,1,1), \"%d\")."
+  },
+  {
+   "id": "cr6-over_indexed_expr-14",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, \"got=\" + FormatLong(B(1,1,3,4), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: \"got=\" + FormatLong(B(1,1,3,4), \"%d\")."
+  },
+  {
+   "id": "cr6-over_indexed_expr-15",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-16",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-17",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, S3(1,2,3,4))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: S3(1,2,3,4)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-18",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", B(1,1,1,1) = 3, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 3."
+  },
+  {
+   "id": "cr6-over_indexed_expr-19",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(L, B(1,1,1,1), B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-20",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\n  N = 2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-21",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 14: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-over_indexed_expr-22",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr6-over_indexed_expr-23",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nNext N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 14: NEXT without FOR."
+  },
+  {
+   "id": "cr6-over_indexed_expr-24",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr6-over_indexed_expr-25",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCase 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Case outside Select."
+  },
+  {
+   "id": "cr6-over_indexed_expr-26",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-over_indexed_expr-27",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Incomplete expression: N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3."
+  },
+  {
+   "id": "cr6-over_indexed_expr-28",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then\n N = 2\n ElseIf B(1,1,1,1) = 1 Then\n N = 3\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr6-over_indexed_expr-29",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf B(1,1,1,1) = 1 Then\n N = 2\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr6-over_indexed_expr-30",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWhile B(1,1,1,1) = 1\n N = 2\n Wend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1."
+  },
+  {
+   "id": "cr6-over_indexed_expr-31",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-32",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To 3\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-33",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-34",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo While B(1,1,1,1) > 0\n N = 2\n Loop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr6-over_indexed_expr-35",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo\n N = 2\n Loop Until B(1,1,1,1) > 0\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr6-over_indexed_expr-36",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case B(1,1,1,1)\n Case 1\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 15: Case outside Select.\nline 17: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-over_indexed_expr-37",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-38",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-39",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Fn1(B(1,1,1,1))."
+  },
+  {
+   "id": "cr6-over_indexed_expr-40",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1))."
+  },
+  {
+   "id": "cr6-over_indexed_expr-41",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-42",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1)) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1)) + 1."
+  },
+  {
+   "id": "cr6-over_indexed_expr-43",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(L, Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-44",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nPanelTemp(N,250) \n N = B(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared:  N = B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-45",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1,B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-46",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,N) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,N) = 3."
+  },
+  {
+   "id": "cr6-over_indexed_expr-47",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,B(1,1,1,1))."
+  },
+  {
+   "id": "cr6-over_indexed_expr-48",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,Undef,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid symbol in expression: N = B(1,1,Undef,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-49",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Undef(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid symbol in expression: N = Undef(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-50",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1), B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1), B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-51",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, 2 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, 2 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-52",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-53",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-54",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n Case Else\n N = 3\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-55",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To B(1,1,1,2)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,2)."
+  },
+  {
+   "id": "cr6-over_indexed_expr-56",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step 2\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-over_indexed_expr-57",
+   "logger": "cr6",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1, B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-58",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nOk = (ASCII(B(1,1,1,1)) = 3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Ok = (ASCII(B(1,1,1,1)) = 3)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-59",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,3,4)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-60",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-61",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-62",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-63",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-64",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1) + 1."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-65",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = 1 + B(1,1,1,\"a\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = 1 + B(1,1,1,\"a\")."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-66",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Abs(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Abs(B(1,1,1,1))."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-67",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,1) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,1) = 3."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-68",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2,3,4)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-69",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-70",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-71",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nL = \"x\" + FormatLong(B(1,1,1,1), \"%d\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: L = \"x\" + FormatLong(B(1,1,1,1), \"%d\")."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-72",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, \"got=\" + FormatLong(B(1,1,3,4), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: \"got=\" + FormatLong(B(1,1,3,4), \"%d\")."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-73",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-74",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-75",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, S3(1,2,3,4))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: S3(1,2,3,4)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-76",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", B(1,1,1,1) = 3, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 3."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-77",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(L, B(1,1,1,1), B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-78",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\n  N = 2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-79",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 14: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-80",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-81",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nNext N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 14: NEXT without FOR."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-82",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-83",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCase 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Case outside Select."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-84",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-85",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Incomplete expression: N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-86",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then\n N = 2\n ElseIf B(1,1,1,1) = 1 Then\n N = 3\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-87",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf B(1,1,1,1) = 1 Then\n N = 2\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-88",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWhile B(1,1,1,1) = 1\n N = 2\n Wend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-89",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-90",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To 3\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-91",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-92",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo While B(1,1,1,1) > 0\n N = 2\n Loop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-93",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo\n N = 2\n Loop Until B(1,1,1,1) > 0\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-94",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case B(1,1,1,1)\n Case 1\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 15: Case outside Select.\nline 17: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-95",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-96",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-97",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Fn1(B(1,1,1,1))."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-98",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1))."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-99",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-100",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1)) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1)) + 1."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-101",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(L, Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-102",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nPanelTemp(N,250) \n N = B(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared:  N = B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-103",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1,B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-104",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,N) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,N) = 3."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-105",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,B(1,1,1,1))."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-106",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,Undef,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid symbol in expression: N = B(1,1,Undef,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-107",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Undef(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid symbol in expression: N = Undef(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-108",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1), B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1), B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-109",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, 2 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, 2 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-110",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-111",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-112",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n Case Else\n N = 3\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-113",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To B(1,1,1,2)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,2)."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-114",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step 2\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-over_indexed_expr-115",
+   "logger": "cr1000x",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1, B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-116",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nOk = (ASCII(B(1,1,1,1)) = 3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Ok = (ASCII(B(1,1,1,1)) = 3)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-117",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,3,4)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-118",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-119",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-120",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-121",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1,1)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-122",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1) + 1\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-123",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = 1 + B(1,1,1,\"a\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = 1 + B(1,1,1,\"a\")\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-124",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Abs(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Abs(B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-125",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,1) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,1) = 3\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-126",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2,3,4)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-127",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2,3)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-128",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-129",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nL = \"x\" + FormatLong(B(1,1,1,1), \"%d\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: L = \"x\" + FormatLong(B(1,1,1,1), \"%d\")\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-130",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, \"got=\" + FormatLong(B(1,1,3,4), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: \"got=\" + FormatLong(B(1,1,3,4), \"%d\")."
+  },
+  {
+   "id": "cr300-over_indexed_expr-131",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-132",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-133",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, S3(1,2,3,4))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: S3(1,2,3,4)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-134",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", B(1,1,1,1) = 3, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 3."
+  },
+  {
+   "id": "cr300-over_indexed_expr-135",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(L, B(1,1,1,1), B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-136",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\n  N = 2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-137",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 14: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-over_indexed_expr-138",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr300-over_indexed_expr-139",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nNext N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 14: NEXT without FOR."
+  },
+  {
+   "id": "cr300-over_indexed_expr-140",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr300-over_indexed_expr-141",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCase 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Case outside Select."
+  },
+  {
+   "id": "cr300-over_indexed_expr-142",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: EndSelect w/o Select"
+  },
+  {
+   "id": "cr300-over_indexed_expr-143",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: ElseIf is not defined.\nline 14: Incomplete expression: N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3."
+  },
+  {
+   "id": "cr300-over_indexed_expr-144",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then\n N = 2\n ElseIf B(1,1,1,1) = 1 Then\n N = 3\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr300-over_indexed_expr-145",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf B(1,1,1,1) = 1 Then\n N = 2\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr300-over_indexed_expr-146",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWhile B(1,1,1,1) = 1\n N = 2\n Wend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1."
+  },
+  {
+   "id": "cr300-over_indexed_expr-147",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-148",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To 3\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-149",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-150",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo While B(1,1,1,1) > 0\n N = 2\n Loop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr300-over_indexed_expr-151",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo\n N = 2\n Loop Until B(1,1,1,1) > 0\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr300-over_indexed_expr-152",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case B(1,1,1,1)\n Case 1\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 15: Case outside Select.\nline 17: EndSelect w/o Select"
+  },
+  {
+   "id": "cr300-over_indexed_expr-153",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-154",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-155",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Fn1(B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-156",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-157",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-158",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1)) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1)) + 1\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-159",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(L, Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-160",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nPanelTemp(N,250) \n N = B(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Illegal destination variable type, expecting Float.\nline 14: Too many parameters:  250.\nline 15: Dimensions not declared:  N = B(1,1,1,1)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-161",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1,B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr300-over_indexed_expr-162",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,N) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,N) = 3\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-163",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-164",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,Undef,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Undef is not defined.\nline 14: Dimensions not declared: N = B(1,1,Undef,1)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-165",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Undef(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Undef is not defined.\nline 14: Dimensions not declared: N = Undef(1,1,1,1)\n."
+  },
+  {
+   "id": "cr300-over_indexed_expr-166",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1), B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1), B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-167",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, 2 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, 2 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-168",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-169",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-170",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n Case Else\n N = 3\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-171",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To B(1,1,1,2)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,2)."
+  },
+  {
+   "id": "cr300-over_indexed_expr-172",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step 2\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-over_indexed_expr-173",
+   "logger": "cr300",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1, B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr350-over_indexed_expr-174",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nOk = (ASCII(B(1,1,1,1)) = 3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Ok = (ASCII(B(1,1,1,1)) = 3)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-175",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,3,4)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-176",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-177",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-178",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-179",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1,1)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-180",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,1) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,1) + 1\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-181",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = 1 + B(1,1,1,\"a\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = 1 + B(1,1,1,\"a\")\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-182",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Abs(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Abs(B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-183",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,1) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,1) = 3\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-184",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2,3,4)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-185",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2,3)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-186",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = S3(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = S3(1,2)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-187",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nL = \"x\" + FormatLong(B(1,1,1,1), \"%d\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: L = \"x\" + FormatLong(B(1,1,1,1), \"%d\")\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-188",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, \"got=\" + FormatLong(B(1,1,3,4), \"%d\"))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: \"got=\" + FormatLong(B(1,1,3,4), \"%d\")."
+  },
+  {
+   "id": "cr350-over_indexed_expr-189",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-190",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-191",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", Ok, S3(1,2,3,4))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: S3(1,2,3,4)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-192",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(\"a\", B(1,1,1,1) = 3, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 3."
+  },
+  {
+   "id": "cr350-over_indexed_expr-193",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall Lg(L, B(1,1,1,1), B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-194",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\n  N = 2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-195",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 14: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-over_indexed_expr-196",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr350-over_indexed_expr-197",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nNext N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 14: NEXT without FOR."
+  },
+  {
+   "id": "cr350-over_indexed_expr-198",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: LOOP statement illegally has SCAN without NEXT SCAN.\nline 14: LOOP without DO."
+  },
+  {
+   "id": "cr350-over_indexed_expr-199",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCase 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Case outside Select."
+  },
+  {
+   "id": "cr350-over_indexed_expr-200",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nEndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: EndSelect w/o Select"
+  },
+  {
+   "id": "cr350-over_indexed_expr-201",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: ElseIf is not defined.\nline 14: Incomplete expression: N = 2 ElseIf B(1,1,1,1) = 1 Then N = 3."
+  },
+  {
+   "id": "cr350-over_indexed_expr-202",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf N = 1 Then\n N = 2\n ElseIf B(1,1,1,1) = 1 Then\n N = 3\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr350-over_indexed_expr-203",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nIf B(1,1,1,1) = 1 Then\n N = 2\n EndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1 ."
+  },
+  {
+   "id": "cr350-over_indexed_expr-204",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nWhile B(1,1,1,1) = 1\n N = 2\n Wend\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) = 1."
+  },
+  {
+   "id": "cr350-over_indexed_expr-205",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-206",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To 3\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-207",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step B(1,1,1,1)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-208",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo While B(1,1,1,1) > 0\n N = 2\n Loop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr350-over_indexed_expr-209",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDo\n N = 2\n Loop Until B(1,1,1,1) > 0\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Dimensions not declared: B(1,1,1,1) > 0."
+  },
+  {
+   "id": "cr350-over_indexed_expr-210",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case B(1,1,1,1)\n Case 1\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 15: Case outside Select.\nline 17: EndSelect w/o Select"
+  },
+  {
+   "id": "cr350-over_indexed_expr-211",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-212",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-213",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = Fn1(B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-214",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-215",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Fn1(B(1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-216",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFn1(B(1,1,1,1)) + 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: Fn1(B(1,1,1,1)) + 1\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-217",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nLg(L, Ok, B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-218",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nPanelTemp(N,250) \n N = B(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Illegal destination variable type, expecting Float.\nline 14: Too many parameters:  250.\nline 15: Dimensions not declared:  N = B(1,1,1,1)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-219",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1,B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr350-over_indexed_expr-220",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nB(1,1,1,N) = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Invalid, or out of place expression: B(1,1,1,N) = 3\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-221",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,1,B(1,1,1,1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: N = B(1,1,1,B(1,1,1,1))\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-222",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = B(1,1,Undef,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Undef is not defined.\nline 14: Dimensions not declared: N = B(1,1,Undef,1)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-223",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nN = Undef(1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Undef is not defined.\nline 14: Dimensions not declared: N = Undef(1,1,1,1)\n."
+  },
+  {
+   "id": "cr350-over_indexed_expr-224",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1), B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1), B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-225",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, 2 To B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, 2 To B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-226",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case 1, Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: 1, Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-227",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case Is > B(1,1,1,1)\n N = 2\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: Is > B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-228",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nSelect Case N\n Case B(1,1,1,1)\n N = 2\n Case Else\n N = 3\n EndSelect\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Dimensions not declared: B(1,1,1,1)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-229",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = B(1,1,1,1) To B(1,1,1,2)\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared:  B(1,1,1,1).\nline 14: Dimensions not declared: B(1,1,1,2)."
+  },
+  {
+   "id": "cr350-over_indexed_expr-230",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nFor N = 1 To 3 Step 2\n Ok = True\n Next N\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-over_indexed_expr-231",
+   "logger": "cr350",
+   "source": "Public B(1,1,5)\nPublic S3(5) As Long\nPublic Ok As Boolean\nPublic N As Long\nPublic L As String * 40\nFunction Fn1(a)\n  Fn1 = a\nEndFunction\nSub Lg(a As String, b As Boolean, c)\n  L = a\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nDelay(1, B(1,1,1,1),mSec)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Dimensions not declared: B(1,1,1,1).\nline 14: Too many parameters:  mSec."
+  }
+ ]
+}

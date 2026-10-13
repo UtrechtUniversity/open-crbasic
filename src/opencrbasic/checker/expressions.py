@@ -515,6 +515,12 @@ def _names_through_over_index(expr: S.Expr | None, known: set[str], dim_counts: 
     return out
 
 
+def _dim_limit(profile) -> int | None:
+    """`_over_indexed`'s `limit`: CR6/CR1000X reject only more than three subscripts (round 16 of
+    `docs/checker.md`), CR300/CR350 any beyond the declared dimensions."""
+    return 3 if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else None
+
+
 def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | None = None) -> bool:
     """Whether `expr` indexes a declared variable with more subscripts than it has dimensions
     (`limit`: more than `limit` subscripts instead). CR300/CR350 reject `R(2,1)` for `Public R(5)`
@@ -1024,12 +1030,15 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             # "Variable illegal in Parameter" check below, independent of the undefined-name
             # report just made (oracle-confirmed; see this method's own docstring).
 
-        if not whole_echo and dim_counts and _over_indexed(arg, dim_counts):
+        if dim_counts and _over_indexed(arg, dim_counts, _dim_limit(profile)):
             # CR300/CR350: `Battery(R(2,1))` for `Public R(5)` (oracle, 2026-09-28); the argument
-            # list ends there (`SplitStr(S(1,2),T,...)` -> `Too many parameters:  T.`, 2026-10-01)
-            diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False),
+            # list ends there (`SplitStr(S(1,2),T,...)` -> `Too many parameters:  T.`, 2026-10-01).
+            # CR6/CR1000X: past three subscripts, no follow-up (`Delay(1,B(1,1,1,1),mSec)`, round 16)
+            text = _arg_text(stmt, i)
+            diags.error(stmt.line, dimensions_message(
+                text if stmt.keyword.upper() == "SELECT" else text.strip(), profile, False),
                         stmt.file)
-            if i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
+            if not whole_echo and i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
                 from .instr_rules import _next_simple_token
                 token = _next_simple_token(_arg_text(stmt, i + 1)) or _arg_text(stmt, i + 1)
                 diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
@@ -1458,8 +1467,9 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         text = _if_condition_text(stmt)
         if text is None:
             text = _if_condition_text_no_then(stmt)
-        if text is not None and not names and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS and \
-                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True)):
+        if text is not None and not names and \
+                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True),
+                              _dim_limit(profile)):
             # CR300/CR350: `If Q(1) Then` for a scalar `Q` (or `Public Q()`), `If Z(1,1) = 1 Then`
             # for `Public Z(3)` -> `Dimensions not declared: Q(1) .` (oracle, 2026-10-10)
             diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
@@ -1503,8 +1513,9 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
             continue
         names = _undefined_names(stmt.cond, known)
         m = re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
-        if m and not names and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS and \
-                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True)):
+        if m and not names and \
+                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True),
+                              _dim_limit(profile)):
             diags.error(stmt.line, dimensions_message(m.group(1), profile, False), stmt.file)
             continue
         if not names or not m:
@@ -1527,16 +1538,14 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     for stmt in program.statements:
         if (isinstance(stmt, S.Call) and not stmt.explicit and stmt.name.upper() in functions
                 and stmt.tail_expr is None and stmt.juxtaposed is None
-                and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS
                 and not any(_undefined_names(a, known) for a in stmt.args)
-                and any(_over_indexed(a, dim_counts) for a in stmt.args)):
+                and any(_over_indexed(a, dim_counts, _dim_limit(profile)) for a in stmt.args)):
             # CR300/CR350: `Fn(X(1,2))` is checked like `Y = Fn(X(1,2))` (oracle, 2026-10-10)
             diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                         stmt.file)
         if (isinstance(stmt, S.Call) and stmt.tail_expr is not None
-                and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS
                 and not _undefined_names(stmt.tail_expr, known)
-                and _over_indexed(stmt.tail_expr, dim_counts)):
+                and _over_indexed(stmt.tail_expr, dim_counts, _dim_limit(profile))):
             # CR300/CR350: `Fn(1)+X(1,2)` is checked like `Y = Fn(1)+X(1,2)` (oracle, 2026-10-10)
             diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                         stmt.file)
@@ -1557,8 +1566,9 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
                         stmt.file, show_file="cr3xx")
             continue
         if not names:
-            if not whole_echo and _over_indexed(stmt.value, dim_counts):
-                # CR300/CR350: `X = R(2,1)` -> `Dimensions not declared:     X = R(2,1)` (oracle)
+            if _over_indexed(stmt.value, dim_counts, _dim_limit(profile)):
+                # CR300/CR350: `X = R(2,1)` -> `Dimensions not declared:     X = R(2,1)` (oracle);
+                # CR6/CR1000X past three subscripts, round 16
                 diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                             stmt.file)
             continue
@@ -2346,6 +2356,10 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
         for i, (expr, text) in enumerate(parts):
             names = _undefined_names(expr, known) if expr is not None else []
             if not names:
+                if i and text is not None and _over_indexed(
+                        expr, symbols.declared_dim_counts(program, strings=True), _dim_limit(profile)):
+                    # `For N = 1 To B(1,1,1,1)`: the header part echoed (oracle, 2026-10-13)
+                    diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
                 continue
             if whole_echo:
                 if text is None:
@@ -2377,8 +2391,12 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         if kw == "SELECT":
-            orphans.append(not whole_echo and bool(stmt.args) and
-                           bool(_undefined_names(stmt.args[0], known)))
+            # (an over-indexed selector opens no block either, on all four loggers)
+            orphans.append(bool(stmt.args) and (
+                (not whole_echo and bool(_undefined_names(stmt.args[0], known)))
+                or (not _undefined_names(stmt.args[0], known) and _over_indexed(
+                    stmt.args[0], symbols.declared_dim_counts(program, strings=True),
+                    _dim_limit(profile)))))
             continue
         if kw == "ENDSELECT" or (kw == "END" and re.match(r"(?i)\s*End\s+Select\b", stmt.text or "")):
             if orphans and orphans.pop():
@@ -2393,8 +2411,9 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
                 continue  # `ElseIf Nope Then` with no `If`: only `Case with no Select.`
             names = _undefined_names(stmt.cond, known)
             text = _if_condition_text(stmt)
-            if text is not None and not names and not whole_echo and _over_indexed(
-                    stmt.cond, symbols.declared_dim_counts(program, strings=True)):
+            if text is not None and not names and _over_indexed(
+                    stmt.cond, symbols.declared_dim_counts(program, strings=True),
+                    _dim_limit(profile)):
                 diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
                 continue
             if not names or text is None:
@@ -2427,6 +2446,14 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
                 outside = index
             names += low + high
         if not names:
+            cm = re.match(r"(?i)\s*Case\s(.*)$", stmt.text or "")
+            if cm:
+                counts = symbols.declared_dim_counts(program, strings=True)
+                if any(_over_indexed(e, counts, _dim_limit(profile)) for item in stmt.items
+                       for e in item[1:] if isinstance(e, S.Expr)):
+                    # the whole item list after `Case ` is echoed (oracle, 2026-10-13)
+                    diags.error(stmt.line, dimensions_message(cm.group(1), profile, False),
+                                stmt.file)
             continue
         if whole_echo:
             m = re.match(r"(?i)\s*Case\s(.*)$", stmt.text or "")

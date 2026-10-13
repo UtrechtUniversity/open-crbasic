@@ -1663,7 +1663,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
          if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"},
         bool(subs), links if links is not None else CallLinks())
     known = expressions._known_names(program, profile)
-    dims_ds = expressions.program_dims(program, profile, known) if profile.single_pass else None
+    dims_ds = expressions.program_dims(program, profile, known)
     # Before the first `BeginProg` in expansion order (an included file has its own line numbers).
     seen_beginprog = False
 
@@ -3422,6 +3422,14 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
     for i, (arg, raw, nl) in enumerate(zip(stmt.args, items, quirk)):
         names = expressions._undefined_names(arg, known)
         if not names:
+            if not is_function and (counts := getattr(ds, "dim_counts", None)) and expressions._over_indexed(
+                    arg, counts, expressions._dim_limit(profile)):
+                # an argument indexing a declared variable past its dimensions (CR6/CR1000X: past
+                # three): `Dimensions not declared: <argument>.`, every such argument (oracle,
+                # 2026-10-13, all four loggers, `docs/checker.md` "Round 16")
+                echo = raw.lstrip() if i == last_tail else raw.strip()
+                diags.error(stmt.line, expressions.dimensions_message(echo, profile, nl, nl),
+                            stmt.file)
             continue
         echo = raw.strip()
         if i == last_tail:  # the final tail piece keeps its trailing blanks (oracle, 2026-10-04)
@@ -3575,7 +3583,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         if known is not None:
             _report_call_arg_names(stmt, known, profile, diags,
                                    is_function=sub_params[name].keyword.upper() == "FUNCTION"
-                                   and not stmt.explicit)
+                                   and not stmt.explicit, ds=ds)
         if not (profile.single_pass and len(diags.items) > before):
             _check_call_args(stmt, sub_params[name], diags)
     if name in subs:
