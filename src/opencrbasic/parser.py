@@ -1876,6 +1876,20 @@ class _Parser:
                 star = p.next()
                 if p.at_end() or p.is_op(","):
                     size_missing = star.col + 1  # `String *` with no size (oracle, 2026-10-10)
+                elif not dims and p.peek().kind == "NUMBER" and (
+                        p.peek(1).kind == "OP" and p.peek(1).text == "("):
+                    # `Public A As String * 16(5) = {...}`: the dimension follows the size
+                    # (oracle, all four loggers, round 16; docs/frontend.md)
+                    num = p.next()
+                    strsize = S.Number(num.line, file, num.value, num.text)
+                    p.next()
+                    start_col = p.peek().col
+                    dims.append(self._parse_expr(p, line, file))
+                    dim0_span = (start_col, p.peek().col)
+                    while p.is_op(","):
+                        p.next()
+                        dims.append(self._parse_expr(p, line, file))
+                    self._close_dims_or_raise(p, name_tok)
                 else:
                     strsize = self._parse_expr(p, line, file)
             elif not dims and p.is_op("("):
