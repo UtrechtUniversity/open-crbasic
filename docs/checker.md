@@ -6652,3 +6652,11 @@ Review r15-cloud R15C-1. `FieldCal(Option,MeasVar,...,KnownVar,...)` with `V(4)`
 `K and V must be declared the same size.` on all four loggers for options 1, 2 and 3, whether spelled by element
 (`V(1)`/`K(1)`), whole (`V()`/`K()`) or mixed; the comparison is on declarations, not on the elements used. No code change
 (`instr_rules.check_fieldcal_variable_args` already agrees).
+
+### EOF continuation inside an included file (oracle, 2026-10-12; `tests/fixtures/r16_include_eof_continuation.json`)
+
+Review r15-cloud R15C-2. A ` _` on the last line of an included file (`Public LibV _`, with or without a trailing newline or
+CRLF) drops that statement exactly as in the main file: `LibV` is then undefined in the main program (CR6/CR1000X
+`Invalid symbol in expression`, CR300/CR350 `LibV is not defined.`). A blank line after the continuation joins it to the empty
+line and the declaration survives; a continuation in the middle of the file swallows the next line
+(`<Lib.crb> line 2: Invalid Variable declaration Public.`). All four loggers; no code change (`source._Loader` already agrees).
