@@ -6688,3 +6688,16 @@ Follow-up to "Table names starting with a digit" (all four loggers, oracle 2026-
   name) are printed after it (`checker/__init__.py` gate, `instr_data.is_table_name_diag`). On CR300/CR350 the name error
   replaces those messages and `No BeginProg in Program.` too (they are `late` in `finalize_illegal_table_names`; the
   cr350 `Invalid port specified N` is treated alike).
+
+### `GOESField` outside a table or without a `GOESTable` (fixture `tests/fixtures/r16_goes_field.json`)
+
+All four loggers (oracle 2026-10-13, 72 cases):
+- `GOESField(...)` outside `DataTable..EndTable` is `GoesTable must be used inside a table declaration.` (the
+  `GOESTable` text, same entry as `TABLE_ONLY_INSTRUCTIONS`); it also replaces `No BeginProg in Program.` in a fragment.
+- Inside a table with no earlier `GOESTable`: `GoesTable not active.` at the `GOESField` line, and at the `EndTable` line
+  one `GoesField declared without a GoesTable declaration.` per such `GOESField`. CR6/CR1000X forget the `GOESTable` at
+  each new `DataTable`; CR300/CR350 keep it for the rest of the file (one probe: a second table without it is clean).
+  A table whose only fields are `GOESField`s gets just `Table T declared with no output fields.`
+- `GOESTable` alone does not produce a field: `DataTable..GOESTable(..)..EndTable` is `Table T declared with no output
+  fields.` (it was in `_FIELD_PRODUCING_INSTRUCTIONS`). A `GOESField` before the table's `GOESTable` crashes the real
+  compiler (exit 5), no verdict. Implemented in `instr_data.check_table_structure`.

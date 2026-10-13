@@ -1,0 +1,527 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-goes_field-out",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-out",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-goes_field-out",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-goes_field-out",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-goes_field-in_notab",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-in_notab",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr300-goes_field-in_notab",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr350-goes_field-in_notab",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr6-goes_field-in_ok",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-goes_field-in_ok",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-goes_field-in_ok",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-goes_field-in_ok",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-goes_field-second_table",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: GoesTable not active.\nline 12: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-second_table",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: GoesTable not active.\nline 12: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr300-goes_field-second_table",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr350-goes_field-second_table",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-goes_field-out_after",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-out_after",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-goes_field-out_after",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-goes_field-out_after",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nGOESField(1,1,3,6,\"\")\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-goes_field-two_fields",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-goes_field-two_fields",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-goes_field-two_fields",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-goes_field-two_fields",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-goes_field-field_only_end",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-goes_field-field_only_end",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr300-goes_field-field_only_end",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr350-goes_field-field_only_end",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-goes_field-gt_only",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-goes_field-gt_only",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr300-goes_field-gt_only",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr350-goes_field-gt_only",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-goes_field-gt_gf",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-goes_field-gt_gf",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr300-goes_field-gt_gf",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr350-goes_field-gt_gf",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-goes_field-gt_s",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-goes_field-gt_s",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-goes_field-gt_s",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-goes_field-gt_s",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-goes_field-gf_s_gt",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-goes_field-gf_s_gt",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-goes_field-gf_s_gt",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-goes_field-gf_s_gt",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-goes_field-gt_two",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-goes_field-gt_two",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-goes_field-gt_two",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-goes_field-gt_two",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nSample(1,x,FP2)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-goes_field-gf_only",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-goes_field-gf_only",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr300-goes_field-gf_only",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr350-goes_field-gf_only",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 6: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-goes_field-gf_two_s",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesTable not active.\nline 9: GoesField declared without a GoesTable declaration.\nline 9: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-gf_two_s",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesTable not active.\nline 9: GoesField declared without a GoesTable declaration.\nline 9: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr300-goes_field-gf_two_s",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesTable not active.\nline 9: GoesField declared without a GoesTable declaration.\nline 9: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr350-goes_field-gf_two_s",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesTable not active.\nline 9: GoesField declared without a GoesTable declaration.\nline 9: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr6-goes_field-gf_then_other",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-gf_then_other",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-goes_field-gf_then_other",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-goes_field-gf_then_other",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nSample(1,x,FP2)\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-goes_field-tbl_after_bad",
+   "logger": "cr6",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-tbl_after_bad",
+   "logger": "cr1000x",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr300-goes_field-tbl_after_bad",
+   "logger": "cr300",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr350-goes_field-tbl_after_bad",
+   "logger": "cr350",
+   "source": "Const C=ComRS232\nPublic x\nPublic r As String * 400\nDataTable(T,True,-1)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\nDataTable(T2,True,-1)\nGOESTable(r,C,3,0,TRUE,TRUE,3)\nGOESField(1,1,3,6,\"\")\nSample(1,x,FP2)\nEndTable\n\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: GoesTable not active.\nline 7: GoesField declared without a GoesTable declaration."
+  },
+  {
+   "id": "cr6-goes_field-frag_out",
+   "logger": "cr6",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-frag_out",
+   "logger": "cr1000x",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-goes_field-frag_out",
+   "logger": "cr300",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-goes_field-frag_out",
+   "logger": "cr350",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-goes_field-frag_out_dup",
+   "logger": "cr6",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-goes_field-frag_out_dup",
+   "logger": "cr1000x",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-goes_field-frag_out_dup",
+   "logger": "cr300",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-goes_field-frag_out_dup",
+   "logger": "cr350",
+   "source": "GOESField (1, 1, 3, 4, \"\")\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: GoesTable must be used inside a table declaration."
+  }
+ ]
+}

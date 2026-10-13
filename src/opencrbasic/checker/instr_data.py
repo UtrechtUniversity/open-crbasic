@@ -57,6 +57,7 @@ TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
     "CARDOUT": "CardOut",              # checked with the oracle
     "MQTTPUBLISHTABLE": "MQTTPublishTable",
     "GOESTABLE": "GoesTable",
+    "GOESFIELD": "GoesTable",          # oracle, all four loggers, 2026-10-12 (r16_goes_field)
     "TABLEFILE": "TableFile",          # checked with the oracle
     "TOTALIZE": "Totalize",            # checked with the oracle
     "AVERAGE": "Average",              # checked with the oracle (also a saved fuzz reproducer)
@@ -119,7 +120,7 @@ TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
 _FIELD_PRODUCING_INSTRUCTIONS = frozenset({
     "SAMPLE", "AVERAGE", "TOTALIZE", "STDDEV", "MAXIMUM", "MINIMUM", "MEDIAN", "MOMENT",
     "SAMPLEMAXMIN", "COVARIANCE", "WINDVECTOR", "HISTOGRAM", "HISTOGRAM4D", "RAINFLOW",
-    "LEVELCROSSING", "SAMPLEFIELDCAL", "GOESTABLE", "MQTTPUBLISHTABLE", "FFT",
+    "LEVELCROSSING", "SAMPLEFIELDCAL", "MQTTPUBLISHTABLE", "FFT",
     "ETSZ", "ETCLEARSKY",
 })
 
@@ -327,6 +328,8 @@ def check_table_structure(program: S.Program, profile: Profile,
     in_table = False
     table_name = ""
     has_field = False
+    goes_seen = False        # a `GOESTable` was declared (CR300/CR350 keep it across tables)
+    goes_orphans = 0         # `GOESField`s in this table without it
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             if isinstance(stmt, S.Unparsed):
@@ -336,6 +339,8 @@ def check_table_structure(program: S.Program, profile: Profile,
         if kw == "DATATABLE":
             in_table = True
             has_field = False
+            goes_orphans = 0
+            goes_seen = goes_seen and profile.single_pass
             table_name = (_declared_table_name(stmt) or "")[:_TABLE_NAME_LIMIT]
             continue
         if kw == "ENDTABLE":
@@ -345,11 +350,18 @@ def check_table_structure(program: S.Program, profile: Profile,
             if not has_field and table_name:
                 diags.error(stmt.line, f"Table {table_name} declared with no output fields.", stmt.file)
                 return (stmt.file, stmt.line)
+            for _ in range(goes_orphans):   # one per such `GOESField`
+                diags.error(stmt.line, "GoesField declared without a GoesTable declaration.", stmt.file)
             in_table = False
             continue
         if in_table:
             if kw in _FIELD_PRODUCING_INSTRUCTIONS:
                 has_field = True
+            elif kw == "GOESTABLE":
+                goes_seen = True
+            elif kw == "GOESFIELD" and kw in profile.instructions and not goes_seen:
+                diags.error(stmt.line, "GoesTable not active.", stmt.file)
+                goes_orphans += 1
             continue
         display = TABLE_ONLY_INSTRUCTIONS.get(kw)
         if display is not None and kw in profile.instructions:
