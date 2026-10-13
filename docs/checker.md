@@ -6660,3 +6660,11 @@ CRLF) drops that statement exactly as in the main file: `LibV` is then undefined
 `Invalid symbol in expression`, CR300/CR350 `LibV is not defined.`). A blank line after the continuation joins it to the empty
 line and the declaration survives; a continuation in the middle of the file swallows the next line
 (`<Lib.crb> line 2: Invalid Variable declaration Public.`). All four loggers; no code change (`source._Loader` already agrees).
+
+### Unclosed one-argument built-in group around `LineNum`/`Signature` (oracle, 2026-10-12; `tests/fixtures/r16_abs_unclosed_builtin.json`)
+
+Review r15-cloud R15C-3. `Y = F(LineNum(X) + 1` compiles for every one-argument built-in `F` probed (`Sqr`, `Log`, `Ln`, `Log10`,
+`Exp`, `Int`, `Fix`, `Frac`, `Sgn`, `Cos`, `Tan`, `ATN`, `Len`, `Floor`, `Ceiling`, `Abs`, also around `Signature`), with or
+without the trailing `+ 1`. Multi-argument `Round`/`Mid` keep `Expression expects ,`, a non-function name (`A`, `ArcSin`) is
+undefined, and `Sqr(Sqr(LineNum(X) + 1` stays `No Matching, or out of place ) in expression`. All four loggers; the
+`parser._close_open_extra` rule is therefore not a false accept for these. No code change.

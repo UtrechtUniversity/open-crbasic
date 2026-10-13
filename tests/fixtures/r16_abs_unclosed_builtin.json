@@ -1,0 +1,791 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-c3-0-c3-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-0-c3-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-0-c3-0",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-0-c3-0",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-1-c3-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-1-c3-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-1-c3-1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-1-c3-1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-2-c3-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sin(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-2-c3-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sin(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-2-c3-2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sin(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-2-c3-2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sin(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-3-c3-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-3-c3-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-3-c3-3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-3-c3-3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-4-c3-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Exp(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-4-c3-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Exp(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-4-c3-4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Exp(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-4-c3-4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Exp(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-5-c3-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ln(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-5-c3-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ln(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-5-c3-5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ln(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-5-c3-5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ln(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-6-c3-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Int(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-6-c3-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Int(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-6-c3-6",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Int(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-6-c3-6",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Int(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-7-c3-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Fix(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-7-c3-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Fix(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-7-c3-7",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Fix(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-7-c3-7",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Fix(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-8-c3-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Cos(LineNum(X)+1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-8-c3-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Cos(LineNum(X)+1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-8-c3-8",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Cos(LineNum(X)+1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-8-c3-8",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Cos(LineNum(X)+1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-9-c3-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sgn(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-9-c3-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sgn(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-9-c3-9",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sgn(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-9-c3-9",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sgn(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-10-c3-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Signature(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-10-c3-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Signature(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-10-c3-10",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Signature(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-10-c3-10",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Signature(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-11-c3-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log10(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-11-c3-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log10(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-11-c3-11",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log10(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-11-c3-11",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Log10(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-12-c3-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Frac(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-12-c3-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Frac(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-12-c3-12",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Frac(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-12-c3-12",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Frac(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-13-c3-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ATN(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-13-c3-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ATN(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-13-c3-13",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ATN(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-13-c3-13",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ATN(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-14-c3-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Round(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Round(LineNum(X)."
+  },
+  {
+   "id": "cr1000x-c3-14-c3-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Round(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Round(LineNum(X)."
+  },
+  {
+   "id": "cr300-c3-14-c3-14",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Round(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Round(LineNum(X)\n."
+  },
+  {
+   "id": "cr350-c3-14-c3-14",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Round(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Round(LineNum(X)\n."
+  },
+  {
+   "id": "cr6-c3-15-c3-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Mid(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Mid(LineNum(X)."
+  },
+  {
+   "id": "cr1000x-c3-15-c3-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Mid(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Mid(LineNum(X)."
+  },
+  {
+   "id": "cr300-c3-15-c3-15",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Mid(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Mid(LineNum(X)\n."
+  },
+  {
+   "id": "cr350-c3-15-c3-15",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Mid(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Y = Mid(LineNum(X)\n."
+  },
+  {
+   "id": "cr6-c3-16-c3-16",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-16-c3-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-16-c3-16",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-16-c3-16",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-17-c3-17",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Tan(LineNum(X) * 2\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-17-c3-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Tan(LineNum(X) * 2\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-17-c3-17",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Tan(LineNum(X) * 2\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-17-c3-17",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Tan(LineNum(X) * 2\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-18-c3-18",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = A(LineNum(X) + 1."
+  },
+  {
+   "id": "cr1000x-c3-18-c3-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = A(LineNum(X) + 1."
+  },
+  {
+   "id": "cr300-c3-18-c3-18",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: Dimensions not declared:     Y = A(LineNum(X) + 1\n."
+  },
+  {
+   "id": "cr350-c3-18-c3-18",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = A(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: Dimensions not declared:     Y = A(LineNum(X) + 1\n."
+  },
+  {
+   "id": "cr6-c3-19-c3-19",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = (LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-19-c3-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = (LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-19-c3-19",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = (LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-19-c3-19",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = (LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-20-c3-20",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ArcSin(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = ArcSin(LineNum(X) + 1."
+  },
+  {
+   "id": "cr1000x-c3-20-c3-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ArcSin(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = ArcSin(LineNum(X) + 1."
+  },
+  {
+   "id": "cr300-c3-20-c3-20",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ArcSin(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ArcSin is not defined.\nline 4: Dimensions not declared:     Y = ArcSin(LineNum(X) + 1\n."
+  },
+  {
+   "id": "cr350-c3-20-c3-20",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = ArcSin(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ArcSin is not defined.\nline 4: Dimensions not declared:     Y = ArcSin(LineNum(X) + 1\n."
+  },
+  {
+   "id": "cr6-c3-21-c3-21",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Y = Sqr(Sqr(LineNum(X) + 1."
+  },
+  {
+   "id": "cr1000x-c3-21-c3-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Y = Sqr(Sqr(LineNum(X) + 1."
+  },
+  {
+   "id": "cr300-c3-21-c3-21",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Y = Sqr(Sqr(LineNum(X) + 1\n."
+  },
+  {
+   "id": "cr350-c3-21-c3-21",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Sqr(Sqr(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Y = Sqr(Sqr(LineNum(X) + 1\n."
+  },
+  {
+   "id": "cr6-c3-22-c3-22",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Floor(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-22-c3-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Floor(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-22-c3-22",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Floor(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-22-c3-22",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Floor(LineNum(X)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-c3-23-c3-23",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ceiling(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-c3-23-c3-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ceiling(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-c3-23-c3-23",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ceiling(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-c3-23-c3-23",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Ceiling(LineNum(X) + 1\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
