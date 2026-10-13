@@ -483,6 +483,10 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
             in_struct = not kw.startswith("END")
         if in_struct or kw != "UNITS" or not st.args:
             continue  # inside a `StructureType`, `Units` names a member (`structuretype_1.CR6`)
+        for extra in getattr(st, "extra_targets", ()):
+            if extra.name.upper() not in allowed:
+                diags.error(st.line, f"Can't assign units to {extra.name}, it must be declared "
+                            "Public or referenced as a source in a Data Table.", st.file)
         target = st.args[0]
         if isinstance(target, (S.Name, S.Index)) and target.name.upper() not in allowed:
             diags.error(st.line, f"Can't assign units to {target.name}, it must be declared Public "

@@ -2047,11 +2047,24 @@ class _Parser:
         try:
             p.expect_ident("UNITS")
             lhs = self._parse_atom(p, line, file)
-            if not p.at_end():
+            # anything between the first target and the `=` is ignored (`Units PP  S = ms`,
+            # `Units A + 1 = ms`; oracle, all four loggers, round 16). A `,` list checks every
+            # name and a non-name first target has its own error, so those stay unparsed.
+            extra_targets: list[S.Expr] = []
+            if not p.at_end() and not isinstance(lhs, (S.Name, S.Index)):
                 raise _ParseError("unexpected trailing input in Units target")
+            while p.is_op(","):   # `Units A, B = ms`: every name is checked
+                p.next()
+                if p.at_end():
+                    break
+                extra = self._parse_atom(p, line, file)
+                if not isinstance(extra, (S.Name, S.Index)):
+                    raise _ParseError("unexpected trailing input in Units target")
+                extra_targets.append(extra)
         except _ParseError as e:
             return S.Unparsed(line, file, text=seg_text.strip(), reason=str(e))
         stmt = S.Instruction(line, file, keyword="UNITS", args=[lhs, S.String(line, file, label)])
+        stmt.extra_targets = extra_targets
         stmt.text = seg_text.strip()
         return stmt
 
