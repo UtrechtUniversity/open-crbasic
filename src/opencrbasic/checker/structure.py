@@ -926,12 +926,31 @@ def _before_beginprog_name(stmt: S.Stmt, kw: str, profile, subs: set[str]) -> st
             (kw in _FORBIDDEN_BEFORE_BEGINPROG or kw in profile.before_beginprog):
         record = profile.instructions.get(control or kw)
         return record["name"] if record else (control or stmt.keyword)
+    if isinstance(stmt, S.Unparsed) and kw == "UNPARSED" and re.match(r"(?i)\s*ESSInitialize\s*\(", stmt.text) \
+            and _quote_in_first_arg(stmt.text):
+        return "ESSInitialize"   # a cut-off first string is still `ESSInitialize` (round 16)
     if isinstance(stmt, S.Assignment):
         return "Expr"
     if isinstance(stmt, S.Call):
         return "Call" if stmt.name.upper() in subs else \
             "Expr" if stmt.name.upper() in profile.functions else None
     return None
+
+
+def _quote_in_first_arg(text: str) -> bool:
+    """Whether the call's first top-level `"` string never closes before the first top-level comma
+    (strings skipped), e.g. `Word("a,"b")`."""
+    i = text.find("(") + 1
+    while 0 < i < len(text):
+        if text[i] == '"':
+            j = text.find('"', i + 1)
+            if j < 0:
+                return True
+            i = j
+        elif text[i] == ",":
+            return False
+        i += 1
+    return False
 
 
 def _control_keyword(stmt: S.Stmt) -> str | None:
@@ -1799,6 +1818,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
+            if before_bp and not in_body_block and not in_table and not in_decl_block and \
+                    _before_beginprog_name(stmt, "UNPARSED", profile, set()):
+                diags.error(stmt.line, "ESSInitialize illegally occurs before BeginProg.", stmt.file)
+                return stmt.line
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS \
                     or is_hash_statement(stmt):
                 continue

@@ -6794,3 +6794,16 @@ alone, not the statement. `SerialOpen` takes 5 or 6 arguments (CR350 5 to 8): mo
 fewer `Expression expects ,` (CR350 used to accept 4 or fewer). Fuzz reproducers cr1000x `false_accept/ee26b0ad7cda`, `8fec3d32a4c5`,
 cr6 `95e2a4d5d433`, `fe18dc272183`, `9d2dd45508e6`, `db82630bee84` (the last four need their include libraries).
 Not modelled: `SerialOpen(COMC1)` prints an extra `Internal error: unable to compile program.` here (the real CR6 does not).
+
+## Round 16 message-diff families, second worker (2026-10-13)
+
+### `ESSInitialize` with a cut-off string before `BeginProg` (fixture `tests/fixtures/r16_ess_unterminated.json`)
+
+All four loggers (oracle 2026-10-13, 32 cases). `ESSInitialize("private,"fuzz")`, `ESSInitialize(")`, `ESSInitialize("a,"b",1)`
+(an unterminated string inside the first argument, before any top-level comma) read its argument raw, so the statement is
+`ESSInitialize illegally occurs before BeginProg.` like `ESSInitialize("a")`; it was `No BeginProg in Program.` here (the
+statement is `Unparsed`, `parser._parse_text_segment`). Inside `BeginProg` it compiles (unchanged). Other instructions
+with an optional first parameter (`Calibrate(")`) are *not* the same: not generalised, and ours rejects `Calibrate(")` inside
+`BeginProg`, which the real compilers accept (CR6 and CR300 probed; not fixed, no corpus case). Not done: `ESSInitialize(x,")`
+on CR300/CR350 omits `x is not defined.`; `ESSInitialize("a,"b)` on CR300/CR350.
+`structure._before_beginprog_name`, `structure._quote_in_first_arg`.
