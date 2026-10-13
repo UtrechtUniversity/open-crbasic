@@ -327,7 +327,7 @@ are in `docs/lsp-rounds/`.
 8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);
    host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md`.
 
-## Next steps
+## Next steps (round 16, superseded by "Next steps (round 17)" above)
 
 1. Act on the cloud review of round 15 (`origin/reviews/r15-cloud`; confirm each finding against
    the oracle first).
