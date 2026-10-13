@@ -361,7 +361,9 @@ def _not_constant_integer(arg) -> bool:
 _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
 # Observed (min, max) argument counts where they differ from the table's `nargs`, keyed by that
 # profile `nargs` (oracle, 2026-10-03, all four loggers).
-_ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}}
+# `GZip` (table nargs 1) takes exactly 2 (`Filename, ZippedFilename`; CR6/CR1000X oracle 2026-10-13:
+# 1 -> `Expression expects ,`, 3+ -> `No Matching, or out of place )`; absent on CR300/CR350).
+_ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}, "GZIP": {1: (2, 2)}}
 # Argument counts a call accepts when they are not one range, keyed by profile `nargs` (oracle,
 # 2026-10-10, all four loggers): `HTTPPut` takes 4, 8 or 9 (2, 3, 5, 6, 7 are `few`, 10+ `many`).
 # `FTPClient` (table nargs 6) takes 6, 10 or 11 (oracle, all four loggers, 2026-10-11: 7-9 are

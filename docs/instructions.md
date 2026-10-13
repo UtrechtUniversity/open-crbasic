@@ -2157,3 +2157,9 @@ CR300/CR350 (`Debug is not defined.` cascade, unchanged).
   is a float32 first (`6710886.6` passes, `6710886.9` fails, `1073741823.6` becomes 2^30 and passes). `Out of memory.`
   ends the compile (no `Invalid symbol`, `Illegal parameter(s)` or later-line errors; a wrong argument count still wins).
 Fuzz reproducer cr1000x `false_accept/823848325de3`.
+
+### `GZip` argument count (CR6, CR1000X, round 16)
+
+Fixture `r16_gzip_arity.json` (`expressions._ARITY_RANGE`). The table says one argument; the call takes exactly two
+(`Filename, ZippedFilename`): one gives `Expression expects , : <statement>.`, three or more `No Matching, or out of place
+) in expression: <statement>.`, in an assignment or as a bare call. Fuzz reproducer cr1000x `false_accept/27dda59dbe0b`.
