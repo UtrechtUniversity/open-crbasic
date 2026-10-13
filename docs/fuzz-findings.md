@@ -761,3 +761,22 @@ at the end of the file, fixed). Fixed families are in `docs/checker.md` "Round 1
 sections. Left open: `Return (expr)` outside a `Function` on CR300/CR350 (names must not be printed), `CallTable (T  rimTab)`
 (`rimTab is not defined.` only), the rest of the `ID is not defined.` count cluster (unparsed `Const X Y=5`, `&B...X` names,
 declarations after a failed declaration), multi-variable `Illegally dimension` echo, `Units a  b = c`, `Function F("x")`.
+
+## Round 16 message-diff ranking (2026-10-13)
+
+`tools/fuzz_replay.py` on `main` ee0e97f4: 2,923 reproducers, 2,272 exact, 52 false accepts, 569 message diffs (523 still +
+46 changed from false accept), 14 mode diffs, 16 oracle errors (page faults). Ranking as in round 15 (first differing line,
+digits normalised), CDM reproducers dropped: the tail is flat (largest cluster 8, then 8, 7, 7, 6 ...), so no family is
+dominant. Clusters seen: CR300/CR350 `Too many parameters:  X.` vs `Dest is not defined.` cascade (8); `No BeginProg in
+Program.` where the real compiler reports a table name / instruction-outside-program error first (~55 rows in all: table
+names 15, `GoesTable must be used` 3, `ApplyAndRestartSequence not declared` 4, `ESSInitialize illegally occurs before
+BeginProg.` 3, `Could not find DataTable X.` + `Illegal table name` for `AcceptDataRecords` 3, `Units ...` 4);
+`Sample must be used inside a table declaration.` vs `X is not defined.` (CR300/CR350, 13); block-closer errors
+(`EndSelect w/o Select`) hidden by an earlier `Call` of an undefined Sub in a file without `BeginProg` (11);
+`Scan illegally occurs before BeginProg.` vs `Scan without NextScan.` (6); `Dimensions not declared: X( I ) .` echo
+spacing (5, CR300/CR350); `#EndIf without #If` vs `Unknown instruction: #EndIf` (4, CR6).
+Fixed in round 16 (`docs/checker.md` "Round 16 message-diff families"): table names over 20 characters and digit-led
+operator-expression names (15), `GOESField`/`GOESTable` (3 + table-only), `ApplyAndRestartSequence` (4). Left open: the
+rest above, `ESSInitialize` before `BeginProg`, `AcceptDataRecords` unknown table, `Sample`/`X is not defined.` order on
+CR300/CR350, the no-`BeginProg` block-closer ordering (`Call Foo` / `x=1` / `EndSelect`: real prints only `Sub Foo not
+defined.` when an undefined-name statement precedes the closer).
