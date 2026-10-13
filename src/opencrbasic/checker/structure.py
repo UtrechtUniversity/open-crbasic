@@ -223,7 +223,7 @@ def _scan_counts_for_table_placement(stmt: S.Stmt, env: consteval.Env | None = N
 
 
 def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
-                                  in_sub: bool, zero_scan: bool = False) -> None:
+                                  in_sub: bool, zero_scan: bool = False, env=None) -> None:
     """`CallTable` outside any `Scan` (before it, after `NextScan`, or in a `Sub`), pass 2, all four
     loggers (oracle, 2026-09-27): a table with `DataInterval` -> `Table with DataInterval must be
     called within Scan..NextScan.`; an auto-sized one (negative size) -> `Cannot autoallocate memory
@@ -253,6 +253,13 @@ def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags
     size = table.args[2] if len(table.args) > 2 else None
     auto = isinstance(size, S.Unary) and size.op == "-" or \
         isinstance(size, S.Number) and size.value < 0
+    if env is not None and size is not None:
+        # only the sizes the logger auto-allocates: CR300/CR350 `-1`, CR6/CR1000X any negative or
+        # out-of-range one (a CR300/CR350 `-1000` is a fixed 1000 and compiles; docs/tdf-rules.md)
+        from .. import tables as T
+        raw = T._fold(size, env, None)
+        if raw is not None:
+            auto = T.declared_size(raw, env.profile.name in ("cr300", "cr350"), 1) is None
     if zero_scan and has_interval:
         return
     if has_interval and not in_sub:
@@ -261,6 +268,50 @@ def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags
     if auto and not (in_sub and has_interval):
         diags.error(stmt.line, f"Cannot autoallocate memory for DataTable {table.args[0].name} "
                     "called outside of Scan, e.g., called by Sub.", stmt.file)
+
+def _accept_known(stmt: S.Stmt, state: dict) -> bool:
+    args = getattr(stmt, "args", []) or []
+    return len(args) > 2 and isinstance(args[2], S.Name) and \
+        args[2].name.upper() in state.get("closed", set())
+
+
+def _check_accept_table(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
+                        outside: bool, env) -> None:
+    """`AcceptDataRecords(.., .., Table)` fills `Table` like a `CallTable` made at that statement
+    (oracle, all four loggers, 2026-10-13): outside every `Scan` (or in a `Sub`) an auto-sized table
+    gets the `Cannot autoallocate` message (as for `CallTable`), and a table with a `DataInterval`
+    whose `Lapses` is not 0 (also `DataInterval(0,0,..)`) gets `Data Table cannot be interval
+    driven.` at the statement, after it. Inside a `Scan` a fixed or auto table without interval is
+    fine."""
+    from .. import tables as T
+    name = stmt.args[2].name.upper()
+    table = None
+    driven = False
+    for st in program.statements:
+        kw = _keyword(st)
+        if kw == "DATATABLE":
+            args = getattr(st, "args", []) or []
+            table = st if args and isinstance(args[0], S.Name) and args[0].name.upper() == name else None
+            driven = False
+        elif kw == "DATAINTERVAL" and table is not None:
+            lapses = getattr(st, "args", [])[3:4]
+            val = T._fold(lapses[0], env, None) if lapses else 10
+            driven = driven or val != 0
+        elif kw == "ENDTABLE" and table is not None:
+            break
+    if table is None:
+        return
+    size = table.args[2] if len(table.args) > 2 else None
+    auto = isinstance(size, S.Unary) and size.op == "-" or isinstance(size, S.Number) and size.value < 0
+    raw = T._fold(size, env, None) if size is not None else None
+    if raw is not None:
+        auto = T.declared_size(raw, env.profile.name in ("cr300", "cr350"), 1) is None
+    if outside and auto:
+        diags.error(stmt.line, f"Cannot autoallocate memory for DataTable {table.args[0].name} "
+                    "called outside of Scan, e.g., called by Sub.", stmt.file)
+    if driven:
+        diags.error(stmt.line, "Data Table cannot be interval driven.", stmt.file)
+
 
 def _ends_sub(stmt: S.Stmt, kw: str) -> bool:
     return kw in ("ENDSUB", "ENDFUNCTION") or (
@@ -633,7 +684,9 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
         elif kw == "CALLTABLE" and not in_table and (not any(scans) or in_body) and \
                 _calltable_known(stmt, tables):
             _check_calltable_outside_scan(stmt, program, diags, in_body,
-                                          bool(scans) and not in_body)
+                                          bool(scans) and not in_body, env)
+        elif kw == "ACCEPTDATARECORDS" and not in_table and _accept_known(stmt, tables):
+            _check_accept_table(stmt, program, diags, not any(scans) or in_body, env)
         if kw in _BODY_BLOCK_STARTS:
             in_body = True
         elif S.ends_routine(stmt) or kw in _BODY_BLOCK_ENDS:
@@ -1704,7 +1757,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif kw == "CALLTABLE" and not profile.single_pass and not in_table and \
                 (not any(pass2_scans) or in_body_block) and _calltable_known(stmt, tables):
             _check_calltable_outside_scan(stmt, program, diags, in_body_block,
-                                          bool(pass2_scans) and not in_body_block)
+                                          bool(pass2_scans) and not in_body_block, env)
+        elif kw == "ACCEPTDATARECORDS" and not profile.single_pass and not in_table and \
+                _accept_known(stmt, tables):
+            _check_accept_table(stmt, program, diags, not any(pass2_scans) or in_body_block, env)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue

@@ -6712,3 +6712,18 @@ All four loggers (oracle 2026-10-13, 140 cases). `EndApplyAndRestartSequence` be
 pass-1 errors and by CR300/CR350 name errors, printed in line order with other tier-C findings, they replace
 `No BeginProg in Program.` and the unclosed-block summary. `structure.check_apply_restart_sequence`. Not done: the
 instructions with an argument (`Too many parameters:  1.`).
+## Auto-allocation placement: which sizes, and AcceptDataRecords (round 16)
+
+`Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.` (docs
+above) applies only to a table the logger really auto-sizes: on CR300/CR350 size `-1` (a `-1000` is
+a fixed 1000 and compiled with the message before: false reject, fixed), on CR6/CR1000X every
+negative or out-of-range size (`tables.declared_size(...) is None`).
+
+`AcceptDataRecords(addr, table_no, Table)` outside every `Scan` (before, after, in a `Sub`, in a
+literal-zero `Scan`) gets the same message at the statement for an auto-sized `Table`, on all four
+loggers (oracle 2026-10-13); and a `Table` with a `DataInterval` whose Lapses is not 0 (default
+10; also `DataInterval(0,0,..)`) gets `Data Table cannot be interval driven.` at the statement
+whether it is inside a `Scan` or not (after the first message when both apply). Lapses 0 and
+fixed tables are fine. Fixture `tests/fixtures/r16_accept_autoalloc.json`. Known difference: an
+`AcceptDataRecords` after the last `NextScan` also prints `AcceptDataRecords never reached at run
+time.` here; the real compiler prints no such warning for it (reachability layer, not fixed).
