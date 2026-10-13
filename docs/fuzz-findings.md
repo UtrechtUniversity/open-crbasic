@@ -780,3 +780,91 @@ operator-expression names (15), `GOESField`/`GOESTable` (3 + table-only), `Apply
 rest above, `ESSInitialize` before `BeginProg`, `AcceptDataRecords` unknown table, `Sample`/`X is not defined.` order on
 CR300/CR350, the no-`BeginProg` block-closer ordering (`Call Foo` / `x=1` / `EndSelect`: real prints only `Sub Foo not
 defined.` when an undefined-name statement precedes the closer).
+
+
+## Round 16: fresh seeds 409-412 (2026-10-13)
+
+New seeds (previous: 0, 1, 42-54, 100, 201-208, 301-308, 401-408), 600 mutants per logger and seed (`--workers 3`, the four
+loggers of a seed in parallel, `scratch/r16/run.sh`; seed 409 took about 12 minutes, 410-412 about 5-7 minutes thanks to the
+oracle cache; 410-412 ran as one chained background command). Counts are the tool's classify-phase tallies; `oracle_error`
+mutants (real-compiler page fault) are excluded. All 16 runs had the round-15 tree. 241 reproducers saved; the 6 CDM/CPI ones
+(3 CR1000X false accepts, 2 CR6 and 1 CR1000X message diffs) are counted here only and were not committed, per the human
+decision of 2026-10-12.
+
+| Seed | Logger | exact | false_reject | false_accept | message_diff | mode_diff | other |
+|---|---|---|---|---|---|---|---|
+| 409 | cr6 | 581 | 0 | 5 | 11 | 0 | 6 oracle errors |
+| 409 | cr1000x | 585 | 0 | 5 | 10 | 0 | 3 oracle errors |
+| 409 | cr300 | 581 | 0 | 2 | 16 | 0 | 4 oracle errors |
+| 409 | cr350 | 583 | 0 | 1 | 15 | 0 | 4 oracle errors |
+| 410 | cr6 | 585 | 2 | 0 | 10 | 1 | 4 oracle errors |
+| 410 | cr1000x | 584 | 0 | 3 | 12 | 1 | 3 oracle errors |
+| 410 | cr300 | 581 | 0 | 1 | 17 | 1 | 3 oracle errors |
+| 410 | cr350 | 587 | 0 | 1 | 9 | 0 | 6 oracle errors |
+| 411 | cr6 | 581 | 0 | 4 | 14 | 0 | 2 oracle errors |
+| 411 | cr1000x | 586 | 0 | 1 | 11 | 1 | 2 oracle errors |
+| 411 | cr300 | 575 | 1 | 3 | 21 | 0 | 6 oracle errors |
+| 411 | cr350 | 572 | 0 | 4 | 21 | 0 | 6 oracle errors |
+| 412 | cr6 | 578 | 0 | 4 | 17 | 0 | 3 oracle errors |
+| 412 | cr1000x | 581 | 1 | 6 | 11 | 0 | 4 oracle errors |
+| 412 | cr300 | 590 | 0 | 1 | 8 | 0 | 3 oracle errors |
+| 412 | cr350 | 585 | 0 | 0 | 15 | 0 | 4 oracle errors |
+
+No crash, hang or `implementation_exception`. Four false rejects, three families fixed, one open: CR6 `Delay(0,999999999999,Sec)`
+(`cr6/false_reject/7ee5e9c9ebee`) and CR6 `Public x As String * 16(5) = {...}` (not saved: the shrinker hit an oracle error;
+found by re-running seed 410 with a copy of `fuzz.py` that dumps unshrunk false rejects) and CR1000X `Units PP  S = ms` (same
+reason, seed 412) are fixed below; the CR300 `Unable to allocate enough data table space to manage flash write cycle limits.`
+false reject (`cr300/false_reject/9354d3641c2a`, `Scan(ScanConst,...)` with a 9999-record table over a 15 s `DataInterval`) belongs
+to the storage/auto-table worker and stays open. Replay of the whole corpus after the fixes (`tools/fuzz_replay.py`): old set
+(2,923 reproducers, rounds up to 15) 2,272 exact / 52 false accepts / 569 message diffs / 14 mode diffs / 16 oracle errors / 0
+false rejects (unchanged from the round-15 baseline); new set (235 reproducers of this round without CDM/CPI) 1 exact / 32 false
+accepts / 197 message diffs / 4 mode diffs / 1 false reject (the CR300 storage one).
+
+### Closed this round (3 families, one fixture each, `tests/fixtures/r16_*.json`)
+
+False rejects: constant `Delay` interval of 2^31 or more on CR6/CR1000X (`r16_delay_long_interval`); dimension after a `String`
+size with initializer (`r16_string_size_dims`); words after the first `Units` target and `Units A, B = ms`
+(`r16_units_extra_words`). Rules are in `docs/checker.md` "Round 16".
+
+### Not closed
+
+False accepts (32 new, 0 CDM; each needs a value model or statement-level rule; examples with hashes): `Variable X out of
+bounds.` (`cr1000x/3316999a9aae`, `cr6/eae4709fbd91`, `cr6/3e20860e8d27`, `cr6/5eaff780b01b`, `cr6/a99ccb3134e8`,
+`cr1000x/d46658b76a26`); `Structure inside Structure` (`cr300/48efbd16f793`, `82edfe04af7d`); `FieldNames cannot be a variable.`
+(`cr300/4f3d882614c3`, `65a6de8f06bc`); `Settling time -N too short` (`cr1000x/a1b7277c7cd5`); `Number of bytes N must be less than
+input buffer N` (`cr1000x/437f0d77eed9`); `Invalid PulseCount channel.` (`cr350/d2576b1675ed`); `N is an invalid CommsMode
+parameter.` (`cr350/2c6d7051e308`); `Warning: Invalid fnotch value` (`cr300/67148abb5fb4`); `Scan illegally occurs after
+EndSequence.` (`cr6/9142ff727f5b`); `Delay illegally occurs before BeginProg.` (`cr1000x/807280ae0826`); `Missing DialSequence().`
+(`cr1000x/876d392458b6`); `Missing instance number` (`cr1000x/b93de6a1a116`); `Variable Type LongN not supported`
+(`cr1000x/f94e121fc217`); `N+N must be declared as a Const.` (`cr6/022d98dd3efc`); `Invalid output option; range N..N.`
+(`cr6/4156d89a014d`); `Invalid function option in SDMSWNA.` (`cr6/77636b10567c`); `When using TimedControl reps must be N.`
+(`cr6/7f9efa8af42c`); `Invalid clock set mode, must be N..N.` (`cr6/c060e9f1402f`); `Incomplete expression: &HN  NaN.`
+(`cr1000x/072c74da6af5`); `Illegal parameter(s)` (`cr1000x/7290cd87d3b0`); GZip with an unclosed call
+(`cr6/5688599287a4`, value-model worker). Singles on CR300/CR350: `Expression expects ,` (`cr350/ecd1a672b918`), `X is not defined.`
+(`cr350/1ab8532817a1`, `882d52e3099e`, `cr300/bd1648cdb628`). Found while probing the fixes (not reproducers):
+`Public x(3) As String * 16(5)` (`Incomplete expression: 16(5).`), `Public x As String * 16(5) = { }` (`Variable
+initialization of x has bad syntax.`), `Units 3 Q = ms`, `Units = ms`, `Units PPS, PPS = ms`, CR300/CR350 `Delay` with a huge
+`mSec`/`uSec` interval (`Max Delay is 24 Hours`), and `Delay(0,3601,Sec)` under `Scan(1,Sec)` where we print `by 3601 Sec` and
+the real compiler `by 3600 Sec` (not reproduced elsewhere; CR6/CR1000X).
+
+Message-diff families (197 new; first differing line, normalised): `No BeginProg in Program.` where the real compiler reports a name
+error first (`DataTable name UndeclaredFuzzNameN is N chars too long.` 5: `cr350/6398c3662bd7`, `7fa84bc5a23d`, `cr1000x/42141e76055b`;
+`Table name N+N illegal, starts with a number.` 4: `cr1000x/bfdee1e42ed1`, `cr300/2f735b71aa65`, `30787a5a5a43`;
+`GoesTable must be used inside a table declaration.` 2: `cr350/4f9151e085de`, `cr300/a620020511bd`; round 15 family);
+`Cannot use DataTable value as a MenuItem, use DisplayValue.` missing (5: `cr1000x/a7167e69be69`, `b07d06f6a0f6`, `fe43be59b478`);
+`EndSelect w/o Select` vs `Sub InitPowerProfile not defined.` (4: `cr1000x/e406ca2fdda2`, `cr6/62e642b46f39`, `7e992c91dd9e`) and vs
+nothing (4: `cr6/37e0c8f02912`, `3870a684e57e`, `5c994c3a7375`); CR300/CR350 `x is not defined.` missing (3: `cr350/cf6b7746ff60`,
+`cr300/d6b595f7c2a3`, `f72e3e545f2d`) and `Sample is not defined.` vs `Sample must be used inside a table declaration.` (2:
+`cr350/2e93a51dcc12`, `cr300/8b1537d7f82b`); an unresolvable symbol in `FinAppLib.crb` echoed differently (3: `cr6/1a0adf09197f`,
+`e45722386a0c`, `f8a295fb01aa`); `Warning: Invalid fnotch value` before `EndTable without DataTable.` (`cr350/032625ac1c8b`,
+`cr300/032625ac1c8b`); `Too many parameters:  SearchString.` vs `Dimensions not declared` (`cr350/1910a4ff9dbe`, `5d3b18cc3e0a`);
+`Flag not yet declared so cannot be aliased.` where the real compiler prints nothing (`cr350/2908622773b2`, `cr300/6d94546b742e`);
+`DisplayMenu without EndMenu.` missing (`cr1000x/10d9c28bfffb`, `61143927c9cc`); `Invalid symbol in expression: True.` where the
+real compiler is silent (`cr1000x/90c3a37e8add`, `94dae8a8b7fb`). 159 distinct first-line signatures in all; the rest are singletons
+of the CR300/CR350 cascade (`Too many parameters` / `... is not defined.`) family of rounds 14-15 (`docs/fuzz-findings.md` "Round 15").
+
+### Overlaps with other workers
+
+Storage/auto-table: the CR300 false reject above and the flash-write-cycle false accepts of round 15. Value-model false accepts:
+the `Settling time`, `Number of bytes`, GZip and `Variable X out of bounds.` families. Message-diff ranking: the `No BeginProg` and
+CR300/CR350 cascade families. Nothing here touches FieldCal, EOF continuation or LineNum closers.

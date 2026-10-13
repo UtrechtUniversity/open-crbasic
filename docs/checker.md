@@ -6727,3 +6727,32 @@ whether it is inside a `Scan` or not (after the first message when both apply). 
 fixed tables are fine. Fixture `tests/fixtures/r16_accept_autoalloc.json`. Known difference: an
 `AcceptDataRecords` after the last `NextScan` also prints `AcceptDataRecords never reached at run
 time.` here; the real compiler prints no such warning for it (reachability layer, not fixed).
+
+## Round 16 (fuzz seeds 409-412, 2026-10-13)
+
+### `Delay` interval outside the Long range (oracle, 2026-10-13; `tests/fixtures/r16_delay_long_interval.json`)
+
+CR6/CR1000X: a constant `Delay` interval of 2^31 or more (`Delay(0,999999999999,Sec)`, `Delay(0,2147483648,min)`,
+`Delay(0,3600000000,uSec)`) draws no `Measurement Delay Exceeds 60 min.` and no `Scan interval too short`; the delay is not
+counted at all (a false reject, `cr6/false_reject/7ee5e9c9ebee`). Up to `2147483647` the old rules hold (and a few values just
+below, e.g. `2147483647 uSec`, give `Program too big for task memory` instead, not modelled). CR300/CR350 differ again (a huge
+`mSec`/`uSec` interval is `Max Delay is 24 Hours` there, not modelled). `instr_measure._delay_interval_us`,
+`scan_time.instruction_units`.
+
+### `Public x As String * 16(5) = {...}`: dimension after the string size (oracle, 2026-10-13; `tests/fixtures/r16_string_size_dims.json`)
+
+The dimension may follow the size of a `String` declaration, with an initializer and with more than one dimension
+(`Public x As String * 16(5) = {"a","b"}`, `String * 16(5,2)`); `{...}` longer than the product gives `Warning: Attempt to
+initialize variable out of bounds.`. All four loggers. Before, the size and initializer were parsed as one expression and
+rejected with `Invalid symbol in expression` (`cr6/false_reject` of seed 410). Only a numeric size is split this way
+(`parser._parse_vardecl`). Left open (false accepts): `Public x(3) As String * 16(5)` is `Incomplete expression: 16(5).`,
+`= { }` is `Variable initialization of x has bad syntax.`.
+
+### `Units A  B = ms`: words after the first target are ignored (oracle, 2026-10-13; `tests/fixtures/r16_units_extra_words.json`)
+
+Everything between the first `Units` target and the `=` is ignored when the target is a name or indexed name: `Units PP  S = ms`,
+`Units PPS + 1 = ms`, `Units PPS As Long = ms`, `Units PPS) = ms` compile on all four loggers (`cr1000x/false_reject` of seed
+412 via `Units PP  S`, an inserted-space mutant). `Units A, B = ms` checks every name (`Can't assign units to B, ...`), and a
+trailing comma is ignored. Not modelled: `Units 3 Q = ms` (`Can't assign units to 3`), `Units = ms` (`Missing or illegal
+variable name in Units declaration.`), duplicates in one list (`PPS already assigned Units ms.` twice). `parser._parse_units_segment`,
+`instr_data.check_units_targets`.
