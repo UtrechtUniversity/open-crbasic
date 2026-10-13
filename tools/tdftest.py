@@ -18,6 +18,7 @@ Usage (from `opencrbasic/`):
     python3 tools/tdftest.py --group repo         # crbasic/ only
     python3 tools/tdftest.py --group chm --limit 50
     python3 tools/tdftest.py --write-fixtures     # also refresh tests/fixtures/tdf/*.json
+    python3 tools/tdftest.py --logger cr300       # same, against cr300comp.exe (cr6|cr1000x|cr300|cr350)
 
 Requires Wine (see PROGRESS.md); `--no-oracle` skips real-compiler runs and only reports on
 already-cached results (used by the pytest tests when Wine is unavailable).
@@ -183,6 +184,15 @@ def _first_tdf_diff(a: bytes, b: bytes) -> str:
     return "(bytes differ but no structural diff found)"
 
 
+def _user_sizes(blob: bytes) -> dict[str, int] | None:
+    """`{table name: record count}` of every table but `Status` (CR300/CR350 Status is not
+    modelled, so byte identity says nothing about their data tables)."""
+    try:
+        return {t.name: t.size for t in tdf.parse(blob)[1] if t.name != "Status"}
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _first_byte_diff(a: bytes, b: bytes) -> int:
     for i, (x, y) in enumerate(zip(a, b)):
         if x != y:
@@ -210,15 +220,19 @@ def main(argv=None) -> int:
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-oracle", action="store_true", help="only use cached oracle results")
     ap.add_argument("--gate", choices=["report", "exact"], default="report")
+    ap.add_argument("--logger", choices=["cr6", "cr1000x", "cr300", "cr350"], default="cr6",
+                    help="logger whose compiler and profile are compared (default cr6)")
     ap.add_argument("--write-fixtures", action="store_true")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
 
-    profile = profiles.get("cr6")
+    profile = profiles.get(args.logger)
+    compiler = REPO / "compiler" / profile.exe_name
     programs = _programs(args.group, args.limit)
 
     compiled_ok = 0
     tdf_match = 0
+    size_match = 0
     lst_match = 0
     mismatches: list[tuple[str, str, str]] = []
     skipped = 0
@@ -228,7 +242,7 @@ def main(argv=None) -> int:
     not_cached = 0
     for group, path, siblings in programs:
         try:
-            oracle_result = run_oracle_tdf(path, siblings, cache_only=args.no_oracle)
+            oracle_result = run_oracle_tdf(path, siblings, compiler, cache_only=args.no_oracle)
         except NotCached:
             not_cached += 1
             continue
@@ -250,15 +264,20 @@ def main(argv=None) -> int:
             continue
 
         theirs_tdf, theirs_lst = oracle_result["tdf"], oracle_result["lst"] or b""
+        theirs_sizes = _user_sizes(theirs_tdf)
+        if theirs_sizes is not None and theirs_sizes == _user_sizes(our_tdf):
+            size_match += 1
+        elif args.logger in ("cr300", "cr350"):
+            mismatches.append((group, path.name, f"sizes: theirs={theirs_sizes} ours={_user_sizes(our_tdf)}"))
         if our_tdf == theirs_tdf:
             tdf_match += 1
-        else:
+        elif args.logger in ("cr6", "cr1000x"):    # CR300/CR350: Status/-l are unmodelled, see sizes
             diff = _first_tdf_diff(theirs_tdf, our_tdf)
             mismatches.append((group, path.name, f"TDF: {diff}"))
 
         if our_lst == theirs_lst:
             lst_match += 1
-        elif our_tdf == theirs_tdf:
+        elif our_tdf == theirs_tdf and args.logger in ("cr6", "cr1000x"):
             # TDF matched but list text didn't: show a line-level diff.
             a = theirs_lst.decode("latin-1").splitlines()
             b = our_lst.decode("latin-1").splitlines()
@@ -270,7 +289,8 @@ def main(argv=None) -> int:
 
         if args.write_fixtures:
             FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
-            fixture = FIXTURES_DIR / f"{group}_{path.stem}.json"
+            fixture = FIXTURES_DIR / (f"{group}_{path.stem}.json" if args.logger == "cr6"
+                                      else f"{args.logger}_{group}_{path.stem}.json")
             fixture.write_text(json.dumps({
                 "program": path.name, "group": group,
                 "tdf_b64": base64.b64encode(theirs_tdf).decode("ascii"),
@@ -282,6 +302,7 @@ def main(argv=None) -> int:
           + (f"  not yet cached (--no-oracle): {not_cached}" if args.no_oracle else ""))
     print(f"missing expected artifacts: {missing_artifacts}  oracle errors: {oracle_errors}")
     print(f"TDF byte-identical: {tdf_match}/{compiled_ok}")
+    print(f"table sizes identical (all tables but Status): {size_match}/{compiled_ok}")
     print(f"table-list byte-identical: {lst_match}/{compiled_ok}")
     if mismatches:
         print(f"\n{len(mismatches)} mismatches:")

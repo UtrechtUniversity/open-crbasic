@@ -1,0 +1,471 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-auto-fp2-1s",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 580038
+   }
+  },
+  {
+   "id": "cr300-auto-fp2-100ms",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 580038
+   }
+  },
+  {
+   "id": "cr300-auto-long3-5s",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(5000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 307079
+   }
+  },
+  {
+   "id": "cr300-auto-string",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 372881
+   }
+  },
+  {
+   "id": "cr300-two-autos",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 200476,
+    "A0": 200342
+   }
+  },
+  {
+   "id": "cr300-autos-interval",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  DataInterval(0,10,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A1,True,-1)\n  DataInterval(0,5,Sec,0)\n  Sample(1,F2,IEEE4)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n    CallTable A1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 435313,
+    "A0": 43794,
+    "A1": 87244
+   }
+  },
+  {
+   "id": "cr300-auto-lapses0",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  DataInterval(0,10,Sec,0)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 580038
+   }
+  },
+  {
+   "id": "cr300-fixed-and-auto",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,100000)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 100000,
+    "A0": 478548
+   }
+  },
+  {
+   "id": "cr300-fixed-squeezes-auto",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,570000)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 570000,
+    "A0": 8646
+   }
+  },
+  {
+   "id": "cr300-auto-datavent",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  DataEvent(0,Trig,Trig=False,0)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 580038
+   }
+  },
+  {
+   "id": "cr300-auto-tablefile-interval",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  DataInterval(0,3,Sec,10)\n  TableFile(\"CPU:Tf\",8,-1,0,0,Min,0,0)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 5056968
+   }
+  },
+  {
+   "id": "cr300-auto-fillstop",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  FillStop\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 580038
+   }
+  },
+  {
+   "id": "cr300-sub-fixed-with-auto",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,50)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nSub S1\n  CallTable T0\nEndSub\nBeginProg\n  Scan(1000,mSec,0,0)\n    Call S1\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 50,
+    "A0": 200476
+   }
+  },
+  {
+   "id": "cr300-sub-fixed-zero-interval",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,50)\n  DataInterval(0,0,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nSub S1\n  CallTable T0\nEndSub\nBeginProg\n  Scan(1000,mSec,0,0)\n    Call S1\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 50,
+    "A0": 284671
+   }
+  },
+  {
+   "id": "cr300-sub-huge-fixed",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2000000000)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nSub S1\n  CallTable T0\nEndSub\nBeginProg\n  Scan(1000,mSec,0,0)\n    Call S1\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2000000000,
+    "A0": 289450
+   }
+  },
+  {
+   "id": "cr300-squeeze-fp2-fp2-1s-fits",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,578446)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 578446,
+    "A0": 454
+   }
+  },
+  {
+   "id": "cr300-squeeze-fp2-fp2-1s-one-more",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,578447)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables.",
+   "expected_sizes": {}
+  },
+  {
+   "id": "cr300-squeeze-str-long3-100ms-fits",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,368493)\n  Sample(1,S,String)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 368493,
+    "A0": 2890
+   }
+  },
+  {
+   "id": "cr300-squeeze-str-long3-100ms-one-more",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,368494)\n  Sample(1,S,String)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables.",
+   "expected_sizes": {}
+  },
+  {
+   "id": "cr300-squeeze-long3-fp2-1s-interval-fits",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,560009)\n  DataInterval(0,10,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 560009,
+    "A0": 454
+   }
+  },
+  {
+   "id": "cr300-squeeze-long3-fp2-1s-interval-one-more",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,560010)\n  DataInterval(0,10,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables.",
+   "expected_sizes": {}
+  },
+  {
+   "id": "cr300-three-autos",
+   "logger": "cr300",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A1,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(1,L,Long)\nEndTable\nDataTable(A2,True,-1)\n  Sample(1,S,String)\nEndTable\nDataTable(T9,True,-1)\n  Sample(1,F2,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable A0\n    CallTable A1\n    CallTable A2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T9, is declared but never called.",
+   "expected_sizes": {
+    "A0": 207075,
+    "A1": 208196,
+    "A2": 206993,
+    "T9": 1
+   }
+  },
+  {
+   "id": "cr350-auto-fp2-1s",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2910207
+   }
+  },
+  {
+   "id": "cr350-auto-fp2-100ms",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2910207
+   }
+  },
+  {
+   "id": "cr350-auto-long3-5s",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(5000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 1540697
+   }
+  },
+  {
+   "id": "cr350-auto-string",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 1870847
+   }
+  },
+  {
+   "id": "cr350-two-autos",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 1007160,
+    "A0": 1006892
+   }
+  },
+  {
+   "id": "cr350-autos-interval",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  DataInterval(0,10,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A1,True,-1)\n  DataInterval(0,5,Sec,0)\n  Sample(1,F2,IEEE4)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n    CallTable A1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2193180,
+    "A0": 219618,
+    "A1": 438886
+   }
+  },
+  {
+   "id": "cr350-auto-lapses0",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  DataInterval(0,10,Sec,0)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2910207
+   }
+  },
+  {
+   "id": "cr350-fixed-and-auto",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,100000)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 100000,
+    "A0": 2808717
+   }
+  },
+  {
+   "id": "cr350-fixed-squeezes-auto",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2900000)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2900000,
+    "A0": 8646
+   }
+  },
+  {
+   "id": "cr350-auto-datavent",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  DataEvent(0,Trig,Trig=False,0)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2910207
+   }
+  },
+  {
+   "id": "cr350-auto-tablefile-interval",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  DataInterval(0,3,Sec,10)\n  TableFile(\"CPU:Tf\",8,-1,0,0,Min,0,0)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 25373128
+   }
+  },
+  {
+   "id": "cr350-auto-fillstop",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,-1)\n  FillStop\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2910207
+   }
+  },
+  {
+   "id": "cr350-sub-fixed-with-auto",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,50)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nSub S1\n  CallTable T0\nEndSub\nBeginProg\n  Scan(1000,mSec,0,0)\n    Call S1\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 50,
+    "A0": 1007160
+   }
+  },
+  {
+   "id": "cr350-sub-fixed-zero-interval",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,50)\n  DataInterval(0,0,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nSub S1\n  CallTable T0\nEndSub\nBeginProg\n  Scan(1000,mSec,0,0)\n    Call S1\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 50,
+    "A0": 1430868
+   }
+  },
+  {
+   "id": "cr350-sub-huge-fixed",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2000000000)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nSub S1\n  CallTable T0\nEndSub\nBeginProg\n  Scan(1000,mSec,0,0)\n    Call S1\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2000000000,
+    "A0": 1454534
+   }
+  },
+  {
+   "id": "cr350-squeeze-fp2-fp2-1s-fits",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2908615)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2908615,
+    "A0": 454
+   }
+  },
+  {
+   "id": "cr350-squeeze-fp2-fp2-1s-one-more",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2908616)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables.",
+   "expected_sizes": {}
+  },
+  {
+   "id": "cr350-squeeze-str-long3-100ms-fits",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,1866459)\n  Sample(1,S,String)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 1866459,
+    "A0": 2890
+   }
+  },
+  {
+   "id": "cr350-squeeze-str-long3-100ms-one-more",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,1866460)\n  Sample(1,S,String)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables.",
+   "expected_sizes": {}
+  },
+  {
+   "id": "cr350-squeeze-long3-fp2-1s-interval-fits",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2815909)\n  DataInterval(0,10,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_sizes": {
+    "T0": 2815909,
+    "A0": 454
+   }
+  },
+  {
+   "id": "cr350-squeeze-long3-fp2-1s-interval-one-more",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(T0,True,2815910)\n  DataInterval(0,10,Sec,10)\n  Sample(1,L,Long)\n  Sample(1,F1,FP2)\n  Sample(3,A(),IEEE4)\nEndTable\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,0,0)\n    CallTable T0\n    CallTable A0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables.",
+   "expected_sizes": {}
+  },
+  {
+   "id": "cr350-three-autos",
+   "logger": "cr350",
+   "source": "Public F1, F2, F3(2), F4, F5, L As Long, A(3), S As String * 8, Trig As Boolean\nDataTable(A0,True,-1)\n  Sample(1,F1,FP2)\nEndTable\nDataTable(A1,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(1,L,Long)\nEndTable\nDataTable(A2,True,-1)\n  Sample(1,S,String)\nEndTable\nDataTable(T9,True,-1)\n  Sample(1,F2,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable A0\n    CallTable A1\n    CallTable A2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T9, is declared but never called.",
+   "expected_sizes": {
+    "A0": 1043796,
+    "A1": 1044452,
+    "A2": 1043601,
+    "T9": 1
+   }
+  }
+ ]
+}

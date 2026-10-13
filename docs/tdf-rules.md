@@ -928,11 +928,10 @@ Allocator, as read from the decompilation and confirmed by the sweeps:
   interval is known); a table called only from a `Sub` is sized like an auto table and charges
   nothing here (`Sub` + `Scan` call charges). Size `-N` (N >= 2) is a fixed `N` (flagged), not
   an auto weight, on these loggers.
-- Auto-sized (`-1`) tables share what is left after every other table; they are not modelled
-  (a fixed table that leaves them too little is a remaining false accept).
-- `DataEvent`, `CardOut`, `DataInterval(0,0)` and `AcceptDataRecords`-only tables are not
-  charged by the model (their fixed `N` fails at the same order of size in the oracle, not
-  pinned), so the check never rejects more than the real compiler.
+- Auto-sized (`-1`) tables share what is left after every other table (round 16, "Auto-sized
+  tables" below); a fixed table that leaves them too little fails like any other.
+- `DataEvent`, `TableFile`, `FillStop`, `DataInterval(0,0)` and tables called only from a `Sub` are
+  charged by the same allocator port (round 16, "Other table kinds" below).
 
 Size literal beyond +-2^31 ("toxic", float32 magnitude above 2^31 including `-inf`; exactly
 +-2^31 and `+inf` are the benign INT_MAX case): a called table with such a size makes the
@@ -964,5 +963,50 @@ Zero and `-0.5` give 1; `-1` (and `-1.5`) is auto.
 
 Before round 15 a negative size other than -1, or one beyond 32 bits, reached `tdf.serialize`
 as a negative or oversized `I` (`struct.error` from `crbc -z`), and fractional sizes were rounded
-(101, and 0 for `0.5`) instead of truncated. The CR300/CR350 `-1` auto size still uses the
-CR6 constants (580038 for one FP2 CR300 table, 2910207 on the CR350; unmodelled).
+(101, and 0 for `0.5`) instead of truncated. The CR300/CR350 `-1` auto size is the allocator's own (below: 580038 for one FP2 CR300 table, 2910207 on the CR350).
+
+### Auto-sized tables and the full allocator (CR300/CR350, round 16)
+
+`checker/storage.allocate` is a port of the whole 26-pass allocator (`cr300comp` `FUN_005ae6e0`,
+`cr350comp` `FUN_005ad9b0`), 32-bit integer wraparound and float32 arithmetic included; the
+fixed-size charge above is its fixed branch. Every table is in one of three states per pass:
+
+- *not called* (no `CallTable`/`AcceptDataRecords`): size 1, `B` (bytes per record) added to the
+  auto reserve;
+- *auto-like*: called and (size `-1`, or the call interval `W` unknown, and not a flagged `-N`):
+  reserve `max((t + 1024 // R + (k == 1)) * R, 0x3000)` with `t = 1` if `R < 512` else `3`, plus
+  `((Lapses * 16) // B + 1) * B` when it has a `DataInterval` with `Lapses`, and rate
+  `R / (k * W)` (float32; `W = 1.0` when unknown). Its block is fixed with up to 512 records, so
+  `k = min(496 // B, 512)` with a `DataInterval` (1 otherwise);
+- *fixed*: the charge above, subtracted from the pool at once (also an auto table on every later
+  pass, once its size is set).
+
+After the loop `duration = float(pool - fixed charges - reserve - 0x1000) / rate` (retry when it
+is not positive). An auto-like table then gets `n = int(duration / W)` records, a span of
+`max(int(R * (n / k)) + lapse_records + 0x2000, 0x3000)` bytes (retry when the span holds fewer than
+the flash-wear minimum records), rounded up to a page, and `size = (span // R - (4096 // R + 1)) * k`
+(a fixed-size table called only from a `Sub` keeps its own `N`, raised to `k` when smaller). The
+pool left is reduced by the span. A pass that ends with the pool below zero, or with a retry flag,
+runs the next pass (the sizes set on pass 0 are then fixed ones); 26 failed passes print the two
+messages. The size of one FP2 auto table is 580038 records (CR300; `R = 18`) and 2910207 (CR350).
+
+`W` is the table's own `DataInterval` interval when it has one (also with `Lapses = 0`), otherwise
+the interval of the *last* `CallTable` in source order (the enclosing `Scan`; a call inside a
+`Sub` makes it unknown). The block fix, the page rounding and the minimum are the same as for CR6
+elsewhere in this document except that the CR6 water-fill (a table forced to two records) does not
+exist here. `TableFile` does not skip the `Lapses` term on these loggers (it does on the CR6).
+Oracle evidence: 1,100+ random one-to-four table programs on both loggers (mixed fixed and
+auto sizes, `DataInterval` with Lapses 0/5/10/50/100/255, scans of 100 ms to 10 s,
+`SlowSequence`), 116 squeeze-threshold cases (the largest fixed table that still lets an auto
+table fit, minus/plus a few records) and `tests/fixtures/r16_auto_size_cr3xx.json` (44 cases).
+
+### Other table kinds (round 16)
+
+- `DataEvent` (flag `0x20000`), `TableFile`, `FillStop` (no flash-wear minimum), `DataInterval(0,0)`
+  (interval and `W` are the `Scan`'s) and a table called only from a `Sub` or `AcceptDataRecords`
+  are charged exactly as a plain table in the same state (threshold sweeps, both loggers, all
+  matched); a fixed table called only from a `Sub` is charged its auto share, not its `N`, so
+  `N = 2000000000` there compiles.
+- `Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.`
+  applies only to a table the logger actually auto-sizes: on CR300/CR350 a size of `-1`
+  (a `-1000` is a fixed 1000 and compiles); on CR6/CR1000X every negative or out-of-range size.

@@ -1,22 +1,24 @@
-"""CR300/CR350 data-table storage limit (`docs/tdf-rules.md` "Storage limit").
+"""CR300/CR350 data-table allocator (`docs/tdf-rules.md` "Storage limit" and "Auto-sized tables").
 
 After a clean parse the real compiler sizes every table in one pool (`cr300comp.exe` /
 `cr350comp.exe`): up to 26 passes, then `Unable to allocate enough data table space to manage
 flash write cycle limits.` and, when the last pass left the pool negative, `Not enough storage
-area for DataTables.` This module models only the part that is exact and cannot reject a program
-the real compiler accepts:
+area for DataTables.` `allocate` is a port of that allocator (decompiled in rounds 15 and 16,
+confirmed with oracle threshold sweeps on both loggers), 32-bit wraparound and float32 arithmetic
+included. It does three things at once:
 
-- every called table of a fixed size whose `CallTable` sits lexically inside a `Scan` is charged
-  `roundup4096(a + int(R * (N / k)) + 0x2000)` (all float32), raised to the flash-wear minimum
-  record count of a no-`DataInterval` table in a known-interval `Scan`; the sum is compared with
-  the pool less 16 KB per declared table (`_pool_pages`);
-- a called table whose size literal is beyond +-2^31 (as float32) fails whenever another called
-  table is auto-sized.
+- charges every called table of a fixed size `roundup4096(a + int(R * (N / k)) + 0x2000)`, raised
+  to the flash-wear minimum record count, against the pool less 16 KB per declared table
+  (`pool_bytes`);
+- sizes the auto (`-1`) tables from what is left (`tables.build_tables` takes the TDF record
+  counts from here), and a table called only from a `Sub`/`AcceptDataRecords` is charged its auto
+  share instead of its own `N`;
+- fails (both messages) when no pass fits, which also covers a size literal beyond +-2^31
+  (`INT_MIN`, whose wrapped charge sinks the pool whenever another table is auto-sized).
 
-Auto-sized tables, `DataEvent`/`CardOut` tables, tables called only from a `Sub`, and pool
-consumers this module does not know (it only ever shrinks the real pool) are never charged, so
-the model can miss a rejection but not invent one. The constants and rules come from the
-allocator's decompilation and were confirmed with oracle threshold sweeps (docs).
+Pool consumers this module does not know (GOES/PakBus send buffers, `DAT_006ef00c`) only ever
+shrink the real pool, so the model can miss a rejection or size an auto table too large but not
+invent a rejection.
 """
 
 from __future__ import annotations
@@ -30,6 +32,7 @@ _POOL_PAGES = {"cr300": 2560, "cr350": 12800}   # 0xA00000 / 0x3200000 bytes, in
 _PAGE = 4096
 _BLOCK_BYTES = 496                              # a DataInterval table's block: 496 // bytes per record
 _INT_MIN = -(1 << 31)
+_BASE = 0x600000                                 # start of the table area
 
 MSG_ALLOC = "Unable to allocate enough data table space to manage flash write cycle limits."
 MSG_STORAGE = "Not enough storage area for DataTables."
@@ -54,81 +57,215 @@ def _wrap32(v: int) -> int:
     return v - (1 << 32) if v & 0x80000000 else v
 
 
-def _min_records(interval: float | None, scan: float | None, flagged: bool, k: int) -> int:
-    """Flash-wear minimum record count at the last (26th) pass, `FUN_005b50c0`: a negative-size
-    table is written once a day, a table with a `DataInterval` of a second or more every whole
-    second of it, any other table every `Scan` interval; 0 when unknown."""
-    if flagged:
-        period_ms = 86400000.0
-    elif interval is not None and interval >= 1:
-        period_ms = float(int(interval) * 1000)
-    elif scan is not None:
-        period_ms = _f32(_f32(scan) * 1000.0)
+_I32 = (-(1 << 31), (1 << 31) - 1)
+
+
+def _i32(v: int) -> int:
+    return _wrap32(v)
+
+
+def _min_recs(sp: dict, k: int, cc: int) -> int:
+    """Flash-wear minimum record count of pass `cc`, `FUN_005b50c0` (also the `W == -1` and
+    `W == 0` branches). `sp` carries `flagged`, `day`, `own_ms`, `W` (call interval in seconds, `None`
+    when the call interval is unknown) and `B`'s block `k`."""
+    if sp["flagged"]:
+        period = 86400000.0
+    elif sp["day"]:
+        period = 2592000000.0
+    elif sp["own_ms"]:
+        period = _f32(float(sp["own_ms"]))
+    elif sp["W"] is None:
+        if cc == 0:
+            period = 50.0
+        elif cc < 5:
+            period = float(cc * 100)
+        elif cc < 10:
+            period = float(cc * 1000)
+        else:
+            period = float(cc * 5000)
+    elif sp["W"] == 0:
+        period = 50.0
+        for lim, val in ((2, 2000.0), (4, 5000.0), (8, 10000.0), (12, 20000.0), (16, 30000.0),
+                         (20, 60000.0), (23, 120000.0)):
+            if cc > lim:
+                period = val
     else:
-        return 0
-    wear = _f32(_f32(_f32(_f32(3600000.0 / period_ms) * 24.0) / _f32(float(k)))
-                / _f32(_f32(100000.0) / _f32(365.0)))
+        period = _f32(_f32(sp["W"]) * 1000.0)
+    den = _f32(max(float(10 - cc), 1.0))
+    try:
+        wear = _f32(_f32(_f32(_f32(3600000.0 / period) * 24.0) / _f32(float(k)))
+                    / _f32(_f32(100000.0) / _f32(den * 365.0)))
+    except ZeroDivisionError:
+        return _INT_MIN
     return _cvt_int(wear)
 
 
-def _charge(n: int, nbytes: int, lapses: int, flagged: bool, interval: float | None,
-            scan: float | None) -> int:
-    """Bytes (a multiple of 4096) one fixed-size called table takes from the pool."""
-    a1 = (lapses * 16) // nbytes + 1 if lapses else 0
-    k = 1
-    if lapses:
-        k = min(_BLOCK_BYTES // nbytes if nbytes else 0, a1 + n)
-        if k < 2:
-            k, lapses = 1, 0
-    rec = k * nbytes + 16
-    a2 = (lapses * 16) // nbytes + 1 if lapses else 0
-    used = _wrap32(a2 + _cvt_int(_f32(_f32(float(rec)) * _f32(_f32(float(n)) / _f32(float(k))))) + 0x2000)
-    lo = _min_records(interval, scan, flagged, k)
-    # C `(int)((float)used / (float)rec)` truncates toward zero
-    if int(_f32(_f32(float(used)) / _f32(float(rec)))) < lo:
-        used = lo * rec
-    return -(-used // _PAGE) * _PAGE if used > 0 else 0
+def _round_page(v: int) -> int:
+    """`FUN_005d4660`: round an unsigned 32-bit address up to 4096."""
+    return _wrap32((-(-(v & 0xFFFFFFFF) // _PAGE)) * _PAGE)
+
+
+def allocate(specs: list[dict], pool: int) -> dict:
+    """Port of the table allocator (`cr300comp` `FUN_005ae6e0`, 26 passes; docs/tdf-rules.md
+    "Storage limit" and "Auto-sized tables"). `specs` are the user tables in declaration order:
+    `called`, `n` (record count argument; -1 auto, INT_MIN for a size beyond 32 bits), `flagged`,
+    `B` (bytes per record), `lapses`, `card`, `own_ms` (DataInterval in ms, 0 none), `W` (call
+    interval in seconds or None), `fillstop`, `kone`, `day`. Returns `{"sizes": [...], "msg1": bool,
+    "msg2": bool}` (sizes are the final record counts of the last pass)."""
+    st = []
+    for sp in specs:
+        st.append({"N": sp["n"], "k": 0, "R": 0, "lapses": sp["lapses"], **{
+            x: sp[x] for x in ("called", "flagged", "B", "card", "own_ms", "W", "fillstop", "kone", "day")}})
+    e4 = pool
+    ok_exit = False
+    for cc in range(26):
+        e4 = pool
+        reserve = 0
+        rate = 0.0
+        d8 = False
+        ptr = _BASE
+        for t in st:
+            if not t["called"]:
+                t["N"] = 1
+                reserve = _i32(reserve + t["B"])
+                continue
+            if (t["N"] < 0 or t["W"] is None) and not t["flagged"]:
+                _blockfix(t, 512)
+                R, k = t["R"], t["k"]
+                c1 = (1 if R < 512 else 3) + (1024 // R) + (1 if k == 1 else 0)
+                c1 = max(c1 * R, 0x3000)
+                reserve = _i32(reserve + c1)
+                if not t["card"]:
+                    reserve = _i32(reserve + (((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0) * t["B"])
+                w = 1.0 if t["W"] is None else _f32(t["W"])
+                rate = _f32(_f32(float(R) / _f32(float(k) * w)) + rate)
+            else:
+                a1 = ((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0
+                _blockfix(t, _i32(a1 + t["N"]))
+                R, k = t["R"], t["k"]
+                a2 = ((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0
+                u = _i32(a2 + _cvt_int(_f32(_f32(float(R)) * _f32(_f32(float(t["N"])) / _f32(float(k))))) + 0x2000)
+                if not t["fillstop"]:
+                    lo = _min_recs(t, k, cc)
+                    if _cvt_int(_f32(_f32(float(u)) / _f32(float(R)))) < lo:
+                        u = _i32(lo * R)
+                ptr, used = _alloc(ptr, u)
+                e4 = _i32(e4 - used)
+        dur = 0.0
+        if rate != 0.0:
+            dur = _f32(float(_i32(_i32(e4 - reserve) - 0x1000))) / rate if rate else 0.0
+            dur = _f32(dur)
+            if dur <= 0.0:
+                d8 = True
+        for t in st:
+            if t["N"] < 0 or (t["W"] is None and not t["flagged"]):
+                if t["called"] and t["B"]:
+                    R, k = t["R"], t["k"]
+                    w = 1.0 if t["W"] is None else _f32(t["W"])
+                    n = _cvt_int(_f32(dur / w)) if w else _INT_MIN
+                    u = _cvt_int(_f32(_f32(float(R)) * _f32(_f32(float(n)) / _f32(float(k)))))
+                    u = _i32(u + (((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0) + 0x2000)
+                    if u < 0x3000:
+                        u = 0x3000
+                    if not t["fillstop"]:
+                        lo = _min_recs(t, k, cc)
+                        if _tdiv(u, R) < lo:
+                            d8 = True
+                    ptr, used = _alloc(ptr, u)
+                    b4 = _tdiv(used, R)
+                    if t["N"] < 0:
+                        t["N"] = _i32((b4 - (4096 // R + 1)) * k)
+                    e4 = _i32(e4 - used)
+                if t["N"] < 1:
+                    t["N"] = 1
+                if t["N"] < t["k"]:
+                    t["N"] = t["k"]
+        if e4 < 0:
+            d8 = True
+        if not d8:
+            ok_exit = True
+            break
+    return {"sizes": [t["N"] for t in st], "msg1": not ok_exit, "msg2": e4 < 0}
+
+
+def _tdiv(a: int, b: int) -> int:
+    q = abs(a) // abs(b)
+    return q if (a >= 0) == (b >= 0) else -q
+
+
+def _alloc(ptr: int, u: int) -> tuple[int, int]:
+    """One table's span from the running pointer: start and end rounded up to a page."""
+    start = _round_page(ptr)
+    end = _round_page(_i32(start + u))
+    return end, _i32(end - start)
+
+
+def _blockfix(t: dict, arg: int) -> None:
+    """`FUN_005b7d00`: the record block (`k` records of `R = k * B + 16` bytes), fixed the first time."""
+    if t["R"]:
+        return
+    if t["lapses"] == 0:
+        t["k"] = 1
+    else:
+        t["k"] = min(_BLOCK_BYTES // t["B"], arg)
+        if t["k"] < 2:
+            t["k"], t["lapses"] = 1, 0
+        if t["kone"]:
+            t["k"], t["lapses"] = 1, 0
+    t["R"] = t["k"] * t["B"] + 16
+
+
+def pool_bytes(profile_name: str, n_declared: int, has_public: bool, n_named_const: int) -> int:
+    """The pool left for the user's tables: 16 KB per table beyond the first (`DataTableInfo`, a
+    `Public` table and a named `ConstTable` are tables too)."""
+    extra = (1 if has_public else 0) + n_named_const
+    return (_POOL_PAGES[profile_name] - 4 * (n_declared + extra)) * _PAGE
+
+
+def spec_of(m: dict) -> dict:
+    """The allocator input of one data table from its `tables._build_data_table` meta."""
+    from .. import tables as T
+    cls = T.size_class(m["size_raw"])
+    flagged = False
+    if cls is None:
+        n = 1
+    elif cls[0] == "auto":
+        n = -1
+    elif cls[0] in ("edge", "inf"):
+        n = 2147483647
+        flagged = cls[0] == "edge" and cls[1] < 0
+    elif cls[0] == "toxic":
+        n, flagged = _INT_MIN, True
+    else:
+        n, flagged = cls[1], cls[2]
+    di = bool(m["interval_seconds"]) or m["zero_interval"]
+    return {"called": m["called"], "n": n, "flagged": flagged, "B": m["bytes_per_record"],
+            "lapses": m["lapses"] if di else 0, "card": False,   # TableFile does not skip the Lapses term here
+            "own_ms": int(round(m["interval_seconds"] * 1000)) if m["interval_seconds"] else 0,
+            "W": m["call_w"], "fillstop": m.get("fillstop", False), "kone": False, "day": False,
+            "zero_interval": m["zero_interval"]}
+
+
+def run(metas: list[dict], pool: int) -> dict | None:
+    """Runs the allocator on the data tables' metas (`None` when a table has no record bytes)."""
+    specs = [spec_of(m) for m in metas]
+    for sp in specs:
+        if sp["zero_interval"] and sp["W"]:
+            sp["own_ms"] = int(round(sp["W"] * 1000))
+    if any(not sp["B"] for sp in specs):
+        return None
+    return allocate(specs, pool)
 
 
 def check(program: S.Program, profile, result, diags) -> None:
     """Reports the storage-limit pair of messages (pass 2, only on an otherwise clean program)."""
     if profile.name not in _POOL_PAGES or diags.errors:
         return
-    from .. import tables as T
     declared = [t for t in (result.tables or []) if hasattr(t, "_storage")]
     if not declared:
         return
-    scanned = T._scan_program(program)
-    extra = (1 if scanned["publics"] else 0) + 1     # `Public` and `DataTableInfo`, a table each
-    extra -= 1                                       # (the pool is 16 KB per table beyond the first)
-    extra += sum(1 for c in scanned["const_tables"] if c.name)   # a named `ConstTable` is a table too
-    pool = (_POOL_PAGES[profile.name] - 4 * (len(declared) + extra)) * _PAGE
-    classes = []
-    used = 0
-    for t in declared:
-        m = t._storage
-        if not m["called"]:
-            continue
-        cls = T.size_class(m["size_raw"])
-        if cls is not None and cls[0] in ("edge", "inf"):   # +-2^31 / +inf: INT32_MAX, -2^31 flagged
-            cls = ("fixed", 2147483647, cls[0] == "edge" and cls[1] < 0)
-        classes.append((t, m, cls))
-    autos = [m for _, m, cls in classes if cls == ("auto",) and m["scans"]]
-    if autos and any(cls == ('toxic',) and m["scans"] for _, m, cls in classes):
+    alloc = declared[0]._storage.get("alloc")
+    if alloc and alloc["msg1"]:
         diags.error(0, MSG_ALLOC)
-        diags.error(0, MSG_STORAGE)
-        return
-    for t, m, cls in classes:
-        if cls is None or cls[0] != "fixed" or not m["scans"]:
-            continue
-        if m["has_card"] or m["has_event"] or m["zero_interval"] or not m["bytes_per_record"]:
-            continue
-        lapses = m["lapses"] if m["interval_seconds"] else 0
-        scan = None
-        known = [s for s in m["scans"] if s]
-        if len(known) == len(m["scans"]):
-            scan = max(known)
-        used += _charge(cls[1], m["bytes_per_record"], lapses, cls[2], m["interval_seconds"], scan)
-    if used > pool:
-        diags.error(0, MSG_ALLOC)
-        diags.error(0, MSG_STORAGE)
+        if alloc["msg2"]:
+            diags.error(0, MSG_STORAGE)

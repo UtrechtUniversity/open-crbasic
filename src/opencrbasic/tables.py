@@ -455,6 +455,30 @@ def _scan_calls(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, list[float
     return calls
 
 
+def _last_call_interval(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float | None]:
+    """The call interval (seconds) the real compiler leaves on each table: that of the last
+    `CallTable` in source order (the enclosing `Scan`'s interval; `None` for a call outside every
+    `Scan`, e.g. in a `Sub`, or one whose interval is not a plain constant). `checker/storage.py`."""
+    stack: list[float | None] = []
+    last: dict[str, float | None] = {}
+    for s in stmts:
+        kw = _kw(s)
+        if kw == "SCAN":
+            secs = None
+            if s.args:
+                val = _fold(s.args[0], env, None)
+                if isinstance(val, (int, float)) and not isinstance(val, bool) and val > 0:
+                    unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
+            stack.append(secs)
+        elif kw == "NEXTSCAN":
+            if stack:
+                stack.pop()
+        elif kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name):
+            last[s.args[0].name.upper()] = stack[-1] if stack else None
+    return last
+
+
 # ---------------------------------------------------------------- Status table (§4)
 
 
@@ -1322,6 +1346,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
     meta = dict(own_weight=own_weight, lapses=lapses, zero_interval=zero_interval, size_val=size_val, size_raw=size_raw,
                 bytes_per_record=bytes_per_record,
                 has_event=any(_kw(s) == "DATAEVENT" for s in dt.body),
+                fillstop=any(_kw(s) == "FILLSTOP" for s in dt.body),
                 interval_seconds=interval_seconds, has_card=has_card,
                 display_interval=display_interval, called=dt.name.upper() in called)
 
@@ -1392,7 +1417,8 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         t.size = max(records, 2, m["_dflt"])
 
 
-def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float]):
+def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float],
+                 resolve_auto: bool = True):
     for t, m in tables_meta:
         w = scan_weights.get(t.name.upper())
         if (m["zero_interval"] and m["called"] and w
@@ -1412,7 +1438,8 @@ def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[st
             t.time_into = (0, 0)
         elif m["size_val"] != -1:
             t.size = m["size_val"]
-    _resolve_auto_sizes(tables_meta, scan_weights)
+    if resolve_auto:
+        _resolve_auto_sizes(tables_meta, scan_weights)
 
 
 # ---------------------------------------------------------------- top-level
@@ -1464,8 +1491,30 @@ def build_tables(program: S.Program, profile, consts: dict):
     if public_table is not None:
         tables.append(public_table)
 
-    _apply_sizes(data_table_metas, scan_weights)
+    cr3xx = profile.name in ("cr300", "cr350")
+    if cr3xx:
+        last_call = _last_call_interval(program.statements, env)
+        for table, meta in data_table_metas:
+            meta["call_w"] = meta["own_weight"] or last_call.get(table.name.upper())
+    _apply_sizes(data_table_metas, scan_weights, resolve_auto=not cr3xx)
+    alloc = None
+    if cr3xx and data_table_metas:
+        from .checker import storage
+        pool = storage.pool_bytes(profile.name, len(data_table_metas), bool(scanned["publics"]),
+                                  sum(1 for c in scanned["const_tables"] if c.name))
+        metas = [m for _, m in data_table_metas]
+        alloc = storage.run(metas, pool)
+        if alloc:
+            for (table, m), n in zip(data_table_metas, alloc["sizes"]):
+                if m["called"] and (m["size_val"] == -1 or n > table.size):
+                    table.size = n     # a fixed size is raised to the record block `k` (Sub-called)
+        else:
+            for table, m in data_table_metas:
+                if m["called"] and m["size_val"] == -1:
+                    table.size = 1
     for table, meta in data_table_metas:
+        if alloc:
+            meta["alloc"] = alloc
         table._storage = dict(meta, scans=scan_calls.get(table.name.upper(), []))  # type: ignore[attr-defined]
 
     table_list_text = render_table_list(tables)
