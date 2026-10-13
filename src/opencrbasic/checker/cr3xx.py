@@ -2020,6 +2020,8 @@ _CLOSER_ERRORS = frozenset({
 # fuzz reproducers `false_accept/ca5935f3a78b` and `a2f667cdbbc7`): another block-structure error
 # (`EndSub without Sub or nested subs.`) and a built-in call's arity error.
 def _hides_nothing(d) -> bool:
+    if d.message.endswith(" must be used inside a table declaration."):
+        return True   # (oracle, 2026-10-13: `Sample` outside a table beside an unknown `CallTable`)
     if d.message.endswith("without Sub or nested subs."):
         return True
     if d.message == "If without EndIf inside of Sub.":  # oracle, CR300/CR350, 2026-10-11 (`t5` probe)

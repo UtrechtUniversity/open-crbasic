@@ -336,6 +336,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # CR6/CR1000X: any pass-1 error hides the reachability warning (oracle, 2026-10-12)
         diags.items[:] = [d for d in diags.items if not _is_unreached(d)]
     generic_errors: list = []  # pass-2 argument/expression findings (CR6/CR1000X: no tier-C gate)
+    unknown_table_diags: list = []   # `Could not find DataTable T.`: ends the walk, gates nothing above it
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
     if not diags.errors:
@@ -460,7 +461,14 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # declared but never closed with `EndTable`. Also tier B, oracle-confirmed the same way as
         # the other two calls just above (accumulates with an unrelated `expressions.check` finding
         # rather than being suppressed by it).
+        n_calltable = len(diags.items)
         _run_pass(instr_data.check_unclosed_calltable, program, diags)
+        # The unknown-table error ends the walk there but does not hide the tier-C findings above
+        # it (oracle, all four loggers, 2026-10-13: `Sample` outside a table, then an unknown
+        # `CallTable`, prints both)
+        unknown_table_diags += [d for d in diags.items[n_calltable:]
+                                if d.message.startswith("Could not find DataTable ")]
+        generic_errors += unknown_table_diags
         # `SetSetting`/`SetStatus` field names: collected aside like the index bounds, so a finding
         # neither hides tier C nor is hidden by tier-B findings (CR6/CR1000X; CR300/CR350 run it
         # below, only when nothing else was found). `docs/instructions.md`.
@@ -585,8 +593,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]
     tier_c_start = len(diags.items)
     table_stop = None
-    gate = [d for d in diags.errors if profile.single_pass or not (
-        any(d is g for g in generic_errors) or instr_data.is_table_name_diag(d))]
+    gate = [d for d in diags.errors if not (
+        any(d is g for g in unknown_table_diags) or
+        not profile.single_pass and (any(d is g for g in generic_errors) or instr_data.is_table_name_diag(d)))]
     if not gate:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the
@@ -621,6 +630,13 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     if generic_errors:
         diags.items[tier_c_start:] = [d for d in diags.items[tier_c_start:]
                                       if d.severity != "error" or not d.line or before_cutoff(d)]
+    if profile.single_pass and unknown_table_diags:
+        # (CR300/CR350: the unknown table ends the walk there; tier C stops with it)
+        end_pos = min(links.positions.get((d.file, d.line), d.line) for d in unknown_table_diags)
+        diags.items[tier_c_start:] = [
+            d for d in diags.items[tier_c_start:]
+            if d.severity != "error" or not d.line
+            or links.positions.get((d.file, d.line), d.line) <= end_pos]
     if generic_errors and len(diags.items) > tier_c_start:
         # Tier-C findings print in source order among the generic pass-2 ones (oracle, CR6/
         # CR1000X, 2026-10-04: a bad channel on an earlier line precedes a later `foo bar`).

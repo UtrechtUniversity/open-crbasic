@@ -6829,3 +6829,16 @@ middle of an executing sequence`) or `ModemHangup` (`ModemHangup(1) previously d
 `BeginProg`/`Scan` (`... declared in the middle of an executing sequence`), `EndModemHangup` in `BeginProg` (adds
 `BeginProg within a ModemHangup sequence.`), an `EndDialSequence` inside a `DataTable` (then `Sample illegally occurs
 before BeginProg.`); `EndModemHangup(x)`/`EndVoice(x)` (`Too many parameters:  x.`).
+
+### Table-only instructions outside a table beside an unknown `CallTable` or a CR300/CR350 placement stop (fixture `tests/fixtures/r16_table_only_before_stop.json`)
+
+Oracle 2026-10-13, 68 cases on all four loggers. `Sample`/`DataInterval`/`Average` outside a `DataTable` print `X must be used
+inside a table declaration.` in line order together with: an unknown `CallTable T` (`Could not find DataTable T.`, which ends
+the walk: a table-only instruction after it is not reported), on all four loggers; and on CR300/CR350 a placement stop of the
+late walk (`NextScan with no Scan.`, `Scan`/`SerialIn`/`Expr illegally occurs before BeginProg.`), an orphan `EndTable`
+(`EndTable without DataTable.`, which also ends the walk). Ours dropped the table-only message whenever such an error
+existed (the `Could not find` error gated tier C; CR300/CR350 skipped tier C once the walk had failed). Now the unknown-table
+error is exempt from the tier-C gate on all loggers (`unknown_table_diags` in `checker/__init__.py`; CR300/CR350 also cut tier C
+after it, and `cr3xx._hides_nothing` lists the message), and `structure.check_scan_placement_late` adds the
+`check_table_structure` findings of the statements before its stop. A later undefined name (`x = Zork` after the
+stop) is not printed, as before.

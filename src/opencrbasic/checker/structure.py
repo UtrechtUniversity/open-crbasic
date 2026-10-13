@@ -631,6 +631,36 @@ def check_slow_sequence_blocks(program: S.Program, profile, diags: Diagnostics) 
 
 
 def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> tuple | None:
+    """`_scan_placement_walk`, then the table-structure findings (`Sample must be used inside a
+    table declaration.`, `EndTable without DataTable.`) of the statements before the walk's stop
+    (CR300/CR350, oracle 2026-10-13: they are printed in line order before the placement error,
+    which ends the compile; tier C does not run once the walk has failed)."""
+    n_before = len(diags.items)
+    stop = _scan_placement_walk(program, profile, diags)
+    if stop is None:
+        return None
+    at = next((i for i, st in enumerate(program.statements)
+               if (st.file, st.line) == stop), None)
+    if at is None:
+        return stop
+    early = Diagnostics()
+    table_stop = instr_data.check_table_structure(
+        dataclasses.replace(program, statements=program.statements[:at]), profile, early)
+    for d in early.items:
+        if d.severity != "error":
+            continue
+        index = next((i for i in range(n_before, len(diags.items))
+                      if diags.items[i].severity == "error" and diags.items[i].line > d.line),
+                     len(diags.items))
+        diags.items.insert(index, d)
+    if table_stop is not None:
+        diags.items[n_before:] = [d for d in diags.items[n_before:]
+                                  if d.severity != "error" or d.line <= table_stop[1]]
+        return table_stop
+    return stop
+
+
+def _scan_placement_walk(program: S.Program, profile, diags: Diagnostics) -> tuple | None:
     """CR300/CR350: `CallTable` outside `Scan`, the first extra `NextScan` and the before-`BeginProg`
     placement errors, in statement order, after the table `Reps` checks and before the
     unclosed-block checks (oracle, 2026-09-27: an unrelated `X = Q` or `Sample (0,X,FP2)` hides
