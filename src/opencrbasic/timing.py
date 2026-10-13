@@ -85,12 +85,19 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
         prev_kw = kw
         if not inside:
             continue
+        model = _model(profile)
         if kw == "PORTSET" and len(stmt.args) == 2:
             lines.append(f"line {stmt.line}: PortSet = 100")
-        elif kw == "SW12":
+        elif kw == "SW12" and model != "cr3xx":
             lines.append(f"line {stmt.line}: Sw12 = 100")
-        elif kw == "PANELTEMP":
-            _paneltemp(stmt, env, lines)
+        elif kw == "SWVX" and model != "cr6":
+            lines.append(f"line {stmt.line}: SwVx = 100")
+        elif kw == "BATTERY" and model == "cr1000x":
+            lines.append(f"line {stmt.line}: Battery = 800")
+        elif kw == "PANELTEMP" and model != "cr3xx":
+            _paneltemp(stmt, env, lines, 12 if model == "cr1000x" else 10)
+        elif kw in ("DELAY", "MUXSELECT") and model == "cr3xx":
+            pass
         elif kw == "DELAY":
             _delay(stmt, env, lines, pipeline)
         elif kw in _MEASURE:
@@ -106,13 +113,18 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
     return lines
 
 
-def _paneltemp(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
+def _model(profile: Profile) -> str:
+    """Which timing cost model a logger follows: the CR6, the CR1000X, or the CR300/CR350."""
+    return {"cr6": "cr6", "cr1000x": "cr1000x"}.get(profile.name, "cr3xx")
+
+
+def _paneltemp(stmt: S.Instruction, env: consteval.Env, lines: list[str], base: int = 10) -> None:
     if len(stmt.args) < 2:
         return
     timeout = _num(_const(stmt.args[1], env))
     if not timeout or timeout <= 0:
         return
-    cost = (10 + _round_half_up(10000.0 / timeout)) * 100
+    cost = (base + _round_half_up(10000.0 / timeout)) * 100
     lines.append(f"line {stmt.line}: PanelTemp = {cost}")
     lines.append(f"line {stmt.line}: PanelTemp = {cost}")
 
@@ -164,6 +176,30 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     ri, gi, ci, fi, si, ii, doubling = _MEASURE[stmt.keyword]
     if len(stmt.args) <= ii:
         return
+    model = _model(env.profile)
+    if model != "cr6":
+        reps, rng, flag, settle, integ = (_num(_const(stmt.args[k], env)) for k in (ri, gi, fi, si, ii))
+        if None in (reps, rng, flag, settle, integ) or reps < 1 or settle < 0 or integ < 0:
+            return
+        chan_n = _num(_const(stmt.args[ci], env))
+        if chan_n is None:
+            return
+        reps = int(reps)
+        if model == "cr3xx":
+            cost = (_c3_cost(1 + (1 if flag else 0), reps, settle) if doubling
+                    else _c3_cost(1, reps, settle, 1 if flag else 0))
+        else:
+            if rng not in _PLAIN_RANGES and rng not in _C_RANGES and rng not in _AUTO_RANGES:
+                return
+            n = reps * (2 if flag else 1) if doubling else reps + (1 if flag else 0)
+            c = rng in _C_RANGES or rng == 830
+            valid = _x1000_chan(chan_n, doubling)
+            if valid is None:
+                return
+            auto = (n if doubling else reps) if rng in _AUTO_RANGES else 0
+            cost = _x1000_cost(n, settle, integ, c, reps, auto, c and valid)
+        lines.append(f"line {stmt.line}: {_LABEL[stmt.keyword]} = {cost}")
+        return
     reps, rng, flag, settle, integ = (_num(_const(stmt.args[k], env)) for k in (ri, gi, fi, si, ii))
     chan = stmt.args[ci]
     um = re.fullmatch(r"U(\d+)", chan.name.upper()) if isinstance(chan, S.Name) else None
@@ -188,6 +224,50 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     lines.append(f"line {stmt.line}: {_LABEL[stmt.keyword]} = {cost}")
 
 
+# CR1000X (docs/cli.md "CR1000X and CR300/CR350 timing"): a measurement pass costs 185 + 32*ks +
+# 32*m (us), settle quantum 32 us (ks = (settle+16)//32, 14 when 0), integration m =
+# round(31250/integ) (8 when 0); C ranges add 64 per pass and 50 per rep; AutoRange adds one
+# settling pass (5 + settle part + 64 if C) per measurement.
+def _x1000_parts(settle: float, integ: float) -> tuple[int, int]:
+    ks = 14 if settle == 0 else int(settle + 16) // 32
+    m = 8 if integ == 0 else max(1, int(31250 / integ + 0.5))
+    return 32 * ks, 32 * m
+
+
+def _x1000_cost(n: int, settle: float, integ: float, c: bool = False, c_reps: int = 0,
+                auto_n: int = 0, u: bool = False) -> int:
+    """`c`: a C range; `u`: that C range on a valid channel (SE 1..16, differential 1..8), the
+    only case the 64 us per pass applies."""
+    s_part, x_part = _x1000_parts(settle, integ)
+    cost = 180 + n * (185 + (64 if u else 0) + s_part + x_part) + (50 * c_reps if c else 0)
+    cost += auto_n * (5 + s_part + (64 if u else 0))
+    return cost // 100 * 100
+
+
+def _x1000_chan(chan: float | None, differential: bool) -> bool | None:
+    """Whether `chan` is a valid channel on the CR1000X; None where the cost is not modelled
+    (negative channels, channel 0 of a differential instruction)."""
+    if chan is None or chan < 0 or (differential and chan == 0):
+        return None
+    return 1 <= chan <= (8 if differential else 16)
+
+
+# CR300/CR350: a pass costs 51136 + settle (500 when 0); the fixed part is 50 + 60*m for m passes
+# per rep (RevDiff, RevEx, double-measurement forms); a MeasOff pass is 51021 + settle with no
+# fixed part of its own. Range and integration time have no effect.
+_C3_PASS = 51136
+_C3_OFFSET_PASS = 51021
+
+
+def _c3_fixed(m: int) -> int:
+    return 50 + 60 * m
+
+
+def _c3_cost(m: int, reps: int, settle: float, offset_pass: int = 0) -> int:
+    s = int(settle) or 500
+    return (_c3_fixed(m) + reps * m * (_C3_PASS + s) + offset_pass * (_C3_OFFSET_PASS + s)) // 100 * 100
+
+
 def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: int = 0, auto_reps: int = 0) -> int:
     ks = int((24 * (settle or 500) + 127) // 256)
     kx = 24 if integ == 0 else max(1, int((24e6 / integ + 128) // 256))
@@ -205,7 +285,14 @@ def _therm(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     a = _args(stmt, env, 1, 4, 5)
     if a is None or a[0] < 1 or a[1] < 0 or a[2] < 0:
         return
-    lines.append(f"line {stmt.line}: {_THERM[stmt.keyword]} = {_meas_cost(2 * a[0], a[1], a[2])}")
+    model = _model(env.profile)
+    if model == "cr3xx":
+        cost = _c3_cost(2, int(a[0]), a[1])
+    elif model == "cr1000x":
+        cost = _x1000_cost(2 * int(a[0]), a[1], a[2])
+    else:
+        cost = _meas_cost(2 * a[0], a[1], a[2])
+    lines.append(f"line {stmt.line}: {_THERM[stmt.keyword]} = {cost}")
 
 
 _LABEL = {"VOLTSE": "VoltSe", "VOLTDIFF": "VoltDiff", "TCSE": "TCSe", "TCDIFF": "TCDiff"}
@@ -240,6 +327,30 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     if not _chan_is_u(chan) and _num(_const(chan, env)) is None:
         return
     if reps < 1 or reps > 1000 or settle < 0 or integ < 0:
+        return
+    model = _model(env.profile)
+    if model != "cr6":
+        valid = _x1000_chan(_num(_const(chan, env)), not single) if model == "cr1000x" else None
+        if resistance or (model == "cr1000x" and valid is None):
+            return
+        per = base * (2 if rev_diff else 1) * (2 if rev_ex else 1)
+        group = max(int(mp), 1)
+        left = int(reps)
+        entries = 0
+        while left > 0 and (model == "cr1000x" or entries < 3):
+            g = min(group, left)
+            left -= g
+            entries += 1
+            if model == "cr3xx":
+                cost = (_c3_fixed(per) + g * per * (_C3_PASS + (int(settle) or 500))) // 100 * 100
+            else:
+                for r in (rng, rng2):
+                    if r not in _PLAIN_RANGES and r not in _C_RANGES and r not in _AUTO_RANGES:
+                        return
+                c = any(r in _C_RANGES or r == 830 for r in (rng, rng2))
+                auto = per * g if (g2 is None and rng in _AUTO_RANGES) else 0
+                cost = _x1000_cost(g * per, settle, integ, c, g * base, auto, c and valid)
+            lines.append(f"line {stmt.line}: {label} = {cost}")
         return
     c_range = False
     for r in (rng, rng2):
@@ -279,6 +390,25 @@ def _am25t(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         return
     auto = rng in _AUTO_RANGES
     c_range = rng in _C_RANGES or rng == 830
+    model = _model(env.profile)
+    if model != "cr6":
+        if cm is not None or not (c_range or auto or rng in _PLAIN_RANGES or model == "cr3xx"):
+            return
+        m = 2 if rev else 1
+        reps = int(reps)
+        if model == "cr3xx":
+            first = (_c3_fixed(m) + m * (_C3_PASS + (int(settle) or 500))) // 100 * 100
+            total = (_c3_fixed(m) + reps * m * (_C3_PASS + 80 + (int(settle) or 500))) // 100 * 100
+            out = [first] * 3 + [500, total]
+        else:
+            s_part, x_part = _x1000_parts(settle, integ)
+            first = (180 + m * (185 + s_part + x_part) + (50 if c_range else 0)) // 100 * 100
+            total = (180 + reps * (m * (265 + s_part + x_part) + (50 if c_range else 0)
+                                   + (m * (85 + s_part) if auto else 0))) // 100 * 100
+            out = [first] * 3 + [300, total]
+        out.append(400 + 200 * int(cnum))
+        lines.extend(f"line {stmt.line}: AM25T = {v}" for v in out)
+        return
     if not (c_range or auto or rng in _PLAIN_RANGES):
         return
     n = 2 if rev else 1
@@ -321,7 +451,8 @@ def _closed(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline:
     elif kw == "PULSECOUNT":
         out = [100] if _args(stmt, env, 1) else []
     elif kw == "CALIBRATE":
-        out = [2000, 7700] * 3
+        model = _model(env.profile)
+        out = {"cr6": [2000, 7700] * 3, "cr1000x": [1500, 5700] * 3}.get(model, [])
     elif kw == "CS616":
         a = _args(stmt, env, 1)
         out = [200 + 500 * int(a[0])] if a else []
@@ -334,7 +465,7 @@ def _closed(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline:
             base = 100 if a[2] == 0 else 13000
             out = [_floor100(base + int(a[1]) * (2000 * int(a[0]) + 50))]
     elif kw == "ACPOWER":
-        out = _acpower(stmt, env)
+        out = _acpower(stmt, env) if _model(env.profile) == "cr6" else _acpower_x1000(stmt, env)
     lines.extend(f"line {stmt.line}: {label} = {v}" for v in out)
 
 
@@ -359,6 +490,31 @@ def _acpower(stmt: S.Instruction, env: consteval.Env) -> list[int]:
     cfg = int(a[0])
     seq = {2: [volt, cur, cur], 3: [volt, cur] * 3, 1: [volt] + [cur] * max(int(a[2]), 0)}.get(cfg, [volt, cur])
     return [1000] + [v for x in seq for v in (head, x)]
+
+
+def _acpower_x1000(stmt: S.Instruction, env: consteval.Env) -> list[int]:
+    """CR1000X ACPower: numeric channels only, first entry 400; LineFrq 50/60 are table values,
+    2..20 follow 992*q + c (q = 1000//f; c in [1536,1600) by the data, 1550 used)."""
+    if _model(env.profile) != "cr1000x":
+        return []
+    a = _args(stmt, env, 1, 2, 9)
+    if not a or len(stmt.args) < 10:
+        return []
+    for k in (3, 6):
+        if _num(_const(stmt.args[k], env)) is None:
+            return []
+    f = int(a[1])
+    if f == 50:
+        head, x = 61200, 40500
+    elif f == 60:
+        head, x = 51200, 33800
+    elif 2 <= a[1] <= 20:
+        head, x = 1200 + 1000 * (2000 // f), (992 * (1000 // f) + 1550) // 100 * 100
+    else:
+        return []
+    cfg = int(a[0])
+    seq = {2: 3, 3: 6, 1: 1 + max(int(a[2]), 0)}.get(cfg, 2)
+    return [400] + [v for _ in range(seq) for v in (head, x)]
 
 
 _CLOSED = {"PULSEPORT": "PulsePort", "EXCITEV": "ExciteV", "PULSECOUNT": "Pulsecount",

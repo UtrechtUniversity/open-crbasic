@@ -135,7 +135,7 @@ def _hides_times(program_ast, diags, main) -> bool:
 _SINGLE_PASS_KEEPS = re.compile(
     r"FileManage invalid drive|Invalid file type option|Illegal Semaphore|"
     r"Invalid drive or no drive specified|IF or SELECT without EndIf|Could not find \S+\.BytesPerRecord|"
-    r"Illegal dimension|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)")
+    r"Illegal dimension|exceeds number of valid channels|Variable \S+ out of bounds|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)")
 
 
 def _pass1_ok(result, profile=None) -> bool:

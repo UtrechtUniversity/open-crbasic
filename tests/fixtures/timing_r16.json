@@ -35,6 +35,78 @@
    "logger": "cr350",
    "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    PortSet(C1,1,1)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_times": ""
+  },
+  {
+   "id": "cr1000x_voltse_ranges",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(x(1),1,mV5000,1,0,0,60,1,0)\n    VoltSe(x(1),3,mV200,2,1,1000,250,1,0)\n    VoltSe(x(1),5,mV1000C,3,0,500,16667,1,0)\n    VoltSe(x(1),2,mV5000C,4,1,3,50,1,0)\n    VoltSe(x(1),2,AutoRange,5,1,0,5000,1,0)\n    VoltSe(x(1),3,AutoRangeC,6,0,100,1000,1,0)\n    VoltSe(x(1),2,mV5000C,17,0,1,100000,1,0)\n    VoltSe(x(1),2,mV200,0,0,1,100000,1,0)\n    VoltSe(x(1),7,mV5000,1,0,45,0,1,0)\n    VoltSe(x(1),4,mV1000,1,0,1,1,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: VoltSe = 17400\nline 8: VoltSe = 20800\nline 9: VoltSe = 4500\nline 10: VoltSe = 61000\nline 11: VoltSe = 3500\nline 12: VoltSe = 4800\nline 13: VoltSe = 700\nline 14: VoltSe = 600\nline 15: VoltSe = 3400\nline 16: VoltSe = 4000900"
+  },
+  {
+   "id": "cr1000x_diff_tc",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(x(1),3,mV5000,1,1,10,60,1,0)\n    VoltDiff(x(1),2,mV200C,3,0,500,250,1,0)\n    VoltDiff(x(1),2,mV200C,9,0,500,250,1,0)\n    VoltDiff(x(1),2,AutoRangeC,2,1,100,16667,1,0)\n    TCSe(x(1),2,mV200,1,TypeT,x(2),1,0,60,1,0)\n    TCDiff(x(1),2,mV200C,2,TypeK,x(2),1,500,250,1,0)\n    TCSe(x(1),2,AutoRange,12,TypeT,x(2),0,100,1000,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: VoltDiff = 101300\nline 8: VoltDiff = 9800\nline 9: VoltDiff = 9600\nline 10: VoltDiff = 2500\nline 11: TCSe = 52000\nline 12: TCDiff = 19300\nline 13: TCSe = 2900"
+  },
+  {
+   "id": "cr1000x_bridges",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(x(1),3,mV200,1,Vx1,2,2500,1,0,60,1,0)\n    BrHalf3W(x(1),2,mV200C,3,Vx1,1,2500,1,100,250,1,0)\n    BrHalf(x(1),2,AutoRange,3,Vx1,1,2500,0,100,250,1,0)\n    BrHalf4W(x(1),2,mV200,mV1000C,3,Vx1,2,2500,1,1,0,60,1,0)\n    BrFull(x(1),3,mV200C,2,Vx1,0,2500,1,0,0,60,1,0)\n    BrFull6W(x(1),2,mV200,mV200,10,Vx1,1,2500,0,1,500,60,1,0)\n    Therm107(x(1),3,2,Vx1,100,250,1,0)\n    Therm109(x(1),2,2,Vx1,0,60,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: BrHalf = 69400\nline 7: BrHalf = 34700\nline 8: BrHalf3W = 17600\nline 8: BrHalf3W = 17600\nline 9: BrHalf = 4500\nline 9: BrHalf = 4500\nline 10: BrHalf4W = 278200\nline 11: BrFull = 34900\nline 11: BrFull = 34900\nline 11: BrFull = 34900\nline 12: BrFull6W = 69600\nline 12: BrFull6W = 69600\nline 13: Therm107 = 25800\nline 14: Therm109 = 69400"
+  },
+  {
+   "id": "cr1000x_am25t_acpower",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    AM25T(x(1),2,mV200C,2,1,TypeT,x(2),C1,C2,Vx1,1,100,250,1,0)\n    AM25T(x(1),3,AutoRange,1,1,TypeT,x(2),C1,C2,Vx1,0,0,60,1,0)\n    ACPower(y(),1,60,1,115/333,120,2,10/333,15,1)\n    ACPower(y(),2,50,1,115/333,120,2,10/333,15,1)\n    ACPower(y(),3,7,1,115/333,120,2,10/333,15,1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: AM25T = 8700\nline 7: AM25T = 8700\nline 7: AM25T = 8700\nline 7: AM25T = 300\nline 7: AM25T = 17700\nline 7: AM25T = 800\nline 8: AM25T = 17400\nline 8: AM25T = 17400\nline 8: AM25T = 17400\nline 8: AM25T = 300\nline 8: AM25T = 53900\nline 8: AM25T = 600\nline 9: ACPower = 400\nline 9: ACPower = 51200\nline 9: ACPower = 33800\nline 9: ACPower = 51200\nline 9: ACPower = 33800\nline 10: ACPower = 400\nline 10: ACPower = 61200\nline 10: ACPower = 40500\nline 10: ACPower = 61200\nline 10: ACPower = 40500\nline 10: ACPower = 61200\nline 10: ACPower = 40500\nline 11: ACPower = 400\nline 11: ACPower = 286200\nline 11: ACPower = 142400\nline 11: ACPower = 286200\nline 11: ACPower = 142400\nline 11: ACPower = 286200\nline 11: ACPower = 142400\nline 11: ACPower = 286200\nline 11: ACPower = 142400\nline 11: ACPower = 286200\nline 11: ACPower = 142400\nline 11: ACPower = 286200\nline 11: ACPower = 142400"
+  },
+  {
+   "id": "cr300_measure",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(x(1),3,mV2500,1,0,0,_60Hz,1,0)\n    VoltSe(x(1),2,mV34,2,1,100,60,1,0)\n    VoltDiff(x(1),2,mV2500,1,1,1000,60,1,0)\n    VoltDiff(x(1),2,mV2500,1,0,1000,60,1,0)\n    TCSe(x(1),2,mV2500,1,TypeT,x(2),1,10,60,1,0)\n    TCDiff(x(1),3,mV34,2,TypeK,x(2),1,10,60,1,0)\n    Therm107(x(1),2,1,Vx1,10,_60Hz,1,0)\n    Therm109(x(1),1,1,Vx1,0,_60Hz,1,0)\n    VoltSe(x(1),2,mV2500,-3,0,1,60,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: VoltSe = 155000\nline 8: VoltSe = 153700\nline 9: VoltDiff = 208700\nline 10: VoltDiff = 104300\nline 11: TCSe = 153400\nline 12: TCDiff = 307000\nline 13: Therm107 = 204700\nline 14: Therm109 = 103400\nline 15: VoltSe = 102300"
+  },
+  {
+   "id": "cr300_bridges_am25t",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(x(1),2,mV2500,1,Vx1,2,2500,1,10,60,1,0)\n    BrHalf(x(1),7,mV2500,1,Vx1,1,2500,0,10,60,1,0)\n    BrHalf3W(x(1),2,mV2500,1,Vx1,1,2500,1,0,60,1,0)\n    BrHalf4W(x(1),2,mV2500,mV2500,1,Vx1,1,2500,1,1,0,60,1,0)\n    BrFull(x(1),3,mV2500,1,Vx1,2,2500,1,0,0,60,1,0)\n    AM25T(x(1),3,mV2500,2,1,TypeT,x(2),C1,C2,Vx1,1,10,_60Hz,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: BrHalf = 204700\nline 8: BrHalf = 51200\nline 8: BrHalf = 51200\nline 8: BrHalf = 51200\nline 9: BrHalf3W = 206800\nline 9: BrHalf3W = 206800\nline 10: BrHalf4W = 413600\nline 10: BrHalf4W = 413600\nline 11: BrFull = 206700\nline 11: BrFull = 103400\nline 12: AM25T = 102400\nline 12: AM25T = 102400\nline 12: AM25T = 102400\nline 12: AM25T = 500\nline 12: AM25T = 307500\nline 12: AM25T = 800"
+  },
+  {
+   "id": "cr350_measure",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(x(1),3,mV2500,1,0,0,_60Hz,1,0)\n    VoltSe(x(1),2,mV34,2,1,100,60,1,0)\n    VoltDiff(x(1),2,mV2500,1,1,1000,60,1,0)\n    VoltDiff(x(1),2,mV2500,1,0,1000,60,1,0)\n    TCSe(x(1),2,mV2500,1,TypeT,x(2),1,10,60,1,0)\n    TCDiff(x(1),3,mV34,2,TypeK,x(2),1,10,60,1,0)\n    Therm107(x(1),2,1,Vx1,10,_60Hz,1,0)\n    Therm109(x(1),1,1,Vx1,0,_60Hz,1,0)\n    VoltSe(x(1),2,mV2500,-3,0,1,60,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: VoltSe = 155000\nline 8: VoltSe = 153700\nline 9: VoltDiff = 208700\nline 10: VoltDiff = 104300\nline 11: TCSe = 153400\nline 12: TCDiff = 307000\nline 13: Therm107 = 204700\nline 14: Therm109 = 103400\nline 15: VoltSe = 102300"
+  },
+  {
+   "id": "cr350_bridges_am25t",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(x(1),2,mV2500,1,Vx1,2,2500,1,10,60,1,0)\n    BrHalf(x(1),7,mV2500,1,Vx1,1,2500,0,10,60,1,0)\n    BrHalf3W(x(1),2,mV2500,1,Vx1,1,2500,1,0,60,1,0)\n    BrHalf4W(x(1),2,mV2500,mV2500,1,Vx1,1,2500,1,1,0,60,1,0)\n    BrFull(x(1),3,mV2500,1,Vx1,2,2500,1,0,0,60,1,0)\n    AM25T(x(1),3,mV2500,2,1,TypeT,x(2),C1,C2,Vx1,1,10,_60Hz,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: BrHalf = 204700\nline 8: BrHalf = 51200\nline 8: BrHalf = 51200\nline 8: BrHalf = 51200\nline 9: BrHalf3W = 206800\nline 9: BrHalf3W = 206800\nline 10: BrHalf4W = 413600\nline 10: BrHalf4W = 413600\nline 11: BrFull = 206700\nline 11: BrFull = 103400\nline 12: AM25T = 102400\nline 12: AM25T = 102400\nline 12: AM25T = 102400\nline 12: AM25T = 500\nline 12: AM25T = 307500\nline 12: AM25T = 800"
+  },
+  {
+   "id": "cr1000x_simple",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(x(1),15000)\n    PanelTemp(x(1),250)\n    Battery(x(2))\n    SWVX(Vx1,1,100)\n    SW12(SW12_1,1)\n    PortSet(C1,1)\n    PulsePort(C1,10000)\n    ExciteV(Vx1,2500,10)\n    PulseCount(x(1),1,P1,1,1,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: PanelTemp = 1300\nline 7: PanelTemp = 1300\nline 8: PanelTemp = 5200\nline 8: PanelTemp = 5200\nline 9: Battery = 800\nline 10: SwVx = 100\nline 11: Sw12 = 100\nline 12: PortSet = 100\nline 13: PulsePort = 20100\nline 14: ExciteV = 100\nline 15: Pulsecount = 100"
+  },
+  {
+   "id": "cr1000x_calibrate",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Calibrate(y())\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: Calibrate = 1500\nline 7: Calibrate = 5700\nline 7: Calibrate = 1500\nline 7: Calibrate = 5700\nline 7: Calibrate = 1500\nline 7: Calibrate = 5700"
+  },
+  {
+   "id": "cr350_simple",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    PortSet(1,1)\n    SWVX(Vx1,1,1)\n    SW12(SW12_1,1)\n    SW12(2,1)\n    PanelTemp(x(1),15000)\n    Delay(0,20,mSec)\n    PulsePort(C1,10000)\n    ExciteV(Vx1,2500,10)\n    PulseCount(x(1),1,1,0,0,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: PortSet = 100\nline 8: PortSet = 100\nline 9: SwVx = 100\nline 14: PulsePort = 20100\nline 15: ExciteV = 100\nline 16: Pulsecount = 100"
+  },
+  {
+   "id": "cr300_simple",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    PortSet(1,1)\n    SWVX(Vx1,1,10)\n    SW12(1)\n    PanelTemp(x(1),15000)\n    Delay(0,20,mSec)\n    PulsePort(C1,10000)\n    ExciteV(Vx1,2500,10)\n    PulseCount(x(1),1,1,0,0,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: PortSet = 100\nline 8: PortSet = 100\nline 9: SwVx = 100\nline 13: PulsePort = 20100\nline 14: ExciteV = 100\nline 15: Pulsecount = 100"
   }
  ]
 }

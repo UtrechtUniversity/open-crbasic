@@ -220,3 +220,59 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
 
 All instructions seen in this repository and the CHM sample with a cost are now modelled when
 their arguments are constant; anything else prints no entry.
+
+### `-t` on the CR1000X, CR300 and CR350 (round 16, oracle-fitted; fixtures `tests/fixtures/timing_r16.json`)
+
+`tools/timingtest.py` compares the `[Times]` section of the real `-t` run with ours
+(`--logger`, `--group repo|chm|all`; exact / mismatch / oracle_error, cached under
+`.oracle-cache/times/`). 2026-10-13, repo 16/16 and CHM 506/507 (CR6), 505/507 (CR1000X),
+505/507 (CR300), 505/507 (CR350). The oracle_error rows are real-compiler page faults
+(`pointervariable_2`, and `strcomp_3` on CR300/CR350); the one CR1000X mismatch is `covspa_1`
+(negative SE channels, below).
+
+Gate (CR300/CR350, single pass): every error hides the entries except an instruction's own
+argument checks (`cli._SINGLE_PASS_KEEPS`: FileManage/file drive, semaphore, settings-field,
+dimension, out-of-bounds, channel-count, table-lookup errors). Previously these loggers used
+the CR6 pass-1 gate and printed entries the real exe hides.
+
+Instruction set per logger (everything not listed prints nothing):
+
+| | CR6 | CR1000X | CR300/CR350 |
+|---|---|---|---|
+| `PanelTemp` | `(10+round(10000/T))*100` x2 | `(12+round(10000/T))*100` x2 | none |
+| `Battery` | none | 800 | none |
+| `SWVX` | not an instruction | 100 | 100 |
+| `SW12`, `Delay`, `MuxSelect` | as above | same as CR6 | none |
+| `PortSet` (2 args), `PulseCount`, `PulsePort`, `ExciteV` | | same on all four | |
+| `Calibrate` | 2000,7700 x3 | 1500,5700 x3 | none |
+| `CS616`, `PeriodAvg` | | same as CR6 | not instructions / unchanged |
+
+Open: `Calibrate`'s first two entries grow when a slow-integration measurement (or
+`PanelTemp` with a short timeout) is in the scan (CR1000X, integ 250: 5200,20500; CR6: 5000,19700);
+not modelled, the six entries above are only exact without such a measurement.
+
+CR1000X measurement (`VoltSe`, `VoltDiff`, `TCSe`, `TCDiff`, 0 residual on 400 random points each;
+bridges 300 each; AM25T 300; Therm107/109 300): `floor100(180 + n*(185 + 64u + S + X) + 50c*reps
++ auto*(5 + S + 64u))`, `S = 32*ks` (`ks = (settle+16)//32`, 14 when settle is 0), `X = 32*m`
+(`m = round(31250/integ)`, 8 when integ is 0, minimum 1), `c` a C range (incl. AutoRangeC),
+`u` = `c` on a valid channel (single-ended 1..16, differential 1..8; otherwise no 64), `auto`
+the AutoRange passes (`reps` for VoltSe/TCSe, `n` for the others). `n` as on the CR6 (`reps+MeasOff`,
+`reps*(1+RevDiff)`, bridge `g*base*(1+RevDiff)*(1+RevEx)` with MeasPEx groups). AutoRange applies
+to single-range bridges only; the two-range 4W/6W forms ignore it. Therm: `n = 2*reps`, plain range.
+AM25T entries: `f,f,f,300,total,400+200*chan` with `f = floor100(180 + m*(185+S+X) + 50c)`,
+`total = floor100(180 + reps*(m*(265+S+X) + 50c + auto*m*(85+S)))`, `m = 1+RevDiff`.
+ACPower: first entry 400 (not 1000), then `(head, x)` pairs as on the CR6; LineFrq 50/60 give
+`x` 40500 / 33800, 2..20 give `floor100(992*(1000//f) + c)` with c in [1536,1600) (1550 used); no
+`Un` channels. Negative single-ended channels (`-n`, settle once) and channel 0 of a differential
+instruction have another cost shape: not modelled (no entry).
+
+CR300/CR350 measurement (`VoltSe`, `VoltDiff`, `TCSe`, `TCDiff`, `Therm107/108/109`, bridges, AM25T;
+0 residual on 200-240 random points per family): range and integration time (fnotch) have no
+effect, the channel number has none either (negative and out-of-range included). A pass costs
+`51136 + settle` (settle 0 is 500); `m` passes per rep add a fixed `50 + 60*m`:
+`VoltSe/TCSe = floor100(110 + reps*(51136+s) + MeasOff*(51021+s))`; `VoltDiff/TCDiff` with
+`m = 1+RevDiff`: `floor100(50+60m + reps*m*(51136+s))`; Therm: `m = 2`; bridges: `m =
+base*(1+RevDiff)*(1+RevEx)`, entries per MeasPEx group as on the CR6 but **at most three**;
+AM25T: `f,f,f,500,total,400+200*chan` with `f = floor100(50+60m + m*(51136+s))` and `total =
+floor100(50+60m + reps*m*(51136+80+s))`. The `Resistance`/`ACPower`/`CS616` instructions do not
+exist on these loggers.
