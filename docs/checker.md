@@ -6807,3 +6807,11 @@ with an optional first parameter (`Calibrate(")`) are *not* the same: not genera
 `BeginProg`, which the real compilers accept (CR6 and CR300 probed; not fixed, no corpus case). Not done: `ESSInitialize(x,")`
 on CR300/CR350 omits `x is not defined.`; `ESSInitialize("a,"b)` on CR300/CR350.
 `structure._before_beginprog_name`, `structure._quote_in_first_arg`.
+
+### `Alias` of a variable declared only later in the file (fixture `tests/fixtures/r16_alias_before_decl.json`)
+
+All four loggers (oracle 2026-10-13, 28 cases). `Alias G(1) = R` / `Public G(6)` is `G not yet declared so cannot be aliased.`
+at the `Alias` line, with or without `BeginProg` after (ours accepted the complete program: the check looked at every
+declaration in the file, not at those above the `Alias`). An out-of-range index on such a name prints the same single line;
+a second `Alias` of the same name after the declaration is judged on its own. `structure.check_pass1`
+(`first_decl`, declaration position versus `Alias` position; only the "declared later and not earlier" case is changed).

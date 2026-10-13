@@ -1130,6 +1130,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                       if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
                       for v in st.vars}
 
+    first_decl: dict[str, int] = {}
+    for pos, stmt in enumerate(program.statements):
+        if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
+            for v in stmt.vars:
+                first_decl.setdefault(v.name.upper(), pos)
+
     for pos, stmt in enumerate(program.statements):
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
@@ -1423,7 +1429,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 diags.error(stmt.line, f"Variable name {stmt.args[1].text} illegal, starts with a "
                             "number.", stmt.file)
             elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
-                _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
+                src = stmt.args[0] if stmt.args else None
+                sizes = dim0_sizes
+                if isinstance(src, (S.Name, S.Index)) and first_decl.get(src.name.upper(), -1) > pos:
+                    # declared only later in the file: not yet declared (round 16, oracle)
+                    sizes = {k: v for k, v in dim0_sizes.items() if k != src.name.upper()}
+                _check_alias_dims(stmt, diags, env, sizes, all_dims, seen_alias_names,
                                    seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"), profile)
         if isinstance(stmt, S.If) and (hashed := S.hash_statement(stmt)) is not None:
             diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)

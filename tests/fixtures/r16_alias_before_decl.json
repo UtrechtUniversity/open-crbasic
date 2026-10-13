@@ -1,0 +1,219 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-alias_before_decl-0",
+   "logger": "cr6",
+   "source": "Alias G(1) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_before_decl-1",
+   "logger": "cr6",
+   "source": "Alias G = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_before_decl-2",
+   "logger": "cr6",
+   "source": "Public G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_before_decl-3",
+   "logger": "cr6",
+   "source": "Alias G(9) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_before_decl-4",
+   "logger": "cr6",
+   "source": "Alias G2 = Q\nPublic G2\nPublic G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G2 not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_before_decl-5",
+   "logger": "cr6",
+   "source": "Alias G(1) = R\nDim G(3)\nStatic H\nAlias H = Z\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased.\nline 4: H not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_before_decl-6",
+   "logger": "cr6",
+   "source": "Alias G(1) = R\nPublic G(6)\nAlias G(1) = Q\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-0",
+   "logger": "cr1000x",
+   "source": "Alias G(1) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-1",
+   "logger": "cr1000x",
+   "source": "Alias G = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-2",
+   "logger": "cr1000x",
+   "source": "Public G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-3",
+   "logger": "cr1000x",
+   "source": "Alias G(9) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-4",
+   "logger": "cr1000x",
+   "source": "Alias G2 = Q\nPublic G2\nPublic G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G2 not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-5",
+   "logger": "cr1000x",
+   "source": "Alias G(1) = R\nDim G(3)\nStatic H\nAlias H = Z\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased.\nline 4: H not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_before_decl-6",
+   "logger": "cr1000x",
+   "source": "Alias G(1) = R\nPublic G(6)\nAlias G(1) = Q\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_before_decl-0",
+   "logger": "cr300",
+   "source": "Alias G(1) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_before_decl-1",
+   "logger": "cr300",
+   "source": "Alias G = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_before_decl-2",
+   "logger": "cr300",
+   "source": "Public G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_before_decl-3",
+   "logger": "cr300",
+   "source": "Alias G(9) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_before_decl-4",
+   "logger": "cr300",
+   "source": "Alias G2 = Q\nPublic G2\nPublic G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G2 not yet declared so cannot be aliased.\nline 4: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_before_decl-5",
+   "logger": "cr300",
+   "source": "Alias G(1) = R\nDim G(3)\nStatic H\nAlias H = Z\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased.\nline 3: Static is not defined.\nline 3: H is not defined.\nline 3: Invalid, or out of place expression: Static H\n.\nline 4: H not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_before_decl-6",
+   "logger": "cr300",
+   "source": "Alias G(1) = R\nPublic G(6)\nAlias G(1) = Q\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased.\nline 3: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_before_decl-0",
+   "logger": "cr350",
+   "source": "Alias G(1) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_before_decl-1",
+   "logger": "cr350",
+   "source": "Alias G = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_before_decl-2",
+   "logger": "cr350",
+   "source": "Public G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_before_decl-3",
+   "logger": "cr350",
+   "source": "Alias G(9) = R\nPublic G(6)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_before_decl-4",
+   "logger": "cr350",
+   "source": "Alias G2 = Q\nPublic G2\nPublic G(6)\nAlias G(1) = R\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G2 not yet declared so cannot be aliased.\nline 4: G not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_before_decl-5",
+   "logger": "cr350",
+   "source": "Alias G(1) = R\nDim G(3)\nStatic H\nAlias H = Z\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased.\nline 3: Static is not defined.\nline 3: H is not defined.\nline 3: Invalid, or out of place expression: Static H\n.\nline 4: H not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_before_decl-6",
+   "logger": "cr350",
+   "source": "Alias G(1) = R\nPublic G(6)\nAlias G(1) = Q\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: G not yet declared so cannot be aliased.\nline 3: G not yet declared so cannot be aliased."
+  }
+ ]
+}
