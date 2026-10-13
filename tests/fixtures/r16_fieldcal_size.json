@@ -1,0 +1,311 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-c1-0-o1-elem-diff",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-0-o1-elem-diff",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-0-o1-elem-diff",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-0-o1-elem-diff",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-1-o1-whole-diff",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-1-o1-whole-diff",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-1-o1-whole-diff",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-1-o1-whole-diff",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-2-o1-meas-whole-known-elem",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-2-o1-meas-whole-known-elem",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-2-o1-meas-whole-known-elem",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-2-o1-meas-whole-known-elem",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(1,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-3-o2-elem-diff",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-3-o2-elem-diff",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-3-o2-elem-diff",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-3-o2-elem-diff",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-4-o2-whole-diff",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-4-o2-whole-diff",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-4-o2-whole-diff",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-4-o2-whole-diff",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-5-o2-meas-whole-known-elem",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-5-o2-meas-whole-known-elem",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-5-o2-meas-whole-known-elem",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-5-o2-meas-whole-known-elem",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(2,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-6-o3-elem-diff",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-6-o3-elem-diff",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-6-o3-elem-diff",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-6-o3-elem-diff",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(1),1,Mult(1),Off(1),Mode(1),K(1),Idx(1),Avg(1))\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-7-o3-whole-diff",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-7-o3-whole-diff",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-7-o3-whole-diff",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-7-o3-whole-diff",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr6-c1-8-o3-meas-whole-known-elem",
+   "logger": "cr6",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr1000x-c1-8-o3-meas-whole-known-elem",
+   "logger": "cr1000x",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr300-c1-8-o3-meas-whole-known-elem",
+   "logger": "cr300",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  },
+  {
+   "id": "cr350-c1-8-o3-meas-whole-known-elem",
+   "logger": "cr350",
+   "source": "Public V(4), K(2), Mult(2), Off(2), Mode(2), Idx(2), Avg(2), Ms, Km, Mu, Of, Mo, Ix, Av\nDataTable (T,True,-1)\n  SampleFieldCal\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    FieldCal(3,V(),1,Mult(),Off(),Mode(),K(1),Idx(),Avg())\n    CallTable T\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: K and V must be declared the same size."
+  }
+ ]
+}

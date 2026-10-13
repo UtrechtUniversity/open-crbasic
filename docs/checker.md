@@ -6645,3 +6645,10 @@ product (`Dim X(3,-1) = {1,...,9}`, `Public X(0) = {1,2}`, `Public X("fuzz") = {
 `Dim X(-1) = {5}`, `Dim X(3,-1) As Long = {1,2,3}` or a huge dimension (`X(999999999999,3)`). All four loggers.
 `structure._check_init_bounds`. Not modelled: an illegal dimension on a later variable of a multi-variable `Dim` echoes only
 `Dim Y = 3` on the real compilers.
+
+### FieldCal `KnownVar and MeasVar must be declared the same size` for two arrays of different sizes (oracle, 2026-10-12; `tests/fixtures/r16_fieldcal_size.json`)
+
+Review r15-cloud R15C-1. `FieldCal(Option,MeasVar,...,KnownVar,...)` with `V(4)` and `K(2)` fails with
+`K and V must be declared the same size.` on all four loggers for options 1, 2 and 3, whether spelled by element
+(`V(1)`/`K(1)`), whole (`V()`/`K()`) or mixed; the comparison is on declarations, not on the elements used. No code change
+(`instr_rules.check_fieldcal_variable_args` already agrees).
