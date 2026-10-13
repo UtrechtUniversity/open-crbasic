@@ -143,6 +143,13 @@ def _floor100(x: int) -> int:
     return _signed32((x & 0xFFFFFFFF) // 100 * 100)
 
 
+def _trunc100(x: int) -> int:
+    """Measurement costs: the sum wraps to signed 32 bits, then is truncated toward zero to a
+    multiple of 100 (a 1,000,000-rep VoltSe prints -109967100; docs/cli.md)."""
+    v = _signed32(x)
+    return v // 100 * 100 if v >= 0 else -(-v // 100 * 100)
+
+
 def _delay(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline: bool) -> None:
     # Timed only for RepDelay == 0 in PipelineMode; units case-insensitive (docs/cli.md).
     if len(stmt.args) < 3 or not pipeline:
@@ -241,7 +248,7 @@ def _x1000_cost(n: int, settle: float, integ: float, c: bool = False, c_reps: in
     s_part, x_part = _x1000_parts(settle, integ)
     cost = 180 + n * (185 + (64 if u else 0) + s_part + x_part) + (50 * c_reps if c else 0)
     cost += auto_n * (5 + s_part + (64 if u else 0))
-    return cost // 100 * 100
+    return _trunc100(cost)
 
 
 def _x1000_chan(chan: float | None, differential: bool) -> bool | None:
@@ -265,7 +272,7 @@ def _c3_fixed(m: int) -> int:
 
 def _c3_cost(m: int, reps: int, settle: float, offset_pass: int = 0) -> int:
     s = int(settle) or 500
-    return (_c3_fixed(m) + reps * m * (_C3_PASS + s) + offset_pass * (_C3_OFFSET_PASS + s)) // 100 * 100
+    return _trunc100(_c3_fixed(m) + reps * m * (_C3_PASS + s) + offset_pass * (_C3_OFFSET_PASS + s))
 
 
 def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: int = 0, auto_reps: int = 0) -> int:
@@ -273,7 +280,7 @@ def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: 
     kx = 24 if integ == 0 else max(1, int((24e6 / integ + 128) // 256))
     settle_part = -(-(32 * ks + thirds_u) // 3)
     # AutoRange adds one settle-only pass per rep, 1 us cheaper than a measurement's (docs/cli.md).
-    return int(140 + extra + n * (816 + settle_part + 32 * kx // 3) + auto_reps * (815 + settle_part)) // 100 * 100
+    return _trunc100(int(140 + extra + n * (816 + settle_part + 32 * kx // 3) + auto_reps * (815 + settle_part)))
 
 
 # Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset): two measurements per
@@ -286,12 +293,15 @@ def _therm(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     if a is None or a[0] < 1 or a[1] < 0 or a[2] < 0:
         return
     model = _model(env.profile)
+    n = (2 * int(a[0])) % 512   # the thermistor measurement count wraps at 512 (2 * Reps; docs/cli.md)
+    if n == 0:
+        return                  # the real compiler crashes (divide by zero) for Reps = 256, 512, ...
     if model == "cr3xx":
-        cost = _c3_cost(2, int(a[0]), a[1])
+        cost = _c3_cost(2, n // 2, a[1])
     elif model == "cr1000x":
-        cost = _x1000_cost(2 * int(a[0]), a[1], a[2])
+        cost = _x1000_cost(n, a[1], a[2])
     else:
-        cost = _meas_cost(2 * a[0], a[1], a[2])
+        cost = _meas_cost(n, a[1], a[2])
     lines.append(f"line {stmt.line}: {_THERM[stmt.keyword]} = {cost}")
 
 
@@ -326,7 +336,7 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     chan = stmt.args[ci]
     if not _chan_is_u(chan) and _num(_const(chan, env)) is None:
         return
-    if reps < 1 or reps > 1000 or settle < 0 or integ < 0:
+    if reps < 1 or settle < 0 or integ < 0:
         return
     model = _model(env.profile)
     if model != "cr6":
@@ -342,7 +352,7 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
             left -= g
             entries += 1
             if model == "cr3xx":
-                cost = (_c3_fixed(per) + g * per * (_C3_PASS + (int(settle) or 500))) // 100 * 100
+                cost = _trunc100(_c3_fixed(per) + g * per * (_C3_PASS + (int(settle) or 500)))
             else:
                 for r in (rng, rng2):
                     if r not in _PLAIN_RANGES and r not in _C_RANGES and r not in _AUTO_RANGES:
@@ -386,7 +396,7 @@ def _am25t(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     chan = stmt.args[3]
     cm = re.fullmatch(r"U(\d+)", chan.name.upper()) if isinstance(chan, S.Name) else None
     cnum = int(cm.group(1)) if cm else _num(_const(chan, env))
-    if cnum is None or reps < 1 or reps > 1000 or settle < 0 or integ < 0:
+    if cnum is None or reps < 1 or settle < 0 or integ < 0:
         return
     auto = rng in _AUTO_RANGES
     c_range = rng in _C_RANGES or rng == 830
@@ -397,14 +407,14 @@ def _am25t(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         m = 2 if rev else 1
         reps = int(reps)
         if model == "cr3xx":
-            first = (_c3_fixed(m) + m * (_C3_PASS + (int(settle) or 500))) // 100 * 100
-            total = (_c3_fixed(m) + reps * m * (_C3_PASS + 80 + (int(settle) or 500))) // 100 * 100
+            first = _trunc100(_c3_fixed(m) + m * (_C3_PASS + (int(settle) or 500)))
+            total = _trunc100(_c3_fixed(m) + reps * m * (_C3_PASS + 80 + (int(settle) or 500)))
             out = [first] * 3 + [500, total]
         else:
             s_part, x_part = _x1000_parts(settle, integ)
-            first = (180 + m * (185 + s_part + x_part) + (50 if c_range else 0)) // 100 * 100
-            total = (180 + reps * (m * (265 + s_part + x_part) + (50 if c_range else 0)
-                                   + (m * (85 + s_part) if auto else 0))) // 100 * 100
+            first = _trunc100(180 + m * (185 + s_part + x_part) + (50 if c_range else 0))
+            total = _trunc100(180 + reps * (m * (265 + s_part + x_part) + (50 if c_range else 0)
+                                            + (m * (85 + s_part) if auto else 0)))
             out = [first] * 3 + [300, total]
         out.append(400 + 200 * int(cnum))
         lines.extend(f"line {stmt.line}: AM25T = {v}" for v in out)
@@ -418,10 +428,10 @@ def _am25t(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     per = 816 + settle_part + 32 * kx // 3
     out = []
     if _chan_is_u(stmt.args[9]):
-        first = (140 + n * per + (50 if c_range else 0)) // 100 * 100
+        first = _trunc100(140 + n * per + (50 if c_range else 0))
         out = [first] * 3 + [300]
     total = 140 + int(reps) * (n * (per + 80) + (n * (815 + settle_part + 80) if auto else 0) + (50 if c_range else 0))
-    out += [total // 100 * 100, (40000 if cm else 0) + 400 + 200 * int(cnum)]
+    out += [_trunc100(total), (40000 if cm else 0) + 400 + 200 * int(cnum)]
     lines.extend(f"line {stmt.line}: AM25T = {v}" for v in out)
 
 

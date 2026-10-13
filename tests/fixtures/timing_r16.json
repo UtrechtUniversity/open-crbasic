@@ -107,6 +107,30 @@
    "logger": "cr300",
    "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    PortSet(1,1)\n    SWVX(Vx1,1,10)\n    SW12(1)\n    PanelTemp(x(1),15000)\n    Delay(0,20,mSec)\n    PulsePort(C1,10000)\n    ExciteV(Vx1,2500,10)\n    PulseCount(x(1),1,1,0,0,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_times": "line 6: Scan: 0\nline 7: PortSet = 100\nline 8: PortSet = 100\nline 9: SwVx = 100\nline 13: PulsePort = 20100\nline 14: ExciteV = 100\nline 15: Pulsecount = 100"
+  },
+  {
+   "id": "cr6_reps_large",
+   "logger": "cr6",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm107(x(1),255,U1,U3,100,250,1,0)\n    Therm107(x(1),300,U1,U3,100,250,1,0)\n    Therm107(x(1),1001,U1,U3,100,250,1,0)\n    VoltSe(x(1),1000000,mV5000,U1,0,100,250,1,0)\n    BrHalf(x(1),1500,mV5000,U1,U3,700,2500,1,1,60,1,0)\n    BrHalf(x(1),1001,mV5000,U1,U3,1001,2500,1,1,60,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: Therm107 = 2505200\nline 8: Therm107 = 432300\nline 9: Therm107 = 2289100\nline 10: VoltSe = 617032800\nline 11: BrHalf = 24483300\nline 11: BrHalf = 24483300\nline 11: BrHalf = 3497700\nline 12: BrHalf = 35011100"
+  },
+  {
+   "id": "cr1000x_reps_large",
+   "logger": "cr1000x",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm107(x(1),255,1,Vx1,100,250,1,0)\n    Therm107(x(1),300,1,Vx1,100,250,1,0)\n    Therm107(x(1),1001,1,Vx1,100,250,1,0)\n    VoltSe(x(1),1000000,mV5000,1,0,100,250,1,0)\n    BrHalf(x(1),1500,mV5000,1,Vx1,700,2500,1,1,60,1,0)\n    AM25T(x(1),2000,mV5000,1,1,TypeT,x(2),C1,C2,Vx1,1,1,60,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: Therm107 = 2183400\nline 8: Therm107 = 376900\nline 9: Therm107 = 1995100\nline 10: VoltSe = -13967100\nline 11: BrHalf = 23599900\nline 11: BrHalf = 23599900\nline 11: BrHalf = 3371500\nline 12: AM25T = 33800\nline 12: AM25T = 33800\nline 12: AM25T = 33800\nline 12: AM25T = 300\nline 12: AM25T = 67748100\nline 12: AM25T = 600"
+  },
+  {
+   "id": "cr300_reps_large",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm107(x(1),255,1,Vx1,100,250,1,0)\n    Therm107(x(1),300,1,Vx1,100,250,1,0)\n    Therm107(x(1),1001,1,Vx1,100,250,1,0)\n    VoltSe(x(1),1000000,mV2500,1,0,100,250,1,0)\n    BrHalf(x(1),1500,mV2500,1,Vx1,700,2500,1,1,60,1,0)\n    VoltDiff(x(1),1000000,mV2500,1,1,100,250,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: Therm107 = 26130500\nline 8: Therm107 = 4508900\nline 9: Therm107 = 23876100\nline 10: VoltSe = -303607400\nline 11: BrHalf = 71591900\nline 11: BrHalf = 71591900\nline 11: BrHalf = 10227500\nline 12: VoltDiff = -607214900"
+  },
+  {
+   "id": "cr350_reps_large",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm107(x(1),255,1,Vx1,100,250,1,0)\n    Therm107(x(1),300,1,Vx1,100,250,1,0)\n    Therm107(x(1),1001,1,Vx1,100,250,1,0)\n    VoltSe(x(1),1000000,mV2500,1,0,100,250,1,0)\n    BrHalf(x(1),1500,mV2500,1,Vx1,700,2500,1,1,60,1,0)\n    VoltDiff(x(1),1000000,mV2500,1,1,100,250,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: Therm107 = 26130500\nline 8: Therm107 = 4508900\nline 9: Therm107 = 23876100\nline 10: VoltSe = -303607400\nline 11: BrHalf = 71591900\nline 11: BrHalf = 71591900\nline 11: BrHalf = 10227500\nline 12: VoltDiff = -607214900"
   }
  ]
 }

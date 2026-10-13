@@ -192,7 +192,8 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
 - `Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset)`: the VoltSe cost
   with `n = 2*Reps` on a plain range, no channel dependence (any SEChan/VxChan form; ~4,000 real
   points over Reps 1..200, Settle 0..400, Integ 0..300000, 0 residual). Reps < 1 and negative
-  Settle/Integ are not modelled.
+  Settle/Integ are not modelled. The measurement count `2*Reps` wraps modulo 512 (Reps 300 costs
+  what Reps 44 does; Reps 256, 512 crash the real compiler, no entry); all four loggers.
 
 - Bridge instructions (BrHalf, BrHalf3W, BrHalf4W, BrFull, BrFull6W, Resistance; ~2,400 randomised
   real points each over reps, both ranges, channel form, MeasPEx, ExmV 100..2500, RevDiff, RevEx,
@@ -204,7 +205,7 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
   `Un` channel (any n for the single-ended BrHalf forms, odd n only for differential), `u = 160`.
   Resistance has no range dependence and prints two entries per group, first the cost with
   `g = 1`. Resistance is only modelled for `MeasPEx >= 1` (negative/zero values behave
-  irregularly). Reps < 1, reps > 1000 and non-constant arguments give no entry. An out-of-range
+  irregularly). Reps < 1 and non-constant arguments give no entry (reps > 1000 are linear and timed, round 16). An out-of-range
   `ExmV` (below 20 or above 2500, `Minimum Excitation is 20mV.` / `Excitation exceeds 2500.`) hides
   all entries in the real exe but our checker does not raise it (verdict gap, not a timing rule).
 
@@ -276,3 +277,12 @@ base*(1+RevDiff)*(1+RevEx)`, entries per MeasPEx group as on the CR6 but **at mo
 AM25T: `f,f,f,500,total,400+200*chan` with `f = floor100(50+60m + m*(51136+s))` and `total =
 floor100(50+60m + reps*m*(51136+80+s))`. The `Resistance`/`ACPower`/`CS616` instructions do not
 exist on these loggers.
+
+Round 16 additions (all four loggers, oracle-confirmed): costs are 32-bit values printed signed and
+truncated toward zero to a multiple of 100 (a 1,000,000-rep CR1000X `VoltSe` prints -109967100);
+Therm107/108/109 count `2*Reps` measurements modulo 512; bridge and AM25T entries are linear for
+any Reps (the old "Reps > 1000: no entry" rule was a CR6 probing artefact). Variable arguments in
+the cost-relevant positions (Reps, Range, Settle, Integ, Timeout, delay) are compile errors in the
+real exe ("Variable illegal in Parameter", "Measurement delay must have constant interval"), so
+"timing for variable arguments" is not a timing rule: state arguments (`PortSet(C1,var)`,
+`ExciteV(Vx1,var,10)`, `SW12(.., var)`) may be variables and cost the same.
