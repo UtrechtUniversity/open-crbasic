@@ -1,0 +1,359 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unmatched_sequence_closers-0",
+   "logger": "cr6",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing DialSequence()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-1",
+   "logger": "cr6",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing DialSequence()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-2",
+   "logger": "cr6",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nDialSequence(3)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Missing DialSequence()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-3",
+   "logger": "cr6",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndModemHangup\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing ModemHangup()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-4",
+   "logger": "cr6",
+   "source": "Public x, Zz\nEndVoice\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndVoice without Voice\nline 3: EndVoice without Voice"
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-5",
+   "logger": "cr6",
+   "source": "Public x, Zz\nDialSequence(2)\nEndVoice\nEndModemHangup\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndVoice without Voice\nline 4: Missing ModemHangup()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-6",
+   "logger": "cr6",
+   "source": "Public x, Zz\nBeginProg\n  EndDialSequence(Zz)\n  y = Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing DialSequence().\nline 4: Invalid, or out of place expression:   y = Zork."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-7",
+   "logger": "cr6",
+   "source": "Public x, Zz\nSub S1\n  EndModemHangup\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing ModemHangup()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-8",
+   "logger": "cr6",
+   "source": "Public x, Zz\nBeginProg\n  Scan(1,Sec,0,0)\n    EndDialSequence(Zz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing DialSequence()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-9",
+   "logger": "cr6",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nx = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing DialSequence().\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-10",
+   "logger": "cr6",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndDialSequence(Zz)\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing DialSequence()."
+  },
+  {
+   "id": "cr6-unmatched_sequence_closers-11",
+   "logger": "cr6",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nCallTable(Nope)\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing DialSequence().\nline 3: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-0",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing DialSequence()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-1",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing DialSequence()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-2",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nDialSequence(3)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Missing DialSequence()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-3",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndModemHangup\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing ModemHangup()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-4",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nEndVoice\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndVoice without Voice\nline 3: EndVoice without Voice"
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-5",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nDialSequence(2)\nEndVoice\nEndModemHangup\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndVoice without Voice\nline 4: Missing ModemHangup()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-6",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nBeginProg\n  EndDialSequence(Zz)\n  y = Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing DialSequence().\nline 4: Invalid, or out of place expression:   y = Zork."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-7",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nSub S1\n  EndModemHangup\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing ModemHangup()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-8",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nBeginProg\n  Scan(1,Sec,0,0)\n    EndDialSequence(Zz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing DialSequence()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-9",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nx = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing DialSequence().\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-10",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndDialSequence(Zz)\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing DialSequence()."
+  },
+  {
+   "id": "cr1000x-unmatched_sequence_closers-11",
+   "logger": "cr1000x",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nCallTable(Nope)\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing DialSequence().\nline 3: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-0",
+   "logger": "cr300",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DialSequence is not defined.\nline 2: Invalid, or out of place expression: DialSequence(2)\n.\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: EndDialSequence is not defined.\nline 4: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-1",
+   "logger": "cr300",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndDialSequence is not defined.\nline 2: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-2",
+   "logger": "cr300",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nDialSequence(3)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DialSequence is not defined.\nline 2: Invalid, or out of place expression: DialSequence(2)\n.\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: DialSequence is not defined.\nline 4: Invalid, or out of place expression: DialSequence(3)\n.\nline 5: EndDialSequence is not defined.\nline 5: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 6: EndDialSequence is not defined.\nline 6: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-3",
+   "logger": "cr300",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndModemHangup\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ModemHangup is not defined.\nline 2: Invalid, or out of place expression: ModemHangup(ComRS232)\n.\nline 3: EndModemHangup is not defined.\nline 3: Invalid, or out of place expression: EndModemHangup\n.\nline 4: EndModemHangup is not defined.\nline 4: Invalid, or out of place expression: EndModemHangup\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-4",
+   "logger": "cr300",
+   "source": "Public x, Zz\nEndVoice\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndVoice is not defined.\nline 2: Invalid, or out of place expression: EndVoice\n.\nline 3: EndVoice is not defined.\nline 3: Invalid, or out of place expression: EndVoice\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-5",
+   "logger": "cr300",
+   "source": "Public x, Zz\nDialSequence(2)\nEndVoice\nEndModemHangup\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DialSequence is not defined.\nline 2: Invalid, or out of place expression: DialSequence(2)\n.\nline 3: EndVoice is not defined.\nline 3: Invalid, or out of place expression: EndVoice\n.\nline 4: EndModemHangup is not defined.\nline 4: Invalid, or out of place expression: EndModemHangup\n.\nline 5: EndDialSequence is not defined.\nline 5: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-6",
+   "logger": "cr300",
+   "source": "Public x, Zz\nBeginProg\n  EndDialSequence(Zz)\n  y = Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression:   EndDialSequence(Zz)\n.\nline 4: y is not defined.\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-7",
+   "logger": "cr300",
+   "source": "Public x, Zz\nSub S1\n  EndModemHangup\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndModemHangup is not defined.\nline 3: Invalid, or out of place expression:   EndModemHangup\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-8",
+   "logger": "cr300",
+   "source": "Public x, Zz\nBeginProg\n  Scan(1,Sec,0,0)\n    EndDialSequence(Zz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndDialSequence is not defined.\nline 4: Invalid, or out of place expression:     EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-9",
+   "logger": "cr300",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nx = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndDialSequence is not defined.\nline 2: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-10",
+   "logger": "cr300",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndDialSequence(Zz)\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ModemHangup is not defined.\nline 2: Invalid, or out of place expression: ModemHangup(ComRS232)\n.\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: EndModemHangup is not defined.\nline 4: Invalid, or out of place expression: EndModemHangup\n."
+  },
+  {
+   "id": "cr300-unmatched_sequence_closers-11",
+   "logger": "cr300",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nCallTable(Nope)\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndDialSequence is not defined.\nline 2: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: EndVoice is not defined.\nline 4: Invalid, or out of place expression: EndVoice\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-0",
+   "logger": "cr350",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DialSequence is not defined.\nline 2: Invalid, or out of place expression: DialSequence(2)\n.\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: EndDialSequence is not defined.\nline 4: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-1",
+   "logger": "cr350",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndDialSequence is not defined.\nline 2: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-2",
+   "logger": "cr350",
+   "source": "Public x, Zz\nDialSequence(2)\nEndDialSequence(Zz)\nDialSequence(3)\nEndDialSequence(Zz)\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DialSequence is not defined.\nline 2: Invalid, or out of place expression: DialSequence(2)\n.\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: DialSequence is not defined.\nline 4: Invalid, or out of place expression: DialSequence(3)\n.\nline 5: EndDialSequence is not defined.\nline 5: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 6: EndDialSequence is not defined.\nline 6: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-3",
+   "logger": "cr350",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndModemHangup\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ModemHangup is not defined.\nline 2: Invalid, or out of place expression: ModemHangup(ComRS232)\n.\nline 3: EndModemHangup is not defined.\nline 3: Invalid, or out of place expression: EndModemHangup\n.\nline 4: EndModemHangup is not defined.\nline 4: Invalid, or out of place expression: EndModemHangup\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-4",
+   "logger": "cr350",
+   "source": "Public x, Zz\nEndVoice\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndVoice is not defined.\nline 2: Invalid, or out of place expression: EndVoice\n.\nline 3: EndVoice is not defined.\nline 3: Invalid, or out of place expression: EndVoice\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-5",
+   "logger": "cr350",
+   "source": "Public x, Zz\nDialSequence(2)\nEndVoice\nEndModemHangup\nEndDialSequence(Zz)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DialSequence is not defined.\nline 2: Invalid, or out of place expression: DialSequence(2)\n.\nline 3: EndVoice is not defined.\nline 3: Invalid, or out of place expression: EndVoice\n.\nline 4: EndModemHangup is not defined.\nline 4: Invalid, or out of place expression: EndModemHangup\n.\nline 5: EndDialSequence is not defined.\nline 5: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-6",
+   "logger": "cr350",
+   "source": "Public x, Zz\nBeginProg\n  EndDialSequence(Zz)\n  y = Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression:   EndDialSequence(Zz)\n.\nline 4: y is not defined.\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-7",
+   "logger": "cr350",
+   "source": "Public x, Zz\nSub S1\n  EndModemHangup\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndModemHangup is not defined.\nline 3: Invalid, or out of place expression:   EndModemHangup\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-8",
+   "logger": "cr350",
+   "source": "Public x, Zz\nBeginProg\n  Scan(1,Sec,0,0)\n    EndDialSequence(Zz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndDialSequence is not defined.\nline 4: Invalid, or out of place expression:     EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-9",
+   "logger": "cr350",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nx = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndDialSequence is not defined.\nline 2: Invalid, or out of place expression: EndDialSequence(Zz)\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-10",
+   "logger": "cr350",
+   "source": "Public x, Zz\nModemHangup(ComRS232)\nEndDialSequence(Zz)\nEndModemHangup\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ModemHangup is not defined.\nline 2: Invalid, or out of place expression: ModemHangup(ComRS232)\n.\nline 3: EndDialSequence is not defined.\nline 3: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: EndModemHangup is not defined.\nline 4: Invalid, or out of place expression: EndModemHangup\n."
+  },
+  {
+   "id": "cr350-unmatched_sequence_closers-11",
+   "logger": "cr350",
+   "source": "Public x, Zz\nEndDialSequence(Zz)\nCallTable(Nope)\nEndVoice\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndDialSequence is not defined.\nline 2: Invalid, or out of place expression: EndDialSequence(Zz)\n.\nline 4: EndVoice is not defined.\nline 4: Invalid, or out of place expression: EndVoice\n."
+  }
+ ]
+}

@@ -509,6 +509,12 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
                 diags.error(st.line, f"{st.args[0].name} already assigned Units {units}.", st.file)
 
 
+_SEQUENCE_OPENERS = frozenset({"DIALSEQUENCE", "MODEMHANGUP"})
+_SEQUENCE_CLOSERS = {"ENDDIALSEQUENCE": ("Missing DialSequence().", "DIALSEQUENCE"),
+                     "ENDMODEMHANGUP": ("Missing ModemHangup().", "MODEMHANGUP"),
+                     "ENDVOICE": ("EndVoice without Voice", None)}
+
+
 def check_table_and_menu_placement(program: S.Program, profile: Profile,
                                    diags: Diagnostics, env=None) -> int | None:
     """Pass 2 (oracle, suppressed by a pass-1 error): a second `DataInterval` in one table ->
@@ -537,6 +543,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
     item_bool = False              # the current `MenuItem`/`MenuRecompile` variable is Boolean
     item_kind: str | None = None   # "int" / "float" / "string": what its `MenuPick` values must be
     first_is_const = False
+    sequences: dict[str, int] = {}   # open DialSequence / ModemHangup blocks
     variables = symbols.declared_variable_names(program)
     types = symbols.declared_variable_types(program)
     if env is None:
@@ -578,6 +585,17 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                             st.file)
         elif kw not in profile.instructions:
             continue
+        elif not profile.single_pass and kw in _SEQUENCE_CLOSERS:
+            # an `EndDialSequence`/`EndModemHangup`/`EndVoice` with no opener (CR6/CR1000X, oracle
+            # 2026-10-13, `docs/checker.md` "Round 16 ... second worker"): printed in line order,
+            # every one, and pass 2 goes on
+            message, opener = _SEQUENCE_CLOSERS[kw]
+            if opener and sequences.get(opener):
+                sequences[opener] -= 1
+            else:
+                diags.error(st.line, message, st.file)
+        elif not profile.single_pass and kw in _SEQUENCE_OPENERS:
+            sequences[kw] = sequences.get(kw, 0) + 1
         elif kw == "DISPLAYMENU" and menus:
             # a second `DisplayMenu` before `EndMenu` (the first stays open; fuzz-found, oracle)
             diags.error(st.line, "DisplayMenu without EndMenu.", st.file)

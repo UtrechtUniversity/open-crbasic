@@ -6815,3 +6815,17 @@ at the `Alias` line, with or without `BeginProg` after (ours accepted the comple
 declaration in the file, not at those above the `Alias`). An out-of-range index on such a name prints the same single line;
 a second `Alias` of the same name after the declaration is judged on its own. `structure.check_pass1`
 (`first_decl`, declaration position versus `Alias` position; only the "declared later and not earlier" case is changed).
+
+### `EndDialSequence`/`EndModemHangup`/`EndVoice` with no opener, CR6/CR1000X (fixture `tests/fixtures/r16_unmatched_sequence_closers.json`)
+
+Oracle 2026-10-13, 48 cases on all four loggers. `EndDialSequence(x)` with no open `DialSequence` is `Missing DialSequence().`,
+`EndModemHangup` with no open `ModemHangup` is `Missing ModemHangup().`, `EndVoice` (there is no `Voice` instruction) is
+`EndVoice without Voice`; each closer prints, in line order, in any context (top level, `BeginProg`, `Scan`, `Sub`), and
+pass 2 goes on (a later `y = Zork` is still reported; hidden by a pass-1 error like other pass-2 messages). The closers are
+independent: `DialSequence(2)` / `EndModemHangup` is still `Missing ModemHangup().`; a second closer after a closed pair
+is reported. CR300/CR350 keep `EndDialSequence is not defined.`. `instr_data.check_table_and_menu_placement`
+(`_SEQUENCE_CLOSERS`). Not done: a nested `DialSequence` (`Missing EndDialSequence().` + `DialSequence is declared in the
+middle of an executing sequence`) or `ModemHangup` (`ModemHangup(1) previously declared.`), `DialSequence` inside
+`BeginProg`/`Scan` (`... declared in the middle of an executing sequence`), `EndModemHangup` in `BeginProg` (adds
+`BeginProg within a ModemHangup sequence.`), an `EndDialSequence` inside a `DataTable` (then `Sample illegally occurs
+before BeginProg.`); `EndModemHangup(x)`/`EndVoice(x)` (`Too many parameters:  x.`).
