@@ -360,6 +360,59 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef | S.If, list[str]]
     return None
 
 
+def check_apply_restart_sequence(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`ApplyAndRestartSequence` / `EndApplyAndRestartSequence` bookkeeping (oracle, all four
+    loggers, 2026-10-13, docs/checker.md "Round 16 message-diff families"): an `End...` before any
+    `ApplyAndRestartSequence` is `ApplyAndRestartSequence not declared`; a second `Apply...` (closed
+    or not) is `ApplyAndRestartSequence already declared`; a first one in executable code (the
+    contexts of `first_misplaced_sub`) is `ApplyAndRestartSequence is declared in the middle of an
+    executing sequence` and ends the compile there."""
+    declared = open_sub = in_table = before_sequence = False
+    conditional_depth = active_scans = for_do_depth = 0
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        if kw == "APPLYANDRESTARTSEQUENCE":
+            executing = (open_sub or in_table or before_sequence or active_scans > 0
+                         or conditional_depth > 0 or for_do_depth > 0)
+            if declared:
+                diags.error(stmt.line, "ApplyAndRestartSequence already declared", stmt.file)
+            elif executing:
+                diags.error(stmt.line, "ApplyAndRestartSequence is declared in the middle of an "
+                            "executing sequence", stmt.file)
+                return
+            declared = True
+        elif kw == "ENDAPPLYANDRESTARTSEQUENCE":
+            if not declared:
+                diags.error(stmt.line, "ApplyAndRestartSequence not declared", stmt.file)
+        elif isinstance(stmt, S.SubDef):
+            open_sub = True
+        elif _ends_sub(stmt, kw):
+            open_sub, conditional_depth = False, 0
+        elif kw == "BEGINPROG":
+            before_sequence = True
+        elif kw in ("ENDPROG", "SLOWSEQUENCE"):
+            before_sequence = False
+        elif kw == "SCAN":
+            active_scans += 1
+            before_sequence = False
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            active_scans = max(0, active_scans - 1)
+        elif kw == "DATATABLE":
+            in_table = True
+        elif kw == "ENDTABLE":
+            in_table = False
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+            conditional_depth += 1
+        elif kw == "ENDSELECT" or kw == "ENDIF" or (
+                kw == "END" and _block_word(getattr(stmt, "args", []) or []) in ("SELECT", "IF")):
+            conditional_depth = max(0, conditional_depth - 1)
+        elif kw in ("FOR", "DO", "WHILE"):
+            for_do_depth += 1
+        elif kw in ("LOOP", "WEND") or (kw == "NEXT" and _block_word(
+                getattr(stmt, "args", []) or []) != "SCAN"):
+            for_do_depth = max(0, for_do_depth - 1)
+
+
 def first_misplaced_data_table(program: S.Program, profile) -> S.Instruction | None:
     """First `DataTable` declared in executable code, if any.
 

@@ -1,0 +1,1003 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-apply_restart_sequence-ok",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-ok",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-ok",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-ok",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-end_only",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-end_only",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-end_only",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-end_only",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-end_only_after",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-end_only_after",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-end_only_after",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-end_only_after",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-two_apply",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-two_apply",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-two_apply",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-two_apply",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-unclosed",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-unclosed",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-unclosed",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-unclosed",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nx=1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-unclosed_eof",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\nx=1\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-unclosed_eof",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\nx=1\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-unclosed_eof",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\nx=1\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-unclosed_eof",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\nx=1\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-in_prog",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-in_prog",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-in_prog",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-in_prog",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-in_prog_end",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-in_prog_end",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-in_prog_end",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-in_prog_end",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nx=1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-after_prog",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nEndProg\nEndApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-after_prog",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nEndProg\nEndApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-after_prog",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nEndProg\nEndApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-after_prog",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nEndProg\nEndApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-sub",
+   "logger": "cr6",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-sub",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-sub",
+   "logger": "cr300",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-sub",
+   "logger": "cr350",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-p1_before",
+   "logger": "cr6",
+   "source": "Public x As Bogus\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-p1_before",
+   "logger": "cr1000x",
+   "source": "Public x As Bogus\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-p1_before",
+   "logger": "cr300",
+   "source": "Public x As Bogus\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-p1_before",
+   "logger": "cr350",
+   "source": "Public x As Bogus\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-p1_after",
+   "logger": "cr6",
+   "source": "EndApplyAndRestartSequence\nPublic x As Bogus\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-p1_after",
+   "logger": "cr1000x",
+   "source": "EndApplyAndRestartSequence\nPublic x As Bogus\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-p1_after",
+   "logger": "cr300",
+   "source": "EndApplyAndRestartSequence\nPublic x As Bogus\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-p1_after",
+   "logger": "cr350",
+   "source": "EndApplyAndRestartSequence\nPublic x As Bogus\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bogus not supported"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-undef_after",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\ny = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 4: Invalid, or out of place expression: y = 1."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-undef_after",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\ny = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 4: Invalid, or out of place expression: y = 1."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-undef_after",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\ny = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: y is not defined."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-undef_after",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\ny = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: y is not defined."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-undef_before",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\ny = 1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: y = 1.\nline 4: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-undef_before",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\ny = 1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: y = 1.\nline 4: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-undef_before",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\ny = 1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: y is not defined."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-undef_before",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\ny = 1\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: y is not defined."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-tierc",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nSample(1,x,FP2)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-tierc",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nSample(1,x,FP2)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-tierc",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nSample(1,x,FP2)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-tierc",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nSample(1,x,FP2)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-tierc2",
+   "logger": "cr6",
+   "source": "Public x\nSample(1,x,FP2)\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-tierc2",
+   "logger": "cr1000x",
+   "source": "Public x\nSample(1,x,FP2)\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-tierc2",
+   "logger": "cr300",
+   "source": "Public x\nSample(1,x,FP2)\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-tierc2",
+   "logger": "cr350",
+   "source": "Public x\nSample(1,x,FP2)\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-tierc3",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nPortSet(99,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 4: Invalid port 99, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-tierc3",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nPortSet(99,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 4: Invalid port 99, use C1..C8."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-tierc3",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nPortSet(99,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-tierc3",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nPortSet(99,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 4: Invalid port specified 99"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-two_end",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-two_end",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-two_end",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-two_end",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-noprog",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-noprog",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-noprog",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-noprog",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-unknown",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nBogus(1)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: Invalid, or out of place expression: Bogus(1).\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-unknown",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nBogus(1)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared\nline 3: Invalid, or out of place expression: Bogus(1).\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-unknown",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nBogus(1)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bogus is not defined.\nline 3: Invalid, or out of place expression: Bogus(1)\n."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-unknown",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nBogus(1)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bogus is not defined.\nline 3: Invalid, or out of place expression: Bogus(1)\n."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-inscan",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nApplyAndRestartSequence\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-inscan",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nApplyAndRestartSequence\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-inscan",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nApplyAndRestartSequence\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-inscan",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nApplyAndRestartSequence\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-unclosed_if",
+   "logger": "cr6",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nIf x Then\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-unclosed_if",
+   "logger": "cr1000x",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nIf x Then\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-unclosed_if",
+   "logger": "cr300",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nIf x Then\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-unclosed_if",
+   "logger": "cr350",
+   "source": "Public x\nEndApplyAndRestartSequence\nBeginProg\nIf x Then\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-apply_in_if",
+   "logger": "cr6",
+   "source": "Public x\nIf x Then\nApplyAndRestartSequence\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-apply_in_if",
+   "logger": "cr1000x",
+   "source": "Public x\nIf x Then\nApplyAndRestartSequence\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-apply_in_if",
+   "logger": "cr300",
+   "source": "Public x\nIf x Then\nApplyAndRestartSequence\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-apply_in_if",
+   "logger": "cr350",
+   "source": "Public x\nIf x Then\nApplyAndRestartSequence\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a1",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a1",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a1",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a1",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a2",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a2",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a2",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a2",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a3",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a3",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a3",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a3",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a4",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a4",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a4",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a4",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a5",
+   "logger": "cr6",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndSub\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a5",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndSub\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a5",
+   "logger": "cr300",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndSub\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a5",
+   "logger": "cr350",
+   "source": "Public x\nSub S\nApplyAndRestartSequence\nEndSub\nBeginProg\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a6",
+   "logger": "cr6",
+   "source": "Public x\nSub S\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a6",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a6",
+   "logger": "cr300",
+   "source": "Public x\nSub S\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a6",
+   "logger": "cr350",
+   "source": "Public x\nSub S\nEndApplyAndRestartSequence\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a7",
+   "logger": "cr6",
+   "source": "Public x\nFunction F\nApplyAndRestartSequence\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a7",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F\nApplyAndRestartSequence\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a7",
+   "logger": "cr300",
+   "source": "Public x\nFunction F\nApplyAndRestartSequence\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a7",
+   "logger": "cr350",
+   "source": "Public x\nFunction F\nApplyAndRestartSequence\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a9",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a9",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a9",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a9",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nEndProg\nApplyAndRestartSequence\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a10",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a10",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a10",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a10",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nBeginProg\nApplyAndRestartSequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a11",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nApplyAndRestartSequence\nSample(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a11",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nApplyAndRestartSequence\nSample(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a11",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\nApplyAndRestartSequence\nSample(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a11",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\nApplyAndRestartSequence\nSample(1,x,FP2)\nEndTable\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ApplyAndRestartSequence is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-a12",
+   "logger": "cr6",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-a12",
+   "logger": "cr1000x",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-a12",
+   "logger": "cr300",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-a12",
+   "logger": "cr350",
+   "source": "Public x\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nApplyAndRestartSequence\nEndApplyAndRestartSequence\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ApplyAndRestartSequence already declared"
+  },
+  {
+   "id": "cr6-apply_restart_sequence-frag_end",
+   "logger": "cr6",
+   "source": "EndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr1000x-apply_restart_sequence-frag_end",
+   "logger": "cr1000x",
+   "source": "EndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr300-apply_restart_sequence-frag_end",
+   "logger": "cr300",
+   "source": "EndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: ApplyAndRestartSequence not declared"
+  },
+  {
+   "id": "cr350-apply_restart_sequence-frag_end",
+   "logger": "cr350",
+   "source": "EndApplyAndRestartSequence\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: ApplyAndRestartSequence not declared"
+  }
+ ]
+}

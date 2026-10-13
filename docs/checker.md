@@ -6701,3 +6701,14 @@ All four loggers (oracle 2026-10-13, 72 cases):
 - `GOESTable` alone does not produce a field: `DataTable..GOESTable(..)..EndTable` is `Table T declared with no output
   fields.` (it was in `_FIELD_PRODUCING_INSTRUCTIONS`). A `GOESField` before the table's `GOESTable` crashes the real
   compiler (exit 5), no verdict. Implemented in `instr_data.check_table_structure`.
+
+### `ApplyAndRestartSequence` bookkeeping (fixture `tests/fixtures/r16_apply_restart_sequence.json`)
+
+All four loggers (oracle 2026-10-13, 140 cases). `EndApplyAndRestartSequence` before any `ApplyAndRestartSequence` is
+`ApplyAndRestartSequence not declared` (each one; a second `End` after a declared `Apply` is accepted); a second `Apply`
+(closed or not, also in `BeginProg`) is `ApplyAndRestartSequence already declared`; a first `Apply` in executable code
+(contexts of `first_misplaced_sub`: Sub/Function, DataTable, BeginProg before the first Scan, Scan, If/For/Do) is
+`... is declared in the middle of an executing sequence` and ends the compile there. They are tier-C-like: hidden by
+pass-1 errors and by CR300/CR350 name errors, printed in line order with other tier-C findings, they replace
+`No BeginProg in Program.` and the unclosed-block summary. `structure.check_apply_restart_sequence`. Not done: the
+instructions with an argument (`Too many parameters:  1.`).
