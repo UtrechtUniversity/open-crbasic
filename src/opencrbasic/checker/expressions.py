@@ -348,6 +348,19 @@ _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
 # -> `Parameter must be a constant integer`; `Hr`, `1+1`, `-1` compile on CR300 and also CR6/CR1000X
 # for `-1` only the range message `usec delay before transmit is illegal`, not modelled).
 _CONST_INTEGER_BAD_ARGS = {"TCPOPEN": frozenset({2}), "SERIALOPEN": frozenset({3, 4})}
+# The trailing `TimeOut` argument of `HTTPPut` (9th) and `FTPClient` (11th): a string (also `""`),
+# `NAN` or a float literal is `Parameter must be a constant integer`, before the argument-count
+# check (oracle, all four loggers, 2026-10-13). Only the type is modelled: a 32-bit-overflowing
+# literal differs by logger (CR6/CR1000X constant-integer, CR300/CR350 `Parameter TimeOut cannot
+# be negative`), a variable or function call there is also constant-integer but needs the symbol
+# table, and the negative-value message is not modelled.
+_CONST_INTEGER_TYPE_ARGS = {"HTTPPUT": frozenset({8}), "FTPCLIENT": frozenset({10})}
+
+
+def _not_integer_type(arg) -> bool:
+    if isinstance(arg, S.Number):
+        return isinstance(arg.value, float)
+    return isinstance(arg, S.String) or (isinstance(arg, S.Name) and arg.name.upper() == "NAN")
 
 
 def _not_constant_integer(arg) -> bool:
@@ -1767,6 +1780,8 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
            for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
         return "constint"
     if any(i < n and _not_constant_integer(args[i]) for i in _CONST_INTEGER_BAD_ARGS.get(upper, ())):
+        return "constint"
+    if any(i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())):
         return "constint"
     if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
             and isinstance(args[-1], S.String)):
