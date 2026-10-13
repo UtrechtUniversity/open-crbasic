@@ -1,0 +1,40 @@
+{
+ "cases": [
+  {
+   "id": "cr300_unknown_instr_hides",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    Nope(1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": ""
+  },
+  {
+   "id": "cr300_semaphore_error_keeps",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    SemaphoreGet(9)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: PortSet = 100"
+  },
+  {
+   "id": "cr300_too_many_params_hides",
+   "logger": "cr300",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    PortSet(C1,1,1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": ""
+  },
+  {
+   "id": "cr350_unknown_instr_hides",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    Nope(1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": ""
+  },
+  {
+   "id": "cr350_semaphore_error_keeps",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    SemaphoreGet(9)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": "line 6: Scan: 0\nline 7: PortSet = 100"
+  },
+  {
+   "id": "cr350_too_many_params_hides",
+   "logger": "cr350",
+   "source": "Public x(8), y(8), z(8), v1,v2,v3, s As String * 20\nDataTable(T,True,-1)\n  Sample(1,x(1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n    PortSet(C1,1,1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_times": ""
+  }
+ ]
+}

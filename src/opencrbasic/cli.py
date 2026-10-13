@@ -17,6 +17,7 @@ exit status 0 on success, 1 on failure.
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -129,11 +130,21 @@ def _hides_times(program_ast, diags, main) -> bool:
     return False
 
 
-def _pass1_ok(result) -> bool:
+# CR300/CR350 compile in one pass; the errors below come from an instruction's own argument checks
+# and do not hide `[Times]` (CHM corpus, oracle 2026-10-12: every other error kind does).
+_SINGLE_PASS_KEEPS = re.compile(
+    r"FileManage invalid drive|Invalid file type option|Illegal Semaphore|"
+    r"Invalid drive or no drive specified|IF or SELECT without EndIf|Could not find \S+\.BytesPerRecord|"
+    r"Illegal dimension|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)")
+
+
+def _pass1_ok(result, profile=None) -> bool:
     """`-t`'s `[Times]` entries follow the checker's own pass-1 gate, not `result.ok`:
     `dhcprenew_1.CR6` (a CHM corpus example) fails on a pass-2-only channel-range error yet still
     gets a full `[Times]` section, while `readonly_1.CR6` (a pass-1 parse error) gets none
     (`docs/cli.md` "-t"). The checker records that gate as `result.pass1_errors`."""
+    if profile is not None and profile.single_pass:
+        return not any(not _SINGLE_PASS_KEEPS.search(d.message) for d in result.diagnostics.errors)
     return result.ok if result.pass1_errors is None else not result.pass1_errors
 
 
@@ -195,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
             program_ast = None
 
     times_entries: list[str] = []
-    if opts["t"] and program_ast is not None and _pass1_ok(result) and not _hides_times(program_ast, result.diagnostics, program.name):
+    if opts["t"] and program_ast is not None and _pass1_ok(result, profile) and not _hides_times(program_ast, result.diagnostics, program.name):
         from . import timing
         try:
             times_entries = timing.times_lines(program_ast, profile, program.name)
