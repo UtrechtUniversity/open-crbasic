@@ -3410,6 +3410,13 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
         if len(items) + len(tail) == len(stmt.args):
             items, quirk = items + tail, quirk + [False] * (len(tail) - 1) + [stmt.at_eol]
             last_tail = len(items) - 1
+    if items is None and _group_end(stmt.text, m.end()) is None and stmt.text[m.end()] == "(":
+        # `Call S(A,Zork` -- the paren runs off the end of the line and compiles; the last argument
+        # is echoed like a trailing tail piece: trailing blanks kept, newline only at the real end
+        # of line (oracle, 2026-10-13, all four loggers, `docs/checker.md` "Round 16")
+        items = _split_top(stmt.text[m.end() + 1:])
+        quirk = [False] * (len(items) - 1) + [stmt.at_eol]
+        last_tail = len(items) - 1
     if items is None or len(items) != len(stmt.args):
         return
     for i, (arg, raw, nl) in enumerate(zip(stmt.args, items, quirk)):

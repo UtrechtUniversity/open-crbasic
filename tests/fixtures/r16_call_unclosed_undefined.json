@@ -1,0 +1,415 @@
+{
+ "observation_date": "2026-10-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-call_unclosed_undefined-0",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID\n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-1",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq.\nline 8: Invalid symbol in expression: Z_ID\n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-2",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID '\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID ."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-3",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  ' c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID  ."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-4",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID  \n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-5",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Q+1\n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-6",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-7",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-8",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-9",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID\n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-10",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Zq,Zr\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq.\nline 8: Invalid symbol in expression: Zr\n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-11",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(Mq,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Mq."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-12",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Q+1  \n."
+  },
+  {
+   "id": "cr6-call_unclosed_undefined-13",
+   "logger": "cr6",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-14",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID\n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-15",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq.\nline 8: Invalid symbol in expression: Z_ID\n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-16",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID '\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID ."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-17",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  ' c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID  ."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-18",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID  \n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-19",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Q+1\n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-20",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-21",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-22",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-23",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Z_ID\n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-24",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Zq,Zr\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq.\nline 8: Invalid symbol in expression: Zr\n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-25",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(Mq,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Mq."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-26",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Q+1  \n."
+  },
+  {
+   "id": "cr1000x-call_unclosed_undefined-27",
+   "logger": "cr1000x",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zq."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-28",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-29",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined.\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-30",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID '\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-31",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  ' c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-32",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-33",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-34",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-35",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-36",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-37",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-38",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Zq,Zr\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined.\nline 8: Zr is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-39",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(Mq,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Mq is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-40",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+  },
+  {
+   "id": "cr300-call_unclosed_undefined-41",
+   "logger": "cr300",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-42",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-43",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined.\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-44",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID '\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-45",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  ' c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-46",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-47",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-48",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-49",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-50",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Z_ID)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-51",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Z,Z_ID\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Z_ID is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-52",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nrun(M,Zq,Zr\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined.\nline 8: Zr is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-53",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(Mq,Z,3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Mq is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-54",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Z,Q+1  \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+  },
+  {
+   "id": "cr350-call_unclosed_undefined-55",
+   "logger": "cr350",
+   "source": "Public Z As Float\nPublic M As Float\nSub run(RM As Float, source As Float, sid)\n  RM = source + sid\nEndSub\nBeginProg\nScan (1,Sec,0,0)\nCall run(M,Zq,3 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zq is not defined."
+  }
+ ]
+}

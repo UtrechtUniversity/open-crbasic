@@ -6756,3 +6756,13 @@ Everything between the first `Units` target and the `=` is ignored when the targ
 trailing comma is ignored. Not modelled: `Units 3 Q = ms` (`Can't assign units to 3`), `Units = ms` (`Missing or illegal
 variable name in Units declaration.`), duplicates in one list (`PPS already assigned Units ms.` twice). `parser._parse_units_segment`,
 `instr_data.check_units_targets`.
+
+### Undefined names in an unclosed `Sub` call (all four loggers, round 16)
+
+Fixture `r16_call_unclosed_undefined.json` (`structure._report_call_arg_names`). `Call Sub(A,B,Zork` with the `)` missing at the
+end of the line compiles when every name resolves; an undefined name in it is reported exactly as in the closed call
+(CR6/CR1000X `Invalid symbol in expression: <arg>.`, CR300/CR350 `Zork is not defined.`), the last argument echoed like a
+tail piece: trailing blanks kept, `\n` before the `.` only at the real end of line (`Z_ID .` before a `'` comment).
+Not modelled (pre-existing, separate): `Call S(A,Z,3 : Z = 1` compiles on all four loggers (the colon ends the call) but
+we reject it; `Call S(A,Z,Z_ID +`, `Call S(A,Z,Q(1`, and a trailing comma with undefined names give other messages.
+Fuzz reproducer cr1000x `false_accept/58c9cc38619c` (`Call run(Z_min_sub,Z,Z_ID` after the `Const` was deleted).
