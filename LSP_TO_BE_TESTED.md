@@ -546,3 +546,39 @@ profiles); Remote-WSL for Linux. Source files unchanged; harness corrections are
   of the client's spelling; H-17 Remote-WSL watcher sends no event for a file in a new folder.
   Also: Workspace Trust is undocumented (the extension does not activate in an untrusted folder).
 - Not run: T-01 differential/replay/TDF gates, Windows benchmarks (H-11), visual checks, `py.exe`.
+
+## Local visual host report (2026-10-15, Windows 11 + Remote-WSL, f76901b2)
+
+[Results, screenshots and step logs](docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md).
+Visual complement of the `73479946` record (`opencrbasic/src` and `vscode/` unchanged since then).
+VS Code 1.142.0 test host in isolated profiles, theme Dark 2026; edits and commands through a
+step-file harness, screenshots taken at chosen moments, real left-clicks only (no keyboard).
+
+- **T-02/T-03 PASS (Windows, WSL):** Main.CR6 shows only its `Table Shunt_Data` warning; `x9 = = 1`
+  gives a red squiggle and a Problems entry on line 146 (0.97 s / 0.78 s), undo clears it; clicking
+  the Problems entry selects the range. T-03 token scopes and colours checked with the token inspector
+  on Windows (all expectations hold).
+- **T-04/H-02:** Windows: `pythonPath` change, palette "Restart Server" (clicked) and the command
+  restart without a toast. **Remote-WSL: one error toast** "Request textDocument/semanticTokens/full
+  failed. Error: Starting server failed" after the first `pythonPath` change, not in 3 repeats
+  (proposed H-18).
+- **T-12:** F2 refusal texts render inline for Scan, a string, a comment and a keyword; the rename box
+  renders on a valid name; Ctrl+. "Change to `counter`" applies by click; format refusal is an info
+  toast. The collision message is API-level only (no typing at click tier).
+- **T-09/T-15:** help hover with "Source: help page", signature highlight moving Dest/Reps/SEChan,
+  outline, breadcrumbs, folding chevrons, underlined include links, declaration colour settling 1-2.5 s
+  after an edit without a keystroke, hints aligned after `é😀`. VS Code's default
+  `editor.inlayHints.maximumLength` (43) cuts VoltSE hints after `SettlingTime…` (proposed H-20).
+- **T-18 PASS (Windows, WSL):** readable refusal tab, no toast, Small.CR6 output in the same window;
+  on WSL the tab title starts with `\` (proposed H-19).
+- **T-17 item 1 (GUI):** before the first analysis a `.`-triggered `Status.`/`Public.` shows no popup;
+  the next letter shows the fields only if the analysis has finished. On WSL the Status list once
+  appeared on its own at about 2.2 s. An explicit trigger shows "Loading..." and then VS Code's
+  word-based suggestions, not an empty list (proposed H-21). Keystroke to squiggle: Windows 0.80-2.81 s
+  (median 0.88), WSL 0.61-0.64 s. Windows first-analysis times grew during the session (cause not
+  established).
+- **T-16 item 8 (screen):** the out-of-glob entry stays in Problems until VS Code's `didClose`,
+  178 s after the tab closes (Windows and WSL), then disappears within 0.4 s.
+- **Workspace Trust:** a new untrusted folder gets no prompt, only the Restricted Mode banner; `.CR6`
+  opens as Plain Text and the extension shows "disabled because the current workspace is not trusted".
+- Not run: Ctrl+click, typed rename names, the token inspector on WSL, trusting the folder.
