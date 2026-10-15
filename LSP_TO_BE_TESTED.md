@@ -519,3 +519,30 @@ Show Compiler Output": the output tab shows the refusal `Cannot show compiler ou
 bytes, above the maxFileBytes limit of 200.` (readable, no error toast, no empty tab), and a small
 `.CR6` still shows its compiler output in the same window. Remove the setting afterwards. Accept
 when both are observed.
+
+## Local host report (2026-10-15, Windows 11 + WSL2 Ubuntu 24.04, 73479946)
+
+[Results, findings and raw evidence](docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md).
+First Windows and Linux record. VS Code 1.142.0 extension test host (API/protocol level, isolated
+profiles); Remote-WSL for Linux. Source files unchanged; harness corrections are host files in the record.
+
+- **T-18 PASS** on Windows and Remote-WSL: refusal text in the read-only tab, small file compiles
+  in the same window, compiler output equals `crbc` once the setting is removed.
+- **T-16 item 8 (F5) PASS** on Windows: the out-of-glob entry is published only under the client's
+  `file:///c%3A/...` URI and cleared after `didClose`; VS Code sends that `didClose` ~180 s after
+  the tab closes (also on WSL).
+- Windows: regression harness 26/26 (T-04, T-10, T-12, T-13 checks of 679f2f70); T-02 incl. H-01
+  lines 32-33, T-04 item 3 (space + `É` path), T-12 item 11 (rename/quick-fix URIs), T-09 smoke,
+  T-15 items 4/5 pass; T-14 VSIX installs, activates, shows Main's one warning, hover, uninstalls
+  (needs a trusted workspace). WSL: 24/26 (H-17), run 2 12/13 (harness assumption), T-11 15/15,
+  npm 30/30, full pytest 38009 passed / 507 skipped, idle benchmark within all three targets.
+- Repository verifier from WSL with the real exe:
+  `BUILD  host tests 119 pass | CRBasic 16/16 compiled, 6 warning(s) | repository pass`.
+- **Findings for the coordinator** (proposed H-11..H-17): H-11 Windows analysis workers stall while
+  an anonymous-pipe client is silent (tests, `lsp_bench`; not seen in VS Code); H-12
+  `LspClient.kill()` POSIX-only; H-13 `lsp_install_check.py` POSIX venv paths (Windows 7/9; 15/15
+  with Windows paths); H-14 CRLF working tree from `core.autocrlf` breaks 21 compiler tests; H-15
+  POSIX path in one positions test; H-16 server URIs for unopened files use `file:///c:/` regardless
+  of the client's spelling; H-17 Remote-WSL watcher sends no event for a file in a new folder.
+  Also: Workspace Trust is undocumented (the extension does not activate in an untrusted folder).
+- Not run: T-01 differential/replay/TDF gates, Windows benchmarks (H-11), visual checks, `py.exe`.
