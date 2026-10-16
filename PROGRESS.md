@@ -147,6 +147,24 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
+## Round 17 (2026-10-16, in progress)
+
+- Integrated on `claude/laughing-franklin-08z9vo` (local, not pushed): `ocb-r16-pending-fuzz`
+  (4 commits), the CR300/CR350 Lapses fix (6d3822d7, false reject 9354d3641c2a), falseacc2
+  546e8e77/84c70b74/49c6f23c/8afe88f8 and msgdiff2 db2c32f0/bae8bab0/60eea626/808fc8e8.
+  546e8e77 (HTTPPut/FTPClient TimeOut) is reverted (7c3b530e): it made two CR350 replay
+  reproducers false rejects (minimised `scratch/r17/ftp_false_reject_min.CR6`).
+- Gates at 00e3d006 (2026-10-16, macOS M4): pytest 38,888 passed / 311 skipped (`-m server` 163
+  passed at 6d3822d7); difftest unchanged (repo/chm exact cr6 16/506, cr1000x 16/506, cr300 6/505,
+  cr350 6/505); new fixtures audit 0 differing; `fuzz_replay` 3,158 reproducers: 2,348 exact, 69
+  false accepts, 0 false rejects, 707 message diffs, 18 mode diffs, 16 oracle errors
+  (`scratch/replay-r17d.json`).
+- Probed, not implemented: CR6/CR1000X `Out of memory.` from Lapses 8,254,784 for an FP2 table
+  (`docs/tdf-rules.md`, the unimplemented CR6 allocator).
+- Workers (Sonnet, briefs in `scratch/r17/`): W1 `ocb-r17-callcolon` (`Call S(A,Z,3 : Z = 1`
+  false reject), W2 `ocb-r17-optfirst` (`Calibrate(")` false reject, optional-first-parameter
+  instructions), W3 `ocb-r17-ftp-wips` (TimeOut rule with its gating, the two round-16 WIP commits).
+
 ## Resume here (2026-10-13, round 16 interrupted by machine shutdown)
 
 - Verified and pushed on `claude/laughing-franklin-08z9vo` (full pytest 38,202+ passed, difftest
