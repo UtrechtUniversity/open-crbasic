@@ -833,6 +833,15 @@ class _Parser:
                 # Its argument is read raw: `ESSInitialize(public")` and `ESSInitialize("public)`
                 # compile on all four loggers (oracle, 2026-09-28; a fuzz-found false reject).
                 return S.Unparsed(line, file, text=seg_text_raw.strip(), reason="empty statement")
+            m = re.match(r"\s*([A-Za-z_]\w*)", seg_text_raw)
+            rec = self.profile.instructions.get(m.group(1).upper()) if m else None
+            real = [c for c in rec["params"] if c not in (14, 32, 36, 46)] if rec else []
+            if (e.message == "unterminated string" and real and real[0] >= 100
+                    and seg_text_raw[e.col:e.col + 1] == '"'):
+                # An optional first parameter: the cut-off string is dropped and the rest read as
+                # the instruction (oracle, 2026-10-16: `Calibrate(")` compiles, `Calibrate(A,")`
+                # reports `Variable A out of bounds.`).
+                return self._parse_text_segment(seg_text_raw[:e.col].rstrip().rstrip(","), line, file)
             # An unterminated string is echoed verbatim, indentation and trailing spaces included
             # (oracle, 2026-09-28: `    S = "abc   .`).
             text = seg_text_raw if e.message == "unterminated string" else seg_text_raw.strip()

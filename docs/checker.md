@@ -2797,6 +2797,14 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
 - On CR300/CR350, `String without end quote` starts the `Too many parameters` cascade.
 - `ESSInitialize` reads its argument raw: `ESSInitialize(public")` and `ESSInitialize("public)`
   compile on all four loggers (a fuzz-found CR350 false reject before this).
+- Instructions whose first parameter is optional (`Calibrate`, `ConstTable`, `SequentialMode` and
+  `CPISwSyncMode` on CR6/CR1000X, per `profile.instructions`) drop the cut-off string and read the
+  rest as the instruction (oracle, 2026-10-16, all four loggers): `Calibrate(")` compiles,
+  `Calibrate(A,")` is `Variable A out of bounds.`, before `BeginProg` it is `Calibrate illegally
+  occurs before BeginProg.` (`parser._parse_text_segment`; fixtures `r17_optfirst_unterminated*.json`).
+  CR300/CR350 `SequentialMode`/`CPISwSyncMode` keep their own messages. Not covered:
+  `SlowSequence(")`, whose pre-`BeginProg` `Multiple BeginProgs.` is also missing for a bare
+  `SlowSequence`.
 
 Not done: `S = abc"`, where an undefined name comes first, and `ESSInitialize(X)` -> `Community
 Names parameter is of type string`. Replay: 847 of 1469 exact, no false rejects.
