@@ -1,0 +1,303 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r17_table_only_source-0",
+   "logger": "cr6",
+   "source": "Public x, y\nSample (1,x y,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-1",
+   "logger": "cr6",
+   "source": "Public x, y\nAverage (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-2",
+   "logger": "cr6",
+   "source": "Public x, y\nMaximum (1,x y,FP2,False,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-3",
+   "logger": "cr6",
+   "source": "Public x, y\nTotalize (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-5",
+   "logger": "cr6",
+   "source": "Public x, y\nSample (1,x +,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-8",
+   "logger": "cr6",
+   "source": "Public x, y\nSample (1 2,x,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r17_table_only_source-9",
+   "logger": "cr6",
+   "source": "Public x, y\nSample (1,x,FP2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: FP2 3."
+  },
+  {
+   "id": "cr6-r17_table_only_source-10",
+   "logger": "cr6",
+   "source": "Public x, y\nMedian (1,x y,10,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Median must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-11",
+   "logger": "cr6",
+   "source": "Public x, y\nStdDev (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: StdDev must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r17_table_only_source-13",
+   "logger": "cr6",
+   "source": "Public x, y\nDelay (x y)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x y.\nline 2: Variable illegal in Parameter: x y."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSample (1,x y,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nAverage (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nMaximum (1,x y,FP2,False,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nTotalize (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSample (1,x +,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSample (1 2,x,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSample (1,x,FP2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: FP2 3."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nMedian (1,x y,10,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Median must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nStdDev (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: StdDev must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-r17_table_only_source-13",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDelay (x y)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x y.\nline 2: Variable illegal in Parameter: x y."
+  },
+  {
+   "id": "cr300-r17_table_only_source-0",
+   "logger": "cr300",
+   "source": "Public x, y\nSample (1,x y,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-1",
+   "logger": "cr300",
+   "source": "Public x, y\nAverage (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-2",
+   "logger": "cr300",
+   "source": "Public x, y\nMaximum (1,x y,FP2,False,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-3",
+   "logger": "cr300",
+   "source": "Public x, y\nTotalize (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-5",
+   "logger": "cr300",
+   "source": "Public x, y\nSample (1,x +,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-8",
+   "logger": "cr300",
+   "source": "Public x, y\nSample (1 2,x,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r17_table_only_source-9",
+   "logger": "cr300",
+   "source": "Public x, y\nSample (1,x,FP2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: FP2 3.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r17_table_only_source-10",
+   "logger": "cr300",
+   "source": "Public x, y\nMedian (1,x y,10,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Median must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-11",
+   "logger": "cr300",
+   "source": "Public x, y\nStdDev (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: StdDev must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-r17_table_only_source-13",
+   "logger": "cr300",
+   "source": "Public x, y\nDelay (x y)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x y.\nline 2: Variable illegal in Parameter: x y.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r17_table_only_source-0",
+   "logger": "cr350",
+   "source": "Public x, y\nSample (1,x y,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-1",
+   "logger": "cr350",
+   "source": "Public x, y\nAverage (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-2",
+   "logger": "cr350",
+   "source": "Public x, y\nMaximum (1,x y,FP2,False,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Max must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-3",
+   "logger": "cr350",
+   "source": "Public x, y\nTotalize (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Totalize must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-5",
+   "logger": "cr350",
+   "source": "Public x, y\nSample (1,x +,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-8",
+   "logger": "cr350",
+   "source": "Public x, y\nSample (1 2,x,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r17_table_only_source-9",
+   "logger": "cr350",
+   "source": "Public x, y\nSample (1,x,FP2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: FP2 3.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r17_table_only_source-10",
+   "logger": "cr350",
+   "source": "Public x, y\nMedian (1,x y,10,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Median must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-11",
+   "logger": "cr350",
+   "source": "Public x, y\nStdDev (1,x y,FP2,False)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: StdDev must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r17_table_only_source-13",
+   "logger": "cr350",
+   "source": "Public x, y\nDelay (x y)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x y.\nline 2: Variable illegal in Parameter: x y.\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}

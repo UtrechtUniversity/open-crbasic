@@ -589,6 +589,10 @@ def _has_assign(expr) -> bool:
 
 _DIGIT_NAME = re.compile(r"[\d.][\w.]*")
 
+_DEFERRED_SOURCE_INSTRUCTIONS = frozenset({
+    "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "MEDIAN", "STDDEV", "MOMENT", "COVARIANCE"})
+
+
 class _Parser:
     def __init__(self, profile: profiles.Profile, diags: Diagnostics, provenance: bool = True):
         self.provenance = provenance  # False: no `Stmt.origin`, no `line_map` (language-server-only data)
@@ -601,6 +605,7 @@ class _Parser:
         self._done = False  # set once a top-level EndProg is seen; see `run()`
         self._inline_body = False  # parsing the statements of a one-line `If`
         self._in_struct = False  # inside StructureType ... EndStructureType
+        self._in_table = False   # inside DataTable ... EndTable
         self.function_names: set[str] = set()
         self._collect = False
         self._to_ok = False  # `To` as a binary operator: assignment values and `Select Case`
@@ -1008,6 +1013,8 @@ class _Parser:
                 stmt = self._parse_stmt(p, line, file, seg_text)
             if isinstance(stmt, S.Instruction) and stmt.keyword in ("STRUCTURETYPE", "ENDSTRUCTURETYPE"):
                 self._in_struct = stmt.keyword == "STRUCTURETYPE"
+            if isinstance(stmt, S.Instruction) and stmt.keyword in ("DATATABLE", "ENDTABLE"):
+                self._in_table = stmt.keyword == "DATATABLE"
             if stmt is None:
                 return S.Unparsed(line, file, text=seg_text, reason="empty statement")
             if not p.at_end():
@@ -1021,9 +1028,44 @@ class _Parser:
         except _ParseError as e:
             if re.match(r"expected '\)', found '\.\d+'", str(e)) and _SNMP_OID_STATEMENT.match(seg_text):
                 return S.Unparsed(line, file, text=seg_text, reason=SNMP_OID_REASON)
+            if (placed := self._table_only_outside_table(seg, p, line, file, seg_text)) is not None:
+                return placed
             return S.Unparsed(line, file, text=seg_text, reason=str(e))
         except Exception as e:  # never raise out of the parser
             return S.Unparsed(line, file, text=seg_text, reason=f"internal error: {e!r}")
+
+    def _table_only_outside_table(self, seg: list[Token], p: _TokStream, line: int, file: str,
+                                  seg_text: str) -> S.Instruction | None:
+        """`Sample (1,x y,FP2)` outside a table (oracle, all four loggers, 2026-10-13): the source
+        argument (the second) of the output-processing instructions is not read before `X must be
+        used inside a table declaration.`, so a parse failure inside it, in a balanced argument
+        list, still leaves the instruction; the later arguments become placeholders."""
+        if (self._in_table or self._in_struct or len(seg) < 4 or seg[0].kind != "IDENT"
+                or seg[0].upper not in _DEFERRED_SOURCE_INSTRUCTIONS
+                or seg[0].upper not in self.profile.instructions
+                or seg[1].kind != "OP" or seg[1].text != "("):
+            return None
+        depth, commas = 0, []
+        for i, tok in enumerate(seg[1:], 1):
+            if tok.kind != "OP":
+                continue
+            depth += (tok.text == "(") - (tok.text == ")")
+            if depth < 0 or (depth == 0 and tok.text == ")" and seg[i + 1:] and seg[i + 1].kind != "EOF"):
+                return None
+            if tok.text == "," and depth == 1:
+                commas.append(i)
+        if depth != 0 or len(commas) < 2 or not commas[0] < p.i <= commas[1]:
+            return None
+        sub = _TokStream(seg[2:commas[0]] + [Token("EOF", "", "", seg[commas[0]].col)], seg_text)
+        try:
+            first = self._parse_expr(sub, line, file)
+        except _ParseError:
+            return None
+        if not sub.at_end():
+            return None
+        args: list[S.Expr | None] = [first] + [S.Number(line, file, value=0, text="0") for _ in commas]
+        return S.Instruction(line, file, text=seg_text, keyword=seg[0].upper, args=args,
+                             arg_spans=[None] * len(args))
 
     # ------------------------------------------------------- statements
 

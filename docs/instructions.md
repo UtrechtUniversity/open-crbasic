@@ -2201,3 +2201,11 @@ first written as an unverified WIP in round 16 and completed here). Rules, all f
   (`check_function_arity`, `check_function_call_counts`).
 - Declared string variables count their dimensions for over-indexing like numeric ones on every logger
   (`symbols.declared_dim_counts(strings=True)`).
+
+### Table-only instruction with a malformed source argument outside a table (all four loggers, round 17)
+
+Fixture `r17_table_only_source.json` (parser `_table_only_outside_table`, completing the round-16 WIP 4ab1b610).
+`Sample (1,x y,FP2)`, `Average`, `Maximum`, `Totalize` (and `Median`, `StdDev`) outside a `DataTable` report `<Name> must be used
+inside a table declaration.` (`Max` for `Maximum`) even when the second (source) argument does not parse, because that
+argument is not read before the placement error. Other malformed shapes (`Sample (1,x y,FP2) z`, an unclosed parenthesis,
+a missing argument) keep their own parse messages, which are still not matched on every logger and are not covered.
