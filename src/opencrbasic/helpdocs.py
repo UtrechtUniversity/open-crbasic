@@ -63,7 +63,7 @@ class _Block:
 
 
 class _Reducer(HTMLParser):
-    """Collects h1-h4 and p blocks outside tables as plain text; anchors keep their offsets."""
+    """Collects headings, paragraphs and table rows as plain text; anchors keep their offsets."""
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -92,9 +92,15 @@ class _Reducer(HTMLParser):
         elif tag == "table":
             self._close()
             self._table += 1
-        elif tag in ("p", "h1", "h2", "h3", "h4"):
+        elif self._table and tag == "tr":
             self._close()
+            self._tag = "tr"
+        elif self._table and tag in ("td", "th"):
+            if _flat("".join(self._buf)):
+                self._emit(" | ")
+        elif tag in ("p", "h1", "h2", "h3", "h4"):
             if not self._table:
+                self._close()
                 self._tag = tag
         elif tag == "br":
             if self._tag is not None:
@@ -110,9 +116,13 @@ class _Reducer(HTMLParser):
         if tag in _SKIP:
             self._skip = max(0, self._skip - 1)
         elif tag == "table":
-            self._table = max(0, self._table - 1)
-        elif tag in ("p", "h1", "h2", "h3", "h4"):
             self._close()
+            self._table = max(0, self._table - 1)
+        elif self._table and tag == "tr":
+            self._close()
+        elif tag in ("p", "h1", "h2", "h3", "h4"):
+            if not self._table:
+                self._close()
         elif tag == "a" and self._open:
             start, href = self._open.pop()
             self._anchors.append((start, self._len, href, "".join(self._buf)[start:self._len]))
@@ -279,6 +289,16 @@ def _heading_key(text: str) -> tuple[str, ...]:
     return tuple(k for k in keys if k)
 
 
+def _description_with_rows(blocks: Sequence[_Block], index: int) -> str:
+    parts = [_collapse(blocks[index].text)]
+    for block in blocks[index + 1:]:
+        if block.tag != "tr":
+            break
+        if text := _flat(block.text):
+            parts.append(text)
+    return "\n".join(parts)
+
+
 def _describe(blocks: Sequence[_Block], name: str) -> str:
     """Description paragraph under the heading paragraph answering to `name`, or ''."""
     want = _norm(name)
@@ -288,10 +308,11 @@ def _describe(blocks: Sequence[_Block], name: str) -> str:
         if b.tag != "p" or "\n" in b.text.strip() or len(b.text) > 120:
             continue
         if want in _heading_key(b.text) and i + 1 < len(blocks):
-            for nxt in blocks[i + 1:i + 3]:
+            for j in range(i + 1, min(i + 3, len(blocks))):
+                nxt = blocks[j]
                 t = _collapse(nxt.text)
                 if nxt.tag == "p" and t and not t.lower().startswith("type:"):
-                    return t
+                    return _description_with_rows(blocks, j)
             return ""
     return ""
 
@@ -415,10 +436,10 @@ class HelpProvider:
             blocks = _blocks(target.read_text(encoding="utf-8", errors="replace"))
         except (OSError, ValueError):
             return ""
-        for nxt in blocks[1:3]:
+        for i, nxt in enumerate(blocks[1:3], start=1):
             t = _collapse(nxt.text)
             if nxt.tag == "p" and t and not t.lower().startswith("type:"):
-                return t
+                return _description_with_rows(blocks, i)
         return ""
 
 

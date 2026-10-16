@@ -15,11 +15,12 @@ import asyncio
 import contextlib
 import hashlib
 import logging
+import os
 import subprocess
 import sys
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import Any, BinaryIO, Iterator
 
 EXPECTED_API_VERSION = 1       # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"
@@ -118,8 +119,10 @@ def build_server():
 
     def folders_of(params: types.InitializeParams) -> list[Path]:
         if params.workspace_folders:
+            session.folder_uris.update({fs_path(f.uri): f.uri for f in params.workspace_folders})
             return [fs_path(f.uri) for f in params.workspace_folders]
         if params.root_uri:
+            session.folder_uris[fs_path(params.root_uri)] = params.root_uri
             return [fs_path(params.root_uri)]
         if params.root_path:
             return [Path(params.root_path).absolute()]
@@ -205,6 +208,7 @@ def build_server():
 
     @server.feature(types.WORKSPACE_DID_CHANGE_WORKSPACE_FOLDERS)
     async def on_folders(params: types.DidChangeWorkspaceFoldersParams) -> None:
+        session.folder_uris.update({fs_path(f.uri): f.uri for f in params.event.added or []})
         await session.set_folders([fs_path(f.uri) for f in params.event.added or []],
                                   [fs_path(f.uri) for f in params.event.removed or []])
 
@@ -625,16 +629,44 @@ def build_server():
     return server
 
 
+@contextlib.contextmanager
+def protocol_streams() -> Iterator[tuple[BinaryIO | None, BinaryIO | None]]:
+    if sys.platform == "win32":
+        import ctypes
+        import msvcrt
+        from ctypes import wintypes
+
+        # H-11: keep protocol pipes private before pygls starts reading or the pool spawns.
+        # Hypothesis, awaiting Windows validation: a child's stdio setup blocks behind the
+        # reader's pending ReadFile on an inherited pipe. Children should see NUL instead.
+        with contextlib.ExitStack() as stack:
+            stdin = stack.enter_context(os.fdopen(os.dup(sys.stdin.fileno()), "rb"))
+            stdout = stack.enter_context(os.fdopen(os.dup(sys.stdout.fileno()), "wb"))
+            nul = stack.enter_context(open(os.devnull, "r+b"))
+            sys.stdout.flush()
+            set_std_handle = ctypes.WinDLL("kernel32", use_last_error=True).SetStdHandle
+            set_std_handle.argtypes = [wintypes.DWORD, wintypes.HANDLE]
+            set_std_handle.restype = wintypes.BOOL
+            for fd, handle in ((0, -10), (1, -11)):
+                os.dup2(nul.fileno(), fd)
+                if not set_std_handle(handle, msvcrt.get_osfhandle(fd)):
+                    raise ctypes.WinError()
+            yield stdin, stdout
+    else:
+        yield None, None
+
+
 def main() -> None:
     print(startup_line(), file=sys.stderr, flush=True)
     refusal = check_api_version()
     if refusal:
         print(refusal, file=sys.stderr, flush=True)
         sys.exit(2)
-    server = build_server()
-    try:
-        server.start_io()
-    finally:
-        server.session.close()  # type: ignore[attr-defined]
+    with protocol_streams() as (stdin, stdout):
+        server = build_server()
+        try:
+            server.start_io(stdin, stdout)
+        finally:
+            server.session.close()  # type: ignore[attr-defined]
     if not server.state.get("shutdown"):  # type: ignore[attr-defined]
         sys.exit(1)             # LSP: `exit` without a prior `shutdown`

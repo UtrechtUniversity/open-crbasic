@@ -66,17 +66,15 @@ def test_other_file_encoding():
     assert positions.decoded_position(lines, 0, 2, encoding="utf-16", editor_encoding="cp1252") == (1, 2)
 
 
-def test_ctx_clamps_a_line_past_the_end_and_converts_back():
-    ctx = Ctx("cr6", "utf-16", "utf-8", {}, {})
-    ctx._blobs["/nowhere/x.cr6"] = DATA
-    from pathlib import Path
-    path = Path("/nowhere/x.cr6")
+def test_ctx_clamps_a_line_past_the_end_and_converts_back(tmp_path):
+    path = tmp_path / "x.cr6"
+    ctx = Ctx("cr6", "utf-16", "utf-8", {path: DATA}, {})
     assert ctx.decoded(path, types.Position(99, 0)) == (3, 0)
     assert ctx.decoded(path, types.Position(0, 5)) == (0, 9)
     assert ctx.position(path, 0, 9) == types.Position(0, 5)
     assert ctx.position(path, 99, 3) == types.Position(3, 0)
     assert ctx.position(path, 0, None) == types.Position(0, 6)
-    assert ctx.decoded(Path("/nowhere/missing.cr6"), types.Position(0, 0)) is None
+    assert ctx.decoded(tmp_path / "missing.cr6", types.Position(0, 0)) is None
 
 
 def test_completion_reports_a_capped_list_as_incomplete(monkeypatch):

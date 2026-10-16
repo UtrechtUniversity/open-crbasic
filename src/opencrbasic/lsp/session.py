@@ -23,6 +23,7 @@ from concurrent.futures.process import BrokenProcessPool
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable
+from urllib.parse import quote
 
 from .. import positions
 from .config import Config, discover
@@ -246,6 +247,7 @@ class Session:
         self.discovered: set[Path] = set()
         self._last: dict[str, tuple] = {}
         self._uris: dict[Path, str] = {}           # the client's URI of every path it opened
+        self.folder_uris: dict[Path, str] = {}     # retain removed roots to clear their diagnostics
         self._pool: ProcessPoolExecutor | None = None
         self._pool_gen = 0
         self._sem: asyncio.Semaphore | None = None
@@ -804,13 +806,22 @@ class Session:
                             SRC_COMPILE))
         return out
 
+    def uri(self, path: Path) -> str:
+        if path in self._uris:
+            return self._uris[path]
+        for parent in path.parents:
+            if parent in self.folder_uris:
+                relative = quote(path.relative_to(parent).as_posix(), safe="/")
+                return self.folder_uris[parent].rstrip("/") + "/" + relative
+        return path.as_uri()
+
     def _publish(self, paths: set[Path]) -> None:
         if self._closed:
             return
         for path in sorted(paths):
             diags = self._compose(path)
             doc = self.docs.get(path)
-            uri = doc.uri if doc else self._uris.get(path) or path.as_uri()
+            uri = doc.uri if doc else self.uri(path)
             version = doc.version if doc else None
             key = (version, tuple(diags))
             last = self._last.get(uri)

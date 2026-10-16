@@ -29,11 +29,35 @@ def test_normal_page(prov):
     assert h.params[0].link == "../parameters/fooDest.htm"
     assert h.params[0].description == "Invented description of the destination <variable>. Second sentence."
     assert h.params[1].description == "Invented repetition count."
-    assert h.params[2].description == "Invented notch text."
+    assert h.params[2].description == "Invented notch text.\na | b"
     assert h.params[3].description == h.params[4].description == "Invented scaling text."
     assert h.params[3].link == h.params[4].link == "../parameters/foomult.htm"
     assert h.source_path == FIX / "Instructions" / "foomeasure.htm"
     assert not any(p.optional for p in h.params)
+
+
+@pytest.mark.parametrize("linked", [False, True])
+def test_parameter_description_includes_option_table(tmp_path, linked):
+    instructions = tmp_path / "Instructions"
+    instructions.mkdir()
+    description = ('<p>Filters noise; common options are:</p>'
+                   '<table><thead><tr>\n<th>Option</th>\n<th>Description</th>\n</tr></thead><tbody>'
+                   '<tr>\n<td>60</td>\n<td><p>Filter <b>60 Hz</b>.</p></td>\n</tr>'
+                   '<tr><td>50</td><td>Filter 50 Hz.</td></tr></tbody></table>'
+                   '<p>Type: Constant</p><p>Other</p><p>Other description.</p>')
+    (instructions / "foolist.htm").write_text(
+        '<h1>FooList</h1><h2>Syntax</h2>'
+        '<p>FooList(<a href="../parameters/fn.htm">fN1</a>, Other)</p>'
+        + ('' if linked else '<h2>Parameters</h2><p>f<sub>N1</sub></p>' + description))
+    if linked:
+        (tmp_path / "parameters").mkdir()
+        (tmp_path / "parameters" / "fn.htm").write_text('<h1>fN1</h1>' + description)
+    h = HelpProvider(tmp_path).lookup("FooList")
+    expected = ("Filters noise; common options are:\nOption | Description\n"
+                "60 | Filter 60 Hz.\n50 | Filter 50 Hz.")
+    assert h.params[0].description == expected
+    assert "Filter 50 Hz." in helpdocs.render_markdown(h, pair_signature("FooList", [1, 2], h))
+    assert h.params[1].description == ("" if linked else "Other description.")
 
 
 def test_unknown_and_non_instruction_pages(prov):

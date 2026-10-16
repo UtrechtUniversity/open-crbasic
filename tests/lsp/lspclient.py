@@ -196,10 +196,14 @@ class LspClient:
         return self.proc.wait(timeout)
 
     def kill(self) -> None:
-        try:
-            os.killpg(self.proc.pid, signal.SIGKILL)   # the server's own session: its pool workers too
-        except (ProcessLookupError, PermissionError):
-            pass
+        if sys.platform == "win32":
+            subprocess.run(["taskkill", "/T", "/F", "/PID", str(self.proc.pid)],
+                           capture_output=True)         # include spawned pool workers
+        else:
+            try:
+                os.killpg(self.proc.pid, signal.SIGKILL)   # the server's own session
+            except (ProcessLookupError, PermissionError):
+                pass
         if self.proc.poll() is None:
             self.proc.kill()
         self.proc.wait()

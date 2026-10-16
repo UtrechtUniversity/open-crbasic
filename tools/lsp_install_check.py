@@ -58,6 +58,10 @@ LSP_EXTRA = re.compile(r"""extra\s*==\s*['"]lsp['"]""")
 MAX_DETAIL_LINES = 40
 
 
+def venv_executable(venv: Path, name: str) -> Path:
+    return venv / "Scripts" / f"{name}.exe" if sys.platform == "win32" else venv / "bin" / name
+
+
 class Report:
     def __init__(self) -> None:
         self.results: list[tuple[str, bool]] = []
@@ -182,7 +186,7 @@ def make_venv(uv: str, tmp: Path, name: str, requirement: str, report: Report,
     venv = tmp / name
     env = clean_env(UV_PROJECT_ENVIRONMENT=str(tmp / "project-env"))
     created = sh([uv, "venv", venv], cwd=tmp, env=env)
-    python = venv / "bin" / "python"
+    python = venv_executable(venv, "python")
     installed = sh([uv, "pip", "install", "--python", python, requirement], cwd=tmp, env=env)
     if created.returncode != 0 or installed.returncode != 0:
         report.record(f"fresh venv: {label}", False,
@@ -236,7 +240,7 @@ def compare_compiles(a: dict, b: dict) -> list[str]:
 
 def check_compile(report: Report, venv: Path, tmp: Path) -> None:
     help_env = clean_env()
-    crbc = venv / "bin" / "crbc"
+    crbc = venv_executable(venv, "crbc")
     installed_help = sh([crbc, "--help"], cwd=tmp, env=help_env)
     checkout_help = sh([sys.executable, "-m", "opencrbasic", "--help"], cwd=tmp,
                        env=clean_env(PYTHONPATH=str(SRC)))
@@ -367,7 +371,7 @@ def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) 
 def check_lsp(report: Report, venv: Path, tmp: Path) -> None:
     cwd = tmp / "lsp-cwd"
     cwd.mkdir()
-    res = lsp_session(venv / "bin" / "crbc-lsp", cwd, clean_env())
+    res = lsp_session(venv_executable(venv, "crbc-lsp"), cwd, clean_env())
     problems: list[str] = []
     if "error" in res:
         problems.append(res["error"])
@@ -406,7 +410,7 @@ def check_lsp(report: Report, venv: Path, tmp: Path) -> None:
 
 
 def check_core(report: Report, venv: Path, tmp: Path) -> None:
-    python = venv / "bin" / "python"
+    python = venv_executable(venv, "python")
     imported = sh([python, "-c", "import opencrbasic.cli as c, pathlib; "
                    "print(pathlib.Path(c.__file__).resolve())"], cwd=tmp, env=clean_env())
     path = text(imported.stdout).strip()
