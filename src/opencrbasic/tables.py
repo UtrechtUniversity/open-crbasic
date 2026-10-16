@@ -1408,7 +1408,11 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         # a CardOut/TableFile table (nonzero card size) skips the Lapses-buffer term
         reserved += m["_reserve"]
         if lapses and b and not m["has_card"]:
-            reserved += ((lapses * 16) // b + 1) * b
+            if 0 < lapses < 1 << 31:    # `Lapses * 16` wraps to 32 bits before the division (CR6/CR1000X `Out of memory.`)
+                w16 = (lapses * 16 + (1 << 31)) % (1 << 32) - (1 << 31)
+                reserved += (int(w16 / b) + 1) * b
+            else:
+                reserved += ((lapses * 16) // b + 1) * b
         rate = _f32(m["_rate"] + rate)
     duration = _f32(_f32(_FREE_MEMORY - reserved) / rate) if rate else float("inf")
     if rate:
@@ -1424,6 +1428,7 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
             t.size = 2
             continue
         records = int(_f32(duration / m["_w"])) if m["bytes_per_record"] else 0
+        m["_n_raw"] = records     # before the minimum: the count `checker/storage.cr6_table_oom` charges
         t.size = max(records, 2, m["_dflt"])
 
 

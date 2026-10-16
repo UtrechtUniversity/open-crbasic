@@ -277,27 +277,37 @@ _MAX_ALLOC = 0x8000000                   # CR6/CR1000X: largest single allocatio
 MSG_OOM = "Out of memory."
 
 
-def cr6_table_oom(m: dict) -> bool:
-    """CR6/CR1000X: a fixed-size table's single block request exceeds `_MAX_ALLOC` (docs/
-    tdf-rules.md "CR6/CR1000X Out of memory"). Only a plain fixed size is modelled; an auto,
-    negative or beyond-range size is left alone (not probed)."""
+MSG_ALLOC_TABLE = "Out of Memory; Unable to allocate table {}."
+
+
+def cr6_table_oom(m: dict, auto_n: int | None = None, name: str = "") -> str | None:
+    """CR6/CR1000X: a table's single block request exceeds `_MAX_ALLOC` (docs/tdf-rules.md "CR6/
+    CR1000X Out of memory"): returns `MSG_OOM`, or for an auto-sized table whose request is zero
+    `MSG_ALLOC_TABLE`, else `None`. `auto_n` is the resolved record count of an auto (or negative)
+    size, only modelled without CardOut/TableFile; a beyond-range size is left alone."""
     from .. import tables as T
     cls = T.size_class(m["size_raw"])
+    auto = False
     if cls is None:
         n = 1
     elif cls[0] == "fixed" and not cls[2]:
         n = cls[1]
+    elif cls[0] == "auto" or (cls[0] == "fixed" and cls[2]):   # CR6/CR1000X size every negative size as auto
+        if auto_n is None or not (-1 << 31) < auto_n < 1 << 31 or auto_n in (0, 1) or m.get("has_card"):
+            return None                     # a CardOut/TableFile table is not modelled
+        n = auto_n
+        auto = True
     else:
-        return False
+        return None
     b = m["bytes_per_record"]
     if not b or not m["called"]:
-        return False
+        return None
     lap = (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if m["display_interval"] else 0
     a = _tdiv(_wrap32(abs(lap) * 16 if lap != _INT_MIN else 0), b) + 1 if lap else 0
     mm = _wrap32(n + a)
     k = 1
     if lap:
-        k = min(1008 // b, mm)
+        k = 1008 // b if auto else min(1008 // b, mm)    # an auto table's block is fixed before its count is known
         if k < 2:
             k = 1
     r = k * b + 16
@@ -305,7 +315,9 @@ def cr6_table_oom(m: dict) -> bool:
         c = r
     else:
         c = _wrap32((2048 // r + _tdiv(mm, k) + (1 if r < 1024 else 3)) * r)
-    return c > _MAX_ALLOC or c < 0      # a wrapped negative request fails the host allocation
+    if c > _MAX_ALLOC or c < 0:         # a wrapped negative request fails the host allocation
+        return MSG_OOM
+    return MSG_ALLOC_TABLE.format(name) if auto and c == 0 else None
 
 
 def _var_words(program: S.Program, env, kinds: tuple) -> list[tuple[int, int]]:
@@ -368,9 +380,14 @@ def check(program: S.Program, profile, result, diags) -> None:
     """Reports the storage-limit pair of messages (pass 2, only on an otherwise clean program)."""
     if profile.name in ("cr6", "cr1000x") and not diags.errors:
         from .. import consteval
-        if public_table_oom(program, consteval.Env(profile, dict(program.consts))) or any(
-                cr6_table_oom(t._storage) for t in (result.tables or []) if hasattr(t, "_storage")):
+        if public_table_oom(program, consteval.Env(profile, dict(program.consts))):
             diags.error(0, MSG_OOM)
+        else:
+            msgs = [cr6_table_oom(t._storage, t._storage.get("_n_raw"), t.name) for t in result.tables or [] if hasattr(t, "_storage")]
+            if MSG_OOM in msgs:                 # one message; a plain `Out of memory.` wins over a table's zero request
+                diags.error(0, MSG_OOM)
+            elif any(msgs):
+                diags.error(0, next(m for m in msgs if m))
         return
     if profile.name not in _POOL_PAGES or diags.errors:
         return

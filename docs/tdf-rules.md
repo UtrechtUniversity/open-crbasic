@@ -1090,6 +1090,24 @@ pool: each table, and each variable segment, is checked on its own. Three places
   no `DataInterval` `6710783/6710784`, Lapses `8254783/8254784`; also IEEE4, String*100, arrays,
   `Minimum`/`Maximum` with time stamps, Boolean, `DataEvent`, `FillStop`, `CardOut`, and a
   `B > 504` table where `k` falls to 1 but `M` still includes `a`. A negative wrapped request also
-  fails (`Size 1000000000`). Only plain positive sizes are modelled: auto (`-1`), negative and
-  beyond-range sizes are left alone (never probed). An uncalled table is not charged
-  (`If c Then CallTable T` on one line counts as a call).
+  fails (`Size 1000000000`). An uncalled table is not charged
+  (`If c Then CallTable T` on one line counts as a call). Beyond-range sizes are not modelled.
+- **Auto (`-1`) and negative sizes** (round 18, CR6 and CR1000X identical; a negative size is an
+  auto size here). The same request formula applies with `N` the table's *unclamped* auto record
+  count `int(f32(duration / w))` of `tables._resolve_auto_sizes` (it can be negative or huge; the
+  `max(.., 2, k)` minimum is not applied) and the block `k = 1008 // B` fixed *before* the count is
+  known (`1` if `< 2`), not capped by `M`; `a` is the Lapses term as above and the Lapses buffer in
+  the auto-size reserve is `(tdiv(wrap32(16 * L), B) + 1) * B` (so `Lapses` in `[2^27, 2^28)` wraps
+  it negative and makes `N` huge). Consequences, all oracle-confirmed: ordinary auto tables never
+  fail (any Lapses below `2^27`, negative sizes, 20 M-element records ...); with
+  `Lapses = 2^27 + x` `Out of memory.` holds for `x < x*` (`x* = 117714754` for 1 or 2 `FP2`
+  fields, `...808` for 3, `...817` for 4, `...845822` for 10; with a 1 hr interval
+  `...740/740/815/791/812`; ours matches all). A zero request (`c = 0`) gives `Out of Memory;
+  Unable to allocate table <Name>.` instead (no line, same pass, the declared name): a window of
+  about 4000 `x` above `x*` (`117714754 .. 117718784` for 2 `FP2` fields, accepted from
+  `117718785`). When another table gives plain `Out of memory.` that message alone is printed
+  (both orders). Not modelled
+  (false accepts only): auto tables with `CardOut`/`TableFile` (`TableFile` with `Lapses = 2^27+5`
+  gives `Out of memory.`, `CardOut` gives none, a `TableFile` at the boundary gives the
+  `Unable to allocate` message), a table forced to 2 records, `N` outside the int32 range, record
+  counts 0 and 1.

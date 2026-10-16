@@ -1,0 +1,2003 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r18_oom_auto-0-size__1_lap_2_27_0",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-1-size__1_lap_2_27_1",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217729)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-2-size__1_lap_2_27_2",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217730)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-3-size__1_lap_2_27_3",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217731)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-4-size__1_lap_2_27_5",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-5-size__1_lap_2_27_10",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217738)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-6-size__1_lap_2_27_30",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217758)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-7-size__1_lap_2_27_100",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217828)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-8-size__1_lap_2_27_1000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134218728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-9-size__1_lap_2_27_10000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134227728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-10-size__1_lap_2_27_100000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134317728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-11-size__1_lap_2_27_1000000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,135217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-12-size__1_lap_2_27_10000000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,144217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-13-size__1_lap_2_27_50000000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,184217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-14-size__1_lap_2_27_100000000",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,234217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-15-size__1_lap_2_27_134217727",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-16-iv0_10_mSec_lap134217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,134217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-17-iv0_10_mSec_lap135217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,135217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-18-iv0_10_mSec_lap251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-19-iv0_10_mSec_lap251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-20-iv0_10_mSec_lap251932728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-21-iv0_10_mSec_lap254217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-22-iv0_10_mSec_lap268435455",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-23-iv0_10_mSec_lap268435456",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,268435456)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-24-iv0_10_mSec_lap268435461",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-25-iv0_100_mSec_lap134217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,134217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-26-iv0_100_mSec_lap135217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,135217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-27-iv0_100_mSec_lap251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-28-iv0_100_mSec_lap251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-29-iv0_100_mSec_lap251932728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-30-iv0_100_mSec_lap254217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-31-iv0_100_mSec_lap268435455",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-32-iv0_100_mSec_lap268435456",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,268435456)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-33-iv0_100_mSec_lap268435461",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-r18_oom_auto-34-iv0_1_Sec_lap134217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,134217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-35-iv0_1_Sec_lap135217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,135217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-36-iv0_1_Sec_lap251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-37-iv0_1_Sec_lap251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-38-iv0_1_Sec_lap251932728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-39-iv0_1_Sec_lap254217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-40-iv0_1_Sec_lap268435455",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-41-iv0_1_Sec_lap268435456",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,268435456)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-42-iv0_1_Sec_lap268435461",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-43-iv0_5_Min_lap134217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,134217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-44-iv0_5_Min_lap135217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,135217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-45-iv0_5_Min_lap251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-46-iv0_5_Min_lap251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-47-iv0_5_Min_lap251932728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-48-iv0_5_Min_lap254217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-49-iv0_5_Min_lap268435455",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-50-iv0_5_Min_lap268435456",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,268435456)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-51-iv0_5_Min_lap268435461",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-52-iv0_1_Day_lap134217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,134217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-53-iv0_1_Day_lap135217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,135217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-54-iv0_1_Day_lap251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-55-iv0_1_Day_lap251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-56-iv0_1_Day_lap251932728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-57-iv0_1_Day_lap254217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-58-iv0_1_Day_lap268435455",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-59-iv0_1_Day_lap268435456",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,268435456)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-60-iv0_1_Day_lap268435461",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-61-iv0_1_Hr_lap134217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,134217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-62-iv0_1_Hr_lap135217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,135217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-63-iv0_1_Hr_lap251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-64-iv0_1_Hr_lap251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-65-iv0_1_Hr_lap251932728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-66-iv0_1_Hr_lap254217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-67-iv0_1_Hr_lap268435455",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-68-iv0_1_Hr_lap268435456",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,268435456)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-69-iv0_1_Hr_lap268435461",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-70-size_1_lap134217733",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-71-size_1_lap251932481",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-72-size_1_lap251932482",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-73-size_1_lap251932488",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-74-size_2_lap134217733",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-2)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-75-size_2_lap251932481",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-2)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-76-size_2_lap251932482",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-2)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-77-size_2_lap251932488",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-2)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-78-size_50_lap134217733",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-50)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-79-size_50_lap251932481",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-50)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-80-size_50_lap251932482",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-50)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-81-size_50_lap251932488",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-50)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-82-size_100000_lap134217733",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-100000)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-83-size_100000_lap251932481",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-100000)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-84-size_100000_lap251932482",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-100000)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-85-size_100000_lap251932488",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-100000)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-86-fld_Average_1_A__251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Average(1,A,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-87-fld_Average_1_A__251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Average(1,A,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-88-fld_Average_1_A__252057728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Average(1,A,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-89-fld_Average_1_A__252217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Average(1,A,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-90-fld_Sample_1_A_I_251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Sample(1,A,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-91-fld_Sample_1_A_I_251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(1,A,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-92-fld_Sample_1_A_I_252057728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Sample(1,A,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-93-fld_Sample_1_A_I_252217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Sample(1,A,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-94-fld_Sample_2_A_L_251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Sample(2,A,Long)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 2, out of bounds."
+  },
+  {
+   "id": "cr6-r18_oom_auto-95-fld_Sample_2_A_L_251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(2,A,Long)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 2, out of bounds."
+  },
+  {
+   "id": "cr6-r18_oom_auto-96-fld_Sample_2_A_L_252057728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Sample(2,A,Long)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 2, out of bounds."
+  },
+  {
+   "id": "cr6-r18_oom_auto-97-fld_Sample_2_A_L_252217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Sample(2,A,Long)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 2, out of bounds."
+  },
+  {
+   "id": "cr6-r18_oom_auto-98-fld_Sample_1_S_S_251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-99-fld_Sample_1_S_S_251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-100-fld_Sample_1_S_S_252057728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-101-fld_Sample_1_S_S_252217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-102-fld_Minimum_1_A__251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Minimum(1,A,FP2,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-103-fld_Minimum_1_A__251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Minimum(1,A,FP2,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-104-fld_Minimum_1_A__252057728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Minimum(1,A,FP2,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-105-fld_Minimum_1_A__252217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Minimum(1,A,FP2,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-106-fld_Sample_1_A_F_251217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-107-fld_Sample_1_A_F_251931728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-108-fld_Sample_1_A_F_252057728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-109-fld_Sample_1_A_F_252217728",
+   "logger": "cr6",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-110-two_auto_big",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-111-two_auto_mix",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Min,1000)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-112-two_auto_mix2",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-113-auto_plus_fixed",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,100)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-114-auto_uncalled",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_oom_auto-115-auto_cardout",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  CardOut(0,-1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-116-auto_cardout_big",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  CardOut(0,-1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-117-auto_dataevent",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-118-auto_interval0_lap134217733",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-119-auto_neglap134217733",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-120-auto_interval0_lap251932482",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-121-auto_neglap251932482",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-122-auto_interval0_lap536870912",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,536870912)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-123-auto_neglap536870912",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-536870912)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-124-auto_interval0_lap1073741824",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,1073741824)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-125-auto_neglap1073741824",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-1073741824)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-126-auto_interval0_lap2147483647",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-127-auto_neglap2147483647",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-2147483647)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-128-auto_interval0_lap2147483648",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,2147483648)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-129-auto_neglap2147483648",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-2147483648)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-130-auto_interval0_lap4294967296",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-131-auto_neglap4294967296",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-4294967296)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-132-lowercase_name",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(tbl_x,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable tbl_x\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table tbl_x."
+  },
+  {
+   "id": "cr6-r18_oom_auto-133-two_fail_oom_then_alloc",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-134-two_alloc_then_oom",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-135-alloc_plus_fixed_oom",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-136-fixed_oom_plus_alloc",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T2,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-137-win117714753",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-138-winneg117714753",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-139-winhr117714753",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-5)\n  DataInterval(0,1,Hr,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-140-win117714754",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-141-winneg117714754",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-142-winhr117714754",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-5)\n  DataInterval(0,1,Hr,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-143-win117718784",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251936512)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-144-winneg117718784",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251936512)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-145-winhr117718784",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-5)\n  DataInterval(0,1,Hr,251936512)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-146-win117718785",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251936513)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-147-winneg117718785",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251936513)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-148-winhr117718785",
+   "logger": "cr6",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-5)\n  DataInterval(0,1,Hr,251936513)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-149-x117714740",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932468)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-150-x117714753",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-151-x117714754",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-152-x117714755",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932483)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-153-x117714760",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-154-x117714800",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932528)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-155-x117715000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-156-x117716000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251933728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr6-r18_oom_auto-157-x117720000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251937728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-158-x117730000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251947728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-159-x117740000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251957728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-160-x117760000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251977728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-161-x117800000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252017728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-162-x117900000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252117728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-163-x118000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-164-x118500000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252717728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-165-x119000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,253217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-166-x120000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-167-x122000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,256217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-168-x125000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,259217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-169-x128000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,262217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-170-x130000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,264217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-171-x132000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,266217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-172-x133000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,267217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-173-x133500000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,267717728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-174-x134000000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,268217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-175-x134200000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,268417728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-176-x134217000",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,268434728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-177-x134217727",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-178-r8",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Day,95407976)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-179-r16",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Day,100432562)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-180-r31",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Min,658798259)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-181-r36",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Hr,98297780)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-182-r46",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,1,Min,5057977)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,-7)\n  DataInterval(0,1,Hr,109651694)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_oom_auto-183-mr0",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Day,135499786)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T2,1,1000)\n  DataInterval(0,1,Hr,180571121)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-184-mr1",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,10,Min,482850000)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,1000)\n  DataInterval(0,1,Day,251932377)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T3,True,25)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-185-mr2",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,True,25)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Day,251931832)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T3,1,-1)\n  DataInterval(0,1,Day,126571865)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-186-mr6",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Hr,135711008)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,25)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-187-mr7",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,25)\n  DataInterval(0,15,Sec,1158925)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,100,mSec,251933082)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T2."
+  },
+  {
+   "id": "cr6-r18_oom_auto-188-mr8",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,1,Hr,684676348)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-189-mr10",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-7)\n  DataInterval(0,10,Min,251935249)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T1."
+  },
+  {
+   "id": "cr6-r18_oom_auto-190-mr12",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,5,Sec,251934387)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T1."
+  },
+  {
+   "id": "cr6-r18_oom_auto-191-mr13",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-7)\n  DataInterval(0,100,mSec,88775478)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Min,42439966)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-192-mr14",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,100,mSec,134580658)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,-7)\n  DataInterval(0,100,mSec,251937356)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-193-mr17",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-7)\n  DataInterval(0,10,Min,8467941)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nDataTable(T2,True,25)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T3,1,-1)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-194-mr18",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,5,Sec,67120329)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-195-mr19",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,25)\n  DataInterval(0,1,Hr,196921299)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T2,1,-7)\n  DataInterval(0,10,Min,135385758)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T3,1,-1)\n  DataInterval(0,1,Min,1804482258)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-196-mr21",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,True,-1)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Hr,9534463)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-197-mr26",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,25)\n  DataInterval(0,15,Sec,17916690)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-198-mr29",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Min,251934119)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T1."
+  },
+  {
+   "id": "cr6-r18_oom_auto-199-mr36",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Hr,251934171)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T1."
+  },
+  {
+   "id": "cr6-r18_oom_auto-200-mr37",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Min,191883556)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,10,Min,47912086)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-201-mr38",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,10,Min,136126491)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-202-mr40",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Day,134297408)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,1000)\n  DataInterval(0,1,Hr,136069143)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-203-mr44",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,10,Min,208436975)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nDataTable(T2,True,-7)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T3,True,25)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-204-mr45",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-7)\n  DataInterval(0,5,Sec,156634589)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-205-mr46",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,True,-1)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,25)\n  DataInterval(0,100,mSec,251935213)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-206-mr51",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,True,-7)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,5,Sec,109163994)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-207-mr54",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,1,Day,251935081)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T2,True,-1)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T3,True,-7)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-208-mr55",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,5,Sec,251934336)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,15,Sec,233740425)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-209-mr60",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,100,mSec,13217610)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T2,1,25)\n  DataInterval(0,1,Min,42081848)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-210-mr61",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,5,Sec,158233275)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-211-mr62",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,1,Day,108486121)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,100,mSec,146726573)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r18_oom_auto-212-mr63",
+   "logger": "cr6",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,1,Min,176422986)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-0-size__1_lap_2_27_0",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-1-size__1_lap_2_27_3",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217731)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-2-size__1_lap_2_27_30",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134217758)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-3-size__1_lap_2_27_10000",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,134227728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-4-size__1_lap_2_27_10000000",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,144217728)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-5-size__1_lap_2_27_134217727",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,-1)\n  DataInterval(0,15,Sec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-6-iv0_10_mSec_lap251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-7-iv0_10_mSec_lap254217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-8-iv0_10_mSec_lap268435461",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,10,mSec,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 10000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-9-iv0_100_mSec_lap251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-10-iv0_100_mSec_lap254217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-11-iv0_100_mSec_lap268435461",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,100,mSec,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DataTable interval 100000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-12-iv0_1_Sec_lap251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-13-iv0_1_Sec_lap254217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-14-iv0_1_Sec_lap268435461",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Sec,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-15-iv0_5_Min_lap251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-16-iv0_5_Min_lap254217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-17-iv0_5_Min_lap268435461",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,5,Min,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-18-iv0_1_Day_lap251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-19-iv0_1_Day_lap254217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-20-iv0_1_Day_lap268435461",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Day,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-21-iv0_1_Hr_lap251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,251217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-22-iv0_1_Hr_lap254217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,254217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-23-iv0_1_Hr_lap268435461",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,1,Hr,268435461)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-24-size_1_lap251932482",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-25-size_2_lap251932481",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-2)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-26-size_50_lap134217733",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-50)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-27-size_50_lap251932488",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-50)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-28-size_100000_lap251932482",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-100000)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-29-fld_Average_1_A__251931728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Average(1,A,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-30-fld_Sample_1_A_I_251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Sample(1,A,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-31-fld_Sample_1_A_I_252217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Sample(1,A,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-32-fld_Sample_2_A_L_252057728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Sample(2,A,Long)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 2, out of bounds."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-33-fld_Sample_1_S_S_251931728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-34-fld_Minimum_1_A__251217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251217728)\n  Minimum(1,A,FP2,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-35-fld_Minimum_1_A__252217728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252217728)\n  Minimum(1,A,FP2,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-36-fld_Sample_1_A_F_252057728",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1\nPublic S As String * 30\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252057728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-37-two_auto_mix",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251931728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Min,1000)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-38-auto_uncalled",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,134217733)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-39-auto_dataevent",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-40-auto_interval0_lap251932482",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-41-auto_neglap536870912",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-536870912)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-42-auto_interval0_lap2147483647",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,0,Sec,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-43-auto_neglap2147483648",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-2147483648)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-44-lowercase_name",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(tbl_x,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable tbl_x\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table tbl_x."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-45-alloc_plus_fixed_oom",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T1,1,-1)\n  DataInterval(0,15,Sec,251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nDataTable(T2,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-46-winneg117714753",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-47-winneg117714754",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251932482)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-48-winneg117718784",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251936512)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-49-winneg117718785",
+   "logger": "cr1000x",
+   "source": "Public A,C,V1,V2,V3,V4,V5,V6,V7,V8\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,-251936513)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-50-x117714753",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932481)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-51-x117714760",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251932488)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-52-x117716000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251933728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-53-x117740000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,251957728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-54-x117900000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,252117728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-55-x119000000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,253217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-56-x125000000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,259217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-57-x132000000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,266217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-58-x134000000",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,268217728)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-59-x134217727",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T,1,-1)\n  DataInterval(0,15,Sec,268435455)\n  Sample(1,A,FP2)\n  Sample(1,C,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-60-r31",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nDataTable(T2,1,-1)\n  DataInterval(0,1,Min,658798259)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-61-mr0",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Day,135499786)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nDataTable(T2,1,1000)\n  DataInterval(0,1,Hr,180571121)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-62-mr6",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Hr,135711008)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,25)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-63-mr10",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-7)\n  DataInterval(0,10,Min,251935249)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T1."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-64-mr14",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,100,mSec,134580658)\n  Sample(1,V1,FP2)\nEndTable\nDataTable(T2,1,-7)\n  DataInterval(0,100,mSec,251937356)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-65-mr19",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,25)\n  DataInterval(0,1,Hr,196921299)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T2,1,-7)\n  DataInterval(0,10,Min,135385758)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T3,1,-1)\n  DataInterval(0,1,Min,1804482258)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-66-mr29",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,1,Min,251934119)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(1,Min,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of Memory; Unable to allocate table T1."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-67-mr38",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,10,Min,136126491)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-68-mr45",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-7)\n  DataInterval(0,5,Sec,156634589)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-69-mr54",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,1000)\n  DataInterval(0,1,Day,251935081)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T2,True,-1)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\nEndTable\nDataTable(T3,True,-7)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r18_oom_auto-70-mr61",
+   "logger": "cr1000x",
+   "source": "Public V1,V2,V3,V4,V5,V6\nDataTable(T1,1,-1)\n  DataInterval(0,5,Sec,158233275)\n  Sample(1,V1,FP2)\n  Sample(1,V2,FP2)\n  Sample(1,V3,FP2)\n  Sample(1,V4,FP2)\n  Sample(1,V5,FP2)\n  Sample(1,V6,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,V1,FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  }
+ ]
+}
