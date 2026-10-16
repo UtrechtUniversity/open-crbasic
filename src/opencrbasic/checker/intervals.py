@@ -15,6 +15,7 @@ Oracle probes, 2026-09-28 (`docs/checker.md` "TimeIntoInterval arguments").
 
 from __future__ import annotations
 
+import re
 import struct
 
 from .. import consteval
@@ -27,14 +28,46 @@ _FUNCTIONS = frozenset({"TIMEINTOINTERVAL", "IFTIME"})
 # argument positions checked (`docs/checker.md` "Integral parameters").
 _INTEGRAL_ARGS = {"TIMEINTOINTERVAL": (0, 1, 2), "IFTIME": (0, 1, 2), "SERIALOPEN": (1,)}
 _MONTH = 6
+# The trailing `TimeOut` of `HTTPPut` (9th argument) and `FTPClient` (11th): see `timeout_gate`.
+_TIMEOUT_ARG = {"HTTPPUT": 8, "FTPCLIENT": 10}
+_MODE_RE = re.compile(r"(?i)\b(IfTime|TimeIntoInterval|Timer|SerialOpen|HTTPPut|FTPClient)\b\s*\(")
+_LITERAL_RE = re.compile(r"\"[^\"]*\"|'.*$")
 NOT_INTEGRAL = "Parameter must be integral."
 _INT_MIN, _INT_MAX = -2**31, 2**31 - 1
+
+
+def timeout_gate(seen: bool, text: str | None) -> tuple[bool | None, bool]:
+    """`(gate, seen)` for one statement. `seen` is the parser's persistent integer-argument mode:
+    `IfTime`/`TimeIntoInterval` set it and nothing restores it until a `Timer` or `SerialOpen`
+    (oracle, round 17, CR6 and CR350: an earlier `IfTime` in a `Sub`, another `Scan` or earlier in
+    the same statement; `Timer`/`SerialOpen` between them switches it off). `gate` is the mode at
+    the statement's first `HTTPPut`/`FTPClient` (`True`/`False`), `None` when an `IfTime` follows
+    that call in the same statement (not modelled). Gates the `TimeOut` rule (round 17 notes in
+    `docs/instructions.md`)."""
+    code = _LITERAL_RE.sub('""', text or "")
+    mode, gate, queried = seen, False, False
+    for m in _MODE_RE.finditer(code):
+        word = m.group(1).upper()
+        if word in ("HTTPPUT", "FTPCLIENT"):
+            if not queried:
+                gate, queried = mode, True
+        elif word in ("IFTIME", "TIMEINTOINTERVAL"):
+            if queried and not mode:
+                gate = None
+            mode = True
+        else:
+            mode = False
+    return gate, mode
 
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     wide = wide_constants(program, profile)
     scan: tuple[int, int] | None = None
+    seen = False
     for stmt in program.statements:
+        gate, seen = timeout_gate(seen, getattr(stmt, "text", None))
+        if gate:
+            _check_timeout(stmt, diags, env, profile, wide)
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         if kw == "SCAN":
             scan = _scan_step(stmt, env)
@@ -51,6 +84,25 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if not bad and call.name.upper() in _FUNCTIONS:
                 _check_call(call, scan, stmt, diags, env,
                             any(d.line < stmt.line for d in diags.errors))
+
+
+def _check_timeout(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None:
+    """After an earlier `IfTime`/`TimeIntoInterval`, a string `TimeOut` is `Warning: Parameter will
+    truncate to the nearest integer.`; a float-typed constant or `NAN` is `Parameter must be
+    integral.` (not a constant-integer error; oracle, all four loggers, round 17)."""
+    for call in _calls(stmt, _TIMEOUT_ARG):
+        if isinstance(call, S.Call) and call.explicit:
+            continue
+        i = _TIMEOUT_ARG[call.name.upper()]
+        if i >= len(call.args) or call.args[i] is None:
+            continue
+        arg = call.args[i]
+        if isinstance(arg, S.String):
+            diags.warning(stmt.line, "Parameter will truncate to the nearest integer.", stmt.file)
+        elif (isinstance(arg, S.Name) and arg.name.upper() == "NAN") or (
+                not_integral(arg, env, profile, wide)
+                and (not profile.single_pass or _float_typed(arg, env, wide))):
+            diags.error(stmt.line, NOT_INTEGRAL, stmt.file)
 
 
 def wide_constants(program: S.Program, profile) -> frozenset[str]:

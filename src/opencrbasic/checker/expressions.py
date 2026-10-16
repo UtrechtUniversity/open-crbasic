@@ -350,6 +350,24 @@ _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
 _CONST_INTEGER_BAD_ARGS = {"TCPOPEN": frozenset({2}), "SERIALOPEN": frozenset({3, 4})}
 
 
+# Outside an earlier `IfTime`/`TimeIntoInterval` (`intervals.timeout_gate`; set per statement by
+# `check_function_arity`, `None` elsewhere so other callers never apply the rule) the trailing
+# `TimeOut` of `HTTPPut` (9th) and `FTPClient` (11th) argument, a string (also `""`), `NAN` or a
+# float literal, is `Parameter must be a constant integer`, before the argument-count check (oracle,
+# all four loggers). After one, the same arguments give a truncate warning / `Parameter must be
+# integral.` instead, reported by `intervals.check`. Not modelled: a variable or function call
+# there, overflowing literals (CR6/CR1000X constant-integer, CR300/CR350 `Parameter TimeOut cannot
+# be negative`) and the negative-value messages.
+_TIMEOUT_GATE: list = [None]
+_CONST_INTEGER_TYPE_ARGS = {"HTTPPUT": frozenset({8}), "FTPCLIENT": frozenset({10})}
+
+
+def _not_integer_type(arg) -> bool:
+    if isinstance(arg, S.Number):
+        return isinstance(arg.value, float)
+    return isinstance(arg, S.String) or (isinstance(arg, S.Name) and arg.name.upper() == "NAN")
+
+
 def _not_constant_integer(arg) -> bool:
     if isinstance(arg, S.String):
         return True
@@ -1781,6 +1799,9 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
         return "constint"
     if any(i < n and _not_constant_integer(args[i]) for i in _CONST_INTEGER_BAD_ARGS.get(upper, ())):
         return "constint"
+    if _TIMEOUT_GATE[0] is False and any(
+            i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())):
+        return "constint"
     if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
             and isinstance(args[-1], S.String)):
         return "constint"
@@ -2020,7 +2041,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
         # resolve its bare uses as the function (oracle, 2026-10-08)
         declared_variables = declared_variables - frozenset(profile.functions)
     known: set[str] | None = None
-    from . import structs, structure  # lazy: both import this module
+    from . import intervals, structs, structure  # lazy: all import this module
     struct_types = structs._structure_members(program)
     kinds = structs._variable_kinds(program, struct_types) if struct_types else {}
     struct_vars = _struct_var_names(program)
@@ -2028,7 +2049,9 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
     mine: list = []
     table_mine: list = []   # the `mine` entries from DataTable output instructions
     in_table = False
+    seen_timeint = False
     for stmt in program.statements:
+        _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, getattr(stmt, "text", None))
         if isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
@@ -2167,6 +2190,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 _hold(held, diags, problem)
                 if struct_value:
                     mine.append(diags.items[-1])
+    _TIMEOUT_GATE[0] = None
     if not profile.single_pass and table_mine:
         # CR6/CR1000X: only the first DataTable instruction is reported, and none at all once a
         # statement outside a table has one (oracle, 2026-10-03)

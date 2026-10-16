@@ -1,0 +1,191 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r17_timeout_mode-0",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr6-r17_timeout_mode-1",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_mode-2",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: ComPort 0 illegal.\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr6-r17_timeout_mode-3",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)."
+  },
+  {
+   "id": "cr6-r17_timeout_mode-4",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_mode-5",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: ComPort 0 illegal.\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_mode-0",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-r17_timeout_mode-1",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_mode-2",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: ComPort 0 illegal.\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-r17_timeout_mode-3",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_mode-4",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_mode-5",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: ComPort 0 illegal.\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)."
+  },
+  {
+   "id": "cr300-r17_timeout_mode-0",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr300-r17_timeout_mode-1",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 11: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_mode-2",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Com2 is not defined.\nline 9: ComPort 0 illegal.\nline 9: Parameter must be a constant integer:     SerialOpen(Com2,115200,3,0,100)\n.\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr300-r17_timeout_mode-3",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_mode-4",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_mode-5",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Com2 is not defined.\nline 9: ComPort 0 illegal.\nline 9: Parameter must be a constant integer:     SerialOpen(Com2,115200,3,0,100)\n.\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_mode-0",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr350-r17_timeout_mode-1",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 11: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_mode-2",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr350-r17_timeout_mode-3",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_mode-4",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    PTemp = Timer(1,Sec,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_mode-5",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    SerialOpen(Com2,115200,3,0,100)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n."
+  }
+ ]
+}

@@ -2163,3 +2163,26 @@ Fuzz reproducer cr1000x `false_accept/823848325de3`.
 Fixture `r16_gzip_arity.json` (`expressions._ARITY_RANGE`). The table says one argument; the call takes exactly two
 (`Filename, ZippedFilename`): one gives `Expression expects , : <statement>.`, three or more `No Matching, or out of place
 ) in expression: <statement>.`, in an assignment or as a bare call. Fuzz reproducer cr1000x `false_accept/27dda59dbe0b`.
+
+### `HTTPPut` / `FTPClient` trailing `TimeOut` type and its parser-mode gate (all four loggers, round 17)
+
+Fixtures `r16_http_ftp_timeout.json` (ungated), `r17_timeout_gate.json`, `r17_timeout_mode.json`
+(`expressions._CONST_INTEGER_TYPE_ARGS`, `intervals.timeout_gate`/`_check_timeout`). The 9th argument of `HTTPPut` and the 11th
+of `FTPClient` is `TimeOut`. What a string, `NAN` or float literal there draws depends on a parser mode that `IfTime` and
+`TimeIntoInterval` set and never restore (oracle, all four loggers; hypothesis from the decompilation notes in
+`scratch/codex/re-r17.md` section 3 confirmed by probes):
+
+- No earlier `IfTime`/`TimeIntoInterval`: `Parameter must be a constant integer: <statement>.` before the argument-count check
+  (the round-16 rule; the first round-16 attempt applied it everywhere and made fuzz reproducers cr350 `mode_diff/85bcd6b49434`,
+  `f9b89ecaf1f0` false rejects).
+- After one -- in any earlier statement (another `Scan`, a `Sub` before `BeginProg`, the condition of an enclosing or earlier
+  `If`, earlier in the same statement), source order, not execution order: a string (also `""`) or a variable/function call is
+  `Warning: Parameter will truncate to the nearest integer.` (once, at the call line, before any argument-count error); a
+  float-typed constant (`1.5`, `1.0`, `1E3`, a `Const` of 1.5) or `NAN` is `Parameter must be integral.` (before the
+  argument-count error). A literal beyond 32 bits is also `integral` on CR6/CR1000X, `Parameter TimeOut cannot be negative` on
+  CR300/CR350 (not modelled, nor `-1`/`TRUE`/`&HFFFFFFFF`).
+- A later `Timer(` or `SerialOpen(` call resets the mode (CR6, CR350 probed): the constant-integer error returns. `Sqr`,
+  `Round`, `Public.Timestamp` do not set the mode. An `IfTime` after the `FTPClient` in the same statement is not modelled.
+
+The truncate warning of a clean compile prints before every later-pass warning (reachability, fnotch) whatever its line
+(`compiler._sort_key`). Not modelled: variable timeouts outside the gated state (constant-integer, needs the symbol table).

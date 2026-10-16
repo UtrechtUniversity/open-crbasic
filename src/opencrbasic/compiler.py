@@ -100,6 +100,11 @@ class CompileResult:
                 and d.message.startswith("Cannot open include file ")):
             # reader pass: before any other message of the main file (`docs/checker.md`)
             return (False, (-1, d.line), 0)
+        if (d.severity == "warning" and d.message == "Parameter will truncate to the nearest integer."
+                and not self.diagnostics.errors):
+            # parser warning of a compile with no errors: before every later-pass warning
+            # (reachability, fnotch), whatever its line (oracle, round 17, `docs/instructions.md`)
+            return (False, (-1, d.line), 0)
         return (False, self._position(d),
                 d.message.endswith("never reached at run time.") * 2
                 or d.message.endswith("illegally occurs before BeginProg."))
