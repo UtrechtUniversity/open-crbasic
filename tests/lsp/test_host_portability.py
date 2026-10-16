@@ -61,6 +61,27 @@ def test_unopened_windows_file_uri_uses_client_root(root_uri):
     assert session.uri(path) == session._uris[path]           # opened spelling still wins
 
 
+@pytest.mark.parametrize("overlapping", [True, False])
+def test_unopened_diagnostics_clear_previous_folder_spelling(overlapping):
+    root = PureWindowsPath("C:/x")
+    path = root / "sub/Bad.CR6"
+    published = []
+    session = Session(lambda *args: published.append(args))
+    session.folder_uris[root] = "file:///C:/x"
+    diags = [Diag(0, 0, 1, "error", "bad", "opencrbasic")]
+    session._compose = lambda _: list(diags)
+    session._publish({path})
+    session._publish({path})
+    assert published == [("file:///C:/x/sub/Bad.CR6", None, diags)]
+    session.folder_uris[root / "sub" if overlapping else root] = (
+        "file:///c%3A/x/sub" if overlapping else "file:///c%3A/x")
+    diags.clear()
+    session._publish({path})
+    assert published[-1] == ("file:///C:/x/sub/Bad.CR6", None, [])
+    assert len(published) == 2
+    assert "file:///C:/x/sub/Bad.CR6" not in session._last
+
+
 @pytest.mark.server
 @pytest.mark.parametrize("workspace_folders", [True, False])
 def test_unopened_diagnostics_and_folder_removal_keep_client_root(make_client, tmp_path,

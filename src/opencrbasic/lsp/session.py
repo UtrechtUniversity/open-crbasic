@@ -246,8 +246,9 @@ class Session:
         self.entries: dict[Path, Entry] = {}
         self.discovered: set[Path] = set()
         self._last: dict[str, tuple] = {}
+        self._last_uris: dict[Path, str] = {}
         self._uris: dict[Path, str] = {}           # the client's URI of every path it opened
-        self.folder_uris: dict[Path, str] = {}     # retain removed roots to clear their diagnostics
+        self.folder_uris: dict[Path, str] = {}     # the client's URI of each workspace folder
         self._pool: ProcessPoolExecutor | None = None
         self._pool_gen = 0
         self._sem: asyncio.Semaphore | None = None
@@ -822,6 +823,11 @@ class Session:
             diags = self._compose(path)
             doc = self.docs.get(path)
             uri = doc.uri if doc else self.uri(path)
+            old_uri = self._last_uris.get(path)
+            if old_uri != uri and old_uri in self._last:
+                self.publish(old_uri, None, [])
+                self._last.pop(old_uri, None)
+            self._last_uris[path] = uri
             version = doc.version if doc else None
             key = (version, tuple(diags))
             last = self._last.get(uri)

@@ -208,6 +208,8 @@ def build_server():
 
     @server.feature(types.WORKSPACE_DID_CHANGE_WORKSPACE_FOLDERS)
     async def on_folders(params: types.DidChangeWorkspaceFoldersParams) -> None:
+        for folder in params.event.removed or []:
+            session.folder_uris.pop(fs_path(folder.uri), None)
         session.folder_uris.update({fs_path(f.uri): f.uri for f in params.event.added or []})
         await session.set_folders([fs_path(f.uri) for f in params.event.added or []],
                                   [fs_path(f.uri) for f in params.event.removed or []])
