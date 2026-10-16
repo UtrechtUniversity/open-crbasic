@@ -147,23 +147,47 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Round 17 (2026-10-16, in progress)
+## Round 17 (2026-10-16; resume here)
 
-- Integrated on `claude/laughing-franklin-08z9vo` (local, not pushed): `ocb-r16-pending-fuzz`
-  (4 commits), the CR300/CR350 Lapses fix (6d3822d7, false reject 9354d3641c2a), falseacc2
-  546e8e77/84c70b74/49c6f23c/8afe88f8 and msgdiff2 db2c32f0/bae8bab0/60eea626/808fc8e8.
-  546e8e77 (HTTPPut/FTPClient TimeOut) is reverted (7c3b530e): it made two CR350 replay
-  reproducers false rejects (minimised `scratch/r17/ftp_false_reject_min.CR6`).
-- Gates at 00e3d006 (2026-10-16, macOS M4): pytest 38,888 passed / 311 skipped (`-m server` 163
-  passed at 6d3822d7); difftest unchanged (repo/chm exact cr6 16/506, cr1000x 16/506, cr300 6/505,
-  cr350 6/505); new fixtures audit 0 differing; `fuzz_replay` 3,158 reproducers: 2,348 exact, 69
-  false accepts, 0 false rejects, 707 message diffs, 18 mode diffs, 16 oracle errors
-  (`scratch/replay-r17d.json`).
-- Probed, not implemented: CR6/CR1000X `Out of memory.` from Lapses 8,254,784 for an FP2 table
-  (`docs/tdf-rules.md`, the unimplemented CR6 allocator).
-- Workers (Sonnet, briefs in `scratch/r17/`): W1 `ocb-r17-callcolon` (`Call S(A,Z,3 : Z = 1`
-  false reject), W2 `ocb-r17-optfirst` (`Calibrate(")` false reject, optional-first-parameter
-  instructions), W3 `ocb-r17-ftp-wips` (TimeOut rule with its gating, the two round-16 WIP commits).
+- Integrated on `claude/laughing-franklin-08z9vo` (local, NOT pushed), each gated: `ocb-r16-pending-fuzz`;
+  Lapses `cvttss2si` + `*16` wrap in the CR300/CR350 allocator (false reject 9354d3641c2a); the
+  non-WIP commits of `ocb-r16-falseacc2` and `ocb-r16-msgdiff2`; W1 `:` splits a statement even
+  inside an open parenthesis (false reject `Call S(A,Z,3 : Z = 1`); W2 unterminated string in an
+  optional-first-parameter instruction (false reject `Calibrate(")`; SlowSequence excluded by the
+  coordinator, eec3f491); W4 CR6/CR1000X `Out of memory.` (128 MiB per allocation: fixed tables,
+  Public table, Dim/Public segments; `docs/tdf-rules.md`); W3 HTTPPut/FTPClient TimeOut rule with
+  its IfTime parser-mode gate (round-16 revert undone), both round-16 WIP commits completed.
+- Gates at f1ab5cae (macOS M4): pytest 39,778 passed / 311 skipped, `-m server` 163 passed;
+  difftest repo/chm exact cr6 16/506, cr1000x 16/506, cr300 6/505, cr350 6/505 (unchanged);
+  every new fixture audits 0 differing uncached; `fuzz_replay` 3,158: 2,368 exact (2,315 at the
+  start), 62 false accepts (78), 0 false rejects, 696 message diffs, 16 mode diffs, 16 oracle errors
+  (`scratch/replay-r17h.json`); `scripts/verify.py`: `BUILD  host tests 119 pass | CRBasic 16/16
+  compiled, 6 warning(s) | repository pass` (after deleting a stray `opencrbasic/.venv`).
+  tdftest CR6/CR300/CR350 unchanged; CR1000X tdftest has 274 Status-table field-name mismatches,
+  identical before and after W4 (pre-existing CR1000X TDF gap, never claimed).
+- Codex works on this machine again (ChatGPT app CLI 0.162 alpha). Human instruction 2026-10-16:
+  run read-only gpt-6.1-sol research over `scratch/re/*.decomp.c` for hard families. Report
+  `scratch/codex/re-r17.md` (CR6 OOM, CR300 Preserve pool, IfTime parser mode); its predictions
+  were oracle-checked before workers used them (CR6 OOM boundaries exact; PreserveVariables off).
+  Pass `-o` an absolute path.
+- Worker incidents: W4 ran `pkill -f fuzz_replay` (forbidden); W3 reports `fuzz_replay.py --help`
+  starts a run and touched a corpus file (restored). Repeat both warnings in briefs.
+
+## Next steps (round 18)
+
+1. Gate and integrate `ocb-r17-preserve` (f20301b1, W5: CR300/CR350 PreserveVariables /
+   PreserveOneVariable pool deductions, fixture `r17_preserve_pool.json` audited 0 differing,
+   pytest/difftest green in the worktree): NOT yet run there: `fuzz_replay`, tdftest cr300/cr350.
+   Expect a small conflict in `checker/storage.py` with W4. Worktree still at
+   `.claude/worktrees/ocb-r17-preserve`; `ocb-r17-ftp-wips` worktree can be removed (integrated).
+2. FALSE REJECT found by W5, not fixed: `Const J(300) = 1` (array constant) on CR300 gives
+   `Const is not defined`; the real compiler accepts. Probe all four loggers first.
+3. Push this branch, then ask the cloud reviewer for a review of rounds 16-17.
+4. Open from round 17: `SlowSequence(")` / `SlowSequence(A,")` messages; W1 leftovers
+   (`docs/checker.md` "Colon inside parentheses"); TimeOut negative/overflow messages; Timer/
+   SerialOpen mode reset unprobed on CR1000X/CR300; inline `If ... CallTable` on CR300/CR350
+   still a false accept; CR6 OOM for auto/negative table sizes.
+5. Then round-16 lists below (false accepts, message diffs, seeds 413+).
 
 ## Resume here (2026-10-13, round 16 interrupted by machine shutdown)
 
