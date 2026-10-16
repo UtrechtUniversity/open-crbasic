@@ -67,6 +67,11 @@ branch remains (every worker commit was verified present on the branch before de
   LSP-04a-rules.
 - 2026-10-12: Windows and Linux cannot be tested in this work session; the release claim is
   macOS only. Windows/Linux stay untested and unclaimed (user guide sections 1 and 8, client README).
+- 2026-10-16: help stays CR6-only for the first release (other loggers need their own extracted
+  help; not available). The first release is accepted on the macOS validation alone; T-19
+  (Windows/WSL re-checks after LSP-R6) is not a release gate. Remaining work before merging: one
+  gpt-6.1-sol review round of the unreviewed LSP commits, its findings and the open earlier review
+  items fixed, then a repository cleanup.
 
 ## Review round 2
 
