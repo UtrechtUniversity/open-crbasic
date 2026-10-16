@@ -2811,13 +2811,21 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
   name opens the program (`SlowSequence(Q)`, `(A)`, `(Z)` with `Public A, Z, Q`: `Multiple`), while
   `SlowSequence(Undef)` is `Undef is not defined.` and no `Multiple`. CR6/CR1000X never resolve the
   argument. Expression and `Const` arguments are not probed and do not open the program on CR300/CR350.
-  Not covered: a `SlowSequence` followed by `EndProg` before any `BeginProg` (`SlowSequence` /
-  `EndProg` / `BeginProg` ...) is `No BeginProg in Program.` here because the parser stops at the
-  first `EndProg`, while the real compiler accepts it (pre-existing false reject, not changed); on
-  CR300/CR350 a `NextScan` with no `Scan` between such a `SlowSequence` and `BeginProg` (the real
-  compiler reports `NextScan with no Scan.` alone); `Scan`/`NextScan` between them (real: `Multiple
-  BeginProgs.` plus `Warning: BEGINPROG never reached at run time.`; ours `Scan illegally occurs
-  before BeginProg.`). Verdicts agree with the oracle everywhere except the `EndProg` shape above.
+  A clean `SlowSequence` before any `BeginProg` is the start of the program for the real compiler
+  (oracle 2026-10-16, all four loggers, fixture `r18_slowseq_endprog.json`,
+  `tests/test_r18_slowseq_endprog.py`): `SlowSequence` / `EndProg` compiles (also bare `SlowSequence`
+  with no `EndProg`, `SlowSequence(1)`, `(A)`; CR6/CR1000X `(Nope)`), nothing after the first `EndProg`
+  is read (garbage or a second program with errors), and what follows the `SlowSequence` is in-program:
+  `A = 1`, `Scan`/`NextScan` and `Sub`/`EndSub` are clean, while the unbalanced forms report at `EndProg`
+  (`Scan without NextScan.`, `IF or SELECT without EndIf or EndSelect.`, `Sub ... EndSub not matched.`)
+  and a bad statement gives only its own message, never `... illegally occurs before BeginProg`. A bare
+  `EndProg` is still `No BeginProg in Program.`. `structure.open_program_at_slowsequence` inserts a
+  `BeginProg` ahead of the opening `SlowSequence` when the statements hold no `BeginProg`. Not covered:
+  `SubScan (1,Sec,0)` in such a block (real `SubScan must have >0 number of scans.`, a separate rule),
+  and a `SlowSequence` with a `BeginProg` after it and `Scan`/`NextScan` between (real: `Multiple
+  BeginProgs.` plus `Warning: BEGINPROG never reached at run time.`; ours `Scan illegally occurs before
+  BeginProg.`); on CR300/CR350 a `NextScan` with no `Scan` between such a `SlowSequence` and `BeginProg`
+  (real: `NextScan with no Scan.` alone).
 
 Not done: `S = abc"`, where an undefined name comes first, and `ESSInitialize(X)` -> `Community
 Names parameter is of type string`. Replay: 847 of 1469 exact, no false rejects.

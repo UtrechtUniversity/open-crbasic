@@ -233,6 +233,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                                                            S.cut_after_hash(program.statements[stop])])
         if program.hash_cut is not None:
             del diags.items[program.hash_cut:]  # parser findings of later lines
+    program = structure.open_program_at_slowsequence(program, profile)
     env = consteval.Env(profile, dict(program.consts))
 
     _run_pass(structure.check_pass1, program, profile, diags, env)

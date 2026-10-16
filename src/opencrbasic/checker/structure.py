@@ -1565,6 +1565,42 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
 _DO_ALIASES = {"WHILE": "DO", "WEND": "LOOP"}
 
 
+def _slowsequence_resolves(stmt: S.Stmt, declared: set[str]) -> bool:
+    """CR300/CR350 resolve a `SlowSequence` name argument (`SlowSequence(Q)`, `Q is not defined.`)
+    where CR6/CR1000X never read it, so there it must resolve without error: a literal, or a
+    declared name (oracle, CR300/CR350, 2026-10-16). Other shapes are not probed."""
+    return not isinstance(stmt, S.Instruction) or all(
+        isinstance(a, (S.Number, S.String)) or (isinstance(a, S.Name) and a.name.upper() in declared)
+        for a in stmt.args if a is not None)
+
+
+def open_program_at_slowsequence(program: S.Program, profile: profiles.Profile) -> S.Program:
+    """A clean `SlowSequence` before any `BeginProg`/`EndProg` is the start of the program for the
+    real compiler (oracle, 2026-10-16, all four loggers, `docs/checker.md`): `SlowSequence` /
+    `EndProg` with no `BeginProg` compiles, `A = 1`, `Scan`/`NextScan`, `Sub` between them are
+    in-program (`Scan without NextScan.` at `EndProg`, no `... before BeginProg`). Only when the
+    statements hold no `BeginProg` (the parser stops at the first `EndProg`, so a later one is never
+    seen): a `BeginProg` is inserted ahead of it. Returns `program` itself otherwise."""
+    for n, st in enumerate(program.statements):
+        kw = _keyword(st)
+        if kw in ("BEGINPROG", "ENDPROG"):
+            return program
+        if isinstance(st, S.Unparsed) and re.match(r"\s*SlowSequence\b", st.text, re.I):
+            return program
+        if kw == "SLOWSEQUENCE":
+            break
+    else:
+        return program
+    if any(_keyword(s) == "BEGINPROG" for s in program.statements):
+        return program
+    declared = ({x.upper() for x in symbols.declared_names(program)}
+                if profile.name in ("cr300", "cr350") else set())
+    if profile.name in ("cr300", "cr350") and not _slowsequence_resolves(st, declared):
+        return program
+    begin = S.Instruction(line=st.line, file=st.file, text="BeginProg", keyword="BEGINPROG")
+    return dataclasses.replace(program, statements=[*program.statements[:n], begin, *program.statements[n:]])
+
+
 def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
     """End-of-program block balance, run only when passes 1 and 2 found nothing (oracle, CR6 and
     CR300, 2026-09-27: an unclosed `Scan`/`For`/`If` plus an unrelated pass-2 `X = Q` prints only
@@ -1804,10 +1840,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         # name (oracle, CR300/CR350, 2026-10-16: `SlowSequence(Q)`/`(A)`/`(Z)` with declared Publics
         # give `Multiple BeginProgs.`, `SlowSequence(Undef)` does not). Other shapes are not probed
         # and keep the pre-round-18 behaviour (no program opened).
-        ss_resolves = not isinstance(stmt, S.Instruction) or all(
-            isinstance(a, (S.Number, S.String))
-            or (isinstance(a, S.Name) and a.name.upper() in declared_here)
-            for a in stmt.args if a is not None)
+        ss_resolves = _slowsequence_resolves(stmt, declared_here)
         if kw == "SLOWSEQUENCE" and not program_marker_seen and (profile.name in ("cr6", "cr1000x") or ss_resolves) \
                 and not any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file
                             for d in diags.items):
