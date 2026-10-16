@@ -330,6 +330,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         diags.items[:] = [d for d in diags.items if not any(d is h for h in held_member)]
         if diags.errors:
             held_items = []
+    _run_pass(storage.check_pass1, program, profile, diags, env)   # CR6/CR1000X `Out of memory.`
     pass1_errors = bool(diags.errors)
     result.pass1_errors = pass1_errors
     if pass1_errors and not profile.single_pass:

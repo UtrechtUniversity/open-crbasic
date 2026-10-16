@@ -376,7 +376,13 @@ def _scan_program(program: S.Program):
         i += 1
 
     called: set[str] = set()
-    for s in stmts:
+
+    def _flat(ss):   # an inline `If c Then CallTable T` calls T too
+        for x in ss:
+            yield x
+            yield from _flat((getattr(x, "inline", None) or []) + (getattr(x, "inline_else", None) or []))
+
+    for s in _flat(stmts):
         kw2 = _kw(s)
         if kw2 == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name):
             called.add(s.args[0].name.upper())
@@ -1529,8 +1535,7 @@ def build_tables(program: S.Program, profile, consts: dict):
 # above `INT32_MAX`, `docs/fuzz-findings.md` "Hang"), so `build_tables`/`tables_hook.attach` is
 # only ever reached for a declaration this checker considers legal -- but that still allows a
 # dimension anywhere up to `INT32_MAX` through to here, and the real compiler itself rejects most
-# of that range with `Out of memory.` (a check this module does not implement, `docs/
-# checker.md`'s "Known remaining gaps"). This is therefore pure robustness, not a claim about a
+# of that range with `Out of memory.` (`checker/storage.py`, not this module). This is therefore pure robustness, not a claim about a
 # verified real-compiler limit: `_MAX_EXPLODE_COUNT` is comfortably above the largest single-field
 # element count this session could get the real compiler to actually accept (2,000,000, oracle-
 # confirmed), so no known-exact `-l` output is affected, and it keeps this generator from ever

@@ -262,8 +262,105 @@ def run(metas: list[dict], pool: int) -> dict | None:
     return allocate(specs, pool)
 
 
+_MAX_ALLOC = 0x8000000                   # CR6/CR1000X: largest single allocation request, 128 MiB
+MSG_OOM = "Out of memory."
+
+
+def cr6_table_oom(m: dict) -> bool:
+    """CR6/CR1000X: a fixed-size table's single block request exceeds `_MAX_ALLOC` (docs/
+    tdf-rules.md "CR6/CR1000X Out of memory"). Only a plain fixed size is modelled; an auto,
+    negative or beyond-range size is left alone (not probed)."""
+    from .. import tables as T
+    cls = T.size_class(m["size_raw"])
+    if cls is None:
+        n = 1
+    elif cls[0] == "fixed" and not cls[2]:
+        n = cls[1]
+    else:
+        return False
+    b = m["bytes_per_record"]
+    if not b or not m["called"]:
+        return False
+    lap = (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if m["display_interval"] else 0
+    a = _tdiv(_wrap32(abs(lap) * 16 if lap != _INT_MIN else 0), b) + 1 if lap else 0
+    mm = _wrap32(n + a)
+    k = 1
+    if lap:
+        k = min(1008 // b, mm)
+        if k < 2:
+            k = 1
+    r = k * b + 16
+    if n == 1:
+        c = r
+    else:
+        c = _wrap32((2048 // r + _tdiv(mm, k) + (1 if r < 1024 else 3)) * r)
+    return c > _MAX_ALLOC or c < 0      # a wrapped negative request fails the host allocation
+
+
+def _var_words(program: S.Program, env, kinds: tuple) -> list[tuple[int, int]]:
+    """(elements, 4-byte words per element) of every `kinds` declaration (a Float/Long/Boolean
+    is one word, a Double two, a String its padded length / 4; any other type is not counted, so
+    the total can only be too small)."""
+    from .. import tables as T
+    out = []
+    for st in program.statements:
+        if not isinstance(st, S.Declaration) or st.kind not in kinds:
+            continue
+        for v in st.vars:
+            t = (v.type or "FLOAT").upper()
+            if t not in ("FLOAT", "LONG", "BOOLEAN", "DOUBLE", "STRING"):
+                continue
+            dims = [T._as_int(T._fold(d, env), default=1) for d in v.dims]
+            if len(dims) > 3 or any(not 1 <= d <= 2147483647 for d in dims):
+                continue                    # `Illegally dimension`: never allocated
+            info = T._make_var_info(v, env)
+            n = 1
+            for d in dims:
+                n *= d
+            out.append((n, 2 if t == "DOUBLE" else info.stored_len // 4 if t == "STRING" else 1))
+    return out
+
+
+def _segment_oom(words: list[tuple[int, int]]) -> bool:
+    """One variable segment (`Dim` or `Public`) starts at 4 words and is requested as
+    `wrap32(words * 4)` bytes; the request fails above 128 MiB or when it wraps negative (zero
+    is a null request that crashes the compiler: not modelled)."""
+    total = 4
+    for n, w in words:
+        total = _wrap32(total + _wrap32(_wrap32(n) * w))
+    req = _wrap32(total * 4)
+    return req > _MAX_ALLOC or req < 0
+
+
+def variables_oom(program: S.Program, profile, env) -> bool:
+    """CR6/CR1000X end of pass 1: a `Dim` or a `Public` segment too large to allocate (reported at
+    the program's last statement, ends the compile before pass 2)."""
+    return profile.name in ("cr6", "cr1000x") and any(
+        _segment_oom(_var_words(program, env, (k,))) for k in ("DIM", "PUBLIC"))
+
+
+def check_pass1(program: S.Program, profile, diags, env) -> None:
+    if variables_oom(program, profile, env):
+        diags.error(program.last_line, MSG_OOM)
+
+
+def public_table_oom(program: S.Program, env) -> bool:
+    """The `Public` table is one record of the `Public` variables' bytes; its block request is
+    `2 * bytes + 32`, so it fails above 67,108,848 bytes."""
+    words = _var_words(program, env, ("PUBLIC",))
+    if any(n >= 1 << 31 for n, _ in words):
+        return False
+    return sum(n * w for n, w in words) * 4 > (_MAX_ALLOC - 32) // 2
+
+
 def check(program: S.Program, profile, result, diags) -> None:
     """Reports the storage-limit pair of messages (pass 2, only on an otherwise clean program)."""
+    if profile.name in ("cr6", "cr1000x") and not diags.errors:
+        from .. import consteval
+        if public_table_oom(program, consteval.Env(profile, dict(program.consts))) or any(
+                cr6_table_oom(t._storage) for t in (result.tables or []) if hasattr(t, "_storage")):
+            diags.error(0, MSG_OOM)
+        return
     if profile.name not in _POOL_PAGES or diags.errors:
         return
     declared = [t for t in (result.tables or []) if hasattr(t, "_storage")]

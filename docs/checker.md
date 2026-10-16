@@ -560,17 +560,12 @@ Oracle-confirmed rules (`Public`/`Dim`/`Static`, `checker/structure.py`'s `_chec
 - **`2147483647` (`INT32_MAX`) itself is not this checker's concern**: the real compiler *crashes*
   on it (a wow64 page fault under Wine, confirmed reproducible, not a Wine artifact this session
   could rule out either way) rather than accepting or rejecting it cleanly, so no oracle text
-  exists to match. Values just below it (oracle-tried up to `2100000000`) instead get a real,
-  different, **not implemented** message, `Out of memory.`, reported at the program's last
-  statement's line rather than the declaration's own -- a genuine, memory-size-dependent real
-  limit this session did not attempt to model (it would need the same auto-allocation-pool
-  reverse-engineering `docs/tdf-rules.md` §10 already flags as low-confidence for a much smaller,
-  better-understood table-sizing problem); every value in this session's own accepted-corpus and
-  fuzz-seed evidence stays well under it, so this remains a `mismatch`, not a false accept this
-  session introduced.
+  exists to match. Values below it whose storage is too large to allocate instead get `Out of memory.`, reported at the
+  program's last line (`docs/tdf-rules.md` "CR6/CR1000X `Out of memory.`", implemented in
+  `checker/storage.py`).
 - The check is **per-dimension**, not per total element count: `Public X(100000,100000) As Long`
   (10^10 elements) is *not* `Illegally dimension` (each individual dimension, 100000, is legal) --
-  it is the same `Out of memory.` gap above.
+  it is the `Out of memory.` rule above.
 
 ## `expressions.py`: undefined-symbol checking (deliberately narrow)
 

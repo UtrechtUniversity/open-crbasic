@@ -22,8 +22,7 @@ from . import expressions, instr_data, instr_rules, symbols
 # `[1, _MAX_DIM_VALUE]`. `_MAX_DIM_VALUE` is `INT32_MAX` -- every value at or below it that this
 # session could actually get the real compiler to accept/reject cleanly (rather than crash) falls
 # on the expected side of this boundary; a handful of merely-too-large-to-allocate values well
-# below it instead get `Out of memory.` (a distinct, not-yet-implemented message, `docs/
-# checker.md`), so this check only ever fires where "Illegally dimension" is the confirmed text.
+# below it instead get `Out of memory.` (a distinct message, `checker/storage.py`), so this check only ever fires where "Illegally dimension" is the confirmed text.
 _MAX_ARRAY_DIMS = 3
 _MAX_DIM_VALUE = 2147483647
 

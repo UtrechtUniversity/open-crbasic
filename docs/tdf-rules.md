@@ -896,7 +896,7 @@ frames 0x5af9c3 / 0x5afb17). Nothing is reported when any other error was found,
 "declared but never called" warnings are skipped once it fires. Implemented in
 `checker/storage.py`; evidence `tests/fixtures/r15_storage_limit.json` (62 oracle cases) and
 threshold sweeps on both loggers (below). CR6/CR1000X use a different allocator (`Out of memory.`
-for large tables, unimplemented).
+for large tables, see "CR6/CR1000X `Out of memory.`" below).
 
 Allocator, as read from the decompilation and confirmed by the sweeps:
 
@@ -921,7 +921,7 @@ Allocator, as read from the decompilation and confirmed by the sweeps:
   fit (the wrapped product is zero or negative, so `a` is 1 or less). Evidence
   `tests/fixtures/r17_lapses_wrap.json` (CR300/CR350; the fuzz false reject
   `tests/corpus/fuzz/cr300/false_reject/9354d3641c2a.CR6`). CR6/CR1000X instead print
-  `Out of memory.` from Lapses 8,254,784 upward for that FP2 table (the unimplemented CR6 allocator).
+  `Out of memory.` from Lapses 8,254,784 upward for that FP2 table (the CR6 allocator, below).
   That reproduces the CR300 thresholds to the record: FP2 580266/580267, IEEE4 522240/522241,
   `String*4` 435200/435201, interval FP2 5059161/5059162; CR350 2910435/2910436 and
   25375321/25375322.
@@ -1017,3 +1017,40 @@ table fit, minus/plus a few records) and `tests/fixtures/r16_auto_size_cr3xx.jso
 - `Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.`
   applies only to a table the logger actually auto-sizes: on CR300/CR350 a size of `-1`
   (a `-1000` is a fixed 1000 and compiles); on CR6/CR1000X every negative or out-of-range size.
+
+## CR6/CR1000X `Out of memory.`
+
+Implemented in `checker/storage.py`; evidence `tests/fixtures/r17_cr6_oom.json` (326 oracle cases,
+CR6 and CR1000X identical), formulas from the decompiled allocator (`CR6Comp` `FUN_004f4400`,
+`FUN_00508be0`, `FUN_004d3560`). Every host allocation is limited to 134,217,728 bytes (128 MiB);
+a request above that, or one that wraps negative as a signed 32-bit int, prints a bare
+`Out of memory.` (a zero request is a null allocation that crashes the compiler under Wine, not
+modelled; some wrapped small requests crash too, e.g. `Dim X(1073741823)`). There is no shared
+pool: each table, and each variable segment, is checked on its own. Three places:
+
+- **Variable segments** (end of pass 1, `line <last>: Out of memory.`). `Dim` and `Public` are
+  separate segments, each counting 4 words overhead; a Float/Long/Boolean element is one 4-byte
+  word, a Double two, a String its padded length / 4. Request `wrap32(4 * words)`; elements
+  `wrap32(d1*d2*d3)` so `Dim X(65536,65536)` passes and `Dim X(50000,50000)` fails. `Dim` anywhere
+  counts, including inside a `Sub`/`Function` (all in one segment). The line is `EndProg`'s, else
+  the main file's last physical line (`Program.last_line`). It ends the compile: pass-1 style
+  errors (`Illegally dimension`, `Too many parameters`, unterminated strings, ...) print first,
+  pass-2 symbol errors (`Invalid symbol in expression`, missing tables, unclosed blocks) do not.
+  Not matched: the pass-2 generic fallback `Invalid, or out of place expression` for `A = )`
+  still prints before the OOM line in the real compiler, ours drops it.
+- **`Public` table** (no line, pass 2): one record of the Public bytes, requested as
+  `2 * bytes + 32`; fails above 67,108,848 bytes (16,777,212 words). `Public X(16777212)` passes,
+  `Public X(16777213)` fails without a line (the segment check above, 33,554,428 words, only fires
+  first for larger arrays).
+- **Fixed data tables** (no line, pass 2, only when no other error): with `B` the record bytes,
+  `N` the size, `L` the Lapses of a `DataInterval` (default 10, `abs`; `abs(INT_MIN)*16` wraps
+  to 0): `a = tdiv(wrap32(|L|*16), B) + 1` (0 without `DataInterval` or `L = 0`),
+  `M = wrap32(N + a)`, `k = min(1008 // B, M)` (1 if `< 2`, and 1 without Lapses),
+  `R = k*B + 16`, request `R` when `N == 1`, else `wrap32((2048 // R + tdiv(M,k) + (1 if R < 1024
+  else 3)) * R)`. Confirmed boundaries (FP2+FP2, `B = 4`): `Size 33029130/33029131` with Lapses 1,
+  no `DataInterval` `6710783/6710784`, Lapses `8254783/8254784`; also IEEE4, String*100, arrays,
+  `Minimum`/`Maximum` with time stamps, Boolean, `DataEvent`, `FillStop`, `CardOut`, and a
+  `B > 504` table where `k` falls to 1 but `M` still includes `a`. A negative wrapped request also
+  fails (`Size 1000000000`). Only plain positive sizes are modelled: auto (`-1`), negative and
+  beyond-range sizes are left alone (never probed). An uncalled table is not charged
+  (`If c Then CallTable T` on one line counts as a call).

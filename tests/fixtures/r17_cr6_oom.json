@@ -1,0 +1,2297 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r17_cr6_oom-0",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,33029130)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-1",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-2",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-3",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-4",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1)\n  DataInterval(0,15,Sec,8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-5",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,268435456)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-6",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-8254783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-7",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-8",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-2147483648)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-9",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-2147483649)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-10",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,3000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-11",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,10000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-12",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-13",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,2147483646)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-14",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,1e10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-15",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,8254784.5)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-16",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,8254783.9)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-17",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-18",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,536870912)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-19",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-20",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,8254783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-21",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-22",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,-8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-23",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-24",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-25",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,2147483648)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-26",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,-33029131)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-27",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-28",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,0)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-29",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-30",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,3000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-31",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,6710784.5)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-32",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,6710783.9)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-33",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,-6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-34",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,-6710785)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-35",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1e9)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-36",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-37",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,2147483647)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-38",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-39",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,1073741824)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-40",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,536870912)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-41",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(Test,1,268435456)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-42",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDataTable(T2,1,6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-43",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDataTable(T2,1,10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-44",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDataTable(T2,1,10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-45",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If A>1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-46",
+   "logger": "cr6",
+   "source": "Public A, B\nSub S\n  CallTable T1\nEndSub\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find DataTable T1."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-47",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nSub S\n  CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-48",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-49",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,-6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-50",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,-6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-51",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-52",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,2147483648)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-53",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-54",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,33554432)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-55",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,214748364)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-56",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,1073741824)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-57",
+   "logger": "cr6",
+   "source": "Public A, B\nConst Z = 6710784\nDataTable(T1,1,Z)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-58",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDim Q\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Q = Q +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid, or out of place expression:     Q = Q +."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-59",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Q = 1."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-60",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T9\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable T9."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-61",
+   "logger": "cr6",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-62",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,Q,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-63",
+   "logger": "cr6",
+   "source": "Sub S\n  Dim X(33554429)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-64",
+   "logger": "cr6",
+   "source": "Sub S\n  Dim X(33554428)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-65",
+   "logger": "cr6",
+   "source": "Sub S\n  Dim X(20000000)\nEndSub\nDim Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-66",
+   "logger": "cr6",
+   "source": "Sub S\n  Dim X(20000000)\nEndSub\nSub S2\n  Dim X(20000000)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-67",
+   "logger": "cr6",
+   "source": "Function F(a)\n  Dim X(33554429)\n  Return a\nEndFunction\nSub S\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-68",
+   "logger": "cr6",
+   "source": "Sub S\nEndSub\nDim X(20000000)\nDim Y(20000000)\nBeginProg\n  Dim Z(5)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-69",
+   "logger": "cr6",
+   "source": "Sub S\nEndSub\nDim X(33554428)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-70",
+   "logger": "cr6",
+   "source": "Public X(33554420)\nDim Y(33554428)\nSub S\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-71",
+   "logger": "cr6",
+   "source": "Public X(33554428) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-72",
+   "logger": "cr6",
+   "source": "Public X(10),Y(16777200) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-73",
+   "logger": "cr6",
+   "source": "Public X(10),Y(16777202) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-74",
+   "logger": "cr6",
+   "source": "Public X(10),Y(16777203) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-75",
+   "logger": "cr6",
+   "source": "Public X(16777210) As Long\nPublic Y As String * 4\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-76",
+   "logger": "cr6",
+   "source": "Public X(16777210) As Long\nPublic Y As String * 3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-77",
+   "logger": "cr6",
+   "source": "Public X(16777209) As Long\nPublic Y As String * 4\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-78",
+   "logger": "cr6",
+   "source": "Public A\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-79",
+   "logger": "cr6",
+   "source": "Public A\nDim X(33554429)\nDim Y(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-80",
+   "logger": "cr6",
+   "source": "Public A\nDim X(33554429)\nPublic Y(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-81",
+   "logger": "cr6",
+   "source": "Public A\nPublic Y(33554429)\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-82",
+   "logger": "cr6",
+   "source": "Public A\nDim X(20000000)\nDim Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-83",
+   "logger": "cr6",
+   "source": "Public A\nDim X(20000000)\nPublic Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-84",
+   "logger": "cr6",
+   "source": "Public A\nDim X(20000000)\nStatic Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Static Y(20000000).\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-85",
+   "logger": "cr6",
+   "source": "Public A\nDim X(33554429)\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-86",
+   "logger": "cr6",
+   "source": "Public A\nPublic X(16777213)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Q = 1."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-87",
+   "logger": "cr6",
+   "source": "Public A\nPublic X(16777213)\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-88",
+   "logger": "cr6",
+   "source": "Public X(16777213)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-89",
+   "logger": "cr6",
+   "source": "Public X(16777212)\nDim Y(33554428)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-90",
+   "logger": "cr6",
+   "source": "Public X(16777212)\nPublic Z\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-91",
+   "logger": "cr6",
+   "source": "Public X(16777211)\nPublic Z\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-92",
+   "logger": "cr6",
+   "source": "Public X(16777211)\nPublic Z\nAlias Z = ZZ\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-93",
+   "logger": "cr6",
+   "source": "Public X(16777212)\nUnits X=m\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-94",
+   "logger": "cr6",
+   "source": "Public X(16777211)\nPublic Z\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: A."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-95",
+   "logger": "cr6",
+   "source": "Dim X(2147483643)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-96",
+   "logger": "cr6",
+   "source": "Dim X(1073741824)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-97",
+   "logger": "cr6",
+   "source": "Dim X(1073741825)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-98",
+   "logger": "cr6",
+   "source": "Dim X(2147483000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-99",
+   "logger": "cr6",
+   "source": "Dim X(46341,46341)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-100",
+   "logger": "cr6",
+   "source": "Dim X(65536,32768)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-101",
+   "logger": "cr6",
+   "source": "Dim X(65536,65536)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-102",
+   "logger": "cr6",
+   "source": "Public X(1000,1000,100)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-103",
+   "logger": "cr6",
+   "source": "Public X(100,100,100) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-104",
+   "logger": "cr6",
+   "source": "Dim X(8388607) As Double\nDim Y(8388607) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-105",
+   "logger": "cr6",
+   "source": "Dim X(16777215) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-106",
+   "logger": "cr6",
+   "source": "Dim X(100000) As String * 1000\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-107",
+   "logger": "cr6",
+   "source": "Public X(1000000) As String * 100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-108",
+   "logger": "cr6",
+   "source": "Public X(1200000) As String * 100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-109",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    If A Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-110",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Call Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-111",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Foo(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-112",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = B +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     A = B +.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-113",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = Sin(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression:     A = Sin(1,2).\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-114",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression:     A = 1 2.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-115",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A,1,mV5000,99,1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-116",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-117",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-118",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-119",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-120",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,2,3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  4.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-121",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression:     A = \"abc.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-122",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nDataTable(T,1,10)\n  Sample(1,A,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-123",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nDataTable(T,1,10)\n  Sample(1,Q,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-124",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nDataTable(T,1,10)\n  Sample(0,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-125",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nConst C = Q\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Q.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-126",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nDim Y(0)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimension: Dim Y(0)\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-127",
+   "logger": "cr6",
+   "source": "Public A,B\nDim X(33554429)\nDim Y(2)\nDim A\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A already declared as a variable.\nline 8: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-128",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,5592319)\n  Sample(1,A,IEEE4)\n  Sample(1,B,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-129",
+   "logger": "cr6",
+   "source": "Public A,B\nDataTable(Test,1,5592320)\n  Sample(1,A,IEEE4)\n  Sample(1,B,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-130",
+   "logger": "cr6",
+   "source": "Public S As String * 100\nDataTable(Test,1,1118463)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-131",
+   "logger": "cr6",
+   "source": "Public S As String * 100\nDataTable(Test,1,1118464)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-132",
+   "logger": "cr6",
+   "source": "Public A(5)\nDataTable(Test,1,2917731)\n  Sample(5,A(),FP2)\n  Average(5,A(),IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-133",
+   "logger": "cr6",
+   "source": "Public A(5)\nDataTable(Test,1,2917732)\n  Sample(5,A(),FP2)\n  Average(5,A(),IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-134",
+   "logger": "cr6",
+   "source": "Public A As Boolean\nDataTable(Test,1,6710783)\n  Sample(1,A,Boolean)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-135",
+   "logger": "cr6",
+   "source": "Public A As Boolean\nDataTable(Test,1,6710784)\n  Sample(1,A,Boolean)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-136",
+   "logger": "cr6",
+   "source": "Public A(200)\nDataTable(Test,1,164479)\n  Sample(200,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-137",
+   "logger": "cr6",
+   "source": "Public A(200)\nDataTable(Test,1,164480)\n  Sample(200,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-138",
+   "logger": "cr6",
+   "source": "Public A,B(300)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8270586)\n  Sample(1,A,FP2)\n  Sample(300,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-139",
+   "logger": "cr6",
+   "source": "Public A,B(300)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8270587)\n  Sample(1,A,FP2)\n  Sample(300,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-140",
+   "logger": "cr6",
+   "source": "Public A,B(100)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8222281)\n  Sample(1,A,FP2)\n  Sample(100,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-141",
+   "logger": "cr6",
+   "source": "Public A,B(100)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8222282)\n  Sample(1,A,FP2)\n  Sample(100,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-142",
+   "logger": "cr6",
+   "source": "Public A,B(250)\nDataTable(Test,1,130244)\n  DataInterval(0,15,Sec,100000)\n  Sample(1,A,FP2)\n  Sample(250,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-143",
+   "logger": "cr6",
+   "source": "Public A,B(250)\nDataTable(Test,1,130245)\n  DataInterval(0,15,Sec,100000)\n  Sample(1,A,FP2)\n  Sample(250,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-144",
+   "logger": "cr6",
+   "source": "Public A,B(5)\nDataTable(Test,1,6003671)\n  DataInterval(0,15,Sec,3)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-145",
+   "logger": "cr6",
+   "source": "Public A,B(5)\nDataTable(Test,1,6003672)\n  DataInterval(0,15,Sec,3)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-146",
+   "logger": "cr6",
+   "source": "Public A,B(5)\nDataTable(Test,1,3531991)\n  DataEvent(0,A>5,A<3,0)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-147",
+   "logger": "cr6",
+   "source": "Public A,B(5)\nDataTable(Test,1,3531992)\n  DataEvent(0,A>5,A<3,0)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-148",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-149",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n' comment\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-150",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\nPublic Z\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-151",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-152",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-153",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\nBeginProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-154",
+   "logger": "cr6",
+   "source": "Dim X(33554429)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-155",
+   "logger": "cr6",
+   "source": "Dim X(1610612732)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-156",
+   "logger": "cr6",
+   "source": "Dim X(1610612736)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-157",
+   "logger": "cr6",
+   "source": "Dim X(536870911)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-158",
+   "logger": "cr6",
+   "source": "Dim X(1073741824)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-159",
+   "logger": "cr6",
+   "source": "Dim X(1073741825)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-160",
+   "logger": "cr6",
+   "source": "Dim X(1073741824) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-161",
+   "logger": "cr6",
+   "source": "Dim X(268435455) As String * 4\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr6-r17_cr6_oom-162",
+   "logger": "cr6",
+   "source": "Dim X(50000,50000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-0",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,33029130)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-1",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-2",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-3",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-4",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1)\n  DataInterval(0,15,Sec,8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-5",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,268435456)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-6",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-8254783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-7",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-8",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-2147483648)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-9",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,-2147483649)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-10",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,3000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-11",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,10000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-12",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-13",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,2147483646)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-14",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,1e10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-15",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,8254784.5)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-16",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,8254783.9)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-17",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-18",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,536870912)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-19",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,9999)\n  DataInterval(0,15,Sec,10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-20",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,8254783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-21",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-22",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,-8254784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-23",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1000)\n  DataInterval(0,15,Sec,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-24",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-25",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,2147483648)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-26",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,-33029131)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-27",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-28",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,0)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-29",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-30",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,3000000000)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-31",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,6710784.5)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-32",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,6710783.9)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-33",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,-6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-34",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,-6710785)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-35",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1e9)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-36",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-37",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,2147483647)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-38",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,33029131)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-39",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,1073741824)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-40",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,536870912)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-41",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(Test,1,268435456)\n  DataInterval(0,15,Sec,1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-42",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDataTable(T2,1,6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-43",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDataTable(T2,1,10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-44",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDataTable(T2,1,10)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-45",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If A>1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-46",
+   "logger": "cr1000x",
+   "source": "Public A, B\nSub S\n  CallTable T1\nEndSub\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find DataTable T1."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-47",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nSub S\n  CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-48",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,-1)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-49",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,-6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-50",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,-6710783)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-51",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,2147483647)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-52",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,2147483648)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-53",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,4294967296)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-54",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,33554432)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-55",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,214748364)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-56",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,1073741824)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-57",
+   "logger": "cr1000x",
+   "source": "Public A, B\nConst Z = 6710784\nDataTable(T1,1,Z)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-58",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nDim Q\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Q = Q +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid, or out of place expression:     Q = Q +."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-59",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     Q = 1."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-60",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T9\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable T9."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-61",
+   "logger": "cr1000x",
+   "source": "Public A, B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,B,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-62",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\n  Sample(1,Q,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-63",
+   "logger": "cr1000x",
+   "source": "Sub S\n  Dim X(33554429)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-64",
+   "logger": "cr1000x",
+   "source": "Sub S\n  Dim X(33554428)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-65",
+   "logger": "cr1000x",
+   "source": "Sub S\n  Dim X(20000000)\nEndSub\nDim Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-66",
+   "logger": "cr1000x",
+   "source": "Sub S\n  Dim X(20000000)\nEndSub\nSub S2\n  Dim X(20000000)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-67",
+   "logger": "cr1000x",
+   "source": "Function F(a)\n  Dim X(33554429)\n  Return a\nEndFunction\nSub S\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-68",
+   "logger": "cr1000x",
+   "source": "Sub S\nEndSub\nDim X(20000000)\nDim Y(20000000)\nBeginProg\n  Dim Z(5)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-69",
+   "logger": "cr1000x",
+   "source": "Sub S\nEndSub\nDim X(33554428)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-70",
+   "logger": "cr1000x",
+   "source": "Public X(33554420)\nDim Y(33554428)\nSub S\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-71",
+   "logger": "cr1000x",
+   "source": "Public X(33554428) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-72",
+   "logger": "cr1000x",
+   "source": "Public X(10),Y(16777200) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-73",
+   "logger": "cr1000x",
+   "source": "Public X(10),Y(16777202) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-74",
+   "logger": "cr1000x",
+   "source": "Public X(10),Y(16777203) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-75",
+   "logger": "cr1000x",
+   "source": "Public X(16777210) As Long\nPublic Y As String * 4\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-76",
+   "logger": "cr1000x",
+   "source": "Public X(16777210) As Long\nPublic Y As String * 3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-77",
+   "logger": "cr1000x",
+   "source": "Public X(16777209) As Long\nPublic Y As String * 4\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-78",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-79",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(33554429)\nDim Y(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-80",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(33554429)\nPublic Y(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-81",
+   "logger": "cr1000x",
+   "source": "Public A\nPublic Y(33554429)\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-82",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(20000000)\nDim Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-83",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(20000000)\nPublic Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-84",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(20000000)\nStatic Y(20000000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Static Y(20000000).\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-85",
+   "logger": "cr1000x",
+   "source": "Public A\nDim X(33554429)\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-86",
+   "logger": "cr1000x",
+   "source": "Public A\nPublic X(16777213)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Q = 1."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-87",
+   "logger": "cr1000x",
+   "source": "Public A\nPublic X(16777213)\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-88",
+   "logger": "cr1000x",
+   "source": "Public X(16777213)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-89",
+   "logger": "cr1000x",
+   "source": "Public X(16777212)\nDim Y(33554428)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-90",
+   "logger": "cr1000x",
+   "source": "Public X(16777212)\nPublic Z\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-91",
+   "logger": "cr1000x",
+   "source": "Public X(16777211)\nPublic Z\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-92",
+   "logger": "cr1000x",
+   "source": "Public X(16777211)\nPublic Z\nAlias Z = ZZ\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-93",
+   "logger": "cr1000x",
+   "source": "Public X(16777212)\nUnits X=m\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-94",
+   "logger": "cr1000x",
+   "source": "Public X(16777211)\nPublic Z\nDataTable(T1,1,6710784)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: A."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-95",
+   "logger": "cr1000x",
+   "source": "Dim X(2147483643)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-96",
+   "logger": "cr1000x",
+   "source": "Dim X(1073741824)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-97",
+   "logger": "cr1000x",
+   "source": "Dim X(1073741825)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-98",
+   "logger": "cr1000x",
+   "source": "Dim X(2147483000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-99",
+   "logger": "cr1000x",
+   "source": "Dim X(46341,46341)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-100",
+   "logger": "cr1000x",
+   "source": "Dim X(65536,32768)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-101",
+   "logger": "cr1000x",
+   "source": "Dim X(65536,65536)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-102",
+   "logger": "cr1000x",
+   "source": "Public X(1000,1000,100)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-103",
+   "logger": "cr1000x",
+   "source": "Public X(100,100,100) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-104",
+   "logger": "cr1000x",
+   "source": "Dim X(8388607) As Double\nDim Y(8388607) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-105",
+   "logger": "cr1000x",
+   "source": "Dim X(16777215) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-106",
+   "logger": "cr1000x",
+   "source": "Dim X(100000) As String * 1000\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-107",
+   "logger": "cr1000x",
+   "source": "Public X(1000000) As String * 100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-108",
+   "logger": "cr1000x",
+   "source": "Public X(1200000) As String * 100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-109",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    If A Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-110",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Call Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-111",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Foo(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-112",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = B +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     A = B +.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-113",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = Sin(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression:     A = Sin(1,2).\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-114",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression:     A = 1 2.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-115",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A,1,mV5000,99,1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-116",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-117",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-118",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-119",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-120",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,2,3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  4.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-121",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n    A = \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression:     A = \"abc.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-122",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nDataTable(T,1,10)\n  Sample(1,A,FP2)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-123",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nDataTable(T,1,10)\n  Sample(1,Q,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-124",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nDataTable(T,1,10)\n  Sample(0,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-125",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nConst C = Q\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Q.\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-126",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nDim Y(0)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimension: Dim Y(0)\n\nline 7: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-127",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDim X(33554429)\nDim Y(2)\nDim A\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A already declared as a variable.\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-128",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,5592319)\n  Sample(1,A,IEEE4)\n  Sample(1,B,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-129",
+   "logger": "cr1000x",
+   "source": "Public A,B\nDataTable(Test,1,5592320)\n  Sample(1,A,IEEE4)\n  Sample(1,B,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-130",
+   "logger": "cr1000x",
+   "source": "Public S As String * 100\nDataTable(Test,1,1118463)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-131",
+   "logger": "cr1000x",
+   "source": "Public S As String * 100\nDataTable(Test,1,1118464)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-132",
+   "logger": "cr1000x",
+   "source": "Public A(5)\nDataTable(Test,1,2917731)\n  Sample(5,A(),FP2)\n  Average(5,A(),IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-133",
+   "logger": "cr1000x",
+   "source": "Public A(5)\nDataTable(Test,1,2917732)\n  Sample(5,A(),FP2)\n  Average(5,A(),IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-134",
+   "logger": "cr1000x",
+   "source": "Public A As Boolean\nDataTable(Test,1,6710783)\n  Sample(1,A,Boolean)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-135",
+   "logger": "cr1000x",
+   "source": "Public A As Boolean\nDataTable(Test,1,6710784)\n  Sample(1,A,Boolean)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-136",
+   "logger": "cr1000x",
+   "source": "Public A(200)\nDataTable(Test,1,164479)\n  Sample(200,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-137",
+   "logger": "cr1000x",
+   "source": "Public A(200)\nDataTable(Test,1,164480)\n  Sample(200,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-138",
+   "logger": "cr1000x",
+   "source": "Public A,B(300)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8270586)\n  Sample(1,A,FP2)\n  Sample(300,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-139",
+   "logger": "cr1000x",
+   "source": "Public A,B(300)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8270587)\n  Sample(1,A,FP2)\n  Sample(300,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-140",
+   "logger": "cr1000x",
+   "source": "Public A,B(100)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8222281)\n  Sample(1,A,FP2)\n  Sample(100,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-141",
+   "logger": "cr1000x",
+   "source": "Public A,B(100)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,8222282)\n  Sample(1,A,FP2)\n  Sample(100,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-142",
+   "logger": "cr1000x",
+   "source": "Public A,B(250)\nDataTable(Test,1,130244)\n  DataInterval(0,15,Sec,100000)\n  Sample(1,A,FP2)\n  Sample(250,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-143",
+   "logger": "cr1000x",
+   "source": "Public A,B(250)\nDataTable(Test,1,130245)\n  DataInterval(0,15,Sec,100000)\n  Sample(1,A,FP2)\n  Sample(250,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-144",
+   "logger": "cr1000x",
+   "source": "Public A,B(5)\nDataTable(Test,1,6003671)\n  DataInterval(0,15,Sec,3)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-145",
+   "logger": "cr1000x",
+   "source": "Public A,B(5)\nDataTable(Test,1,6003672)\n  DataInterval(0,15,Sec,3)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-146",
+   "logger": "cr1000x",
+   "source": "Public A,B(5)\nDataTable(Test,1,3531991)\n  DataEvent(0,A>5,A<3,0)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-147",
+   "logger": "cr1000x",
+   "source": "Public A,B(5)\nDataTable(Test,1,3531992)\n  DataEvent(0,A>5,A<3,0)\n  Sample(1,A,FP2)\n  Sample(5,B(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-148",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-149",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n' comment\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-150",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\nPublic Z\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-151",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-152",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-153",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\nBeginProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-154",
+   "logger": "cr1000x",
+   "source": "Dim X(33554429)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-155",
+   "logger": "cr1000x",
+   "source": "Dim X(1610612732)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-156",
+   "logger": "cr1000x",
+   "source": "Dim X(1610612736)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-157",
+   "logger": "cr1000x",
+   "source": "Dim X(536870911)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-158",
+   "logger": "cr1000x",
+   "source": "Dim X(1073741824)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-159",
+   "logger": "cr1000x",
+   "source": "Dim X(1073741825)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-160",
+   "logger": "cr1000x",
+   "source": "Dim X(1073741824) As Double\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-161",
+   "logger": "cr1000x",
+   "source": "Dim X(268435455) As String * 4\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  },
+  {
+   "id": "cr1000x-r17_cr6_oom-162",
+   "logger": "cr1000x",
+   "source": "Dim X(50000,50000)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
+  }
+ ]
+}
