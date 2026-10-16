@@ -147,7 +147,56 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Round 17 (2026-10-16; resume here)
+## Round 18 (2026-10-16; resume here)
+
+- `claude/laughing-franklin-08z9vo` was merged into `main` (mirror PR #1, 73e423ca) and pushed to
+  the primary remote. Round 18 works on `ocb-r18`, cut from `origin/main` (local, NOT pushed);
+  use it as the integration branch and worktree base from now on (replaces the old branch name in
+  "Work method").
+- Integrated, each verified by the coordinator (fixture audit, full pytest, and a probe of the
+  worker's weakest claim): round-17 `ocb-r17-preserve` (PreserveVariables pool, no conflict);
+  W1 `Const J(n) = v` declares scalar J = first subscript, rest ignored (false reject on all four
+  loggers, not just CR300; fixture `r18_const_array.json`); W3 `SlowSequence(")`/`(A,")` messages and
+  pre-BeginProg `Multiple BeginProgs.`, CR300/CR350 gate by "argument resolves" (coordinator probe
+  overturned the worker's "literal only" guess; `r18_slowseq_timeout.json`); W4 a clean SlowSequence
+  before any BeginProg opens the program, so `SlowSequence`/`EndProg` compiles (false reject), incl.
+  CR300/CR350 expression arguments over declared names (coordinator probe found the first version
+  still false-rejected them; `r18_slowseq_endprog.json`); W2 CR300/CR350 inline `If c Then CallTable`
+  counts as a call in the storage allocator (false accept; `r18_inline_calltable.json`) and
+  CR6/CR1000X `Out of memory.` for auto/negative sizes via the Lapses*16 wrap plus the zero-request
+  `Out of Memory; Unable to allocate table <Name>.` (`r18_oom_auto.json`; `docs/tdf-rules.md`).
+- Gates at b130ab83 (macOS M4): pytest 40,603 passed / 311 skipped, `-m server` 163 passed; all six
+  new/changed fixtures audit 0 differing; difftest repo/chm exact cr6 18/506, cr1000x 18/506,
+  cr300 7/505 (11 verdict), cr350 7/505 (11 verdict), mismatch 0, implementation_exception 0 (repo
+  count is 18 since the merge into main); `fuzz_replay` 3,158: 2,375 exact (2,368), 62 false
+  accepts, 0 false rejects, 689 message diffs, 16 mode diffs, 16 oracle errors, no file got worse
+  (`scratch/r18/replay-r18-final.json`); tdftest unchanged (`goestable_1` only on CR6/CR300/CR350,
+  the pre-existing CR1000X Status gap); `scripts/verify.py`: `BUILD  host tests 136 pass | CRBasic
+  19/19 compiled, 6 warning(s) | repository pass`.
+- `fuzz_replay --gate no-regressions` always exits 1 while the corpus has oracle errors
+  (`gate_failed`); compare class counts instead.
+- Worktree `scratch` symlinks are not covered by `.gitignore` (`scratch/` matches directories
+  only); briefs must forbid `git add -A`/`git add .`. Briefs: `scratch/r18/W*.md`.
+
+## Next steps (round 19)
+
+1. Push `ocb-r18` (needs the human's OK), then ask the cloud reviewer for rounds 16-18.
+2. TimeOut (HTTPPut 9th / FTPClient 11th) values: W3 probes `scratch/r18/W3/run_timeout1.txt`
+   show `-1`, `TRUE`, `&HFFFFFFFF`, 2147483647 -> `Parameter TimeOut cannot be negative` on all four
+   loggers but -2147483648 compiles; looks like a per-logger value*1000 overflow. Pre-existing
+   false accepts. Candidate for Codex research over `scratch/re/*.decomp.c` before a worker.
+3. Const leftovers (W1): false rejects `Const J()`, `J(,3)`, `J (3)`, `J(3 = 5`, `Const J As
+   Long(3)` echo; false accepts `Const K = Y`/`J(Y)` (`Variable used in CONST expression.`),
+   `Const K = "a"`, `X = J(1)` on a Const (`Incomplete expression`).
+4. SlowSequence leftovers: declared-array argument `SlowSequence(B(1))`; Scan/NextScan between a
+   pre-BeginProg SlowSequence and a real BeginProg (`Multiple` + `BEGINPROG never reached`
+   warning); CR300/CR350 NextScan there; `SubScan (1,Sec,0)` in such a block.
+5. OOM leftovers (W2): auto tables with CardOut/TableFile, records forced to 2, counts 0/1, N
+   outside int32; `_scan_weights` ignores inline calls (no observed effect).
+6. Round-17 list item 4 leftovers and the round-16 lists below (false accepts, message diffs,
+   fuzz seeds 413+).
+
+## Round 17 (2026-10-16)
 
 - Integrated on `claude/laughing-franklin-08z9vo` (local, NOT pushed), each gated: `ocb-r16-pending-fuzz`;
   Lapses `cvttss2si` + `*16` wrap in the CR300/CR350 allocator (false reject 9354d3641c2a); the
@@ -173,7 +222,7 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Worker incidents: W4 ran `pkill -f fuzz_replay` (forbidden); W3 reports `fuzz_replay.py --help`
   starts a run and touched a corpus file (restored). Repeat both warnings in briefs.
 
-## Next steps (round 18)
+## Next steps (round 18, done or carried into round 19)
 
 1. Gate and integrate `ocb-r17-preserve` (f20301b1, W5: CR300/CR350 PreserveVariables /
    PreserveOneVariable pool deductions, fixture `r17_preserve_pool.json` audited 0 differing,
