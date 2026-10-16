@@ -136,14 +136,14 @@ def allocate(specs: list[dict], pool: int) -> dict:
                 c1 = max(c1 * R, 0x3000)
                 reserve = _i32(reserve + c1)
                 if not t["card"]:
-                    reserve = _i32(reserve + (((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0) * t["B"])
+                    reserve = _i32(reserve + _lap(t) * t["B"])
                 w = 1.0 if t["W"] is None else _f32(t["W"])
                 rate = _f32(_f32(float(R) / _f32(float(k) * w)) + rate)
             else:
-                a1 = ((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0
+                a1 = _lap(t)
                 _blockfix(t, _i32(a1 + t["N"]))
                 R, k = t["R"], t["k"]
-                a2 = ((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0
+                a2 = _lap(t)
                 u = _i32(a2 + _cvt_int(_f32(_f32(float(R)) * _f32(_f32(float(t["N"])) / _f32(float(k))))) + 0x2000)
                 if not t["fillstop"]:
                     lo = _min_recs(t, k, cc)
@@ -164,7 +164,7 @@ def allocate(specs: list[dict], pool: int) -> dict:
                     w = 1.0 if t["W"] is None else _f32(t["W"])
                     n = _cvt_int(_f32(dur / w)) if w else _INT_MIN
                     u = _cvt_int(_f32(_f32(float(R)) * _f32(_f32(float(n)) / _f32(float(k)))))
-                    u = _i32(u + (((t["lapses"] * 16) // t["B"] + 1) if t["lapses"] else 0) + 0x2000)
+                    u = _i32(u + _lap(t) + 0x2000)
                     if u < 0x3000:
                         u = 0x3000
                     if not t["fillstop"]:
@@ -186,6 +186,11 @@ def allocate(specs: list[dict], pool: int) -> dict:
             ok_exit = True
             break
     return {"sizes": [t["N"] for t in st], "msg1": not ok_exit, "msg2": e4 < 0}
+
+
+def _lap(t: dict) -> int:
+    """Records kept for the Lapses count: `Lapses * 16` wraps to 32 bits before the division."""
+    return _tdiv(_i32(t["lapses"] * 16), t["B"]) + 1 if t["lapses"] else 0
 
 
 def _tdiv(a: int, b: int) -> int:
@@ -240,7 +245,7 @@ def spec_of(m: dict) -> dict:
         n, flagged = cls[1], cls[2]
     di = bool(m["interval_seconds"]) or m["zero_interval"]
     return {"called": m["called"], "n": n, "flagged": flagged, "B": m["bytes_per_record"],
-            "lapses": m["lapses"] if di else 0, "card": False,   # TableFile does not skip the Lapses term here
+            "lapses": (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if di else 0, "card": False,   # TableFile does not skip the Lapses term here
             "own_ms": int(round(m["interval_seconds"] * 1000)) if m["interval_seconds"] else 0,
             "W": m["call_w"], "fillstop": m.get("fillstop", False), "kone": False, "day": False,
             "zero_interval": m["zero_interval"]}

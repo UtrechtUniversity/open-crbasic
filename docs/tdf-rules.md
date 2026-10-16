@@ -915,6 +915,13 @@ Allocator, as read from the decompilation and confirmed by the sweeps:
   UINT2, IEEE8, String, `Maximum`/`Minimum` with time stamps, arrays), `k = 1` without a
   `DataInterval`; with one `k = min(496 // B, a + N)` (a record block of at most 496 bytes) and
   `k = 1` when that is below 2, and `a = (Lapses * 16) // B + 1` (0 when Lapses is 0 or `k = 1`).
+  Lapses goes through the truncating convert (a value of 2^31 or more, or below -2^31, becomes
+  INT_MIN; `abs` keeps INT_MIN) and `Lapses * 16` wraps to 32 bits before the signed division:
+  Lapses 10^8 fails, while 134,217,728 / 268,435,455 / 268,435,456 / 2^31 / 10^12 / -10^12 all
+  fit (the wrapped product is zero or negative, so `a` is 1 or less). Evidence
+  `tests/fixtures/r17_lapses_wrap.json` (CR300/CR350; the fuzz false reject
+  `tests/corpus/fuzz/cr300/false_reject/9354d3641c2a.CR6`). CR6/CR1000X instead print
+  `Out of memory.` from Lapses 8,254,784 upward for that FP2 table (the unimplemented CR6 allocator).
   That reproduces the CR300 thresholds to the record: FP2 580266/580267, IEEE4 522240/522241,
   `String*4` 435200/435201, interval FP2 5059161/5059162; CR350 2910435/2910436 and
   25375321/25375322.
