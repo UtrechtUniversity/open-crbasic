@@ -2186,3 +2186,18 @@ of `FTPClient` is `TimeOut`. What a string, `NAN` or float literal there draws d
 
 The truncate warning of a clean compile prints before every later-pass warning (reachability, fnotch) whatever its line
 (`compiler._sort_key`). Not modelled: variable timeouts outside the gated state (constant-integer, needs the symbol table).
+
+### Function-as-statement arity, `Timer` arity, `Sub`-call echo, string over-index counts (all four loggers, rounds 16-17)
+
+Fixture `r16_function_statement_arity.json` (172 cases, audits clean against the real compilers, 2026-10-16;
+first written as an unverified WIP in round 16 and completed here). Rules, all four loggers:
+
+- `Timer` takes exactly 3 arguments (`expressions._ARITY_RANGE`): fewer `Expression expects , : <statement>.`, more `No
+  Matching, or out of place ) in expression: <statement>.`. Its third argument being a string, `NAN` or float literal is
+  `Parameter must be a constant integer: <statement>.` whatever came before, also after an `IfTime` (the `TimeOut` gate above
+  does not apply; CR6 and CR350 probed).
+- A user `Function` called as a statement needs its closing `)` (a `Sub` call does not); a wrong built-in call nested in a
+  `Function` statement's arguments echoes the whole statement; inside a `Sub` call only the offending argument is echoed
+  (`check_function_arity`, `check_function_call_counts`).
+- Declared string variables count their dimensions for over-indexing like numeric ones on every logger
+  (`symbols.declared_dim_counts(strings=True)`).

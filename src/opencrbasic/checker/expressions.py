@@ -360,6 +360,9 @@ _CONST_INTEGER_BAD_ARGS = {"TCPOPEN": frozenset({2}), "SERIALOPEN": frozenset({3
 # be negative`) and the negative-value messages.
 _TIMEOUT_GATE: list = [None]
 _CONST_INTEGER_TYPE_ARGS = {"HTTPPUT": frozenset({8}), "FTPCLIENT": frozenset({10})}
+# `Timer`'s third argument is the same error whatever came before (it resets the mode first; oracle,
+# CR6/CR350, 2026-10-16: also after an `IfTime`).
+_CONST_INTEGER_TYPE_ARGS_ALWAYS = {"TIMER": frozenset({2})}
 
 
 def _not_integer_type(arg) -> bool:
@@ -384,7 +387,9 @@ _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
 # `SerialOpen` (table nargs 5, CR350 6) takes 5 or 6 arguments, CR350 5 to 8 (oracle 2026-10-13: more is
 # `No Matching, or out of place )`, 4 or fewer `Expression expects ,`; CR350 accepted 4 or fewer).
 _ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}, "GZIP": {1: (2, 2)},
-                "SERIALOPEN": {5: (5, 6), 6: (5, 8)}}
+                "SERIALOPEN": {5: (5, 6), 6: (5, 8)}, "TIMER": {3: (3, 3)}}
+# (`Timer` takes exactly 3: fewer `Expression expects ,`, more `No Matching, or out of place )`; oracle,
+# all four loggers, 2026-10-13, `N = Timer(1,sec)`, `Timer(1,2)`, `N = Timer(1,sec,0,0)`)
 # Argument counts a call accepts when they are not one range, keyed by profile `nargs` (oracle,
 # 2026-10-10, all four loggers): `HTTPPut` takes 4, 8 or 9 (2, 3, 5, 6, 7 are `few`, 10+ `many`).
 # `FTPClient` (table nargs 6) takes 6, 10 or 11 (oracle, all four loggers, 2026-10-11: 7-9 are
@@ -1383,7 +1388,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     variable_names = symbols.declared_variable_names(program)
     ds = program_dims(program, profile, known)
     dim_counts = symbols.declared_dim_counts(
-        program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
+        program, strings=True)
 
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or id(stmt) in skip:
@@ -1539,7 +1544,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     _check_function_statements(program, profile, diags, known)
 
     dim_counts = symbols.declared_dim_counts(
-        program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
+        program, strings=True)
     struct_vars = _struct_var_names(program)
     functions = {st.name.upper() for st in program.statements
                  if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"}
@@ -1802,6 +1807,8 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if _TIMEOUT_GATE[0] is False and any(
             i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())):
         return "constint"
+    if any(i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS_ALWAYS.get(upper, ())):
+        return "constint"
     if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
             and isinstance(args[-1], S.String)):
         return "constint"
@@ -2045,6 +2052,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
     struct_types = structs._structure_members(program)
     kinds = structs._variable_kinds(program, struct_types) if struct_types else {}
     struct_vars = _struct_var_names(program)
+    sub_names = {st.name.upper() for st in program.statements
+                 if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
     start = len(diags.items)
     mine: list = []
     table_mine: list = []   # the `mine` entries from DataTable output instructions
@@ -2109,16 +2118,27 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 mine.append(diags.items[-1])
                 continue
             problem = _call_arity_problem(stmt.name, stmt.args, profile)
+            in_arg = None
             if not problem:
-                for a in call_exprs:
+                for k, a in enumerate(call_exprs):
                     problem = _find_arity_problem(a, profile)
                     if problem:
+                        # inside a `Sub` call the offending argument alone is echoed (oracle,
+                        # 2026-10-13, all four loggers); a `Function` statement echoes it whole
+                        if stmt.tail_expr is None and stmt.juxtaposed is None and \
+                                stmt.name.upper() in sub_names:
+                            in_arg = k
                         break
             if problem:
                 if (problem == "constint" and any(
                         d.line == stmt.line and d.file == stmt.file
                         and d.message.startswith("Parameter must be a constant integer:")
                         for d in diags.items)):
+                    continue
+                if in_arg is not None:
+                    diags.error(stmt.line, _arity_message(
+                        problem, _call_arg_text(stmt.text, in_arg).strip(), profile, False), stmt.file)
+                    _hold(held, diags, problem)
                     continue
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
                                                             whole_statement=True), stmt.file)
@@ -2323,6 +2343,18 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                 missing[0] = max(1, required - len(stmt.args))
                 if kind:
                     report(stmt, kind, stmt.text, True)
+                elif (m := re.match(r"\s*" + re.escape(stmt.name) + r"\s*(?=\()", stmt.text or "", re.I)) \
+                        and structure._group_end(stmt.text, m.end()) is None:
+                    # a user `Function` called as a statement needs its `)` (a `Sub` call does
+                    # not): oracle, 2026-10-13, all four loggers
+                    report(stmt, "many", stmt.text, True)
+                else:
+                    # a wrong call nested in an argument: the whole statement is echoed (oracle,
+                    # 2026-10-13, all four loggers)
+                    for arg in stmt.args:
+                        if kind := problem(arg):
+                            report(stmt, kind, stmt.text, True)
+                            return
 
     for stmt in program.statements:
         visit(stmt)
