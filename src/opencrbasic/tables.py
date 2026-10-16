@@ -378,11 +378,6 @@ def _scan_program(program: S.Program):
 
     called: set[str] = set()
 
-    def _flat(ss):   # an inline `If c Then CallTable T` calls T too
-        for x in ss:
-            yield x
-            yield from _flat((getattr(x, "inline", None) or []) + (getattr(x, "inline_else", None) or []))
-
     for s in _flat(stmts):
         kw2 = _kw(s)
         if kw2 == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name):
@@ -400,6 +395,14 @@ def _scan_program(program: S.Program):
     return dict(uses_ch400=uses_ch400, struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
                 readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
+
+
+def _flat(ss):
+    """`ss` with the statements of every inline `If c Then ... Else ...` spliced in after it (an
+    inline `If c Then CallTable T` calls T too)."""
+    for x in ss:
+        yield x
+        yield from _flat((getattr(x, "inline", None) or []) + (getattr(x, "inline_else", None) or []))
 
 
 def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
@@ -444,7 +447,7 @@ def _scan_calls(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, list[float
     a call in a `Sub` or outside any `Scan` adds nothing (`checker/storage.py`)."""
     stack: list[float | None] = []
     calls: dict[str, list[float | None]] = {}
-    for s in stmts:
+    for s in _flat(stmts):
         kw = _kw(s)
         if kw == "SCAN":
             secs = None
@@ -468,7 +471,7 @@ def _last_call_interval(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, fl
     `Scan`, e.g. in a `Sub`, or one whose interval is not a plain constant). `checker/storage.py`."""
     stack: list[float | None] = []
     last: dict[str, float | None] = {}
-    for s in stmts:
+    for s in _flat(stmts):
         kw = _kw(s)
         if kw == "SCAN":
             secs = None

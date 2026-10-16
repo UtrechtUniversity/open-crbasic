@@ -979,6 +979,19 @@ both when both are present. `tables._preserve_deduction` / `storage.preserve_cha
 
 Evidence `tests/fixtures/r17_preserve_pool.json` and the threshold sweeps listed there.
 
+### Inline `If c Then CallTable T` (round 18)
+
+An inline call (`If c Then CallTable T`, also in the `Else` part or after a `:`) is a call exactly
+like a block-`If` one for the storage allocator: the table is charged its own size and its call
+interval is the enclosing `Scan`'s. Before round 18 `tables._last_call_interval` / `_scan_calls` did
+not descend into the inline statements, so `W` was unknown and the table was charged the cheaper
+auto share, a false accept (CR300/CR350). Oracle (cr300comp, cr350comp, 2026-10-16): the first
+failing size of a fixed table next to an auto table is identical for plain, inline and mixed calls
+(CR300 578447, CR350 2908616 with `Scan(10,Sec,0,0)`); the `declared but never called` warning
+already treats an inline call as a call on all four loggers (fixture `r18_inline_calltable.json`).
+Not changed: `_scan_weights` (the CR6/CR1000X auto-size weight) still ignores inline calls; the
+oracle gives no TDF there, so its effect is unobserved.
+
 ## DataTable size argument (all four loggers; round 15)
 
 TDF `size` of a called table, one FP2 table in a `Scan` (oracle, `tools/tdf_probe.py --exe`;

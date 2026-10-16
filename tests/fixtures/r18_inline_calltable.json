@@ -1,0 +1,975 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r18_inline_calltable-0-plain_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-1-plain_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-2-plain_100",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-3-inline_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-4-inline_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-5-inline_100",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-6-inline-else_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-7-inline-else_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-8-block_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-9-block_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-10-none_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-11-none_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-12-inline-colon_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-13-inline-colon_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-14-inline-other_5M",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable T2."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-15-inline-other_5M_x2",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-16-cr300_plain_N578446",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-17-cr300_plain_N578447",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-18-cr300_inl_N578446",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-19-cr300_inl_N578447",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-20-cr300_mix_N578446",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-21-cr300_mix_N578447",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-22-cr350_plain_N2908615",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-23-cr350_plain_N2908616",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-24-cr350_inl_N2908615",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-25-cr350_inl_N2908616",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-26-cr350_mix_N2908615",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-27-cr350_mix_N2908616",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-28-inline_in_Sub",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  If C = 1 Then CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-29-plain_in_Sub",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-30-inline_outside_scan",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  If C = 1 Then CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-31-plain_outside_scan",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-32-inline_slowseq",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r18_inline_calltable-33-plain_slowseq",
+   "logger": "cr300",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-0-plain_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-1-plain_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-2-plain_100",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-3-inline_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-4-inline_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-5-inline_100",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-6-inline-else_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-7-inline-else_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-8-block_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-9-block_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-10-none_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-11-none_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-12-inline-colon_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-13-inline-colon_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-14-inline-other_5M",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable T2."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-15-inline-other_5M_x2",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-16-cr300_plain_N578446",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-17-cr300_plain_N578447",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-18-cr300_inl_N578446",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-19-cr300_inl_N578447",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-20-cr300_mix_N578446",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-21-cr300_mix_N578447",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-22-cr350_plain_N2908615",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-23-cr350_plain_N2908616",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-24-cr350_inl_N2908615",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-25-cr350_inl_N2908616",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-26-cr350_mix_N2908615",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-27-cr350_mix_N2908616",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-28-inline_in_Sub",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  If C = 1 Then CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-29-plain_in_Sub",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-30-inline_outside_scan",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  If C = 1 Then CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-31-plain_outside_scan",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-32-inline_slowseq",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r18_inline_calltable-33-plain_slowseq",
+   "logger": "cr350",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-0-plain_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-1-plain_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-2-plain_100",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-3-inline_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-4-inline_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-5-inline_100",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-6-inline-else_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-7-inline-else_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-8-block_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-9-block_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-10-none_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-11-none_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-12-inline-colon_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-13-inline-colon_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-14-inline-other_5M",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable T2."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-15-inline-other_5M_x2",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-16-cr300_plain_N578446",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-17-cr300_plain_N578447",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-18-cr300_inl_N578446",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-19-cr300_inl_N578447",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-20-cr300_mix_N578446",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-21-cr300_mix_N578447",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-22-cr350_plain_N2908615",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-23-cr350_plain_N2908616",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-24-cr350_inl_N2908615",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-25-cr350_inl_N2908616",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-26-cr350_mix_N2908615",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-27-cr350_mix_N2908616",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-28-inline_in_Sub",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  If C = 1 Then CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-29-plain_in_Sub",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-30-inline_outside_scan",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  If C = 1 Then CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-31-plain_outside_scan",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-32-inline_slowseq",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r18_inline_calltable-33-plain_slowseq",
+   "logger": "cr6",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-0-plain_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-1-plain_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-2-plain_100",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-3-inline_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-4-inline_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-5-inline_100",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,100)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,100)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-6-inline-else_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-7-inline-else_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then A=2 Else CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-8-block_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-9-block_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then\n      CallTable T1\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-10-none_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-11-none_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-12-inline-colon_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-13-inline-colon_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1 : A = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T2, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-14-inline-other_5M",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable T2."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-15-inline-other_5M_x2",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-16-cr300_plain_N578446",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-17-cr300_plain_N578447",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-18-cr300_inl_N578446",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-19-cr300_inl_N578447",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-20-cr300_mix_N578446",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,578446)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-21-cr300_mix_N578447",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,578447)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-22-cr350_plain_N2908615",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-23-cr350_plain_N2908616",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-24-cr350_inl_N2908615",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-25-cr350_inl_N2908616",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    If C = 1 Then CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-26-cr350_mix_N2908615",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,2908615)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-27-cr350_mix_N2908616",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,2908616)\n  Sample(1,A,FP2)\nEndTable\nDataTable(T2,1,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    A=1\n    CallTable T1\n    If C = 2 Then CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-28-inline_in_Sub",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  If C = 1 Then CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-29-plain_in_Sub",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  CallTable T1\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-30-inline_outside_scan",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  If C = 1 Then CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-31-plain_outside_scan",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  CallTable T1\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-32-inline_slowseq",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    If C = 1 Then CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r18_inline_calltable-33-plain_slowseq",
+   "logger": "cr1000x",
+   "source": "Public A,C\nDataTable(T1,1,5000000)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A=1\n  NextScan\n  SlowSequence\n  Scan(10,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

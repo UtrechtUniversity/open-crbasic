@@ -3963,8 +3963,9 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   lone `+`/`=`, `&`, `%`, `!`, `Not`.
 - **Bare variable after `Then`** (`r5cr6_inline_bare*`): `If c Then Y` (a declared variable, no
   assignment) is a pass-1 `Invalid, or out of place expression: Y.`, so later pass-2-only findings are
-  hidden. Gaps seen, not modelled: `If c Then Battery` (inline instruction arity) and the `declared but
-  never called` warning for a table named in an inline `CallTable`.
+  hidden. Gap seen, not modelled: `If c Then Battery` (inline instruction arity). The `declared but
+  never called` warning for a table named in an inline `CallTable` matches the oracle on all four
+  loggers (round 18, `r18_inline_calltable.json`).
 - **Stray `)` and `,`** (`r5cr6_stray_paren_comma`, CR6/CR1000X): `X )`, `X ) + 1`, `X ) )` are pass-1
   `Invalid, or out of place expression` (not `Incomplete expression`); in `Y = 1, 2` / `Y = Z, W` /
   `Y = Int(1), 2` a top-level comma after an operand is pass-1 `Incomplete expression`, and one where an
