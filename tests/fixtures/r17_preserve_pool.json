@@ -1,0 +1,519 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r17_preserve_pool-0",
+   "logger": "cr300",
+   "source": "Public V\nPreserveVariables\nDataTable(Test,1,579356)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-1",
+   "logger": "cr300",
+   "source": "Public V\nPreserveVariables\nDataTable(Test,1,579357)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-2",
+   "logger": "cr300",
+   "source": "Public V(26)\nPreserveVariables\nDataTable(Test,1,578673)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-3",
+   "logger": "cr300",
+   "source": "Public V(26)\nPreserveVariables\nDataTable(Test,1,578674)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-4",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,579128)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-5",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,579129)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-6",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,579584)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(2,Min,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-7",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,579585)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(2,Min,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-8",
+   "logger": "cr300",
+   "source": "Public V\nDim D(300)\nPreserveVariables\nDataTable(Test,1,566385)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-9",
+   "logger": "cr300",
+   "source": "Public V\nDim D(300)\nPreserveVariables\nDataTable(Test,1,566386)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-10",
+   "logger": "cr300",
+   "source": "Public V\nDim D1(300) As Double\nPreserveVariables\nDataTable(Test,1,552732)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-11",
+   "logger": "cr300",
+   "source": "Public V\nDim D1(300) As Double\nPreserveVariables\nDataTable(Test,1,552733)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-12",
+   "logger": "cr300",
+   "source": "Public V\nSub S1\n  Dim D1(300)\nEndSub\nPreserveVariables\nDataTable(Test,1,566385)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-13",
+   "logger": "cr300",
+   "source": "Public V\nSub S1\n  Dim D1(300)\nEndSub\nPreserveVariables\nDataTable(Test,1,566386)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-14",
+   "logger": "cr300",
+   "source": "Public V\nPublic S As String * 95\nPreserveVariables\nDataTable(Test,1,579356)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-15",
+   "logger": "cr300",
+   "source": "Public V\nPublic S As String * 95\nPreserveVariables\nDataTable(Test,1,579357)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-16",
+   "logger": "cr300",
+   "source": "Public V\nPublic S As String * 96\nPreserveVariables\nDataTable(Test,1,578673)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-17",
+   "logger": "cr300",
+   "source": "Public V\nPublic S As String * 96\nPreserveVariables\nDataTable(Test,1,578674)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-18",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,575715)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-19",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,575716)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-20",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,575715)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(2,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-21",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,575716)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(2,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-22",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,579356)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-23",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,579357)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-24",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,579811)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-25",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,579812)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-26",
+   "logger": "cr300",
+   "source": "Public V(20)\nPreserveOneVariable V\nDataTable(Test,1,571619)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-27",
+   "logger": "cr300",
+   "source": "Public V(20)\nPreserveOneVariable V\nDataTable(Test,1,571620)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-28",
+   "logger": "cr300",
+   "source": "Public V(20)\nPreserveOneVariable V(3)\nDataTable(Test,1,575715)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-29",
+   "logger": "cr300",
+   "source": "Public V(20)\nPreserveOneVariable V(3)\nDataTable(Test,1,575716)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-30",
+   "logger": "cr300",
+   "source": "Public V(3,4)\nPreserveOneVariable V()\nDataTable(Test,1,573440)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-31",
+   "logger": "cr300",
+   "source": "Public V(3,4)\nPreserveOneVariable V()\nDataTable(Test,1,573441)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-32",
+   "logger": "cr300",
+   "source": "Public V\nPublic S(4) As String * 50\nPreserveOneVariable S\nDataTable(Test,1,564792)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-33",
+   "logger": "cr300",
+   "source": "Public V\nPublic S(4) As String * 50\nPreserveOneVariable S\nDataTable(Test,1,564793)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-34",
+   "logger": "cr300",
+   "source": "Public V\nPublic S(4) As String * 50\nPreserveOneVariable S(2)\nDataTable(Test,1,573212)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-35",
+   "logger": "cr300",
+   "source": "Public V\nPublic S(4) As String * 50\nPreserveOneVariable S(2)\nDataTable(Test,1,573213)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-36",
+   "logger": "cr300",
+   "source": "Public V\nPublic W(5)\nPreserveOneVariable W\nPreserveOneVariable V\nDataTable(Test,1,569571)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-37",
+   "logger": "cr300",
+   "source": "Public V\nPublic W(5)\nPreserveOneVariable W\nPreserveOneVariable V\nDataTable(Test,1,569572)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-38",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nPreserveOneVariable V\nPreserveOneVariable V\nDataTable(Test,1,577536)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-39",
+   "logger": "cr300",
+   "source": "Public V\nPreserveOneVariable V\nPreserveOneVariable V\nPreserveOneVariable V\nDataTable(Test,1,577537)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(10,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-40",
+   "logger": "cr300",
+   "source": "Public V\nPublic D As Double\nPreserveOneVariable D\nDataTable(Test,1,575488)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-41",
+   "logger": "cr300",
+   "source": "Public V\nPublic D As Double\nPreserveOneVariable D\nDataTable(Test,1,575489)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-42",
+   "logger": "cr300",
+   "source": "Public V(30)\nPreserveVariables\nPreserveOneVariable V(2)\nDataTable(Test,1,574122)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-43",
+   "logger": "cr300",
+   "source": "Public V(30)\nPreserveVariables\nPreserveOneVariable V(2)\nDataTable(Test,1,574123)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-44",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nPreserveOneVariable V\nDataTable(Test,1,577763)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-45",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nPreserveOneVariable V\nDataTable(Test,1,577764)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-46",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,579128)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    V=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_preserve_pool-47",
+   "logger": "cr300",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,579129)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    V=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-48",
+   "logger": "cr350",
+   "source": "Public V\nPreserveVariables\nDataTable(Test,1,2909525)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-49",
+   "logger": "cr350",
+   "source": "Public V\nPreserveVariables\nDataTable(Test,1,2909526)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-50",
+   "logger": "cr350",
+   "source": "Public V(26)\nPreserveVariables\nDataTable(Test,1,2908842)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-51",
+   "logger": "cr350",
+   "source": "Public V(26)\nPreserveVariables\nDataTable(Test,1,2908843)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-52",
+   "logger": "cr350",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,2909297)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-53",
+   "logger": "cr350",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,2909298)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-54",
+   "logger": "cr350",
+   "source": "Public V\nDim D(300)\nPreserveVariables\nDataTable(Test,1,2896554)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-55",
+   "logger": "cr350",
+   "source": "Public V\nDim D(300)\nPreserveVariables\nDataTable(Test,1,2896555)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-56",
+   "logger": "cr350",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,2905884)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-57",
+   "logger": "cr350",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,2905885)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-58",
+   "logger": "cr350",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,2905884)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(2,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-59",
+   "logger": "cr350",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,2905885)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(2,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-60",
+   "logger": "cr350",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,2909980)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-61",
+   "logger": "cr350",
+   "source": "Public V\nPreserveOneVariable V\nDataTable(Test,1,2909981)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-62",
+   "logger": "cr350",
+   "source": "Public V(3,4)\nPreserveOneVariable V()\nDataTable(Test,1,2903609)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-63",
+   "logger": "cr350",
+   "source": "Public V(3,4)\nPreserveOneVariable V()\nDataTable(Test,1,2903610)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-64",
+   "logger": "cr350",
+   "source": "Public V\nPublic W(5)\nPreserveOneVariable W\nPreserveOneVariable V\nDataTable(Test,1,2899740)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-65",
+   "logger": "cr350",
+   "source": "Public V\nPublic W(5)\nPreserveOneVariable W\nPreserveOneVariable V\nDataTable(Test,1,2899741)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-66",
+   "logger": "cr350",
+   "source": "Public V(30)\nPreserveVariables\nPreserveOneVariable V(2)\nDataTable(Test,1,2904291)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-67",
+   "logger": "cr350",
+   "source": "Public V(30)\nPreserveVariables\nPreserveOneVariable V(2)\nDataTable(Test,1,2904292)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-68",
+   "logger": "cr350",
+   "source": "Public V(60)\nPreserveVariables\nPreserveOneVariable V\nDataTable(Test,1,2907932)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-69",
+   "logger": "cr350",
+   "source": "Public V(60)\nPreserveVariables\nPreserveOneVariable V\nDataTable(Test,1,2907933)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-70",
+   "logger": "cr350",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,2909297)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    V=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_preserve_pool-71",
+   "logger": "cr350",
+   "source": "Public V(60)\nPreserveVariables\nDataTable(Test,1,2909298)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(30,Sec,0,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    V=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  }
+ ]
+}

@@ -953,6 +953,32 @@ tables, strings, `Maximum` with time, three tables, and random programs near the
 (450 programs, no false reject; remaining false accepts all have an auto-sized table or a
 `DataEvent`/`AcceptDataRecords` table).
 
+### Preserved variables (round 17)
+
+`PreserveVariables` and `PreserveOneVariable` take a store off the pool before any table
+(`cr300comp` `FUN_005ae6e0` calling `FUN_005b4dd0`; `cr350comp` `FUN_005ad9b0` / `FUN_005b4080`),
+both when both are present. `tables._preserve_deduction` / `storage.preserve_charge`:
+
+    T      = max(smallest main-sequence Scan interval in 100 us units, capped at 600000, floor)
+    wear   = float32((3600000 / (T / 10)) * 24 / 27)
+    recs   = trunc(max(q * 0.6 * wear + q + 2, 5))
+    charge = roundup4096(max(recs * A, 8192))
+
+- `T`: scans after a `SlowSequence` do not count; with only slow scans `T` is the 60 s cap; no scan
+  at all was not probed (model: 10 s).
+- `PreserveVariables`: `A = 64`, `T` floor 100000 (10 s), `q = max(public_bytes // 60, 1)` with
+  `public_bytes = 16 +` every `Public`, `Dim` (also inside a `Sub`, each counted) and `StructureType`
+  member (once; instances of a structure could not be probed, the real compiler crashes under Wine):
+  4 bytes per Float/Long/Boolean element, 8 per Double, `(size // 4 + 1) * 4` per String element.
+  A tiny program charges as `q = 1` (16 KB at a 1 s scan), not `q = 0` (8 KB; 30 s scan gives 8 KB either way).
+- `PreserveOneVariable` descriptors: with `P` the largest payload (a whole variable, array or `V()`
+  is its full width, an indexed element `V(i)` / `V(i,j)` its element width) and `n` the number of
+  statements (no dedup): `A = P + 78`, `q = n`, `T` floor 20000 (2 s). One float at a 1 or 2 s
+  scan takes 80 KB.
+- The pool shrinks by the sum (both may apply).
+
+Evidence `tests/fixtures/r17_preserve_pool.json` and the threshold sweeps listed there.
+
 ## DataTable size argument (all four loggers; round 15)
 
 TDF `size` of a called table, one FP2 table in a `Scan` (oracle, `tools/tdf_probe.py --exe`;

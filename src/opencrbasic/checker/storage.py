@@ -16,9 +16,9 @@ included. It does three things at once:
 - fails (both messages) when no pass fits, which also covers a size literal beyond +-2^31
   (`INT_MIN`, whose wrapped charge sinks the pool whenever another table is auto-sized).
 
-Pool consumers this module does not know (GOES/PakBus send buffers, `DAT_006ef00c`) only ever
-shrink the real pool, so the model can miss a rejection or size an auto table too large but not
-invent a rejection.
+`PreserveVariables` / `PreserveOneVariable` take their store off the pool first
+(`preserve_charge`); other unknown consumers could only shrink the real pool further, so the model
+can miss a rejection or size an auto table too large but not invent a rejection.
 """
 
 from __future__ import annotations
@@ -98,6 +98,17 @@ def _min_recs(sp: dict, k: int, cc: int) -> int:
     except ZeroDivisionError:
         return _INT_MIN
     return _cvt_int(wear)
+
+
+def preserve_charge(a: int, d: int, q_arg: int, min_tick: int, tick: int, public_bytes: int) -> int:
+    """Pool bytes taken by the variable-preservation store, `cr300comp` `FUN_005b4dd0(A, D, q_arg,
+    minimum)` (float32 at each step). `tick` is the smallest scan interval in 100 us units."""
+    t = max(tick, min_tick)
+    q = max(public_bytes // d, 1) if q_arg == 0 else q_arg   # q = 0 charges as q = 1 (oracle, T = 10 s)
+    wear = _f32(_f32(_f32(3600000.0 / _f32(t / 10.0)) * 24.0) / 27.0)
+    recs = _f32(_f32(_f32(_f32(q * 0.6) * wear) + q) + 2.0)
+    n = _cvt_int(max(recs, 5.0))
+    return _round_page(max(_wrap32(n * a), 0x2000))
 
 
 def _round_page(v: int) -> int:

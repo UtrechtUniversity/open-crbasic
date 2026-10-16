@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import dataclasses
 import json
+import math
 import struct
 from dataclasses import dataclass, field
 from fractions import Fraction
@@ -1507,7 +1508,8 @@ def build_tables(program: S.Program, profile, consts: dict):
     if cr3xx and data_table_metas:
         from .checker import storage
         pool = storage.pool_bytes(profile.name, len(data_table_metas), bool(scanned["publics"]),
-                                  sum(1 for c in scanned["const_tables"] if c.name))
+                                  sum(1 for c in scanned["const_tables"] if c.name)) \
+            - _preserve_deduction(program, env, scanned, var_info)
         metas = [m for _, m in data_table_metas]
         alloc = storage.run(metas, pool)
         if alloc:
@@ -1525,6 +1527,60 @@ def build_tables(program: S.Program, profile, consts: dict):
 
     table_list_text = render_table_list(tables)
     return tables, table_list_text, None
+
+
+def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
+    """CR300/CR350 pool bytes taken before the tables by `PreserveVariables` and
+    `PreserveOneVariable` (docs/tdf-rules.md "Preserved variables"; `checker/storage.py`)."""
+    from .checker import storage
+    stmts = program.statements
+    kws = [_kw(s) for s in stmts]
+    if "PRESERVEVARIABLES" not in kws and "PRESERVEONEVARIABLE" not in kws:
+        return 0
+    ticks = None          # smallest main-sequence Scan; SlowSequence scans only lift the 60 s cap
+    slow = False
+    for s in stmts:
+        if _kw(s) == "SLOWSEQUENCE":
+            slow = True
+        elif _kw(s) == "SCAN":
+            if slow:
+                ticks = 600000 if ticks is None else ticks
+            elif s.args:
+                val = _fold(s.args[0], env, None)
+                if isinstance(val, (int, float)) and not isinstance(val, bool) and val > 0:
+                    unit = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    t = int(val * _UNIT_NS.get(unit, _UNIT_NS["SEC"]) // 100_000)
+                    ticks = t if ticks is None else min(ticks, t)
+    ticks = 100000 if ticks is None else min(ticks, 600000)
+
+    def size(v: S.VarDecl) -> tuple[int, int]:
+        """(element width, element count) of a declaration; a `Double` is 8 bytes."""
+        info = _make_var_info(v, env)
+        return info.stored_len or (8 if (v.type or "").upper() == "DOUBLE" else 4), math.prod(info.shape)
+
+    total = 0
+    if "PRESERVEVARIABLES" in kws:
+        pub = 16      # every Public, Dim and Sub-level Dim, plus each StructureType member once
+        decls = [v for v in scanned["all_vars"] if (v.type or "").upper() not in scanned["struct_types"]]
+        decls += [m for st in scanned["struct_types"].values() for m in st["members"]]
+        pub += sum(w * n for w, n in map(size, decls))
+        total += storage.preserve_charge(64, 60, 0, 100000, ticks, pub)
+    by_name = {v.name.upper(): v for v in scanned["all_vars"]}
+    payloads = []
+    for s in stmts:
+        if _kw(s) != "PRESERVEONEVARIABLE" or not s.args:
+            continue
+        a = s.args[0]
+        v = by_name.get(getattr(a, "name", "").upper())
+        if v is None:
+            continue
+        w, n = size(v)
+        whole = not isinstance(a, S.Index) or not any(x is not None for x in a.args)   # `V()` is the whole array
+        payloads.append(w * n if whole else w)
+    if payloads:
+        top = max(payloads)
+        total += storage.preserve_charge(top + 78, top, len(payloads), 20000, ticks, 0)
+    return total
 
 
 # ---------------------------------------------------------------- `-l` table list (docs/cli.md)
