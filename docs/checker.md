@@ -2797,9 +2797,25 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
   rest as the instruction (oracle, 2026-10-16, all four loggers): `Calibrate(")` compiles,
   `Calibrate(A,")` is `Variable A out of bounds.`, before `BeginProg` it is `Calibrate illegally
   occurs before BeginProg.` (`parser._parse_text_segment`; fixtures `r17_optfirst_unterminated*.json`).
-  CR300/CR350 `SequentialMode`/`CPISwSyncMode` keep their own messages. Not covered:
-  `SlowSequence(")`, whose pre-`BeginProg` `Multiple BeginProgs.` is also missing for a bare
-  `SlowSequence`.
+  CR300/CR350 `SequentialMode`/`CPISwSyncMode` keep their own messages.
+- `SlowSequence` (round 18, oracle 2026-10-16, all four loggers, fixture `r18_slowseq_timeout.json`,
+  `tests/test_r18_slowseq_timeout.py`): `SlowSequence(")` and `SlowSequence("abc` drop the string
+  (same rule as above; inside `BeginProg` they compile). `SlowSequence(A,")` and `SlowSequence(1,")`
+  are `Too many parameters:  ".` (the cut-off string is the excess argument; `parser._parse_text_segment`
+  puts a `0` in its place so the echo keeps the raw quote). A clean `SlowSequence` before any
+  `BeginProg`/`EndProg` opens the program (`structure.check_pass2`, `program_marker_seen`): the next
+  `BeginProg` is `Multiple BeginProgs.` (bare, `SlowSequence(1)`, `SlowSequence(")`, `Sub`/`EndSub`
+  before it), a second `SlowSequence` before it changes nothing, and `EndProg` clears the state.
+  An erroneous `SlowSequence` (`SlowSequence(A B)`, `SlowSequence(1,2)`) gives no `Multiple`. On
+  CR300/CR350 only literal or empty arguments open the program (`SlowSequence(Q)` is `Q is not defined.`
+  there, no `Multiple`; a defined name is not probed).
+  Not covered: a `SlowSequence` followed by `EndProg` before any `BeginProg` (`SlowSequence` /
+  `EndProg` / `BeginProg` ...) is `No BeginProg in Program.` here because the parser stops at the
+  first `EndProg`, while the real compiler accepts it (pre-existing false reject, not changed); on
+  CR300/CR350 a `NextScan` with no `Scan` between such a `SlowSequence` and `BeginProg` (the real
+  compiler reports `NextScan with no Scan.` alone); `Scan`/`NextScan` between them (real: `Multiple
+  BeginProgs.` plus `Warning: BEGINPROG never reached at run time.`; ours `Scan illegally occurs
+  before BeginProg.`). Verdicts agree with the oracle everywhere except the `EndProg` shape above.
 
 Not done: `S = abc"`, where an undefined name comes first, and `ESSInitialize(X)` -> `Community
 Names parameter is of type string`. Replay: 847 of 1469 exact, no false rejects.

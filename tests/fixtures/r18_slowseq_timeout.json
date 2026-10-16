@@ -1,0 +1,247 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r18_slowseq-pre_cut",
+   "logger": "cr6",
+   "source": "Public A, Z\nSlowSequence(\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-pre_cut",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSlowSequence(\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-pre_cut",
+   "logger": "cr300",
+   "source": "Public A, Z\nSlowSequence(\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-pre_cut",
+   "logger": "cr350",
+   "source": "Public A, Z\nSlowSequence(\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-pre_bare",
+   "logger": "cr6",
+   "source": "Public A, Z\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-pre_bare",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-pre_bare",
+   "logger": "cr300",
+   "source": "Public A, Z\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-pre_bare",
+   "logger": "cr350",
+   "source": "Public A, Z\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-pre_cut_again",
+   "logger": "cr6",
+   "source": "Public A, Z\nSlowSequence(\"abc\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-pre_cut_again",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSlowSequence(\"abc\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-pre_cut_again",
+   "logger": "cr300",
+   "source": "Public A, Z\nSlowSequence(\"abc\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-pre_cut_again",
+   "logger": "cr350",
+   "source": "Public A, Z\nSlowSequence(\"abc\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-pre_excess",
+   "logger": "cr6",
+   "source": "Public A, Z\nSlowSequence(A,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-pre_excess",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSlowSequence(A,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-pre_excess",
+   "logger": "cr300",
+   "source": "Public A, Z\nSlowSequence(A,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-pre_excess",
+   "logger": "cr350",
+   "source": "Public A, Z\nSlowSequence(A,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-pre_excess_num",
+   "logger": "cr6",
+   "source": "Public A, Z\nSlowSequence(1,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-pre_excess_num",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSlowSequence(1,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-pre_excess_num",
+   "logger": "cr300",
+   "source": "Public A, Z\nSlowSequence(1,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-pre_excess_num",
+   "logger": "cr350",
+   "source": "Public A, Z\nSlowSequence(1,\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-pre_two_then_begin",
+   "logger": "cr6",
+   "source": "Public A, Z\nSlowSequence(\")\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-pre_two_then_begin",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSlowSequence(\")\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-pre_two_then_begin",
+   "logger": "cr300",
+   "source": "Public A, Z\nSlowSequence(\")\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-pre_two_then_begin",
+   "logger": "cr350",
+   "source": "Public A, Z\nSlowSequence(\")\nSlowSequence\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-inprog_cut",
+   "logger": "cr6",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_slowseq-inprog_cut",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_slowseq-inprog_cut",
+   "logger": "cr300",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_slowseq-inprog_cut",
+   "logger": "cr350",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_slowseq-inprog_excess",
+   "logger": "cr6",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(A,\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  \".",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-inprog_excess",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(A,\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  \".",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-inprog_excess",
+   "logger": "cr300",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(A,\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-inprog_excess",
+   "logger": "cr350",
+   "source": "Public A, Z\nBeginProg\n  SlowSequence(A,\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  }
+ ]
+}

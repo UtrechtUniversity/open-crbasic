@@ -1749,6 +1749,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # *third* `BeginProg` nested inside the second gets its own second `Multiple BeginProgs.` line
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
+    program_marker_seen = False   # a BeginProg, EndProg or SlowSequence statement has been seen
     pass2_scans: list[bool] = []
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
@@ -1796,6 +1797,24 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             in_beginprog = True
         elif kw == "ENDPROG":
             in_beginprog = False
+        # CR300/CR350 resolve a name argument (`SlowSequence(Q)`, `Q is not defined.`) where CR6/CR1000X
+        # never read it, so only literal or empty arguments open the program there (unmodelled: a
+        # defined name on CR300/CR350).
+        ss_literal = not isinstance(stmt, S.Instruction) or all(
+            isinstance(a, (S.Number, S.String)) for a in stmt.args if a is not None)
+        if kw == "SLOWSEQUENCE" and not program_marker_seen and (profile.name in ("cr6", "cr1000x") or ss_literal) \
+                and not any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file
+                            for d in diags.items):
+            # A clean `SlowSequence` before any `BeginProg`/`EndProg` opens the program: the next
+            # `BeginProg` is `Multiple BeginProgs.` (oracle, all four loggers, 2026-10-16:
+            # `SlowSequence` / `BeginProg`, `Sub`/`EndSub` / `SlowSequence` / `BeginProg`; a second
+            # `SlowSequence` before it changes nothing, `EndProg` clears the state). A `SlowSequence`
+            # with its own error (`SlowSequence(Q)` on CR300/CR350, `SlowSequence(A B)`) does not.
+            in_beginprog = True
+        if kw in ("BEGINPROG", "ENDPROG", "SLOWSEQUENCE") or (
+                isinstance(stmt, S.Unparsed) and re.match(r"\s*SlowSequence\b", stmt.text, re.I)):
+            # (an erroneous `SlowSequence` is an `Unparsed` statement, and still counts as seen)
+            program_marker_seen = True
         if kw == "SLOWSEQUENCE" and pass2_scans and not profile.single_pass:
             # a `Scan` still open at `SlowSequence`: `Missing NextScan.` there, and pass 2 ends
             # (oracle, CR6/CR1000X, 2026-10-12; CR300/CR350: `check_scan_placement_late`)
