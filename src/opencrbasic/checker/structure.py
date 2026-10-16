@@ -4658,7 +4658,8 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         # 2026-10-10); `Const X =` is `Const bad value:` from the parser
         rest = _after_keyword(stmt)
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
-        if "=" not in rest and (named := re.match(r'\s*("[^"]*"|[^\s,]+)', rest)):
+        if "=" not in rest and (named := re.match(r'\s*("[^"]*"|[A-Za-z_]\w*(?=\()|[^\s,]+)', rest)):
+            # (`Const J(3)`: a subscript list is dropped, oracle 2026-10-16, docs/checker.md "Round 18")
             # the first item is read again as a surplus parameter (oracle, all four loggers,
             # 2026-10-10: `Const X Y`, `Const 1 2 3` -> `1`, `Const "a"`, `Const -1`)
             diags.error(stmt.line, f"Too many parameters:  {named.group(1)}.", stmt.file)

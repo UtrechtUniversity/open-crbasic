@@ -6858,3 +6858,20 @@ space. Implemented by dropping the paren-depth test from `parser._split_text_seg
 differences on exotic shapes: `Call S( : Z = 1` (real reports three `Call argument required.`),
 CR300/CR350 `Call S(A : Z, 3)` (real omits our extra `Call argument required.`), `If .. Then :
 Call S(..( : ..` on CR300/CR350 (we add `IF or SELECT without EndIf`).
+
+## Round 18: `Const Name(subscript) = ...`
+
+Oracle (all four loggers, 2026-10-16; fixture `tests/fixtures/r18_const_array.json`): a subscripted
+`Const J(3) = 5` compiles, before `BeginProg`, after it, and inside a `Sub`, and declares the scalar
+constant `J` whose **value is the first subscript** (probed through `Public X(J-k)` dimension legality:
+`J(3)`, `J(7)`, `J(2,3)`, `J(2,3,4)`, `J(2+1)`, `J(K)` with `Const K = 4`, `J(2.5)`, `J(-1)`). Everything
+else is ignored once the `=` is present: further subscripts (`J(3,a)`, `J(2,3 = 1`), `As <anything>`
+(`As Bogus` compiles), and the whole value (`= a`, `= 1 +`). The first subscript is checked like a scalar
+`Const` value (`J(a)` is the undefined-symbol message, `J(Y)` with a `Public Y` is `Variable used in CONST
+expression.`, not implemented, as for scalar `Const`). Without any `=` (`Const J(3)`, `Const J(2,3) As
+Long`) it is `Const with no assignment.` plus `Too many parameters:  J.` (the subscript list is dropped
+from the echo). Implemented in `parser.py` (`_const_array`) and `structure._check_unparsed_pass1`.
+
+Not handled (false rejects remain): `J()`, `J(,3)`, `J (3)` (space), `J(3 = 5`, an unterminated string
+after the `=`, `J(1+)` echo, `Const J As Long(3)` (`Long(3) unknown Const type`). Separate pre-existing
+gap: `X = J(1)` on any scalar `Const` is `Incomplete expression: X = J(1).` on the oracle; we accept.

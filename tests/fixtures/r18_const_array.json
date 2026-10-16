@@ -1,0 +1,667 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-const-arr-0",
+   "logger": "cr6",
+   "source": "Const J(300) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-0",
+   "logger": "cr1000x",
+   "source": "Const J(300) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-0",
+   "logger": "cr300",
+   "source": "Const J(300) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-0",
+   "logger": "cr350",
+   "source": "Const J(300) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-1",
+   "logger": "cr6",
+   "source": "Const J(1) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-1",
+   "logger": "cr1000x",
+   "source": "Const J(1) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-1",
+   "logger": "cr300",
+   "source": "Const J(1) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-1",
+   "logger": "cr350",
+   "source": "Const J(1) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-2",
+   "logger": "cr6",
+   "source": "Const J(2,3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-2",
+   "logger": "cr1000x",
+   "source": "Const J(2,3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-2",
+   "logger": "cr300",
+   "source": "Const J(2,3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-2",
+   "logger": "cr350",
+   "source": "Const J(2,3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-3",
+   "logger": "cr6",
+   "source": "Const J(3) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-3",
+   "logger": "cr1000x",
+   "source": "Const J(3) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-3",
+   "logger": "cr300",
+   "source": "Const J(3) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-3",
+   "logger": "cr350",
+   "source": "Const J(3) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-4",
+   "logger": "cr6",
+   "source": "Const J(3) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr1000x-const-arr-4",
+   "logger": "cr1000x",
+   "source": "Const J(3) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr300-const-arr-4",
+   "logger": "cr300",
+   "source": "Const J(3) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr350-const-arr-4",
+   "logger": "cr350",
+   "source": "Const J(3) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr6-const-arr-5",
+   "logger": "cr6",
+   "source": "Const J(2,5) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr1000x-const-arr-5",
+   "logger": "cr1000x",
+   "source": "Const J(2,5) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr300-const-arr-5",
+   "logger": "cr300",
+   "source": "Const J(2,5) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr350-const-arr-5",
+   "logger": "cr350",
+   "source": "Const J(2,5) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr6-const-arr-6",
+   "logger": "cr6",
+   "source": "Const J(2+1) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr1000x-const-arr-6",
+   "logger": "cr1000x",
+   "source": "Const J(2+1) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr300-const-arr-6",
+   "logger": "cr300",
+   "source": "Const J(2+1) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr350-const-arr-6",
+   "logger": "cr350",
+   "source": "Const J(2+1) = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr6-const-arr-7",
+   "logger": "cr6",
+   "source": "Const K = 4\nConst J(K) = 5\nPublic X(J-4)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimension: Public X(J-4)"
+  },
+  {
+   "id": "cr1000x-const-arr-7",
+   "logger": "cr1000x",
+   "source": "Const K = 4\nConst J(K) = 5\nPublic X(J-4)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimension: Public X(J-4)"
+  },
+  {
+   "id": "cr300-const-arr-7",
+   "logger": "cr300",
+   "source": "Const K = 4\nConst J(K) = 5\nPublic X(J-4)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimension: Public X(J-4)"
+  },
+  {
+   "id": "cr350-const-arr-7",
+   "logger": "cr350",
+   "source": "Const K = 4\nConst J(K) = 5\nPublic X(J-4)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimension: Public X(J-4)"
+  },
+  {
+   "id": "cr6-const-arr-8",
+   "logger": "cr6",
+   "source": "Const J(2.5) = 5\nPublic X(J*2-5)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J*2-5)"
+  },
+  {
+   "id": "cr1000x-const-arr-8",
+   "logger": "cr1000x",
+   "source": "Const J(2.5) = 5\nPublic X(J*2-5)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J*2-5)"
+  },
+  {
+   "id": "cr300-const-arr-8",
+   "logger": "cr300",
+   "source": "Const J(2.5) = 5\nPublic X(J*2-5)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J*2-5)"
+  },
+  {
+   "id": "cr350-const-arr-8",
+   "logger": "cr350",
+   "source": "Const J(2.5) = 5\nPublic X(J*2-5)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J*2-5)"
+  },
+  {
+   "id": "cr6-const-arr-9",
+   "logger": "cr6",
+   "source": "Const J(-1) = 5\nPublic X(J+1)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J+1)"
+  },
+  {
+   "id": "cr1000x-const-arr-9",
+   "logger": "cr1000x",
+   "source": "Const J(-1) = 5\nPublic X(J+1)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J+1)"
+  },
+  {
+   "id": "cr300-const-arr-9",
+   "logger": "cr300",
+   "source": "Const J(-1) = 5\nPublic X(J+1)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J+1)"
+  },
+  {
+   "id": "cr350-const-arr-9",
+   "logger": "cr350",
+   "source": "Const J(-1) = 5\nPublic X(J+1)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J+1)"
+  },
+  {
+   "id": "cr6-const-arr-10",
+   "logger": "cr6",
+   "source": "Const J(3) As Long = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr1000x-const-arr-10",
+   "logger": "cr1000x",
+   "source": "Const J(3) As Long = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr300-const-arr-10",
+   "logger": "cr300",
+   "source": "Const J(3) As Long = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr350-const-arr-10",
+   "logger": "cr350",
+   "source": "Const J(3) As Long = 5\nPublic X(J-3)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-3)"
+  },
+  {
+   "id": "cr6-const-arr-11",
+   "logger": "cr6",
+   "source": "Const J(3) As Bogus = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-11",
+   "logger": "cr1000x",
+   "source": "Const J(3) As Bogus = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-11",
+   "logger": "cr300",
+   "source": "Const J(3) As Bogus = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-11",
+   "logger": "cr350",
+   "source": "Const J(3) As Bogus = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-12",
+   "logger": "cr6",
+   "source": "Const J(3) = a\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-12",
+   "logger": "cr1000x",
+   "source": "Const J(3) = a\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-12",
+   "logger": "cr300",
+   "source": "Const J(3) = a\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-12",
+   "logger": "cr350",
+   "source": "Const J(3) = a\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-13",
+   "logger": "cr6",
+   "source": "Const J(3) = 1 +\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-13",
+   "logger": "cr1000x",
+   "source": "Const J(3) = 1 +\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-13",
+   "logger": "cr300",
+   "source": "Const J(3) = 1 +\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-13",
+   "logger": "cr350",
+   "source": "Const J(3) = 1 +\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-14",
+   "logger": "cr6",
+   "source": "Const J(2,a) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr1000x-const-arr-14",
+   "logger": "cr1000x",
+   "source": "Const J(2,a) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr300-const-arr-14",
+   "logger": "cr300",
+   "source": "Const J(2,a) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr350-const-arr-14",
+   "logger": "cr350",
+   "source": "Const J(2,a) = 5\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr6-const-arr-15",
+   "logger": "cr6",
+   "source": "Const J(2,3 = 1\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr1000x-const-arr-15",
+   "logger": "cr1000x",
+   "source": "Const J(2,3 = 1\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr300-const-arr-15",
+   "logger": "cr300",
+   "source": "Const J(2,3 = 1\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr350-const-arr-15",
+   "logger": "cr350",
+   "source": "Const J(2,3 = 1\nPublic X(J-2)\nBeginProg\nX(1) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(J-2)"
+  },
+  {
+   "id": "cr6-const-arr-16",
+   "logger": "cr6",
+   "source": "Const J(a) = 5\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: a."
+  },
+  {
+   "id": "cr1000x-const-arr-16",
+   "logger": "cr1000x",
+   "source": "Const J(a) = 5\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: a."
+  },
+  {
+   "id": "cr300-const-arr-16",
+   "logger": "cr300",
+   "source": "Const J(a) = 5\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: a is not defined.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr350-const-arr-16",
+   "logger": "cr350",
+   "source": "Const J(a) = 5\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: a is not defined.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr6-const-arr-17",
+   "logger": "cr6",
+   "source": "Const J(3) = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-const-arr-17",
+   "logger": "cr1000x",
+   "source": "Const J(3) = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+  },
+  {
+   "id": "cr300-const-arr-17",
+   "logger": "cr300",
+   "source": "Const J(3) = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 5: X is not defined."
+  },
+  {
+   "id": "cr350-const-arr-17",
+   "logger": "cr350",
+   "source": "Const J(3) = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 5: X is not defined."
+  },
+  {
+   "id": "cr6-const-arr-18",
+   "logger": "cr6",
+   "source": "Const J = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-const-arr-18",
+   "logger": "cr1000x",
+   "source": "Const J = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+  },
+  {
+   "id": "cr300-const-arr-18",
+   "logger": "cr300",
+   "source": "Const J = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 5: X is not defined."
+  },
+  {
+   "id": "cr350-const-arr-18",
+   "logger": "cr350",
+   "source": "Const J = 1\nConst J(3) = 1\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 5: X is not defined."
+  },
+  {
+   "id": "cr6-const-arr-19",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nConst J(3) = 5\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const-arr-19",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nConst J(3) = 5\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const-arr-19",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nConst J(3) = 5\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const-arr-19",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nConst J(3) = 5\nX = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const-arr-20",
+   "logger": "cr6",
+   "source": "Const J(3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-const-arr-20",
+   "logger": "cr1000x",
+   "source": "Const J(3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-const-arr-20",
+   "logger": "cr300",
+   "source": "Const J(3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr350-const-arr-20",
+   "logger": "cr350",
+   "source": "Const J(3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr6-const-arr-21",
+   "logger": "cr6",
+   "source": "Const J(2,3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-const-arr-21",
+   "logger": "cr1000x",
+   "source": "Const J(2,3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-const-arr-21",
+   "logger": "cr300",
+   "source": "Const J(2,3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr350-const-arr-21",
+   "logger": "cr350",
+   "source": "Const J(2,3)\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr6-const-arr-22",
+   "logger": "cr6",
+   "source": "Const J(3) As Long\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-const-arr-22",
+   "logger": "cr1000x",
+   "source": "Const J(3) As Long\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-const-arr-22",
+   "logger": "cr300",
+   "source": "Const J(3) As Long\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J.\nline 4: X is not defined."
+  },
+  {
+   "id": "cr350-const-arr-22",
+   "logger": "cr350",
+   "source": "Const J(3) As Long\nPublic X\nBeginProg\nX = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  J.\nline 4: X is not defined."
+  }
+ ]
+}

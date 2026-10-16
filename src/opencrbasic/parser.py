@@ -1768,6 +1768,17 @@ class _Parser:
         try:
             name_tok = p.expect_ident()
             vtype = None
+            if not lead and p.is_op("(") and p.peek().col == name_tok.col + len(name_tok.text):
+                # `Const J(3) = 5` declares the scalar `J = 3`: the first subscript is the value, any
+                # further subscripts and everything after `=` are ignored (oracle, 2026-10-16,
+                # docs/checker.md "Round 18")
+                p.next()
+                dim_start_col = p.peek().col
+                arr_dim = self._parse_expr(p, line, file)
+                arr_span = (dim_start_col, p.peek().col)
+                if any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
+                    return self._const_array(p, line, file, name_tok, arr_dim, arr_span)
+                raise _ParseError("Const subscript without '='")
             if p.is_ident("AS"):
                 p.next()
                 type_tok = p.expect_ident()
@@ -1825,6 +1836,16 @@ class _Parser:
         try:
             self.env.define(name_tok.text, consteval.value_of(value, self.env),
                             consteval.is_float(value, self.env))
+        except consteval.NotConstant:
+            pass
+        return node
+
+    def _const_array(self, p, line, file, name_tok, dim, span):
+        p.i = len(p.toks) - 1  # (everything after the first subscript is ignored)
+        node = S.ConstDecl(line, file, name=name_tok.text, value=dim, type=None, value_span=span)
+        try:
+            self.env.define(name_tok.text, consteval.value_of(dim, self.env),
+                            consteval.is_float(dim, self.env))
         except consteval.NotConstant:
             pass
         return node
