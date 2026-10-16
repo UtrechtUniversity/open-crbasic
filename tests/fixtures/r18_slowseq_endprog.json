@@ -578,6 +578,622 @@
    "source": "Public A, B(3)\nSlowSequence\nEndProg\nEndProg\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
    "expected_stdout": "t.CR6 -- Compiled OK.",
    "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_add",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(1+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_add",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(1+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_add",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(1+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_add",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(1+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_var",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_var",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_var",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_var",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_const",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K*2)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_const",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K*2)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_const",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K*2)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_const",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K*2)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_abs",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Abs(-1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_abs",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Abs(-1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_abs",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Abs(-1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_abs",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Abs(-1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_neg",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(-A)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_neg",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(-A)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_neg",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(-A)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_neg",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(-A)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_str",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(\"a\"&\"b\")\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_str",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(\"a\"&\"b\")\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_str",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(\"a\"&\"b\")\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_str",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(\"a\"&\"b\")\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_cmp",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Z=1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_cmp",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Z=1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_cmp",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Z=1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_cmp",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Z=1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_undef",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Nope+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_undef",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Nope+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_undef",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Nope+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_undef",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(Nope+1)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_undef2",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+Nope)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_undef2",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+Nope)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_undef2",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+Nope)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_undef2",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A+Nope)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_arr",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A(1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_arr",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A(1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_arr",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A(1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: A(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_arr",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(A(1))\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: A(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_ep_constarg",
+   "logger": "cr6",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_ep_constarg",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr300-r18_endprog-expr_ep_constarg",
+   "logger": "cr300",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr350-r18_endprog-expr_ep_constarg",
+   "logger": "cr350",
+   "source": "Public A, Z\nConst K = 2\nSlowSequence(K)\n  A = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_add",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(1+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_add",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(1+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_add",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(1+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_add",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(1+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_var",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_var",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_var",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_var",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_const",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K*2)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_const",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K*2)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_const",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K*2)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_const",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K*2)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_abs",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Abs(-1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_abs",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Abs(-1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_abs",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Abs(-1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_abs",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Abs(-1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_neg",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(-A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_neg",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(-A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_neg",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(-A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_neg",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(-A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_str",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(\"a\"&\"b\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_str",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(\"a\"&\"b\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_str",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(\"a\"&\"b\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_str",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(\"a\"&\"b\")\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_cmp",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Z=1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_cmp",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Z=1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_cmp",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Z=1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_cmp",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Z=1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_undef",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Nope+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_undef",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Nope+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_undef",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Nope+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_undef",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(Nope+1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_undef2",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+Nope)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_undef2",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+Nope)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_undef2",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+Nope)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_undef2",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A+Nope)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_arr",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A(1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_arr",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A(1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_arr",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A(1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: A(1).\nline 5: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_arr",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(A(1))\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: A(1).\nline 5: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_endprog-expr_sq_constarg",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_endprog-expr_sq_constarg",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_endprog-expr_sq_constarg",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_endprog-expr_sq_constarg",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nConst K = 2\nSlowSequence(K)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Multiple BeginProgs.",
+   "expected_exit": 1
   }
  ]
 }

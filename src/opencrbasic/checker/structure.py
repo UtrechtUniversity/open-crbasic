@@ -1565,13 +1565,31 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
 _DO_ALIASES = {"WHILE": "DO", "WEND": "LOOP"}
 
 
-def _slowsequence_resolves(stmt: S.Stmt, declared: set[str]) -> bool:
-    """CR300/CR350 resolve a `SlowSequence` name argument (`SlowSequence(Q)`, `Q is not defined.`)
-    where CR6/CR1000X never read it, so there it must resolve without error: a literal, or a
-    declared name (oracle, CR300/CR350, 2026-10-16). Other shapes are not probed."""
+def _expr_resolves(e: S.Expr | None, declared: set[str], functions) -> bool:
+    """An expression whose names are all declared (variables, Consts) or built-in function calls;
+    an array reference (`A(1)`) is not probed and does not count."""
+    if e is None or isinstance(e, (S.Number, S.String)):
+        return True
+    if isinstance(e, S.Name):
+        return e.name.upper() in declared
+    if isinstance(e, S.Unary):
+        return _expr_resolves(e.operand, declared, functions)
+    if isinstance(e, S.Binary):
+        return _expr_resolves(e.left, declared, functions) and _expr_resolves(e.right, declared, functions)
+    if isinstance(e, S.Index):
+        return e.name.upper() in functions and e.name.upper() not in declared and all(
+            _expr_resolves(a, declared, functions) for a in e.args)
+    return False
+
+
+def _slowsequence_resolves(stmt: S.Stmt, declared: set[str], functions=()) -> bool:
+    """CR300/CR350 resolve a `SlowSequence` argument (`SlowSequence(Q)`, `Q is not defined.`) where
+    CR6/CR1000X never read it, so there it must resolve without error: a literal, or an expression
+    over declared names and built-in functions (oracle, CR300/CR350, 2026-10-16: `(1+1)`, `(A+1)`,
+    `(K*2)`, `(Abs(-1))`, `(-A)`, `("a"&"b")`, `(Z=1)` open the program; `(Nope+1)`, `(A+Nope)`,
+    `(A(1))` with a scalar `A` are errors and do not). Array references are not probed."""
     return not isinstance(stmt, S.Instruction) or all(
-        isinstance(a, (S.Number, S.String)) or (isinstance(a, S.Name) and a.name.upper() in declared)
-        for a in stmt.args if a is not None)
+        _expr_resolves(a, declared, functions) for a in stmt.args if a is not None)
 
 
 def open_program_at_slowsequence(program: S.Program, profile: profiles.Profile) -> S.Program:
@@ -1595,7 +1613,7 @@ def open_program_at_slowsequence(program: S.Program, profile: profiles.Profile) 
         return program
     declared = ({x.upper() for x in symbols.declared_names(program)}
                 if profile.name in ("cr300", "cr350") else set())
-    if profile.name in ("cr300", "cr350") and not _slowsequence_resolves(st, declared):
+    if profile.name in ("cr300", "cr350") and not _slowsequence_resolves(st, declared, profile.functions):
         return program
     begin = S.Instruction(line=st.line, file=st.file, text="BeginProg", keyword="BEGINPROG")
     return dataclasses.replace(program, statements=[*program.statements[:n], begin, *program.statements[n:]])
@@ -1840,7 +1858,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         # name (oracle, CR300/CR350, 2026-10-16: `SlowSequence(Q)`/`(A)`/`(Z)` with declared Publics
         # give `Multiple BeginProgs.`, `SlowSequence(Undef)` does not). Other shapes are not probed
         # and keep the pre-round-18 behaviour (no program opened).
-        ss_resolves = _slowsequence_resolves(stmt, declared_here)
+        ss_resolves = _slowsequence_resolves(stmt, declared_here, profile.functions)
         if kw == "SLOWSEQUENCE" and not program_marker_seen and (profile.name in ("cr6", "cr1000x") or ss_resolves) \
                 and not any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file
                             for d in diags.items):

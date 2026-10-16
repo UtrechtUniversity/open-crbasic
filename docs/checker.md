@@ -2810,7 +2810,7 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
   On CR300/CR350 the argument must resolve without error: a literal, empty, or a declared `Public`
   name opens the program (`SlowSequence(Q)`, `(A)`, `(Z)` with `Public A, Z, Q`: `Multiple`), while
   `SlowSequence(Undef)` is `Undef is not defined.` and no `Multiple`. CR6/CR1000X never resolve the
-  argument. Expression and `Const` arguments are not probed and do not open the program on CR300/CR350.
+  argument. (Expression and `Const` arguments: see below.)
   A clean `SlowSequence` before any `BeginProg` is the start of the program for the real compiler
   (oracle 2026-10-16, all four loggers, fixture `r18_slowseq_endprog.json`,
   `tests/test_r18_slowseq_endprog.py`): `SlowSequence` / `EndProg` compiles (also bare `SlowSequence`
@@ -2819,7 +2819,10 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
   `A = 1`, `Scan`/`NextScan` and `Sub`/`EndSub` are clean, while the unbalanced forms report at `EndProg`
   (`Scan without NextScan.`, `IF or SELECT without EndIf or EndSelect.`, `Sub ... EndSub not matched.`)
   and a bad statement gives only its own message, never `... illegally occurs before BeginProg`. A bare
-  `EndProg` is still `No BeginProg in Program.`. `structure.open_program_at_slowsequence` inserts a
+  `EndProg` is still `No BeginProg in Program.`. On CR300/CR350 any argument expression over declared names
+  and built-in functions opens the program (`(1+1)`, `(A+1)`, `(K*2)`, `(Abs(-1))`, `(-A)`, `("a"&"b")`, `(Z=1)`, with or
+  without a later `BeginProg`: `Multiple BeginProgs.`); an undefined name (`(Nope+1)`) or `A(1)` on a scalar is an
+  error and does not (`structure._slowsequence_resolves`; declared-array references are not probed). `structure.open_program_at_slowsequence` inserts a
   `BeginProg` ahead of the opening `SlowSequence` when the statements hold no `BeginProg`. Not covered:
   `SubScan (1,Sec,0)` in such a block (real `SubScan must have >0 number of scans.`, a separate rule),
   and a `SlowSequence` with a `BeginProg` after it and `Scan`/`NextScan` between (real: `Multiple
