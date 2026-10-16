@@ -582,3 +582,43 @@ step-file harness, screenshots taken at chosen moments, real left-clicks only (n
 - **Workspace Trust:** a new untrusted folder gets no prompt, only the Restricted Mode banner; `.CR6`
   opens as Plain Text and the extension shows "disabled because the current workspace is not trusted".
 - Not run: Ctrl+click, typed rename names, the token inspector on WSL, trusting the folder.
+
+### T-19 Windows/WSL re-checks after LSP-R6, appended 2026-10-16
+
+Re-check on Windows and Remote-WSL after LSP-R6. Inputs:
+[H-11..H-17 and Workspace Trust](docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md),
+[H-18..H-21 and PanelTemp hover](docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md).
+The macOS checks of the fixes do not establish Windows/WSL behaviour.
+
+1. **H-11 (Windows):** run the server-marked tests and `tools/lsp_bench.py` with a silent client,
+   without a keep-alive shim. Accept completed analyses and benchmark results without timeouts.
+2. **H-12 (Windows):** run server tests that kill their client; teardown must succeed and leave no
+   server or analysis-worker processes behind.
+3. **H-13 (Windows):** run `tools/lsp_install_check.py`; fresh environments must use Windows
+   `Scripts` executables and pass the install/stdio checks without host shims.
+4. **H-15 (Windows):** run
+   `tests/lsp/test_features_positions.py::test_ctx_clamps_a_line_past_the_end_and_converts_back`;
+   the portable absolute-path fixture must pass.
+5. **H-16 (Windows):** check diagnostics for unopened entries with a root URI using the client's
+   drive-letter case and colon escaping. Published URIs must follow the client's spelling;
+   opening the same file must not create a second Problems collection.
+6. **H-18 (Remote-WSL):** change `opencrbasic.pythonPath` several times between valid interpreters,
+   both while idle and immediately after an edit. Accept a new startup banner and diagnostics
+   each time, with no provider-request error toast (especially semantic tokens).
+7. **H-19 (Windows and Remote-WSL):** Show Compiler Output for `Main.CR6`; the tab title must be
+   `Main.CR6 compiler output.txt`, with no leading backslash. Check Show Table Fields too.
+8. **H-20 (Windows and Remote-WSL):** with default editor settings and `helpDirectory` configured,
+   all 9 VoltSE parameter-name hints must be drawn, including `fN1:`, `Mult:` and `Offset:`.
+9. **Workspace Trust:** in an untrusted folder, the Extensions view must show the description
+   explaining that CRBasic runs a Python language server from the configured interpreter.
+   `.CR6` remains Plain Text until the folder is trusted; trusting enables the extension.
+10. **PanelTemp hover:** hover its `fN1` parameter help; the filter list must appear after
+    "common options for filtering noise are:".
+
+**T-17/H-21 clarification:** the earlier "popup is empty" wording describes the server result,
+not the screen. Before first analysis, an empty automatic `.` result for `Status.`/`Public.`
+shows no popup. The next letter shows fields once analysis has finished. Ctrl+Space shows
+"Loading...", then VS Code's word-based suggestions. One Remote-WSL Status list appeared by
+itself, so automatic appearance is possible but not guaranteed. **T-16 item 8 clarification:**
+Problems entries can remain for about three minutes after closing the out-of-glob file's tab,
+until VS Code sends `didClose`.

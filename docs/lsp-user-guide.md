@@ -12,20 +12,19 @@ and per-module limits are in [lsp-api.md](lsp-api.md).
 
 ## 1. Status in brief
 
-- Tested and claimed for **macOS only** (arm64, VS Code 1.141.0), at the revisions named in
-  section 8. Windows and Linux are **untested and not claimed** (human decision 2026-10-12: they
-  cannot be tested in this work session).
+- macOS host results (arm64, VS Code 1.141.0) are in section 8. Later Windows and Remote-WSL
+  host records and their limits are linked in section 9. The LSP-R6 client changes still need
+  Windows/WSL re-checks; their unit tests do not establish editor behaviour there.
 - Diagnostics, outline, folding, hover, completion, signature help, navigation, semantic tokens and
   syntax highlighting passed provider or API checks in a VS Code Extension Development Host at
   `1b01311d`. Watched files, workspace folders, the size bound, the completion cap, rename,
   formatting, quick fixes, the display of compiler messages, the `.CR300` association and the
   interpreter change were run at API or protocol level in the same host at `7d6db3b1` and
   `679f2f70` (the client's provider commands, workspace edits, configuration updates and traces).
-  Visual checks (F2 box, Ctrl+. menu, toasts, Problems and hover rendering, themes, Explorer clicks,
-  repainting and typing) are still pending.
-- **Not host-tested at all:** the parameter-name inlay hints, the output commands (LSP-09c; request
-  T-15), the packaged `.vsix` (LSP-08f; request T-14) and the changes since `679f2f70`, including
-  the review-round-3 fixes. Their checks are unit and stdio tests.
+  Later visual checks (F2 box, Ctrl+. menu, toasts, Problems and hover rendering, repainting and
+  typing), with qualifications, are in the host records linked in section 9.
+- Inlay hints, output commands, VSIX installation and review-round-3 fixes have later host
+  results in section 8 and the Windows/Remote-WSL records in section 9.
 - The review findings of round 2 are fixed (section 9); round 3 is in progress.
 
 ## 2. Install and launch
@@ -57,6 +56,10 @@ cd vscode && npm ci && npm run compile
 - If the interpreter imports `opencrbasic` from another checkout (a git worktree, for example), set
   `opencrbasic.serverEnv` to `{"PYTHONPATH": "<worktree>/opencrbasic/src"}`.
 
+**Restricted Mode (Workspace Trust).** Trust the folder to enable the extension: it runs a Python
+language server from the configured interpreter. Until then `.CR6` opens as Plain Text and the
+extension is disabled. The Extensions view explains why it needs trust.
+
 The server is `python -m opencrbasic.lsp` (or the `crbc-lsp` script after installation), over stdio.
 It writes one startup line to stderr before it serves requests:
 
@@ -72,8 +75,9 @@ when `analysis.API_VERSION` is not the version it was written for (`lsp-api.md`,
 Installed package: `tools/lsp_install_check.py` builds the wheel, installs it into fresh environments
 outside the repository, and checks `crbc`, `crbc-lsp` and the core import without pygls. It passed 15 of 15
 checks on a cloud Linux VM with Python 3.13.16 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md))
-and on macOS at `7d6db3b1` and `679f2f70` (host records in section 8). Windows is **untested**, and the
-Linux run is not a host record.
+and on macOS at `7d6db3b1` and `679f2f70` (host records in section 8). The later
+[Windows/WSL record](lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md) reports Windows path
+failures (H-13); its passing Windows run used a host shim.
 
 ## 3. Settings
 
@@ -360,9 +364,8 @@ Known limits and the open review findings for rename and formatting are in secti
 
 ### 5.11 Parameter-name hints and output commands (LSP-09c)
 
-Both are wired in the server and the client. They have stdio tests and client unit tests;
-**neither was run in an editor** (see [LSP-09c-handoff.md](lsp-rounds/LSP-09c-handoff.md) for the
-host checks).
+Both have stdio tests and client unit tests. Windows and Remote-WSL editor observations are in the
+[2026-10-15 visual host record](lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md).
 
 - **Parameter-name hints.** A grey `Name:` before each positional argument of an instruction or
   builtin function call, for example `Dest:`, `Reps:`, `Range:` before the arguments of `VoltSe`. The
@@ -371,6 +374,10 @@ host checks).
   an empty argument, or for a name declared in the program. Hints refresh when a new analysis
   finishes. Turn them off with `opencrbasic.inlayHints.parameterNames` = `false`. After an edit,
   hints for a changed file are withheld until the analysis catches up rather than shown at old lines.
+  The extension defaults `editor.inlayHints.maximumLength` to `0` (unlimited) for `[crbasic]`, so
+  VS Code's usual 43-character limit does not cut off the instruction hints (H-20). VS Code
+  [registers editor settings as language-overridable](https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorConfigurationSchema.ts);
+  set this value in your `[crbasic]` settings to choose a limit.
 - **opencrbasic: Show Compiler Output.** Opens, beside the editor, the text the command-line
   compiler prints for the active file's entry program: the header, `line N:` messages and warnings,
   computed from your unsaved text without writing a file. On a `.crb` the entry is the first entry
@@ -467,13 +474,28 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 | Packaged `.vsix` installs into an empty profile, activates, uninstalls (LSP-08f, T-14) | Pass | `ccba3666`, `e18cdf52` |
 | Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | [e18cdf52](lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md) |
 | Review round 3 fixes, macOS items (LSP-R3, T-16); references across entries and comment refusal (LSP-R4a) | Pass | `e18cdf52` |
-| Member completion before the first analysis (LSP-R4b, T-17 item 1) | 6 of 6 cold requests return the fields in 462-498 ms over stdio (0 items before R4b); the GUI empty-list fallback not observed | `e18cdf52` (on `e1769132`) |
+| Member completion before the first analysis (LSP-R4b, T-17 item 1) | 6 of 6 cold requests return the fields in 462-498 ms over stdio (0 items before R4b); later GUI fallback observations are in section 9 | `e18cdf52` (on `e1769132`) |
 | Typing latency (T-17 item 2) | Server after-debounce p95 149 ms; GUI squiggle upper bounds 984-1249 ms | `e18cdf52` |
-| Windows and Linux | **Untested, not claimed** (human decision 2026-10-12) | - |
+| Windows and Remote-WSL | Later API/protocol and visual records, with findings H-11..H-21; see section 9 | `73479946`, `f76901b2` |
 
 ## 9. Known limits
 
-- One platform tested and claimed (macOS). Windows and Linux are untested and not claimed.
+- Windows and Remote-WSL have [API/protocol](lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md)
+  and [visual](lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md) host records, including
+  the following limits. Client changes after those records still need the T-19 host re-checks in
+  [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md).
+- **Completion before the first analysis (H-21).** If `Status.` or `Public.` completion exceeds
+  `featureWaitMs` (default 1500 ms), an automatic `.` trigger shows no popup: VS Code draws nothing
+  for an empty automatic result. The next letter asks again and shows fields once analysis has
+  finished. An explicit trigger (Ctrl+Space) shows "Loading...", then VS Code's word-based
+  suggestions, rather than an empty popup. One Remote-WSL Status list appeared without another
+  keystroke; automatic appearance is not guaranteed (visual host record above).
+- **Remote-WSL watcher gap (H-17).** VS Code's file watcher may send no event for a file created
+  immediately inside a newly created folder. The server picks it up on the next rediscovery,
+  such as a workspace folder change or `opencrbasic: Restart Server` (API/protocol record above).
+- **Problems after closing an out-of-glob file.** VS Code sent `didClose` about three minutes
+  after its tab closed on Windows and Remote-WSL. Its Problems entries remain until that
+  notification; the server then clears them (both host records above).
 - **Review findings from round 2** ([review](lsp-rounds/review-2026-10-11-f3069825.md)) are fixed
   in LSP-R2a (`463a565`: rename checks every dependency's current bytes and `Public.<name>`
   captures) and LSP-R2b (`3d76e93`: positions map through the editor text when the encoding
@@ -517,6 +539,8 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 - **Toast after changing `pythonPath`** (H-02, observed at `7c450ed5`). Fixed in LSP-01e; at `7d6db3b1`
   two interpreter switches logged no failed notification (toast absence not visually checked). If
   the new server did not start, run `opencrbasic: Restart Server`.
+  H-18 found a separate provider-request toast on Remote-WSL; LSP-R6 returns the provider's
+  fallback when a request fails while the client is not running. The visual re-check is T-19.
 - **`[error]` lines in the output channel on a normal start or stop.** The startup line is also written
   to stderr, and the client logs stderr at error level; pygls logs `Server shutting down. No more
   requests!` the same way. Both are expected (observed at `7d6db3b1`).
