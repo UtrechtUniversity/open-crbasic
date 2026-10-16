@@ -180,7 +180,24 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
 ## Next steps (round 19)
 
-1. Push `ocb-r18` (needs the human's OK), then ask the cloud reviewer for rounds 16-18.
+1. Fix the Codex review of rounds 16-18 (human instruction 2026-10-17: gpt-6.1-sol via the
+   ChatGPT app CLI, not the cloud session; report `scratch/codex/review-r18.md`, range
+   `438ad6ee..ocb-r18`). All three confirmed by coordinator oracle probes on 2026-10-17
+   (`scratch/r18/review/t.CR6` + `c.txt`, all four loggers):
+   - R18X-1 FALSE REJECT, CR300 only: `PreserveVariables` + `Scan(2,3,0,0)` (numeric units, 3 = Min)
+     and `DataTable(Test,1,579584)` with `Sample(1,V,FP2)` of `Public V(60)` compiles on all four;
+     ours fails storage on CR300 (`Scan(2,Min,0,0)` matches). `tables._preserve_deduction` reads
+     units by name and defaults to seconds; fold the units argument.
+   - R18X-2 FALSE REJECT, all four: after `X = IfTime(0,1,Min)`, `If 1 Then X = FTPClient("s","u",
+     "p","a","b",2,0,0,Sec,0,"x") Else X = Timer(1,Sec,0)` gives only `line 5: Warning: Parameter will
+     truncate to the nearest integer.`; ours adds `Parameter must be a constant integer`. The inline
+     If text and its bodies both pass through `timeout_gate` (`checker/expressions.py`
+     `check_function_arity` on `_with_inline(program)`), so the Else `Timer` resets the mode first.
+   - R18X-3 internal error, CR6/CR1000X: `Public C As Long, L As Long, T As String * 100` /
+     `Debug(-1,1e39,C,L,T)` before BeginProg is `line 2: Out of memory.` on the real compilers
+     (Codex predicted a clean compile: wrong); ours raises `OverflowError` in the float32 pack in
+     `checker/instr_rules.py` (`Internal error: unable to compile program.`). CR300/CR350 match.
+   `ocb-r18` is pushed to the mirror (2026-10-17).
 2. TimeOut (HTTPPut 9th / FTPClient 11th) values: W3 probes `scratch/r18/W3/run_timeout1.txt`
    show `-1`, `TRUE`, `&HFFFFFFFF`, 2147483647 -> `Parameter TimeOut cannot be negative` on all four
    loggers but -2147483648 compiles; looks like a per-logger value*1000 overflow. Pre-existing
