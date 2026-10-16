@@ -659,14 +659,16 @@ def test_r3b_f1_const_used_as_a_parameter_dimension_is_renamed(tmp_path):
     assert run(p).ok
 
 
-def test_r3b_f2_alias_junk_token_is_refused(tmp_path):
+def test_r3b_f2_alias_junk_token_does_not_shift_ordinals(tmp_path):
     p = write(tmp_path, "M.CR6", "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n"
               "  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n")
     r = run(p)
     assert r.ok
-    res = R.rename([r], p, *pos(p, "a2 = 1"), "b2")
-    assert not res.ok and res.refusal.code == "no_range"
-    res = R.rename([r], p, *pos(p, "a1"), "b1")     # the junk spells another name: a1 is exact
+    res = R.rename([r], p, *pos(p, "a2 = 1"), "b2")     # the declaration, not the ignored `a2`
+    assert res.ok and spots(res, p) == [(1, 22, 24), (4, 4, 6)]
+    p.write_bytes(apply(p.read_bytes(), res.edits[p]))
+    assert run(p).ok
+    res = R.rename([run(p)], p, *pos(p, "a1"), "b1")
     assert res.ok and spots(res, p) == [(1, 15, 17)]
 
 

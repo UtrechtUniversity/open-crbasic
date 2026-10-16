@@ -435,6 +435,63 @@ def classified_tokens(stmt: S.Stmt):
     return out
 
 
+def _alias_junk(st: S.Instruction, n_items: int) -> list[list[tuple]]:
+    """Per right-hand item of `Alias A = X junk, Y` the `(name, kind)` keys of the identifier and
+    string tokens after its name (and index) that the parser skips; the last list holds those of
+    every item after the parsed ones. Empty lists when the text cannot be tokenized."""
+    empty: list[list[tuple]] = [[] for _ in range(n_items + 1)]
+    try:
+        toks = lexer.tokenize(st.text or "", st.line)
+    except lexer.LexError:
+        return empty
+    depth, items, cur, prev, seen_eq = 0, [], [], None, False
+    for t in toks:
+        op = t.kind == "OP"
+        if op and t.text == "(":
+            depth += 1
+        elif op and t.text == ")":
+            depth = max(0, depth - 1)
+        if not seen_eq:
+            seen_eq = op and t.text == "=" and depth == 0
+        elif op and t.text == "," and depth == 0:
+            items.append(cur)
+            cur = []
+        else:
+            cur.append((t, prev))
+        prev = t
+    items.append(cur)
+    out: list[list[tuple]] = []
+    for j, item in enumerate(items):
+        skip = 0 if j >= n_items else 1
+        if skip and len(item) > 1 and item[1][0].kind == "OP" and item[1][0].text == "(":
+            d, skip = 0, len(item)
+            for idx in range(1, len(item)):
+                t = item[idx][0]
+                d += (t.text == "(") - (t.text == ")") if t.kind == "OP" else 0
+                if d == 0:
+                    skip = idx + 1
+                    break
+        keys = []
+        for t, pv in item[skip:]:
+            if t.kind == "IDENT":
+                k = "member" if pv is not None and pv.kind == "OP" and pv.text == "." else "id"
+            elif t.kind == "STRING":
+                k = "string"
+            else:
+                continue
+            keys.append((_tok_name(t, k), k))
+        out.append(keys)
+    tail = [k for keys in out[n_items:] for k in keys]
+    return (out[:n_items] + [[] for _ in range(max(0, n_items - len(out)))])[:n_items] + [tail]
+
+
+def skipped_keys(unit: S.Stmt) -> list[tuple]:
+    """Keys of the tokens of `unit` the index counts but has no record for (see `_alias_junk`)."""
+    if isinstance(unit, S.Instruction) and unit.keyword.upper() == "ALIAS":
+        return [k for keys in _alias_junk(unit, len(unit.args) - 1) for k in keys]
+    return []
+
+
 def _tok_name(t: lexer.Token, kind: str) -> str:
     return str(t.value).upper() if kind == "string" else t.upper
 
@@ -486,6 +543,12 @@ class _Builder:
         n = self.counts.get(key, 0)
         self.counts[key] = n + 1
         return n
+
+    def _skip_tokens(self, keys) -> None:
+        """Count the tokens the parser ignored (`Alias A = X junk, Y`), so that the ordinals of the
+        records after them still point at their own token."""
+        for key in keys:
+            self._occ(key)
 
     def decl(self, stmt, name, kind, *, node=None, scope=None, routine="default", container=None,
              type=None, quoted=False, unverified=False, count=True) -> Declaration:
@@ -652,7 +715,8 @@ class _Builder:
         self.ref(st, spelling, INSTRUCTION, st)
         if kw == "ALIAS" and st.args:
             target = self.expr(st.args[0], st, ALIAS_TARGET)
-            for rhs in st.args[1:]:
+            junk = _alias_junk(st, len(st.args) - 1)
+            for j, rhs in enumerate(st.args[1:]):
                 name = rhs.name if isinstance(rhs, (S.Name, S.Index)) else None
                 if name is None:
                     self.expr(rhs, st)
@@ -662,6 +726,8 @@ class _Builder:
                 if isinstance(rhs, S.Index):
                     for a in rhs.args:
                         self.expr(a, st)
+                self._skip_tokens(junk[j])
+            self._skip_tokens(junk[-1])
         elif kw == "UNITS" and st.args:
             self.expr(st.args[0], st, UNITS_TARGET)
         elif kw in ("DATATABLE", "CONSTTABLE", "STRUCTURETYPE", "OBJECTTYPE") and st.args:

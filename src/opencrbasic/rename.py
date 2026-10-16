@@ -313,6 +313,7 @@ def _check_ordinals(ix, targets) -> None:
             toks = bindings.classified_tokens(unit) or ()
             n_tok = sum(1 for t, k in toks if k == key[1] and bindings._tok_name(t, k) == key[0])
             n_rec = sum(1 for o in ix.records_in(unit) if o.tok_key == key)
+            n_rec += sum(1 for k in bindings.skipped_keys(unit) if k == key)
             if n_tok > n_rec:
                 raise _Refuse("no_range", f"{unit.file}:{unit.line}: the statement spells "
                               f"{rec.name!r} {n_tok} times but the index records {n_rec}; the "

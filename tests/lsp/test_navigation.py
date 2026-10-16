@@ -172,6 +172,15 @@ EndProg
     assert N.definition(r, m, 12, 4) == []                                     # Scan
 
 
+def test_alias_junk_token_is_not_the_declaration(tmp_path):
+    m = write(tmp_path, "m.CR6", "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n"
+              "  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n")
+    r = run(m)
+    assert where(N.definition(r, m, *pos(m, "a2 = 1"))) == [("m.CR6", 1, 22, 24)]
+    assert [(h.line, h.start) for h in N.document_highlights(r, m, *pos(m, "a2 = 1"))] == \
+        [(1, 22), (4, 4)]
+
+
 def test_continued_line(tmp_path):
     m = write(tmp_path, "m.CR6", "Public alpha, _\n  beta, _\n  gamma\nBeginProg\n  Scan(1,Sec,0,0)\n"
               "    gamma = beta + _\n      alpha\n  NextScan\nEndProg\n")

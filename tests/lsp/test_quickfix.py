@@ -364,3 +364,9 @@ def test_read_position_offers_no_statement_words(tmp_path):
     assert not {"Change to `Do`", "Change to `FOR`"} & set(titles), titles
     entry = write(tmp_path, "b.CR6", prog("Temp = Humiditty + 1"))
     assert actions_for(run(entry), entry)[0][1].title == "Change to `Humidity`"
+
+
+def test_read_position_offers_only_the_declared_name_not_statement_words(tmp_path):
+    entry = write(tmp_path, "c.CR6", "Public Fo2, x\nBeginProg\n  Scan(1,Sec,0,0)\n"
+                  "    x = Fo + 1\n  NextScan\nEndProg\n")
+    assert [a.title for _, a in actions_for(run(entry), entry)] == ["Change to `Fo2`"]

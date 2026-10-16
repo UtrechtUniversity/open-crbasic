@@ -23,9 +23,9 @@ branch remains (every worker commit was verified present on the branch before de
   (not LSP; fix: rerun `scripts/solar_model.py`, `power_sim.py`, `power_workbook.py`).
 - Reviews: rounds 1 (`39286384`), 2 (`f3069825`), 3 ([astra](docs/lsp-rounds/review-2026-10-11-ccba3666.md),
   [Fable](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md)) and 4
-  ([`743da2ac`](docs/lsp-rounds/review-2026-10-12-743da2ac.md)): every finding fixed, except
-  round-3 F2 (`Alias` junk: rename refused, not renamed), F12 (`BeginBurstTrigger` pair: no local
-  help page) and F15 (`TO` still offered as a quick fix: catalog lists it as a function only).
+  ([`743da2ac`](docs/lsp-rounds/review-2026-10-12-743da2ac.md)): every finding fixed (round-3
+  F2, F12 and F15 in LSP-R7a: `Alias` junk tokens counted in the ordinals, `BeginBurstTrigger`
+  pair, `TO` dropped from read-position quick fixes).
   The R5 fixes themselves are not reviewed.
 - Host (macOS only; release claim narrowed to macOS by human decision 2026-10-12): T-01..T-17 and
   H-01..H-10 accepted per the host records under `docs/lsp-rounds/host-tests/`, last
