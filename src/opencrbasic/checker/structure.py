@@ -1750,6 +1750,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
     program_marker_seen = False   # a BeginProg, EndProg or SlowSequence statement has been seen
+    declared_here = ({n.upper() for n in symbols.declared_names(program)}
+                     if profile.name in ("cr300", "cr350") else set())
     pass2_scans: list[bool] = []
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
@@ -1798,11 +1800,15 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif kw == "ENDPROG":
             in_beginprog = False
         # CR300/CR350 resolve a name argument (`SlowSequence(Q)`, `Q is not defined.`) where CR6/CR1000X
-        # never read it, so only literal or empty arguments open the program there (unmodelled: a
-        # defined name on CR300/CR350).
-        ss_literal = not isinstance(stmt, S.Instruction) or all(
-            isinstance(a, (S.Number, S.String)) for a in stmt.args if a is not None)
-        if kw == "SLOWSEQUENCE" and not program_marker_seen and (profile.name in ("cr6", "cr1000x") or ss_literal) \
+        # never read it, so there the argument must resolve without error: a literal, or a declared
+        # name (oracle, CR300/CR350, 2026-10-16: `SlowSequence(Q)`/`(A)`/`(Z)` with declared Publics
+        # give `Multiple BeginProgs.`, `SlowSequence(Undef)` does not). Other shapes are not probed
+        # and keep the pre-round-18 behaviour (no program opened).
+        ss_resolves = not isinstance(stmt, S.Instruction) or all(
+            isinstance(a, (S.Number, S.String))
+            or (isinstance(a, S.Name) and a.name.upper() in declared_here)
+            for a in stmt.args if a is not None)
+        if kw == "SLOWSEQUENCE" and not program_marker_seen and (profile.name in ("cr6", "cr1000x") or ss_resolves) \
                 and not any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file
                             for d in diags.items):
             # A clean `SlowSequence` before any `BeginProg`/`EndProg` opens the program: the next

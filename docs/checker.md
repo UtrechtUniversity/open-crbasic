@@ -2807,8 +2807,10 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
   `BeginProg` is `Multiple BeginProgs.` (bare, `SlowSequence(1)`, `SlowSequence(")`, `Sub`/`EndSub`
   before it), a second `SlowSequence` before it changes nothing, and `EndProg` clears the state.
   An erroneous `SlowSequence` (`SlowSequence(A B)`, `SlowSequence(1,2)`) gives no `Multiple`. On
-  CR300/CR350 only literal or empty arguments open the program (`SlowSequence(Q)` is `Q is not defined.`
-  there, no `Multiple`; a defined name is not probed).
+  On CR300/CR350 the argument must resolve without error: a literal, empty, or a declared `Public`
+  name opens the program (`SlowSequence(Q)`, `(A)`, `(Z)` with `Public A, Z, Q`: `Multiple`), while
+  `SlowSequence(Undef)` is `Undef is not defined.` and no `Multiple`. CR6/CR1000X never resolve the
+  argument. Expression and `Const` arguments are not probed and do not open the program on CR300/CR350.
   Not covered: a `SlowSequence` followed by `EndProg` before any `BeginProg` (`SlowSequence` /
   `EndProg` / `BeginProg` ...) is `No BeginProg in Program.` here because the parser stops at the
   first `EndProg`, while the real compiler accepts it (pre-existing false reject, not changed); on

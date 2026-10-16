@@ -242,6 +242,146 @@
    "source": "Public A, Z\nBeginProg\n  SlowSequence(A,\")\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  \".\nline 4: Too many parameters:  Sec.",
    "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-decl_Q",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nSlowSequence(Q)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-decl_Q",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nSlowSequence(Q)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-decl_Q",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nSlowSequence(Q)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-decl_Q",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nSlowSequence(Q)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-decl_A",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nSlowSequence(A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-decl_A",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nSlowSequence(A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-decl_A",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nSlowSequence(A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-decl_A",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nSlowSequence(A)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-decl_Z",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nSlowSequence(Z)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-decl_Z",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nSlowSequence(Z)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-decl_Z",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nSlowSequence(Z)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-decl_Z",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nSlowSequence(Z)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-undef_name",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nSlowSequence(Undef)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-undef_name",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nSlowSequence(Undef)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-undef_name",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nSlowSequence(Undef)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Undef is not defined.\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-undef_name",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nSlowSequence(Undef)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Undef is not defined.\nline 4: Too many parameters:  Sec.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr6-r18_slowseq-num_one",
+   "logger": "cr6",
+   "source": "Public A, Z, Q\nSlowSequence(1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr1000x-r18_slowseq-num_one",
+   "logger": "cr1000x",
+   "source": "Public A, Z, Q\nSlowSequence(1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr300-r18_slowseq-num_one",
+   "logger": "cr300",
+   "source": "Public A, Z, Q\nSlowSequence(1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
+  },
+  {
+   "id": "cr350-r18_slowseq-num_one",
+   "logger": "cr350",
+   "source": "Public A, Z, Q\nSlowSequence(1)\nBeginProg\n  Scan (1,Sec,0,0)\n    A = 1\n  NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Multiple BeginProgs.",
+   "expected_exit": 1
   }
  ]
 }
