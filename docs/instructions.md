@@ -2163,13 +2163,3 @@ Fuzz reproducer cr1000x `false_accept/823848325de3`.
 Fixture `r16_gzip_arity.json` (`expressions._ARITY_RANGE`). The table says one argument; the call takes exactly two
 (`Filename, ZippedFilename`): one gives `Expression expects , : <statement>.`, three or more `No Matching, or out of place
 ) in expression: <statement>.`, in an assignment or as a bare call. Fuzz reproducer cr1000x `false_accept/27dda59dbe0b`.
-
-### `HTTPPut` / `FTPClient` trailing `TimeOut` type (all four loggers, round 16)
-
-Fixture `r16_http_ftp_timeout.json` (`expressions._CONST_INTEGER_TYPE_ARGS`). The 9th argument of `HTTPPut` and the 11th of
-`FTPClient` is `TimeOut`, a constant integer: a string (also `""`), `NAN` or a float literal (`1.5`, `1.0`) gives `Parameter
-must be a constant integer: <statement>.`, before the argument-count check (a 10th/12th argument after it still gets this
-message). Not modelled: a variable or function call (`R`, `Hdr`, `Int(1)`) in that position gives the same message but
-needs the symbol table; a 32-bit-overflowing literal gives it on CR6/CR1000X but `Parameter TimeOut cannot be negative` on
-CR300/CR350 (`2147483648`); `-1`, `TRUE`, `2147483647` and `&HFFFFFFFF` give `Parameter TimeOut cannot be negative`
-(`-2147483648` and `2147483` compile). Fuzz reproducers cr350 `false_accept/918143423fb9`, cr300 `ef8a04a7c081`.
