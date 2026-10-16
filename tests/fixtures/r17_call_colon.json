@@ -1,0 +1,443 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r17_call_colon-0",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_call_colon-1",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_call_colon-2",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required."
+  },
+  {
+   "id": "cr6-r17_call_colon-3",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:  Z = Q."
+  },
+  {
+   "id": "cr6-r17_call_colon-4",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Q,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Q."
+  },
+  {
+   "id": "cr6-r17_call_colon-5",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Battery(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_call_colon-6",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A ."
+  },
+  {
+   "id": "cr6-r17_call_colon-7",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A .\nline 7: Invalid, or out of place expression:  A)."
+  },
+  {
+   "id": "cr6-r17_call_colon-8",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = (A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = (A .\nline 7: Invalid, or out of place expression:  A)."
+  },
+  {
+   "id": "cr6-r17_call_colon-9",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : Q = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:  Q = 2."
+  },
+  {
+   "id": "cr6-r17_call_colon-10",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : A = (2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  A = (2."
+  },
+  {
+   "id": "cr6-r17_call_colon-11",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A, Z, \"a:b\" : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_call_colon-12",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 :: Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_call_colon-13",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression:  Z = 1)."
+  },
+  {
+   "id": "cr6-r17_call_colon-14",
+   "logger": "cr6",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    If A > 1 Then Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-0",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-1",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-2",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-3",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:  Z = Q."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-4",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Q,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Q."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-5",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Battery(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-6",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A ."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-7",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A .\nline 7: Invalid, or out of place expression:  A)."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-8",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = (A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = (A .\nline 7: Invalid, or out of place expression:  A)."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-9",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : Q = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:  Q = 2."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-10",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : A = (2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  A = (2."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-11",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A, Z, \"a:b\" : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-12",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 :: Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-13",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression:  Z = 1)."
+  },
+  {
+   "id": "cr1000x-r17_call_colon-14",
+   "logger": "cr1000x",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    If A > 1 Then Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r17_call_colon-0",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_call_colon-1",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_call_colon-2",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required."
+  },
+  {
+   "id": "cr300-r17_call_colon-3",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr300-r17_call_colon-4",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Q,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr300-r17_call_colon-5",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Battery(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_call_colon-6",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A ."
+  },
+  {
+   "id": "cr300-r17_call_colon-7",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A .\nline 7: Invalid, or out of place expression:  A)\n."
+  },
+  {
+   "id": "cr300-r17_call_colon-8",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = (A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = (A .\nline 7: Invalid, or out of place expression:  A)\n."
+  },
+  {
+   "id": "cr300-r17_call_colon-9",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : Q = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr300-r17_call_colon-10",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : A = (2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  A = (2\n."
+  },
+  {
+   "id": "cr300-r17_call_colon-11",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A, Z, \"a:b\" : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_call_colon-12",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 :: Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_call_colon-13",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression:  Z = 1)\n."
+  },
+  {
+   "id": "cr300-r17_call_colon-14",
+   "logger": "cr300",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    If A > 1 Then Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_call_colon-0",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_call_colon-1",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_call_colon-2",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required."
+  },
+  {
+   "id": "cr350-r17_call_colon-3",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr350-r17_call_colon-4",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Q,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr350-r17_call_colon-5",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Battery(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_call_colon-6",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A ."
+  },
+  {
+   "id": "cr350-r17_call_colon-7",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = Sqr(A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = Sqr(A .\nline 7: Invalid, or out of place expression:  A)\n."
+  },
+  {
+   "id": "cr350-r17_call_colon-8",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Z = (A : A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:     Z = (A .\nline 7: Invalid, or out of place expression:  A)\n."
+  },
+  {
+   "id": "cr350-r17_call_colon-9",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : Q = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr350-r17_call_colon-10",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1 : A = (2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  A = (2\n."
+  },
+  {
+   "id": "cr350-r17_call_colon-11",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A, Z, \"a:b\" : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_call_colon-12",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 :: Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_call_colon-13",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S(A,Z,3 : Z = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression:  Z = 1)\n."
+  },
+  {
+   "id": "cr350-r17_call_colon-14",
+   "logger": "cr350",
+   "source": "Public A, Z\nSub S(p, q, r)\n  p = q + r\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    If A > 1 Then Call S(A,Z,3 : Z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

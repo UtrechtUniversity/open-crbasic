@@ -6842,3 +6842,16 @@ error is exempt from the tier-C gate on all loggers (`unknown_table_diags` in `c
 after it, and `cr3xx._hides_nothing` lists the message), and `structure.check_scan_placement_late` adds the
 `check_table_structure` findings of the statements before its stop. A later undefined name (`x = Zork` after the
 stop) is not printed, as before.
+
+## Colon inside parentheses (oracle 2026-10-16, cr6/cr1000x/cr300/cr350)
+
+The real compilers split a logical line at every `:` outside a `"..."` string; parentheses do
+not protect it. `Call S(A,Z,3 : Z = 1` is the statement `Call S(A,Z,3` (an unclosed call is
+completed at end of statement) followed by `Z = 1`; `Call S(A,Z : Z = 1` is `Call argument
+required.`; `Z = Sqr(A : A)` is `No Matching, or out of place ) in expression:     Z = Sqr(A `
+then `Invalid, or out of place expression:  A).`. Each later segment is echoed with its leading
+space. Implemented by dropping the paren-depth test from `parser._split_text_segments` and
+`_split_colon_segments`. Fixture `tests/fixtures/r17_call_colon.json`. Known remaining
+differences on exotic shapes: `Call S( : Z = 1` (real reports three `Call argument required.`),
+CR300/CR350 `Call S(A : Z, 3)` (real omits our extra `Call argument required.`), `If .. Then :
+Call S(..( : ..` on CR300/CR350 (we add `IF or SELECT without EndIf`).

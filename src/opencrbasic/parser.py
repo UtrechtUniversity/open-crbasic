@@ -139,10 +139,10 @@ def _eof_like(line: int) -> Token:
 
 
 def _split_text_segments(text: str) -> list[str]:
-    """Split a logical line's raw text on top-level `:` (outside `(...)` and `"..."` strings),
+    """Split a logical line's raw text on every `:` outside `"..."` strings (parentheses do not
+    protect a `:`, oracle 2026-10-16, all four loggers: `docs/checker.md` "Colon inside parentheses"),
     without tokenising -- so a segment whose content isn't tokenisable CRBasic at all (a `Units`
-    label) can still be found and routed separately. Mirrors `_split_colon_segments`'s paren-depth
-    rule at the character level.
+    label) can still be found and routed separately. Mirrors `_split_colon_segments`.
     """
     segments: list[str] = []
     current: list[str] = []
@@ -167,11 +167,7 @@ def _split_text_segments(text: str) -> list[str]:
             current.append(ch)
             i += 1
             continue
-        if ch == "(":
-            depth += 1
-        elif ch == ")":
-            depth = max(0, depth - 1)
-        if ch == ":" and depth == 0:
+        if ch == ":":
             segments.append("".join(current))
             current = []
             i += 1
@@ -555,17 +551,13 @@ def _hoist_block_statements(stmt: S.If) -> list[S.Stmt]:
 
 
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
-    """Split a fully-tokenised logical line on top-level `:` (not inside `(...)`)."""
+    """Split a fully-tokenised logical line on every `:`."""
     segments: list[list[Token]] = []
     current: list[Token] = []
     depth = 0
     eof = tokens[-1]
     for t in tokens[:-1]:
-        if t.kind == "OP" and t.text == "(":
-            depth += 1
-        elif t.kind == "OP" and t.text == ")":
-            depth = max(0, depth - 1)
-        if t.kind == "OP" and t.text == ":" and depth == 0:
+        if t.kind == "OP" and t.text == ":":
             segments.append(current)
             current = []
             continue
