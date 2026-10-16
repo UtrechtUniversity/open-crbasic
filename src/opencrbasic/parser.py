@@ -837,6 +837,7 @@ class _Parser:
             rec = self.profile.instructions.get(m.group(1).upper()) if m else None
             real = [c for c in rec["params"] if c not in (14, 32, 36, 46)] if rec else []
             if (e.message == "unterminated string" and real and real[0] >= 100
+                    and m.group(1).upper() != "SLOWSEQUENCE"
                     and seg_text_raw[e.col:e.col + 1] == '"'):
                 # An optional first parameter: the cut-off string is dropped and the rest read as
                 # the instruction (oracle, 2026-10-16: `Calibrate(")` compiles, `Calibrate(A,")`
