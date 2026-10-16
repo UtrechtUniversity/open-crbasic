@@ -76,7 +76,7 @@ Installed package: `tools/lsp_install_check.py` builds the wheel, installs it in
 outside the repository, and checks `crbc`, `crbc-lsp` and the core import without pygls. It passed 15 of 15
 checks on a cloud Linux VM with Python 3.13.16 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md))
 and on macOS at `7d6db3b1` and `679f2f70` (host records in section 8). The later
-[Windows/WSL record](lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md) reports Windows path
+Windows/WSL record (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`) reports Windows path
 failures (H-13); its passing Windows run used a host shim.
 
 ## 3. Settings
@@ -365,7 +365,7 @@ Known limits and the open review findings for rename and formatting are in secti
 ### 5.11 Parameter-name hints and output commands (LSP-09c)
 
 Both have stdio tests and client unit tests. Windows and Remote-WSL editor observations are in the
-[2026-10-15 visual host record](lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md).
+2026-10-15 visual host record (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`).
 
 - **Parameter-name hints.** A grey `Name:` before each positional argument of an instruction or
   builtin function call, for example `Dest:`, `Reps:`, `Range:` before the arguments of `VoltSe`. The
@@ -443,25 +443,25 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 
 | Area | Observed | Record |
 |---|---|---|
-| Server starts in the Extension Development Host; startup line in the output channel | Yes, with `api_version=1` and the revision | [7c450ed5](lsp-rounds/host-tests/2026-10-11-7c450ed5/RESULTS.md) |
+| Server starts in the Extension Development Host; startup line in the output channel | Yes, with `api_version=1` and the revision | 7c450ed5 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-7c450ed5/RESULTS.md`) |
 | Startup line logged at error level in the channel | Yes; a success shows as an error | `7c450ed5` |
-| Info copy of the startup line (LSP-01e) | Yes, as an info `window/logMessage`; the stderr copy still shows as `[error]` | [7d6db3b1](lsp-rounds/host-tests/2026-10-11-7d6db3b1/RESULTS.md) |
+| Info copy of the startup line (LSP-01e) | Yes, as an info `window/logMessage`; the stderr copy still shows as `[error]` | 7d6db3b1 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-7d6db3b1/RESULTS.md`) |
 | `Main.CR6`: no errors, expected tester warnings | Yes | `7c450ed5` |
 | Invalid edit: errors after debounce; undo clears them | Yes | `7c450ed5` |
 | Unsaved library overlay merges diagnostics; Don't Save restores them | Yes | `7c450ed5` |
-| Library edit on physical line 32 covers lines 32 and 33 | Yes (fixed by LSP-01d; was line 33) | [e77ee5cc](lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md) |
+| Library edit on physical line 32 covers lines 32 and 33 | Yes (fixed by LSP-01d; was line 33) | e77ee5cc (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`) |
 | `debounceMs` and `exclude` change without restart | Yes | `7c450ed5` |
 | `opencrbasic: Restart Server` | Yes | `7c450ed5` |
 | Interpreter path change restarts the server | Yes, a new server starts; an error toast also appears (H-02) | `7c450ed5` |
-| Interpreter path change without the toast (LSP-01e) | Two valid changes restarted the server and republished; no failure message in the trace. Toast absence is a visual gap | `7d6db3b1`, [679f2f70](lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md) |
-| `.CR300` opens as CRBasic automatically (LSP-01e) | **Fails** at `1b01311d` (H-03: plain text); `.CR300`, `.CR1X`, `.CR350` open as `crbasic` and logger `cr300` gives live diagnostics at `7d6db3b1` and `679f2f70` | [1b01311d](lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md) |
+| Interpreter path change without the toast (LSP-01e) | Two valid changes restarted the server and republished; no failure message in the trace. Toast absence is a visual gap | `7d6db3b1`, 679f2f70 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md`) |
+| `.CR300` opens as CRBasic automatically (LSP-01e) | **Fails** at `1b01311d` (H-03: plain text); `.CR300`, `.CR1X`, `.CR350` open as `crbasic` and logger `cr300` gives live diagnostics at `7d6db3b1` and `679f2f70` | 1b01311d (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md`) |
 | Open `.crb` with no entry shows the information note | Yes | `7c450ed5` |
 | Include name with a space: one URI, opened or not | Yes | `7c450ed5` |
 | UTF-8 non-ASCII include name: mojibake in the message (H-04) | Yes at `7c450ed5`; with the display fix the message reads `É space.crb` with no `Ã` (diagnostic level; Problems rendering not seen) at `7d6db3b1`, `679f2f70` | `7c450ed5` |
-| Syntax highlighting, scope checks | 12 of 12 pass | [602f6462](lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md) |
+| Syntax highlighting, scope checks | 12 of 12 pass | 602f6462 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md`) |
 | Syntax highlighting, visual check, Dark Modern | Yes | `7c450ed5` |
 | Help hover, variable hover, completion, signature help, outline, folding, links, navigation, semantic tokens, Unicode, after-edit update (provider and API level) | 16 checks pass | `1b01311d` |
-| Same, visual rendering, repaint, typing responsiveness | Observed (screenshots), with the record's qualifications: cross-entry references then incomplete (H-08, fixed in LSP-R4a and passed at `e18cdf52`), full nested outline not exhaustively inspected | [ccba3666](lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md) |
+| Same, visual rendering, repaint, typing responsiveness | Observed (screenshots), with the record's qualifications: cross-entry references then incomplete (H-08, fixed in LSP-R4a and passed at `e18cdf52`), full nested outline not exhaustively inspected | ccba3666 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md`) |
 | F2 box, refusal text, Ctrl+. menu, format refusal toast, Problems rendering (T-12 visuals) | Observed | `ccba3666` |
 | Full pytest suite, client tests, repository verifier | 22,182 passed, 311 skipped; client 10 pass; `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` (H-05 strict-mode leak fixed) | `1b01311d` |
 | Benchmark on an idle macOS host: hover p95 0.856 ms, completion p95 3.948 ms (in-process core calls); diagnostics p95 133.740 ms after the debounce, from an end-to-end edit-to-publish of 433.740 ms (20 edits, stdio) | Measured once; not a guarantee | `e77ee5cc` |
@@ -472,7 +472,7 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 | Unmatched `.CR300` information note (H-06) and rename of an unsaved library collision (R2a), Latin-1 positions (R2b) | Pass at provider level | `679f2f70` |
 | Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md)); Windows **untested** | `7d6db3b1`, `679f2f70` |
 | Packaged `.vsix` installs into an empty profile, activates, uninstalls (LSP-08f, T-14) | Pass | `ccba3666`, `e18cdf52` |
-| Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | [e18cdf52](lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md) |
+| Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | e18cdf52 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md`) |
 | Review round 3 fixes, macOS items (LSP-R3, T-16); references across entries and comment refusal (LSP-R4a) | Pass | `e18cdf52` |
 | Member completion before the first analysis (LSP-R4b, T-17 item 1) | 6 of 6 cold requests return the fields in 462-498 ms over stdio (0 items before R4b); later GUI fallback observations are in section 9 | `e18cdf52` (on `e1769132`) |
 | Typing latency (T-17 item 2) | Server after-debounce p95 149 ms; GUI squiggle upper bounds 984-1249 ms | `e18cdf52` |
@@ -480,8 +480,8 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 
 ## 9. Known limits
 
-- Windows and Remote-WSL have [API/protocol](lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md)
-  and [visual](lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md) host records, including
+- Windows and Remote-WSL have API/protocol (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`)
+  and visual (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`) host records, including
   the following limits. Client changes after those records still need the T-19 host re-checks in
   [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md).
 - **Completion before the first analysis (H-21).** If `Status.` or `Public.` completion exceeds

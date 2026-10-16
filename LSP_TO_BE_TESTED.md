@@ -70,7 +70,7 @@ None yet.
 
 ## Local host report (2026-10-11, implementation revision 602f6462)
 
-[Full results and saved evidence](docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md).
+Full results and saved evidence (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md`).
 
 - T-01 for LSP-01a was executed: pytest and the real-compiler repository verifier pass;
   differential/replay counts match the recorded compiler baseline. Known oracle faults still
@@ -87,7 +87,7 @@ not advance the cloud coordinator's round ledger or claim acceptance of untested
 
 ## Local host supplement (2026-10-11, tested revision 8b25214a)
 
-[Full supplementary results and raw evidence](docs/lsp-rounds/host-tests/2026-10-11-8b25214a/RESULTS.md).
+Full supplementary results and raw evidence (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-8b25214a/RESULTS.md`).
 This revision includes LSP-02a (`43acb404`) and the help-parser fix (`665b40f7`).
 
 - T-01 for both LSP-01a and LSP-02a is now executed: full pytest passes; four-profile diagnostic
@@ -125,7 +125,7 @@ checks for them will be appended as T-05+ when they are wired.
 
 ## Local VS Code host report (2026-10-11, tested implementation 7c450ed5)
 
-[Full results, findings, raw logs and screenshots](docs/lsp-rounds/host-tests/2026-10-11-7c450ed5/RESULTS.md).
+Full results, findings, raw logs and screenshots (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-7c450ed5/RESULTS.md`).
 
 - T-02 CR6 scenarios are observed: successful startup with import/API/revision banner, expected
   Main warnings, errors after invalid edits, clearing on undo, merged errors from an unsaved
@@ -155,7 +155,7 @@ future implementation changes and the remaining platform/findings checks require
 
 ## Local gate supplement (2026-10-11, c0fd9bf1)
 
-[Supplement and raw evidence](docs/lsp-rounds/host-tests/2026-10-11-c0fd9bf1/RESULTS.md): after
+Supplement and raw evidence (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-c0fd9bf1/RESULTS.md`): after
 pulling the standalone editing/help-rule additions, full host pytest passes **22,048 tests,
 311 skipped**; the real-exe repository verifier passes with its exact BUILD line in the record.
 The server and client files are unchanged from the VS Code test revision; no additional VS Code
@@ -244,8 +244,8 @@ and `opencrbasic.helpDirectory` set to the repository's `extracted_chm`. Accept 
 
 ## Local host report (2026-10-11, e77ee5cc / 4d88a186 / 1b01311d)
 
-[Oracle, range, encoding, indentation, benchmark and arity evidence](docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md).
-[Integrated-feature retest and actual VS Code API observations](docs/lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md).
+Oracle, range, encoding, indentation, benchmark and arity evidence (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`).
+Integrated-feature retest and actual VS Code API observations (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md`).
 
 - T-01 at `e77ee5cc`: differential group totals, all replay classifications and TDF totals match
   the earlier host baseline; real-exe verify passes. Full pytest exposed four failures from
@@ -337,7 +337,7 @@ later; retest rename after them). Full wording in
 
 Observed at `7d6db3b1`; client tuning/association follow-up at `572e54d4` after pulling 01g.
 Full results, commands, scripts, raw diagnostics and client traces:
-[host report](docs/lsp-rounds/host-tests/2026-10-11-7d6db3b1/RESULTS.md).
+host report (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-7d6db3b1/RESULTS.md`).
 
 - **T-11 PASS (macOS):** clean install 15/15, installed CLI parity and LSP stdio lifecycle.
 - **T-04 amendment partially observed:** two valid interpreter restarts succeed without the
@@ -385,7 +385,7 @@ On a revision at or after `a42c7b0` (details in
 
 ## Local host retest (2026-10-11, 679f2f70)
 
-[Fresh results and raw evidence](docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md)
+Fresh results and raw evidence (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md`)
 for `679f2f7009b8cd04c1a496851cf30b57dc660b8c`:
 
 - **T-13 H-06/H-07 PASS through the actual VS Code client:** unmatched other-logger documents now
@@ -464,7 +464,7 @@ regression tests already; these are the editor-visible checks:
 
 ### Results recorded for T-14, T-09, T-12 (host record `ccba3666`), appended 2026-10-11
 
-[host-tests/2026-10-11-ccba3666/RESULTS.md](docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md):
+host-tests/2026-10-11-ccba3666/RESULTS.md (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md`):
 T-14 passed; T-09/T-12 visual checks observed on macOS, with its qualifications. Follow-ups (ledger
 H-08..H-10): cross-entry references are fixed in LSP-R4a, so re-check T-09 "Definition/references"
 on that revision: Peek References from A on a library symbol used by A and B lists A, B and Lib.
@@ -504,7 +504,7 @@ again (`isIncomplete: true`). A valid file shows no visible marker for "first an
 
 ### Results recorded for T-15, T-16, T-17 and the H-08/H-10 re-checks (host record `e18cdf52`), appended 2026-10-12
 
-[host-tests/2026-10-11-e18cdf52/RESULTS.md](docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md):
+host-tests/2026-10-11-e18cdf52/RESULTS.md (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md`):
 T-15, the macOS items of T-16, T-17 items 1 and 2, and the T-09 references and H-10 re-checks pass.
 T-12 step 5 (and its amendment): accept "one undo restores every text"; the open/clean/dirty state
 of the files the rename opened is VS Code's and varied between host runs (clean at `ccba3666`,
@@ -522,7 +522,7 @@ when both are observed.
 
 ## Local host report (2026-10-15, Windows 11 + WSL2 Ubuntu 24.04, 73479946)
 
-[Results, findings and raw evidence](docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md).
+Results, findings and raw evidence (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`).
 First Windows and Linux record. VS Code 1.142.0 extension test host (API/protocol level, isolated
 profiles); Remote-WSL for Linux. Source files unchanged; harness corrections are host files in the record.
 
@@ -549,7 +549,7 @@ profiles); Remote-WSL for Linux. Source files unchanged; harness corrections are
 
 ## Local visual host report (2026-10-15, Windows 11 + Remote-WSL, f76901b2)
 
-[Results, screenshots and step logs](docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md).
+Results, screenshots and step logs (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`).
 Visual complement of the `73479946` record (`opencrbasic/src` and `vscode/` unchanged since then).
 VS Code 1.142.0 test host in isolated profiles, theme Dark 2026; edits and commands through a
 step-file harness, screenshots taken at chosen moments, real left-clicks only (no keyboard).
@@ -586,8 +586,8 @@ step-file harness, screenshots taken at chosen moments, real left-clicks only (n
 ### T-19 Windows/WSL re-checks after LSP-R6, appended 2026-10-16
 
 Re-check on Windows and Remote-WSL after LSP-R6. Inputs:
-[H-11..H-17 and Workspace Trust](docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md),
-[H-18..H-21 and PanelTemp hover](docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md).
+H-11..H-17 and Workspace Trust (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`),
+H-18..H-21 and PanelTemp hover (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`).
 The macOS checks of the fixes do not establish Windows/WSL behaviour.
 
 1. **H-11 (Windows):** run the server-marked tests and `tools/lsp_bench.py` with a silent client,

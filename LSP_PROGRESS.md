@@ -3,45 +3,40 @@
 Live implementation state and session handoff. Design and acceptance criteria:
 [LSP_PLAN.md](LSP_PLAN.md). Compiler state and worker policy: [PROGRESS.md](PROGRESS.md).
 
-## Current state (2026-10-12, LSP work in this configuration closed)
+## Current state (2026-10-16, first release ready to merge)
 
-Human instruction 2026-10-12: R5 is the last LSP work in this cloud configuration. The work below
-is integrated and pushed on `claude/laughing-franklin-08z9vo`; no worker worktree or `codex/*`
-branch remains (every worker commit was verified present on the branch before deletion).
+Human decisions 2026-10-16: help stays CR6-only; the first release is accepted on the macOS
+validation alone (T-19, the Windows/WSL re-check after LSP-R6, is not a release gate).
 
 - Implemented and integrated: LSP-00..09 (analysis facade and source providers, positions, catalog
   and generated grammar, help provider, binding index; stdio server with diagnostics, completion,
   hover, signature help, outline, folding, links, definition/references/highlights, semantic
   tokens, rename, formatting, quick fixes, inlay hints, "Show Compiler Output" and "Show Table
   Fields"; workspace watching, folders and limits; VS Code client and packaged VSIX; user guide,
-  benchmarks, install check, test tiers, Pyrefly gate) and review/host fix rounds R1-R5.
-- Final gates on the integrated tree (R5 included, coordinator, cloud container):
-  `tests/lsp -n 4` 781 passed; full suite `-n 4` 22,286 passed / 507 skipped; selfdiff 4343 cases,
-  0 differ; `pyrefly check` 0 errors; `npm test` 30 pass; `tools/vsix_check.py` 11/11; `verify.py`
-  (`CR6COMP=opencrbasic`) `BUILD  host tests 119 FAIL | CRBasic 16/16 compiled, 6 warning(s) |
-  repository pass`, the 3 failures being the stale generated power/solar outputs from `2a1d36d`
-  (not LSP; fix: rerun `scripts/solar_model.py`, `power_sim.py`, `power_workbook.py`).
+  benchmarks, install check, test tiers, Pyrefly gate) and review/host fix rounds R1-R7.
 - Reviews: rounds 1 (`39286384`), 2 (`f3069825`), 3 ([astra](docs/lsp-rounds/review-2026-10-11-ccba3666.md),
-  [Fable](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md)) and 4
-  ([`743da2ac`](docs/lsp-rounds/review-2026-10-12-743da2ac.md)): every finding fixed (round-3
-  F2, F12 and F15 in LSP-R7a: `Alias` junk tokens counted in the ordinals, `BeginBurstTrigger`
-  pair, `TO` dropped from read-position quick fixes).
-  The R5 fixes themselves are not reviewed.
-- Host (macOS only; release claim narrowed to macOS by human decision 2026-10-12): T-01..T-17 and
-  H-01..H-10 accepted per the host records under `docs/lsp-rounds/host-tests/`, last
-  [`e18cdf52`](docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md). Open host item: T-18
-  (bounded compiler-output command, LSP-R5a).
+  [Fable](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md)), 4
+  ([`743da2ac`](docs/lsp-rounds/review-2026-10-12-743da2ac.md)) and 5
+  ([`de6affff`](docs/lsp-rounds/review-2026-10-16-de6affff.md), R5/R6, no findings). Every finding
+  is fixed; the last open ones (round-3 F2, F12, F15) in LSP-R7a: `Alias` junk tokens counted in
+  the ordinals, `BeginBurstTrigger` pair, `TO` dropped from read-position quick fixes.
+- Host: macOS T-01..T-17 and H-01..H-10 accepted (last record `e18cdf52`); T-18 passed on Windows
+  and Remote-WSL (`73479946`, `f76901b2`). The raw host records under `docs/lsp-rounds/host-tests/`
+  were removed in the pre-merge cleanup; their summaries stay in [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md)
+  and the files in git history (`git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/`).
+- Gates at the release revision: see the round ledger row LSP-R7.
 
-## Remaining work (for a later session)
+## Remaining work (after the first release)
 
-1. Host T-18 on a revision at or after `1302f14`.
-2. Optional review of the R5 commits (`743da2ac..1302f14`).
+1. T-19 (Windows/WSL re-checks after LSP-R6), if Windows/Linux are to be claimed.
+2. Help for CR1000X/CR300/CR350 needs their own extracted help files and a per-logger
+   `helpDirectory`; not planned.
 3. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
    does not detect a file that appears after analysis, formatting refuses programs with errors,
    completion capped at 200, CR6-only help, references skip entries whose analysis is pending,
-   Windows/Linux not claimed; the open review items above.
-4. `scratch/lsp/selfdiff-base.json` is local to a checkout (untracked); a host or new session
-   recreates it at the round's base SHA before running selfdiff ("Resume here").
+   Windows/Linux not claimed.
+4. `scratch/lsp/selfdiff-base.json` is local to a checkout (untracked); recreate it at the round's
+   base SHA before running selfdiff ("Resume here").
 5. Compiler items found by this work are recorded in PROGRESS.md (not executed here).
 
 ## Work rules (human instructions 2026-10-11)
@@ -157,7 +152,7 @@ Open:
   - First `npm ci` on the host gave tar ENOENT warnings and a missing `tsc`; a repeat was clean
     (cause not established; not an LSP defect).
 - Host record `e18cdf52` (macOS, installed VSIX; R4b probes and gates on `e1769132`):
-  [RESULTS.md](docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md). Pass: T-15 (hints and
+  RESULTS.md (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md`). Pass: T-15 (hints and
   both commands), T-16 macOS items (cross-entry rename and collision, dimension parameter, include
   size limit, `Units` formatting, nested signature, close after Python change, integer settings),
   H-08 and H-10 re-checks, T-17 cold completion (6/6 within 500 ms on R4b; 0 items before),
@@ -224,6 +219,7 @@ Open:
 | LSP-R4b member completion before the first analysis | `codex/lsp-r4b` -> cherry-picked | integrated | defect confirmed over stdio: with no finished analysis every member list (`Status.`, `Public.`) was empty with `isIncomplete: false`; host's Status/Public difference attributed to timing (inferred). Fix: completion waits up to `featureWaitMs` only while no program exists; without one it answers `isIncomplete: true`. Coordinator: tests/lsp -n 4 770 passed, selfdiff 0 differ, pyrefly 0, npm 30/30 | host T-17 item 1 |
 | LSP-R5 review round 4 fixes | `codex/lsp-r5{a,b}` -> cherry-picked | integrated | coordinator on the combined tree: tests/lsp -n 4 781 passed, full suite 22,286 passed / 507 skipped, selfdiff 0 differ, pyrefly 0, npm 30, vsix_check 11/11, verify.py only the 3 known freshness failures. R5a: compiler-output command runs in the worker pool under maxFileBytes/analysisTimeoutMs, refusals `too_large`/`timeout`; R5b: link gate gets Markdown only, scheduler fixture commits unsigned, inlay `Units` match on a token boundary | host T-18 |
 | LSP-R6 Windows/WSL host findings H-11..H-21 | `codex/lsp-r6{a,b}` -> cherry-picked | integrated | Codex gpt-6.1-sol workers + read-only review (1 P2 fixed: stale diagnostics when a file's URI changes; P3 skipped: output tab restored from before the upgrade keeps its old URI). Coordinator on the combined tree (macOS): tests/lsp -n 4 805 passed, pyrefly 0, npm 36/36, verify.py `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository FAIL` (pre-existing `opencrbasic/.venv` only). H-11 NUL std handles (Windows-only, unverified), H-12 taskkill, H-13 Scripts/*.exe, H-15 test path, H-16 URIs follow the folder spelling, H-18 no toast while not running, H-19 output URI without leading slash, H-20 `[crbasic]` maximumLength 0, trust declared, PanelTemp option rows in hovers; H-17/H-21/didClose documented; H-14 root `.gitattributes`: `-text` for `*.CR6`/`*.crb` and `opencrbasic/tests/**` (byte-exact checkout; CRLF CLI fixtures kept) | host T-19 |
+| LSP-R7 review round 5 + open round-3 items | `ocb-lsp-r7a` -> cherry-picked `8c359f49` | integrated, gates passed | [review](docs/lsp-rounds/review-2026-10-16-de6affff.md) of R5/R6: no findings. R7a (Sonnet worker): round-3 F2/F12/F15. Coordinator on the combined tree (macOS): tests/lsp -n 4 818 passed, full suite -n 4 39,799 passed / 311 skipped after re-pinning `test_prog_signature_matches_cr6comp` (Main 37086, FinApp_tester 2012, re-observed with `CR6Comp.exe -s`; the inputs changed on main after the 09-25 pin), pyrefly 0, npm 36/36, vsix_check 11/11, links ok (93 files), verify.py `BUILD  host tests 136 pass \| CRBasic 19/19 compiled, 6 warning(s) \| repository pass`; selfdiff not run (no base; R7a touches only LSP modules) | - |
 | LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay` -> cherry-picked | integrated (core, not wired) | worker: 15 passed, tests/lsp -n 4 611, selfdiff 0 differ; Main.CR6 whole file 344 hints in 0.08 s, never `argN` | wire in LSP-09c |
