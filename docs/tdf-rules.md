@@ -1084,6 +1084,17 @@ table fit, minus/plus a few records) and `tests/fixtures/r16_auto_size_cr3xx.jso
   applies only to a table the logger actually auto-sizes: on CR300/CR350 a size of `-1`
   (a `-1000` is a fixed 1000 and compiles); on CR6/CR1000X every negative or out-of-range size.
 
+## Debug float literal beyond float32 (round 19)
+
+`Debug(-1,x,...)` HistorySize written as a decimal literal is read as float32. A value past the
+float32 maximum saturates by sign, as the `INF` name does (`checker/instr_rules.py` `check_stage2a`
+and the Debug branch): `+1e39` and `3.5e38` print `line 2: Out of memory.` on CR6 and CR1000X
+(an unhandled `OverflowError` before round 19), `-1e39` compiles, and `3.4e38` / `3.40282e38`
+compile (`Compiled in PipelineMode.`). The `Out of memory.` comes from HistorySize mapped to
+INT_MAX, `*4` = 0xFFFFFFFC, over the history limit. Only `+inf` maps to INT_MAX here; finite
+values in [2^31, FLT_MAX] keep the earlier INT_MIN mapping (not probed). Evidence:
+`tests/fixtures/r19_review_r18x.json` (CR6, CR1000X). CR300 and CR350 have no `Debug` (`Debug is not defined.`).
+
 ## CR6/CR1000X `Out of memory.`
 
 Implemented in `checker/storage.py`; evidence `tests/fixtures/r17_cr6_oom.json` (326 oracle cases,

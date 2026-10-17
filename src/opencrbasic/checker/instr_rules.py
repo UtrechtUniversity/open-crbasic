@@ -1749,8 +1749,12 @@ def debug_history_oom(stmt: S.Instruction, env, profile, program: S.Program) -> 
         v = 2**31 - 1     # (saturates, unlike NAN and -INF)
     elif isinstance(arg, S.Number) and not arg.text.startswith("&") and (
             "." in arg.text or "E" in arg.text.upper()):
-        f = struct.unpack("<f", struct.pack("<f", arg.value))[0]   # (a decimal literal is a float32)
-        v = int(f) if -2**31 <= f < 2**31 else -2**31
+        try:
+            f = struct.unpack("<f", struct.pack("<f", arg.value))[0]   # (a decimal literal is a float32)
+        except OverflowError:   # beyond float32 range: +-inf, as in check_stage2a above
+            f = math.copysign(math.inf, arg.value)
+        # +inf saturates to Long max (Debug 1e39 and 3.5e38: Out of memory); -inf and other out-of-range values to Long min
+        v = int(f) if -2**31 <= f < 2**31 else (2**31 - 1 if math.isinf(f) and f > 0 else -2**31)
     return (v * 4) & 0xFFFFFFFF > _DEBUG_HISTORY_LIMIT
 
 
