@@ -147,7 +147,51 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Round 18 (2026-10-16; resume here)
+## Round 19 (2026-10-17; resume here)
+
+- Integrated on `ocb-r18` (pushed to the mirror after this commit), each verified by the
+  coordinator (fixture audit, full pytest, oracle probe of the worker's weakest claim):
+  - Codex review of rounds 16-18 (`scratch/codex/review-r18.md`): W6 R18X-2 the IfTime/Timer timeout
+    mode advances in source order inside a one-line If (`intervals.gate_text`;
+    `r19_inline_if_timeout.json`); W5 R18X-1 Scan units folded by value (`tables._scan_unit_name`;
+    also fixed CR350 boundaries and CR300/CR350 units 0/6 false rejects) and R18X-3 Debug float
+    literal past float32 (`r19_review_r18x.json`).
+  - W8 TimeOut literal values: signed32(10*v) < 0 -> `Parameter TimeOut cannot be negative`, per-logger
+    literal classification (`r19_timeout_values.json`, docs/instructions.md). Rule from Codex RE
+    (`scratch/codex/re-r19-timeout.md`), coordinator-confirmed 80/80 before any code
+    (`scratch/r19/timeout/`). W8's first version lost an exact mixed-error case; its follow-up
+    fixed it. Coordinator probe `scratch/r19/w8c.txt` + `w8c.out`: 10/16 match vs 4/16 before W8.
+  - W7 Const false rejects: empty/spaced subscripts, `As <word> unknown Const type`, dangling-operator
+    subscripts, unterminated strings, CR300/CR350 `CONST needs assignment.` taint
+    (`r19_const_leftovers.json`); coordinator probe of 14 valid typed-Const shapes: 56/56 match.
+- Gates at 761df945: pytest 41,625 passed / 311 skipped, `-m server` 163 passed; all r19 fixtures
+  plus r18_const_array and r17_preserve_pool audit 0 differing; difftest unchanged (cr6/cr1000x
+  repo 18/18, chm 506; cr300/cr350 repo 7 exact + 11 verdict, chm 505; mismatch 0,
+  implementation_exception 0); `fuzz_replay` identical to round 18 (2,375 exact, 62 false
+  accepts, 0 false rejects, 689 message diffs, no class change; `scratch/r19/replay-r19-final.json`;
+  none of the round-19 shapes occur in the corpus); tdftest unchanged; `scripts/verify.py`:
+  `BUILD  host tests 136 pass | CRBasic 19/19 compiled, 6 warning(s) | repository pass`.
+- Codex RE research for a hard family, then a coordinator oracle check of its predictions, then a
+  Haiku worker, worked well (TimeOut). Oracle runs time out under 4 workers; re-run (cached).
+  `tools/probe.py` imports its own checkout's `src` regardless of PYTHONPATH: compare old code
+  in a detached worktree (it also needs `scratch/` to exist).
+
+## Next steps (round 20)
+
+1. TimeOut leftovers on CR300/CR350 (`scratch/r19/w8c.out`): an undefined name inside the same call
+   gives `Parameter must be a constant integer:` (not NEG); an undefined name in a LATER statement on
+   the same line prints NEG first (our order pass puts it second). Not modelled: expressions in the
+   TimeOut slot (-KT, KT+1), sign on hex, &O/&B, an undefined name in the TimeOut slot itself.
+2. Const leftovers (W7, docs/checker.md "Round 19"): `Const J (+) = 7`, `J As Long (5 = 7`, `Long[5]`
+   (lexer error), `Const "abc`, `J(a+)`, `J(3 4)`; false accepts `Const J As String * 10 = "a"`,
+   `Const K = Y`/`J(Y)` (`Variable used in CONST expression.`), `J("a")`, `J(J)`, `X = J(1)`.
+3. W5 leftovers: DataInterval numeric units (`tables._interval_from_args` reads by name); CR6/CR1000X
+   auto-size weights with numeric units unprobed; Debug finite values in [2^31, FLT_MAX].
+4. W6 leftover: `intervals.check` never visits one-line If bodies for the integral/constant checks.
+5. Round-18 items 4-6 (SlowSequence, OOM leftovers, older lists, fuzz seeds 413+). A fresh fuzz
+   seed batch would give the replay gate new evidence; the corpus does not cover rounds 18-19.
+
+## Round 18 (2026-10-16)
 
 - `claude/laughing-franklin-08z9vo` was merged into `main` (mirror PR #1, 73e423ca) and pushed to
   the primary remote. Round 18 works on `ocb-r18`, cut from `origin/main` (local, NOT pushed);
@@ -178,7 +222,7 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Worktree `scratch` symlinks are not covered by `.gitignore` (`scratch/` matches directories
   only); briefs must forbid `git add -A`/`git add .`. Briefs: `scratch/r18/W*.md`.
 
-## Next steps (round 19)
+## Next steps (round 19, done or carried into round 20)
 
 1. Fix the Codex review of rounds 16-18 (human instruction 2026-10-17: gpt-6.1-sol via the
    ChatGPT app CLI, not the cloud session; report `scratch/codex/review-r18.md`, range
