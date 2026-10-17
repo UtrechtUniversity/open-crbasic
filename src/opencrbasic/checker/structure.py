@@ -3907,7 +3907,7 @@ def _bad_const_type(stmt: S.ConstDecl) -> str | None:
     """The `As` type as written when it is not one `Const` accepts, else None."""
     if not stmt.type or stmt.type.upper() in _CONST_TYPES:
         return None
-    m = re.search(r"\bAs\s+(\w+)", stmt.text or "", re.IGNORECASE)
+    m = re.search(r"\bAs\s+([^\s,]+)", stmt.text or "", re.IGNORECASE)
     return m.group(1) if m else stmt.type
 
 

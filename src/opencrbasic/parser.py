@@ -72,6 +72,9 @@ class _ParseError(Exception):
     pass
 
 
+_CONST_TYPE_WORDS = frozenset({"LONG", "FLOAT", "DOUBLE", "STRING", "BOOLEAN"})
+
+
 class _TokStream:
     __slots__ = ("toks", "i", "seg_text")
 
@@ -861,6 +864,9 @@ class _Parser:
                 # the instruction (oracle, 2026-10-16: `Calibrate(")` compiles, `Calibrate(A,")`
                 # reports `Variable A out of bounds.`; `SlowSequence(")` compiles, the same).
                 return self._parse_text_segment(seg_text_raw[:e.col].rstrip().rstrip(","), line, file)
+            if e.message == "unterminated string" and re.match(r"\s*Const\s+[A-Za-z_]", seg_text_raw, re.I):
+                if (stmt := self._const_unterminated(seg_text_raw, e.col, line, file)) is not None:
+                    return stmt
             # An unterminated string is echoed verbatim, indentation and trailing spaces included
             # (oracle, 2026-09-28: `    S = "abc   .`).
             text = seg_text_raw if e.message == "unterminated string" else seg_text_raw.strip()
@@ -1786,16 +1792,40 @@ class _Parser:
                 # further subscripts and everything after `=` are ignored (oracle, 2026-10-16,
                 # docs/checker.md "Round 18")
                 p.next()
-                dim_start_col = p.peek().col
-                arr_dim = self._parse_expr(p, line, file)
-                arr_span = (dim_start_col, p.peek().col)
-                if any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
-                    return self._const_array(p, line, file, name_tok, arr_dim, arr_span)
-                raise _ParseError("Const subscript without '='")
+                while p.is_op(","):
+                    p.next()  # empty leading subscripts are skipped (oracle, 2026-10-17, "Round 19")
+                if p.is_op(")"):
+                    p.next()  # `Const J() = 7` is `Const J = 7`
+                else:
+                    sub_i = p.i
+                    dim_start_col = p.peek().col
+                    if p.is_op("="):
+                        pass  # `Const J( = 1` is `Const J = 1` (oracle, "Round 19")
+                    else:
+                        try:
+                            arr_dim = self._parse_expr(p, line, file)
+                        except _ParseError:
+                            return self._const_bad_subscript(p, sub_i, line, file)
+                        arr_span = (dim_start_col, p.peek().col)
+                        # an `=` inside an unclosed subscript counts (`Const J(3 = 5`: J is 0)
+                        if any(t.kind == "OP" and t.text == "=" for t in p.toks[sub_i:]):
+                            return self._const_array(p, line, file, name_tok, arr_dim, arr_span)
+                        raise _ParseError("Const subscript without '='")
             if p.is_ident("AS"):
                 p.next()
                 type_tok = p.expect_ident()
                 vtype = type_tok.upper
+                word = re.match(r"[^\s,]+", p.seg_text[type_tok.col:]).group()
+                if word.upper() not in _CONST_TYPE_WORDS and any(
+                        t.kind == "OP" and t.text == "=" for t in p.toks):
+                    # the type is the whitespace-delimited word (`As Long(5)`, `As Long=7`,
+                    # `As Long!`): an unknown one makes `J` 0 and ignores the rest of the line
+                    # (oracle, 2026-10-17, docs/checker.md "Round 19")
+                    p.i = len(p.toks) - 1
+                    zero = S.Number(line, file, value=0, text="0")
+                    self.env.define(name_tok.text, 0, False)
+                    return S.ConstDecl(line, file, name=name_tok.text, value=zero, type=word,
+                                       value_span=(0, 0))
                 if p.is_op("!"):
                     p.next()  # pointer type (see docs/frontend.md)
                     vtype += "!"
@@ -1808,6 +1838,8 @@ class _Parser:
                 p.next()  # (`Const = X, Y`: `Y` is the value)
             elif lead and not p.is_op("="):
                 pass  # (`Const = X Y`: `Y` is the value)
+            elif p.is_op("(") and any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
+                pass  # `Const J (5) = 7` is `Const J = (5) = 7`: the `=` is implied (oracle, "Round 19")
             else:
                 p.expect_op("=")
             eq_at = p.i
@@ -1833,7 +1865,7 @@ class _Parser:
                 # `=` seen, value empty or ending in a binary operator: `Invalid, or out of place
                 # expression: <value>.` (oracle, 2026-10-10, docs/checker.md "Round 7")
                 rest = p.toks[eq_at:]
-                if rest[0].kind == "EOF" or (rest[-2].kind == "OP" and rest[-2].text in "+-*/^"
+                if rest[0].kind == "EOF" or (rest[-2].kind == "OP" and rest[-2].text in "+-*/^="
                                              and len(rest[-2].text) == 1):
                     value = p.seg_text[rest[0].col:] if rest[0].kind != "EOF" else ""
                     return S.Unparsed(line, file, text="", reason="Const bad value: " + value)
@@ -1852,6 +1884,52 @@ class _Parser:
         except consteval.NotConstant:
             pass
         return node
+
+    def _const_unterminated(self, seg, q, line, file):
+        """A `Const` line with an unterminated string (oracle, all four loggers, 2026-10-17,
+        docs/checker.md "Round 19"): no `=` at all is the ordinary `Const X` no-assignment; a
+        closed non-empty first subscript before the quote ignores the rest (`J(3) = "abc`); an empty
+        `()`/`(,)` before `=` is `String without end quote` plus the quote's echo; a top-level
+        comma after `=` ends the statement before the quote; anything else is `CONST needs
+        assignment.`"""
+        pre = seg[:q]
+        if "=" not in seg:
+            if re.fullmatch(r"\s*Const\s+[A-Za-z_]\w*(\([^()]*\))?\s+", pre, re.I):
+                return self._parse_text_segment(pre.rstrip(), line, file)
+            return None
+        m = re.match(r"\s*Const\s+([A-Za-z_]\w*)\(\s*([^\s,()]+(?:\s+[^\s,()]+)*)\s*[,)]", pre, re.I)
+        if m:
+            return self._parse_text_segment(f"Const {m[1]}({m[2]}) = 0", line, file)
+        if re.match(r"\s*Const\s+[A-Za-z_]\w*\(\s*,*\s*\)\s*=", pre, re.I):
+            return S.Unparsed(line, file, text="", reason="Const lead: String without end quote\n"
+                              "Invalid, or out of place expression: " + seg[q:] + ".")
+        eq = pre.find("=")
+        if eq >= 0 and "(" not in pre and "," in pre[eq:]:
+            return self._parse_text_segment(seg[:eq + pre[eq:].index(",")], line, file)
+        return S.Unparsed(line, file, text="", reason="Const lead: CONST needs assignment.")
+
+    def _const_bad_subscript(self, p, start_i, line, file):
+        """`Const J(1+) = 1`: a first subscript ending in an operator is `Invalid, or out of place
+        expression: 1+.` (echo: the subscript's own text up to its `,`/`)`); `J` stays undefined
+        (oracle, 2026-10-17, "Round 19"). Any other bad subscript keeps the generic fallback."""
+        depth, end = 0, len(p.toks) - 1
+        for j in range(start_i, len(p.toks) - 1):
+            t = p.toks[j]
+            if t.kind == "OP" and t.text == "(":
+                depth += 1
+            elif t.kind == "OP" and t.text in ",)" and depth == 0:
+                end = j
+                break
+            elif t.kind == "OP" and t.text == ")":
+                depth -= 1
+        last = p.toks[end - 1] if end > start_i else None
+        if (last is not None and last.kind == "OP" and last.text in ("+", "-", "*", "/", "^")
+                and any(t.kind == "OP" and t.text == "=" for t in p.toks[end:])):
+            stop = p.toks[end].col if p.toks[end].kind != "EOF" else len(p.seg_text)
+            text = p.seg_text[p.toks[start_i].col:stop]
+            p.i = len(p.toks) - 1
+            return S.Unparsed(line, file, text="", reason="Const bad value: " + text)
+        raise _ParseError("Const subscript")
 
     def _const_array(self, p, line, file, name_tok, dim, span):
         p.i = len(p.toks) - 1  # (everything after the first subscript is ignored)

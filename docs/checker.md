@@ -6905,3 +6905,31 @@ from the echo). Implemented in `parser.py` (`_const_array`) and `structure._chec
 Not handled (false rejects remain): `J()`, `J(,3)`, `J (3)` (space), `J(3 = 5`, an unterminated string
 after the `=`, `J(1+)` echo, `Const J As Long(3)` (`Long(3) unknown Const type`). Separate pre-existing
 gap: `X = J(1)` on any scalar `Const` is `Incomplete expression: X = J(1).` on the oracle; we accept.
+
+## Round 19: `Const` leftovers (oracle, all four loggers, 2026-10-17; fixture `tests/fixtures/r19_const_leftovers.json`)
+
+Dimension probes (`Public Y(J-k)`) establish `J`'s value; `J` "undefined" is `Invalid symbol in expression: J.`.
+- Empty subscripts are skipped: `Const J() = 7` and `J(,) = 7` are `J = 7`; `J(,5) = 7`, `J(,,5)`, `J(, 5)` are
+  `J = 5`; `J( = 1` is `J = 1` (value of the `=`). Parser: `_parse_const`.
+- `J(5 = 7` (unclosed): the first subscript is the expression `5 = 7`, so `J = 0`; an `=` anywhere in the subscript
+  satisfies the "needs an `=`" rule. Same for a closed one.
+- `Const J (5) = 7` (space) and `J As Long (5) = 7` is `Const J = (5) = 7`: the `=` is implied, the value is the
+  comparison (`J = 0`/`-1`). `Const J (5) = ` echoes `(5) = .` (value ending in `=` joins the dangling-operator echo).
+- `As <word>`: the type is the whitespace-and-comma-delimited word (`Long(5)`, `Long=7`, `Long!`, `String*10`); a
+  word that is not Long/Float/Double/String/Boolean is `<word> unknown Const type`, `J` is defined as 0 and the
+  rest of the line (value included) is ignored. Previously `J` took the value and `As Long=7` was accepted.
+- A first subscript ending in an operator (`J(1+) = 1`, `J(+)`, `J( 1+)`, `J(1 + )`, `J(1+, 5)`) is `Invalid, or out
+  of place expression: <subscript text up to , or )>.`, `J` undefined; `J(5, 1+)` compiles.
+- Unterminated string on a `Const` line (`parser._const_unterminated`): no `=` anywhere -> the no-assignment pair
+  (`Const J "abc`, `Const J(3) "abc`); a closed non-empty first subscript before the quote ignores the rest
+  (`J(3) = "abc`, `J(3, "abc) = 1`); `J() = "abc` / `J(,) = "abc` -> `String without end quote` +
+  `Invalid, or out of place expression: "abc.`; a top-level comma after the `=` ends the statement
+  (`Const J = 4, "abc` compiles); everything else (`J = "abc`, `J = 5 "abc`, `J As Long = "abc`, `J(3 = "abc`,
+  `J("abc) = 1`, `J, K = "abc`) is `CONST needs assignment.`, `J` undefined.
+- CR300/CR350: `CONST needs assignment.` taints later statements like the other declaration errors (`X is not
+  defined.` on a later use; also true for `Const = X`).
+
+Not handled: `J (+) = 7` (echo `(+) = 7.`), `J As Long (5 = 7` (`No Matching, or out of place ) in expression: (5 = 7.`),
+`Long[5]` type word (lexer error), `Const "abc` (`Too many parameters:  "abc.`), `J(a+)` (`Invalid symbol in expression:
+a+.`), `J(3 4)` (`Incomplete expression: 3 4.`), and every false accept of the brief (`Const K = Y` with a variable,
+`J("a")`, `J(J)`, `X = J(1)`) -- not attempted.

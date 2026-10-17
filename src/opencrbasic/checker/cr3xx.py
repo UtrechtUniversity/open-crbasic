@@ -239,7 +239,7 @@ _DECLARATION_TRIGGERS = ("instruction must be in a ConstTable", "already declare
                          "already defined as an internal function.", "is a predefined CONST.",
                          "Only one ConstTable allowed.", "EndConstTable with no ConstTable.",
                          "Missing variable name.", "; cannot be numeric.",
-                         "Too few parameters in instruction.", "Const with no assignment.",
+                         "Too few parameters in instruction.", "Const with no assignment.", "CONST needs assignment.",
                          " unknown Const type")
 _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Need closing )", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Alias is illegally dimensioned.", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "EndStructure without Structure", "String without end quote",
