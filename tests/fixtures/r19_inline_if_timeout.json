@@ -1,0 +1,1003 @@
+{
+ "observation_date": "2026-10-17",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r19_inline_if_timeout-c-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-0",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-0",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\").\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\").\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\").\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\").\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-6",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\n."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-6",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\n."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-7",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-7",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) : X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") ."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") ."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-8",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") ."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-8",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") : Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") ."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-9",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-9",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-10",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-10",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf IfTime(0,1,Min) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf Timer(1,Sec,0) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf Timer(1,Sec,0) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-11",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf Timer(1,Sec,0) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-11",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf Timer(1,Sec,0) Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X=1 ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X=1 ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X=1 ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X=1 ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Y = Timer(1,Sec,0) ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: Y = Timer(1,Sec,0) ElseIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-14",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-14",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = Timer(1,Sec,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Parameter will truncate to the nearest integer.\nline 7: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = Timer(1,Sec,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Parameter will truncate to the nearest integer.\nline 7: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-15",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = Timer(1,Sec,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Parameter will truncate to the nearest integer.\nline 7: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\n."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-15",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = Timer(1,Sec,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: Parameter will truncate to the nearest integer.\nline 7: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\n."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-16",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-16",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\n."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-16",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = Timer(1,Sec,0)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\n."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-17",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-17",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-17",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-18",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-18",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-18",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nX = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c-19",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c-19",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c-19",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = Timer(1,Sec,0) Else Y = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-0",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-0",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5) Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = IfTime(0,1,Min) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-6",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-6",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = SerialOpen(1,9600,3,0,100)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = SerialOpen(1,9600,3,0,100)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-7",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = SerialOpen(1,9600,3,0,100)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-7",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = SerialOpen(1,9600,3,0,100)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) : X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) : X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-8",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) : X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-8",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = SerialOpen(1,9600,3,0,100) : X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be a constant integer:  X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") : Y = IfTime(0,1,Min)\nX = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") .\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") : Y = IfTime(0,1,Min)\nX = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") .\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-9",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") : Y = IfTime(0,1,Min)\nX = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") .\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-9",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") : Y = IfTime(0,1,Min)\nX = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") .\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf SerialOpen(1,9600,3,0,100) Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf SerialOpen(1,9600,3,0,100) Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-10",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf SerialOpen(1,9600,3,0,100) Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-10",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf SerialOpen(1,9600,3,0,100) Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else Y = IfTime(0,1,Min)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer: X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else If 1 Then Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else If 1 Then Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-11",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else If 1 Then Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-11",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\") Else If 1 Then Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = 1 Else Y = IfTime(0,1,Min)\nIf 0 Then Y = 2 Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = 1 Else Y = IfTime(0,1,Min)\nIf 0 Then Y = 2 Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-12",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = 1 Else Y = IfTime(0,1,Min)\nIf 0 Then Y = 2 Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-12",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nIf 1 Then Y = 1 Else Y = IfTime(0,1,Min)\nIf 0 Then Y = 2 Else X = HTTPPut(\"a\",\"b\",\"c\",1,2,3,4,5,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 1 Else Y = Timer(1,Sec,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 1 Else Y = Timer(1,Sec,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-13",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 1 Else Y = Timer(1,Sec,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-13",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 1 Else Y = Timer(1,Sec,0)\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Parameter must be a constant integer: X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,1.5)."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 5 Else Y = 6 'Then Timer(\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 5 Else Y = 6 'Then Timer(\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-14",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 5 Else Y = 6 'Then Timer(\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-14",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then Y = 5 Else Y = 6 'Then Timer(\nIf 1 Then X = FTPClient(\"s\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r19_inline_if_timeout-c2-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"Then\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r19_inline_if_timeout-c2-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"Then\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r19_inline_if_timeout-c2-15",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"Then\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r19_inline_if_timeout-c2-15",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\nScan(30,Sec,0,0)\nY = IfTime(0,1,Min)\nIf 1 Then X = FTPClient(\"Then\",\"u\",\"p\",\"a\",\"b\",2,0,0,Sec,0,\"x\") Else Y = Timer(1,Sec,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Parameter will truncate to the nearest integer."
+  }
+ ]
+}

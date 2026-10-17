@@ -2060,7 +2060,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
     in_table = False
     seen_timeint = False
     for stmt in program.statements:
-        _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, getattr(stmt, "text", None))
+        _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, intervals.gate_text(stmt))
         if isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")

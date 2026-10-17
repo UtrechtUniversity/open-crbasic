@@ -2184,6 +2184,13 @@ of `FTPClient` is `TimeOut`. What a string, `NAN` or float literal there draws d
 - A later `Timer(` or `SerialOpen(` call resets the mode (CR6, CR350 probed): the constant-integer error returns. `Sqr`,
   `Round`, `Public.Timestamp` do not set the mode. An `IfTime` after the `FTPClient` in the same statement is not modelled.
 
+Round 19 (fixture `r19_inline_if_timeout.json`, 140 cases, all four loggers, `intervals.gate_text`): inside a one-line `If`
+the mode also advances in source order: the condition, then the `Then` body, then the `Else` body, then each `:`-separated
+statement in turn. `If 1 Then FTPClient(..) Else Timer(..)` after an `IfTime` is a truncate warning only (the `Else` `Timer`
+does not reach back); `If 1 Then FTPClient(..) Else IfTime(..)` with none before is the constant-integer error; an `IfTime`/
+`Timer`/`SerialOpen` in the condition counts before the bodies. `HTTPPut` and a float `FTPClient` timeout follow the same
+rule. One-line `ElseIf` is not valid CRBasic (`Incomplete expression`; also `ElseIf is not defined` on CR300/CR350).
+
 The truncate warning of a clean compile prints before every later-pass warning (reachability, fnotch) whatever its line
 (`compiler._sort_key`). Not modelled: variable timeouts outside the gated state (constant-integer, needs the symbol table).
 

@@ -36,6 +36,17 @@ NOT_INTEGRAL = "Parameter must be integral."
 _INT_MIN, _INT_MAX = -2**31, 2**31 - 1
 
 
+def gate_text(stmt) -> str | None:
+    """The text `timeout_gate` reads for `stmt` in a flattened (`_with_inline`) statement list: a
+    one-line `If` gives only its condition, its bodies follow as statements of their own, so the
+    mode advances once per source occurrence (oracle, round 19, all four loggers)."""
+    text = getattr(stmt, "text", None)
+    if isinstance(stmt, S.If) and stmt.inline is not None and text:
+        m = re.search(r"(?i)\bThen\b", _LITERAL_RE.sub('""', text))
+        return _LITERAL_RE.sub('""', text)[:m.start()] if m else text
+    return text
+
+
 def timeout_gate(seen: bool, text: str | None) -> tuple[bool | None, bool]:
     """`(gate, seen)` for one statement. `seen` is the parser's persistent integer-argument mode:
     `IfTime`/`TimeIntoInterval` set it and nothing restores it until a `Timer` or `SerialOpen`
