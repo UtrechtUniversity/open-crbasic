@@ -2215,12 +2215,15 @@ Fixture `r19_timeout_values.json` (244 cases; `intervals.timeout_value`, `interv
 - **Const holders.** An in-range integer `Const` is its value (`Const KT = 214748365` NEG, `429496730` OK, `-1` NEG, `-2147483648`
   OK, all four loggers). `Const KT = 2147483648` is a float on CR6/CR1000X (constant-integer, ungated) and NEG on CR300/CR350;
   `Const KT = -2147483649` is OK on all four (it is not a float constant; out-of-range negative `Const` values are not modelled).
-- **Mixed-error statements.** Matched by probe: the count error on the same statement (`FTPClient(...,214748365,9)`, NEG line
-  first, then `No Matching, or out of place )`, all four loggers), an earlier-line error (`Zq = 1` then the NEG call; the NEG line is
-  not printed on CR6/CR1000X but is on CR300/CR350), and a second statement on the same line. Not modelled (four rows excluded from
-  the fixture): an undefined name in the same statement (`HTTPPut(...,NoSuchVar,8,214748365)`) gives only `Invalid symbol in
-  expression:` on CR6/CR1000X (we print the NEG line too), and on CR300/CR350 the undefined-name line comes before the NEG line
-  (we print NEG first).
+- **Undefined names and ordering (probes 2026-10-17, fixture rows `a` and `n`).** CR6/CR1000X: a call whose other argument is an
+  undefined name prints no NEG line; the statement shows `Invalid symbol in expression:` alone. A NEG line that is printed (pass 1)
+  suppresses the pass-2 `Invalid symbol`/`Invalid, or out of place expression` lines of the statements, so with a plain NEG call on
+  the same line as an undefined-name call only the NEG line remains (`HTTPPut(...,NoSuchVar,...) : FTPClient(...,429496729)`
+  gives one NEG line). After an earlier `Zq = 1` line, a call with an undefined name prints both `Invalid, or out of place
+  expression` and its `Invalid symbol` line, and a plain NEG call prints the NEG line only. CR300/CR350: the undefined-name line
+  first, then the same-line NEG line(s) (`order_timeout_negative`). The count error on the same call (`214748365,9`: NEG, then
+  `No Matching, or out of place )`) keeps NEG first on all four loggers. Not modelled: an undefined name in the TimeOut slot
+  itself (CR300/CR350 print an ungated `Parameter must be a constant integer:` line; those rows are excluded from the fixture).
 - **Still not modelled:** expressions in the `TimeOut` slot (`-KT`, `KT+1`), a sign on a hex literal, other literal spellings
   (`&O`, `&B`, leading-zero boundary spellings), and the ordering of the NEG line against other same-line errors.
 

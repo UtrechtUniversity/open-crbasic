@@ -77,7 +77,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     seen = False
     for stmt in program.statements:
         gate, seen = timeout_gate(seen, getattr(stmt, "text", None))
-        _check_timeout_value(stmt, diags, env, profile, wide)
+        _check_timeout_value(stmt, diags, env, profile, wide, program)
         if gate:
             _check_timeout(stmt, diags, env, profile, wide)
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
@@ -98,10 +98,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                             any(d.line < stmt.line for d in diags.errors))
 
 
-def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None:
+def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide, program) -> None:
     """A constant integer `TimeOut` whose 32-bit product `10 * TimeOut` is negative is `Parameter
     TimeOut cannot be negative` on all four loggers, gated or not (oracle, round 19, probes
-    `scratch/r19/W8`). Only the forms in `timeout_value` are modelled."""
+    `scratch/r19/W8`). Only the forms in `timeout_value` are modelled. CR6/CR1000X: no such line when
+    another argument of the same call is an undefined name (`Invalid symbol in expression` alone).
+    CR300/CR350: the line follows the same-line `... is not defined.` lines (`order_timeout_negative`)."""
     for call in _calls(stmt, _TIMEOUT_ARG):
         if isinstance(call, S.Call) and call.explicit:
             continue
@@ -110,7 +112,34 @@ def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -
             continue
         value = timeout_value(call.args[i], env, profile, wide)
         if value is not None and value[0] == "int" and _signed32(10 * value[1]) < 0:
+            if not profile.single_pass and _undefined_sibling(call, i, program, profile):
+                continue
             diags.error(stmt.line, _TIMEOUT_NEGATIVE, stmt.file)
+
+
+def _undefined_sibling(call: S.Index, i: int, program: S.Program, profile) -> bool:
+    """Whether another argument of `call` (not position `i`) names an undefined symbol."""
+    from . import expressions  # lazy: `expressions` imports this module's package
+    known = expressions._known_names(program, profile)
+    return any(a is not None and expressions._undefined_names(a, known)
+               for j, a in enumerate(call.args) if j != i)
+
+
+def order_timeout_negative(diags: Diagnostics, profile) -> None:
+    """CR300/CR350 only: a `Parameter TimeOut cannot be negative` line is printed after the
+    `... is not defined.` lines of its own line (oracle, round 19: `HTTPPut(...,NoSuchVar,8,214748365)`
+    gives `NoSuchVar is not defined.` then the TimeOut line). Moved after the last such line."""
+    if not profile.single_pass:
+        return
+    items = diags.items
+    for d in [d for d in items if d.severity == "error" and d.message == _TIMEOUT_NEGATIVE]:
+        at = next(i for i, o in enumerate(items) if o is d)
+        after = [j for j, o in enumerate(items)
+                 if o is not d and o.severity == "error" and (o.file, o.line) == (d.file, d.line)
+                 and o.message.endswith(" is not defined.")]
+        if after and max(after) > at:
+            items.pop(at)
+            items.insert(max(after), d)
 
 
 def _check_timeout(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None:
