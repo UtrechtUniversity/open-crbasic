@@ -2179,8 +2179,8 @@ of `FTPClient` is `TimeOut`. What a string, `NAN` or float literal there draws d
   `If`, earlier in the same statement), source order, not execution order: a string (also `""`) or a variable/function call is
   `Warning: Parameter will truncate to the nearest integer.` (once, at the call line, before any argument-count error); a
   float-typed constant (`1.5`, `1.0`, `1E3`, a `Const` of 1.5) or `NAN` is `Parameter must be integral.` (before the
-  argument-count error). A literal beyond 32 bits is also `integral` on CR6/CR1000X, `Parameter TimeOut cannot be negative` on
-  CR300/CR350 (not modelled, nor `-1`/`TRUE`/`&HFFFFFFFF`).
+  argument-count error). A literal beyond 32 bits is also `integral` on CR6/CR1000X (round 19: and on CR300/CR350 past the
+  float32 band, see the next section).
 - A later `Timer(` or `SerialOpen(` call resets the mode (CR6, CR350 probed): the constant-integer error returns. `Sqr`,
   `Round`, `Public.Timestamp` do not set the mode. An `IfTime` after the `FTPClient` in the same statement is not modelled.
 
@@ -2193,6 +2193,36 @@ rule. One-line `ElseIf` is not valid CRBasic (`Incomplete expression`; also `Els
 
 The truncate warning of a clean compile prints before every later-pass warning (reachability, fnotch) whatever its line
 (`compiler._sort_key`). Not modelled: variable timeouts outside the gated state (constant-integer, needs the symbol table).
+
+### `HTTPPut` / `FTPClient` constant `TimeOut` value and sign (all four loggers, round 19)
+
+Fixture `r19_timeout_values.json` (244 cases; `intervals.timeout_value`, `intervals._check_timeout_value`, `intervals._decimal`,
+`expressions._timeout_wide`). Oracle probes 2026-10-17 (`scratch/r19/W8/`, `scratch/r19/timeout/run.txt`,
+`scratch/r18/W3/run_timeout1.txt`). Gated and ungated results agree wherever both are noted below. Rules:
+
+- **Negative product.** A constant integer `TimeOut` with 32-bit value `v` gives `p = signed32(10 * v)`; `p < 0` is
+  `line N: Parameter TimeOut cannot be negative` (no statement text), on every logger, gated or not. Observed: `214748364` OK,
+  `214748365` NEG, `429496729` NEG, `429496730` OK, `2147483646` NEG, `2147483647` NEG, `-2147483646` OK, `-2147483647` OK,
+  `-2147483648` OK, `-1` NEG, `+2147483647` NEG, `02147483647` NEG, `TRUE` NEG, `FALSE` OK, `&H7FFFFFFF` NEG, `&H80000000` OK,
+  `&HFFFFFFF6` NEG, `&H00000001` OK. The check does not depend on the mode (`IfTime` earlier or in the same statement).
+- **Float classification.** CR6/CR1000X: a decimal literal past `2147483647` is a float (`+2147483648`, `2147483649`,
+  `-2147483649`, `-2147483650`, `4294967295`), except the exact `-2147483648` (integer, product 0, OK). Ungated it is `Parameter must
+  be a constant integer: <statement>.`, gated `Parameter must be integral.`. A float literal (`-1.5`, `-2147483649.0`) is the same
+  constant-integer error ungated. CR300/CR350 (single pass): the float32-rounded magnitude past `2147483648` is a float (`2147483777`,
+  `-2147483777`, `4294967295`, `-4294967295`), while `2147483775` and `2147483776` round to `2147483648` and are integers.
+- **CR300/CR350 saturation.** Inside the rounding band the digits saturate at `2147483647` before the sign: `2147483648`,
+  `+2147483648` and `2147483776` are NEG (`-10`), `-2147483649`, `-2147483650` and `-2147483776` are OK (`-2147483647`).
+- **Const holders.** An in-range integer `Const` is its value (`Const KT = 214748365` NEG, `429496730` OK, `-1` NEG, `-2147483648`
+  OK, all four loggers). `Const KT = 2147483648` is a float on CR6/CR1000X (constant-integer, ungated) and NEG on CR300/CR350;
+  `Const KT = -2147483649` is OK on all four (it is not a float constant; out-of-range negative `Const` values are not modelled).
+- **Mixed-error statements.** Matched by probe: the count error on the same statement (`FTPClient(...,214748365,9)`, NEG line
+  first, then `No Matching, or out of place )`, all four loggers), an earlier-line error (`Zq = 1` then the NEG call; the NEG line is
+  not printed on CR6/CR1000X but is on CR300/CR350), and a second statement on the same line. Not modelled (four rows excluded from
+  the fixture): an undefined name in the same statement (`HTTPPut(...,NoSuchVar,8,214748365)`) gives only `Invalid symbol in
+  expression:` on CR6/CR1000X (we print the NEG line too), and on CR300/CR350 the undefined-name line comes before the NEG line
+  (we print NEG first).
+- **Still not modelled:** expressions in the `TimeOut` slot (`-KT`, `KT+1`), a sign on a hex literal, other literal spellings
+  (`&O`, `&B`, leading-zero boundary spellings), and the ordering of the NEG line against other same-line errors.
 
 ### Function-as-statement arity, `Timer` arity, `Sub`-call echo, string over-index counts (all four loggers, rounds 16-17)
 

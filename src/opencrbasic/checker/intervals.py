@@ -77,6 +77,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     seen = False
     for stmt in program.statements:
         gate, seen = timeout_gate(seen, getattr(stmt, "text", None))
+        _check_timeout_value(stmt, diags, env, profile, wide)
         if gate:
             _check_timeout(stmt, diags, env, profile, wide)
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
@@ -97,6 +98,21 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                             any(d.line < stmt.line for d in diags.errors))
 
 
+def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None:
+    """A constant integer `TimeOut` whose 32-bit product `10 * TimeOut` is negative is `Parameter
+    TimeOut cannot be negative` on all four loggers, gated or not (oracle, round 19, probes
+    `scratch/r19/W8`). Only the forms in `timeout_value` are modelled."""
+    for call in _calls(stmt, _TIMEOUT_ARG):
+        if isinstance(call, S.Call) and call.explicit:
+            continue
+        i = _TIMEOUT_ARG[call.name.upper()]
+        if i >= len(call.args) or call.args[i] is None:
+            continue
+        value = timeout_value(call.args[i], env, profile, wide)
+        if value is not None and value[0] == "int" and _signed32(10 * value[1]) < 0:
+            diags.error(stmt.line, _TIMEOUT_NEGATIVE, stmt.file)
+
+
 def _check_timeout(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None:
     """After an earlier `IfTime`/`TimeIntoInterval`, a string `TimeOut` is `Warning: Parameter will
     truncate to the nearest integer.`; a float-typed constant or `NAN` is `Parameter must be
@@ -112,7 +128,8 @@ def _check_timeout(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None
             diags.warning(stmt.line, "Parameter will truncate to the nearest integer.", stmt.file)
         elif (isinstance(arg, S.Name) and arg.name.upper() == "NAN") or (
                 not_integral(arg, env, profile, wide)
-                and (not profile.single_pass or _float_typed(arg, env, wide))):
+                and (not profile.single_pass or _float_typed(arg, env, wide))) or (
+                timeout_value(arg, env, profile, wide) == ("wide", 0)):
             diags.error(stmt.line, NOT_INTEGRAL, stmt.file)
 
 
@@ -189,6 +206,79 @@ def _float_typed(expr: S.Expr | None, env: consteval.Env, wide) -> bool:
             _float_typed(expr.right, env, wide)
     return False
 
+
+_TIMEOUT_NEGATIVE = "Parameter TimeOut cannot be negative"
+
+
+def _signed32(x: int) -> int:
+    x &= 0xFFFFFFFF
+    return x - 2**32 if x >= 2**31 else x
+
+
+def timeout_value(arg, env, profile, wide=frozenset()):
+    """Classify a constant `TimeOut` argument: `("wide", 0)` when it is float-typed (a float literal,
+    or a decimal integer literal past the logger's 32-bit range, see `_decimal`), `("int", v)` for an
+    integer constant whose 32-bit value is `v`, or `None` when not modelled (expressions, other
+    spellings, out-of-range `Const` values on CR6/CR1000X)."""
+    if isinstance(arg, S.Unary) and arg.op in ("-", "+") and isinstance(arg.operand, S.Number):
+        if arg.operand.text.startswith("&"):
+            return None   # a sign on a hex literal is not observed
+        return _timeout_literal(arg.operand, -1 if arg.op == "-" else 1, profile)
+    if isinstance(arg, S.Number):
+        return _timeout_literal(arg, 1, profile)
+    if isinstance(arg, S.Name):
+        name = arg.name.upper()
+        if name in ("TRUE", "FALSE"):
+            return ("int", -1 if name == "TRUE" else 0)
+        if name in wide:
+            return ("wide", 0)
+        if env is None:
+            return None
+        try:
+            value = consteval.value_of(arg, env)
+        except consteval.NotConstant:
+            return None
+        if isinstance(value, bool) or not isinstance(value, int):
+            return None
+        if _INT_MIN <= value <= _INT_MAX:
+            return ("int", value)
+        return _decimal(abs(value), -1 if value < 0 else 1, profile, literal=False)
+    return None
+
+
+def _timeout_literal(lit: S.Number, sign: int, profile):
+    text = lit.text.upper()
+    if text.startswith("&H"):
+        digits = text[2:]
+        if sign < 0 or not digits or len(digits) > 8 or any(c not in "0123456789ABCDEF" for c in digits):
+            return None
+        return ("int", _signed32(int(digits, 16)))
+    if text.startswith("&"):
+        return None
+    if "." in text or "E" in text:
+        return ("wide", 0)   # a float literal
+    if not text.isdigit():
+        return None
+    return _decimal(int(text), sign, profile, literal=True)
+
+
+def _decimal(magnitude: int, sign: int, profile, literal: bool):
+    """A decimal magnitude with its sign. CR300/CR350 (single pass): the float32-rounded magnitude
+    past 2147483648 is a float, otherwise the digits saturate at 2147483647 before the sign.
+    CR6/CR1000X: past 2147483647 is a float literal (except the exact literal -2147483648, integer
+    INT_MIN), while an out-of-range `Const` value is not modelled (`None`)."""
+    if profile.single_pass:
+        rounded = struct.unpack("<f", struct.pack("<f", float(magnitude)))[0]
+        if rounded > 2**31:
+            return ("wide", 0)
+        return ("int", sign * min(magnitude, _INT_MAX))
+    if magnitude > _INT_MAX:
+        if not literal:
+            return None
+        if sign < 0 and magnitude == 2**31:
+            return ("int", _INT_MIN)
+        return ("wide", 0)
+    return ("int", sign * magnitude)
 
 def _check_call(call: S.Index, scan, stmt: S.Stmt, diags: Diagnostics, env,
                 after_error: bool = False) -> None:

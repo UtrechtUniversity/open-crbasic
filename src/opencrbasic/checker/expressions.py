@@ -355,14 +355,21 @@ _CONST_INTEGER_BAD_ARGS = {"TCPOPEN": frozenset({2}), "SERIALOPEN": frozenset({3
 # `TimeOut` of `HTTPPut` (9th) and `FTPClient` (11th) argument, a string (also `""`), `NAN` or a
 # float literal, is `Parameter must be a constant integer`, before the argument-count check (oracle,
 # all four loggers). After one, the same arguments give a truncate warning / `Parameter must be
-# integral.` instead, reported by `intervals.check`. Not modelled: a variable or function call
-# there, overflowing literals (CR6/CR1000X constant-integer, CR300/CR350 `Parameter TimeOut cannot
-# be negative`) and the negative-value messages.
+# integral.` instead, reported by `intervals.check`. Overflowing literals and Consts are the constant-
+# integer error too when `intervals.timeout_value` classifies them as float (`_TIMEOUT_WIDE`, set per
+# program by `check_function_arity`). Not modelled: a variable or function call there.
 _TIMEOUT_GATE: list = [None]
+_TIMEOUT_WIDE: list = [frozenset()]
 _CONST_INTEGER_TYPE_ARGS = {"HTTPPUT": frozenset({8}), "FTPCLIENT": frozenset({10})}
 # `Timer`'s third argument is the same error whatever came before (it resets the mode first; oracle,
 # CR6/CR350, 2026-10-16: also after an `IfTime`).
 _CONST_INTEGER_TYPE_ARGS_ALWAYS = {"TIMER": frozenset({2})}
+
+
+def _timeout_wide(arg, profile) -> bool:
+    """Whether a `TimeOut` argument is a float-classified constant (`intervals.timeout_value`)."""
+    from . import intervals  # lazy: `intervals` imports this package's modules
+    return intervals.timeout_value(arg, None, profile, _TIMEOUT_WIDE[0]) == ("wide", 0)
 
 
 def _not_integer_type(arg) -> bool:
@@ -1805,7 +1812,8 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if any(i < n and _not_constant_integer(args[i]) for i in _CONST_INTEGER_BAD_ARGS.get(upper, ())):
         return "constint"
     if _TIMEOUT_GATE[0] is False and any(
-            i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())):
+            i < n and (_not_integer_type(args[i]) or _timeout_wide(args[i], profile))
+            for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())):
         return "constint"
     if any(i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS_ALWAYS.get(upper, ())):
         return "constint"
@@ -2059,6 +2067,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
     table_mine: list = []   # the `mine` entries from DataTable output instructions
     in_table = False
     seen_timeint = False
+    _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
     for stmt in program.statements:
         _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, intervals.gate_text(stmt))
         if isinstance(stmt, S.Instruction):
@@ -2211,6 +2220,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 if struct_value:
                     mine.append(diags.items[-1])
     _TIMEOUT_GATE[0] = None
+    _TIMEOUT_WIDE[0] = frozenset()
     if not profile.single_pass and table_mine:
         # CR6/CR1000X: only the first DataTable instruction is reported, and none at all once a
         # statement outside a table has one (oracle, 2026-10-03)
