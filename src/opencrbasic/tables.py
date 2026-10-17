@@ -47,6 +47,8 @@ def _dtype_code(expr: S.Expr | None, env: consteval.Env) -> int:
 _UNIT_SECONDS = {"USEC": 1e-6, "MSEC": 1e-3, "SEC": 1, "MIN": 60, "HR": 3600, "DAY": 86400}
 _UNIT_NS = {"USEC": 1_000, "MSEC": 1_000_000, "SEC": 1_000_000_000,
             "MIN": 60_000_000_000, "HR": 3_600_000_000_000, "DAY": 86_400_000_000_000}
+# Numeric Scan units (`checker/scan_time.UNIT_NAMES`), keyed by the predefined symbol value.
+_UNIT_NAME_BY_VALUE = {0: "USEC", 1: "MSEC", 2: "SEC", 3: "MIN", 4: "HR", 5: "DAY"}
 
 _STATUS_JSON = json.loads((DATA / "status_table.json").read_text())
 
@@ -137,6 +139,17 @@ def _fold(expr: S.Expr | None, env: consteval.Env, default=None):
         return consteval.value_of(expr, env)
     except consteval.NotConstant:
         return default
+
+
+def _scan_unit_name(expr: S.Expr | None, env: consteval.Env) -> str:
+    """`_UNIT_NS` key of a Scan units argument. It folds like any constant, so the predefined name
+    (`Min`), its numeric value (`3`) and a `Const` give the same unit (`docs/tdf-rules.md`
+    "Numeric and Const Scan units"). A non-constant reads as seconds. A value outside 0..5 reads as
+    uSec, the unit the real compiler leaves no table charge for."""
+    v = _fold(expr, env, None)
+    if isinstance(v, bool) or not isinstance(v, int):
+        return "SEC"
+    return _UNIT_NAME_BY_VALUE.get(v, "USEC")
 
 
 def _as_int(v, default=0) -> int:
@@ -430,7 +443,7 @@ def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
                 # `Scan` block regardless of whether that check ran or found anything, so it must
                 # tolerate the value being un-usable here rather than assume `float()` succeeds.
                 if isinstance(val, (int, float)) and not isinstance(val, bool):
-                    unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    unit_name = _scan_unit_name(s.args[1], env) if len(s.args) > 1 else "SEC"
                     secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
             stack.append(secs if secs else 1.0)
         elif kw == "NEXTSCAN":
@@ -454,7 +467,7 @@ def _scan_calls(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, list[float
             if s.args:
                 val = _fold(s.args[0], env, None)
                 if isinstance(val, (int, float)) and not isinstance(val, bool) and val > 0:
-                    unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    unit_name = _scan_unit_name(s.args[1], env) if len(s.args) > 1 else "SEC"
                     secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
             stack.append(secs)
         elif kw == "NEXTSCAN":
@@ -478,7 +491,7 @@ def _last_call_interval(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, fl
             if s.args:
                 val = _fold(s.args[0], env, None)
                 if isinstance(val, (int, float)) and not isinstance(val, bool) and val > 0:
-                    unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    unit_name = _scan_unit_name(s.args[1], env) if len(s.args) > 1 else "SEC"
                     secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
             stack.append(secs)
         elif kw == "NEXTSCAN":
@@ -1556,7 +1569,7 @@ def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
             elif s.args:
                 val = _fold(s.args[0], env, None)
                 if isinstance(val, (int, float)) and not isinstance(val, bool) and val > 0:
-                    unit = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    unit = _scan_unit_name(s.args[1], env) if len(s.args) > 1 else "SEC"
                     t = int(val * _UNIT_NS.get(unit, _UNIT_NS["SEC"]) // 100_000)
                     ticks = t if ticks is None else min(ticks, t)
     ticks = 100000 if ticks is None else min(ticks, 600000)

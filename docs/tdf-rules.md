@@ -979,6 +979,33 @@ both when both are present. `tables._preserve_deduction` / `storage.preserve_cha
 
 Evidence `tests/fixtures/r17_preserve_pool.json` and the threshold sweeps listed there.
 
+### Numeric and Const Scan units (round 19)
+
+A `Scan` units argument is read by its folded value, so the predefined name, its number and a
+`Const` agree: `Min` = `3`, `Sec` = `2`, `uSec` = `0` (`tables._scan_unit_name`, used by the
+preserve deduction, the auto-size scan weight and the storage call intervals). Before round 19 the
+name was read textually, so a number or a Const defaulted to seconds.
+
+Probed on CR300 and CR350 with `DataTable(Test,1,N)` / `Sample(1,V,FP2)` / `Public V(60)` and one
+`CallTable` (real boundary = largest passing N; `scratch/r19/W5`, round-19 worker):
+
+- With `PreserveVariables`, units 1 and 2 share one boundary (CR300 577308, CR350 2907477), units 3
+  and 4 another (CR300 579584, CR350 2909753), and `Const U = 3` equals `Min`. `Scan(1,5,0,0)`
+  (Day) gives the 3/4 boundary. (Inference, not probed directly: 1 and 2 share the 10 s floor and 3
+  and 4 the 60 s cap of `preserve_charge`.)
+- Without `PreserveVariables` the boundary is the same for every unit (CR300 580266, CR350 2910435).
+  The units only matter for the allocator through units 0 and 6.
+- Units 0, 6, 7 and -1 (outside `Min`..`Day`): no table charge at any size tried (CR300 and CR350,
+  intervals 1 and 2, with and without preserve; 1e8 records still compiles). The fold reads them as
+  uSec. CR6 and CR1000X reject `Scan(2,0,...)` and `Scan(2,6,...)` (`Scan 0uSec invalid must be at
+  least 1mSec.`), which is unchanged.
+- Why the round-18 review probe (N = 579584) did not show CR350 failing: N = 579584 is below
+  CR350's boundary for every unit. Before the fix, CR350 with `Scan(2,3,0,0)` and `PreserveVariables`
+  had boundary 2907477 instead of the real 2909753, so it was wrong for N 2907478 to 2909753.
+
+Evidence: `tests/fixtures/r19_review_r18x.json`. CR6/CR1000X `Scan` auto-size weights are not
+probed for numeric units (`DataInterval` numeric units are not changed by this rule and not probed).
+
 ### Inline `If c Then CallTable T` (round 18)
 
 An inline call (`If c Then CallTable T`, also in the `Else` part or after a `:`) is a call exactly
