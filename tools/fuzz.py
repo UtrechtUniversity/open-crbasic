@@ -41,8 +41,6 @@ Usage:
 Budget: real compiles run under Wine at ~2s each; a 4-worker pool overlaps them (`--workers`).
 """
 
-from __future__ import annotations
-
 import argparse
 import concurrent.futures
 import hashlib

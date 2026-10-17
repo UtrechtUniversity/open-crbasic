@@ -1,7 +1,5 @@
 """Unit tests for `opencrbasic.lexer`."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import lexer

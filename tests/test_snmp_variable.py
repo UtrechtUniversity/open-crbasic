@@ -1,8 +1,6 @@
 """`SNMPVariable(MyTemp, OID, ...)` declares `MyTemp` (`checker/symbols.py`). Oracle, all four
 loggers, 2026-09-28: the program below compiles."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

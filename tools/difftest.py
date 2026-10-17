@@ -12,8 +12,6 @@ Results go to stdout and to `difftest-<logger>.json` (ignored by git). The real 
 through tools/oracle.py (cached), so the first run of a large corpus is slow.
 """
 
-from __future__ import annotations
-
 import argparse
 import concurrent.futures
 import json

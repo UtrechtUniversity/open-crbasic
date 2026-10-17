@@ -24,8 +24,6 @@ Requires Wine (see PROGRESS.md); `--no-oracle` skips real-compiler runs and only
 already-cached results (used by the pytest tests when Wine is unavailable).
 """
 
-from __future__ import annotations
-
 import argparse
 import base64
 import hashlib

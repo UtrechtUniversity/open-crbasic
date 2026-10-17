@@ -17,8 +17,6 @@ Full rules and oracle evidence: `docs/instructions.md` (new "Data tables and out
 section).
 """
 
-from __future__ import annotations
-
 import math
 import re
 

@@ -2,8 +2,6 @@
 prefix (`parser._include_warning_drives`). Oracle, all four loggers, 2026-09-28
 (`docs/checker.md` "Duplicate Units, missing includes")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

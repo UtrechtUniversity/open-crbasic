@@ -2,8 +2,6 @@
 `DisplayMenu without EndMenu.`). Expected lines are verbatim CR6 oracle output, 2026-09-28; CR1000X
 matched the same probes (`docs/checker.md` "Display menus")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

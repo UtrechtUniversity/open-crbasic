@@ -6,8 +6,6 @@ decoded-character column (`docs/lsp-api.md` "Source positions"); the server conv
 See `docs/lsp-api.md` "Inlay hints (LSP-09a)".
 """
 
-from __future__ import annotations
-
 import re
 
 from dataclasses import dataclass

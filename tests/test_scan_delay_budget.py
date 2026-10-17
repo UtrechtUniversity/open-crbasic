@@ -1,8 +1,6 @@
 """Scan interval too short for measurement (Delay budget). Expected lines are verbatim oracle
 output (real compilers, 2026-10-01); CR300 has no such check."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

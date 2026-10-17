@@ -1,7 +1,5 @@
 """`positions.decoded_position` (LSP position -> decoded column) and the feature position context."""
 
-from __future__ import annotations
-
 import pickle
 from pathlib import Path
 

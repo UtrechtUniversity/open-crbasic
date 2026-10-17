@@ -7,11 +7,10 @@ encoding and the configured file encoding (through the editor text of an open do
 through its bytes), and nothing else. There are no CRBasic rules here.
 """
 
-from __future__ import annotations
-
 import contextlib
 from pathlib import Path
-from typing import Any, Callable, Mapping
+from typing import Any
+from collections.abc import Callable, Mapping
 
 from lsprotocol import types
 

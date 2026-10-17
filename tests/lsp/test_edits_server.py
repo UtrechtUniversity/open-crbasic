@@ -4,8 +4,6 @@ expected values are computed from the document text or from the core modules, so
 the adapter (refusal mapping, versions, positions, scheduling), not CRBasic rules.
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest
@@ -392,7 +390,7 @@ def test_code_actions_ignore_other_diagnostics_and_kinds(make_client, tmp_path):
 
 
 def test_display_text_redecodes_with_the_editor_encoding():
-    mojibake = "Cannot open include file  CPU:É space.crb.".encode("utf-8").decode("latin-1")
+    mojibake = "Cannot open include file  CPU:É space.crb.".encode().decode("latin-1")
     assert "Ã" in mojibake
     assert display_text(mojibake, "utf-8") == "Cannot open include file  CPU:É space.crb."
     assert display_text("plain ASCII", "utf-8") == "plain ASCII"

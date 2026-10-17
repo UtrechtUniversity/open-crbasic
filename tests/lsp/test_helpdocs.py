@@ -1,7 +1,5 @@
 """Help provider tests: synthetic fixtures only; the optional corpus test asserts no help text."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

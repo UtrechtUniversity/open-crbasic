@@ -6,8 +6,6 @@ original compiler does, and is checked by `opencrbasic.structure`. Every node ca
 1-based source line it came from and, for diagnostics, the file it came from.
 """
 
-from __future__ import annotations
-
 import dataclasses
 from dataclasses import dataclass, field
 
@@ -212,8 +210,8 @@ class Call(Stmt):
     args: list[Expr | None] = field(default_factory=list)
     explicit: bool = False          # written with `Call`
     tail_ignored: bool = False      # `S()` followed by ignored trailing text
-    tail_expr: "Expr | None" = None  # a `Function` call statement continued as one expression
-    juxtaposed: "list[Expr] | None" = None  # operands of a juxtaposed tail: `Fn(1) 1`
+    tail_expr: Expr | None = None  # a `Function` call statement continued as one expression
+    juxtaposed: list[Expr] | None = None  # operands of a juxtaposed tail: `Fn(1) 1`
     juxt_opaque: bool = False        # tail starts with `,` or `(`: `Fn(1),Zork`
 
 
@@ -229,7 +227,7 @@ class Unparsed(Stmt):
     expr: object = None  # the expression of a statement the parser took apart but cannot compile
 
 
-def ends_routine(stmt: "Stmt") -> bool:
+def ends_routine(stmt: Stmt) -> bool:
     """`EndSub`/`EndFunction`, or the two-word `End Sub`/`End Function` (parsed as `END` with the
     word as its argument); the real compiler closes the routine with either spelling (oracle,
     2026-10-12, all four loggers, `docs/checker.md` "Two-word routine closers")."""
@@ -242,7 +240,7 @@ def ends_routine(stmt: "Stmt") -> bool:
         stmt.args[0].name.upper() in ("SUB", "FUNCTION")
 
 
-def hash_statement(st: "Stmt") -> "Unparsed | None":
+def hash_statement(st: Stmt) -> Unparsed | None:
     """The `#...` statement that ends the compile (`Unknown instruction`): `st` itself or one in
     an inline `If` body."""
     if isinstance(st, Unparsed):
@@ -253,7 +251,7 @@ def hash_statement(st: "Stmt") -> "Unparsed | None":
     return None
 
 
-def cut_after_hash(st: "Stmt") -> "Stmt":
+def cut_after_hash(st: Stmt) -> Stmt:
     """`st` without the inline statements that follow its `#...` statement (and without the `Else`
     body when the `#...` is in the `Then` body): the compile stops there."""
     then, other = getattr(st, "inline", None) or [], getattr(st, "inline_else", None) or []

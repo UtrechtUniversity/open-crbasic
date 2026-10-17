@@ -8,8 +8,6 @@ operator list. Every regex is case-insensitive (`(?i)` first) and sticks to synt
 Oniguruma (VS Code) and Python `re`. See docs/lsp-api.md, "Instruction catalog".
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import re

@@ -2,8 +2,6 @@
 `_check_decl_exprs`/`_check_alias_index_names`). Oracle probes, 2026-09-27, `docs/checker.md`
 "Declaration expressions"."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

@@ -1,7 +1,5 @@
 """The stdio language server, driven as a real subprocess (LSP-01b)."""
 
-from __future__ import annotations
-
 import json
 import os
 import shutil

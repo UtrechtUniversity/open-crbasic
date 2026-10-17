@@ -1,8 +1,6 @@
 """LSP-07c: protocol-independent quick fixes (`opencrbasic.quickfix`). Message families and ranking:
 docs/lsp-api.md "Quick fixes (LSP-07c)"."""
 
-from __future__ import annotations
-
 import random
 import time
 from pathlib import Path

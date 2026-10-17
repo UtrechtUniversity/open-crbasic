@@ -1,8 +1,6 @@
 """Leftover-text errors on CR300/CR350 (statement fragments and the `Too many parameters`
 cascade). Expected lines are verbatim oracle output (CR300, 2026-10-01); CR350 is identical."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

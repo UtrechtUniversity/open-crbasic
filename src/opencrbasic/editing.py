@@ -15,14 +15,13 @@ found by the loader itself; completion candidates are the catalog's entries plus
 the parsed program and the table definitions `tables.build_tables` computes.
 """
 
-from __future__ import annotations
-
 import functools
 import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import NamedTuple, Sequence
+from typing import NamedTuple
+from collections.abc import Sequence
 
 from . import lexer, positions, profiles, source
 from . import syntax as S
@@ -66,7 +65,7 @@ _IRREGULAR_PAIRS = {
 }
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def block_pairs(profile: str = "cr6") -> dict[str, str]:
     """Upper-case opener word -> closer word, for the blocks of `profile`'s instruction table."""
     cat = InstructionCatalog.for_profile(profile)
@@ -91,7 +90,7 @@ class _Roles(NamedTuple):
     closers: dict[str, str]     # closer -> opener (the family name)
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _roles(profile: str) -> _Roles:
     pairs = block_pairs(profile)
     return _Roles(pairs, {c: o for o, c in pairs.items()})
@@ -381,7 +380,7 @@ class Symbol:
     range: Span
     selection: Span
     occurrence: int
-    children: tuple["Symbol", ...] = ()
+    children: tuple[Symbol, ...] = ()
 
 
 class _Frame:
@@ -637,7 +636,7 @@ _PREFIX_RE = re.compile(r"(?<![A-Za-z0-9_$])[A-Za-z_][A-Za-z0-9_]*\$?$")
 _BASE_RE = re.compile(r"(?<![A-Za-z0-9_$.])([A-Za-z_][A-Za-z0-9_]*\$?)\s*\.\s*$")
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _catalog_items(profile: str) -> tuple[CompletionItem, ...]:
     """The catalog's completion items of a profile, in completion order (label, case-insensitive
     then exact). Built once per profile: the items are immutable and the catalog is cached."""

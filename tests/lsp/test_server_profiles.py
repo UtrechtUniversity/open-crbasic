@@ -6,8 +6,6 @@ real compiler accepted on that logger (fixtures `calltable_open_table-3` and the
 is not run here.
 """
 
-from __future__ import annotations
-
 import time
 from pathlib import Path
 

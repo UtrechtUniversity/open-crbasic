@@ -2,8 +2,6 @@
 reachability rule for an `If` left open at `NextScan`. Oracle, CR6 and CR300, 2026-09-27
 (`docs/checker.md` "Unclosed blocks")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

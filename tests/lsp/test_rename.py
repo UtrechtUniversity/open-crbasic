@@ -5,8 +5,6 @@ The semantic-preservation sweep renames program-declared names of `../crbasic` t
 tmp copies, compiles the affected entries and compares them with the unrenamed compile. By default
 a stride sample runs; `RENAME_SWEEP=full` runs every declaration and prints the counts."""
 
-from __future__ import annotations
-
 import dataclasses
 import hashlib
 import os

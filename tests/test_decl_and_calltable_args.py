@@ -3,8 +3,6 @@ initializer bounds warnings, `CallTable` excess arguments and the CR300/CR350 `S
 rewrite. Expected lines are verbatim oracle output on all four loggers, 2026-09-28
 (`docs/checker.md` "Declaration details and CallTable arguments")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

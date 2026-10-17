@@ -6,8 +6,6 @@ pass-1 `Invalid Variable declaration banana.`, and it suppresses pass 2); an unk
 first leaves the statement for pass 2.
 """
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

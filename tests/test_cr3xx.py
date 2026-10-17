@@ -7,8 +7,6 @@ pipeline (`checker/__init__.py`); the tests below call the ordinary `checker.che
 hook's own effect.
 """
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

@@ -2,8 +2,6 @@
 declaration's own error is dropped. Oracle, both compilers identical, 2026-09-27
 (`docs/loggers.md` "Declaration errors taint")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

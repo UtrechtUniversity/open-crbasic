@@ -2,8 +2,6 @@
 oracle output (real compilers, 2026-10-01); CR6 and CR1000X are identical, CR350 is identical to
 CR300."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

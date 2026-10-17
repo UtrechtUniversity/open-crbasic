@@ -3,7 +3,7 @@
 An incomplete open-source, native re-implementation of Campbell Scientific's CRBasic
 pre-compilers for the CR6, CR1000X, CR300 and CR350 dataloggers (`CR6Comp.exe`,
 `cr1000xcomp.exe`, `cr300comp.exe`, `cr350comp.exe`). It runs on Linux, macOS and Windows with
-only Python 3.10+, no Wine and no Windows binaries. It aims to reproduce the logger compilers'
+only Python 3.15+, no Wine and no Windows binaries. It aims to reproduce the logger compilers'
 checks, diagnostics and output artefacts, but known differences remain. Current differential
 results report normalized diagnostic output agreement; only outputs explicitly identified as
 byte-identical in `PROGRESS.md` have full byte parity. It can already replace the exe for this

@@ -14,8 +14,6 @@ It establishes output equivalence of two opencrbasic revisions only, never agree
 real compilers.
 """
 
-from __future__ import annotations
-
 import argparse
 import concurrent.futures
 import contextlib

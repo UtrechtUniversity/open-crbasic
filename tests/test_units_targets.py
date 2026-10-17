@@ -1,8 +1,6 @@
 """`Can't assign units to %s, ...` (`checker/instr_data.py` `check_units_targets`). Oracle probes,
 CR6 and CR300 identical, 2026-09-27 (`docs/checker.md` "Units targets")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

@@ -38,8 +38,6 @@ Not yet verified against the oracle (documented gaps, `docs/cli.md`):
 - a dangling continuation marker on a file's last physical line (nothing follows to join).
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 
 from . import lexer, source

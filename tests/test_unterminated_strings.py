@@ -3,8 +3,6 @@
 are verbatim oracle output on all four loggers, 2026-09-28 (`docs/checker.md` "Unterminated
 strings")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

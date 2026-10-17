@@ -26,8 +26,6 @@ args=[Name("I")])` (a real loop counter) share the same shape, and one-word form
 handling.
 """
 
-from __future__ import annotations
-
 import collections
 import dataclasses
 
@@ -2603,7 +2601,7 @@ def _include_warning_drives(diags: Diagnostics, profile: profiles.Profile) -> No
                       if d.severity == "warning" else d for d in diags.items]
 
 
-def _set_last_line(program: S.Program, parser: "_Parser", main_text: str) -> None:
+def _set_last_line(program: S.Program, parser: _Parser, main_text: str) -> None:
     """The line end-of-program messages are reported on: `EndProg`'s, or else the main file's
     last physical line, trailing blank lines included (oracle, CR6: `Public X` plus two blank
     lines -> `line 3: No BeginProg in Program.`)."""

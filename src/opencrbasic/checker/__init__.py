@@ -91,8 +91,6 @@ name/type resolution (the rest of `expressions.py`) are future work; see `docs/c
 `PROGRESS.md`'s phase-3 row for current coverage and the oracle evidence behind each rule above.
 """
 
-from __future__ import annotations
-
 import dataclasses
 import os
 from contextvars import ContextVar

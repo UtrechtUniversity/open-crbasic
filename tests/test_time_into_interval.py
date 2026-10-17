@@ -2,8 +2,6 @@
 are verbatim oracle output, CR6 and CR300, 2026-09-28 (`docs/checker.md` "TimeIntoInterval
 arguments"); CR1000X and CR350 matched the `t*` probes."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

@@ -1,8 +1,6 @@
 """Port-terminal argument errors. Expected lines are verbatim oracle output (real compilers,
 2026-10-01) for the shared port converter."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

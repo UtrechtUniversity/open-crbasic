@@ -1,7 +1,5 @@
 """ESSVariables declaration checks. Expected lines are oracle-confirmed (2026-10-01)."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

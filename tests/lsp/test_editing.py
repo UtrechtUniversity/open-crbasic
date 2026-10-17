@@ -1,7 +1,5 @@
 """Editing-feature logic (LSP-03b-core): outline, folding, include links, completion."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

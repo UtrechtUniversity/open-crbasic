@@ -1,8 +1,6 @@
 """`Could not find DataTable %s.` for any unknown `CallTable` target, and global redeclaration
 errors. Oracle probes, CR6 and CR300 identical, 2026-09-27 (`docs/checker.md`)."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

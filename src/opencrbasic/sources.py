@@ -7,12 +7,11 @@ absolute, non-lowercased, non-symlink-resolved paths (`Path.absolute()`). `DiskS
 the loader's historical behaviour. See `docs/lsp-api.md`.
 """
 
-from __future__ import annotations
-
 import hashlib
 import stat
 from pathlib import Path
-from typing import Mapping, Protocol
+from typing import Protocol
+from collections.abc import Mapping
 
 
 class SourceProvider(Protocol):

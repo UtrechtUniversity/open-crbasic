@@ -21,8 +21,6 @@ included. It does three things at once:
 can miss a rejection or size an auto table too large but not invent a rejection.
 """
 
-from __future__ import annotations
-
 import math
 import struct
 

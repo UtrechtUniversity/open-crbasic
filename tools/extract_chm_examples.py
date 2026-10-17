@@ -15,8 +15,6 @@ Only extracts programs that contain both `BeginProg` and `EndProg`; fragments ar
 Usage (from opencrbasic/): python3 tools/extract_chm_examples.py
 """
 
-from __future__ import annotations
-
 import re
 from html.parser import HTMLParser
 from pathlib import Path

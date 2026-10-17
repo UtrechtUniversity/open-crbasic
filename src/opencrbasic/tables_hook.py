@@ -2,8 +2,6 @@
 `.table_list`), for `checker.py` to call after a successful compile and for `cli.py`'s `-z`/`-l`.
 """
 
-from __future__ import annotations
-
 from . import syntax as S
 from .tables import build_tables
 

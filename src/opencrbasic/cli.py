@@ -15,8 +15,6 @@ Output goes to stdout and to the message file (CR6cmple.xxx by default, CRLF lin
 exit status 0 on success, 1 on failure.
 """
 
-from __future__ import annotations
-
 import re
 import sys
 from pathlib import Path

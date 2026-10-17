@@ -3,8 +3,6 @@
 Checks structure, the report's internal consistency and the generated inputs. It asserts no
 timing: the targets in LSP_PLAN.md are compared by the report, not asserted here."""
 
-from __future__ import annotations
-
 import json
 import sys
 from pathlib import Path

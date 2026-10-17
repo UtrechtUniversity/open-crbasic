@@ -9,8 +9,6 @@ difference from the oracle is such a size are reported as an expected, separate 
 than a hard failure, matching the task's acceptance criterion.
 """
 
-from __future__ import annotations
-
 import base64
 import json
 import sys

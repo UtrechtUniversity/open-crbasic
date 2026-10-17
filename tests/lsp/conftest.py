@@ -7,8 +7,6 @@ from; otherwise the analysis is recomputed. It refuses overlays and paths outsid
 sources (`crbasic/`, `tests/corpus/`), so a test that writes or overlays files cannot use it.
 The cache lives per process (each xdist worker has its own)."""
 
-from __future__ import annotations
-
 import hashlib
 from pathlib import Path
 

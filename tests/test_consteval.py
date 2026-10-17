@@ -1,8 +1,6 @@
 """Unit tests for `opencrbasic.consteval`, driven through `parser.parse_text` so expressions are
 built with the parser's real precedence rather than hand-assembled trees."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import consteval, parser, profiles

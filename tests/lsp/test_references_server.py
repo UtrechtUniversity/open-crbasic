@@ -2,8 +2,6 @@
 (LSP-R4a, host findings H-08 and H-10). Two entries include one library that declares the name
 both use."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

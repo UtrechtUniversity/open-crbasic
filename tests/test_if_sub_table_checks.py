@@ -1,8 +1,6 @@
 """`If` conditions, `Sub` call argument counts, table sources and string `Alias` indices.
 Oracle probes, 2026-09-27 (`docs/checker.md` "If conditions, Sub arguments, table sources")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

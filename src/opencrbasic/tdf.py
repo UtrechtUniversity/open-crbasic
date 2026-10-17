@@ -8,8 +8,6 @@ ending the field list. Each field: type byte (0x80 flag = read-only), name, alia
 (u32), dimension (u32), sub-dimensions (u32 list ending in 0).
 """
 
-from __future__ import annotations
-
 import struct
 from dataclasses import dataclass, field
 

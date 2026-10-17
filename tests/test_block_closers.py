@@ -1,8 +1,6 @@
 """Unmatched `EndIf`/`EndSelect`/`Next`/`Loop` (`checker/structure.py` `check_block_closers`).
 Oracle probes, CR6 and CR300 identical, 2026-09-27 (`docs/checker.md` "Unmatched block ends")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

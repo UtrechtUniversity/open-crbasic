@@ -7,8 +7,6 @@ variable of a known type is judged; anything else (undefined names, aliases, poi
 structure members, functions) is left silent, the safe side of AGENTS.md.
 """
 
-from __future__ import annotations
-
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from . import expressions, structure

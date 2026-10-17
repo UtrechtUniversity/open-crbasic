@@ -2,8 +2,6 @@
 placement and a stray `NextSubScan`. Oracle probes, 2026-09-27 (`docs/checker.md` "One-off
 rules")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

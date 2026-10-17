@@ -11,8 +11,6 @@ Block words are not listed here: the structure comes from `editing` (`_roles`, `
 `_block_events`), the same classification folding and the outline use.
 """
 
-from __future__ import annotations
-
 import bisect
 import re
 from collections import defaultdict
@@ -133,7 +131,7 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
     """`({0-based physical line: indent level}, exclusive line limit)`: the level every editable
     line should have, and the first line from which on nothing is edited."""
     roles = _roles(profile)
-    lines = [ln[:-1] if ln.endswith("\r") else ln for ln in text.split("\n")]
+    lines = [ln.removesuffix("\r") for ln in text.split("\n")]
     logical, overflow = _load(text)
     events: dict[int, list[tuple[str, str]]] = defaultdict(list)
     for role, family, _name, first, _last in _block_events(text, profile):
@@ -280,7 +278,7 @@ def _format(text: str, profile: str, indent: str, lo: int, hi: int | None) -> li
     for n, level in levels.items():
         if n < lo or (hi is not None and n > hi):
             continue
-        body = lines[n][:-1] if lines[n].endswith("\r") else lines[n]
+        body = lines[n].removesuffix("\r")
         if not body.strip(" \t"):
             continue                                # blank lines keep their (trailing) blanks
         width = _leading(body)

@@ -8,8 +8,6 @@ Entry points:
     render_table_list(tables) -> str            # the `-l`/`-c` text, given tables in TDF order
 """
 
-from __future__ import annotations
-
 import dataclasses
 import json
 import math
@@ -896,7 +894,7 @@ def _type_bytes(type_code: int, dim_for_string: int = 0) -> int:
     return _TYPE_BYTES.get(type_code, 4)
 
 
-def _elem_size(f: "_OutField", info: VarInfo) -> int:
+def _elem_size(f: _OutField, info: VarInfo) -> int:
     return info.stored_len if (info.stored_len and f.type_code == 11) else 1
 
 
@@ -955,7 +953,7 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
     return out
 
 
-def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env) -> "_OutField":
+def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env) -> _OutField:
     """`FFT(Source, DataType, N, Tint, Units, Option)` (docs/tdf-rules.md §9b): one read-only field
     `<Source>[<flat element index if > 1>]_FFT`; layout by `Option mod 10`, description `FFT,N,<Tint seconds %.4e>,<Option mod 100>`.
     A non-variable Source stays a name-only placeholder (no TDF field)."""
@@ -1380,7 +1378,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
     return table, meta
 
 
-def _field_record_bytes(of: "_OutField") -> int:
+def _field_record_bytes(of: _OutField) -> int:
     """Per-record byte cost of one output field: for ASCII (type 11) `dim` already IS the byte
     length; for numeric types it is `dim` (element count) times the type's own byte width."""
     if of.type_code == 11:

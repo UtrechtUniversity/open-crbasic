@@ -21,8 +21,6 @@ tempfile.mkdtemp(prefix="lsp-install-") and removed on exit unless --keep. The r
 written to. Exit status is 1 when any check fails.
 """
 
-from __future__ import annotations
-
 import argparse
 import difflib
 import hashlib

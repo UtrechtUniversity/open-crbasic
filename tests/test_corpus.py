@@ -13,8 +13,6 @@ narrow, rare, documented language feature this front end does not implement. See
 docs/frontend.md.
 """
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 

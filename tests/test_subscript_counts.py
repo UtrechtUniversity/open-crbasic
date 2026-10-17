@@ -2,8 +2,6 @@
 `symbols.declared_dim_counts`). Expected lines are verbatim oracle output, CR6 and CR300,
 2026-09-28; CR1000X and CR350 matched the same probes (`docs/checker.md` "Subscript counts")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

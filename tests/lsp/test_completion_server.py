@@ -3,8 +3,6 @@ completion"): a `Status.` / `Public.` typed right after opening an entry, before
 exists, waits up to `featureWaitMs` for the first program instead of answering an empty,
 complete list. Real stdio servers through `lspclient.py`, and an in-process `Session`."""
 
-from __future__ import annotations
-
 import asyncio
 import time
 from pathlib import Path

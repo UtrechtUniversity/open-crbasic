@@ -19,8 +19,6 @@ Without `--run` the commands are printed, one per line. With `--run` they run in
 every gate runs and the exit status is non-zero when any fails.
 """
 
-from __future__ import annotations
-
 import argparse
 import re
 import subprocess

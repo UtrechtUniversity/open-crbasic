@@ -1,8 +1,6 @@
 """`Invalid SDM Address: %d, must be 0 - 14.` (`instr_rules.check_sdm_address`). Oracle, CR6 and
 CR1000X, 2026-09-28 (`docs/instructions.md` "SDM addresses")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

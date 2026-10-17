@@ -4,8 +4,6 @@ only what oracle probing established, anything else (non-constant arguments, oth
 prints no entry.
 """
 
-from __future__ import annotations
-
 import re
 
 from . import consteval, mode

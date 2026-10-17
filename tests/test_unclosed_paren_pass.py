@@ -6,8 +6,6 @@ expression: %s.` (printed next to other pass-1 errors, and it suppresses pass 2)
 unknown -> pass-2 generic fallback; a later unknown name -> pass-2 `Invalid symbol in expression`.
 """
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

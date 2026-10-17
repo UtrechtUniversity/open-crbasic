@@ -14,10 +14,9 @@ Three levels:
   position encoding.
 """
 
-from __future__ import annotations
-
 import codecs
-from typing import Mapping, NamedTuple, Sequence
+from typing import NamedTuple
+from collections.abc import Mapping, Sequence
 
 from .source import LineSpan, LogicalLine, Occurrence, Piece, _split_physical_lines
 
@@ -38,7 +37,7 @@ class EditorBytes(bytes):
 
     text: str | None = None
 
-    def __new__(cls, data: bytes, text: str | None = None) -> "EditorBytes":
+    def __new__(cls, data: bytes, text: str | None = None) -> EditorBytes:
         out = super().__new__(cls, data)
         out.text = text
         return out

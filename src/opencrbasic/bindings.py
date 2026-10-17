@@ -10,12 +10,11 @@ re-lexing is `name_tokens`/`token_of`, which tokenizes a statement's own text so
 find a record's column (string tokens are never name tokens).
 """
 
-from __future__ import annotations
-
 import re
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Iterable, NamedTuple
+from typing import NamedTuple
+from collections.abc import Iterable
 
 from . import consteval, lexer, profiles, tables
 from . import syntax as S
@@ -52,7 +51,7 @@ class Declaration:
     #                                    field system_table external
     scope: str                         # "global" | "routine" | "structure" | "table" | "predefined"
     routine: S.SubDef | None           # the owning Sub/Function (scope "routine"; params too)
-    container: "Declaration | None"    # StructureType owning a member; ConstTable owning a Const;
+    container: Declaration | None    # StructureType owning a member; ConstTable owning a Const;
     #                                    DataTable/system table owning a `field`
     file: str                          # compiler display name
     line: int                          # compiler-reported line
@@ -64,7 +63,7 @@ class Declaration:
     type: str | None = None            # upper-case declared type, if any
     quoted: bool = False               # a DataTable/ConstTable name written as a string
     external: CatalogEntry | None = None
-    alias_target: "Reference | None" = None
+    alias_target: Reference | None = None
     unverified_scope: bool = False     # scope inside a routine is not established by evidence
     tok_key: tuple = ()
     modelled: bool = False             # table/system_table: every field name is known (`fields_of`)
@@ -93,7 +92,7 @@ class Reference:
     unit: S.Stmt | None = None
     index: int = 0
     occurrence: int | None = None
-    base: "Reference | None" = None    # member reference: the reference of its base
+    base: Reference | None = None    # member reference: the reference of its base
     is_write: bool = False
     forward: bool = False              # every candidate is declared in a later statement
     tok_key: tuple = ()
@@ -182,7 +181,7 @@ class BindingIndex:
         """Candidates for a name used in `routine` (None: outside every routine)."""
         return self._resolve_name(name.upper(), routine, role)
 
-    def token_of(self, record: "Declaration | Reference") -> lexer.Token | None:
+    def token_of(self, record: Declaration | Reference) -> lexer.Token | None:
         """The lexer token (a `col` into `record.unit.text`) of the record's name, or None when the
         statement text cannot be tokenized or has fewer such tokens than `occurrence` says."""
         if record.unit is None or record.occurrence is None:

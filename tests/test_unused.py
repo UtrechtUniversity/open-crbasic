@@ -13,8 +13,6 @@ line numbers within a group -- not a single global line sort, which does not mak
 different files restart their own line numbering at 1).
 """
 
-from __future__ import annotations
-
 import subprocess
 import sys
 from pathlib import Path

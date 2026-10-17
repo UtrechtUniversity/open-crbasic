@@ -23,8 +23,6 @@ exe bytes, the program name and bytes, and the sorted (name, bytes) of every sib
 corpus re-run only re-invokes the real compiler for programs that actually changed.
 """
 
-from __future__ import annotations
-
 import argparse
 import hashlib
 import json

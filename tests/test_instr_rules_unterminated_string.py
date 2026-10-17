@@ -20,8 +20,6 @@ no CLI flags), scratch probes only, not saved as `knowledge/test_results/` captu
 this test also locks in.)
 """
 
-from __future__ import annotations
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 

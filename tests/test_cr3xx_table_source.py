@@ -1,8 +1,6 @@
 """CR300/CR350: an undefined name in a table-output source (`instr_data._report_undefined_source`).
 Oracle, 2026-09-27 (`docs/loggers.md` "Undefined table sources")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

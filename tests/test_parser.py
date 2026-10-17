@@ -1,7 +1,5 @@
 """Unit tests for `opencrbasic.parser`."""
 
-from __future__ import annotations
-
 from opencrbasic import parser
 from opencrbasic import syntax as S
 

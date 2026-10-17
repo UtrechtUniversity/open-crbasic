@@ -1,7 +1,5 @@
 """Source positions (LSP-02a): provenance pieces, reported-line map, LSP position conversion."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

@@ -13,8 +13,6 @@ the zero slack at the end of .text; the cave saves all registers, writes the rec
 GetStdHandle(-12)/WriteFile, restores them, re-executes the displaced prologue and jumps back.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import os

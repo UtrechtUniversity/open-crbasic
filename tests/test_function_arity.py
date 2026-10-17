@@ -2,8 +2,6 @@
 arity inside expressions). Rules and oracle evidence: `docs/checker.md`.
 """
 
-from __future__ import annotations
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 

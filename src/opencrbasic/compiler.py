@@ -1,7 +1,5 @@
 """Compile driver: parse, check, and render CR6Comp-compatible results."""
 
-from __future__ import annotations
-
 import bisect
 import os
 from dataclasses import dataclass, field

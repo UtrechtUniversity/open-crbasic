@@ -5,8 +5,6 @@ current text includes, `analysisTimeoutMs` kills the worker, and the refusal is 
 reason. Each test then checks that a normal command and diagnostics still work.
 """
 
-from __future__ import annotations
-
 import time
 from pathlib import Path
 

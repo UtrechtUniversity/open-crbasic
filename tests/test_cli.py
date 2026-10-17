@@ -5,8 +5,6 @@ to exercise comments, a line continuation, `#If`, a bare `Include()` inside a `S
 timed instructions this project implements.
 """
 
-from __future__ import annotations
-
 import subprocess
 import sys
 from pathlib import Path

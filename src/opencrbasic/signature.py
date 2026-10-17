@@ -6,8 +6,6 @@ the same file twice contributes the file twice). Verified against the exe: PT100
 with its five IncludeSection expansions gives 53316 (docs/cli.md).
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 
 

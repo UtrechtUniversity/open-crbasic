@@ -3,8 +3,6 @@
 `docs/checker.md`, "Expression expects ( (bare function name)".
 """
 
-from __future__ import annotations
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 

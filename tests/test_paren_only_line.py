@@ -6,8 +6,6 @@ before `BeginProg`, give `Compiled in PipelineMode.` (CR6/CR1000X) / `Compiled O
 `) X banana`, `) + 3` and `,x` still get the generic fallback.
 """
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

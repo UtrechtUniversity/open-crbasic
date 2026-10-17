@@ -8,8 +8,6 @@ evidence: `docs/instructions.md`; the pre-existing table-never-called rule's own
 `docs/checker.md`/`docs/tdf-rules.md` section 13.
 """
 
-from __future__ import annotations
-
 import re
 
 from .. import consteval

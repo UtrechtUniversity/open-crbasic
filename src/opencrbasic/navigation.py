@@ -12,8 +12,6 @@ does not come from one contiguous physical slice, or whose token cannot be found
 is never navigated.
 """
 
-from __future__ import annotations
-
 import os
 from dataclasses import dataclass
 from pathlib import Path

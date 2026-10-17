@@ -11,10 +11,8 @@ CR6 `DAT_005fd008` loop):
   entry is declared `count x 16`, so a second `ESSVariables` reports each of them).
 """
 
-from __future__ import annotations
-
 import json
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 
 from .. import consteval
@@ -22,7 +20,7 @@ from .. import syntax as S
 from ..diagnostics import Diagnostics
 
 
-@lru_cache(maxsize=None)
+@cache
 def _table(data_dir: str) -> tuple[dict, ...]:
     path = Path(data_dir) / "ess_variables.json"
     return tuple(json.loads(path.read_text())) if path.exists() else ()

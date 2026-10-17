@@ -8,8 +8,6 @@ module docstring). Rules and oracle evidence: `docs/checker.md` (the required-pa
 `docs/instructions.md` (the numeric-value checks).
 """
 
-from __future__ import annotations
-
 import math
 import re
 import struct

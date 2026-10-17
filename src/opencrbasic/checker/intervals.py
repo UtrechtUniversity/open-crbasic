@@ -13,8 +13,6 @@ values become whole seconds plus microseconds. A negative `TintoInt` wraps into 
 Oracle probes, 2026-09-28 (`docs/checker.md` "TimeIntoInterval arguments").
 """
 
-from __future__ import annotations
-
 import re
 import struct
 

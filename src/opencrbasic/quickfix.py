@@ -10,8 +10,6 @@ name, or a file in the include directory's listing. Nothing is inserted or delet
 a token without an exact one-slice range (`navigation`) gets no action.
 """
 
-from __future__ import annotations
-
 import os
 import re
 from dataclasses import dataclass

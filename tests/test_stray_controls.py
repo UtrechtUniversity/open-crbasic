@@ -2,8 +2,6 @@
 `Case outside Select.`/`EndSelect w/o Select` pass-1 checks). Expected lines are verbatim oracle
 output, CR6 and CR300, 2026-09-27 (`docs/checker.md` "Stray control statements")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

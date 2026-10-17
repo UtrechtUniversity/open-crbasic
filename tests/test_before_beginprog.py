@@ -2,8 +2,6 @@
 `profile.before_beginprog`). Oracle, all four loggers, 2026-09-27 (`docs/checker.md` "Instructions
 before BeginProg")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

@@ -1,8 +1,6 @@
 """LSP-05a: the read-only binding index (`opencrbasic.bindings`). Scope policies and their evidence:
 docs/lsp-api.md "Binding index (LSP-05a)"."""
 
-from __future__ import annotations
-
 from collections import Counter
 from pathlib import Path
 

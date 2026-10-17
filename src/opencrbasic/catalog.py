@@ -5,11 +5,9 @@ from each logger's compiler by `tools/extract_tables.py`). There is no second in
 `docs/lsp-api.md` ("Instruction catalog") describes the kinds, the overlaps and the keyword rule.
 """
 
-from __future__ import annotations
-
 import functools
 from dataclasses import dataclass
-from typing import Iterator
+from collections.abc import Iterator
 
 from . import profiles
 
@@ -90,7 +88,7 @@ class InstructionCatalog:
             self._by_name.setdefault(entry.name.upper(), []).append(entry)
 
     @classmethod
-    def for_profile(cls, name: str) -> "InstructionCatalog":
+    def for_profile(cls, name: str) -> InstructionCatalog:
         """The cached catalog of a profile name (`ValueError` for an unknown one)."""
         return _cached(profiles.get(name).name)
 
@@ -123,6 +121,6 @@ class InstructionCatalog:
         return isinstance(name, str) and name.upper() in self._by_name
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _cached(name: str) -> InstructionCatalog:
     return InstructionCatalog(name)

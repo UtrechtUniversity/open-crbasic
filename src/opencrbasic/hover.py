@@ -6,15 +6,13 @@ information only: it never changes a checker rule. See `docs/lsp-api.md` "Hover 
 help (LSP-04b-core)".
 """
 
-from __future__ import annotations
-
 import dataclasses
 import json
 import re
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Mapping
+from collections.abc import Mapping
 
 from . import positions, profiles
 from . import syntax as S

@@ -1,8 +1,6 @@
 """Indentation formatter (LSP-07b): rules, refusals, idempotence and the semantic-preservation
 sweep over `crbasic/` and the CHM corpus."""
 
-from __future__ import annotations
-
 import re
 from pathlib import Path
 

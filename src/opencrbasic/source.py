@@ -22,8 +22,6 @@ Quirks verified against the real compiler (`tools/oracle.py`); see `docs/fronten
   file is not loaded (`_nested_include`; oracle, 2026-10-12, `docs/frontend.md`).
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -102,7 +100,7 @@ class LogicalLine:
     # confirmed, `docs/loggers.md` "Generic fallback echo on CR300/CR350").
     kind: str = "code"       # code | overflow | include_begin | include_end | include_warning | include_error
     pulls: int = 0           # CR6/CR1000X initializer pull: physical lines folded into `text`
-    unpulled: "list[LogicalLine] | None" = None  # the lines as written, for when `text` is not read
+    unpulled: list[LogicalLine] | None = None  # the lines as written, for when `text` is not read
     bad_init: tuple[str, str] | None = None      # (message, variable) reported only when read
     # Provenance (positions only; nothing in the compiler reads these): see `positions.py`.
     pieces: tuple[Piece, ...] = ()   # where each character of `text` came from, in order

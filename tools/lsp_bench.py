@@ -25,8 +25,6 @@ wall-clock on whatever host runs the tool and are recorded with the host's load 
 count. Percentiles are nearest-rank. Procedure: docs/lsp-rounds/LSP-08.md.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import math
@@ -39,7 +37,7 @@ import sys
 import tempfile
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -346,7 +344,7 @@ def measure_server(cfg: Config) -> dict:
 
 def run_benchmark(cfg: Config) -> dict:
     programs = list(cfg.programs) or sorted(CRBASIC.glob("*.CR6"))
-    report: dict = {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    report: dict = {"generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
                     "host": host_info(cfg),
                     "parameters": {k: str(v) if isinstance(v, Path) else v
                                    for k, v in cfg.__dict__.items() if k != "programs"},

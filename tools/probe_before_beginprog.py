@@ -12,8 +12,6 @@ it reports that message; any probe that compiles cleanly or fails differently ke
 to the control-statement check. Pass `--write` to update the logger's data file.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import re

@@ -3,8 +3,6 @@
 Oracle probes, 2026-09-27 (`docs/checker.md` "Pass-1 instruction arguments").
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

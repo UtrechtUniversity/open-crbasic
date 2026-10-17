@@ -8,8 +8,6 @@ error. All rules below are oracle-confirmed per logger this round; see `docs/ins
 "Measurement/I-O instruction checks" for the evidence and each logger's coverage.
 """
 
-from __future__ import annotations
-
 import math
 
 import re

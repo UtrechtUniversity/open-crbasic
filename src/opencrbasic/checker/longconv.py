@@ -11,8 +11,6 @@ becoming -2147483648 past +-2^31 and otherwise saturating at +-2147483647 (any o
 expression gives -2147483648). A string or NAN is -2147483648. Hex literals wrap to 32 bits.
 """
 
-from __future__ import annotations
-
 import math
 import struct
 

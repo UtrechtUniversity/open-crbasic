@@ -8,8 +8,6 @@ and the return address into the caller; `--json` also gives the frames.
     python tools/trace_times.py program.CR6 [--json]
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import os

@@ -1,8 +1,6 @@
 """`<file>` prefix of a message from an included file. Oracle, 2026-09-27: CR6/CR1000X print the
 name as written without its drive; CR300/CR350 with it, adding `cpu:` when none was written."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

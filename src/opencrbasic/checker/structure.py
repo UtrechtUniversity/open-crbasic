@@ -4,8 +4,6 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 `docs/checker.md`.
 """
 
-from __future__ import annotations
-
 import dataclasses
 import re
 
@@ -13,7 +11,7 @@ from .. import consteval
 from .. import lexer
 from .. import parser
 from .. import syntax as S
-from ..profiles import DottedName
+from ..profiles import DottedName, Profile
 from ..diagnostics import Diagnostics
 from . import expressions, instr_data, instr_rules, symbols
 
@@ -1592,7 +1590,7 @@ def _slowsequence_resolves(stmt: S.Stmt, declared: set[str], functions=()) -> bo
         _expr_resolves(a, declared, functions) for a in stmt.args if a is not None)
 
 
-def open_program_at_slowsequence(program: S.Program, profile: profiles.Profile) -> S.Program:
+def open_program_at_slowsequence(program: S.Program, profile: Profile) -> S.Program:
     """A clean `SlowSequence` before any `BeginProg`/`EndProg` is the start of the program for the
     real compiler (oracle, 2026-10-16, all four loggers, `docs/checker.md`): `SlowSequence` /
     `EndProg` with no `BeginProg` compiles, `A = 1`, `Scan`/`NextScan`, `Sub` between them are
@@ -3681,7 +3679,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
                        before_bp: bool, in_body_block: bool,
                        sub_params: dict | None = None,
                        known: set[str] | None = None,
-                       link_ctx: "_LinkContext | None" = None, ds=None) -> int | None:
+                       link_ctx: _LinkContext | None = None, ds=None) -> int | None:
     """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
     to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
     verified this round:

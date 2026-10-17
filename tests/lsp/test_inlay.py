@@ -2,8 +2,6 @@
 (LSP-09a)". Help text in these tests is synthetic; the sweep over the real help runs only when
 ../extracted_chm exists."""
 
-from __future__ import annotations
-
 import time
 from pathlib import Path
 

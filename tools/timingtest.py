@@ -14,8 +14,6 @@ For each program the real exe is run as `<exe> -t <program> out.msg` (Wine; cach
 Results go to stdout and to `timingtest-<logger>.json` (ignored by git).
 """
 
-from __future__ import annotations
-
 import argparse
 import concurrent.futures
 import contextlib

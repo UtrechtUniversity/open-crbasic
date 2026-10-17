@@ -1,8 +1,6 @@
 """`Illegal parameter %s, expecting constant integer.` at type-code-4 positions
 (`instr_rules.check_const_int_args`). Oracle, 2026-09-28 (`docs/type-codes.md`, code 4)."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

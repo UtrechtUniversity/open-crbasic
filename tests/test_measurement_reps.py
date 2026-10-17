@@ -1,8 +1,6 @@
 """Measurement-instruction `Reps` and destination bounds. Expected lines are verbatim oracle
 output (real compilers, 2026-10-01)."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

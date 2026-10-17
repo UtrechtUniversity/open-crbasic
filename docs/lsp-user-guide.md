@@ -29,7 +29,7 @@ and per-module limits are in [lsp-api.md](lsp-api.md).
 
 ## 2. Install and launch
 
-Requirements: Python 3.10 or newer with [uv](https://docs.astral.sh/uv/) (`pyproject.toml`,
+Requirements: Python 3.15 or newer with [uv](https://docs.astral.sh/uv/) (`pyproject.toml`,
 `requires-python`); VS Code 1.95 or newer (`vscode/package.json`, `engines`); Node.js with npm, only
 to build the client. The macOS host run at `1b01311d` used Node 26.0.0 and npm 11.12.1.
 

@@ -6,8 +6,6 @@ modules applied to the same program, so these tests check the adapter (positions
 scheduling), not CRBasic rules.
 """
 
-from __future__ import annotations
-
 import shutil
 import time
 from pathlib import Path

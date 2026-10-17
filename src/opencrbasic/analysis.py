@@ -4,12 +4,10 @@ the result was computed from. No second pipeline: `analyze` is `compiler.compile
 `SourceProvider`. See `docs/lsp-api.md` "Analysis facade (API_VERSION 1)".
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import MappingProxyType
-from typing import Mapping
+from collections.abc import Mapping
 
 from . import positions, profiles
 from .compiler import compile_file

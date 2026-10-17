@@ -42,8 +42,6 @@ observed in this project's corpus). `Static` declarations were not investigated 
 invalid syntax by the CR6 grammar in every oracle probe tried, and unused in `crbasic/`).
 """
 
-from __future__ import annotations
-
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 

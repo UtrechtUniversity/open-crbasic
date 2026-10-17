@@ -2,8 +2,6 @@
 bare (no-`Call`-keyword) name is a legal statement. Rules and oracle evidence: `docs/checker.md`.
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import replace
 from types import SimpleNamespace

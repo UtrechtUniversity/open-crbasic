@@ -9,8 +9,6 @@ Units of 100 us throughout. Instructions the model does not know add an unknown 
 total of a scan holding one is a lower bound (`partial`).
 """
 
-from __future__ import annotations
-
 import math
 import re
 import struct

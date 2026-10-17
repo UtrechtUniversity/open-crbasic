@@ -6,8 +6,6 @@ protocol adapter (`server.py`) feeds it events and supplies a `publish` callback
 in worker processes and is awaited, so the event loop never blocks on it.
 """
 
-from __future__ import annotations
-
 import asyncio
 import hashlib
 import itertools
@@ -22,7 +20,7 @@ from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures.process import BrokenProcessPool
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Callable
+from collections.abc import Callable
 from urllib.parse import quote
 
 from .. import positions
@@ -650,7 +648,7 @@ class Session:
             future = loop.run_in_executor(pool, job, str(entry.path), snap.logger, snap.overlays,
                                           snap.max_file_bytes)
             return await asyncio.wait_for(future, snap.timeout)
-        except asyncio.TimeoutError:
+        except TimeoutError:
             self._reset_pool(gen)
             return ServerError(f"{label} of {entry.path.name} timed out after "
                                f"{round(snap.timeout * 1000)} ms; the analysis worker was "
@@ -851,7 +849,7 @@ class Session:
         the configuration pull must not hang requests)."""
         try:
             await asyncio.wait_for(self._configured.wait(), timeout)
-        except asyncio.TimeoutError:
+        except TimeoutError:
             pass
 
     def blobs(self) -> dict[Path, bytes]:
@@ -914,7 +912,7 @@ class Session:
                 self._event = asyncio.Event()
             try:
                 await asyncio.wait_for(self._event.wait(), left)
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 return self._pick(path)
 
     async def load(self, ana: Analysed | None):
@@ -958,7 +956,7 @@ class Session:
                 self._event = asyncio.Event()
             try:
                 await asyncio.wait_for(self._event.wait(), min(left, 0.25))
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 pass
         return [e for _, e in sorted(self.entries.items()) if e.reads.get(key)]
 

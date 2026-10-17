@@ -27,8 +27,6 @@ Exits nonzero if the compile failed (matching CR6Comp.exe's own exit status), af
 printing whatever the compiler produced.
 """
 
-from __future__ import annotations
-
 import argparse
 import os
 import shutil

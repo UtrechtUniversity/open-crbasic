@@ -16,8 +16,6 @@ for why CR6Comp reports the *last* physical line of a continued statement, which
 `source.py` assigns as the logical line's `line`).
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass
 

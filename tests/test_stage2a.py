@@ -1,8 +1,6 @@
 """CR6/CR1000X checks between pass 1 and pass 2's expression tier (`instr_data.check_stage2a`),
 and string array dimensions. Oracle probes, 2026-09-27 (`docs/checker.md` "Stage 2a")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

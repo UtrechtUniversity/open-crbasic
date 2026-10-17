@@ -20,8 +20,6 @@ Needs `npm ci` in ../vscode first (it uses the pinned node_modules/.bin/vsce). T
 Exit status is 1 when any check fails. The .vsix is removed on exit unless --keep.
 """
 
-from __future__ import annotations
-
 import argparse
 import hashlib
 import json

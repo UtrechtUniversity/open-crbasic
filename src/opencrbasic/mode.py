@@ -12,9 +12,7 @@ copy of CR6's, kept only so every profile has one; `mode.decide`'s result for th
 discarded by `compiler.py`.
 """
 
-from __future__ import annotations
-
-from typing import Callable
+from collections.abc import Callable
 
 from . import syntax as S
 from .profiles import Profile

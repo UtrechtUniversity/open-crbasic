@@ -9,8 +9,6 @@ formatting, quick-fix code actions, parameter-name inlay hints and the commands
 `opencrbasic.showCompilerOutput` and `opencrbasic.showTableFields`. Each has a stdio transcript test.
 """
 
-from __future__ import annotations
-
 import asyncio
 import contextlib
 import hashlib
@@ -20,7 +18,8 @@ import subprocess
 import sys
 import traceback
 from pathlib import Path
-from typing import Any, BinaryIO, Iterator
+from typing import Any, BinaryIO
+from collections.abc import Iterator
 
 EXPECTED_API_VERSION = 1       # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"

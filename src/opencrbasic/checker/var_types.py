@@ -6,8 +6,6 @@ a small table of them. Unknown names, functions and operand mixes the oracle was
 have no type (`None`), and a check that needs a type it does not have stays silent.
 """
 
-from __future__ import annotations
-
 import math
 import re
 
@@ -124,7 +122,7 @@ def _statement_expressions(stmt: S.Stmt):
             yield from _statement_expressions(inner)
 
 
-def _string_typed(typer: "_Typer", node: S.Expr) -> bool:
+def _string_typed(typer: _Typer, node: S.Expr) -> bool:
     """A String operand, or a logical word whose right operand is one (`X AND "a" AND X`: the
     first `AND` keeps its string operand's type, so the second also reports; `"a" AND X AND X`
     reports once; oracle, all four loggers, 2026-10-12)."""
@@ -133,7 +131,7 @@ def _string_typed(typer: "_Typer", node: S.Expr) -> bool:
     return typer.of(node) == "STRING"
 
 
-def _string_operand_messages(typer: "_Typer", stmt: S.Stmt, every: bool = False) -> list[str]:
+def _string_operand_messages(typer: _Typer, stmt: S.Stmt, every: bool = False) -> list[str]:
     """The messages for the one String-operand error a statement holds; none when it holds
     several (their number and order is not established), except `every`: several
     `String is illegal here`, one each (oracle, 2026-10-10: `"a" and "b" and "c" .`)."""
@@ -156,7 +154,7 @@ def _string_operand_messages(typer: "_Typer", stmt: S.Stmt, every: bool = False)
     return found[0] if len(found) == 1 else []
 
 
-def _snmp_mismatch(typer: "_Typer", name: S.Expr | None, snmp_type: str) -> bool:
+def _snmp_mismatch(typer: _Typer, name: S.Expr | None, snmp_type: str) -> bool:
     var = typer.variable(name)
     return var is not None and snmp_type.upper() in _SNMP_TYPES and \
         snmp_type.upper() not in _SNMP_ALLOWED.get(typer.types[var], _SNMP_TYPES - {"STRING"})
@@ -166,7 +164,7 @@ def _same_type(dest: str, source: str) -> bool:
     return dest == source or (dest == "STRING" and source == "FLOAT")
 
 
-def _indexed_past_first(typer: "_Typer", dest: S.Expr, env: consteval.Env) -> bool:
+def _indexed_past_first(typer: _Typer, dest: S.Expr, env: consteval.Env) -> bool:
     """`RoutersNeighbors` takes the whole array: a subscript that is a variable, a binary
     expression or a literal of 2 or more is `Destination variable cannot be indexed` (oracle,
     2026-10-08: `L(1)`, `L(1.5)`, `L(-1)` and `(1,1)` compile, `L(0)` adds an out-of-bounds line
@@ -289,7 +287,7 @@ def _array_size(typer: _Typer, dims: dict[str, tuple[int, ...]], expr: S.Expr | 
     return 1
 
 
-def _ctype_illegal(typer: "_Typer", node: S.Index) -> bool:
+def _ctype_illegal(typer: _Typer, node: S.Index) -> bool:
     """`CType(x)` (no type) or `CType(x,Boolean|UINT2|<Const>|<constant number expression>)`:
     `Illegal type`, a pass-1 finding. Other bad second arguments (a variable, an undefined name, a
     string) add further messages and are left alone."""

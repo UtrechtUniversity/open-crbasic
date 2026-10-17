@@ -2,8 +2,6 @@
 errors, member arity, and EventCount. Expected lines are verbatim oracle output (real compilers,
 2026-10-01). CR6 and CR1000X give the CR6 list; CR300 and CR350 give the CR300 list."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

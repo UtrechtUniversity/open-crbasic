@@ -39,8 +39,6 @@ CR6 ports go through one converter (decompiled `FUN_00515ff0`): `C1..C16` (101..
 2026-10-01: `PortSet(109,1)`, `SPIOpen(105,...)` compile); CR1000X takes `C1..C8`.
 """
 
-from __future__ import annotations
-
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics

@@ -1,7 +1,5 @@
 """tools/lsp_gate.py: classification of changed files into gates, the pyrefly include reader."""
 
-from __future__ import annotations
-
 import pytest
 
 import lsp_gate as G

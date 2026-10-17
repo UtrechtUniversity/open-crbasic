@@ -28,8 +28,6 @@ target at all), which gets the same message with a plain empty echo and no embed
 `docs/checker.md` for the corpus evidence, e.g. `am25t_1.CR6`, `ProgramStructure_1.CR6`).
 """
 
-from __future__ import annotations
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic import syntax as S
 from opencrbasic.compiler import CompileResult

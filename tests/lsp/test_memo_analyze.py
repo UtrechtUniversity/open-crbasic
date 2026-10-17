@@ -1,7 +1,5 @@
 """The memoised analysis fixture (tests/lsp/conftest.py): keys, invalidation and refusals."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

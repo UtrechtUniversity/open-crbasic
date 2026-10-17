@@ -1,8 +1,6 @@
 """Tests for `opencrbasic.profiles`: extension-to-logger mapping, `--logger`, and per-logger data
 loading. Evidence for the per-logger differences these profiles carry: `docs/loggers.md`."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

@@ -15,8 +15,6 @@ Warnings are untested against this rule and are left unprefixed (`cr6comp` only 
 errors) rather than guessed at.
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass, field
 

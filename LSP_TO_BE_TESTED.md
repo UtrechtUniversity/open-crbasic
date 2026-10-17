@@ -28,7 +28,7 @@ and the fixture-backed pytest suite only.
 
 ### T-02 VS Code extension launch (LSP-01c/01b)
 
-On macOS (and Windows/Linux when available), VS Code with Python 3.10+ and this checkout:
+On macOS (and Windows/Linux when available), VS Code with Python 3.15+ and this checkout:
 
 1. `cd opencrbasic && uv sync` (installs pygls into the dev environment).
 2. `cd vscode && npm ci && npm run compile`.

@@ -4,8 +4,6 @@ Each profile names the directory of tables extracted from that model's compiler
 (`tools/extract_tables.py`) and the few output conventions that differ between models.
 """
 
-from __future__ import annotations
-
 import json
 from dataclasses import dataclass
 from functools import cached_property

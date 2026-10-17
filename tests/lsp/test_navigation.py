@@ -1,8 +1,6 @@
 """LSP-05b-core: protocol-independent navigation (`opencrbasic.navigation`). Policies:
 docs/lsp-api.md "Navigation (LSP-05b-core)"."""
 
-from __future__ import annotations
-
 import shutil
 from pathlib import Path
 

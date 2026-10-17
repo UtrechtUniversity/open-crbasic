@@ -1,8 +1,6 @@
 """Hover and signature-help logic tests. Help text in these tests is synthetic (written here); the
 optional real-help tests run only when ../extracted_chm exists and assert structure, not text."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 import pytest

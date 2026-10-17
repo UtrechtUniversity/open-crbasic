@@ -5,8 +5,6 @@ the shared `checker/*` modules (`PLAN.md`); `check` below is a no-op on every ot
 evidence: `docs/loggers.md`.
 """
 
-from __future__ import annotations
-
 import collections
 import dataclasses
 

@@ -3,8 +3,6 @@
 processes through `lspclient.py`; in-process `Session` tests where a bound cannot be reached
 through the protocol cheaply."""
 
-from __future__ import annotations
-
 import asyncio
 import random
 import time

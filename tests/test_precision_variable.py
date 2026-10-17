@@ -3,8 +3,6 @@
 `docs/instructions.md`.
 """
 
-from __future__ import annotations
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 

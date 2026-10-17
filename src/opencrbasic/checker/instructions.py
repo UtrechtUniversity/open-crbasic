@@ -7,8 +7,6 @@ Currently just the analog-channel range check, which is per-logger data (`termin
 rest of this module's oracle evidence, separate from `checker/__init__.py`'s own owner).
 """
 
-from __future__ import annotations
-
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics

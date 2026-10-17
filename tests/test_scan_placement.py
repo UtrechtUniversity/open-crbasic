@@ -2,8 +2,6 @@
 (`checker/structure.py` `check_pass2`, `_check_calltable_outside_scan`, `check_end_blocks`).
 Oracle, CR6 and CR300, 2026-09-27 (`docs/checker.md` "Scan placement")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

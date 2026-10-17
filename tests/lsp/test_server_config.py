@@ -1,7 +1,5 @@
 """Configuration parsing and entry discovery (no server process)."""
 
-from __future__ import annotations
-
 from opencrbasic.lsp.config import Config, discover, glob_regex, parse_config
 
 

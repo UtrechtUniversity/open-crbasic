@@ -2,8 +2,6 @@
 (`cr3xx._report_unregistered`). Expected lines are verbatim oracle output, 2026-09-28
 (`docs/loggers.md` "Tainted declarations")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

@@ -14,8 +14,6 @@ unary minus binds looser than `^`: `-2^2 = -4`).
 ``TRUE`` = -1, ``FALSE`` = 0 (from the symbol table); comparisons yield -1/0.
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 
 from . import syntax as S
@@ -59,7 +57,7 @@ class Env:
             value = int(value)
         self.consts[name.upper()] = value
 
-    def child(self, section: str | None) -> "Env":
+    def child(self, section: str | None) -> Env:
         """A view with a different `Section` binding but the same (mutable, shared) consts."""
         return Env(self.profile, self.consts, section)
 

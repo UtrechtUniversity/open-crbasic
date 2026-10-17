@@ -11,14 +11,13 @@ checks read identifiers of lines the parser did not turn into statements (inacti
 branches, directives, text after `EndProg`) only to refuse; they never produce an edit.
 """
 
-from __future__ import annotations
-
 import hashlib
 import re
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import NamedTuple, Sequence
+from typing import NamedTuple
+from collections.abc import Sequence
 
 from . import bindings, lexer, navigation
 from .catalog import InstructionCatalog
@@ -180,7 +179,7 @@ class _State:
                             yield path, n - 1
 
 
-_states: "OrderedDict[int, _State]" = OrderedDict()
+_states: OrderedDict[int, _State] = OrderedDict()
 
 
 def _state(result) -> _State:

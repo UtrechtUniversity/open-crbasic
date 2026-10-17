@@ -6,13 +6,11 @@ the user points it at (`docs/legal.md`, `docs/lsp-api.md` "Help provider"). Help
 and prose are display information only: they never influence checker rules.
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass, field, replace
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Iterable, Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 
 __all__ = [
     "ParamHelp", "InstructionHelp", "HelpProvider", "PairedParam", "PairedSignature",

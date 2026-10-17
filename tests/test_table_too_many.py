@@ -2,8 +2,6 @@
 (`instr_rules._TOO_MANY_EXTRA`). Expected lines are verbatim oracle output on all four loggers,
 2026-09-28."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

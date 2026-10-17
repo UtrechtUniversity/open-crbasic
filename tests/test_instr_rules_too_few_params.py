@@ -41,8 +41,6 @@ and cross-checked against the CHM corpus's own `openinterval_1.CR6` (bare `DataT
 `etsz_1.CR6` (bare `ETsz`, code 11) and `writeio_1.CR6` (bare `CallTable`, code 6).
 """
 
-from __future__ import annotations
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 

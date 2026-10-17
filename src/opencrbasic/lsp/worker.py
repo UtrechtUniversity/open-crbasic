@@ -1,8 +1,6 @@
 """The jobs that run inside a spawned worker process: an analysis, and the compiler output of the
 `opencrbasic.showCompilerOutput` command. Imports only the core compiler."""
 
-from __future__ import annotations
-
 import os
 import pickle
 import time

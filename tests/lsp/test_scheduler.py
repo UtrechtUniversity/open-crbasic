@@ -4,8 +4,6 @@ client's URI after a close (F5), unrelated requests during a first analysis (F6)
 revision (F8). Real stdio server processes through `lspclient.py`, and in-process `Session` tests
 where the scheduler is driven with controlled job outcomes."""
 
-from __future__ import annotations
-
 import asyncio
 import hashlib
 import shutil

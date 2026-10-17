@@ -12,8 +12,6 @@ class (the checker changed shape, not just got better). Intended for the agents 
 `src/opencrbasic/**` to confirm a fix without re-running the fuzzer.
 """
 
-from __future__ import annotations
-
 import argparse
 import concurrent.futures
 import json

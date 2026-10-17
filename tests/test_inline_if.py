@@ -2,8 +2,6 @@
 (`checker/__init__.py` `_with_inline`, `parser.py` `_parse_stmt_list`). Expected lines are
 verbatim oracle output, CR6 and CR300, 2026-09-28 (`docs/checker.md` "One-line If statements")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

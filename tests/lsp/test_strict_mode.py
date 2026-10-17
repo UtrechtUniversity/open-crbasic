@@ -1,8 +1,6 @@
 """Strict mode must be active in the process that runs the tests, including every xdist worker
 (`tests/conftest.py` sets it at session start, which each worker runs)."""
 
-from __future__ import annotations
-
 import os
 
 

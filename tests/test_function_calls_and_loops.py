@@ -3,8 +3,6 @@ undefined names in `Do`/`Loop` conditions. Expected lines are verbatim oracle ou
 CR300, 2026-09-28; CR1000X and CR350 matched the `f*` probes (`docs/checker.md` "Function argument
 counts")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

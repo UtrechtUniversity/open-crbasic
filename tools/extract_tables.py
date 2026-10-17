@@ -9,8 +9,6 @@ documented in docs/binary.md; the addresses below are for CR6.14.2.0 (2025-03-04
 checked by content before use.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import os

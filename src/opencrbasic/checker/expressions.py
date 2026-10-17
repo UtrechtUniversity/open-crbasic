@@ -2,8 +2,6 @@
 evidence: `docs/checker.md`.
 """
 
-from __future__ import annotations
-
 import re
 
 import json

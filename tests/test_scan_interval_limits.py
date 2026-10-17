@@ -2,8 +2,6 @@
 (`checker/instr_rules.py` `_divisibility_message`, `check_scan_max_interval`). Oracle, all four
 loggers, 2026-09-27 (`docs/instructions.md` "Scan and table interval limits")."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles

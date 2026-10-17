@@ -2,8 +2,6 @@
 (`expressions.py`'s `check_function_call_counts`). Expected lines are verbatim oracle output,
 all four loggers (2026-10-02)."""
 
-from __future__ import annotations
-
 import pytest
 
 from opencrbasic import checker, parser, profiles
