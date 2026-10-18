@@ -1378,7 +1378,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif isinstance(stmt, S.Unparsed) and _logical_assign_accepted(stmt, program, profile):
             pass  # compiles (`X AND Y = 1`); only its string operands are reported, in pass 2
         elif isinstance(stmt, S.Unparsed):
-            _check_unparsed_pass1(stmt, diags)
+            _check_unparsed_pass1(stmt, diags, program, profile)
             for message in _junk_init_findings(stmt, profile):
                 if message == "Size of string missing." and profile.single_pass and any(
                         d.message == message for d in diags.items):
@@ -4681,6 +4681,8 @@ def _junk_init_findings(stmt: S.Unparsed, profile) -> list[str]:
     CR300/CR350 the first. Pass 1 on all four, so the generic fallback does not follow."""
     head = _JUNK_INIT_HEAD.match(stmt.text)
     out: list[str] = []
+    if stmt.reason.startswith(_CONST_BAD_VALUE):
+        return out  # reported by `_check_unparsed_pass1`
     if stmt.text.lstrip().startswith("#"):
         # a statement starting with `#` (echo: the raw text, the line end as a newline on all four
         # loggers), pass 1 (oracle, 2026-10-10: `#1 ____`, `# 1`, ` #abc` after a `:`)
@@ -4705,7 +4707,24 @@ def _junk_init_findings(stmt: S.Unparsed, profile) -> list[str]:
     return out
 
 
-def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
+def _const_undefined_names(text: str, program, profile) -> list[str]:
+    """Plain names in a bad `Const` value that resolve to nothing (oracle, 2026-10-18, "Round 20")."""
+    try:
+        toks = lexer.tokenize(text, 0)
+    except lexer.LexError:
+        return []
+    known = expressions._known_names(program, profile)
+    out = []
+    for i, t in enumerate(toks):
+        if t.kind != "IDENT" or t.upper in known:
+            continue
+        if any(o.kind == "OP" and o.text == "." for o in toks[max(i - 1, 0):i + 2]):
+            return []
+        out.append(t.text)
+    return out
+
+
+def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics, program=None, profile=None) -> None:
     """The specific-reason `Unparsed` diagnoses only -- true pass-1 (`docs/checker.md` "Pass
     model": `Need '=' in units definition: %s.`/`Const with no assignment.`/`Need '=' in alias
     definition: %s.`/`Invalid Variable declaration %s.` are all in the coordinator's own pass-1
@@ -4759,8 +4778,19 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
                     stmt.file)
         return
     if stmt.reason.startswith(_CONST_BAD_VALUE):
-        diags.error(stmt.line, f"Invalid, or out of place expression: "
-                    f"{stmt.reason[len(_CONST_BAD_VALUE):]}.", stmt.file)
+        text = stmt.reason[len(_CONST_BAD_VALUE):]
+        generic = "Invalid, or out of place expression: {}."
+        if text.startswith(parser.CONST_NOMATCH):
+            text, generic = text[2:], "No Matching, or out of place ) in expression: {}."
+        elif text.startswith(parser.CONST_INCOMPLETE):
+            text, generic = text[2:], "Incomplete expression: {}."
+        names = _const_undefined_names(text, program, profile) if program is not None else []
+        if names and profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
+            return
+        for name in names:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+        diags.error(stmt.line, generic.format(text), stmt.file)
         return
     if stmt.reason == _FOR_MISSING:
         diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)

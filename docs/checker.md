@@ -6933,3 +6933,27 @@ Not handled: `J (+) = 7` (echo `(+) = 7.`), `J As Long (5 = 7` (`No Matching, or
 `Long[5]` type word (lexer error), `Const "abc` (`Too many parameters:  "abc.`), `J(a+)` (`Invalid symbol in expression:
 a+.`), `J(3 4)` (`Incomplete expression: 3 4.`), and every false accept of the brief (`Const K = Y` with a variable,
 `J("a")`, `J(J)`, `X = J(1)`) -- not attempted.
+
+## Round 20: `Const` leftovers (oracle, all four loggers, 2026-10-18; fixture `tests/fixtures/r20_const.json`)
+
+- Value (after `=`, or the implied one of `Const J (5) = 7`) with an unmatched `(` (`(5`, `((5)`, `(5 = 7`,
+  `(5 4`): `No Matching, or out of place ) in expression: <value>.`; with an undefined name CR6/CR1000X give
+  `Invalid symbol in expression: <value>.` instead, CR300/CR350 `a is not defined.` first. A value with misplaced
+  operators and balanced parentheses (`(+)`, `* 5`, `5 * * 3`, `(5 +)`) is `Invalid, or out of place expression:
+  <value>.`, and an undefined name in it (`a+`, `1+a+`) is reported the same way as above. Adjacent operands
+  (`Const J = a b`, `J(3 4) = 7`, `J(3 4 = 7`, `J(3 4, 5) = 7`) are `Incomplete expression: <operands>.` (subscript
+  echo ends at its `,`/`)`); undefined names replace it on CR6/CR1000X. `J(3 4)` without `=` stays the
+  no-assignment pair. Parser: `_parse_const`, `_const_sub_unparsed`; messages: `structure._check_unparsed_pass1`.
+- `As Long[5]` (a `[` in the type word): `Long[5] unknown Const type` with `=`, no-assignment pair without.
+- `Const "abc` (unterminated string as the name): no-assignment pair with `Too many parameters:  "abc.` (the word up
+  to a space); with `=` anywhere `Invalid variable or constant name: "abc.`; `Const 5 "abc` is the pair with `5`.
+- `Const J As String * 10 = "a"` (also `As Long * 10 = 3`): `Invalid, or out of place expression: * 10 = "a".`
+  (echo from the `*` to the next top-level `,`). Without `=` it stays the no-assignment pair.
+- A name used before its declaration is undefined: itself (`Const J = J`, `J(J)`), a later `Const` (`K = L` then
+  `Const L = 2`) or a later `Public` (`expressions._not_yet_declared`). Not matched: CR300/CR350
+  `Const J As Long = J` adds `Variable illegal in Parameter: J.`.
+- Not implemented (observed): `Variable used in CONST expression.` for an earlier-declared variable in a value or
+  first subscript (`Const K = Y`, `Y + 1`, `Z(1)`, `-Y`, `J(Y)`, `Status.Battery`); the Const is still declared
+  (a later duplicate is `already declared as a CONST.`), CR6/CR1000X then report `Illegally dimension: Public Q(K)`
+  for a use as dimension, CR300/CR350 do not. `X = J(1)` / `X = S(1)` on a Const is `Incomplete expression: X =
+  J(1).` (CR300: with the ` |` echo quirk); `Const K = Min(2,3)` is `Incomplete expression: Min(2,3).`. We accept.

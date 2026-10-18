@@ -917,6 +917,33 @@ def _value_less_tables(program: S.Program, profile=None) -> frozenset:
     return frozenset(tables - others)
 
 
+def _not_yet_declared(program: S.Program, profile) -> dict[int, frozenset[str]]:
+    """Per top-level `ConstDecl` (by `id`): the names it may not use yet -- itself and every
+    `Const` or variable first declared on a later top-level line (`Const J = J`, `Const K = L` /
+    `Const L = 2`, `Const K = Y2` / `Public Y2`): `Invalid symbol in expression` /
+    `<name> is not defined.` (oracle, all four loggers, 2026-10-18, docs/checker.md "Round 20").
+    Names a logger predefines stay resolvable."""
+    stmts = program.statements
+    variables = symbols.declared_variable_names(program)
+    base = set(profile.symbols) | set(profile.functions) | set(profile.instructions)
+    seen: set[str] = set()
+    out: dict[int, frozenset[str]] = {}
+    consts_after: dict[int, set[str]] = {}
+    pending: set[str] = set()
+    for i in range(len(stmts) - 1, -1, -1):
+        if isinstance(stmts[i], S.ConstDecl):
+            pending = pending | {stmts[i].name.upper()}
+        consts_after[i] = pending
+    for i, st in enumerate(stmts):
+        if isinstance(st, S.ConstDecl):
+            later = (consts_after[i] | (variables - seen)) - seen - base
+            out[id(st)] = frozenset(later)
+            seen.add(st.name.upper())
+        elif isinstance(st, S.Declaration):
+            seen.update(v.name.upper() for v in st.vars)
+    return out
+
+
 def _failed_consts(program: S.Program, known: set[str], profile=None) -> set[str]:
     """`Const` names whose value does not resolve, directly or through another failed `Const`:
     the real compilers never declare them, so every later use is itself unresolved (oracle, all
@@ -931,12 +958,13 @@ def _failed_consts(program: S.Program, known: set[str], profile=None) -> set[str
         # constant is never declared (oracle, CR300/CR350, 2026-10-12)
         failed |= {c.name.upper() for c in consts if _find_arity_problem(c.value, profile)
                    or _find_bare_function_ref(c.value, profile, frozenset())}
+    unready = _not_yet_declared(program, profile) if profile is not None else {}
     changed = True
     while changed:
         changed = False
         for c in consts:
             name = c.name.upper()
-            if name not in failed and _undefined_names(c.value, known - failed):
+            if name not in failed and _undefined_names(c.value, known - failed - unready.get(id(c), frozenset())):
                 failed.add(name)
                 changed = True
     return failed
@@ -1639,12 +1667,13 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
     """
     known = _known_names(program, profile)
     whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+    unready = _not_yet_declared(program, profile)
     for stmt in program.statements:
         if not isinstance(stmt, S.ConstDecl):
             continue
         if stmt.type and stmt.type.upper() not in _CONST_TYPES:
             continue  # `unknown Const type` is the only message (oracle, 2026-10-10)
-        names = _undefined_names(stmt.value, known)
+        names = _undefined_names(stmt.value, known - unready.get(id(stmt), frozenset()))
         if not names:
             continue
         if whole_echo:

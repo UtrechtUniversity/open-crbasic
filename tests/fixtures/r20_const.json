@@ -1,0 +1,1619 @@
+{
+ "observation_date": "2026-10-18",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-fr-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr1000x-fr-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr300-fr-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr350-fr-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr6-fr-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr1000x-fr-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr300-fr-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr350-fr-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr6-fr-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5] = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Long[5] unknown Const type"
+  },
+  {
+   "id": "cr1000x-fr-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5] = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Long[5] unknown Const type"
+  },
+  {
+   "id": "cr300-fr-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5] = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Long[5] unknown Const type"
+  },
+  {
+   "id": "cr350-fr-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5] = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Long[5] unknown Const type"
+  },
+  {
+   "id": "cr6-fr-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5]\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-fr-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5]\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-fr-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5]\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr350-fr-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long[5]\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr6-fr-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr1000x-fr-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr300-fr-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr350-fr-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr6-fr-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+."
+  },
+  {
+   "id": "cr1000x-fr-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+."
+  },
+  {
+   "id": "cr300-fr-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: a+."
+  },
+  {
+   "id": "cr350-fr-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: a+."
+  },
+  {
+   "id": "cr6-fr-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr1000x-fr-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr300-fr-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr350-fr-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr6-fr-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-fr-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-fr-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr350-fr-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr6-fr-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a b."
+  },
+  {
+   "id": "cr1000x-fr-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a b."
+  },
+  {
+   "id": "cr300-fr-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: b is not defined.\nline 3: Incomplete expression: a b."
+  },
+  {
+   "id": "cr350-fr-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: b is not defined.\nline 3: Incomplete expression: a b."
+  },
+  {
+   "id": "cr6-fr-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr1000x-fr-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr300-fr-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr350-fr-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr6-fr-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr1000x-fr-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr300-fr-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr350-fr-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J (5 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 = 7."
+  },
+  {
+   "id": "cr6-fr-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5."
+  },
+  {
+   "id": "cr1000x-fr-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5."
+  },
+  {
+   "id": "cr300-fr-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5."
+  },
+  {
+   "id": "cr350-fr-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5."
+  },
+  {
+   "id": "cr6-fr-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-fr-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-fr-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr350-fr-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr6-fr-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr1000x-fr-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr300-fr-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr350-fr-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+) = 7."
+  },
+  {
+   "id": "cr6-fr-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J (a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: (a+) = 7."
+  },
+  {
+   "id": "cr1000x-fr-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J (a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: (a+) = 7."
+  },
+  {
+   "id": "cr300-fr-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J (a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: (a+) = 7."
+  },
+  {
+   "id": "cr350-fr-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J (a+) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: (a+) = 7."
+  },
+  {
+   "id": "cr6-fr-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+."
+  },
+  {
+   "id": "cr1000x-fr-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+."
+  },
+  {
+   "id": "cr300-fr-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: a+."
+  },
+  {
+   "id": "cr350-fr-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: a+."
+  },
+  {
+   "id": "cr6-fr-16",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 5."
+  },
+  {
+   "id": "cr1000x-fr-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 5."
+  },
+  {
+   "id": "cr300-fr-16",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 5."
+  },
+  {
+   "id": "cr350-fr-16",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 5."
+  },
+  {
+   "id": "cr6-fr-17",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3, 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fr-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3, 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fr-17",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3, 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fr-17",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3, 4 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fr-18",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr1000x-fr-18",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr300-fr-18",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr350-fr-18",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr6-fr-19",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+, 3) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+."
+  },
+  {
+   "id": "cr1000x-fr-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+, 3) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+."
+  },
+  {
+   "id": "cr300-fr-19",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+, 3) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: a+."
+  },
+  {
+   "id": "cr350-fr-19",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+, 3) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: a+."
+  },
+  {
+   "id": "cr6-fr-20",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-fr-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-fr-20",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr350-fr-20",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(a+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr6-fr-21",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 = 7."
+  },
+  {
+   "id": "cr1000x-fr-21",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 = 7."
+  },
+  {
+   "id": "cr300-fr-21",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 = 7."
+  },
+  {
+   "id": "cr350-fr-21",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4 = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4 = 7."
+  },
+  {
+   "id": "cr6-fr-22",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) As Long = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr1000x-fr-22",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) As Long = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr300-fr-22",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) As Long = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr350-fr-22",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4) As Long = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr6-fr-23",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +."
+  },
+  {
+   "id": "cr1000x-fr-23",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +."
+  },
+  {
+   "id": "cr300-fr-23",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +."
+  },
+  {
+   "id": "cr350-fr-23",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +."
+  },
+  {
+   "id": "cr6-fr-24",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 4."
+  },
+  {
+   "id": "cr1000x-fr-24",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 4."
+  },
+  {
+   "id": "cr300-fr-24",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 4."
+  },
+  {
+   "id": "cr350-fr-24",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (5 4."
+  },
+  {
+   "id": "cr6-fr-25",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = ((5)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: ((5)."
+  },
+  {
+   "id": "cr1000x-fr-25",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = ((5)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: ((5)."
+  },
+  {
+   "id": "cr300-fr-25",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = ((5)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: ((5)."
+  },
+  {
+   "id": "cr350-fr-25",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = ((5)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: ((5)."
+  },
+  {
+   "id": "cr6-fr-26",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (a\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: (a."
+  },
+  {
+   "id": "cr1000x-fr-26",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (a\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: (a."
+  },
+  {
+   "id": "cr300-fr-26",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (a\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: No Matching, or out of place ) in expression: (a."
+  },
+  {
+   "id": "cr350-fr-26",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (a\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: No Matching, or out of place ) in expression: (a."
+  },
+  {
+   "id": "cr6-fr-27",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+)."
+  },
+  {
+   "id": "cr1000x-fr-27",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+)."
+  },
+  {
+   "id": "cr300-fr-27",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+)."
+  },
+  {
+   "id": "cr350-fr-27",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (+)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (+)."
+  },
+  {
+   "id": "cr6-fr-28",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 5."
+  },
+  {
+   "id": "cr1000x-fr-28",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 5."
+  },
+  {
+   "id": "cr300-fr-28",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 5."
+  },
+  {
+   "id": "cr350-fr-28",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 5."
+  },
+  {
+   "id": "cr6-fr-29",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = 5 * * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5 * * 3."
+  },
+  {
+   "id": "cr1000x-fr-29",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = 5 * * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5 * * 3."
+  },
+  {
+   "id": "cr300-fr-29",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = 5 * * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5 * * 3."
+  },
+  {
+   "id": "cr350-fr-29",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = 5 * * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5 * * 3."
+  },
+  {
+   "id": "cr6-fr-30",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +)."
+  },
+  {
+   "id": "cr1000x-fr-30",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +)."
+  },
+  {
+   "id": "cr300-fr-30",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +)."
+  },
+  {
+   "id": "cr350-fr-30",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = (5 +)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: (5 +)."
+  },
+  {
+   "id": "cr6-fr-31",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc   \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr1000x-fr-31",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc   \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr300-fr-31",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc   \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr350-fr-31",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc   \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr6-fr-32",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc def\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr1000x-fr-32",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc def\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr300-fr-32",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc def\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr350-fr-32",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc def\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr6-fr-33",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc = 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid variable or constant name: \"abc."
+  },
+  {
+   "id": "cr1000x-fr-33",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc = 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid variable or constant name: \"abc."
+  },
+  {
+   "id": "cr300-fr-33",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc = 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid variable or constant name: \"abc."
+  },
+  {
+   "id": "cr350-fr-33",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst \"abc = 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid variable or constant name: \"abc."
+  },
+  {
+   "id": "cr6-fr-34",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst 5 \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr1000x-fr-34",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst 5 \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr300-fr-34",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst 5 \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr350-fr-34",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst 5 \"abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr6-fr-35",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4, 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr1000x-fr-35",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4, 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr300-fr-35",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4, 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr350-fr-35",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(3 4, 5) = 7\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr6-fr-36",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = a b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a b."
+  },
+  {
+   "id": "cr1000x-fr-36",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = a b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a b."
+  },
+  {
+   "id": "cr300-fr-36",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = a b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: b is not defined.\nline 3: Incomplete expression: a b."
+  },
+  {
+   "id": "cr350-fr-36",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = a b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: b is not defined.\nline 3: Incomplete expression: a b."
+  },
+  {
+   "id": "cr6-fr-37",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-fr-37",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-fr-37",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr350-fr-37",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(a b) As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr6-fr-38",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+b+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+b+."
+  },
+  {
+   "id": "cr1000x-fr-38",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+b+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: a+b+."
+  },
+  {
+   "id": "cr300-fr-38",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+b+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: a+b+."
+  },
+  {
+   "id": "cr350-fr-38",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = a+b+\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: a+b+."
+  },
+  {
+   "id": "cr6-fr-39",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(1+a+) = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: 1+a+."
+  },
+  {
+   "id": "cr1000x-fr-39",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(1+a+) = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: 1+a+."
+  },
+  {
+   "id": "cr300-fr-39",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(1+a+) = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: 1+a+."
+  },
+  {
+   "id": "cr350-fr-39",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(1+a+) = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: a is not defined.\nline 3: Invalid, or out of place expression: 1+a+."
+  },
+  {
+   "id": "cr6-fa-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr1000x-fa-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr300-fa-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr350-fa-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr6-fa-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\", K = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr1000x-fa-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\", K = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr300-fa-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\", K = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr350-fa-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10 = \"a\", K = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = \"a\"."
+  },
+  {
+   "id": "cr6-fa-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long * 10 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = 3."
+  },
+  {
+   "id": "cr1000x-fa-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long * 10 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = 3."
+  },
+  {
+   "id": "cr300-fa-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long * 10 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = 3."
+  },
+  {
+   "id": "cr350-fa-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As Long * 10 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: * 10 = 3."
+  },
+  {
+   "id": "cr6-fa-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = J\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: J."
+  },
+  {
+   "id": "cr1000x-fa-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = J\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: J."
+  },
+  {
+   "id": "cr300-fa-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = J\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined."
+  },
+  {
+   "id": "cr350-fa-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = J\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined."
+  },
+  {
+   "id": "cr6-fa-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J = J + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: J + 1."
+  },
+  {
+   "id": "cr1000x-fa-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J = J + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: J + 1."
+  },
+  {
+   "id": "cr300-fa-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J = J + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined."
+  },
+  {
+   "id": "cr350-fa-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J = J + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined."
+  },
+  {
+   "id": "cr6-fa-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(J) = 1\nPublic Q(J)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: J.\nline 4: Invalid symbol in expression: J."
+  },
+  {
+   "id": "cr1000x-fa-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(J) = 1\nPublic Q(J)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: J.\nline 4: Invalid symbol in expression: J."
+  },
+  {
+   "id": "cr300-fa-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(J) = 1\nPublic Q(J)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined."
+  },
+  {
+   "id": "cr350-fa-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(J) = 1\nPublic Q(J)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined."
+  },
+  {
+   "id": "cr6-fa-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = L\nConst L = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: L."
+  },
+  {
+   "id": "cr1000x-fa-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = L\nConst L = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: L."
+  },
+  {
+   "id": "cr300-fa-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = L\nConst L = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: L is not defined."
+  },
+  {
+   "id": "cr350-fa-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = L\nConst L = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: L is not defined."
+  },
+  {
+   "id": "cr6-fa-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = Y2 + 1\nPublic Y2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Y2 + 1."
+  },
+  {
+   "id": "cr1000x-fa-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = Y2 + 1\nPublic Y2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Y2 + 1."
+  },
+  {
+   "id": "cr300-fa-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = Y2 + 1\nPublic Y2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y2 is not defined."
+  },
+  {
+   "id": "cr350-fa-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = Y2 + 1\nPublic Y2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y2 is not defined."
+  },
+  {
+   "id": "cr6-fa-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = 2\nConst K = K\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-fa-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = 2\nConst K = K\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is already declared as a CONST."
+  },
+  {
+   "id": "cr300-fa-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = 2\nConst K = K\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is already declared as a CONST."
+  },
+  {
+   "id": "cr350-fa-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = 2\nConst K = K\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is already declared as a CONST."
+  },
+  {
+   "id": "cr6-fa-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J(\"a\") = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J(\"a\") = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J(\"a\") = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J(\"a\") = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst J(K) = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst J(K) = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst J(K) = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst J(K) = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst L = K\nPublic Q(L)\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst L = K\nPublic Q(L)\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst L = K\nPublic Q(L)\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = 4\nConst L = K\nPublic Q(L)\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = True\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = True\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = True\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = True\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst K = NAN\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst K = NAN\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst K = NAN\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst K = NAN\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst S As String = \"ab\"\nPublic Q As String * 4 = S\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fa-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst S As String = \"ab\"\nPublic Q As String * 4 = S\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fa-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst S As String = \"ab\"\nPublic Q As String * 4 = S\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fa-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst S As String = \"ab\"\nPublic Q As String * 4 = S\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fa-16",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr1000x-fa-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr300-fa-16",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  },
+  {
+   "id": "cr350-fa-16",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Z(3)\nConst J As String * 10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Const with no assignment.\nline 3: Too many parameters:  J."
+  }
+ ]
+}

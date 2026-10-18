@@ -70,6 +70,8 @@ class _ParseError(Exception):
     pass
 
 
+CONST_NOMATCH = "\x00N"
+CONST_INCOMPLETE = "\x00I"
 _CONST_TYPE_WORDS = frozenset({"LONG", "FLOAT", "DOUBLE", "STRING", "BOOLEAN"})
 
 
@@ -862,6 +864,23 @@ class _Parser:
                 # the instruction (oracle, 2026-10-16: `Calibrate(")` compiles, `Calibrate(A,")`
                 # reports `Variable A out of bounds.`; `SlowSequence(")` compiles, the same).
                 return self._parse_text_segment(seg_text_raw[:e.col].rstrip().rstrip(","), line, file)
+            if (m := re.match(r"(\s*Const\s+([A-Za-z_]\w*)\s+As\s+)([^\s,]*\[[^\s,]*)", seg_text_raw, re.I)):
+                # a `[` in the type word: the word is the type (`Long[5] unknown Const type`); with
+                # no `=` it is the plain no-assignment pair (oracle, 2026-10-18, "Round 20")
+                if "=" not in seg_text_raw:
+                    return self._parse_text_segment(f"Const {m[2]}", line, file)
+                self.env.define(m[2], 0, False)
+                return S.ConstDecl(line, file, name=m[2], value=S.Number(line, file, value=0, text="0"),
+                                   type=m[3], value_span=(0, 0), text=seg_text_raw)
+            if e.message == "unterminated string" and re.match(r"\s*Const\s+\"", seg_text_raw, re.I):
+                # `Const "abc`: the string is read as a name, to the next space (oracle, 2026-10-18)
+                word = re.match(r"[^\s,]+", seg_text_raw[e.col:]).group()
+                return S.Unparsed(line, file, text="", reason="Const lead: " + (
+                    f"Invalid variable or constant name: {word}." if "=" in seg_text_raw else
+                    f"Const with no assignment.\nToo many parameters:  {word}."))
+            if e.message == "unterminated string" and "=" not in seg_text_raw and re.fullmatch(
+                    r"\s*Const\s+[^\s\",]+\s+", seg_text_raw[:e.col], re.I):
+                return self._parse_text_segment(seg_text_raw[:e.col].rstrip(), line, file)  # `Const 5 "abc`
             if e.message == "unterminated string" and re.match(r"\s*Const\s+[A-Za-z_]", seg_text_raw, re.I):
                 if (stmt := self._const_unterminated(seg_text_raw, e.col, line, file)) is not None:
                     return stmt
@@ -1804,6 +1823,10 @@ class _Parser:
                             arr_dim = self._parse_expr(p, line, file)
                         except _ParseError:
                             return self._const_bad_subscript(p, sub_i, line, file)
+                        if not (p.at_end() or p.is_op(",") or p.is_op(")")) and any(
+                                t.kind == "OP" and t.text == "=" for t in p.toks[sub_i:]):
+                            # `Const J(3 4) = 7`: adjacent operands (oracle, 2026-10-18, "Round 20")
+                            return self._const_sub_unparsed(p, sub_i, line, file, CONST_INCOMPLETE)
                         arr_span = (dim_start_col, p.peek().col)
                         # an `=` inside an unclosed subscript counts (`Const J(3 = 5`: J is 0)
                         if any(t.kind == "OP" and t.text == "=" for t in p.toks[sub_i:]):
@@ -1827,6 +1850,21 @@ class _Parser:
                 if p.is_op("!"):
                     p.next()  # pointer type (see docs/frontend.md)
                     vtype += "!"
+                if p.is_op("*") and any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
+                    # `Const J As String * 10 = "a"`: the `*` is out of place; the echo runs to the
+                    # next top-level `,` (oracle, 2026-10-18, docs/checker.md "Round 20")
+                    star = p.peek()
+                    depth, end = 0, len(p.toks) - 1
+                    for j in range(p.i, len(p.toks) - 1):
+                        t = p.toks[j]
+                        depth += (t.kind == "OP") * ((t.text == "(") - (t.text == ")"))
+                        if t.kind == "OP" and t.text == "," and depth == 0:
+                            end = j
+                            break
+                    stop = p.toks[end].col if p.toks[end].kind != "EOF" else len(p.seg_text)
+                    p.i = len(p.toks) - 1
+                    return S.Unparsed(line, file, text="",
+                                      reason="Const bad value: " + p.seg_text[star.col:stop])
                 if vtype == "STRING" and p.is_op("*"):
                     p.next()
                     self._parse_expr(p, line, file)
@@ -1852,6 +1890,15 @@ class _Parser:
                 # a top-level comma ends the statement, the rest is ignored; so does an unmatched `)`
                 # (`Const Pi = 1) + 2` compiles on all four loggers, oracle 2026-10-12)
                 p.i = len(p.toks) - 1
+            elif not p.at_end():
+                # a value followed by another operand: `Const J = a b`, `(5 4` (oracle, 2026-10-18,
+                # docs/checker.md "Round 20")
+                rest = p.toks[eq_at:-1]
+                depth = sum((t.text == "(") - (t.text == ")") for t in rest if t.kind == "OP")
+                text = p.seg_text[value_start_col:]
+                p.i = len(p.toks) - 1
+                return S.Unparsed(line, file, text="", reason="Const bad value: " + (
+                    CONST_NOMATCH if depth > 0 else CONST_INCOMPLETE) + text)
         except _ParseError:
             # `Const` with no complete `Name [As Type] = value` on its own physical line -- a CHM
             # corpus example wrapped the assignment onto the next line with no `_` continuation
@@ -1867,6 +1914,14 @@ class _Parser:
                                              and len(rest[-2].text) == 1):
                     value = p.seg_text[rest[0].col:] if rest[0].kind != "EOF" else ""
                     return S.Unparsed(line, file, text="", reason="Const bad value: " + value)
+                depth = sum((t.text == "(") - (t.text == ")") for t in rest if t.kind == "OP")
+                if depth >= 0:
+                    # `Const J = (5`, `((5)`, `(5 = 7`: no matching `)`; `(+)`, `* 5`, `5 * * 3`: out of
+                    # place (oracle, 2026-10-18, docs/checker.md "Round 20")
+                    value = p.seg_text[rest[0].col:]
+                    p.i = len(p.toks) - 1
+                    return S.Unparsed(line, file, text="", reason="Const bad value: " + (
+                        CONST_NOMATCH if depth > 0 else "") + value)
             body = re.sub(r"(?i)^\s*Const\b", "", p.seg_text, count=1)
             bad = re.match(r"\s*(?:=\s*)*(\d\w*)(?![\w.])", body)
             if bad and "=" in body:
@@ -1910,6 +1965,9 @@ class _Parser:
         """`Const J(1+) = 1`: a first subscript ending in an operator is `Invalid, or out of place
         expression: 1+.` (echo: the subscript's own text up to its `,`/`)`); `J` stays undefined
         (oracle, 2026-10-17, "Round 19"). Any other bad subscript keeps the generic fallback."""
+        return self._const_sub_unparsed(p, start_i, line, file, "", True)
+
+    def _const_sub_unparsed(self, p, start_i, line, file, kind, need_op=False):
         depth, end = 0, len(p.toks) - 1
         for j in range(start_i, len(p.toks) - 1):
             t = p.toks[j]
@@ -1921,12 +1979,12 @@ class _Parser:
             elif t.kind == "OP" and t.text == ")":
                 depth -= 1
         last = p.toks[end - 1] if end > start_i else None
-        if (last is not None and last.kind == "OP" and last.text in ("+", "-", "*", "/", "^")
-                and any(t.kind == "OP" and t.text == "=" for t in p.toks[end:])):
+        if not need_op or (last is not None and last.kind == "OP" and last.text in ("+", "-", "*", "/", "^")
+                           and any(t.kind == "OP" and t.text == "=" for t in p.toks[end:])):
             stop = p.toks[end].col if p.toks[end].kind != "EOF" else len(p.seg_text)
             text = p.seg_text[p.toks[start_i].col:stop]
             p.i = len(p.toks) - 1
-            return S.Unparsed(line, file, text="", reason="Const bad value: " + text)
+            return S.Unparsed(line, file, text="", reason="Const bad value: " + kind + text)
         raise _ParseError("Const subscript")
 
     def _const_array(self, p, line, file, name_tok, dim, span):
