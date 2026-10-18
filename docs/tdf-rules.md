@@ -1004,7 +1004,43 @@ Probed on CR300 and CR350 with `DataTable(Test,1,N)` / `Sample(1,V,FP2)` / `Publ
   had boundary 2907477 instead of the real 2909753, so it was wrong for N 2907478 to 2909753.
 
 Evidence: `tests/fixtures/r19_review_r18x.json`. CR6/CR1000X `Scan` auto-size weights are not
-probed for numeric units (`DataInterval` numeric units are not changed by this rule and not probed).
+probed for numeric units. `DataInterval` numeric units: see "Numeric and Const units (round 20)".
+
+### Numeric and Const units (round 20)
+
+`DataInterval` and `Scan` units are read by value, like the round-19 `Scan` fold above
+(`tables._unit_value`, shared by `tables._scan_unit_name`, `tables._interval_from_args` and the
+divisibility check in `checker/instr_rules.py`). A fraction is truncated toward zero before the
+lookup, so `1.9` is mSec, `2.5` is Sec, `5.9` is Day and `-0.5` is uSec (CR6, CR1000X, CR300, CR350;
+`scratch/r20/W5`, round-20 W5 probes; fixture `tests/fixtures/r20_interval_units.json`). Before
+round 20 the `Scan` helper read a non-integer float as Sec, so `Scan(1,1.9,0,0)` gave a 1 s list
+interval where the real compiler gives 1 mSec.
+
+`DataInterval` unit values (oracle, DataTable 15-unit probes on all four loggers):
+
+- 0..5 = USec..Day, as the named units.
+- 6 = MON: TDF interval (0,0), TintoInt dropped to 0, `-l` line `Interval: N MON`; with a zero
+  interval there is no `-l` line and no enclosing-`Scan` weight. Size -1 sizes the table as a
+  constant weight: 232674 records on CR6 for 1, 2, 15 and 100 MON, where a 15 s weight gives 2059767
+  (so a MON table carries no interval weight in the auto-size arithmetic here).
+- Any other value (7, 8, 100, -1, -2): invalid, TDF interval (1,0), `-l` line `Interval: 1 SEC`,
+  TintoInt dropped to 0. Size -1 gives 2059767 on CR6 (as a 1 s table).
+- A units value that is not a constant reads as Sec (unchanged).
+- Divisibility (`DataTable interval N uSec not integrally divisible by scan interval M uSec`) is
+  checked with the truncated unit: `DataInterval(0,15,1.9,10)` in `Scan(1,Sec,0,0)` gives the message
+  on all four loggers. MON and invalid units are not in the divisibility table and are not checked,
+  as observed (no message for 15 MON or 7 in a 1 s scan).
+- CR300 only: numeric 0 gives the same flash-storage failure as named USec.
+
+Not established: the auto-size weight of a MON table with other auto-size tables in the same
+program (only single-table probes); the display of a zero-interval table whose enclosing `Scan` unit
+differs from its `DataInterval` unit (the real list prints the `Scan` unit name, ours prints the
+`DataInterval` unit name; a pre-existing gap, not changed by round 20).
+
+Pre-existing and not changed here: fractional and negative `Interval` values (`DataInterval(0,0.5,
+Sec,10)` lists `Interval: 1 SEC` on the real compiler, ours `0.5 SEC`; `Interval=-0.5` lists `1 SEC`).
+CR300/CR350 list and TDF output differs from ours for named units too, and CR1000X TDF differs for
+every probed case (`tdftest`).
 
 ### Inline `If c Then CallTable T` (round 18)
 

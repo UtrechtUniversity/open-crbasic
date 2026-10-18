@@ -139,13 +139,24 @@ def _fold(expr: S.Expr | None, env: consteval.Env, default=None):
         return default
 
 
-def _scan_unit_name(expr: S.Expr | None, env: consteval.Env) -> str:
-    """`_UNIT_NS` key of a Scan units argument. It folds like any constant, so the predefined name
-    (`Min`), its numeric value (`3`) and a `Const` give the same unit (`docs/tdf-rules.md`
-    "Numeric and Const Scan units"). A non-constant reads as seconds. A value outside 0..5 reads as
-    uSec, the unit the real compiler leaves no table charge for."""
+def _unit_value(expr: S.Expr | None, env: consteval.Env) -> int | None:
+    """Units argument of `Scan` or `DataInterval` as an integer: the predefined name (`Min`), its
+    number (`3`) and a `Const` agree, and a fraction is truncated toward zero (`1.9` is mSec, `-0.5`
+    is uSec; oracle, round 20 W5, `docs/tdf-rules.md` "Numeric and Const units"). `None` when the
+    argument does not fold to a finite number."""
     v = _fold(expr, env, None)
-    if isinstance(v, bool) or not isinstance(v, int):
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        return None
+    if isinstance(v, float) and not math.isfinite(v):
+        return None
+    return int(v)
+
+
+def _scan_unit_name(expr: S.Expr | None, env: consteval.Env) -> str:
+    """`_UNIT_NS` key of a Scan units argument (`_unit_value`). A non-constant reads as seconds. A
+    value outside 0..5 reads as uSec, the unit the real compiler leaves no table charge for."""
+    v = _unit_value(expr, env)
+    if v is None:
         return "SEC"
     return _UNIT_NAME_BY_VALUE.get(v, "USEC")
 
@@ -1265,15 +1276,28 @@ _OUTPUT_KEYWORDS = {"SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "STDD
                     "MOMENT", "SAMPLEMAXMIN", "HISTOGRAM", "WINDVECTOR", "COVARIANCE"}
 
 
+_UNIT_MON = 6  # predefined `MON`; a DataInterval unit only (`Scan` has no month)
+
+
 def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: int, unit_idx: int):
-    unit_name = (getattr(args[unit_idx], "name", "") or "SEC").upper() if len(args) > unit_idx else "SEC"
+    """(TintoInt, Interval) as (sec, nsec) TDF pairs, the Interval value, and its unit name for the
+    `-l` line. The units argument reads by value (`_unit_value`): 0..5 are the named units, 6 is MON
+    (both TDF pairs (0,0) and TintoInt dropped, oracle round 20 W4), and any other value is invalid
+    (Interval 1 Sec, TintoInt dropped; oracle round 20 W4). A non-constant units argument reads as
+    seconds."""
+    unit_val = _unit_value(args[unit_idx], env) if len(args) > unit_idx else None
     into_val = _fold(args[into_idx], env, 0) if len(args) > into_idx else 0
     interval_val = _fold(args[val_idx], env, 0) if len(args) > val_idx else 0
-    ns_per_unit = _UNIT_NS.get(unit_name, _UNIT_NS["SEC"])
     # A String `TintoInt`/`Interval` (`DataInterval("x",15,Sec,10)`) compiles on CR300/CR350
     # (oracle, 2026-10-12): it is taken as 0 here rather than crashing in `float()`.
     into_val = into_val if isinstance(into_val, (int, float)) else 0
     interval_val = interval_val if isinstance(interval_val, (int, float)) else 0
+    if unit_val == _UNIT_MON:
+        return (0, 0), (0, 0), float(interval_val or 0), "MON"
+    if unit_val is not None and unit_val not in _UNIT_NAME_BY_VALUE:
+        into_val, interval_val, unit_val = 0, 1, 2
+    unit_name = _UNIT_NAME_BY_VALUE.get(unit_val, "SEC")
+    ns_per_unit = _UNIT_NS[unit_name]
     into_ns = int(round(float(into_val or 0) * ns_per_unit))
     interval_ns = int(round(float(interval_val or 0) * ns_per_unit))
     into = (into_ns // 1_000_000_000, into_ns % 1_000_000_000)
@@ -1311,6 +1335,13 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             interval_seconds = ival * (_UNIT_SECONDS.get(unit, 1))
             display_interval = (ival, unit)
             zero_interval = interval_seconds == 0
+            if unit == "MON":
+                # no `-l` line for a zero MON interval, no enclosing-Scan weight, and no interval
+                # for the auto-size arithmetic (oracle round 20 W5: Size -1 gives 232674 records for
+                # 1, 2, 15 and 100 MON, the size of a table with no interval)
+                zero_interval = False
+                display_interval = (ival, unit) if ival else None
+                interval_seconds = None
             if zero_interval:
                 interval_seconds = None
             own_weight = interval_seconds

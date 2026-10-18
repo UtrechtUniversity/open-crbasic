@@ -16,6 +16,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from . import longconv, symbols
+from ..tables import _unit_value
 from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_names, _variable_refs
 
 # `type_codes.json` codes exempt from the "missing required parameter" error: when the
@@ -977,14 +978,23 @@ def _scan_raw(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None
     return int(value), unit
 
 
-def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env) -> float | None:
+def _units_key(units_arg: S.Expr, env: consteval.Env, truncate: bool):
+    """Units of a `DataInterval` (`truncate`: `tables._unit_value`, a fraction truncated toward zero,
+    `1.9` is mSec) or of a `Scan` (the folded value, unchanged). `None` when unusable."""
+    if truncate:
+        return _unit_value(units_arg, env)
+    return consteval.value_of(units_arg, env)
+
+
+def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env,
+                 truncate_units: bool = False) -> float | None:
     if interval_arg is None or units_arg is None:
         return None
     if not (consteval.is_constant(interval_arg, env) and consteval.is_constant(units_arg, env)):
         return None
     try:
         value = consteval.value_of(interval_arg, env)
-        unit = consteval.value_of(units_arg, env)
+        unit = _units_key(units_arg, env, truncate_units)
     except consteval.NotConstant:
         return None
     us_per_unit = _US_PER_UNIT.get(unit)
@@ -994,7 +1004,7 @@ def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: con
 
 
 def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None,
-                            env: consteval.Env) -> float | None:
+                            env: consteval.Env, truncate_units: bool = False) -> float | None:
     """`_interval_us` with the interval's value truncated toward zero to a whole number of its own
     units first. Oracle-confirmed (`docs/checker.md` "Interval truncation", all four loggers
     identical): `DataInterval(0,1.5,Sec,10)` against `Scan(1,Min,0,0)` reports `interval 1000000
@@ -1004,7 +1014,7 @@ def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None
     its truncated value is not a divisor (`2.5` Sec in a `1` Min table fires; `1.5` Sec in a
     `1` Sec scan is clean because it truncates to `1`).
     """
-    us = _interval_us(interval_arg, units_arg, env)
+    us = _interval_us(interval_arg, units_arg, env, truncate_units)
     if us is None:
         return None
     try:
@@ -1013,7 +1023,7 @@ def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None
         return None
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
-    return int(value) * _US_PER_UNIT[consteval.value_of(units_arg, env)]
+    return int(value) * _US_PER_UNIT[_units_key(units_arg, env, truncate_units)]
 
 
 def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -1075,7 +1085,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
             if _is_negative_or_invalid(value):
                 diags.error(stmt.line, "DataInterval TintoInt and Interval parameters must be non-negative", stmt.file)
                 break
-        interval_us = _divisible_interval_us(interval, units, env)
+        interval_us = _divisible_interval_us(interval, units, env, truncate_units=True)
         if interval_us is not None:
             declared_interval_us[current_table] = (interval_us, stmt.line)
 

@@ -1,0 +1,290 @@
+{
+ "observation_date": "2026-10-18",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-divisible-1.9-msec",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,1.9,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 15000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr6-named-sec-accept",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-numeric-7-invalid",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,7,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-named-mon-accept",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-numeric-0-usec",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,0,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-divisible-1.9-msec",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,1.9,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 15000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr1000x-named-sec-accept",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-numeric-7-invalid",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,7,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-named-mon-accept",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-numeric-0-usec",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,0,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-divisible-1.9-msec",
+   "logger": "cr300",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,1.9,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 15000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr300-named-sec-accept",
+   "logger": "cr300",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-numeric-7-invalid",
+   "logger": "cr300",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,7,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-mon-accept",
+   "logger": "cr300",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-numeric-0-usec",
+   "logger": "cr300",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,0,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-divisible-1.9-msec",
+   "logger": "cr350",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,1.9,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 15000 uSec not integrally divisible by scan interval 1000000 uSec."
+  },
+  {
+   "id": "cr350-named-sec-accept",
+   "logger": "cr350",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-numeric-7-invalid",
+   "logger": "cr350",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,7,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-mon-accept",
+   "logger": "cr350",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-numeric-0-usec",
+   "logger": "cr350",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,0,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-num-6-mon",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,6,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 15 MON"
+   ],
+   "expected_test_records": 100
+  },
+  {
+   "id": "cr6-num-5-day",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,5,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 15 DAY"
+   ],
+   "expected_test_records": 100
+  },
+  {
+   "id": "cr6-zero-mon-no-line",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,0,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [],
+   "expected_test_records": 100
+  },
+  {
+   "id": "cr6-auto-mon-size",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,-1)\n  DataInterval(0,15,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 15 MON"
+   ],
+   "expected_test_records": 232674
+  },
+  {
+   "id": "cr6-auto-invalid-7-size",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,-1)\n  DataInterval(0,15,7,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 1 SEC"
+   ],
+   "expected_test_records": 2059767
+  },
+  {
+   "id": "cr1000x-num-6-mon",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,6,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 15 MON"
+   ],
+   "expected_test_records": 100
+  },
+  {
+   "id": "cr1000x-num-5-day",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,15,5,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 15 DAY"
+   ],
+   "expected_test_records": 100
+  },
+  {
+   "id": "cr1000x-zero-mon-no-line",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,0,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [],
+   "expected_test_records": 100
+  },
+  {
+   "id": "cr1000x-auto-mon-size",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,-1)\n  DataInterval(0,15,MON,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 15 MON"
+   ],
+   "expected_test_records": 232674
+  },
+  {
+   "id": "cr1000x-auto-invalid-7-size",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,-1)\n  DataInterval(0,15,7,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_interval_lines": [
+    "Interval: 1 SEC"
+   ],
+   "expected_test_records": 2059767
+  },
+  {
+   "id": "cr6-neg-interval-minus-1",
+   "logger": "cr6",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,-1,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-neg-interval-minus-1",
+   "logger": "cr1000x",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,-1,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr300-neg-interval-minus-1-accept",
+   "logger": "cr300",
+   "source": "Public V(60)\nDataTable(Test,1,100)\n  DataInterval(0,-1,Sec,10)\n  Sample(1,V,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
