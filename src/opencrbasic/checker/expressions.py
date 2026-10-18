@@ -934,8 +934,15 @@ def _not_yet_declared(program: S.Program, profile) -> dict[int, frozenset[str]]:
         if isinstance(stmts[i], S.ConstDecl):
             pending = pending | {stmts[i].name.upper()}
         consts_after[i] = pending
+    in_routine = False
     for i, st in enumerate(stmts):
-        if isinstance(st, S.ConstDecl):
+        if isinstance(st, S.SubDef):
+            in_routine = True
+        elif S.ends_routine(st):
+            in_routine = False
+        elif in_routine:
+            continue  # routine-local names stay invisible at top level, its own Consts keep the old rule
+        elif isinstance(st, S.ConstDecl):
             later = (consts_after[i] | (variables - seen)) - seen - base
             out[id(st)] = frozenset(later)
             seen.add(st.name.upper())

@@ -1893,9 +1893,16 @@ class _Parser:
             elif not p.at_end():
                 # a value followed by another operand: `Const J = a b`, `(5 4` (oracle, 2026-10-18,
                 # docs/checker.md "Round 20")
-                rest = p.toks[eq_at:-1]
-                depth = sum((t.text == "(") - (t.text == ")") for t in rest if t.kind == "OP")
-                text = p.seg_text[value_start_col:]
+                rest, d = [], 0
+                for t in p.toks[eq_at:-1]:
+                    if t.kind == "OP":
+                        if t.text == "," and d <= 0:
+                            break  # the value ends at a top-level comma (`Const X = 1 2, Y = 3`)
+                        d += (t.text == "(") - (t.text == ")")
+                    rest.append(t)
+                depth = d
+                stop = p.toks[eq_at + len(rest)].col if eq_at + len(rest) < len(p.toks) - 1 else len(p.seg_text)
+                text = p.seg_text[value_start_col:stop]
                 p.i = len(p.toks) - 1
                 return S.Unparsed(line, file, text="", reason="Const bad value: " + (
                     CONST_NOMATCH if depth > 0 else CONST_INCOMPLETE) + text)
