@@ -147,7 +147,48 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Round 19 (2026-10-17; resume here)
+## Round 20 (2026-10-18; interrupted, resume here)
+
+- Integration branch `ocb-r20`, cut from `main` at ef873362 ("Require Python 3.15 ...", not by
+  this workstream). Baseline at ef873362 (2026-10-18): difftest repo/chm identical to round 19
+  (cr6/cr1000x 18/506, cr300/cr350 7+11 verdict/505), `fuzz_replay` identical to round 19
+  (2,375 exact, 62 false accepts, 0 false rejects). Full pytest NOT obtained (see below).
+- BLOCKER: the macOS POSIX semaphore table is exhausted again (`multiprocessing.Lock()` ->
+  `OSError(28, 'No space left on device')`), from killed pytest/xdist trees under heavy load (four
+  workers + coordinator checks gave load averages of 90-170). Every multiprocessing pool fails or
+  hangs: the LSP server worker pool (`tests/lsp/test_lsp_bench.py::test_smoke_report` times out
+  with the ENOSPC traceback in the server's stderr; the same test fails at 3972d0dd, so ef873362
+  is not the cause), and possibly difftest/fuzz_replay jobs. Reboot, then check with
+  `~/.uv-envs/opencrbasic/bin/python -c "import multiprocessing as m; m.Lock()"`.
+  Run at most 2-3 workers at once and never let a worker leave a pytest -n run behind.
+- Pending, NOT integrated:
+  - branch `ocb-r20-w3` commit 9d78c502 (W3, Const leftovers: unmatched paren, incomplete and
+    out-of-place values, `Long[5]`, `Const "abc`, `As String * n = ...` false accept, use before
+    declaration). Fixture `r20_const.json` 228 cases audited 0 differing; focused tests pass.
+    NOT run: full pytest, difftest x4, replay. Gate it after the reboot before integrating.
+    Its report lists observed-but-unimplemented rules: `Variable used in CONST expression.`
+    (per-logger cascade), `X = J(1)` / `Const K = Min(2,3)` (`Incomplete expression`), CR300/CR350
+    `Variable illegal in Parameter: J.` for `Const J As Long = J`.
+  - W4 (no commit): DataInterval units rule observed on all four loggers (real compiler,
+    `scratch/r20/W4/units_out.json`, driver.py): units fold by value like W5's Scan fold
+    (0..5 = USEC..DAY, truncated); 6 = MON (TDF interval 0, list `Interval: N MON`, tinto
+    dropped); any other value = invalid (TDF interval 1 SEC, tinto dropped); CR300 numeric 0
+    with 15 uSec gives the storage failure (false accept today). Not probed: auto-size weight for
+    MON/invalid units. Ready for a worker.
+  - W1 (no commit): fuzz seeds 413-416 not run (machine saturated); `scratch/r20/W1/run.sh`.
+  - W2 (no commit, agent stopped): TimeOut CR300/CR350 leftovers; probe cases in
+    `scratch/r20/W2/p3.txt` (+ outputs) for the next attempt.
+
+## Next steps (round 20, after the reboot)
+
+1. Reboot; confirm the semaphore check above; re-run the full pytest baseline at `ocb-r20` with
+   nothing else running.
+2. Gate `ocb-r20-w3` (full pytest, difftest x4, replay), cherry-pick if green.
+3. Re-dispatch, two or three at a time: DataInterval units (W4 rule above), TimeOut CR300/CR350
+   (W2 cases), fuzz seeds 413-416 (alone, or with one light worker).
+4. Then the round-19 "Next steps (round 20)" list below.
+
+## Round 19 (2026-10-17)
 
 - Integrated on `ocb-r18` (pushed to the mirror after this commit), each verified by the
   coordinator (fixture audit, full pytest, oracle probe of the worker's weakest claim):
