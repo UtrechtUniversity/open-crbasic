@@ -108,8 +108,8 @@ timing.py      -t timing estimates
 ## Remaining-work strategy
 
 Work in small chunks: one observed rule or one harness defect, immediate focused check, then
-the broader regression gate. Commit each verified chunk with a single-line message, as requested
-on 2026-10-02. Do not batch unrelated semantic fixes or rewrite the parser/checker
+the broader regression gate. When commits are authorized, commit each verified chunk with a
+single-line message. Do not batch unrelated semantic fixes or rewrite the parser/checker
 while diagnostic ordering is still being reconstructed.
 
 1. Make measurements trustworthy first: distinguish oracle infrastructure failures and logger
@@ -135,10 +135,9 @@ while diagnostic ordering is still being reconstructed.
    difftest/replay with no false rejects/crashes/hangs or lowered exact agreement; then a fresh
    bounded fuzz seed after the family is stable. Finish with `cd scripts && uv run verify.py`.
 
-Who does what (current human instructions) is in PROGRESS.md "Work method": a coordinating
-session integrates and verifies; Claude subagents (Haiku for easy/medium chunks, Sonnet for rule
-discovery and reverse engineering) implement in their own worktrees; Codex `gpt-6.1-sol` does
-read-only reviews only. Workers get disjoint file ownership and return observed validation.
+The current work method is in [PROGRESS.md](PROGRESS.md#work-method). Follow current human
+instructions for implementation, delegation and review; superseded agent/model assignments and
+branch workflows are preserved in the progress history.
 
 ## Agreement metric
 
