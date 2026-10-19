@@ -147,46 +147,57 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Round 20 (2026-10-18; interrupted, resume here)
+## Round 20 (2026-10-18/19; resume here)
 
 - Integration branch `ocb-r20`, cut from `main` at ef873362 ("Require Python 3.15 ...", not by
-  this workstream). Baseline at ef873362 (2026-10-18): difftest repo/chm identical to round 19
-  (cr6/cr1000x 18/506, cr300/cr350 7+11 verdict/505), `fuzz_replay` identical to round 19
-  (2,375 exact, 62 false accepts, 0 false rejects). Full pytest NOT obtained (see below).
-- BLOCKER: the macOS POSIX semaphore table is exhausted again (`multiprocessing.Lock()` ->
-  `OSError(28, 'No space left on device')`), from killed pytest/xdist trees under heavy load (four
-  workers + coordinator checks gave load averages of 90-170). Every multiprocessing pool fails or
-  hangs: the LSP server worker pool (`tests/lsp/test_lsp_bench.py::test_smoke_report` times out
-  with the ENOSPC traceback in the server's stderr; the same test fails at 3972d0dd, so ef873362
-  is not the cause), and possibly difftest/fuzz_replay jobs. Reboot, then check with
+  this workstream). Clean baseline after the reboot (2026-10-18): pytest 41,625 passed / 311
+  skipped, `-m server` 163 passed; difftest and `fuzz_replay` identical to round 19.
+- Semaphore exhaustion (2026-10-18): the macOS POSIX semaphore table ran out
+  (`multiprocessing.Lock()` -> `OSError(28)`) after killed pytest/xdist trees under load averages of
+  90-170 (four workers + coordinator checks). Every multiprocessing pool then fails or hangs (the
+  LSP server pool: `tests/lsp/test_lsp_bench.py::test_smoke_report` times out with ENOSPC in the
+  server's stderr). Fixed by a reboot. Check before a round:
   `~/.uv-envs/opencrbasic/bin/python -c "import multiprocessing as m; m.Lock()"`.
-  Run at most 2-3 workers at once and never let a worker leave a pytest -n run behind.
-- Pending, NOT integrated:
-  - branch `ocb-r20-w3` commit 9d78c502 (W3, Const leftovers: unmatched paren, incomplete and
-    out-of-place values, `Long[5]`, `Const "abc`, `As String * n = ...` false accept, use before
-    declaration). Fixture `r20_const.json` 228 cases audited 0 differing; focused tests pass.
-    NOT run: full pytest, difftest x4, replay. Gate it after the reboot before integrating.
-    Its report lists observed-but-unimplemented rules: `Variable used in CONST expression.`
-    (per-logger cascade), `X = J(1)` / `Const K = Min(2,3)` (`Incomplete expression`), CR300/CR350
-    `Variable illegal in Parameter: J.` for `Const J As Long = J`.
-  - W4 (no commit): DataInterval units rule observed on all four loggers (real compiler,
-    `scratch/r20/W4/units_out.json`, driver.py): units fold by value like W5's Scan fold
-    (0..5 = USEC..DAY, truncated); 6 = MON (TDF interval 0, list `Interval: N MON`, tinto
-    dropped); any other value = invalid (TDF interval 1 SEC, tinto dropped); CR300 numeric 0
-    with 15 uSec gives the storage failure (false accept today). Not probed: auto-size weight for
-    MON/invalid units. Ready for a worker.
-  - W1 (no commit): fuzz seeds 413-416 not run (machine saturated); `scratch/r20/W1/run.sh`.
-  - W2 (no commit, agent stopped): TimeOut CR300/CR350 leftovers; probe cases in
-    `scratch/r20/W2/p3.txt` (+ outputs) for the next attempt.
+  Claude Code moves long commands to the background automatically, so "stay in the foreground"
+  cannot be followed; the worker brief now says: never kill a backgrounded run, no second heavy run
+  while one is going. Run at most two workers plus the coordinator's gates.
+- Integrated, each gated by the coordinator (fixture audits, full pytest, difftest x4, replay,
+  probes of valid neighbours):
+  - W3 Const leftovers (87c5c25c + fix 39074ec0): unmatched paren / out-of-place / adjacent-operand
+    values, `Long[5]`, `Const "abc`, `As String * n = ...` false accept, use before declaration
+    (`r20_const.json`). Its first commit lost two real-compiler fixture cases
+    (`r14_routine_local_scope` dim_in_const, `r7_cr3xx_top-13`), caught by the full pytest the
+    worker had not run; the fix restores both. Coordinator probe of 10 valid shapes: 38/40 match,
+    the 2 misses are a pre-existing CR300/CR350 false accept (a Sub using a Const declared after
+    it is `K is not defined.`).
+  - W5 DataInterval/Scan units by value (80af5685): 0..5 truncated, 6 = MON (TDF interval 0,
+    tinto dropped, auto-size like MON), anything else invalid (1 SEC), DataInterval divisibility
+    check with truncated units (`r20_interval_units.json`). Coordinator probe of 10 valid numeric
+    DataInterval shapes: 40/40 match.
+- Gates at 80af5685: pytest 41,896 passed / 311 skipped; all r20 fixtures and the older Const
+  fixtures audit 0 differing; difftest unchanged; `fuzz_replay` 2,377 exact (+2), 62 false accepts,
+  0 false rejects, 687 message diffs (`scratch/r20/replay-w5.json`); tdftest unchanged
+  (`goestable_1` only; the reference-fault lines are not mismatches).
+- Not done in round 20: W1 fuzz seeds 413-416 (machine saturated; `scratch/r20/W1/run.sh`), W2/W6
+  TimeOut CR300/CR350 (no commit; observations `scratch/r20/W6/cond.out`, `ungated.out`; candidate
+  rule: after an earlier error on the same line a '-'-signed decimal TimeOut prints `Parameter must
+  be a constant integer: <stmt>.` on CR300/CR350, positive/hex keep NEG; a second '-' call after a
+  NEG call gives NEG then constant-integer on all four loggers). Codex RE research on it was still
+  running when the round closed: `scratch/codex/re-r20-timeout-cr3xx.md` (log `.log`); oracle-check
+  its predictions before any worker uses them.
 
-## Next steps (round 20, after the reboot)
+## Next steps (round 21)
 
-1. Reboot; confirm the semaphore check above; re-run the full pytest baseline at `ocb-r20` with
-   nothing else running.
-2. Gate `ocb-r20-w3` (full pytest, difftest x4, replay), cherry-pick if green.
-3. Re-dispatch, two or three at a time: DataInterval units (W4 rule above), TimeOut CR300/CR350
-   (W2 cases), fuzz seeds 413-416 (alone, or with one light worker).
-4. Then the round-19 "Next steps (round 20)" list below.
+1. Read `scratch/codex/re-r20-timeout-cr3xx.md`, oracle-check its predictions, then one worker for
+   the CR300/CR350 TimeOut messages (start from `scratch/r20/W6/`).
+2. Fuzz seeds 413-416, alone on the machine (`scratch/r20/W1/run.sh`).
+3. W3 leftovers (docs/checker.md "Round 20"): `Variable used in CONST expression.` (per-logger
+   cascade), `X = J(1)` and `Const K = Min(2,3)` (`Incomplete expression`), CR300/CR350
+   `Variable illegal in Parameter: J.`, a Sub using a later Const on CR300/CR350.
+4. W5 leftovers (docs/tdf-rules.md "Numeric and Const units (round 20)"): zero-interval list unit
+   name when Scan and DataInterval units differ, fractional Interval values, CR300 Scan list
+   `(null)`/`MON` for out-of-range units.
+5. Round-19 "Next steps (round 20)" items 3-5.
 
 ## Round 19 (2026-10-17)
 
