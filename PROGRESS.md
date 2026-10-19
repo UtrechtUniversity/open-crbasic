@@ -164,6 +164,37 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   no cross-table sources, short literal; the RT_DATA-DataInterval variant was predicted wrong);
   CR6/CR300 `Anonymous<n>` naming (one program-wide counter from 1, FieldNames still consumes a
   number) 3/3. Brief for the next worker: `scratch/r21/W2-literal-fields.md` (start after W1).
+- Integrated and gated on `ocb-r21`:
+  - W1 (24a2f132) negative TimeOut literals stop folding after a reported error; String-operand
+    errors moved to pass 1 (`var_types.check_string_operands`); `order_timeout_negative` only
+    moves NEG after undefined names from its own or earlier statements. Coordinator 56-case probe
+    56/56 (was 16/56); fixture `r21_negfold.json` 204 cases 0 differing.
+  - W2 (cefee4ea) non-variable Sample sources: String width 4*(floor(n/4)+1), concatenations sum,
+    numbers as String 24; `Anonymous<n>` from one program-wide counter (all output instructions,
+    uncalled tables count, FieldNames still consumes); `FFT(<expression>)` field
+    `Anonymous<n>_FFT` (was dropped). Fixture `tdf_anonymous.json` (user-table summaries, audited
+    by the worker uncached on the real compilers, 112/112; `fixture_audit.py` cannot read this
+    format).
+- Gates at cefee4ea: pytest 42,212 passed / 311 skipped, `-m server` 163 passed; difftest
+  unchanged; `fuzz_replay` 2,377 exact, 62 false accepts, 0 false rejects (unchanged: the corpus
+  has none of these shapes); tdftest CR6 TDF byte-identical 210/210 (was 209/210), CR300 sizes
+  114/114, CR350 118/118, CR1000X sizes 272/274 (Status-table gap unchanged); `scripts/verify.py`:
+  `BUILD  host tests 136 pass | CRBasic 19/19 compiled, 6 warning(s) | repository pass`.
+
+## Next steps (round 22)
+
+1. Suspected same folding rule in other constant-integer checks (W1): TCPOpen/SerialOpen constant
+   arguments, Timer's third argument, unary minus in Scan/DataInterval, Const values, `1-1`/`-KT`.
+   Probe on the real compilers first; the mechanism is in `scratch/codex/re-r20-timeout-cr3xx.md`.
+2. W2 leftovers: String-returning function width (`Left(S,2)` is 16, we give 24); unresolved
+   `Table.Field` sources are named after the member (`Status.Battery` -> `Battery`), we give
+   `Anonymous` (careful with units lookup and the duplicate check). FFT of a literal crashes the
+   real compiler.
+3. W1 leftovers: `"a" * "a"` prints two errors; `+&H…`; error attribution across later `:`
+   segments on one line.
+4. Fuzz seeds 413-416, alone on the machine (`scratch/r20/W1/run.sh`).
+5. Round-20 next-steps items 3-5 (Const and units leftovers).
+
 
 ## Round 20 (2026-10-18/19)
 
