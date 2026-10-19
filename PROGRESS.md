@@ -158,9 +158,12 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   negative TimeOut literal is `Parameter must be a constant integer`; positive/`+N`/hex keep NEG;
   CR6/CR1000X defer expressions with unresolved names (they do not count). Worker W1 implements it
   (branch `ocb-r21-w1`, brief `scratch/r21/W1-negfold.md`).
-- Codex RE on `goestable_1` (CR300/CR350 auto-size split, CR6 `Anonymous1` field name) started
-  2026-10-19: `scratch/codex/re-r21-goestable.md` (log `.log`). Check the process (`ps`) before
-  calling it running; oracle-check its predictions before any worker uses them.
+- Codex RE on `goestable_1` finished 2026-10-19 13:23 (`scratch/codex/re-r21-goestable.md`); root
+  cause: a String-literal Sample is stored at 4*(floor(n/4)+1) bytes, we use 1. Coordinator oracle
+  check (`scratch/r21/goes/`): 8/10 CR300/CR350 count predictions exact (original, no GOESField,
+  no cross-table sources, short literal; the RT_DATA-DataInterval variant was predicted wrong);
+  CR6/CR300 `Anonymous<n>` naming (one program-wide counter from 1, FieldNames still consumes a
+  number) 3/3. Brief for the next worker: `scratch/r21/W2-literal-fields.md` (start after W1).
 
 ## Round 20 (2026-10-18/19)
 
