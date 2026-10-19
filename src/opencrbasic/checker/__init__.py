@@ -736,7 +736,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.add_string_illegal, program, profile, diags)
     _run_pass(warnings.add_truncate_warnings, _with_inline(program), profile, diags)
     _run_pass(cr3xx.semicolon_headers, program, profile, diags)
-    _run_pass(intervals.fold_negative_timeouts, _with_inline(program), profile, diags, env, pass1_items)
+    _run_pass(intervals.fold_timeout_expressions, _with_inline(program), profile, diags, env, pass1_items)
     _run_pass(intervals.order_timeout_negative, diags, profile, program)
 
     def is_constant(expr: S.Expr | None) -> bool:

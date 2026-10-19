@@ -2224,12 +2224,12 @@ Fixture `r19_timeout_values.json` (244 cases; `intervals.timeout_value`, `interv
   first, then the same-line NEG line(s) (`order_timeout_negative`). The count error on the same call (`214748365,9`: NEG, then
   `No Matching, or out of place )`) keeps NEG first on all four loggers. Not modelled: an undefined name in the TimeOut slot
   itself (CR300/CR350 print an ungated `Parameter must be a constant integer:` line; those rows are excluded from the fixture).
-- **Still not modelled:** expressions in the `TimeOut` slot (`-KT`, `KT+1`), a sign on a hex literal, other literal spellings
-  (`&O`, `&B`, leading-zero boundary spellings), and the ordering of the NEG line against other same-line errors.
+- Integer expressions and signed hex/binary forms are covered by the round-21 and round-23 sections below. Other literal
+  spellings (`&O`, leading-zero boundary spellings) and some same-line diagnostic ordering remain open.
 
 ### Negative `TimeOut` literals stop folding after a reported error (all four loggers, round 21)
 
-Fixture `r21_negfold.json` (204 cases, 51 sources x 4 loggers, audit clean 2026-10-19; `intervals.fold_negative_timeouts`,
+Fixture `r21_negfold.json` (204 cases, 51 sources x 4 loggers, audit clean 2026-10-19; `intervals.fold_timeout_expressions`,
 `intervals.order_timeout_negative`, `var_types.check_string_operands`). Mechanism from the read-only RE
 (`scratch/codex/re-r20-timeout-cr3xx.md`), every verdict below observed on the real compilers (CR6 and CR300 on all
 spellings, CR1000X and CR350 on the 56-case set and the fixture):
@@ -2255,8 +2255,40 @@ spellings, CR1000X and CR350 on the 56-case set and the fixture):
 - Order: diagnostics in encounter order. CR300/CR350 `HTTPPut(..,-1) : Result(4)=Nope+1` is NEG then `Nope is not defined.`; a
   name in the call or an earlier statement of its line still comes first (`order_timeout_negative`, round 19).
 - Not modelled: an earlier error that follows the call in the same line when the call has an earlier segment (counted as earlier),
-  folds in expressions (`-KT`, `1-1`), the same effect on the other constant-integer parameters (suspected: `TCPOpen`/`SerialOpen`
-  constant arguments, `Timer`'s third argument, `Scan`/`DataInterval` literals, `Const` values).
+  the same effect on the other constant-integer parameters (suspected: `TCPOpen`/`SerialOpen` constant arguments, `Timer`'s third
+  argument, `Scan`/`DataInterval` literals, `Const` values). Round 23 extends the expression forms below.
+
+### Integer `TimeOut` expressions and named negation (all four loggers, round 23)
+
+Reference observations from 2026-10-19 are preserved in `r23_timeout_expressions.json` (236 cases, 59 sources x four profiles).
+The cases cover clean/error/gated combinations, overflow, preceding and following errors, unresolved sibling arguments,
+colon and inline-If statements, and both HTTPPut and FTPClient. The checker now classifies integer
+`+`, `-`, `*` expressions, unary signs on integer constants and expressions, and signed hex/binary literals. Each arithmetic
+result wraps to signed 32 bits before the existing `signed32(10 * TimeOut)` negative check. `+KT` alone needs no fold;
+`-KT`, `KT+1`, `1-1` and `-(KT+1)` do. Earlier reported errors disable those folds, yielding the constant-integer diagnostic
+ungated and no TimeOut diagnostic after `IfTime`/`TimeIntoInterval`, just as for negative literals in round 21.
+
+The mechanism was traced in a fresh local CR6 decompilation: `FUN_00497d60` evaluates and replaces an expression buffer only
+when both its local expression error and `DAT_00667e64` (reported errors) are zero. `FUN_0049edf0` accepts the resulting
+integer descriptor (`0x123`); other descriptors either set the constant-integer error or follow the persistent integral-mode
+branch. `FUN_0049f6e0` multiplies its result by ten and reports a negative product. These are behavioral observations;
+decompiled code is not copied into the implementation. The CR1000X/CR300/CR350 transfer is established by reference probes.
+
+The broader local probe sweep (`scratch/r23_probe.json`, 320 observations) also confirmed these **unimplemented** neighbors
+on all four profiles; they are deliberately outside the regression fixture's implemented scope:
+
+- With `Const KT=1`, `KT/2` and `2^0` report the constant-integer error ungated. Gated, they report `Parameter must be integral.`
+  while clean, but after `X="a"*2` they instead warn `Parameter will truncate to the nearest integer.`.
+- `NOT 0` gives NEG while clean. After a reported error it gives the constant-integer error ungated and no TimeOut diagnostic
+  gated. `1<<31` is accepted clean, but needs the constant-integer error after an earlier error when ungated.
+- A declared Float variable `X` as TimeOut gives the constant-integer error ungated and the truncate warning gated, with or
+  without an earlier error. The current implementation misses both.
+- `X=IfTime("a",1,Sec)` before a negative TimeOut preserves its truncate warning ahead of NEG. The warning is currently missing;
+  this does not change the observed fact that warnings leave folding enabled.
+
+Unresolved TimeOut operands and the other constant-integer parameter families also remain separate gaps. The existing
+same-line attribution limit from round 21 remains; this change does not generalize the expression evaluator for other
+instruction parameters.
 
 ### Function-as-statement arity, `Timer` arity, `Sub`-call echo, string over-index counts (all four loggers, rounds 16-17)
 

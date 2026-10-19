@@ -102,7 +102,7 @@ def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide, p
     `scratch/r19/W8`). Only the forms in `timeout_value` are modelled. CR6/CR1000X: no such line when
     another argument of the same call is an undefined name (`Invalid symbol in expression` alone).
     CR300/CR350: the line follows the same-line `... is not defined.` lines (`order_timeout_negative`).
-    After an already reported error the negative literals are not folded: `fold_negative_timeouts`."""
+    After an already reported error arithmetic is not folded: `fold_timeout_expressions`."""
     for call in _calls(stmt, _TIMEOUT_ARG):
         if _negative_timeout(call, env, profile, wide, program):
             diags.error(stmt.line, _TIMEOUT_NEGATIVE, stmt.file, stmt=stmt)
@@ -129,25 +129,26 @@ def _undefined_sibling(call: S.Index, i: int, program: S.Program, profile) -> bo
                for j, a in enumerate(call.args) if j != i)
 
 
-def _folds_negation(arg) -> bool:
-    """A `TimeOut` that is a decimal or hex integer literal under unary signs with at least one `-`
-    (`-1`, `-&H1`, `--1`, `-(-1)`, `+(-1)`): the compiler folds the negation only while nothing was
-    reported (`fold_negative_timeouts`)."""
-    minus = False
+def _needs_integer_fold(arg) -> bool:
+    """Arithmetic needs the parser's error-free fold; a unary plus alone does not.
+
+    See `docs/instructions.md`, round 23. The value classifier bounds the supported operators
+    and operands; runtime expressions and unobserved forms are left to their existing checks.
+    """
     while isinstance(arg, S.Unary) and arg.op in ("-", "+"):
-        minus |= arg.op == "-"
+        if arg.op == "-":
+            return True
         arg = arg.operand
-    return minus and isinstance(arg, S.Number) and (
-        arg.text.startswith("&") or not ("." in arg.text or "E" in arg.text.upper()))
+    return isinstance(arg, S.Binary) and arg.op in ("+", "-", "*")
 
 
-def fold_negative_timeouts(program: S.Program, profile, diags: Diagnostics, env, reported) -> None:
-    """The compiler folds `-N` into a constant only while its reported-error count is zero (warnings
-    do not count, `:` and newlines do not reset it). After any reported error a `-N` / `(-N)` /
-    `- N` / `-&H1` / `--1` TimeOut is `Parameter must be a constant integer: <statement>.` instead of
-    the sign check (any value, also `-0` and `-2147483648`); in the gated state (`timeout_gate`) it is
-    silent. Oracle 2026-10-19 (round 21), CR6 and CR300 on every spelling, CR1000X and CR350 on the
-    56-case set of `r21_negfold.json`. `program` is the `_with_inline` list. What counts as reported
+def fold_timeout_expressions(program: S.Program, profile, diags: Diagnostics, env, reported) -> None:
+    """The compiler folds integer arithmetic only while its reported-error count is zero (warnings
+    do not count, `:` and newlines do not reset it). After any reported error, a supported arithmetic
+    TimeOut is `Parameter must be a constant integer: <statement>.` instead of the sign check,
+    whatever its value; in the gated state (`timeout_gate`) it is silent. Oracle rounds 21 and 23,
+    fixtures `r21_negfold.json` and `r23_timeout_expressions.json`. `program` is the `_with_inline`
+    list. What counts as reported
     before the call: an error on an earlier line, an error of an earlier statement of the same line
     (any other error of the line when the call has an earlier segment), a previous `TimeOut` finding of
     this rule, and on CR300/CR350 an undefined name in an earlier argument of the call. CR6/CR1000X
@@ -197,7 +198,7 @@ def fold_negative_timeouts(program: S.Program, profile, diags: Diagnostics, env,
             if _negative_timeout(call, env, profile, wide, program):
                 own = (neg_lines.get(key) or [None]).pop(0)
             value = timeout_value(arg, env, profile, wide)
-            if _folds_negation(arg) and (value is None or value[0] == "int"):
+            if _needs_integer_fold(arg) and value is not None and value[0] == "int":
                 line_first = first[(stmt.file or "", stmt.line)]
                 counted = [d for d in diags.items if d.severity == "error" and d.line
                            and d.message != _TIMEOUT_NEGATIVE and not any(d is a for a in added)
@@ -354,18 +355,30 @@ def _signed32(x: int) -> int:
 def timeout_value(arg, env, profile, wide=frozenset()):
     """Classify a constant `TimeOut` argument: `("wide", 0)` when it is float-typed (a float literal,
     or a decimal integer literal past the logger's 32-bit range, see `_decimal`), `("int", v)` for an
-    integer constant whose 32-bit value is `v`, or `None` when not modelled (expressions, other
-    spellings, out-of-range `Const` values on CR6/CR1000X)."""
+    integer constant whose 32-bit value is `v`, or `None` when not modelled. Integer `+`, `-`,
+    `*` and unary signs on named constants are folded with 32-bit wrapping; other operators and
+    out-of-range `Const` values on CR6/CR1000X remain outside this classifier.
+    """
     if isinstance(arg, S.Unary) and arg.op in ("-", "+"):
         signs, lit = [], arg
         while isinstance(lit, S.Unary) and lit.op in ("-", "+"):
             signs.append(lit.op)
             lit = lit.operand
-        if not isinstance(lit, S.Number):
+        sign = -1 if signs.count("-") % 2 else 1
+        if isinstance(lit, S.Number):
+            return _timeout_literal(lit, sign, profile)
+        value = timeout_value(lit, env, profile, wide)
+        if value is not None and value[0] == "int":
+            return ("int", _signed32(sign * value[1]))
+        return value
+    if isinstance(arg, S.Binary) and arg.op in ("+", "-", "*"):
+        left = timeout_value(arg.left, env, profile, wide)
+        right = timeout_value(arg.right, env, profile, wide)
+        if left is None or right is None or left[0] != "int" or right[0] != "int":
             return None
-        if lit.text.startswith("&") and signs != ["-"]:
-            return None   # only a single minus on a hex literal is observed
-        return _timeout_literal(lit, -1 if signs.count("-") % 2 else 1, profile)
+        a, b = left[1], right[1]
+        value = a + b if arg.op == "+" else a - b if arg.op == "-" else a * b
+        return ("int", _signed32(value))
     if isinstance(arg, S.Number):
         return _timeout_literal(arg, 1, profile)
     if isinstance(arg, S.Name):
@@ -390,11 +403,12 @@ def timeout_value(arg, env, profile, wide=frozenset()):
 
 def _timeout_literal(lit: S.Number, sign: int, profile):
     text = lit.text.upper()
-    if text.startswith("&H"):
+    if text.startswith(("&H", "&B")):
         digits = text[2:]
-        if not digits or len(digits) > 8 or any(c not in "0123456789ABCDEF" for c in digits):
+        base, limit, alphabet = (16, 8, "0123456789ABCDEF") if text[1] == "H" else (2, 32, "01")
+        if not digits or len(digits) > limit or any(c not in alphabet for c in digits):
             return None
-        return ("int", _signed32(sign * _signed32(int(digits, 16))))   # (`-&H80000000` wraps to itself)
+        return ("int", _signed32(sign * _signed32(int(digits, base))))
     if text.startswith("&"):
         return None
     if "." in text or "E" in text:

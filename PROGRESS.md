@@ -1,7 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-19 after development round 22**.
-Measurements describe the round-22 implementation. Inspect `git status` before editing.
+Current compiler state and handoff, updated **2026-10-19 after development round 23**.
+Measurements describe the round-23 implementation. Inspect `git status` before editing;
+use Git to check commit and publication state.
 
 Design and parity criteria: [PLAN.md](PLAN.md). Previous measurements, round logs and superseded
 workflow instructions: [progress history](docs/progress-history.md). Language-server work has its
@@ -18,14 +19,15 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 42,149 passed, 311 skipped |
+| `pytest -q -n 4 -m 'not server'` | 42,385 passed, 311 skipped |
 | `pytest -q -m server` | 163 passed |
-| New expression-source fixture and its audit | 100 cases across four profiles; 0 differing |
-| Saved fuzz replay, 3,158 inputs, after serial retries | 2,376 exact; 62 false accepts; 685 message differences; 16 mode differences; 19 reference/runner failures |
-| Replay regressions against the pre-change snapshot | No changed compiler output on any input with a usable reference verdict; no false rejects, implementation exceptions, crashes or hangs observed |
-| CR6 TDF and table-list corpus comparison | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
+| Integer-TimeOut fixture and fresh four-profile audit (round 23) | 236 cases; 0 differing; 0 missing reference verdicts |
+| Expression-source fixture and its audit (round 22) | 100 cases across four profiles; 0 differing |
+| Saved fuzz replay, 3,158 inputs, round-23 implementation against round-22 reference results | 2,376 exact; 62 false accepts; 685 message differences; 16 mode differences; 19 reference/runner failures retained separately |
+| Round-23 replay comparison against the pre-change snapshot | No changed compiler output on any input with a usable reference verdict; reference compilers were not rerun for this replay |
+| CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
-Four-profile diagnostic comparison (`tools/difftest.py --group all`):
+Four-profile diagnostic comparison, rerun in round 23 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
 |---|---|---|
@@ -34,13 +36,14 @@ Four-profile diagnostic comparison (`tools/difftest.py --group all`):
 | CR300 | 7 / 11 | 505 / 2 |
 | CR350 | 7 / 11 | 505 / 2 |
 
-No verdict mismatches, implementation exceptions or lost exact cases were observed in this
-comparison. The CR300/CR350 repository rejections reflect CR6-specific programs. The help-corpus
+No changed compiler output, verdict mismatches, implementation exceptions or lost exact cases
+were observed on usable reference results. The CR300/CR350 repository rejections reflect CR6-specific programs. The help-corpus
 failures are `pointervariable_2.CR6` on all four profiles and `strcomp_3.CR6` on CR300/CR350.
 The differential and replay gates exit 1 while reference verdicts are missing; this is not a clean
 parity gate. Compare individual valid results and keep failures separate.
 
-Repository verification passed with both the reference compiler and `CR6COMP=opencrbasic`:
+Repository verification passed with the reference compiler in round 22 and with
+`CR6COMP=opencrbasic` in round 23:
 
 ```text
 BUILD  host tests 136 pass | CRBasic 19/19 compiled, 6 warning(s) | repository pass
@@ -50,37 +53,40 @@ Expected warnings are owned by [repository build status](../STATUS.md#build). Th
 includes the `.CR1X` bench harness; the diagnostic corpus table above covers `.CR6` programs.
 Compilation and host tests do not establish logger runtime behavior. No hardware tests were run.
 
-The latest round did not rerun full corpus TDF/table-list comparisons on the other three profiles,
-or full timing, message-file, signature and preprocessing coverage. CDM binary images (`-b`) are
+Round 23 did not rerun full corpus TDF/table-list comparisons on any profile; round 22 ran CR6 only.
+Neither round reran full timing, message-file, signature and preprocessing coverage. CDM binary images (`-b`) are
 [explicitly excluded from parity](PLAN.md#explicit-exclusions-from-parity). Distribution policy is
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
-String-function temporary-buffer widths, member field metadata and duplicate checks now match
-the new reference cases. A zero-byte `Replace` temporary reports the reference allocation error
-instead of reaching a division by zero during table rendering. Rules and remaining limits are in
-[TDF expression buffers and member sources](docs/tdf-rules.md#expression-buffers-and-member-sources-round-22-2026-10-19).
+Round 23 extends the error-dependent TimeOut fold to integer `+`, `-`, `*`, unary signs on
+constants/expressions and signed hex/binary forms, with 32-bit wrapping. Clean and error-gated
+HTTPPut/FTPClient behavior now matches the 236-case fixture. Mechanism, evidence and known limits:
+[integer TimeOut expressions](docs/instructions.md#integer-timeout-expressions-and-named-negation-all-four-loggers-round-23).
+The wider 320-observation probe also found remaining float, runtime, `NOT`, shift and warning
+gaps; these are documented explicitly and are outside the implemented fixture's scope.
 
-The fixture is `tests/fixtures/tdf_expressions.json`; tests check ordered diagnostics and exact
-bytes of explicitly declared DataTables, including an auto-sized table. Regenerate or audit with
-`tools/tdf_expression_fixture_gen.py`; the standard diagnostic fixture auditor does not cover its
-TDF bytes. Implicit structure-table header/units differences on CR300/CR350 remain open.
+Round-22 table-buffer and member fixes remain covered by `tests/fixtures/tdf_expressions.json`:
+[rules and remaining limits](docs/tdf-rules.md#expression-buffers-and-member-sources-round-22-2026-10-19).
+Its TDF bytes require `tools/tdf_expression_fixture_gen.py --audit`; the diagnostic fixture auditor
+does not check them.
 
-Latest local run evidence is under `scratch/r22_*`: the differential baseline/final reports,
-pytest/server logs, fixture audit, TDF comparison and both repository builds. Replay reports are
-`scratch/r22_replay_fresh.json`, `scratch/r22_replay_retries.json` and the combined
-`scratch/r22_replay_final_refreshed.json`; `scratch/r22_replay_comparison.json` compares observed
-pre-change compiler output with the refreshed reference results. These are untracked local files;
-tracked fixtures and behavior notes remain the durable evidence.
+Latest local evidence is under `scratch/r23_*`: probes, fixture audit, tests, differential runs,
+repository verification and replay reports. `r23_baseline.json` and `r23_replay_candidate.json`
+compare compiler output with the round-22 refreshed reference verdicts; the 19 missing reference
+verdicts are excluded from output comparisons. Earlier fresh reference sweeps remain under
+`scratch/r22_*`. These files are untracked; fixtures and behavior notes are the durable evidence.
 
 ## Next steps
 
-1. Extend the error-count-dependent constant-folding investigation beyond negative TimeOut
-   literals: TCPOpen/SerialOpen constant arguments, Timer's third argument, Scan/DataInterval,
-   Const values, `1-1`, `-KT`, `KT+1`, signed hex/binary forms and unresolved names. Probe all four
-   compilers before generalizing; start from the existing TimeOut fixtures and
-   [instruction behavior notes](docs/instructions.md).
+1. Extend constant-folding coverage from the implemented integer TimeOut expressions to the
+   observed round-23 gaps: `KT/2` and `2^0` change from integral errors to truncate warnings after
+   an earlier error when gated; `NOT 0`, `1<<31`, a Float variable TimeOut, and an earlier
+   `IfTime("a",1,Sec)` warning still differ. Then investigate TCPOpen/SerialOpen constant arguments,
+   Timer's third argument, Scan/DataInterval, Const values and unresolved names. Start from the
+   [round-23 observations](docs/instructions.md#integer-timeout-expressions-and-named-negation-all-four-loggers-round-23)
+   and probe all four compilers before generalizing.
 2. Resolve remaining Const diagnostics and ordering: `Variable used in CONST expression.`,
    `X = J(1)`, `Const K = Min(2,3)`, CR300/CR350 `Variable illegal in Parameter: J.`, and a Sub
    referring to a Const declared later. Evidence and completed neighboring rules are in
