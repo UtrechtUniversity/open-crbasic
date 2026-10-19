@@ -775,12 +775,13 @@ def _add_data_table_fields(ix: BindingIndex, program, statements, decls, failure
         scanned["readonly_names"])
     pos = {id(st): i for i, st in enumerate(statements)}
     added: list[Declaration] = []
+    anon_groups, anon_build = [0], [0]   # two passes over the tables, each with its own `Anonymous<n>` count
     for dt in scanned["data_tables"]:
         head = statements[pos[id(dt.body[0])] - 1] if dt.body and id(dt.body[0]) in pos else None
         table = tbl_decls.get(id(head))
         try:
-            groups = _field_groups(dt, env, var_info, by_display, by_base)
-            tdf, _ = tables._build_data_table(dt, env, var_info, by_display, scanned["called"], by_base)
+            groups = _field_groups(dt, env, var_info, by_display, by_base, anon_groups)
+            tdf, _ = tables._build_data_table(dt, env, var_info, by_display, scanned["called"], by_base, anon_build)
             for f in tdf.fields:               # a later `Sample(1, Table.Field, ...)` source
                 if f.type != 11:
                     var_info[f"{dt.name}.{f.name}".upper()] = tables.VarInfo(
@@ -810,7 +811,7 @@ def _add_data_table_fields(ix: BindingIndex, program, statements, decls, failure
     ix.declarations += tuple(added)
 
 
-def _field_groups(dt, env, var_info, by_display, by_base):
+def _field_groups(dt, env, var_info, by_display, by_base, anon=None):
     """`[(output instruction, its FieldNames statement | None, [_OutField])]` for one table, the
     fields exactly as `tables._build_data_table` builds them (name_only fields dropped)."""
     groups: list = []
@@ -836,13 +837,13 @@ def _field_groups(dt, env, var_info, by_display, by_base):
             if pending:
                 flush(None)
             s2 = tables._alias_source(s, var_info, by_display, by_base)
-            pending = tables._emit_output_fields(s2, var_info, by_display, env, by_base)
+            pending = tables._emit_output_fields(s2, var_info, by_display, env, by_base, anon)
             pending_src = s2.args[1] if len(s2.args) > 1 and not any(f.struct_members for f in pending) else None
             instr = s
         elif kw == "FFT":
             if pending:
                 flush(None)
-            pending, pending_src, instr = [tables._fft_field(s, var_info, by_display, env)], None, s
+            pending, pending_src, instr = [tables._fft_field(s, var_info, by_display, env, anon)], None, s
     if pending:
         flush(None)
     return groups

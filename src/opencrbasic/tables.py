@@ -805,6 +805,50 @@ def _source_name(expr: S.Expr | None, var_info: dict[str, VarInfo] | None = None
     return raw
 
 
+def _is_anonymous_source(expr: S.Expr | None, var_info: dict, env: consteval.Env) -> bool:
+    """docs/tdf-rules.md §9c: a Source that is not a variable (literal, `Const`, `NAN`/`True`, any
+    expression, a function call) is named `Anonymous<n>`; a `Table.Field` is not (it takes the
+    referenced field's name)."""
+    if isinstance(expr, S.Index):
+        return expr.name.upper() not in var_info
+    if isinstance(expr, S.Name):
+        return expr.name.upper() not in var_info and (
+            _fold(expr, env, None) is not None or expr.name.upper() == "NAN")
+    return expr is not None and not isinstance(expr, S.Member)
+
+
+def _anonymous_string_len(expr: S.Expr | None, var_info: dict, env: consteval.Env) -> int:
+    """Character count that sizes a non-variable String source (§9c): a literal is its own length,
+    a String variable its stored length, `+`/`&` of those the sum; anything else sizes as a
+    20-character string (stored 24)."""
+    def known(e):
+        v = _fold(e, env, None)
+        if isinstance(v, str):
+            return len(v)
+        if isinstance(e, (S.Name, S.Index)):
+            info = var_info.get(e.name.upper())
+            return info.stored_len if info is not None and info.stored_len else None
+        if isinstance(e, S.Binary) and e.op in ("+", "&"):
+            l, r = known(e.left), known(e.right)
+            return None if l is None or r is None else l + r
+        return None
+    n = known(expr)
+    return 20 if n is None else n
+
+
+def _number_anonymous(fields: list, src: S.Expr | None, var_info: dict, env: consteval.Env,
+                      anon: list[int] | None) -> None:
+    """Give the fields derived from a non-variable Source its `Anonymous<n>` name; `anon[0]` is the
+    program-wide count so far (one number per such Source, FieldNames or not)."""
+    if anon is None or not _is_anonymous_source(src, var_info, env):
+        return
+    anon[0] += 1
+    raw = _source_name(src, var_info)
+    for f in fields:
+        if f.name.startswith(raw):
+            f.name = f"Anonymous{anon[0]}" + f.name[len(raw):]
+
+
 def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: consteval.Env,
                    reps: int) -> tuple[int, list[int]]:
     """(begin, subdims) for an output field's Source, per §3: subdims are the *declared* shape of the
@@ -964,13 +1008,16 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
     return out
 
 
-def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env) -> _OutField:
+def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env,
+               anon: list[int] | None = None) -> _OutField:
     """`FFT(Source, DataType, N, Tint, Units, Option)` (docs/tdf-rules.md §9b): one read-only field
     `<Source>[<flat element index if > 1>]_FFT`; layout by `Option mod 10`, description `FFT,N,<Tint seconds %.4e>,<Option mod 100>`.
-    A non-variable Source stays a name-only placeholder (no TDF field)."""
+    A `Table.Field` Source this module cannot resolve stays a name-only placeholder (no TDF field);
+    any other non-variable Source is a field named `Anonymous<n>_FFT` (§9c)."""
     a = s.args
     src = a[0] if a else None
-    placeholder = not isinstance(src, (S.Name, S.Index))
+    placeholder = src is None or (isinstance(src, S.Member) and not var_info.get(
+        f"{getattr(src.base, 'name', '')}.{src.member}".upper()))
     if placeholder:
         return _OutField("Anonymous", 9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
                           placeholder=True, rng=(1, _FFT_UNBOUNDED))
@@ -992,9 +1039,11 @@ def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteva
     if dim == 1:
         subdims = shape
     proc = "FFT,%d,%.4e,%d" % (n, float(tint) * _UNIT_SECONDS.get(unit, 1), opt % 100)
-    return _OutField(_source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT", (_dtype_code(a[1], env) if len(a) > 1 else 9), True,
-                      proc, 1, dim, subdims, _units_for_source(src, var_info, by_display),
-                      rng=(1, _FFT_UNBOUNDED))
+    out = _OutField(_source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT", (_dtype_code(a[1], env) if len(a) > 1 else 9), True,
+                    proc, 1, dim, subdims, _units_for_source(src, var_info, by_display),
+                    rng=(1, _FFT_UNBOUNDED))
+    _number_anonymous([out], src, var_info, env, anon)
+    return out
 
 
 def _idx_suffix(src: S.Expr | None, var_info: dict, env: consteval.Env) -> str:
@@ -1020,7 +1069,8 @@ def _alias_source(instr: S.Instruction, var_info: dict, by_display: dict, by_bas
 
 
 def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
-                         env: consteval.Env, by_base: dict | None = None) -> list[_OutField]:
+                         env: consteval.Env, by_base: dict | None = None,
+                         anon: list[int] | None = None) -> list[_OutField]:
     instr = _alias_source(instr, var_info, by_display, by_base)
     fields = _emit_struct_fields(instr, var_info, env)
     if fields is None:
@@ -1040,6 +1090,8 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
     for f in fields:
         if f.rng is None and not f.ch400:
             f.rng = _element_range(src, f.begin, f.dim, env)
+    if instr.keyword.upper() != "HISTOGRAM":
+        _number_anonymous(fields, src, var_info, env, anon)
     return fields
 
 
@@ -1106,6 +1158,12 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
             subdims = info.full_shape()
             if isinstance(src, S.Index) and src.args:
                 begin = (begin - 1) * ln + 1
+        elif tcode == 11 and _is_anonymous_source(src, var_info, env):
+            # a non-variable String source is as wide as its value (docs/tdf-rules.md §9c)
+            dim = _string_stored_len(_anonymous_string_len(src, var_info, env))
+            subdims = [dim]
+            return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
+                              units, placeholder=True, elem=dim, splittable=True)]
         return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
                           units, placeholder=not isinstance(src, (S.Name, S.Index)))]
 
@@ -1306,7 +1364,8 @@ def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: 
 
 
 def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
-                       by_display: dict, called: set[str], by_base: dict | None = None) -> tuple[TdfTable, dict]:
+                       by_display: dict, called: set[str], by_base: dict | None = None,
+                       anon: list[int] | None = None) -> tuple[TdfTable, dict]:
     """Returns (TdfTable, meta) where meta carries auto-sizing inputs (bytes_per_record,
     interval_seconds, has_interval, has_card) for tables whose declared Size is -1.
     """
@@ -1364,12 +1423,12 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             if pending:
                 out_fields.extend(split_pending())
             s = _alias_source(s, var_info, by_display, by_base)
-            pending = _emit_output_fields(s, var_info, by_display, env, by_base)
+            pending = _emit_output_fields(s, var_info, by_display, env, by_base, anon)
             pending_src = s.args[1] if len(s.args) > 1 and not any(f.struct_members for f in pending) else None
         elif kw == "FFT":
             if pending:
                 out_fields.extend(split_pending())
-            pending, pending_src = [_fft_field(s, var_info, by_display, env)], None
+            pending, pending_src = [_fft_field(s, var_info, by_display, env, anon)], None
         elif kw in ("ETSZ", "ETCLEARSKY"):
             if pending:
                 out_fields.extend(split_pending())
@@ -1527,8 +1586,9 @@ def build_tables(program: S.Program, profile, consts: dict):
         tables.append(struct_tables[-1])
 
     data_table_metas = []
+    anon = [0]   # program-wide `Anonymous<n>` counter (docs/tdf-rules.md §9c)
     for dt in scanned["data_tables"]:
-        table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"], by_base)
+        table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"], by_base, anon)
         tables.append(table)
         data_table_metas.append((table, meta))
         for f in table.fields:

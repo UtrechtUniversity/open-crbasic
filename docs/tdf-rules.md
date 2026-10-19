@@ -370,6 +370,41 @@ Evidence: `tests/fixtures/tdf_rules.json` cases `fft_layout`, `multidim_expressi
   `Totalize`/`SampleMaxMin` carry no index (they use `begin`). When the element has an `Alias`
   the field is named after the alias with no index (`AA_Cov`, `WA_WVc`).
 
+## 9c. Non-variable sources: `Anonymous<n>` names and String widths (oracle-confirmed 2026-10-19, round 21 W2)
+
+Evidence: `tests/fixtures/tdf_anonymous.json` (28 programs, real TDF user tables on CR6, CR1000X,
+CR300 and CR350, all four agreeing; generator `tools/tdf_anonymous_fixture_gen.py`), CHM
+`goestable_1`. Test: `tests/test_tdf_anonymous.py`. Decompiled counter: CR6Comp `FUN_004ec300`
+(`"%s%d"`, global byte `0x00664409`, starts 0), per `scratch/codex/re-r21-goestable.md`.
+
+- **Name.** An output instruction whose Source is not a variable gets `Anonymous<n>` in place of the
+  Source name (`Anonymous1`, `Anonymous2_Avg`, `Anonymous3_FFT`; a Maximum/Minimum with the time flag
+  shares one number: `Anonymous2_Max`, `Anonymous2_TMx`). Non-variable means a string or number
+  literal, an expression (`X+1`, `-X`, `"ab"+"cd"`), a function call (`Sqr(X)`, `Left(S,2)`), a
+  `Const` name, `NAN`, `True`. A variable, array element, `Alias` and a resolved `Table.Field`
+  Source are not (a `Table.Field` takes the referenced field's name and consumes no number).
+- **Counter.** One program-wide counter from 1, advanced once per non-variable Source in
+  declaration order of the tables and instructions, never reset per table, also for tables that are
+  never called. `FieldNames` renames the field but its number is still consumed (`FieldNames("First")`
+  on the first literal -> `First`, next literal `Anonymous2`). Two identical literals get two numbers.
+- **String width.** `Sample(1, <non-variable>, String)` is a String field `dim = 4*(floor(n/4)+1)`,
+  `subdims = [dim]` for an `n`-character value: `""`..`"abc"` -> 4, 4..7 chars -> 8, 8 -> 12, 100 -> 104.
+  Concatenation of literals/`Const` strings and String variables sizes by the sum (a String variable
+  counts its stored length: `S As String * 8` is 12, `S+"cd"` -> 16); a number or numeric expression
+  as String is 24 (like a 20-character string). A non-String `DataType` (`FP2`, `IEEE4`) over a literal
+  is an ordinary dim-1 numeric field. `FieldNames` over such a field renames it whole (like a String
+  variable). Not modelled: a String-returning function (`Left(S,2)` is really 16, we give 24).
+- **FFT.** `FFT(<expression>, ...)` is a real field `Anonymous<n>_FFT` with the usual layout (we used to
+  drop it); `FFT(B.X, ...)` is `X_FFT`. An FFT of a literal or a number crashes the real compiler
+  (page fault on all four loggers), so it is not modelled.
+- **Effect on CR300/CR350 auto-size.** The stored width is the record size the allocator sees:
+  `goestable_1`'s `FORCE_RANDOM_TX` record is 14 bytes (12 + FP2), not 3, and with it `checker/storage.py`
+  reproduces the real counts (930, 713, 5665, 1000 on CR300; 930, 2201, 28193, 1000 on CR350; with
+  `"x"` instead: 930, 961, 7576, 1000 and 1426, 2945, 37955, 1000).
+- Unchanged / not probed: an unresolved `Table.Field` (`Status.Battery`, a StructureType member
+  `v.f`) is really named after the member and takes no number; we still name it `Anonymous` (no
+  number), see `check_duplicate_fields`.
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Unified model (2026-10-10, supersedes the three fitted pools below).** Re-reading the finalisation

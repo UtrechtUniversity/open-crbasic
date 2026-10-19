@@ -464,7 +464,7 @@ battery_voltage_Avg`/`HR_DATA.panel_temperature_Avg`) went from accepted to a fa
 four loggers, caught by this round's own full `tools/difftest.py --logger <l>` re-run before
 landing (AGENTS.md: verify a generalisation against the whole corpus, not a hand-written probe,
 before trusting it -- the same methodological finding `docs/checker.md`'s "Round 3" section
-records for a different check). Fixed by excluding every field named exactly `"Anonymous"` from
+records for a different check). (Since round 21 W2 a non-variable Source is named `Anonymous<n>`, docs/tdf-rules.md §9c; numbered names are distinct, so they cannot collide, and only the unnumbered `Anonymous` of an unresolved `Table.Field` remains excluded.) Fixed by excluding every field named exactly `"Anonymous"` from
 this check on both sides of the comparison (never recorded as seen, never itself flagged) --
 conservative in the correct direction, since a name already known not to be a genuine derived name
 is not evidence of a genuine collision either way. `ch400status_2.CR6`'s own `CH400Status`
