@@ -101,18 +101,24 @@ def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide, p
     TimeOut cannot be negative` on all four loggers, gated or not (oracle, round 19, probes
     `scratch/r19/W8`). Only the forms in `timeout_value` are modelled. CR6/CR1000X: no such line when
     another argument of the same call is an undefined name (`Invalid symbol in expression` alone).
-    CR300/CR350: the line follows the same-line `... is not defined.` lines (`order_timeout_negative`)."""
+    CR300/CR350: the line follows the same-line `... is not defined.` lines (`order_timeout_negative`).
+    After an already reported error the negative literals are not folded: `fold_negative_timeouts`."""
     for call in _calls(stmt, _TIMEOUT_ARG):
-        if isinstance(call, S.Call) and call.explicit:
-            continue
-        i = _TIMEOUT_ARG[call.name.upper()]
-        if i >= len(call.args) or call.args[i] is None:
-            continue
-        value = timeout_value(call.args[i], env, profile, wide)
-        if value is not None and value[0] == "int" and _signed32(10 * value[1]) < 0:
-            if not profile.single_pass and _undefined_sibling(call, i, program, profile):
-                continue
-            diags.error(stmt.line, _TIMEOUT_NEGATIVE, stmt.file)
+        if _negative_timeout(call, env, profile, wide, program):
+            diags.error(stmt.line, _TIMEOUT_NEGATIVE, stmt.file, stmt=stmt)
+
+
+def _negative_timeout(call, env, profile, wide, program) -> bool:
+    """Whether `call` draws `Parameter TimeOut cannot be negative` when nothing was reported before."""
+    if isinstance(call, S.Call) and call.explicit:
+        return False
+    i = _TIMEOUT_ARG[call.name.upper()]
+    if i >= len(call.args) or call.args[i] is None:
+        return False
+    value = timeout_value(call.args[i], env, profile, wide)
+    if value is None or value[0] != "int" or _signed32(10 * value[1]) >= 0:
+        return False
+    return profile.single_pass or not _undefined_sibling(call, i, program, profile)
 
 
 def _undefined_sibling(call: S.Index, i: int, program: S.Program, profile) -> bool:
@@ -123,18 +129,121 @@ def _undefined_sibling(call: S.Index, i: int, program: S.Program, profile) -> bo
                for j, a in enumerate(call.args) if j != i)
 
 
-def order_timeout_negative(diags: Diagnostics, profile) -> None:
+def _folds_negation(arg) -> bool:
+    """A `TimeOut` that is a decimal or hex integer literal under unary signs with at least one `-`
+    (`-1`, `-&H1`, `--1`, `-(-1)`, `+(-1)`): the compiler folds the negation only while nothing was
+    reported (`fold_negative_timeouts`)."""
+    minus = False
+    while isinstance(arg, S.Unary) and arg.op in ("-", "+"):
+        minus |= arg.op == "-"
+        arg = arg.operand
+    return minus and isinstance(arg, S.Number) and (
+        arg.text.startswith("&") or not ("." in arg.text or "E" in arg.text.upper()))
+
+
+def fold_negative_timeouts(program: S.Program, profile, diags: Diagnostics, env, reported) -> None:
+    """The compiler folds `-N` into a constant only while its reported-error count is zero (warnings
+    do not count, `:` and newlines do not reset it). After any reported error a `-N` / `(-N)` /
+    `- N` / `-&H1` / `--1` TimeOut is `Parameter must be a constant integer: <statement>.` instead of
+    the sign check (any value, also `-0` and `-2147483648`); in the gated state (`timeout_gate`) it is
+    silent. Oracle 2026-10-19 (round 21), CR6 and CR300 on every spelling, CR1000X and CR350 on the
+    56-case set of `r21_negfold.json`. `program` is the `_with_inline` list. What counts as reported
+    before the call: an error on an earlier line, an error of an earlier statement of the same line
+    (any other error of the line when the call has an earlier segment), a previous `TimeOut` finding of
+    this rule, and on CR300/CR350 an undefined name in an earlier argument of the call. CR6/CR1000X
+    count only `reported`, the pass-1 errors (a name left to pass 2 does not count). A converted
+    finding goes after the other errors of its line.
+    """
+    from . import expressions  # lazy: `expressions` imports this module's package
+    stmts = program.statements
+    neg_lines: dict = {}
+    for d in diags.items:
+        if d.severity == "error" and d.message == _TIMEOUT_NEGATIVE:
+            neg_lines.setdefault((d.file, d.line), []).append(d)
+    wide = wide_constants(program, profile)
+    lines: dict = {}
+    first: dict = {}
+    for i, st in enumerate(stmts):
+        lines.setdefault(st.file or "", []).append((st.line, i))
+        first.setdefault((st.file or "", st.line), i)
+    for v in lines.values():
+        v.sort()
+    import bisect
+
+    def position(d) -> int:
+        entries = lines.get(d.file or "")
+        if not entries:
+            return -1
+        k = bisect.bisect_left(entries, (d.line, -1))
+        return entries[k][1] if k < len(entries) else len(stmts)
+
+    known = None
+    seen = False
+    family_error = False
+    added: list = []
+    for k, stmt in enumerate(stmts):
+        gate, seen = timeout_gate(seen, gate_text(stmt))
+        inline = {id(c) for inner in (getattr(stmt, "inline", None) or []) + (
+            getattr(stmt, "inline_else", None) or []) for c in _calls(inner, _TIMEOUT_ARG)}
+        for call in _calls(stmt, _TIMEOUT_ARG):
+            if id(call) in inline or (isinstance(call, S.Call) and call.explicit):
+                continue
+            i = _TIMEOUT_ARG[call.name.upper()]
+            if i >= len(call.args) or call.args[i] is None:
+                continue
+            arg = call.args[i]
+            key = (stmt.file, stmt.line)
+            own = None
+            if _negative_timeout(call, env, profile, wide, program):
+                own = (neg_lines.get(key) or [None]).pop(0)
+            value = timeout_value(arg, env, profile, wide)
+            if _folds_negation(arg) and (value is None or value[0] == "int"):
+                line_first = first[(stmt.file or "", stmt.line)]
+                counted = [d for d in diags.items if d.severity == "error" and d.line
+                           and d.message != _TIMEOUT_NEGATIVE and not any(d is a for a in added)
+                           and (profile.single_pass or any(d is r for r in reported))]
+                before = family_error or any(position(d) < line_first for d in counted) or (
+                    k > line_first and any(position(d) == line_first for d in counted))
+                if not before and profile.single_pass:
+                    known = known or expressions._known_names(program, profile)
+                    before = any(a is not None and expressions._undefined_names(a, known)
+                                 for a in call.args[:i])
+                if before and gate is not None:
+                    if own is not None:
+                        diags.items.remove(own)
+                    if not gate:
+                        diags.error(stmt.line, expressions._arity_message(
+                            "constint", stmt.text, profile, stmt.at_eol, whole_statement=True),
+                            stmt.file)
+                        added.append(diags.items[-1])
+                        family_error = True
+                    continue
+            if own is not None:
+                family_error = True
+
+
+def order_timeout_negative(diags: Diagnostics, profile, program: S.Program) -> None:
     """CR300/CR350 only: a `Parameter TimeOut cannot be negative` line is printed after the
-    `... is not defined.` lines of its own line (oracle, round 19: `HTTPPut(...,NoSuchVar,8,214748365)`
-    gives `NoSuchVar is not defined.` then the TimeOut line). Moved after the last such line."""
+    `... is not defined.` lines of its own call and of the earlier statements of its line, before
+    those of later ones (oracle, round 19: `HTTPPut(...,NoSuchVar,8,214748365)` gives `NoSuchVar is
+    not defined.` then the TimeOut line; round 21: `HTTPPut(...,-1) : Result(4)=Nope+1` the other way
+    round). Moved after the last such line."""
     if not profile.single_pass:
         return
     items = diags.items
     for d in [d for d in items if d.severity == "error" and d.message == _TIMEOUT_NEGATIVE]:
         at = next(i for i, o in enumerate(items) if o is d)
-        after = [j for j, o in enumerate(items)
-                 if o is not d and o.severity == "error" and (o.file, o.line) == (d.file, d.line)
-                 and o.message.endswith(" is not defined.")]
+        same = [st for st in program.statements if (st.file, st.line) == (d.file, d.line)]
+        mine = next((n for n, st in enumerate(same) if id(st) == d.stmt), len(same))
+        after = []
+        for j, o in enumerate(items):
+            if o is d or o.severity != "error" or (o.file, o.line) != (d.file, d.line) \
+                    or not o.message.endswith(" is not defined."):
+                continue
+            name = re.compile(r"(?i)\b" + re.escape(o.message[:-len(" is not defined.")]) + r"\b")
+            owner = next((n for n, st in enumerate(same) if name.search(st.text or "")), 0)
+            if owner <= mine:
+                after.append(j)
         if after and max(after) > at:
             items.pop(at)
             items.insert(max(after), d)
@@ -247,10 +356,16 @@ def timeout_value(arg, env, profile, wide=frozenset()):
     or a decimal integer literal past the logger's 32-bit range, see `_decimal`), `("int", v)` for an
     integer constant whose 32-bit value is `v`, or `None` when not modelled (expressions, other
     spellings, out-of-range `Const` values on CR6/CR1000X)."""
-    if isinstance(arg, S.Unary) and arg.op in ("-", "+") and isinstance(arg.operand, S.Number):
-        if arg.operand.text.startswith("&"):
-            return None   # a sign on a hex literal is not observed
-        return _timeout_literal(arg.operand, -1 if arg.op == "-" else 1, profile)
+    if isinstance(arg, S.Unary) and arg.op in ("-", "+"):
+        signs, lit = [], arg
+        while isinstance(lit, S.Unary) and lit.op in ("-", "+"):
+            signs.append(lit.op)
+            lit = lit.operand
+        if not isinstance(lit, S.Number):
+            return None
+        if lit.text.startswith("&") and signs != ["-"]:
+            return None   # only a single minus on a hex literal is observed
+        return _timeout_literal(lit, -1 if signs.count("-") % 2 else 1, profile)
     if isinstance(arg, S.Number):
         return _timeout_literal(arg, 1, profile)
     if isinstance(arg, S.Name):
@@ -277,9 +392,9 @@ def _timeout_literal(lit: S.Number, sign: int, profile):
     text = lit.text.upper()
     if text.startswith("&H"):
         digits = text[2:]
-        if sign < 0 or not digits or len(digits) > 8 or any(c not in "0123456789ABCDEF" for c in digits):
+        if not digits or len(digits) > 8 or any(c not in "0123456789ABCDEF" for c in digits):
             return None
-        return ("int", _signed32(int(digits, 16)))
+        return ("int", _signed32(sign * _signed32(int(digits, 16))))   # (`-&H80000000` wraps to itself)
     if text.startswith("&"):
         return None
     if "." in text or "E" in text:

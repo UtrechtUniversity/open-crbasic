@@ -190,6 +190,17 @@ def _indexed_past_first(typer: _Typer, dest: S.Expr, env: consteval.Env) -> bool
     return False
 
 
+def check_string_operands(program: S.Program, profile, diags: Diagnostics) -> None:
+    """The String-operand errors are reported while the statement is parsed: pass 1, whatever came
+    before and after, on all four loggers (oracle, 2026-10-19, round 21: `Abs(1,2) : X = "a" * 2`
+    and `X = "a" * 2 : Abs(1,2)` both report both; `"a" * 2 : Nope + 1` reports only the String
+    error on CR6/CR1000X, the String error then the name on CR300/CR350)."""
+    typer = _Typer(program)
+    for stmt in program.statements:
+        for text in _string_operand_messages(typer, stmt):
+            diags.error(stmt.line, text, stmt.file)
+
+
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     typer = _Typer(program)
     tables = symbols.scope_tables(program, env)
@@ -197,8 +208,6 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "BEGINPROG":
             in_prog = True
-        for text in _string_operand_messages(typer, stmt):
-            diags.error(stmt.line, text, stmt.file)
         if isinstance(stmt, S.Unparsed):  # a dotted OID is not an expression
             m = _SNMP_RE.match(stmt.text)
             if m and "SNMPVARIABLE" in profile.instructions and \

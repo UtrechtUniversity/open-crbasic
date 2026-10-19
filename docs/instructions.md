@@ -2227,6 +2227,37 @@ Fixture `r19_timeout_values.json` (244 cases; `intervals.timeout_value`, `interv
 - **Still not modelled:** expressions in the `TimeOut` slot (`-KT`, `KT+1`), a sign on a hex literal, other literal spellings
   (`&O`, `&B`, leading-zero boundary spellings), and the ordering of the NEG line against other same-line errors.
 
+### Negative `TimeOut` literals stop folding after a reported error (all four loggers, round 21)
+
+Fixture `r21_negfold.json` (204 cases, 51 sources x 4 loggers, audit clean 2026-10-19; `intervals.fold_negative_timeouts`,
+`intervals.order_timeout_negative`, `var_types.check_string_operands`). Mechanism from the read-only RE
+(`scratch/codex/re-r20-timeout-cr3xx.md`), every verdict below observed on the real compilers (CR6 and CR300 on all
+spellings, CR1000X and CR350 on the 56-case set and the fixture):
+
+- `-N` is `N` plus an integer negation, folded into a constant only while the compiler-wide REPORTED-error count is zero
+  (warnings do not count; `:` and newlines do not reset it). Clean: `-1`, `(-1)`, `- 1`, `-&H1`, `-(1)`, `-+1`, `+(-1)` are `Parameter
+  TimeOut cannot be negative` (NEG) by value; hex under one minus is `signed32(-signed32(hex))` (`-&H1999999A` NEG,
+  `-&H19999999`, `-&H80000000`, `-&H7FFFFFFF`, `-&HFFFFFFF6`, `-&H0` fine); `--1`, `-(-1)` fine.
+- After any reported error, ungated: every spelling that needs the fold (`-1`, `-0`, `-5`, `-2147483648`, `-&H1`, `-&H7FFFFFFF`,
+  `--1`, `-(-1)`, `+(-1)`) is `Parameter must be a constant integer: <statement>.` (CR300/CR350 add the `| .` echo line), whatever
+  the value. Gated (after `IfTime`/`TimeIntoInterval`, `timeout_gate`): silent, no NEG either. Literals that need no fold
+  (`214748365`, `+2147483647`, `+&H1`, `&HFFFFFFF6`) keep their clean result. A float literal is the constant-integer error
+  clean or not.
+- What counts as reported: `Illegal String operand`, `Incomplete expression`, a previous NEG/constant-integer line, any
+  error of an earlier line or earlier `:` statement; CR300/CR350 also an undefined name (`Nope + 1 : HTTPPut(..,-1)`, or `Nope` in
+  an earlier argument of the call). CR6/CR1000X defer the whole expression holding an unresolved name to pass 2, which runs only
+  when pass 1 reported nothing: a deferred name does not count (`Nope + 1 : HTTPPut(..,-1)` is NEG, `-&H1` NEG).
+- The String-operand errors (`Illegal String operand`, `Illegal operand of type STRING`, `String is illegal here`) are
+  parse-time errors on all four loggers: printed whatever precedes or follows (`Abs(1,2) : X = "a"*2` and the reverse print both;
+  `"a"*2 : Nope+1` prints only the String error on CR6/CR1000X). `var_types.check_string_operands` runs them in pass 1; the
+  one-error-per-statement limit of `_string_operand_messages` still holds (`"a"*"a"` prints two on the real compilers, not modelled
+  there).
+- Order: diagnostics in encounter order. CR300/CR350 `HTTPPut(..,-1) : Result(4)=Nope+1` is NEG then `Nope is not defined.`; a
+  name in the call or an earlier statement of its line still comes first (`order_timeout_negative`, round 19).
+- Not modelled: an earlier error that follows the call in the same line when the call has an earlier segment (counted as earlier),
+  folds in expressions (`-KT`, `1-1`), the same effect on the other constant-integer parameters (suspected: `TCPOpen`/`SerialOpen`
+  constant arguments, `Timer`'s third argument, `Scan`/`DataInterval` literals, `Const` values).
+
 ### Function-as-statement arity, `Timer` arity, `Sub`-call echo, string over-index counts (all four loggers, rounds 16-17)
 
 Fixture `r16_function_statement_arity.json` (172 cases, audits clean against the real compilers, 2026-10-16;

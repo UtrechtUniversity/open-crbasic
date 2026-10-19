@@ -245,6 +245,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # CR6/CR1000X: `Range` code and `fN1` value checks, same pass (`docs/instructions.md`).
     _run_pass(instr_measure.check_pass1_values, program, profile, diags, env)
     # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
+    _run_pass(var_types.check_string_operands, program, profile, diags)
     _run_pass(intervals.check, program, profile, diags, env)
     _run_pass(instr_rules.check_const_int_args, program, profile, diags, env)
     _run_pass(expressions.check_function_call_counts, program, profile, diags)
@@ -332,6 +333,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(storage.check_pass1, program, profile, diags, env)   # CR6/CR1000X `Out of memory.`
     pass1_errors = bool(diags.errors)
     result.pass1_errors = pass1_errors
+    pass1_items = [d for d in diags.items if d.severity == "error"]
     if pass1_errors and not profile.single_pass:
         # CR6/CR1000X: any pass-1 error hides the reachability warning (oracle, 2026-10-12)
         diags.items[:] = [d for d in diags.items if not _is_unreached(d)]
@@ -734,7 +736,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.add_string_illegal, program, profile, diags)
     _run_pass(warnings.add_truncate_warnings, _with_inline(program), profile, diags)
     _run_pass(cr3xx.semicolon_headers, program, profile, diags)
-    _run_pass(intervals.order_timeout_negative, diags, profile)
+    _run_pass(intervals.fold_negative_timeouts, _with_inline(program), profile, diags, env, pass1_items)
+    _run_pass(intervals.order_timeout_negative, diags, profile, program)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)
