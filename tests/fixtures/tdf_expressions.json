@@ -1,0 +1,1035 @@
+{
+ "observation_date": "2026-10-19",
+ "compiler_sha256": {
+  "cr6": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55",
+  "cr1000x": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175",
+  "cr300": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1",
+  "cr350": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+ },
+ "cases": [
+  {
+   "id": "cr6-substring_buffers",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nSample(1,Left(S,200),String)\nSample(1,Left(S,0),String)\nSample(1,Left(S,N),String)\nSample(1,Right(S,2),String)\nSample(1,Mid(S,1,2),String)\nSample(1,UpperCase(S),String)\nSample(1,LowerCase(S),String)\nSample(1,Trim(S),String)\nSample(1,LTrim(S),String)\nSample(1,RTrim(S),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573380000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573390000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331300000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr1000x-substring_buffers",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nSample(1,Left(S,200),String)\nSample(1,Left(S,0),String)\nSample(1,Left(S,N),String)\nSample(1,Right(S,2),String)\nSample(1,Mid(S,1,2),String)\nSample(1,UpperCase(S),String)\nSample(1,LowerCase(S),String)\nSample(1,Trim(S),String)\nSample(1,LTrim(S),String)\nSample(1,RTrim(S),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573380000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573390000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331300000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr300-substring_buffers",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nSample(1,Left(S,200),String)\nSample(1,Left(S,0),String)\nSample(1,Left(S,N),String)\nSample(1,Right(S,2),String)\nSample(1,Mid(S,1,2),String)\nSample(1,UpperCase(S),String)\nSample(1,LowerCase(S),String)\nSample(1,Trim(S),String)\nSample(1,LTrim(S),String)\nSample(1,RTrim(S),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573380000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573390000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331300000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr350-substring_buffers",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nSample(1,Left(S,200),String)\nSample(1,Left(S,0),String)\nSample(1,Left(S,N),String)\nSample(1,Right(S,2),String)\nSample(1,Mid(S,1,2),String)\nSample(1,UpperCase(S),String)\nSample(1,LowerCase(S),String)\nSample(1,Trim(S),String)\nSample(1,LTrim(S),String)\nSample(1,RTrim(S),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573380000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573390000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331300000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f757331310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr6-nested_buffers",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"abc\",2),String)\nSample(1,Mid(\"abcdefgh\",2,2),String)\nSample(1,Left(Left(S,2),1),String)\nSample(1,Left(S,2)+\"ab\",String)\nSample(1,S+Left(S,2),String)\nSample(1,Left(S+\"abc\",2),String)\nSample(1,Left(42,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001c0000001c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr1000x-nested_buffers",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"abc\",2),String)\nSample(1,Mid(\"abcdefgh\",2,2),String)\nSample(1,Left(Left(S,2),1),String)\nSample(1,Left(S,2)+\"ab\",String)\nSample(1,S+Left(S,2),String)\nSample(1,Left(S+\"abc\",2),String)\nSample(1,Left(42,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001c0000001c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr300-nested_buffers",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"abc\",2),String)\nSample(1,Mid(\"abcdefgh\",2,2),String)\nSample(1,Left(Left(S,2),1),String)\nSample(1,Left(S,2)+\"ab\",String)\nSample(1,S+Left(S,2),String)\nSample(1,Left(S+\"abc\",2),String)\nSample(1,Left(42,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001c0000001c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr350-nested_buffers",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"abc\",2),String)\nSample(1,Mid(\"abcdefgh\",2,2),String)\nSample(1,Left(Left(S,2),1),String)\nSample(1,Left(S,2)+\"ab\",String)\nSample(1,S+Left(S,2),String)\nSample(1,Left(S+\"abc\",2),String)\nSample(1,Left(42,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000001c0000001c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573370000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr6-replace_buffers",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(S,\"a\",\"abcdef\"),String)\nSample(1,Replace(S,\"ab\",\"c\"),String)\nSample(1,Replace(S,\"a\",S),String)\nSample(1,Replace(Left(S,2),\"a\",\"abc\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001400000014000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001800000018000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr1000x-replace_buffers",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(S,\"a\",\"abcdef\"),String)\nSample(1,Replace(S,\"ab\",\"c\"),String)\nSample(1,Replace(S,\"a\",S),String)\nSample(1,Replace(Left(S,2),\"a\",\"abc\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001400000014000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001800000018000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr300-replace_buffers",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(S,\"a\",\"abcdef\"),String)\nSample(1,Replace(S,\"ab\",\"c\"),String)\nSample(1,Replace(S,\"a\",S),String)\nSample(1,Replace(Left(S,2),\"a\",\"abc\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001400000014000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001800000018000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr350-replace_buffers",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(S,\"a\",\"abcdef\"),String)\nSample(1,Replace(S,\"ab\",\"c\"),String)\nSample(1,Replace(S,\"a\",S),String)\nSample(1,Replace(Left(S,2),\"a\",\"abc\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001400000014000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000001800000018000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr6-format_buffers",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,FormatFloat(X,\"%2.2f\"),String)\nSample(1,FormatLong(42,\"%d\"),String)\nSample(1,FormatLongLong(\"%lld\"),String)\nSample(1,FormatLongLong(S),String)\nSample(1,FormatFloat(X,S),String)\nSample(1,IPInfo(0,0),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000004400000044000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000004000000040000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000800000008000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000004c0000004c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000006c0000006c0000000000"
+  },
+  {
+   "id": "cr1000x-format_buffers",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,FormatFloat(X,\"%2.2f\"),String)\nSample(1,FormatLong(42,\"%d\"),String)\nSample(1,FormatLongLong(\"%lld\"),String)\nSample(1,FormatLongLong(S),String)\nSample(1,FormatFloat(X,S),String)\nSample(1,IPInfo(0,0),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000004400000044000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000004000000040000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000800000008000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000004c0000004c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000006c0000006c0000000000"
+  },
+  {
+   "id": "cr300-format_buffers",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,FormatFloat(X,\"%2.2f\"),String)\nSample(1,FormatLong(42,\"%d\"),String)\nSample(1,FormatLongLong(\"%lld\"),String)\nSample(1,FormatLongLong(S),String)\nSample(1,FormatFloat(X,S),String)\nSample(1,IPInfo(0,0),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000004400000044000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000004000000040000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000800000008000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000004c0000004c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000006c0000006c0000000000"
+  },
+  {
+   "id": "cr350-format_buffers",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,FormatFloat(X,\"%2.2f\"),String)\nSample(1,FormatLong(42,\"%d\"),String)\nSample(1,FormatLongLong(\"%lld\"),String)\nSample(1,FormatLongLong(S),String)\nSample(1,FormatFloat(X,S),String)\nSample(1,IPInfo(0,0),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000004400000044000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000004000000040000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000800000008000000008b416e6f6e796d6f7573340000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573350000536d700000536d7000000000010000004c0000004c000000008b416e6f6e796d6f7573360000536d700000536d7000000000010000006c0000006c0000000000"
+  },
+  {
+   "id": "cr6-single_argument_index",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Chr(65),String)\nSample(1,Hex(255),String)\nSample(1,Chr(N),String)\nSample(1,Hex(X),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000001010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000003f90000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr1000x-single_argument_index",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Chr(65),String)\nSample(1,Hex(255),String)\nSample(1,Chr(N),String)\nSample(1,Hex(X),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000001010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000003f90000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr300-single_argument_index",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Chr(65),String)\nSample(1,Hex(255),String)\nSample(1,Chr(N),String)\nSample(1,Hex(X),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000001010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000003f90000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr350-single_argument_index",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Chr(65),String)\nSample(1,Hex(255),String)\nSample(1,Chr(N),String)\nSample(1,Hex(X),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000001010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000003f90000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573340000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr6-empty_and_signed_buffers",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"\",0),String)\nSample(1,Trim(\"42\"),String)\nSample(1,Chr(0),String)\nSample(1,Chr(-1),String)\nSample(1,Hex(-1),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000fffffffd0000000400000004000000008b416e6f6e796d6f7573340000536d700000536d7000fffffff90000000400000004000000008b416e6f6e796d6f7573350000536d700000536d7000fffffff900000004000000040000000000"
+  },
+  {
+   "id": "cr1000x-empty_and_signed_buffers",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"\",0),String)\nSample(1,Trim(\"42\"),String)\nSample(1,Chr(0),String)\nSample(1,Chr(-1),String)\nSample(1,Hex(-1),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000fffffffd0000000400000004000000008b416e6f6e796d6f7573340000536d700000536d7000fffffff90000000400000004000000008b416e6f6e796d6f7573350000536d700000536d7000fffffff900000004000000040000000000"
+  },
+  {
+   "id": "cr300-empty_and_signed_buffers",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"\",0),String)\nSample(1,Trim(\"42\"),String)\nSample(1,Chr(0),String)\nSample(1,Chr(-1),String)\nSample(1,Hex(-1),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000fffffffd0000000400000004000000008b416e6f6e796d6f7573340000536d700000536d7000fffffff90000000400000004000000008b416e6f6e796d6f7573350000536d700000536d7000fffffff900000004000000040000000000"
+  },
+  {
+   "id": "cr350-empty_and_signed_buffers",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(\"\",0),String)\nSample(1,Trim(\"42\"),String)\nSample(1,Chr(0),String)\nSample(1,Chr(-1),String)\nSample(1,Hex(-1),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573320000536d700000536d7000000000010000000400000004000000008b416e6f6e796d6f7573330000536d700000536d7000fffffffd0000000400000004000000008b416e6f6e796d6f7573340000536d700000536d7000fffffff90000000400000004000000008b416e6f6e796d6f7573350000536d700000536d7000fffffff900000004000000040000000000"
+  },
+  {
+   "id": "cr6-empty_replace_buffer",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(\"\",\"a\",\"\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "cr1000x-empty_replace_buffer",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(\"\",\"a\",\"\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "cr300-empty_replace_buffer",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(\"\",\"a\",\"\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "cr350-empty_replace_buffer",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Replace(\"\",\"a\",\"\"),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "cr6-string_array_source",
+   "logger": "cr6",
+   "source": "Public S(3) As String * 8\nDataTable(A,1,10)\nSample(1,Left(S(2),2),String)\nSample(1,Trim(S(1)),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr1000x-string_array_source",
+   "logger": "cr1000x",
+   "source": "Public S(3) As String * 8\nDataTable(A,1,10)\nSample(1,Left(S(2),2),String)\nSample(1,Trim(S(1)),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr300-string_array_source",
+   "logger": "cr300",
+   "source": "Public S(3) As String * 8\nDataTable(A,1,10)\nSample(1,Left(S(2),2),String)\nSample(1,Trim(S(1)),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr350-string_array_source",
+   "logger": "cr350",
+   "source": "Public S(3) As String * 8\nDataTable(A,1,10)\nSample(1,Left(S(2),2),String)\nSample(1,Trim(S(1)),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr6-fieldnames_buffer",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nFieldNames(\"Text,Ignored\")\nSample(1,\"next\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b546578740000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr1000x-fieldnames_buffer",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nFieldNames(\"Text,Ignored\")\nSample(1,\"next\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b546578740000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr300-fieldnames_buffer",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nFieldNames(\"Text,Ignored\")\nSample(1,\"next\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b546578740000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr350-fieldnames_buffer",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nFieldNames(\"Text,Ignored\")\nSample(1,\"next\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b546578740000536d700000536d7000000000010000001000000010000000008b416e6f6e796d6f7573320000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr6-status_fields",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,status.bAtTeRy,IEEE4)\nAverage(1,Status.PanelTemp,FP2,0)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d700000536d70000000000100000001000000008750616e656c54656d705f41766700004176670000417667000000000100000001000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr1000x-status_fields",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,status.bAtTeRy,IEEE4)\nAverage(1,Status.PanelTemp,FP2,0)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d700000536d70000000000100000001000000008750616e656c54656d705f41766700004176670000417667000000000100000001000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr300-status_fields",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,status.bAtTeRy,IEEE4)\nAverage(1,Status.PanelTemp,FP2,0)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d700000536d70000000000100000001000000008750616e656c54656d705f41766700004176670000417667000000000100000001000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr350-status_fields",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,status.bAtTeRy,IEEE4)\nAverage(1,Status.PanelTemp,FP2,0)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d700000536d70000000000100000001000000008750616e656c54656d705f41766700004176670000417667000000000100000001000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr6-status_units_shadow",
+   "logger": "cr6",
+   "source": "Public Battery\nUnits Battery = test\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d70007465737400536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr1000x-status_units_shadow",
+   "logger": "cr1000x",
+   "source": "Public Battery\nUnits Battery = test\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d70007465737400536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr300-status_units_shadow",
+   "logger": "cr300",
+   "source": "Public Battery\nUnits Battery = test\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d70007465737400536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr350-status_units_shadow",
+   "logger": "cr350",
+   "source": "Public Battery\nUnits Battery = test\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e0000000000000000000000000000000089426174746572790000536d70007465737400536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr6-status_duplicate",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr1000x-status_duplicate",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr300-status_duplicate",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr350-status_duplicate",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Status.Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr6-status_public_duplicate",
+   "logger": "cr6",
+   "source": "Public Battery\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr1000x-status_public_duplicate",
+   "logger": "cr1000x",
+   "source": "Public Battery\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr300-status_public_duplicate",
+   "logger": "cr300",
+   "source": "Public Battery\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr350-status_public_duplicate",
+   "logger": "cr350",
+   "source": "Public Battery\nDataTable(A,1,10)\nSample(1,Status.Battery,IEEE4)\nSample(1,Battery,IEEE4)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Battery in DataTable A."
+  },
+  {
+   "id": "cr6-structure_members",
+   "logger": "cr6",
+   "source": "StructureType Kind\nValue As Float\nUnits Value = test\nLabel As String * 8\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.value,FP2)\nSample(1,V.label,String)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008756616c75650000536d70007465737400536d70000000000100000001000000008b4c6162656c0000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr1000x-structure_members",
+   "logger": "cr1000x",
+   "source": "StructureType Kind\nValue As Float\nUnits Value = test\nLabel As String * 8\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.value,FP2)\nSample(1,V.label,String)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008756616c75650000536d70007465737400536d70000000000100000001000000008b4c6162656c0000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr300-structure_members",
+   "logger": "cr300",
+   "source": "StructureType Kind\nValue As Float\nUnits Value = test\nLabel As String * 8\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.value,FP2)\nSample(1,V.label,String)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008756616c75650000536d70007465737400536d70000000000100000001000000008b4c6162656c0000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr350-structure_members",
+   "logger": "cr350",
+   "source": "StructureType Kind\nValue As Float\nUnits Value = test\nLabel As String * 8\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.value,FP2)\nSample(1,V.label,String)\nSample(1,\"x\",String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008756616c75650000536d70007465737400536d70000000000100000001000000008b4c6162656c0000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000004000000040000000000"
+  },
+  {
+   "id": "cr6-structure_duplicate",
+   "logger": "cr6",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.Value,FP2)\nSample(1,V.Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr1000x-structure_duplicate",
+   "logger": "cr1000x",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.Value,FP2)\nSample(1,V.Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr300-structure_duplicate",
+   "logger": "cr300",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.Value,FP2)\nSample(1,V.Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr350-structure_duplicate",
+   "logger": "cr350",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V As Kind\nDataTable(A,1,10)\nSample(1,V.Value,FP2)\nSample(1,V.Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr6-structure_rows",
+   "logger": "cr6",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V(2) As Kind\nDataTable(A,1,10)\nSample(1,V(1).Value,FP2)\nSample(1,V(2).Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr1000x-structure_rows",
+   "logger": "cr1000x",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V(2) As Kind\nDataTable(A,1,10)\nSample(1,V(1).Value,FP2)\nSample(1,V(2).Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr300-structure_rows",
+   "logger": "cr300",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V(2) As Kind\nDataTable(A,1,10)\nSample(1,V(1).Value,FP2)\nSample(1,V(2).Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr350-structure_rows",
+   "logger": "cr350",
+   "source": "StructureType Kind\nValue As Float\nEndStructureType\nPublic V(2) As Kind\nDataTable(A,1,10)\nSample(1,V(1).Value,FP2)\nSample(1,V(2).Value,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Value in DataTable A."
+  },
+  {
+   "id": "cr6-table_string_sources",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(B,1,10)\nSample(1,S,String)\nEndTable\nDataTable(A,1,10)\nSample(1,B.S,String)\nSample(1,Left(B.S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table B, is declared but never called.",
+   "table_names": [
+    "B",
+    "A"
+   ],
+   "expected_tdf": "014200000000010e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000000041000000000a0e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr1000x-table_string_sources",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(B,1,10)\nSample(1,S,String)\nEndTable\nDataTable(A,1,10)\nSample(1,B.S,String)\nSample(1,Left(B.S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table B, is declared but never called.",
+   "table_names": [
+    "B",
+    "A"
+   ],
+   "expected_tdf": "014200000000010e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000000041000000000a0e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr300-table_string_sources",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(B,1,10)\nSample(1,S,String)\nEndTable\nDataTable(A,1,10)\nSample(1,B.S,String)\nSample(1,Left(B.S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table B, is declared but never called.",
+   "table_names": [
+    "B",
+    "A"
+   ],
+   "expected_tdf": "014200000000010e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000000041000000000a0e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr350-table_string_sources",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(B,1,10)\nSample(1,S,String)\nEndTable\nDataTable(A,1,10)\nSample(1,B.S,String)\nSample(1,Left(B.S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table B, is declared but never called.",
+   "table_names": [
+    "B",
+    "A"
+   ],
+   "expected_tdf": "014200000000010e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000000041000000000a0e000000000000000000000000000000008b530000536d700000536d7000000000010000000c0000000c000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000000"
+  },
+  {
+   "id": "cr6-status_string_source",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.StationName,String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b53746174696f6e4e616d650000536d700000536d70000000000100000040000000400000000000"
+  },
+  {
+   "id": "cr1000x-status_string_source",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.StationName,String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b53746174696f6e4e616d650000536d700000536d70000000000100000040000000400000000000"
+  },
+  {
+   "id": "cr300-status_string_source",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.StationName,String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b53746174696f6e4e616d650000536d700000536d70000000000100000040000000400000000000"
+  },
+  {
+   "id": "cr350-status_string_source",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,10)\nSample(1,Status.StationName,String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b53746174696f6e4e616d650000536d700000536d70000000000100000040000000400000000000"
+  },
+  {
+   "id": "cr6-auto_string_buffer",
+   "logger": "cr6",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,-1)\nDataInterval(0,5,Sec,10)\nSample(1,Left(S,2),String)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "01410000037dff0e000000000000000000000005000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000087580000536d700000536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr1000x-auto_string_buffer",
+   "logger": "cr1000x",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,-1)\nDataInterval(0,5,Sec,10)\nSample(1,Left(S,2),String)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "01410000037dff0e000000000000000000000005000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000087580000536d700000536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr300-auto_string_buffer",
+   "logger": "cr300",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,-1)\nDataInterval(0,5,Sec,10)\nSample(1,Left(S,2),String)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000008916f0e000000000000000000000005000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000087580000536d700000536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr350-auto_string_buffer",
+   "logger": "cr350",
+   "source": "Public X,N,S As String * 8\nDataTable(A,1,-1)\nDataInterval(0,5,Sec,10)\nSample(1,Left(S,2),String)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "014100002afd8f0e000000000000000000000005000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000010000000100000000087580000536d700000536d700000000001000000010000000000"
+  },
+  {
+   "id": "cr6-string_width_1",
+   "logger": "cr6",
+   "source": "Public S As String * 1\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr1000x-string_width_1",
+   "logger": "cr1000x",
+   "source": "Public S As String * 1\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr300-string_width_1",
+   "logger": "cr300",
+   "source": "Public S As String * 1\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr350-string_width_1",
+   "logger": "cr350",
+   "source": "Public S As String * 1\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr6-string_width_3",
+   "logger": "cr6",
+   "source": "Public S As String * 3\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr1000x-string_width_3",
+   "logger": "cr1000x",
+   "source": "Public S As String * 3\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr300-string_width_3",
+   "logger": "cr300",
+   "source": "Public S As String * 3\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr350-string_width_3",
+   "logger": "cr350",
+   "source": "Public S As String * 3\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000008000000080000000000"
+  },
+  {
+   "id": "cr6-string_width_4",
+   "logger": "cr6",
+   "source": "Public S As String * 4\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr1000x-string_width_4",
+   "logger": "cr1000x",
+   "source": "Public S As String * 4\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr300-string_width_4",
+   "logger": "cr300",
+   "source": "Public S As String * 4\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr350-string_width_4",
+   "logger": "cr350",
+   "source": "Public S As String * 4\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr6-string_width_7",
+   "logger": "cr6",
+   "source": "Public S As String * 7\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr1000x-string_width_7",
+   "logger": "cr1000x",
+   "source": "Public S As String * 7\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr300-string_width_7",
+   "logger": "cr300",
+   "source": "Public S As String * 7\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr350-string_width_7",
+   "logger": "cr350",
+   "source": "Public S As String * 7\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000000c0000000c0000000000"
+  },
+  {
+   "id": "cr6-string_width_20",
+   "logger": "cr6",
+   "source": "Public S As String * 20\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr1000x-string_width_20",
+   "logger": "cr1000x",
+   "source": "Public S As String * 20\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr300-string_width_20",
+   "logger": "cr300",
+   "source": "Public S As String * 20\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr350-string_width_20",
+   "logger": "cr350",
+   "source": "Public S As String * 20\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d7000000000010000001c0000001c0000000000"
+  },
+  {
+   "id": "cr6-string_width_60",
+   "logger": "cr6",
+   "source": "Public S As String * 60\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000044000000440000000000"
+  },
+  {
+   "id": "cr1000x-string_width_60",
+   "logger": "cr1000x",
+   "source": "Public S As String * 60\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000044000000440000000000"
+  },
+  {
+   "id": "cr300-string_width_60",
+   "logger": "cr300",
+   "source": "Public S As String * 60\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000044000000440000000000"
+  },
+  {
+   "id": "cr350-string_width_60",
+   "logger": "cr350",
+   "source": "Public S As String * 60\nDataTable(A,1,10)\nSample(1,Left(S,2),String)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable A\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "table_names": [
+    "A"
+   ],
+   "expected_tdf": "0141000000000a0e000000000000000000000000000000008b416e6f6e796d6f7573310000536d700000536d70000000000100000044000000440000000000"
+  }
+ ]
+}

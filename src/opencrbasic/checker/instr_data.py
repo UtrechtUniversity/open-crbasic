@@ -906,6 +906,7 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
     reported = False
     tables = symbols.scope_tables(program, env)
     known = expressions._known_names(program, profile) if not destinations else set()
+    source_vars = None
     in_table = False
     for st in program.statements:
         if not isinstance(st, S.Instruction):
@@ -942,6 +943,17 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if not destinations and in_table and _report_undefined_source(st, record, known, profile, diags):
                 return True
             source = st.args[1]
+            if kw == "SAMPLE" and len(st.args) > 2:
+                from .. import tables as output_tables
+                if output_tables._dtype_code(st.args[2], env) == 11:
+                    if source_vars is None:
+                        source_vars = {v.name.upper(): output_tables._make_var_info(v, env)
+                                       for v in output_tables._scan_program(program)["all_vars"]}
+                    if output_tables._is_anonymous_source(source, source_vars, env) and \
+                            output_tables._string_stored_len(output_tables._anonymous_string_len(
+                                source, source_vars, env)) <= 0:
+                        diags.error(st.line, "Out of memory.", st.file)
+                        return True
             if reps is not None and reps > 1 and not isinstance(source, (S.Name, S.Index)):
                 diags.error(st.line, "Reps must be 1 when the source is an expression.", st.file)
                 diags.error(st.line, f"Variable Anonymous1, index 1, reps {reps}, out of bounds.",

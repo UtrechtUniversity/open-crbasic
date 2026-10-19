@@ -393,7 +393,7 @@ CR300 and CR350, all four agreeing; generator `tools/tdf_anonymous_fixture_gen.p
   counts its stored length: `S As String * 8` is 12, `S+"cd"` -> 16); a number or numeric expression
   as String is 24 (like a 20-character string). A non-String `DataType` (`FP2`, `IEEE4`) over a literal
   is an ordinary dim-1 numeric field. `FieldNames` over such a field renames it whole (like a String
-  variable). Not modelled: a String-returning function (`Left(S,2)` is really 16, we give 24).
+  variable). String-returning functions use the temporary-buffer rules below.
 - **FFT.** `FFT(<expression>, ...)` is a real field `Anonymous<n>_FFT` with the usual layout (we used to
   drop it); `FFT(B.X, ...)` is `X_FFT`. An FFT of a literal or a number crashes the real compiler
   (page fault on all four loggers), so it is not modelled.
@@ -401,9 +401,54 @@ CR300 and CR350, all four agreeing; generator `tools/tdf_anonymous_fixture_gen.p
   `goestable_1`'s `FORCE_RANDOM_TX` record is 14 bytes (12 + FP2), not 3, and with it `checker/storage.py`
   reproduces the real counts (930, 713, 5665, 1000 on CR300; 930, 2201, 28193, 1000 on CR350; with
   `"x"` instead: 930, 961, 7576, 1000 and 1426, 2945, 37955, 1000).
-- Unchanged / not probed: an unresolved `Table.Field` (`Status.Battery`, a StructureType member
-  `v.f`) is really named after the member and takes no number; we still name it `Anonymous` (no
-  number), see `check_duplicate_fields`.
+- Status and StructureType member sources use their field descriptors, as described below.
+
+### Expression buffers and member sources (round 22, 2026-10-19)
+
+Evidence: `tests/fixtures/tdf_expressions.json`, generated and auditable with
+`tools/tdf_expression_fixture_gen.py`; `tests/test_tdf_expressions.py` checks diagnostics and
+serialized user-table bytes. Reference compiler identities are recorded in the fixture. The
+CR6 decompilation was regenerated locally with Ghidra 12.1.4: `FUN_00499af0` selects function
+buffer lengths, `FUN_0049d8c0` maintains the length stack, and `FUN_004ec300` creates the
+anonymous source descriptor from `DAT_00670ff0`, rounding up to a four-byte boundary. These are
+compile-time buffer sizes, independent of the string returned at runtime.
+
+Let `L` be the unrounded temporary length: literals use their character count, String variables
+their stored width, concatenation adds lengths, and conversion of a numeric function argument
+to String uses 24 bytes. Nested functions propagate `L` without rounding at every call.
+
+- `Left`, `Right`, `Mid`, `UpperCase`, `LowerCase`, `Trim`, `LTrim`, `RTrim`: `L(source)`, ignoring
+  substring positions and requested lengths. `S As String * 8` has stored width 12, so
+  `Sample(1,Left(S,2),String)` stores 16 bytes. `Left(42,2)` stores 28.
+- `Replace`: `L(source) - 1 + L(replacement)`, independent of the search string's length.
+  With an empty source and replacement this would create a zero-byte temporary;
+  `Sample(1,Replace("","a",""),String)` reports `Out of memory.` on the Sample line on all four
+  loggers. The existing stage-2 allocation checks report it before table rendering.
+- `FormatFloat`, `FormatLong`: `L(format) + 60`. `FormatFloat(X,"%2.2f")` stores 68 bytes.
+  `FormatLongLong` takes one variable/string argument and propagates its length, without the
+  60-byte addition (`FormatLongLong("%lld")` stores 8 bytes).
+- `Chr`/`Chr$`: `L=2`; `Hex`: `L=0`; both store 4 bytes. `IPInfo`: `L=104`, stored 108.
+
+The source-name parser also treats a single integer argument as a source subscript, even when
+the source is a function. For a String field of width `w`, its starting index is
+`1 + (argument - 1) * w` (32-bit arithmetic): `Chr(65)` starts at 257 and `Hex(255)` at 1017.
+Multiple arguments or a quoted String argument leave the start at 1. This is a descriptor
+quirk, not an evaluation of the function.
+
+`Status.Battery` uses canonical field spelling (`status.bAtTeRy` still gives `Battery`), takes
+no anonymous number, and inherits no Status units. A Public variable with the same member name
+can supply units, as with earlier user-table sources. Structure members use their declared
+spelling and structure units. String member sources retain their stored width. Resolved member
+sources participate in duplicate-field checks: two `Sample(1,Status.Battery,IEEE4)` instructions
+fail with `Duplicate field name Battery in DataTable A.` rather than being skipped as anonymous
+placeholders.
+
+Limits: byte fixtures cover explicitly declared DataTables. The existing per-profile Status-table
+definition gaps, and CR300/CR350 implicit structure-table header/units differences, are separate
+from this change.
+`Sample(1,Public.X,IEEE4)` caused a reference compiler page fault during exploration and supplies
+no usable verdict; it is excluded from the fixture. The zero-argument `Date`/`PPPOpen` source
+forms have not been modelled by this round.
 
 ## 10. Auto-allocated table size (`Size = -1`)
 

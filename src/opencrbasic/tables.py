@@ -788,21 +788,22 @@ def _datatableinfo_table(n: int) -> TdfTable:
 # ---------------------------------------------------------------- DataTable output fields (§9)
 
 
-def _source_name(expr: S.Expr | None, var_info: dict[str, VarInfo] | None = None) -> str:
-    raw = None
+def _source_info(expr: S.Expr | None, var_info: dict[str, VarInfo]) -> VarInfo | None:
     if isinstance(expr, (S.Name, S.Index)):
-        raw = expr.name
-    elif (isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)) and var_info):
-        info = var_info.get(f"{expr.base.name}.{expr.member}".upper())
-        if info is not None:
-            return info.name
-    if raw is None:
-        return "Anonymous"
+        return var_info.get(expr.name.upper())
+    if isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)):
+        return var_info.get(f"{expr.base.name}.{expr.member}".upper())
+    return None
+
+
+def _source_name(expr: S.Expr | None, var_info: dict[str, VarInfo] | None = None) -> str:
     if var_info is not None:
-        info = var_info.get(raw.upper())
+        info = _source_info(expr, var_info)
         if info is not None and info.name:
             return info.name  # declared spelling; CRBasic is case-insensitive at the use site
-    return raw
+    if isinstance(expr, (S.Name, S.Index)):
+        return expr.name
+    return expr.member if isinstance(expr, S.Member) else "Anonymous"
 
 
 def _is_anonymous_source(expr: S.Expr | None, var_info: dict, env: consteval.Env) -> bool:
@@ -819,15 +820,38 @@ def _is_anonymous_source(expr: S.Expr | None, var_info: dict, env: consteval.Env
 
 def _anonymous_string_len(expr: S.Expr | None, var_info: dict, env: consteval.Env) -> int:
     """Character count that sizes a non-variable String source (§9c): a literal is its own length,
-    a String variable its stored length, `+`/`&` of those the sum; anything else sizes as a
-    20-character string (stored 24)."""
+    a String variable its stored length, `+`/`&` of those the sum. String functions propagate a
+    temporary buffer length, not the length of their runtime result. Unknown/numeric sources
+    retain the 20-character conversion default (stored 24)."""
     def known(e):
         v = _fold(e, env, None)
         if isinstance(v, str):
             return len(v)
+        info = _source_info(e, var_info)
+        if info is not None:
+            return info.stored_len
         if isinstance(e, (S.Name, S.Index)):
-            info = var_info.get(e.name.upper())
-            return info.stored_len if info is not None and info.stored_len else None
+            fn = env.profile.functions.get(e.name.upper())
+            if isinstance(e, S.Index) and fn and fn["kind"] == 312:
+                code = fn["code"]
+                if code == 229:  # Chr / Chr$
+                    return 2
+                if code == 243:  # Hex
+                    return 0
+                if code == 254:  # IPInfo
+                    return 104
+                if code in (239, 251) and e.args:
+                    n = known(e.args[-1])
+                    return (24 if n is None else n) + 60
+                if code == 252 and e.args:  # FormatLongLong's single variable/string argument
+                    return known(e.args[0])
+                if code == 250 and len(e.args) == 3:  # Replace
+                    first, last = known(e.args[0]), known(e.args[2])
+                    return (24 if first is None else first) - 1 + (24 if last is None else last)
+                if code in (230, 237, 238, 245, 246, 247, 248, 249) and e.args:
+                    n = known(e.args[0])
+                    return 24 if n is None else n
+            return None
         if isinstance(e, S.Binary) and e.op in ("+", "&"):
             l, r = known(e.left), known(e.right)
             return None if l is None or r is None else l + r
@@ -859,6 +883,11 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
             return 1, list(info.shape)
     if isinstance(expr, (S.Index, S.Name)):
         info = var_info.get(expr.name.upper())
+        if isinstance(expr, S.Index) and info is None and (
+                len(expr.args) != 1 or isinstance(expr.args[0], S.String)):
+            # The source-name parser accepts a single integer subscript, even on a function,
+            # but not a comma-separated argument list or a quoted string (§9c).
+            return 1, []
         array_shape = list(info.shape) if info and info.shape else ([reps] if isinstance(expr, S.Index) else [])
         if array_shape == [1]:
             array_shape = []  # §3 collapse rule: a one-element array has no subdims
@@ -1149,7 +1178,7 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
         begin, subdims, units = shaped(src, reps)
-        info = var_info.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
+        info = _source_info(src, var_info)
         dim = reps
         if info is not None and info.stored_len is not None and tcode == 11:
             # String source (docs/tdf-rules.md §9a): element = stored_len bytes
@@ -1162,10 +1191,11 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
             # a non-variable String source is as wide as its value (docs/tdf-rules.md §9c)
             dim = _string_stored_len(_anonymous_string_len(src, var_info, env))
             subdims = [dim]
+            begin = ((begin - 1) * dim + 1) & 0xffffffff
             return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
                               units, placeholder=True, elem=dim, splittable=True)]
         return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
-                          units, placeholder=not isinstance(src, (S.Name, S.Index)))]
+                          units, placeholder=not isinstance(src, (S.Name, S.Index)) and info is None)]
 
     if kw in ("AVERAGE", "TOTALIZE", "STDDEV"):
         reps = reps_of()
@@ -1561,6 +1591,18 @@ def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[st
 # ---------------------------------------------------------------- top-level
 
 
+def _register_table_sources(table: TdfTable, var_info: dict[str, VarInfo]) -> None:
+    """Descriptors for `Table.Field` sources (§9b/§9c), without inheriting table-field units."""
+    for f in table.fields:
+        shape = list(f.subdims)
+        stored_len = None
+        if f.type == 11:
+            stored_len = shape.pop() if shape else f.dimension
+        elif not shape and f.dimension > 1:
+            shape = [f.dimension]
+        var_info[f"{table.name}.{f.name}".upper()] = VarInfo(f.type, shape, stored_len, name=f.name)
+
+
 def build_tables(program: S.Program, profile, consts: dict):
     env = consteval.Env(profile, dict(consts))
     scanned = _scan_program(program)
@@ -1584,6 +1626,8 @@ def build_tables(program: S.Program, profile, consts: dict):
     if scanned["uses_ch400"]:
         struct_tables = struct_tables + [_ch400status_table()]
         tables.append(struct_tables[-1])
+    for table in tables:
+        _register_table_sources(table, var_info)
 
     data_table_metas = []
     anon = [0]   # program-wide `Anonymous<n>` counter (docs/tdf-rules.md §9c)
@@ -1591,11 +1635,7 @@ def build_tables(program: S.Program, profile, consts: dict):
         table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"], by_base, anon)
         tables.append(table)
         data_table_metas.append((table, meta))
-        for f in table.fields:
-            # a later `Sample(1, Table.Field, ...)` source (§9b): named like the field, shaped like it
-            if f.type != 11:
-                var_info[f"{table.name}.{f.name}".upper()] = VarInfo(
-                    f.type, list(f.subdims) or ([f.dimension] if f.dimension > 1 else []), name=f.name)
+        _register_table_sources(table, var_info)
 
     if scanned["data_tables"] or struct_tables:
         tables.append(_datatableinfo_table(len(scanned["data_tables"])))
