@@ -147,7 +147,22 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Round 20 (2026-10-18/19; resume here)
+## Round 21 (2026-10-19; resume here)
+
+- Integration branch `ocb-r21` from `main` 316aeccc. Weekly usage was 61% at the start: one
+  worker at a time.
+- TimeOut negative literals: Codex's model (`scratch/codex/re-r20-timeout-cr3xx.md`) confirmed on the
+  real compilers, every TimeOut verdict of 56 results as predicted (`scratch/r21/timeout/c.txt` +
+  `run.txt`; we match 16/56): `-N` folds into an integer constant only while the compiler-wide
+  reported-error count is zero (never reset by `:`/newline), so after any reported error a
+  negative TimeOut literal is `Parameter must be a constant integer`; positive/`+N`/hex keep NEG;
+  CR6/CR1000X defer expressions with unresolved names (they do not count). Worker W1 implements it
+  (branch `ocb-r21-w1`, brief `scratch/r21/W1-negfold.md`).
+- Codex RE on `goestable_1` (CR300/CR350 auto-size split, CR6 `Anonymous1` field name) started
+  2026-10-19: `scratch/codex/re-r21-goestable.md` (log `.log`). Check the process (`ps`) before
+  calling it running; oracle-check its predictions before any worker uses them.
+
+## Round 20 (2026-10-18/19)
 
 - Integration branch `ocb-r20`, cut from `main` at ef873362 ("Require Python 3.15 ...", not by
   this workstream). Clean baseline after the reboot (2026-10-18): pytest 41,625 passed / 311
@@ -163,18 +178,18 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   while one is going. Run at most two workers plus the coordinator's gates.
 - Integrated, each gated by the coordinator (fixture audits, full pytest, difftest x4, replay,
   probes of valid neighbours):
-  - W3 Const leftovers (87c5c25c + fix 39074ec0): unmatched paren / out-of-place / adjacent-operand
+  - W3 Const leftovers (b48b6872 + fix e36154ef on main): unmatched paren / out-of-place / adjacent-operand
     values, `Long[5]`, `Const "abc`, `As String * n = ...` false accept, use before declaration
     (`r20_const.json`). Its first commit lost two real-compiler fixture cases
     (`r14_routine_local_scope` dim_in_const, `r7_cr3xx_top-13`), caught by the full pytest the
     worker had not run; the fix restores both. Coordinator probe of 10 valid shapes: 38/40 match,
     the 2 misses are a pre-existing CR300/CR350 false accept (a Sub using a Const declared after
     it is `K is not defined.`).
-  - W5 DataInterval/Scan units by value (80af5685): 0..5 truncated, 6 = MON (TDF interval 0,
+  - W5 DataInterval/Scan units by value (65e960f3 on main): 0..5 truncated, 6 = MON (TDF interval 0,
     tinto dropped, auto-size like MON), anything else invalid (1 SEC), DataInterval divisibility
     check with truncated units (`r20_interval_units.json`). Coordinator probe of 10 valid numeric
     DataInterval shapes: 40/40 match.
-- Gates at 80af5685: pytest 41,896 passed / 311 skipped; all r20 fixtures and the older Const
+- Gates at 80af5685 (65e960f3 after the rebase onto main): pytest 41,896 passed / 311 skipped; all r20 fixtures and the older Const
   fixtures audit 0 differing; difftest unchanged; `fuzz_replay` 2,377 exact (+2), 62 false accepts,
   0 false rejects, 687 message diffs (`scratch/r20/replay-w5.json`); tdftest unchanged
   (`goestable_1` only; the reference-fault lines are not mismatches).
@@ -182,9 +197,9 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   TimeOut CR300/CR350 (no commit; observations `scratch/r20/W6/cond.out`, `ungated.out`; candidate
   rule: after an earlier error on the same line a '-'-signed decimal TimeOut prints `Parameter must
   be a constant integer: <stmt>.` on CR300/CR350, positive/hex keep NEG; a second '-' call after a
-  NEG call gives NEG then constant-integer on all four loggers). Codex RE research on it was still
-  running when the round closed: `scratch/codex/re-r20-timeout-cr3xx.md` (log `.log`); oracle-check
-  its predictions before any worker uses them.
+  NEG call gives NEG then constant-integer on all four loggers). Codex RE research on it finished
+  2026-10-19 09:09 (`scratch/codex/re-r20-timeout-cr3xx.md`; an earlier note here said it was still
+  running, which was wrong); round 21 oracle-checked it.
 
 ## Next steps (round 21)
 
