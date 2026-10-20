@@ -793,11 +793,13 @@ def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
 # `Reps` (the second argument) of measurement instructions, oracle-probed 2026-10-01 (the decompiled
 # CR6 check `FUN_005163b0` is shared by 23 instructions; only the ones probed on a logger are
 # listed). CR6/CR1000X: `Invalid reps %d, must be > 0` (no period) for Reps <= 0, and `Variable %s
-# out of bounds.` when the Float destination has fewer elements from its start than Reps (any
-# negative Reps). CR300/CR350: `Invalid reps 0, must be > 0.` for Reps 0 only.
+# out of bounds.` when the Float destination cannot hold the output count (also for negative
+# output counts). Optional outputs adjust that count below. CR300/CR350: `Invalid reps 0, must
+# be > 0.` for Reps 0 only.
 _REPS_CHECKED = {
     "cr6": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "BRHALF", "BRHALF3W", "BRHALF4W",
-                      "BRFULL", "BRFULL6W", "RESISTANCE", "PULSECOUNT", "CS616"}),
+                      "BRFULL", "BRFULL6W", "RESISTANCE", "RESISTANCE2W", "RESISTANCE3W",
+                      "PULSECOUNT", "CS616"}),
     "cr1000x": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
                           "PULSECOUNT", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W",
                           "CS616"}),
@@ -806,7 +808,23 @@ _REPS_CHECKED = {
 }
 _REPS_DEST_SIZE = frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
                              "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE",
-                             "PULSECOUNT", "CS616"})  # positive overflow probed (round 24 for the bridges on)
+                             "RESISTANCE2W", "RESISTANCE3W", "PULSECOUNT", "CS616"})
+
+
+def _measurement_output_count(stmt: S.Instruction, reps: int, env: consteval.Env) -> int:
+    """Optional extra outputs, from the bridge/resistance builders and round-25 oracle probes.
+
+    The option is an integer equal to 1, not a Boolean: True (-1) does not enable it.
+    Bridges return one extra value per repetition; resistance returns one extra value overall.
+    """
+    kw = stmt.keyword.upper()
+    option_index = {"BRHALF4W": 14, "BRFULL6W": 14, "RESISTANCE": 13,
+                    "RESISTANCE2W": 10, "RESISTANCE3W": 10}.get(kw)
+    if option_index is None or len(stmt.args) <= option_index:
+        return reps
+    if _int_value(stmt.args[option_index], env) != 1:
+        return reps
+    return reps * 2 if kw in {"BRHALF4W", "BRFULL6W"} else reps + 1
 
 
 def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -850,8 +868,30 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
         total = 1
         for n in shape:
             total *= n
-        if reps < 0 or reps > total - offset:
+        count = _measurement_output_count(stmt, reps, env)
+        if count < 0 or count > total - offset:
             diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+    _check_bridge_burst(program, profile, diags, env)
+
+
+def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics,
+                        env: consteval.Env) -> None:
+    """The shared bridge builder checks burst MeasPEx after resolving its destination."""
+    if profile.name not in {"cr6", "cr1000x"}:
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in {
+                "BRHALF4W", "BRFULL6W"} or len(stmt.args) < 7:
+            continue
+        reps, channel, meas = (_int_value(stmt.args[i], env) for i in (1, 4, 6))
+        if reps is None or channel is None or meas is None or meas < 1:
+            continue
+        # Only valid burst channels: invalid channels have their own conversion diagnostics.
+        valid = (-211 <= channel <= -201 and channel % 2 != 0) if profile.name == "cr6" \
+            else -8 <= channel <= -1
+        if valid and meas != reps:
+            diags.error(stmt.line,
+                        "When channel < 0, measurements per excitation must equal reps.", stmt.file)
 
 
 # Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds): elements the

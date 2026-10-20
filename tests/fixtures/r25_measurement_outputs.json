@@ -1,0 +1,3120 @@
+{
+  "description": "Reference observations for bridge and resistance optional outputs and bridge burst MeasPEx, 2026-10-20. CR6 builder traces: FUN_00513550, FUN_005147a0, FUN_005177a0; all four compiler profiles probed.",
+  "cases": [
+    {
+      "id": "cr6-BrHalf4W-None-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-None-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-None-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-0-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-0-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-0-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-True-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-True-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-True-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-2-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-2-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-2-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W--1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W--1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W--1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-1.5-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-1.5-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-1.5-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-None-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-None-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-None-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-0-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-0-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-0-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-True-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-True-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-True-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-2-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-2-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-2-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W--1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W--1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W--1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-1.5-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-1.5-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-1.5-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-None-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-None-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-None-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-0-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-0-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-0-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-True-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-True-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-True-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-2-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-2-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-2-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance--1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance--1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance--1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-1.5-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-1.5-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-1.5-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-None-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-None-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-None-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-0-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-0-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-0-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-True-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-True-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-True-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-2-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-2-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-2-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W--1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W--1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W--1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-1.5-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-1.5-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-1.5-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-None-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-None-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-None-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-0-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-0-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-0-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-True-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-True-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-True-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-2-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-2-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-2-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W--1-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W--1-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W--1-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-1.5-2",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-1.5-3",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-1.5-4",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-None-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-None-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-None-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-0-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-0-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-0-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-1-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-1-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-1-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-True-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-True-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-True-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-2-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-2-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-2-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W--1-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W--1-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W--1-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-1.5-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-1.5-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-1.5-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-None-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-None-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-None-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-0-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-0-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-0-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-1-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-1-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-1-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-True-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-True-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-True-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-2-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-2-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-2-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W--1-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W--1-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W--1-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-1.5-2",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-1.5-3",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-1.5-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-Resistance-None-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Resistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)."
+    },
+    {
+      "id": "cr1000x-Resistance2W-None-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Resistance2W(X,2,mV5000,U1,500,True,0,50,1,0)."
+    },
+    {
+      "id": "cr1000x-Resistance3W-None-4",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Resistance3W(X,2,mV5000,U1,500,True,0,50,1,0)."
+    },
+    {
+      "id": "cr300-BrHalf4W-None-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-BrHalf4W-None-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-BrHalf4W-None-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-BrHalf4W-0-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr300-BrHalf4W-0-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr300-BrHalf4W-0-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr300-BrHalf4W-1-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-BrHalf4W-1-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-BrHalf4W-1-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-BrHalf4W-True-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr300-BrHalf4W-True-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr300-BrHalf4W-True-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr300-BrHalf4W-2-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-BrHalf4W-2-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-BrHalf4W-2-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-BrHalf4W--1-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr300-BrHalf4W--1-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr300-BrHalf4W--1-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr300-BrHalf4W-1.5-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr300-BrHalf4W-1.5-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr300-BrHalf4W-1.5-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr300-BrFull6W-None-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-BrFull6W-None-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-BrFull6W-None-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-BrFull6W-0-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr300-BrFull6W-0-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr300-BrFull6W-0-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr300-BrFull6W-1-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-BrFull6W-1-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-BrFull6W-1-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-BrFull6W-True-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr300-BrFull6W-True-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr300-BrFull6W-True-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr300-BrFull6W-2-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-BrFull6W-2-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-BrFull6W-2-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-BrFull6W--1-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr300-BrFull6W--1-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr300-BrFull6W--1-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr300-BrFull6W-1.5-2",
+      "logger": "cr300",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr300-BrFull6W-1.5-3",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr300-BrFull6W-1.5-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr300-Resistance-None-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Resistance is not defined.\nline 4: mV5000 is not defined.\nline 4: U1 is not defined.\nline 4: Invalid, or out of place expression: Resistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\n."
+    },
+    {
+      "id": "cr300-Resistance2W-None-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Resistance2W is not defined.\nline 4: mV5000 is not defined.\nline 4: U1 is not defined.\nline 4: Invalid, or out of place expression: Resistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\n."
+    },
+    {
+      "id": "cr300-Resistance3W-None-4",
+      "logger": "cr300",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Resistance3W is not defined.\nline 4: mV5000 is not defined.\nline 4: U1 is not defined.\nline 4: Invalid, or out of place expression: Resistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\n."
+    },
+    {
+      "id": "cr350-BrHalf4W-None-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-BrHalf4W-None-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-BrHalf4W-None-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-BrHalf4W-0-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr350-BrHalf4W-0-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr350-BrHalf4W-0-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr350-BrHalf4W-1-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-BrHalf4W-1-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-BrHalf4W-1-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-BrHalf4W-True-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr350-BrHalf4W-True-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr350-BrHalf4W-True-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr350-BrHalf4W-2-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-BrHalf4W-2-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-BrHalf4W-2-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-BrHalf4W--1-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr350-BrHalf4W--1-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr350-BrHalf4W--1-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr350-BrHalf4W-1.5-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr350-BrHalf4W-1.5-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr350-BrHalf4W-1.5-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr350-BrFull6W-None-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-BrFull6W-None-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-BrFull6W-None-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-BrFull6W-0-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr350-BrFull6W-0-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr350-BrFull6W-0-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+    },
+    {
+      "id": "cr350-BrFull6W-1-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-BrFull6W-1-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-BrFull6W-1-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-BrFull6W-True-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr350-BrFull6W-True-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr350-BrFull6W-True-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,True)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  True."
+    },
+    {
+      "id": "cr350-BrFull6W-2-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-BrFull6W-2-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-BrFull6W-2-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-BrFull6W--1-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr350-BrFull6W--1-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr350-BrFull6W--1-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  -1."
+    },
+    {
+      "id": "cr350-BrFull6W-1.5-2",
+      "logger": "cr350",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr350-BrFull6W-1.5-3",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr350-BrFull6W-1.5-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV2500,mV2500,-1,Vx1,2,2500,True,True,0,50,1,0,1.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.5."
+    },
+    {
+      "id": "cr350-Resistance-None-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Resistance is not defined.\nline 4: mV5000 is not defined.\nline 4: U1 is not defined.\nline 4: Invalid, or out of place expression: Resistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\n."
+    },
+    {
+      "id": "cr350-Resistance2W-None-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Resistance2W is not defined.\nline 4: mV5000 is not defined.\nline 4: U1 is not defined.\nline 4: Invalid, or out of place expression: Resistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\n."
+    },
+    {
+      "id": "cr350-Resistance3W-None-4",
+      "logger": "cr350",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Resistance3W is not defined.\nline 4: mV5000 is not defined.\nline 4: U1 is not defined.\nline 4: Invalid, or out of place expression: Resistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\n."
+    },
+    {
+      "id": "cr6-BrHalf4W-scalar",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-short",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-offset-short",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(3),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-offset-fit",
+      "logger": "cr6",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(2),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-matrix-short",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(2,1),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-matrix-fit",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(1,1),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-long",
+      "logger": "cr6",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-alias",
+      "logger": "cr6",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(Y,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr6-BrHalf4W-zero",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-negative",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-const",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-expression",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrHalf4W-false",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-large-option",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-small-fraction",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-scalar",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-short",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-offset-short",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(3),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-offset-fit",
+      "logger": "cr6",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(2),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-matrix-short",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(2,1),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-matrix-fit",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(1,1),2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-long",
+      "logger": "cr6",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-alias",
+      "logger": "cr6",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(Y,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr6-BrFull6W-zero",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-negative",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-const",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-expression",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-BrFull6W-false",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-large-option",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-small-fraction",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-scalar",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,1,mV5000,-U1,U9,1,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-short",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-offset-short",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X(3),2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-offset-fit",
+      "logger": "cr6",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X(2),2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-matrix-short",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X(2,1),2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-matrix-fit",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X(1,1),2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-long",
+      "logger": "cr6",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-alias",
+      "logger": "cr6",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nResistance(Y,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr6-Resistance-zero",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,0,mV5000,-U1,U9,1,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance-negative",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-1,mV5000,-U1,U9,1,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance-const",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-expression",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-false",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-large-option",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance-small-fraction",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-scalar",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,1,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-short",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-offset-short",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X(3),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-offset-fit",
+      "logger": "cr6",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X(2),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-matrix-short",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X(2,1),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-matrix-fit",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X(1,1),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-long",
+      "logger": "cr6",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-alias",
+      "logger": "cr6",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(Y,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr6-Resistance2W-zero",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,0,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance2W-negative",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-1,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance2W-const",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-expression",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-false",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-large-option",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance2W-small-fraction",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,2,mV5000,U1,500,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-scalar",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,1,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-short",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-offset-short",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X(3),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-offset-fit",
+      "logger": "cr6",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X(2),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-matrix-short",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X(2,1),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-matrix-fit",
+      "logger": "cr6",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X(1,1),2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-long",
+      "logger": "cr6",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-alias",
+      "logger": "cr6",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(Y,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr6-Resistance3W-zero",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,0,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance3W-negative",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-1,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance3W-const",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-expression",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-false",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-large-option",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-Resistance3W-small-fraction",
+      "logger": "cr6",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,2,mV5000,U1,500,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-scalar",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-short",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-offset-short",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(3),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-offset-fit",
+      "logger": "cr1000x",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(2),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-matrix-short",
+      "logger": "cr1000x",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(2,1),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-matrix-fit",
+      "logger": "cr1000x",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X(1,1),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-long",
+      "logger": "cr1000x",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-alias",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(Y,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-zero",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-negative",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-const",
+      "logger": "cr1000x",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-expression",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-false",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-large-option",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-small-fraction",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-scalar",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-short",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-offset-short",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(3),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-offset-fit",
+      "logger": "cr1000x",
+      "source": "Public X(5)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(2),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-matrix-short",
+      "logger": "cr1000x",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(2,1),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-matrix-fit",
+      "logger": "cr1000x",
+      "source": "Public X(2,2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X(1,1),2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-long",
+      "logger": "cr1000x",
+      "source": "Public X(2) As Long\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-alias",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(Y,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
+      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+    },
+    {
+      "id": "cr1000x-BrFull6W-zero",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-negative",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-const",
+      "logger": "cr1000x",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-expression",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,2-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrFull6W-false",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,False)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-large-option",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,4294967297)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-small-fraction",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0.9)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps0-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps0-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps0-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps-1-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps-1-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps-1-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps-2-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps-2-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-reps-2-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps0-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps0-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps0-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps-1-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps-1-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps-1-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps-2-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps-2-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-reps-2-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-Resistance-reps0-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,0,mV5000,-U1,U9,1,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance-reps0-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,0,mV5000,-U1,U9,1,500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance-reps0-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,0,mV5000,-U1,U9,1,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance-reps-1-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-1,mV5000,-U1,U9,1,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-reps-1-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-1,mV5000,-U1,U9,1,500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-reps-1-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-1,mV5000,-U1,U9,1,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance-reps-2-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-2,mV5000,-U1,U9,1,500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-reps-2-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-2,mV5000,-U1,U9,1,500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance-reps-2-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance(X,-2,mV5000,-U1,U9,1,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-reps0-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,0,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance2W-reps0-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,0,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance2W-reps0-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,0,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance2W-reps-1-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-1,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-reps-1-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-1,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-reps-1-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-1,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance2W-reps-2-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-reps-2-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance2W-reps-2-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(X,-2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-reps0-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,0,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance3W-reps0-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,0,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance3W-reps0-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,0,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance3W-reps-1-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-1,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-reps-1-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-1,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-reps-1-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-1,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0"
+    },
+    {
+      "id": "cr6-Resistance3W-reps-2-optNone",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-2,mV5000,U1,500,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-reps-2-opt0",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-2,mV5000,U1,500,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-Resistance3W-reps-2-opt1",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(X,-2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps0-optNone",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps0-opt0",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps0-opt1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps-1-optNone",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps-1-opt0",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps-1-opt1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps-2-optNone",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps-2-opt0",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-reps-2-opt1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,-2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps0-optNone",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps0-opt0",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps0-opt1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,0,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps-1-optNone",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps-1-opt0",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps-1-opt1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps-2-optNone",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps-2-opt0",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-reps-2-opt1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,-2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2, must be > 0\nline 4: Variable X out of bounds.\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps1-meas1",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps1-meas2",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps1-meas3",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-U1,U9,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps2-meas1",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps2-meas2",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps2-meas3",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-U1,U9,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps3-meas1",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps3-meas2",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrHalf4W-burst-reps3-meas3",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV5000,mV5000,-U1,U9,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps1-meas1",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps1-meas2",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps1-meas3",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-U1,U9,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps2-meas1",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps2-meas2",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps2-meas3",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-U1,U9,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps3-meas1",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV5000,mV5000,-U1,U9,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps3-meas2",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr6-BrFull6W-burst-reps3-meas3",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV5000,mV5000,-U1,U9,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps1-meas1",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps1-meas2",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps1-meas3",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,1,mV5000,mV5000,-1,Vx1,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps2-meas1",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps2-meas2",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps2-meas3",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,2,mV5000,mV5000,-1,Vx1,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps3-meas1",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps3-meas2",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrHalf4W-burst-reps3-meas3",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV5000,mV5000,-1,Vx1,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps1-meas1",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps1-meas2",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps1-meas3",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,1,mV5000,mV5000,-1,Vx1,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps2-meas1",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps2-meas2",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps2-meas3",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,2,mV5000,mV5000,-1,Vx1,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps3-meas1",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV5000,mV5000,-1,Vx1,1,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps3-meas2",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: When channel < 0, measurements per excitation must equal reps."
+    },
+    {
+      "id": "cr1000x-BrFull6W-burst-reps3-meas3",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV5000,mV5000,-1,Vx1,3,2500,True,True,0,50,1,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    }
+  ]
+}

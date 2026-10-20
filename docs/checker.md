@@ -2963,14 +2963,14 @@ Oracle-confirmed 2026-10-01.
   argument>.`; an undefined name at a code-20 slot also gives `Variable illegal in Parameter`.
 - Measurement Reps (second argument): CR6/CR1000X `Invalid reps %d, must be > 0` for Reps <= 0
   and `Variable %s out of bounds.` when the Float destination has fewer elements from its start
-  than Reps (negative Reps always); CR300/CR350 `Invalid reps 0, must be > 0.`; only instructions
+  than the required output count; CR300/CR350 `Invalid reps 0, must be > 0.`; only instructions
   probed per logger (decompiled shared check `FUN_005163b0`). Round 24 (fixture
   `r24_dest_counts.json`, Reps 3 against 2, 3, 5 and 6 elements) adds `BrHalf3W`, `BrHalf4W`,
   `BrFull`, `BrFull6W`, `PulseCount`, `CS616` on CR6 and CR1000X and `Resistance` on CR6, each needing
-  Reps elements in the probed options. The decompiled bridge helper `FUN_005147a0` doubles the
-  count for some 4W/6W configurations and `FUN_005177a0` adds one for a Resistance option; those
-  options were not identified, so the check may under-report there. Not modelled: CR1000X `Invalid
-  PulseCount reps.` (Reps past the last pulse channel) and the CR6 4W/6W channel overlap message.
+  Reps elements in the probed options. Round 25 identifies the optional extra-output parameters
+  and adds CR6 `Resistance2W`/`Resistance3W`: see [optional measurement outputs](#optional-measurement-outputs-round-25).
+  Not modelled: CR1000X `Invalid PulseCount reps.` (Reps past the last pulse channel) and the CR6
+  4W/6W channel overlap message.
 - `SerialOpen` with a string or variable ComPort: `ComPort 0 illegal.` then `Parameter must be a
   constant integer: <statement>.` (pass 1, all loggers).
 - A literal where a code-29 destination is required (`RealTime(5)`): `Invalid Variable or Array:
@@ -7021,3 +7021,39 @@ a+.`), `J(3 4)` (`Incomplete expression: 3 4.`), and every false accept of the b
   (a later duplicate is `already declared as a CONST.`), CR6/CR1000X then report `Illegally dimension: Public Q(K)`
   for a use as dimension, CR300/CR350 do not. `X = J(1)` / `X = S(1)` on a Const is `Incomplete expression: X =
   J(1).` (CR300: with the ` |` echo quirk); `Const K = Min(2,3)` is `Incomplete expression: Min(2,3).`. We accept.
+
+## Optional measurement outputs (round 25)
+
+The CR6 bridge builder `FUN_00513550` reads argument 15 and passes a flag to the shared
+`FUN_005147a0` destination resolver. The resistance builder `FUN_005177a0` reads argument 14
+for `Resistance` and argument 11 for `Resistance2W`/`Resistance3W`. Each enables the extra output
+only when the converted integer equals **1**. The omitted-argument sentinel does not enable it.
+These are observations of the supplied compiler versions, not a statement about logger runtime.
+
+Reference probes confirm:
+
+- `BrHalf4W` and `BrFull6W` on CR6/CR1000X require `2 * Reps` Float elements with argument 15
+  equal to 1, otherwise `Reps`.
+- CR6 `Resistance`, `Resistance2W`, and `Resistance3W` require `Reps + 1` Float elements with
+  their final option equal to 1, otherwise `Reps`. This is one extra element overall, not per rep.
+- `1.5` converts to 1 and enables the extra output. `True` (-1), -1, 2, 0, False and 0.9 do not.
+  The local `returnv1.htm` help says any nonzero value enables the output; the reference compilers
+  instead follow the equality test visible in the decompilation.
+- Negative Reps still reports `Invalid reps N, must be > 0`. Destination checking uses the
+  adjusted count: resistance Reps -1 with option 1 needs zero elements and emits no additional
+  bounds error, whereas Reps -2 still does. This distinction is covered explicitly.
+- Destination bounds use the remaining elements after a literal array offset, including a
+  multidimensional offset. Long destinations do not receive this Float-specific check.
+- CR300/CR350 bridge probes use their valid `mV2500` range: omitting the option compiles,
+  while supplying it reports `Too many parameters`. Resistance instructions are unavailable
+  on CR1000X/CR300/CR350. These profile differences are retained in the fixture.
+
+The shared bridge builder also checks `MeasPEx` after resolving the destination. For valid negative
+(burst) channels on CR6/CR1000X, a positive `MeasPEx` unequal to `Reps` reports
+`When channel < 0, measurements per excitation must equal reps.`. Round 25 implements this for
+`BrHalf4W`/`BrFull6W`; other callers and invalid/nonpositive MeasPEx remain outside this change.
+
+Evidence: `tests/fixtures/r25_measurement_outputs.json`, replayable with `tools/fixture_audit.py`.
+Seven alias-destination observations remain strict expected failures: the existing measurement
+bounds checker does not resolve aliases to their backing arrays. Extreme repetition-count integer
+overflow, expression-valued array offsets, and other bridge channel-allocation rules remain open.

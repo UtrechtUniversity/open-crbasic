@@ -4,6 +4,40 @@ Archived snapshots and development logs. [Current state and next steps](../PROGR
 live in `PROGRESS.md`. Branches, pending work, machine state and workflow policies below
 describe their recorded dates; they are not current instructions.
 
+## Round 24 latest-changes snapshot (2026-10-19)
+
+Superseded by round 25 in `PROGRESS.md`. Validation: 43,014 non-server tests passed,
+311 skipped, 45 strict expected failures; 163 server tests passed. Saved replay: 2,393 exact,
+48 false accepts, 682 message differences, 16 mode differences, 19 reference/runner failures.
+Four-profile corpus diagnostics and repository verification were unchanged from round 23.
+
+### Latest changes and evidence (round 24)
+
+Round 24 used the decompiled CR6 instruction builders to replace guessed per-instruction rules
+with the counts the compiler itself passes to its shared destination resolver, then confirmed every
+boundary on the reference compilers. Fixture `tests/fixtures/r24_dest_counts.json` holds 674
+observations (629 asserted, 45 strict `xfail` cases for documented neighbouring gaps):
+
+- Destination element counts for SDMGeneric, SDMSW8A, CSAT3/CSAT3B/CSAT3BMonitor, the CS7500/
+  LI7200/LI7700 command tables, TGA, EC100, SDMCD16AC, PeakValley, HydraProbe, GOESGPS and RectPolar
+  ([builder destination counts](checker.md#builder-destination-counts-round-24-2026-10-19));
+  the previous LI7700 rule was wrong for most commands.
+- Measurement Reps destination size for BrHalf3W, BrHalf4W, BrFull, BrFull6W, PulseCount, CS616
+  (CR6/CR1000X) and Resistance (CR6), from the shared `FUN_005163b0` validator family.
+- Table-output sources written `X()`, multi-dimensional sources and expression subscripts
+  ([table output source](checker.md#table-output-source-with-x-a-multi-dimensional-source-or-an-expression-subscript-round-24)).
+- Analog settling time limits 20..6000000 with C `(long)` conversion
+  ([analog settling time](instructions.md#analog-settling-time-cr6cr1000x-round-24)).
+- `FieldNames` argument validation on all four loggers
+  ([FieldNames argument](checker.md#fieldnames-argument-round-24-all-four-loggers)).
+
+TDF bytes of the round-22 expression fixture still require `tools/tdf_expression_fixture_gen.py
+--audit`; the diagnostic fixture auditor does not check them.
+
+Latest local evidence is under `scratch/r24*` (probe logs, builder extraction scripts, replay and
+differential runs); these files are untracked. Round-23 evidence and its change notes are archived
+in the [progress history](progress-history.md#round-23-latest-changes-snapshot-2026-10-19).
+
 ## Round 23 latest-changes snapshot (2026-10-19)
 
 Superseded by round 24 in `PROGRESS.md`. Validation counts of this round: 42,385 non-server tests
