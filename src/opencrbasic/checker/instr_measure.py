@@ -796,14 +796,17 @@ def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
 # out of bounds.` when the Float destination has fewer elements from its start than Reps (any
 # negative Reps). CR300/CR350: `Invalid reps 0, must be > 0.` for Reps 0 only.
 _REPS_CHECKED = {
-    "cr6": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "BRHALF"}),
+    "cr6": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "BRHALF", "BRHALF3W", "BRHALF4W",
+                      "BRFULL", "BRFULL6W", "RESISTANCE", "PULSECOUNT", "CS616"}),
     "cr1000x": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
-                          "PULSECOUNT", "BRHALF"}),
+                          "PULSECOUNT", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W",
+                          "CS616"}),
     "cr300": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT"}),
     "cr350": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT"}),
 }
 _REPS_DEST_SIZE = frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
-                             "BRHALF"})  # positive overflow probed; PulseCount has its own message
+                             "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE",
+                             "PULSECOUNT", "CS616"})  # positive overflow probed (round 24 for the bridges on)
 
 
 def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -832,7 +835,7 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
                 diags.items.insert(at, Diagnostic("error", stmt.line,
                                                   "Invalid reps 0, must be > 0.", stmt.file))
             continue
-        if reps <= 0:
+        if reps <= 0 and stmt.keyword.upper() != "CS616":  # (CS616: `_check_cs616_reps`)
             diags.error(stmt.line, f"Invalid reps {reps}, must be > 0", stmt.file)
         dest = stmt.args[0]
         if reps == 0 or not isinstance(dest, (S.Name, S.Index)) or \
@@ -856,10 +859,60 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
 # Reps argument (index 1); `REALTIME` needs a fixed nine. Therm107-109 check it on CR300/CR350 only
 # (CR6/CR1000X accept an overrun). Only CalFile also rejects negative Reps.
 _DEST_FIXED = {"REALTIME": 9}
-_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1, "LI7700": 5,
+_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1,
                  "THERM107": 1, "THERM108": 1, "THERM109": 1}
 _DEST_SINGLE_PASS_ONLY = frozenset({"THERM107", "THERM108", "THERM109"})
 _DEST_NEGATIVE_OOB = frozenset({"CALFILE"})
+
+
+# Element counts the CR6 instruction builders pass to the shared destination resolver, read from the
+# decompiled builders and confirmed on the real compilers (docs/checker.md "Builder destination counts").
+# Arguments the builder stores in a byte are reduced modulo 256 (`_byte`).
+_SDM_MODE_VALUES = {"CS7500": (2, 2, 4, 3, 11, 3, 4, 4), "LI7200": (2, 5, 10, 12, 10, 5, 1, 5),
+                    "LI7700": (3, 5, 9, 13, 17, 3, 7, 9)}
+_TGA_VALUES = ((2, 3, 4), (5, 7, 9), (8, 10, 12), (19, 25, 31), (21, 27, 33))
+_EC100_VALUES = (8, 12, 13, 15, 36)
+_BUILDER_FIXED = {"CSAT3B": ((0, 5),), "CSAT3BMONITOR": ((0, 4),), "HYDRAPROBE": ((0, 11), (1, 4)),
+                  "GOESGPS": ((0, 6), (1, 7)), "RECTPOLAR": ((0, 2), (1, 2))}
+
+
+def _byte(value: int) -> int:
+    return value & 0xFF
+
+
+def _builder_counts(kw: str, args: list, env: consteval.Env) -> list[tuple[int, int]]:
+    """`(argument, elements)` pairs a destination or source must hold from its start."""
+    def arg(i):
+        return _int_value(args[i], env) if i < len(args) else None
+    if kw in _BUILDER_FIXED:
+        return [(i, n) for i, n in _BUILDER_FIXED[kw] if i < len(args)]
+    if kw == "SDMGENERIC":
+        return [(0, arg(5))] if arg(5) is not None else []
+    if kw == "SDMSW8A":
+        return [(0, _byte(arg(1)))] if arg(1) is not None else []
+    if kw == "SDMCD16AC":
+        return [(0, 16 * _byte(arg(1)))] if arg(1) is not None else []
+    if kw == "CSAT3":
+        if arg(1) is None:
+            return []
+        reps = _byte(arg(1))
+        return [(0, 5 * reps)] if reps < 128 else []  # a signed byte: negative is `Out of memory.`
+    if kw == "PEAKVALLEY":
+        return [(i, arg(2)) for i in (0, 1, 3) if i < len(args)] if arg(2) is not None else []
+    if kw in _SDM_MODE_VALUES:
+        if arg(1) is None or arg(3) is None or _byte(arg(3)) > 7:
+            return []
+        return [(0, _SDM_MODE_VALUES[kw][_byte(arg(3))] * _byte(arg(1)))]
+    if kw == "TGA":
+        if arg(2) is None or arg(3) is None or not (1 <= _byte(arg(2)) <= 5 and 1 <= _byte(arg(3)) <= 3):
+            return []
+        return [(0, _TGA_VALUES[_byte(arg(2)) - 1][_byte(arg(3)) - 1])]
+    if kw == "EC100":
+        option = arg(2)
+        if option is None or (option != 2718 and _byte(option) > 3):
+            return []
+        return [(0, _EC100_VALUES[4 if option == 2718 else _byte(option)])]
+    return []
 
 
 # Spatial family (oracle, 2026-10-02, all four loggers): argument 3, the source, needs Swath
@@ -929,6 +982,13 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                     reps is not None and reps > 1 and \
                     types.get(name) in ("FLOAT", "STRING"):  # a structure takes Reps 3
                 bad.append(dest)
+        elif kw in _BUILDER_FIXED or kw in ("SDMGENERIC", "SDMSW8A", "SDMCD16AC", "CSAT3",
+                                              "PEAKVALLEY", "TGA", "EC100") or kw in _SDM_MODE_VALUES:
+            # SDMGeneric checks any non-String destination, including a negative count
+            kinds = ("FLOAT", "LONG", "BOOLEAN") if kw == "SDMGENERIC" else ("FLOAT",)
+            for i, need in _builder_counts(kw, stmt.args, env):
+                if overruns(stmt.args[i], need, need < 0, kinds):
+                    bad.append(stmt.args[i])
         elif (kw in _DEST_FIXED or kw in _DEST_PER_REP) and \
                 not (kw in _DEST_SINGLE_PASS_ONLY and not profile.single_pass):
             negative = False

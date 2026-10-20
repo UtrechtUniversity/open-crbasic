@@ -2964,7 +2964,13 @@ Oracle-confirmed 2026-10-01.
 - Measurement Reps (second argument): CR6/CR1000X `Invalid reps %d, must be > 0` for Reps <= 0
   and `Variable %s out of bounds.` when the Float destination has fewer elements from its start
   than Reps (negative Reps always); CR300/CR350 `Invalid reps 0, must be > 0.`; only instructions
-  probed per logger (decompiled shared check `FUN_005163b0`).
+  probed per logger (decompiled shared check `FUN_005163b0`). Round 24 (fixture
+  `r24_dest_counts.json`, Reps 3 against 2, 3, 5 and 6 elements) adds `BrHalf3W`, `BrHalf4W`,
+  `BrFull`, `BrFull6W`, `PulseCount`, `CS616` on CR6 and CR1000X and `Resistance` on CR6, each needing
+  Reps elements in the probed options. The decompiled bridge helper `FUN_005147a0` doubles the
+  count for some 4W/6W configurations and `FUN_005177a0` adds one for a Resistance option; those
+  options were not identified, so the check may under-report there. Not modelled: CR1000X `Invalid
+  PulseCount reps.` (Reps past the last pulse channel) and the CR6 4W/6W channel overlap message.
 - `SerialOpen` with a string or variable ComPort: `ComPort 0 illegal.` then `Parameter must be a
   constant integer: <statement>.` (pass 1, all loggers).
 - A literal where a code-29 destination is required (`RealTime(5)`): `Invalid Variable or Array:
@@ -3151,7 +3157,7 @@ variable; a bare `X()` or scalar holds one):
 |---|---|---|
 | `RealTime` | 9 | all |
 | `Move`, `CalFile`, `AvgRun` | Reps (argument 2) | all |
-| `LI7700` | 5 * Reps | CR6, CR1000X |
+| `LI7700` | Reps times a per-mode count (round 24, see below) | CR6, CR1000X |
 | `Therm107/108/109` | Reps | CR300, CR350 only (CR6/CR1000X accept an overrun) |
 | `SplitStr` | Reps > 1 overruns a scalar; a whole-array destination overruns past its element count (2026-10-11, `docs/instructions.md`) | all |
 
@@ -3200,6 +3206,64 @@ size-3 array), `2e18cd532da2` (AvgRun Reps), `6f3c11c5579c` (LI7700 Reps 3 on a 
 (`Therm109(Temp(),2,...)`), `fuzz/cr1000x/false_accept/49c0752ccf0e` (`CalFile(array2,25,...)`).
 Not covered: negative Reps for instructions other than `CalFile`, CR300/CR350 measurement
 instructions other than `Therm107-109` (not probed), Reps beyond 32 bits.
+
+### Builder destination counts (round 24, 2026-10-19)
+
+Fixture `tests/fixtures/r24_dest_counts.json` (all four loggers; `instr_measure._builder_counts`).
+The CR6 instruction builders pass an element count to one shared destination resolver, which reports
+`Variable %s out of bounds.` when the variable has fewer elements from its start (row-major) than the
+count. The counts below were read from the decompiled builders (`FUN_0043b5c0` SDMGeneric,
+`FUN_0043ba40` SDMSW8A, `FUN_00436d60` CSAT3, `FUN_00437090` CSAT3B, `FUN_00438a20` CS7500 family,
+`FUN_00438190` TGA, `FUN_00438460` EC100, `FUN_0043a080` SDMCD16AC, `FUN_00452980` PeakValley,
+`FUN_00452be0` HydraProbe, `FUN_00428ea0` GOESGPS, `FUN_00452490` RectPolar) and every one was
+confirmed at its boundary on CR6 and CR1000X; CR300/CR350 lack these instructions. A value the
+builder keeps in a byte counts modulo 256 (`SDMSW8A(Z,265,...)` needs 9).
+
+| Instruction | Argument and elements | Types checked |
+|---|---|---|
+| `SDMGeneric` | Dest: `ValuesIn` (6th); a negative count is out of bounds | Float, Long, Boolean (a String destination has its own `Destination out of bounds` rule, not modelled) |
+| `SDMSW8A` | Dest: Reps mod 256 | Float |
+| `CSAT3` | Dest: 5 * Reps (signed byte; a negative Reps is `Out of memory.`, not modelled) | Float |
+| `CSAT3B` / `CSAT3BMonitor` | Dest: 5 / 4 | Float |
+| `CS7500`, `LI7200`, `LI7700` | Dest: Reps mod 256 times a per-command count (4th argument mod 256, 0..7): CS7500 2,2,4,3,11,3,4,4; LI7200 2,5,10,12,10,5,1,5; LI7700 3,5,9,13,17,3,7,9 | Float |
+| `TGA` | Dest: table by DataList (1..5) and ScanMode (1..3): 2,3,4 / 5,7,9 / 8,10,12 / 19,25,31 / 21,27,33 | Float |
+| `EC100` | Dest: by output option 0..3: 8,12,13,15; option 2718: 36 | Float |
+| `SDMCD16AC` | Source (1st): 16 * Reps mod 256 (a Long source takes another path) | Float |
+| `PeakValley` | DestPV, DestChange and Source (1st, 2nd, 4th): Reps (3rd) | Float |
+| `HydraProbe` | 1st: 11; 2nd: 4 | Float |
+| `GOESGPS` | 1st: 6; 2nd: 7 | Float |
+| `RectPolar` | 1st: 2; 2nd: 2 | Float |
+
+The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Not modelled: options outside
+the tables (`EC100` option 4..255 reads past its table after `Invalid output option; range 0..3.`),
+`SolarPosition`, `SerialBrk`, `AVW200`, `SysInfo`, `CDM_*` and the analog measurement helpers.
+
+### Table output source with `X()`, a multi-dimensional source, or an expression subscript (round 24)
+
+Same fixture (`instr_data._check_stage2a`), identical on all four loggers. A table-output source
+(`Sample`, `Average`, ...) is checked over the whole variable, row-major:
+
+- `Variable %s out of bounds.` when the flat offset of the source plus Reps exceeds the element count;
+  printed only when every subscript is a literal (`Sample(8,A((1+2)),FP2)` prints only the next line).
+- `Invalid, or out of place expression: ().` after it for an empty subscript `A()` (index 1).
+- `Variable %s, index %d, reps %d, out of bounds.` when `index + Reps - 1` exceeds the element
+  count, where the index is the subscript of a one-dimensional source and 1 for a multi-dimensional
+  one (`N(4,4)`: `N(2,1)` with Reps 13 prints the first line only; Reps 20 prints both with index 1).
+  This line ends the table checks; a first line alone does not (a later table statement is checked).
+
+Not modelled: a first line alone does not gate pass 2 on CR6/CR1000X (`X=Q` after it is still
+reported); a partial subscript of a multi-dimensional source is skipped.
+
+### `FieldNames` argument (round 24, all four loggers)
+
+Fixture `tests/fixtures/r24_dest_counts.json` (`instr_data.check_fieldnames`, tier C). The output
+instruction's builder reads a following `FieldNames` record (decompiled `FUN_004ec300`) and resolves
+its argument as a string: a numeric constant (`1`, `(1+2)`, a numeric `Const`) or a variable is
+`FieldNames cannot be a variable.`; an empty string is `FieldNames canot be NULL` (sic); a String
+variable gives both. A string literal, string `Const` or constant string expression compiles. The
+line is that of the output instruction before it. CR6/CR1000X report it alongside pass-2
+expression errors; CR300/CR350 only in an otherwise clean file. Not modelled: an undefined name as
+the argument (CR6 then also reports both lines, and its `Invalid symbol` line moves to the owner line).
 
 ## Block structure (2026-10-02)
 

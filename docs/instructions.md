@@ -1122,6 +1122,20 @@ Declarations run before `BeginProg`, and the same gating applies as for the othe
 error anywhere hides them. Other `PakBus address` parameters (`Route`, `PakBusClock`, `ClockReport`,
 `GetVariables`) have no compile-time range check (0, 4095, -1, 5000 all accepted, CR6 and CR350).
 
+### Analog settling time (CR6/CR1000X, round 24)
+
+Fixture `tests/fixtures/r24_dest_counts.json` (`measure.json` `const_ranges`). CR6Comp validates the
+settling time of its analog measurement builders in one helper (`FUN_00516740`, called from the
+VoltSe/VoltDiff/bridge helper `FUN_005147a0`, Resistance `FUN_005177a0`, CurrentSe `FUN_00519a90`,
+Thermistor, AM25T, Therm107-109). The value converts as C `(long)` (a float past the range or a
+string is `-2147483648`); 0 means the default. A nonzero value below 20 is `Settling time %d too
+short, min time is 20.`, a value above 6000000 `Settling time %d too long, max time is 6000000.`,
+after the line's channel error. Probed on CR6 and CR1000X for `VoltSE`, `VoltDiff` (6th argument),
+`TCSE`, `TCDiff` (8th), `BrHalf` (9th), `BrFull` (10th) and `CurrentSE` (6th); CR300/CR350 did not
+reach the check with these programs. The other callers are not modelled. Also not modelled: the
+`Scan interval too short for measurement by %d Sec.` line that a huge or INT_MIN settling time adds at
+`NextScan` (the timing model skips such values).
+
 ## Instruction-resource and pairing checks (2026-10-03, fixture `tests/fixtures/instruction_resources.json`)
 
 Fixture cases are real-compiler observations (`tests/test_instruction_resources.py`); each family

@@ -291,6 +291,39 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
         diags.error(stopper[0].line, stopper[1], stopper[0].file)
 
 
+def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, env) -> None:
+    """`FieldNames` takes a non-empty constant string (docs/checker.md "FieldNames argument"): a
+    numeric constant or a variable is `FieldNames cannot be a variable.`, an empty string `FieldNames
+    canot be NULL`, and a String variable both (its compile-time value is empty). Undefined names are
+    left to the symbol checks. The output instruction it follows reads it, so the line is that
+    instruction's."""
+    tables = symbols.scope_tables(program, env, scalars=True)
+    owner = None
+    for st in program.statements:
+        if not isinstance(st, S.Instruction):
+            continue
+        if st.keyword.upper() != "FIELDNAMES":
+            owner = st
+            continue
+        if len(st.args) != 1 or st.args[0] is None or owner is None:
+            continue
+        line, file = owner.line, owner.file
+        arg = st.args[0]
+        try:
+            value = consteval.value_of(arg, env)
+        except consteval.NotConstant:
+            kind = tables(st).types.get(arg.name.upper()) if isinstance(arg, (S.Name, S.Index)) else None
+            if kind is None:
+                continue
+            diags.error(line, "FieldNames cannot be a variable.", file)
+            value = "" if kind == "STRING" else None
+        else:
+            if not isinstance(value, str):
+                diags.error(line, "FieldNames cannot be a variable.", file)
+        if value == "":
+            diags.error(line, "FieldNames canot be NULL", file)
+
+
 def check_table_structure(program: S.Program, profile: Profile,
                           diags: Diagnostics) -> tuple[str | None, int] | None:
     """`%s must be used inside a table declaration.` for an output-processing instruction (see
@@ -853,7 +886,9 @@ def check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env)
       `Battery((1+2))` -> `Invalid Variable or Array: (1+2).`, `PanelTemp(3,15000)` -> `... 3.`.
     - A table-output `Reps` below 1: `Sample (0,X,FP2)` -> `Illegal Reps 0`; a source running past
       its array: `Sample (3,A(4),FP2)` with `A(5)` -> `Variable A out of bounds.` and `Variable A,
-      index 4, reps 3, out of bounds.`. The first such table statement ends the stage.
+      index 4, reps 3, out of bounds.`. The first such table statement ends the stage (round 24
+      forms `A()`, multi-dimensional and expression-subscripted sources: docs/checker.md "Table
+      output source with `X()`").
     """
     if profile.name not in ("cr6", "cr1000x"):
         return False
@@ -962,24 +997,33 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if reps is None or not isinstance(source, (S.Name, S.Index)):
                 continue
             shape = dims.get(source.name.upper())
-            if shape is None or len(shape) != 1:
+            if shape is None:
                 continue
             if not destinations and _is_struct_typed(program, source.name):
                 continue  # CR300/CR350 never bounds-check a StructureType source (oracle, 2026-10-12)
-            start = 1
-            if isinstance(source, S.Index):
-                if len(source.args) != 1 or source.args[0] is None:
+            start, offset = 1, 0
+            empty = isinstance(source, S.Index) and not source.args
+            if isinstance(source, S.Index) and not empty:
+                if len(source.args) != len(shape) or any(a is None for a in source.args):
                     continue
-                start = _reps_value(source.args[0], env)
-                if start is None:
+                subs = [_reps_value(a, env) for a in source.args]
+                if None in subs:
                     continue
-            if start + reps - 1 > shape[0]:
+                start = subs[0] if len(shape) == 1 else 1
+                for sub, n in zip(subs, shape):
+                    offset = offset * n + sub - 1
+            total = math.prod(shape)
+            if offset + reps > total:
                 name = next((v.name for d in program.statements if isinstance(d, S.Declaration)
                              for v in d.vars if v.name.upper() == source.name.upper()), source.name)
-                diags.error(st.line, f"Variable {name} out of bounds.", st.file)
-                diags.error(st.line, f"Variable {name}, index {start}, reps {reps}, out of bounds.",
-                            st.file)
-                return True
+                if not isinstance(source, S.Index) or all(isinstance(a, S.Number) for a in source.args):
+                    diags.error(st.line, f"Variable {name} out of bounds.", st.file)
+                if empty:
+                    diags.error(st.line, "Invalid, or out of place expression: ().", st.file)
+                if start + reps - 1 > total:
+                    diags.error(st.line, f"Variable {name}, index {start}, reps {reps}, out of bounds.",
+                                st.file)
+                    return True
     return reported
 
 

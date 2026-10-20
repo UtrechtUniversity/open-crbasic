@@ -615,6 +615,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
         table_stop = _run_pass_capture(instr_data.check_table_structure, program, profile, diags)
+        _run_pass(instr_data.check_fieldnames, program, profile, diags, env)
         apply_diags = Diagnostics()
         _run_pass(structure.check_apply_restart_sequence, program, profile, apply_diags)
         for extra in apply_diags.items:   # in source order among the tier-C findings

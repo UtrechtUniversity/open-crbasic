@@ -4,6 +4,32 @@ Archived snapshots and development logs. [Current state and next steps](../PROGR
 live in `PROGRESS.md`. Branches, pending work, machine state and workflow policies below
 describe their recorded dates; they are not current instructions.
 
+## Round 23 latest-changes snapshot (2026-10-19)
+
+Superseded by round 24 in `PROGRESS.md`. Validation counts of this round: 42,385 non-server tests
+passed (311 skipped), 163 server tests; saved replay 2,376 exact, 62 false accepts, 685 message
+differences, 16 mode differences, 19 reference/runner failures.
+
+### Latest changes and evidence (round 23)
+
+Round 23 extends the error-dependent TimeOut fold to integer `+`, `-`, `*`, unary signs on
+constants/expressions and signed hex/binary forms, with 32-bit wrapping. Clean and error-gated
+HTTPPut/FTPClient behavior now matches the 236-case fixture. Mechanism, evidence and known limits:
+[integer TimeOut expressions](instructions.md#integer-timeout-expressions-and-named-negation-all-four-loggers-round-23).
+The wider 320-observation probe also found remaining float, runtime, `NOT`, shift and warning
+gaps; these are documented explicitly and are outside the implemented fixture's scope.
+
+Round-22 table-buffer and member fixes remain covered by `tests/fixtures/tdf_expressions.json`:
+[rules and remaining limits](tdf-rules.md#expression-buffers-and-member-sources-round-22-2026-10-19).
+Its TDF bytes require `tools/tdf_expression_fixture_gen.py --audit`; the diagnostic fixture auditor
+does not check them.
+
+Latest local evidence is under `scratch/r23_*`: probes, fixture audit, tests, differential runs,
+repository verification and replay reports. `r23_baseline.json` and `r23_replay_candidate.json`
+compare compiler output with the round-22 refreshed reference verdicts; the 19 missing reference
+verdicts are excluded from output comparisons. Earlier fresh reference sweeps remain under
+`scratch/r22_*`. These files are untracked; fixtures and behavior notes are the durable evidence.
+
 ## Handoff snapshot through development round 22 (2026-10-19)
 
 Preserved from the pre-cleanup progress ledger, including its older status tables and
