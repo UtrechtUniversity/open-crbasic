@@ -214,7 +214,7 @@ def test_clean_repository_program_matches_facade(make_client, tmp_path):
         assert d.severity == "warning"
         by_path.setdefault(d.path, []).append(
             (max(d.line - 1, 0), 2, "opencrbasic", d.message))
-    assert by_path, "Main.CR6 is expected to produce warnings"
+    by_path.setdefault(root / "Main.CR6", [])           # a clean Main publishes an empty list
     for path, items in by_path.items():
         params = client.wait_diagnostics(path, lambda ds: len(ds) == len(items))
         assert sorted(summary(params)) == sorted(items)

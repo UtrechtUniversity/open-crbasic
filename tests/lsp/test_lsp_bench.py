@@ -1,6 +1,7 @@
 """Smoke test for tools/lsp_bench.py: tiny counts, one program, the synthetic help fixture.
 
-Checks structure, the report's internal consistency and the generated inputs. It asserts no
+Checks structure, the report's internal consistency and the generated inputs. Startup opens
+the error variant, so a clean closed Main need not publish an empty diagnostic list. It asserts no
 timing: the targets in LSP_PLAN.md are compared by the report, not asserted here."""
 
 import json

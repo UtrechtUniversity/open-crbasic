@@ -10,8 +10,8 @@ def test_csi_signature_empty_is_seed():
 
 
 def test_prog_signature_matches_cr6comp():
-    # values printed by CR6Comp.exe -s on 2026-10-16 (Main/FinApp re-observed after FinAppLib/StationConfig changes)
-    expected = {"PT1000_tester.CR6": 53316, "Main.CR6": 37086, "TDR_tester.CR6": 6505,
+    # CR6Comp.exe -s: Main re-observed 2026-10-21 after Shunt removal; others 2026-10-16.
+    expected = {"PT1000_tester.CR6": 53316, "Main.CR6": 16571, "TDR_tester.CR6": 6505,
                 "SBD_tester.CR6": 42286, "FinApp_tester.CR6": 2012}
     for name, value in expected.items():
         assert program_signature(CRBASIC / name) == value, name

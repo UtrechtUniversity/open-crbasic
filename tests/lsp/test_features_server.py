@@ -296,7 +296,7 @@ def test_references_and_highlights_agree_with_the_core(shared):
 
 def test_crb_document_uses_the_first_including_entry(shared):
     client, root, main, text, result = shared
-    lib = root / "ShuntLib.crb"
+    lib = root / "PowerProfileLib.crb"
     client.open(lib)
     symbols = client.on_file("textDocument/documentSymbol", lib)
     assert symbols, "the .crb should get its outline from Main.CR6's program"

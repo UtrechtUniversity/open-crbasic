@@ -1735,8 +1735,7 @@
       "logger": "cr6",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(Y,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-BrHalf4W-zero",
@@ -1841,8 +1840,7 @@
       "logger": "cr6",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(Y,2,mV5000,mV5000,-U1,U9,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-BrFull6W-zero",
@@ -1947,8 +1945,7 @@
       "logger": "cr6",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nResistance(Y,2,mV5000,-U1,U9,2,500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-Resistance-zero",
@@ -2053,8 +2050,7 @@
       "logger": "cr6",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nResistance2W(Y,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-Resistance2W-zero",
@@ -2159,8 +2155,7 @@
       "logger": "cr6",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nResistance3W(Y,2,mV5000,U1,500,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-Resistance3W-zero",
@@ -2265,8 +2260,7 @@
       "logger": "cr1000x",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(Y,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-BrHalf4W-zero",
@@ -2371,8 +2365,7 @@
       "logger": "cr1000x",
       "source": "Public X(2)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(Y,2,mV5000,mV5000,-1,Vx1,2,2500,True,True,0,50,1,0,1)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Alias destinations are not resolved by the measurement bounds checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-BrFull6W-zero",

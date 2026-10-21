@@ -7054,6 +7054,60 @@ The shared bridge builder also checks `MeasPEx` after resolving the destination.
 `BrHalf4W`/`BrFull6W`; other callers and invalid/nonpositive MeasPEx remain outside this change.
 
 Evidence: `tests/fixtures/r25_measurement_outputs.json`, replayable with `tools/fixture_audit.py`.
-Seven alias-destination observations remain strict expected failures: the existing measurement
-bounds checker does not resolve aliases to their backing arrays. Extreme repetition-count integer
-overflow, expression-valued array offsets, and other bridge channel-allocation rules remain open.
+Round 26 resolves all seven bare-alias destination observations; see
+[measurement alias destinations](#measurement-alias-destinations-round-26). Extreme repetition-count
+integer overflow, expression-valued array offsets, and other bridge channel-allocation rules remain open.
+
+
+## Measurement alias destinations (round 26)
+
+Reference observations, 2026-10-21: `tests/fixtures/r26_measurement_aliases.json` preserves 282
+probes on all four profiles, including unresolved cases as strict expected failures. On this
+fixture the round-25 implementation matches 111 cases; round 26 matches 141. The seven alias
+cases in `r25_measurement_outputs.json` now also match and are no longer expected failures.
+
+The implementation is limited to bare, undimensioned Float aliases in the CR6/CR1000X
+measurement Reps checker. It resolves the backing declaration's storage, subtracts the alias's
+starting offset, and applies the existing output-count rule (including optional bridge and
+resistance outputs). An alias list advances by each preceding name's declared size. Literal,
+named-constant and multidimensional starting offsets are covered. Long aliases retain the
+existing absence of this Float-specific bounds check.
+
+The diagnostic name preserves the backing variable declaration spelling when the alias starts at the first element;
+otherwise it is the declared alias name. Target/use capitalization does not change that spelling. For example, `Public X(6): Alias X=Y` with VoltSe Reps 7
+reports `Variable X out of bounds.`, while `Alias X(4)=Y` with Reps 4 reports
+`Variable Y out of bounds.`. Reps 3 fits the latter. These are compile-time observations only.
+
+Reverse-engineering trail: CR6 `FUN_005147a0` passes the adjusted output count to
+`FUN_005077e0`, which resolves the destination via `FUN_004a2f60`; the bounds path reports through
+`FUN_0050a540`. The evaluator/storage paths retain variable metadata for the diagnostic. This
+trail motivated the probes; the profile-specific rules above are based on their observed results.
+No decompiled implementation was copied into Python.
+
+The 141 remaining fixture differences are intentionally retained:
+
+- Dimensioned alias names and indexed alias uses are not correctly registered/resolved by the
+  expression checker (72 observations).
+- An alias of an alias has a different declaration diagnostic (24).
+- Alias declaration validation incorrectly sees a later local shadow of its backing variable
+  (12). The new storage lookup binds at the alias declaration, but the earlier declaration
+  validation still blocks these programs.
+- Scalar routine-parameter measurement bounds are not modelled (2).
+- CR300/CR350 Long alias type diagnostics differ (12); measurement bounds/channel-count
+  diagnostics remain incomplete (19).
+
+CR300/CR350 also differ from CR6/CR1000X in the observed bare-alias measurement capacity: an
+alias starting at `X(4)` of `X(6)` still accepts Reps 6 on CR300. The analogous CR350 case reports
+only its channel limit. Do not extend the CR6 offset subtraction to these profiles. Indexed
+aliases introduce additional bounds rules and remain outside this implementation.
+
+Round-26 validation also refreshed stale repository expectations after the production Shunt
+removal: a fresh CR6 reference run reports Main `ProgSignature = 16571`, and its TDF/list bytes
+match opencrbasic exactly. `tests/fixtures/tdf/repo_Main.json`, the signature expectation, and the
+include-link assertion now reflect the current Main source. No production source changed.
+
+The benchmark startup also relied on Main having a warning: the LSP intentionally does not
+publish an initial empty list for a clean, closed entry (`Session._publish`). It now opens the
+existing injected-error variant before waiting for its first diagnostic, then alternates clean
+and erroneous edits. Its initialization-to-first-publication measurement therefore includes
+opening and analyzing that variant; it is not directly comparable to older closed-entry timings.

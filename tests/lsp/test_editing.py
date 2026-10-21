@@ -471,7 +471,7 @@ def test_include_links_main_cr6():
         assert line[link.range.start_col:link.range.end_col] == link.spec
         assert link.target is not None and link.target.name == link.spec.split(":")[-1]
         assert link.target.is_file()
-    assert {l.spec for l in in_main} >= {"CPU:StationConfig.crb", "CPU:ShuntLib.crb"}
+    assert {l.spec for l in in_main} >= {"CPU:StationConfig.crb", "CPU:PowerProfileLib.crb"}
 
 
 def test_include_links_missing_and_forms(tmp_path):

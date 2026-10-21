@@ -312,12 +312,15 @@ def measure_server(cfg: Config) -> dict:
         client.initialize(CRBASIC, {"entries": ["Main.CR6"], "debounceMs": cfg.debounce_ms,
                                     **SERVER_FAST})
         init_ms = (time.perf_counter() - start) * 1000
-        client.wait_diagnostics(MAIN, timeout=180)
+        # A clean closed entry intentionally has no initial empty publication. Open the
+        # error variant so the first measured publish proves that analysis completed.
+        client.open(MAIN, text=variant_text, version=1)
+        client.wait_diagnostics(MAIN, predicate=lambda ds: any(d["severity"] == 1 for d in ds),
+                                timeout=180)
         first_ms = (time.perf_counter() - start) * 1000
-        client.open(MAIN, text=base_text, version=1)
         raw, version = [], 1
         for k in range(cfg.edits):
-            want_error = k % 2 == 0
+            want_error = k % 2 == 1
             version += 1
             before = len(client.publishes(MAIN))
             start = time.perf_counter()

@@ -1,7 +1,7 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-20 after development round 25**.
-Measurements describe the round-25 implementation. Inspect `git status` before editing;
+Current compiler state and handoff, updated **2026-10-21 after development round 26**.
+Measurements describe the round-26 implementation. Inspect `git status` before editing;
 use Git to check commit and publication state.
 
 Design and parity criteria: [PLAN.md](PLAN.md). Previous measurements, round logs and superseded
@@ -19,24 +19,25 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 43,451 passed, 311 skipped, 52 strict xfail (round-24/25 fixture gaps) |
+| `pytest -q -n 4 -m 'not server'` | 43,599 passed, 311 skipped, 186 strict xfail (round-24/25/26 fixture gaps) |
 | `pytest -q -m server` | 163 passed |
-| Round-25 optional-output/burst fixture | 444 reference observations; 437 match, seven alias-destination gaps |
+| Round-26 measurement-alias fixture and audit | 282 reference observations (four profiles): 141 match, 141 strict xfail; audit 0 differing |
+| Round-25 optional-output/burst fixture and audit | 444 reference observations; all match; audit 0 differing |
 | Round-24 destination/settling/FieldNames fixture | 674 reference observations (CR6/CR1000X/CR300/CR350): 629 match, 45 documented gaps |
 | Integer-TimeOut fixture and fresh four-profile audit (round 23) | 236 cases; 0 differing; 0 missing reference verdicts |
 | Expression-source fixture and its audit (round 22) | 100 cases across four profiles; 0 differing |
-| Saved fuzz replay, 3,158 inputs, round-25 implementation against round-22 reference results | 2,393 exact; 48 false accepts; 682 message differences; 16 mode differences; 19 reference/runner failures retained separately |
-| Round-25 replay comparison against round 24 | All 3,139 usable-reference cases unchanged; 19 reference failures kept separate. Reference compilers were not rerun for this replay |
+| Saved fuzz replay, 3,158 inputs, round-26 implementation against round-22 reference results | 2,393 exact; 48 false accepts; 682 message differences; 16 mode differences; 19 reference/runner failures retained separately |
+| Round-26 replay comparison against round 25 | All 3,139 usable-reference cases unchanged; 19 reference failures kept separate. Reference compilers were not rerun for this replay |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
-Four-profile diagnostic comparison, rerun in round 24 (`tools/difftest.py --group all`), unchanged from round 23:
+Four-profile diagnostic comparison, rerun in round 26 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
 |---|---|---|
 | CR6 | 18 / 0 | 506 / 1 |
 | CR1000X | 18 / 0 | 506 / 1 |
 | CR300 | 7 / 11 | 505 / 2 |
-| CR350 | 7 / 11 | 505 / 2 |
+| CR350 | 8 / 10 | 505 / 2 |
 
 No verdict mismatches, implementation exceptions or lost exact cases were observed on usable
 reference results. The CR300/CR350 repository rejections reflect CR6-specific programs. The help-corpus
@@ -44,44 +45,39 @@ failures are `pointervariable_2.CR6` on all four profiles and `strcomp_3.CR6` on
 The differential and replay gates exit 1 while reference verdicts are missing; this is not a clean
 parity gate. Compare individual valid results and keep failures separate.
 
-Repository verification passed in round 24 both with the reference compiler and with
+Repository verification passed in round 26 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
-BUILD  host tests 136 pass | CRBasic 19/19 compiled, 6 warning(s) | repository pass
+BUILD  host tests 140 pass | CRBasic 19/19 compiled, 5 warning(s) | repository pass
 ```
 
 Expected warnings are owned by [repository build status](../STATUS.md#build). This verification
 includes the `.CR1X` bench harness; the diagnostic corpus table above covers `.CR6` programs.
 Compilation and host tests do not establish logger runtime behavior. No hardware tests were run.
 
-Rounds 23–25 did not rerun full corpus TDF/table-list comparisons on any profile; round 22 ran CR6 only.
+Rounds 23–26 did not rerun full corpus TDF/table-list comparisons on any profile; round 22 ran CR6 only.
 These rounds did not rerun full timing, message-file, signature and preprocessing coverage. CDM binary images (`-b`) are
 [explicitly excluded from parity](PLAN.md#explicit-exclusions-from-parity). Distribution policy is
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
-Round 25 traced the shared CR6 bridge/resistance builders and confirmed their optional-output
-counts and burst-mode constraint against the reference compilers. The rules and decompiled
-function addresses are in [optional measurement outputs](docs/checker.md#optional-measurement-outputs-round-25).
+Round 26 resolves bare Float alias destinations in the CR6/CR1000X measurement Reps checker.
+The backing array's remaining capacity and the reference compiler's diagnostic name are now
+used for normal and optional measurement outputs. All seven round-25 alias cases now pass.
+Rules, decompiled-function trail and limitations are in
+[measurement alias destinations](docs/checker.md#measurement-alias-destinations-round-26).
 
-- CR6/CR1000X `BrHalf4W`/`BrFull6W`: option 1 doubles the destination count. `True` (-1) does
-  not enable the extra output; the reference behavior differs from the help text's nonzero rule.
-- CR6 `Resistance`, `Resistance2W`, `Resistance3W`: option 1 adds one destination element
-  overall, including the negative-Reps diagnostic boundary. The two shorter forms now also
-  receive the shared Reps validation.
-- CR6/CR1000X 4W/6W burst mode: positive `MeasPEx` must equal `Reps`.
-- CR300/CR350 valid-range bridge probes confirm that these profiles reject the extra argument.
-- Fixture `tests/fixtures/r25_measurement_outputs.json`: 444 observations, 437 asserted matches
-  and seven strict expected failures for unresolved alias destinations. Cases cover scalar and
-  array destinations, offsets, multidimensional arrays, constants, fractional options and negative
-  Reps. No hardware was flashed or tested.
+The new four-profile fixture preserves 282 reference observations: 141 match the implementation
+(up from 111 before this round), while 141 strict expected failures preserve neighboring gaps.
+These are existing dimensioned/indexed alias, alias-chain, declaration-shadowing and CR300/CR350
+bounds/type/channel and scalar routine-parameter differences; they are not newly introduced regressions.
 
-Local probe, audit, replay and validation logs are under `scratch/r25*` (untracked). The preceding
-round's implementation notes are in the [round-24 snapshot](docs/progress-history.md#round-24-latest-changes-snapshot-2026-10-19).
-TDF bytes of the round-22 expression fixture still require `tools/tdf_expression_fixture_gen.py
---audit`; diagnostic fixture audits do not check them.
+Local probes and validation logs are under `scratch/r26*` (untracked). Prior state is preserved
+in the [round-25 handoff snapshot](docs/progress-history.md#round-25-handoff-snapshot-2026-10-20).
+No hardware was flashed or tested. TDF bytes of the round-22 expression fixture still require
+`tools/tdf_expression_fixture_gen.py --audit`; diagnostic audits do not check them.
 
 ## Next steps
 
@@ -91,8 +87,9 @@ TDF bytes of the round-22 expression fixture still require `tools/tdf_expression
    strict `xfail` observations: CR1000X `Invalid PulseCount reps.`, CR6 4W/6W channel overlap,
    CSAT3 negative Reps `Out of memory.`, the timing line of an extreme settling time, and a lone
    table bounds line that should not gate pass 2. Round 25 resolved the 4W/6W doubling and Resistance
-   `+1` options and the 4W/6W burst MeasPEx constraint. Alias destinations remain seven strict
-   expected failures in the new fixture. Not yet probed: the remaining settling-time callers (Thermistor, AM25T, Therm107-109, Resistance),
+   `+1` options and the 4W/6W burst MeasPEx constraint. Round 26 resolves the seven bare-alias cases. The new
+   alias fixture preserves dimensioned/indexed aliases, alias chains, local declaration shadowing
+   and CR300/CR350 bounds/type/channel gaps; use its minimized cases before extending resolution. Not yet probed: the remaining settling-time callers (Thermistor, AM25T, Therm107-109, Resistance),
    SDMGeneric's String destination rule and `EC100` options past its table. Then extend the
    constant-folding gaps from round 23 (`KT/2`, `2^0`, `NOT 0`, `1<<31`, Float variable TimeOut,
    an earlier `IfTime("a",1,Sec)` warning) and the TCPOpen/SerialOpen/Timer/Scan constant

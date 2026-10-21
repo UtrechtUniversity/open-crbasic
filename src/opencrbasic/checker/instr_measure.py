@@ -827,12 +827,83 @@ def _measurement_output_count(stmt: S.Instruction, reps: int, env: consteval.Env
     return reps * 2 if kw in {"BRHALF4W", "BRFULL6W"} else reps + 1
 
 
+
+def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
+    """Bare alias destinations: backing Float storage and its diagnostic name (round 26).
+
+    Bind at the alias declaration, so a later local shadow of its backing name does not
+    change the storage. Dimensioned/indexed alias uses remain with the expression checker.
+    """
+    aliases = {}
+    for st in program.statements:
+        if not isinstance(st, S.Instruction) or st.keyword.upper() != "ALIAS" or not st.args:
+            continue
+        target = st.args[0]
+        if not isinstance(target, (S.Name, S.Index)):
+            continue
+        scope = tables(st)
+        shape = scope.dims.get(target.name.upper())
+        if shape is None or scope.types.get(target.name.upper()) != "FLOAT":
+            continue
+        # Alias declaration subscripts may be named constants.
+        if isinstance(target, S.Index):
+            indices = [_int_value(a, env) for a in target.args]
+            if any(i is None for i in indices):
+                continue
+            if len(indices) == 1:
+                offset = indices[0] - 1
+            elif len(indices) == len(shape) and all(1 <= i <= n for i, n in zip(indices, shape)):
+                offset = 0
+                for i, n in zip(indices, shape):
+                    offset = offset * n + i - 1
+            else:
+                continue
+        else:
+            offset = 0
+        total = math.prod(shape)
+        declared_names = {v.name.upper(): v.name
+                          for decl in symbols.scoped_view(program, st).statements
+                          if isinstance(decl, S.Declaration) for v in decl.vars}
+        entries = {}
+        for alias in st.args[1:]:
+            if not isinstance(alias, (S.Name, S.Index)):
+                break
+            size = 1 if isinstance(alias, S.Name) else (
+                _int_value(alias.args[0], env) if len(alias.args) == 1 else None)
+            if size is None or size < 1 or not 0 <= offset < total:
+                break
+            if isinstance(alias, S.Name):
+                entries[alias.name.upper()] = (total - offset,
+                                               declared_names.get(target.name.upper(), target.name)
+                                               if offset == 0 else alias.name)
+            offset += size
+        aliases[id(st)] = entries
+    cache = {}
+    parameters = {id(tables(st)): {p.name.upper() for p in st.params}
+                  for st in program.statements if isinstance(st, S.SubDef)}
+
+    def lookup(stmt, dest):
+        if not isinstance(dest, S.Name) or dest.name.upper() in tables(stmt).dims or \
+                dest.name.upper() in parameters.get(id(tables(stmt)), set()):
+            return None
+        key = id(tables(stmt))
+        if key not in cache:
+            visible = {}
+            for st in symbols.scoped_view(program, stmt).statements:
+                visible.update(aliases.get(id(st), {}))
+            cache[key] = visible
+        return cache[key].get(dest.name.upper())
+
+    return lookup
+
+
 def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     checked = _REPS_CHECKED.get(profile.name, frozenset())
     if not checked:
         return
     from . import symbols
     tables = symbols.scope_tables(program, env, scalars=True)
+    alias_storage = _measurement_aliases(program, tables, env)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or \
                 len(stmt.args) < 2:
@@ -856,10 +927,18 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
         if reps <= 0 and stmt.keyword.upper() != "CS616":  # (CS616: `_check_cs616_reps`)
             diags.error(stmt.line, f"Invalid reps {reps}, must be > 0", stmt.file)
         dest = stmt.args[0]
-        if reps == 0 or not isinstance(dest, (S.Name, S.Index)) or \
-                dest.name.upper() not in floats or dest.name.upper() not in dims:
+        if reps == 0 or not isinstance(dest, (S.Name, S.Index)):
             continue
         if reps > 0 and stmt.keyword.upper() not in _REPS_DEST_SIZE:
+            continue
+        alias = alias_storage(stmt, dest)
+        if alias is not None:
+            available, display_name = alias
+            count = _measurement_output_count(stmt, reps, env)
+            if count < 0 or count > available:
+                diags.error(stmt.line, f"Variable {display_name} out of bounds.", stmt.file)
+            continue
+        if dest.name.upper() not in floats or dest.name.upper() not in dims:
             continue
         shape = dims[dest.name.upper()]
         offset = _flat_offset(dest, shape)
