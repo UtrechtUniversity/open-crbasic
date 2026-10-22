@@ -1,0 +1,1076 @@
+{
+  "cases": [
+    {
+      "id": "cr6-bare",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-offset",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-indexed",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nAlias Y(99)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-bad_index",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y(Nope)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-empty_index",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y()=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-duplicate_rhs",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-chain_next",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-forward",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias Y=Z\nAlias X=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-failed_source",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(99)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-failed_dim",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(99)\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-partial",
+      "logger": "cr6",
+      "source": "Public X(2)\nAlias X=Y,Z(9)\nAlias Y=Q\nAlias Z=W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-collision",
+      "logger": "cr6",
+      "source": "Public X(6),Y\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-local_source",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-other_local",
+      "logger": "cr6",
+      "source": "Sub S\nDim X(6)\nEndSub\nAlias X(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-local_alias",
+      "logger": "cr6",
+      "source": "Sub S\nDim X(6)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-global_alias_local_source",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim Y(6)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-outside_local_alias",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S\nDim W(6)\nAlias W=Y\nEndSub\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-local_shadow_big",
+      "logger": "cr6",
+      "source": "Public X(1)\nAlias X(3)=Y\nSub S\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-local_chain_global",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-local_alias_other_sub",
+      "logger": "cr6",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-bare",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-offset",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-indexed",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nAlias Y(99)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-bad_index",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y(Nope)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-empty_index",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y()=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-duplicate_rhs",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-chain_next",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-forward",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias Y=Z\nAlias X=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-failed_source",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(99)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-failed_dim",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(99)\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-partial",
+      "logger": "cr1000x",
+      "source": "Public X(2)\nAlias X=Y,Z(9)\nAlias Y=Q\nAlias Z=W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-collision",
+      "logger": "cr1000x",
+      "source": "Public X(6),Y\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-local_source",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-other_local",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X(6)\nEndSub\nAlias X(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-local_alias",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X(6)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-global_alias_local_source",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim Y(6)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-outside_local_alias",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S\nDim W(6)\nAlias W=Y\nEndSub\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-local_shadow_big",
+      "logger": "cr1000x",
+      "source": "Public X(1)\nAlias X(3)=Y\nSub S\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-local_chain_global",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-local_alias_other_sub",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-bare",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-offset",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-indexed",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nAlias Y(99)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-bad_index",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y(Nope)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-empty_index",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y()=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-duplicate_rhs",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-chain_next",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-forward",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias Y=Z\nAlias X=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-failed_source",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(99)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-failed_dim",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(99)\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-partial",
+      "logger": "cr300",
+      "source": "Public X(2)\nAlias X=Y,Z(9)\nAlias Y=Q\nAlias Z=W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-collision",
+      "logger": "cr300",
+      "source": "Public X(6),Y\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-local_source",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-other_local",
+      "logger": "cr300",
+      "source": "Sub S\nDim X(6)\nEndSub\nAlias X(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-local_alias",
+      "logger": "cr300",
+      "source": "Sub S\nDim X(6)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-global_alias_local_source",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim Y(6)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-outside_local_alias",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S\nDim W(6)\nAlias W=Y\nEndSub\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-local_shadow_big",
+      "logger": "cr300",
+      "source": "Public X(1)\nAlias X(3)=Y\nSub S\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-local_chain_global",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-local_alias_other_sub",
+      "logger": "cr300",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-bare",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-offset",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-indexed",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nAlias Y(99)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-bad_index",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y(Nope)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-empty_index",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y()=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-duplicate_rhs",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-chain_next",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-forward",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias Y=Z\nAlias X=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-failed_source",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(99)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-failed_dim",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(99)\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-partial",
+      "logger": "cr350",
+      "source": "Public X(2)\nAlias X=Y,Z(9)\nAlias Y=Q\nAlias Z=W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Cannot Alias an Alias.\nline 4: Z not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-collision",
+      "logger": "cr350",
+      "source": "Public X(6),Y\nAlias X=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-local_source",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-other_local",
+      "logger": "cr350",
+      "source": "Sub S\nDim X(6)\nEndSub\nAlias X(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-local_alias",
+      "logger": "cr350",
+      "source": "Sub S\nDim X(6)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-global_alias_local_source",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim Y(6)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-outside_local_alias",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S\nDim W(6)\nAlias W=Y\nEndSub\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-local_shadow_big",
+      "logger": "cr350",
+      "source": "Public X(1)\nAlias X(3)=Y\nSub S\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-local_chain_global",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-local_alias_other_sub",
+      "logger": "cr350",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-global_source_in_sub",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-global_source_in_function",
+      "logger": "cr6",
+      "source": "Public X(6)\nFunction F\nAlias X=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-parameter_source",
+      "logger": "cr6",
+      "source": "Sub S(X)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-local_forward",
+      "logger": "cr6",
+      "source": "Sub S\nAlias X=Y\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-restore_global",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias Y=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-duplicate_scopes",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr6-other_sub_names",
+      "logger": "cr6",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-local_global_collision",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr6-bad_rhs",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-chain_dim_rhs",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z(99)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-chain_empty_rhs",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z()\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-indexed_const",
+      "logger": "cr6",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(K)\nAlias y(K)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-duplicate_name_chain",
+      "logger": "cr6",
+      "source": "Public X(6),W(6)\nAlias X=Y\nAlias W=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: Y.\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-duplicate_source_chain",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nAlias X=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-prior_undefined",
+      "logger": "cr6",
+      "source": "Alias Nope=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope not yet declared so cannot be aliased.\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-list_chain",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2),Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-bad_index_chain",
+      "logger": "cr6",
+      "source": "Public X(6),J\nAlias X=Y\nAlias Y(J)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-repeat_scope_source",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias X=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Duplicate Alias"
+    },
+    {
+      "id": "cr1000x-global_source_in_sub",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-global_source_in_function",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nFunction F\nAlias X=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-parameter_source",
+      "logger": "cr1000x",
+      "source": "Sub S(X)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-local_forward",
+      "logger": "cr1000x",
+      "source": "Sub S\nAlias X=Y\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-restore_global",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias Y=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-duplicate_scopes",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr1000x-other_sub_names",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-local_global_collision",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr1000x-bad_rhs",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-chain_dim_rhs",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z(99)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-chain_empty_rhs",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z()\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-indexed_const",
+      "logger": "cr1000x",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(K)\nAlias y(K)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-duplicate_name_chain",
+      "logger": "cr1000x",
+      "source": "Public X(6),W(6)\nAlias X=Y\nAlias W=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: Y.\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-duplicate_source_chain",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nAlias X=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-prior_undefined",
+      "logger": "cr1000x",
+      "source": "Alias Nope=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope not yet declared so cannot be aliased.\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-list_chain",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2),Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-bad_index_chain",
+      "logger": "cr1000x",
+      "source": "Public X(6),J\nAlias X=Y\nAlias Y(J)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-repeat_scope_source",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias X=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Duplicate Alias"
+    },
+    {
+      "id": "cr300-global_source_in_sub",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-global_source_in_function",
+      "logger": "cr300",
+      "source": "Public X(6)\nFunction F\nAlias X=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-parameter_source",
+      "logger": "cr300",
+      "source": "Sub S(X)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-local_forward",
+      "logger": "cr300",
+      "source": "Sub S\nAlias X=Y\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-restore_global",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias Y=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-duplicate_scopes",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr300-other_sub_names",
+      "logger": "cr300",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-local_global_collision",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr300-bad_rhs",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-chain_dim_rhs",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z(99)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-chain_empty_rhs",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z()\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-indexed_const",
+      "logger": "cr300",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(K)\nAlias y(K)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-duplicate_name_chain",
+      "logger": "cr300",
+      "source": "Public X(6),W(6)\nAlias X=Y\nAlias W=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: Y.\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-duplicate_source_chain",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nAlias X=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-prior_undefined",
+      "logger": "cr300",
+      "source": "Alias Nope=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope not yet declared so cannot be aliased.\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-list_chain",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2),Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-bad_index_chain",
+      "logger": "cr300",
+      "source": "Public X(6),J\nAlias X=Y\nAlias Y(J)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-repeat_scope_source",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias X=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Duplicate Alias"
+    },
+    {
+      "id": "cr350-global_source_in_sub",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-global_source_in_function",
+      "logger": "cr350",
+      "source": "Public X(6)\nFunction F\nAlias X=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-parameter_source",
+      "logger": "cr350",
+      "source": "Sub S(X)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-local_forward",
+      "logger": "cr350",
+      "source": "Sub S\nAlias X=Y\nDim X(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-restore_global",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias Y=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-duplicate_scopes",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr350-other_sub_names",
+      "logger": "cr350",
+      "source": "Sub S\nDim X(6)\nAlias X=Y\nEndSub\nSub T\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-local_global_collision",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.",
+      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+    },
+    {
+      "id": "cr350-bad_rhs",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-chain_dim_rhs",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z(99)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-chain_empty_rhs",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias Y=Z()\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-indexed_const",
+      "logger": "cr350",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(K)\nAlias y(K)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-duplicate_name_chain",
+      "logger": "cr350",
+      "source": "Public X(6),W(6)\nAlias X=Y\nAlias W=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: Y.\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-duplicate_source_chain",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nAlias X=Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-prior_undefined",
+      "logger": "cr350",
+      "source": "Alias Nope=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope not yet declared so cannot be aliased.\nline 2: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-list_chain",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2),Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-bad_index_chain",
+      "logger": "cr350",
+      "source": "Public X(6),J\nAlias X=Y\nAlias Y(J)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-repeat_scope_source",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Z\nEndSub\nAlias X=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Duplicate Alias"
+    }
+  ]
+}

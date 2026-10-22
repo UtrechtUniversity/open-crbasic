@@ -227,48 +227,42 @@
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-chain-2",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-chain-3",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-chain-4",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-chain-6",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-chain-7",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-matrix-1",
@@ -581,48 +575,42 @@
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-chain-2",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-chain-3",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-chain-4",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-chain-6",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-chain-7",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-matrix-1",
@@ -939,7 +927,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  1.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr300-chain-2",
@@ -947,7 +935,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  2.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr300-chain-3",
@@ -955,7 +943,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  3.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr300-chain-4",
@@ -963,7 +951,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  4.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr300-chain-6",
@@ -971,7 +959,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  6.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr300-chain-7",
@@ -979,7 +967,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  7.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr300-matrix-1",
@@ -1306,7 +1294,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  1.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr350-chain-2",
@@ -1314,7 +1302,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  2.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr350-chain-3",
@@ -1322,7 +1310,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  3.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr350-chain-4",
@@ -1330,7 +1318,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  4.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr350-chain-6",
@@ -1338,7 +1326,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  6.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr350-chain-7",
@@ -1346,7 +1334,7 @@
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  7.",
-      "not_modelled": "Alias-of-alias diagnostic differs."
+      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
     },
     {
       "id": "cr350-matrix-1",
@@ -1577,24 +1565,21 @@
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in SequentialMode.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
     },
     {
       "id": "cr6-local-4",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in SequentialMode.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
     },
     {
       "id": "cr6-local-6",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr1000x-index3-1",
@@ -1733,24 +1718,21 @@
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in SequentialMode.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
     },
     {
       "id": "cr1000x-local-4",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in SequentialMode.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
     },
     {
       "id": "cr1000x-local-6",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr300-index3-1",
@@ -1891,24 +1873,21 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-local-4",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-local-6",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-index3-1",
@@ -2052,16 +2031,14 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-local-4",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-local-6",

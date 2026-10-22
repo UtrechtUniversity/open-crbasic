@@ -868,3 +868,69 @@ of the CR300/CR350 cascade (`Too many parameters` / `... is not defined.`) famil
 Storage/auto-table: the CR300 false reject above and the flash-write-cycle false accepts of round 15. Value-model false accepts:
 the `Settling time`, `Number of bytes`, GZip and `Variable X out of bounds.` families. Message-diff ranking: the `No BeginProg` and
 CR300/CR350 cascade families. Nothing here touches FieldCal, EOF continuation or LineNum closers.
+
+## Round 27 bounded refresh (2026-10-22)
+
+Ran `tools/fuzz.py` with 40 mutants per profile, seeds 413 (CR6), 414 (CR1000X), 415
+(CR300) and 416 (CR350), four workers and both shrink budgets set to zero. Outputs are under
+`scratch/r27_fuzz/` (untracked); no existing saved reproducers were removed.
+
+| Profile | Exact | Message difference | Mutant without reference verdict |
+|---|---:|---:|---:|
+| CR6 | 39 | 1 | 0 |
+| CR1000X | 39 | 1 | 0 |
+| CR300 | 39 | 1 | 0 |
+| CR350 | 38 | 1 | 1 |
+
+No usable mutant had a verdict mismatch, mode difference, implementation exception, crash or
+hang. All four saved diagnostic differences produce identical output with the original
+round-26 checker on the current source; they are pre-existing gaps:
+
+- CR6 `5f15b31e4141`, `stddevrun_2.CR6`: malformed whitespace inside an argument is echoed as
+  an invalid statement instead of an invalid symbol.
+- CR1000X `0cb473ea0950`, `delay3_1.CR6`: the String-delay rejection is missing the subsequent
+  `Measurement delay must have constant interval.` diagnostic.
+- CR300 `32ecacbb8bce`, `erase_1.CR6`: missing undefined `ThenX` before the incomplete-expression
+  diagnostic.
+- CR350 `fe12e240d662`, `pointervariable_3.CR6`: extra structure-member diagnostics after
+  declaration errors.
+
+The six seed failures are the existing `pointervariable_2.CR6` fault on all profiles and
+`strcomp_3.CR6` on CR300/CR350. The additional CR350 failure is seed `pppclose_1.CR6`, mutant
+30 (`change_declared_type+replace_argument`): the reference process faulted at `005ACFDE`.
+Its reconstructed source is `scratch/r27_fuzz/cr350_reference_fault.CR6`; the original fault
+text is retained in `summary-cr350.json`. This is not a compiler verdict. Each fuzz invocation
+exits 1 because it retains seed/runner failures, even when all usable mutant verdicts agree.
+Next unused bounded seeds: 417–420.
+
+## Round 28 bounded refresh (2026-10-22)
+
+Ran `tools/fuzz.py` with 40 mutants per profile, seeds 417 (CR6), 418 (CR1000X), 419
+(CR300) and 420 (CR350), four workers and both shrink budgets zero. Outputs are under
+`scratch/r28_fuzz/` (untracked); existing saved reproducers were not removed.
+
+| Profile | Exact | False accept | Message difference | Mutant without reference verdict |
+|---|---:|---:|---:|---:|
+| CR6 | 40 | 0 | 0 | 0 |
+| CR1000X | 39 | 0 | 0 | 1 |
+| CR300 | 38 | 1 | 1 | 0 |
+| CR350 | 40 | 0 | 0 | 0 |
+
+Both saved differences produce identical output with the round-27 checker on current sources,
+so they are pre-existing gaps rather than regressions from parameter-alias resolution:
+
+- CR300 false accept `0dbe2b18b63c`, seed `therm107therm108therm109_1.CR6`: both compilers warn
+  about fnotch, but only the reference then rejects the program with `Channel exceeds number
+  of valid channels.`. This needs the measurement channel/repetition allocation model.
+- CR300 diagnostic difference `067cbbab3307`, seed `dataordatalongreadrestore_1.CR6`: after the
+  undefined index name the reference additionally reports `Dimensions not declared` for the
+  multidimensional access.
+
+There were no implementation crashes, hangs, exceptions, false rejects or mode differences.
+The six seed failures are the existing `pointervariable_2.CR6` fault on all profiles and
+`strcomp_3.CR6` on CR300/CR350. The new CR1000X no-verdict case is `selectcase_2.CR6`, mutant
+35 (`change_declared_type+change_interval`): the reference process raised division by zero at
+`00510774` (exit 148). Its reconstructed source is
+`scratch/r28_fuzz/cr1000x_reference_fault_35.CR6`; the original fault text is retained in
+`summary-cr1000x.json`. It is excluded from compiler-verdict metrics. All four fuzz commands
+exit 1 while retaining these reference failures. Next unused bounded seeds: 421–424.

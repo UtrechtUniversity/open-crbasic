@@ -1135,10 +1135,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
     suppress_line: int | None = None
-    dim0_sizes = symbols.declared_dim0_sizes(program, env)
-    all_dims = symbols.declared_all_dims(program, env)
     seen_alias_names: set[str] = set()
     seen_alias_sources: dict[str, set[tuple]] = {}
+    alias_declarations: list[S.Stmt] = []
+    alias_parameters: S.Declaration | None = None
+    alias_parameter_names: set[str] = set()
+    global_alias_state = (alias_declarations, seen_alias_names, seen_alias_sources)
     known: set[str] | None = None
     operands: set[str] = set()
     in_sub = False
@@ -1157,12 +1159,6 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                       if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
                       for v in st.vars}
 
-    first_decl: dict[str, int] = {}
-    for pos, stmt in enumerate(program.statements):
-        if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
-            for v in stmt.vars:
-                first_decl.setdefault(v.name.upper(), pos)
-
     for pos, stmt in enumerate(program.statements):
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
@@ -1180,6 +1176,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             diags.error(stmt.line, f"Illegal END or EXIT {args[0].name}.", stmt.file)
 
         if isinstance(stmt, S.SubDef):
+            # The reference declaration handler registers parameter storage before the body.
+            # Keep this view local to alias validation; other parameter bounds rules differ.
+            alias_declarations = []
+            alias_parameters = _alias_parameter_declaration(stmt, env, declared_kinds)
+            alias_parameter_names = {p.name.upper() for p in stmt.params}
+            seen_alias_names, seen_alias_sources = set(), {}
             if not in_sub and declared_kinds.get(stmt.name.upper()) == "CONST":
                 _report_numeric_sub_name(stmt, program.consts.get(stmt.name.upper()), diags)
             if not in_sub:
@@ -1187,6 +1189,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
+            alias_declarations, seen_alias_names, seen_alias_sources = global_alias_state
+            alias_parameters = None
+            alias_parameter_names = set()
+        if isinstance(stmt, S.Declaration):
+            alias_declarations.append(stmt)
         if kw in ("STRUCTURETYPE", "OBJECTTYPE"):
             in_struct = True
             struct_members = set()
@@ -1367,7 +1374,6 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                                 continue
                             if dup_at is None or i < dup_at:
                                 declared_kinds.pop(v.name.upper(), None)
-                                dim0_sizes.pop(v.name.upper(), None)
                         stmt.vars[stop + 1:] = [v for v in stmt.vars[stop + 1:] if v.type in struct_types]
                 else:
                     _check_array_dims(stmt, diags, env, profile)
@@ -1451,17 +1457,26 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if known is None:
                 known = expressions._known_names(program, profile)
                 operands = pass1_operands(program, profile)
-            if len(stmt.args) > 1 and isinstance(stmt.args[1], S.Number):
+            src = stmt.args[0] if stmt.args else None
+            if isinstance(src, (S.Name, S.Index)) and src.name.upper() in seen_alias_names:
+                # Source lookup rejects aliases before reading dimensions or RHS (round 27).
+                diags.error(stmt.line, "Cannot Alias an Alias.", stmt.file)
+            elif len(stmt.args) > 1 and isinstance(stmt.args[1], S.Number):
                 # `Alias CD16(29) = 3`, pass 1, all four loggers (oracle, 2026-09-27)
                 diags.error(stmt.line, f"Variable name {stmt.args[1].text} illegal, starts with a "
                             "number.", stmt.file)
-            elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
-                src = stmt.args[0] if stmt.args else None
-                sizes = dim0_sizes
-                if isinstance(src, (S.Name, S.Index)) and first_decl.get(src.name.upper(), -1) > pos:
-                    # declared only later in the file: not yet declared (round 16, oracle)
-                    sizes = {k: v for k, v in dim0_sizes.items() if k != src.name.upper()}
-                _check_alias_dims(stmt, diags, env, sizes, all_dims, seen_alias_names,
+            elif not _check_alias_index_names(stmt, known, decl_variables | alias_parameter_names,
+                                             profile, diags, check_variables=isinstance(src, S.Index)
+                                             and src.name.upper() in alias_parameter_names):
+                # Only preceding declarations in this scope participate in source lookup.
+                # A routine cannot alias a global, even when it can use that variable.
+                # Parameter records precede local declarations in reference source lookup.
+                # The size collectors use last-declaration wins, so place parameters last here.
+                view = dataclasses.replace(program, statements=alias_declarations + (
+                    [alias_parameters] if alias_parameters is not None else []))
+                sizes = symbols.declared_dim0_sizes(view, env)
+                dims = symbols.declared_all_dims(view, env)
+                _check_alias_dims(stmt, diags, env, sizes, dims, seen_alias_names,
                                    seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"), profile)
         if isinstance(stmt, S.If) and (hashed := S.hash_statement(stmt)) is not None:
             diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)
@@ -4360,7 +4375,7 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
 
 
 def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: set[str],
-                             profile, diags: Diagnostics) -> bool:
+                             profile, diags: Diagnostics, check_variables: bool = False) -> bool:
     """`Alias X( Nope ) = Q` -> `Invalid symbol in expression:  Nope .` (raw index text) then
     `Alias is illegally dimensioned.`, all loggers (CR300/CR350 with their own undefined-name
     pair). Returns whether it reported, so `_check_alias_dims` is skipped."""
@@ -4386,7 +4401,8 @@ def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: se
             return True
     bad = False
     for a, text in zip(target.args, items):
-        if a is not None and expressions._undefined_names(a, known):
+        if a is not None and (expressions._undefined_names(a, known) or (
+                check_variables and expressions._variable_refs(a, variables))):
             bad |= _report_decl_expr(a, text, known, variables, profile, stmt, diags)
     if bad:
         diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
@@ -4409,15 +4425,38 @@ def _alias_flat_offset(index: tuple[int, ...], dims: tuple[int, ...]) -> int:
     return flat
 
 
+def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env,
+                                 declared: dict[str, str]) -> S.Declaration:
+    """Alias-only view of measured Float/Long parameter storage (round 28)."""
+    visible = consteval.Env(env.profile, {name: value for name, value in env.consts.items()
+                                       if declared.get(name.upper()) == "CONST"}, env.section)
+    variables = []
+    for param in routine.params:
+        if (param.type or "FLOAT").upper() not in ("FLOAT", "LONG") or len(param.dim_exprs) > 3:
+            continue
+        try:
+            dims = [consteval.value_of(d, visible) for d in param.dim_exprs]
+            valid = all(isinstance(d, (int, float)) and not isinstance(d, bool)
+                        and 1 <= int(d) <= _MAX_DIM_VALUE for d in dims)
+        except (consteval.NotConstant, ValueError, OverflowError):
+            continue
+        if not valid:
+            continue  # Invalid/non-constant parameter dimensions retain their existing diagnostics.
+        variables.append(S.VarDecl(param.name, dims=param.dim_exprs, type=param.type))
+    return S.Declaration(routine.line, routine.file, kind="DIM", vars=variables)
+
+
 def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
                        dim0_sizes: dict[str, int], all_dims: dict[str, tuple[int, ...]],
                        seen_alias_names: set[str],
                        seen_alias_sources: dict[str, set[tuple]],
                        name_collision: str | None = None, profile=None) -> None:
-    """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional (oracle-confirmed
+    """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional. The caller supplies
+    preceding declarations and duplicate-tracking state from the current scope (round 27), and
+    rejects alias sources before these dimension/RHS checks. The checks are oracle-confirmed:
     each accumulates with an unrelated, later `Variable not named.` in the same file, and, being
     pass 1, all suppress every pass-2 check the same way any other pass-1 error already does -- no
-    special "stop the file" behaviour of its own needed for any of the four):
+    special "stop the file" behaviour of its own needed for any of the four:
 
     1. **`%s not yet declared so cannot be aliased.`** (round 7, this session; `docs/messages.tsv`
        `FUN_004b8e70`): `name` -- the source side's own base name, scalar or array, with or without

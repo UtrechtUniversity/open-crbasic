@@ -7111,3 +7111,119 @@ publish an initial empty list for a clean, closed entry (`Session._publish`). It
 existing injected-error variant before waiting for its first diagnostic, then alternates clean
 and erroneous edits. Its initialization-to-first-publication measurement therefore includes
 opening and analyzing that variant; it is not directly comparable to older closed-entry timings.
+
+## Alias source binding and rejection order (round 27)
+
+Reference observations, 2026-10-22: `tests/fixtures/r27_alias_declarations.json` preserves 152
+cases across CR6, CR1000X, CR300 and CR350. The round-26 implementation matches 36; round 27
+matches 140, with the remaining 12 retained as strict expected failures. In the older
+`r26_measurement_aliases.json`, 23 additional observations now match (164 total, 118 expected
+failures). The reference expectations were preserved; only resolved expected-failure markers
+were removed.
+
+Reverse-engineering trail: CR6 `FUN_004b8e70` searches variable records in declaration order.
+Inside a routine the search starts at the routine's variable-record boundary (the value loaded
+from the current routine record at offset `0x3c`); outside routines it excludes local records.
+After finding the source record, the handler checks its alias marker at offset `0x68` before
+parsing source subscripts or creating RHS names. A source with an alias marker reports
+`Cannot Alias an Alias.` and returns. Decompiled code was used to choose probes and was not
+copied into the implementation.
+
+The four-profile probes establish these rules:
+
+- Alias source declarations must precede the alias in the same scope. A global alias is checked
+  against global dimensions, independently of a later local variable with the same name. An
+  array declared in another routine cannot supply an alias source. Inside a routine an alias
+  cannot use a global source, even though ordinary expressions can use that global variable.
+- Previously registered aliases cannot be aliased again. This diagnostic takes precedence over
+  invalid, empty or undefined source indices, an invalid RHS dimension, and a numeric RHS name.
+  Rejecting a chain does not register its RHS: a later alias of that RHS reports that it is not
+  yet declared.
+- Registration depends on where an earlier alias failed. An out-of-bounds source offset reports
+  `Illegally dimensioned aliased name` but still registers a bare RHS alias; a subsequent chain
+  therefore reports `Cannot Alias an Alias.`. An invalid RHS dimension aborts before that name
+  is registered. In a list, names before a failing item remain registered.
+- Alias-name and source-offset duplicate tracking is separate for each routine and for globals.
+  Leaving a routine restores the global tracking state. Name collisions against globals have
+  additional rules that are not implemented by this change.
+
+The pass-1 checker now builds alias source dimensions from preceding declarations in the
+current scope and reuses its existing registration and dimension validation. It keeps separate
+alias tracking for globals and each routine. The measurement storage resolver from round 26
+is unchanged; correcting declaration validation allows eleven of its twelve local-shadow
+observations to match. The remaining CR350 case also has an existing measurement-channel gap.
+
+Remaining gaps: the new fixture retains four routine-parameter source observations and eight
+RHS/global-name collision observations. Routine parameters are valid alias sources in the
+reference compiler but are not registered by this alias check. A local alias whose RHS collides
+with a global name has profile-dependent diagnostic/registration behavior. The older fixture
+still retains twelve CR300/CR350 chain observations because the later undefined-name and
+parameter-count cascades differ, although the chain diagnostic itself now matches. Dimensioned
+and indexed measurement aliases, Long alias type diagnostics and scalar measurement parameters
+remain outside this round. These are compiler observations, not logger runtime evidence.
+
+Round-27 validation also refreshed `tests/test_signature.py` against fresh CR6Comp `-s` results
+for the repository programs after the GPS and shared bench changes: PT1000 tester 45535, Main
+60721, TDR tester 60752, SBD tester 47622, FinApp tester 11702. The first FinApp signature attempt
+timed out; its retry returned a successful compile and signature. This was a stale test
+expectation, not a change to the signature algorithm or production CRBasic.
+
+## Routine-parameter alias storage (round 28)
+
+Reference observations, 2026-10-22: `tests/fixtures/r28_parameter_aliases.json` preserves 368
+cases across CR6, CR1000X, CR300 and CR350. The round-27 checker matches 12; round 28 matches
+284, with 84 neighboring gaps retained as strict expected failures. All four routine-parameter
+source observations in the round-27 fixture now also match (144 of 152 total). None of the
+new fixture's previously exact cases was lost, and the fixture comparison found no newly
+introduced false accepts or false rejects.
+
+Reverse-engineering trail: the routine declaration path in CR6 `FUN_004baf00` records the start
+of the routine's variable records before parsing parameters. It parses their dimensions and
+registers each parameter via `FUN_004d3560`, the same variable-record allocator used for normal
+declarations. `FUN_004b8e70` then finds these records in the routine-local source search and
+rejects an alias record before validating its indices, as traced in round 27. Its forward
+record search also explains why a later local declaration with the parameter's name does not
+replace the parameter's alias capacity. The rules below are based on four-profile reference
+probes; no decompiled implementation was copied into Python.
+
+Implemented scope: untyped/Float and Long parameters with positive, constant dimensions up to
+the existing dimension limit. Alias validation receives an isolated declaration view of those
+parameters. A scalar and an empty `P()` both have one element; `P(4)` has four; multidimensional
+parameters retain their complete shape. User constants must already be declared at the header;
+predefined constants remain available. Named-constant dimensions and positive fractional
+sizes (truncated to an integer, e.g. `3.9` becomes three) are covered. Optional parameters,
+functions, routines declared after `EndProg`, global shadowing and routine isolation were
+probed. The source record's dimensions continue to apply when the routine later declares a
+local of the same name. The synthetic declaration view does not change ordinary expression,
+measurement, table or editor binding resolution.
+
+Parameter alias indices remain constant-only. A runtime index from a global, another parameter,
+an Optional parameter or a String parameter reports `Variable illegal in Parameter: ...` then
+`Alias is illegally dimensioned.`. Unknown and String-literal indices retain the existing
+profile-specific diagnostics. A valid named Const index is accepted. Existing alias-chain,
+duplicate-source and partial-registration checks also apply to parameter sources.
+
+The 84 expected failures retain separate rules rather than generalizing this view:
+
+- 48 String parameter alias cases: byte-storage capacity, character subscripts and alias-list
+  dimensions need their own model.
+- Eight Boolean/Double parameter source cases: these types were observed but are not enabled
+  by this Float/Long implementation.
+- Twelve invalid/nonconstant parameter-dimension cases: the header diagnostics and ordering
+  remain unmodelled. Such parameters are excluded from the new view, preserving rejection
+  instead of allowing a valid alias to hide an invalid header.
+- Twelve forward-Const dimension cases: a later Const must not enable parameter alias storage.
+  These programs retain rejection, while their header diagnostic text remains unmodelled.
+- Four rejected Const-shadow parameter cases: the alias index checker adds diagnostics after
+  the reference has retained the earlier Const and reported only the header conflict.
+
+Twelve separate verdict tests require forward-Const dimension programs to remain rejected,
+even while their exact header diagnostics are strict expected failures. These guards were
+added after the final full-suite collection and passed in a targeted run.
+
+The exploratory probe also recorded 80 measurement-destination observations in
+`scratch/r28_probe.json` (untracked). Scalar Float parameters have a one-element measurement
+capacity; explicit array parameters have their declared capacity. Long destination types and
+CR300/CR350 diagnostic cascades differ. These measurement rules are not changed here, and the
+two old scalar measurement-parameter observations remain expected failures. Compilation and
+these probes do not establish logger runtime behavior.
