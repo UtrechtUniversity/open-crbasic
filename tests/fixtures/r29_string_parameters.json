@@ -1,0 +1,2244 @@
+{
+  "cases": [
+    {
+      "id": "cr6-param-len15_y4",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(4)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-len15_y4",
+      "logger": "cr6",
+      "source": "Public P As String * 15\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-len15_y5",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-len15_y5",
+      "logger": "cr6",
+      "source": "Public P As String * 15\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-len16_y5",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-len16_y5",
+      "logger": "cr6",
+      "source": "Public P As String * 16\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-len16_y6",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-len16_y6",
+      "logger": "cr6",
+      "source": "Public P As String * 16\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-default_y6",
+      "logger": "cr6",
+      "source": "Sub S(P As String)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-default_y6",
+      "logger": "cr6",
+      "source": "Public P As String\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-default_y7",
+      "logger": "cr6",
+      "source": "Sub S(P As String)\nAlias P=Y(7)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-default_y7",
+      "logger": "cr6",
+      "source": "Public P As String\nAlias P=Y(7)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-len3_y1",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-len3_y1",
+      "logger": "cr6",
+      "source": "Public P As String * 3\nAlias P=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-len3_y2",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-len3_y2",
+      "logger": "cr6",
+      "source": "Public P As String * 3\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-len3_yz",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 3)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-len3_yz",
+      "logger": "cr6",
+      "source": "Public P As String * 3\nAlias P=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-unit_p1",
+      "logger": "cr6",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-unit_p1",
+      "logger": "cr6",
+      "source": "Public P(1) As String * 16\nAlias P(1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-unit_p11",
+      "logger": "cr6",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-unit_p11",
+      "logger": "cr6",
+      "source": "Public P(1) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-vec_p3",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-vec_p3",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-vec_p4",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-vec_p4",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-vec_p0",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(0)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-vec_p0",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-vec_p11",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_p11",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-mat_p23",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-mat_p23",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-mat_p231",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-mat_p231",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-mat_p24",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-mat_p24",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-mat_p31",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-mat_p31",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P(3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-mat_p3",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-mat_p3",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-vec_y15",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(15)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-vec_y15",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y(15)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-vec_y16",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(16)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_y16",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-vec_p3_y25",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(25)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-vec_p3_y25",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(25)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-vec_p3_y26",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(26)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_p3_y26",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(26)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-vec_yzw",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-vec_yzw",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-vec_yzwv",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W,V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-vec_yzwv",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W,V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-vec_y2z",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-vec_y2z",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y(2),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-vec_y3z",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(3),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-vec_y3z",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y(3),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-vec_y0",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_y0",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-param-vec_p4_yz",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-vec_p4_yz",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-scal_p1_chain",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-public-scal_p1_chain",
+      "logger": "cr6",
+      "source": "Public P As String * 16\nAlias P(1)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-param-scal_yz_chain",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-public-scal_yz_chain",
+      "logger": "cr6",
+      "source": "Public P As String * 16\nAlias P=Y,Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-param-scal_yzw",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-scal_yzw",
+      "logger": "cr6",
+      "source": "Public P As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-param-vec_dup",
+      "logger": "cr6",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nAlias P(2)=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr6-public-vec_dup",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(2)=Y\nAlias P(2)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr6-param-mat_y30",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(30)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-mat_y30",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(30)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-param-mat_y31",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(31)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-mat_y31",
+      "logger": "cr6",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(31)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-len15_y4",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(4)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-len15_y4",
+      "logger": "cr1000x",
+      "source": "Public P As String * 15\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-len15_y5",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-len15_y5",
+      "logger": "cr1000x",
+      "source": "Public P As String * 15\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-len16_y5",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-len16_y5",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-len16_y6",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-len16_y6",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-default_y6",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-default_y6",
+      "logger": "cr1000x",
+      "source": "Public P As String\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-default_y7",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String)\nAlias P=Y(7)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-default_y7",
+      "logger": "cr1000x",
+      "source": "Public P As String\nAlias P=Y(7)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-len3_y1",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-len3_y1",
+      "logger": "cr1000x",
+      "source": "Public P As String * 3\nAlias P=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-len3_y2",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-len3_y2",
+      "logger": "cr1000x",
+      "source": "Public P As String * 3\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-len3_yz",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 3)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-len3_yz",
+      "logger": "cr1000x",
+      "source": "Public P As String * 3\nAlias P=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-unit_p1",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-unit_p1",
+      "logger": "cr1000x",
+      "source": "Public P(1) As String * 16\nAlias P(1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-unit_p11",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-unit_p11",
+      "logger": "cr1000x",
+      "source": "Public P(1) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-vec_p3",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-vec_p3",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-vec_p4",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-vec_p4",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-vec_p0",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(0)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-vec_p0",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-vec_p11",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-vec_p11",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-mat_p23",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-mat_p23",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-mat_p231",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-mat_p231",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-mat_p24",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-mat_p24",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-mat_p31",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-mat_p31",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P(3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-mat_p3",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-mat_p3",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-vec_y15",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(15)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-vec_y15",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y(15)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-vec_y16",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(16)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-vec_y16",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-vec_p3_y25",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(25)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-vec_p3_y25",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(25)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-vec_p3_y26",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(26)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-vec_p3_y26",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(26)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-vec_yzw",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-vec_yzw",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-vec_yzwv",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W,V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-vec_yzwv",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W,V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-vec_y2z",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-vec_y2z",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y(2),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-vec_y3z",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(3),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-vec_y3z",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y(3),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-vec_y0",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-vec_y0",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-param-vec_p4_yz",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-vec_p4_yz",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-scal_p1_chain",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-public-scal_p1_chain",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16\nAlias P(1)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-param-scal_yz_chain",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-public-scal_yz_chain",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16\nAlias P=Y,Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-param-scal_yzw",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-scal_yzw",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-param-vec_dup",
+      "logger": "cr1000x",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nAlias P(2)=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr1000x-public-vec_dup",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(2)=Y\nAlias P(2)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr1000x-param-mat_y30",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(30)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-mat_y30",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(30)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param-mat_y31",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(31)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-mat_y31",
+      "logger": "cr1000x",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(31)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-len15_y4",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(4)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-len15_y4",
+      "logger": "cr300",
+      "source": "Public P As String * 15\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-len15_y5",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-len15_y5",
+      "logger": "cr300",
+      "source": "Public P As String * 15\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-len16_y5",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-len16_y5",
+      "logger": "cr300",
+      "source": "Public P As String * 16\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-len16_y6",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-len16_y6",
+      "logger": "cr300",
+      "source": "Public P As String * 16\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-default_y6",
+      "logger": "cr300",
+      "source": "Sub S(P As String)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-default_y6",
+      "logger": "cr300",
+      "source": "Public P As String\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-default_y7",
+      "logger": "cr300",
+      "source": "Sub S(P As String)\nAlias P=Y(7)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-default_y7",
+      "logger": "cr300",
+      "source": "Public P As String\nAlias P=Y(7)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-len3_y1",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-len3_y1",
+      "logger": "cr300",
+      "source": "Public P As String * 3\nAlias P=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-len3_y2",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-len3_y2",
+      "logger": "cr300",
+      "source": "Public P As String * 3\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-len3_yz",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 3)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-len3_yz",
+      "logger": "cr300",
+      "source": "Public P As String * 3\nAlias P=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-unit_p1",
+      "logger": "cr300",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-unit_p1",
+      "logger": "cr300",
+      "source": "Public P(1) As String * 16\nAlias P(1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-unit_p11",
+      "logger": "cr300",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-unit_p11",
+      "logger": "cr300",
+      "source": "Public P(1) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-vec_p3",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-vec_p3",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-vec_p4",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-vec_p4",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-vec_p0",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(0)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-vec_p0",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-vec_p11",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-vec_p11",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-mat_p23",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-mat_p23",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-mat_p231",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-mat_p231",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-mat_p24",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-mat_p24",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-mat_p31",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-mat_p31",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P(3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-mat_p3",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-mat_p3",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-vec_y15",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(15)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-vec_y15",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y(15)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-vec_y16",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(16)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-vec_y16",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-vec_p3_y25",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(25)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-vec_p3_y25",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(25)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-vec_p3_y26",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(26)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-vec_p3_y26",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(26)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-vec_yzw",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-vec_yzw",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-vec_yzwv",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W,V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-vec_yzwv",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W,V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-vec_y2z",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-vec_y2z",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y(2),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-vec_y3z",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(3),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-vec_y3z",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y(3),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-vec_y0",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-vec_y0",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-param-vec_p4_yz",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-vec_p4_yz",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-scal_p1_chain",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-public-scal_p1_chain",
+      "logger": "cr300",
+      "source": "Public P As String * 16\nAlias P(1)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-param-scal_yz_chain",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-public-scal_yz_chain",
+      "logger": "cr300",
+      "source": "Public P As String * 16\nAlias P=Y,Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-param-scal_yzw",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-scal_yzw",
+      "logger": "cr300",
+      "source": "Public P As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-param-vec_dup",
+      "logger": "cr300",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nAlias P(2)=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr300-public-vec_dup",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(2)=Y\nAlias P(2)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr300-param-mat_y30",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(30)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-mat_y30",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(30)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-param-mat_y31",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(31)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-mat_y31",
+      "logger": "cr300",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(31)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-len15_y4",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(4)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-len15_y4",
+      "logger": "cr350",
+      "source": "Public P As String * 15\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-len15_y5",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 15)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-len15_y5",
+      "logger": "cr350",
+      "source": "Public P As String * 15\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-len16_y5",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-len16_y5",
+      "logger": "cr350",
+      "source": "Public P As String * 16\nAlias P=Y(5)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-len16_y6",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 16)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-len16_y6",
+      "logger": "cr350",
+      "source": "Public P As String * 16\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-default_y6",
+      "logger": "cr350",
+      "source": "Sub S(P As String)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-default_y6",
+      "logger": "cr350",
+      "source": "Public P As String\nAlias P=Y(6)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-default_y7",
+      "logger": "cr350",
+      "source": "Sub S(P As String)\nAlias P=Y(7)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-default_y7",
+      "logger": "cr350",
+      "source": "Public P As String\nAlias P=Y(7)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-len3_y1",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-len3_y1",
+      "logger": "cr350",
+      "source": "Public P As String * 3\nAlias P=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-len3_y2",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 3)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-len3_y2",
+      "logger": "cr350",
+      "source": "Public P As String * 3\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-len3_yz",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 3)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-len3_yz",
+      "logger": "cr350",
+      "source": "Public P As String * 3\nAlias P=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-unit_p1",
+      "logger": "cr350",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-unit_p1",
+      "logger": "cr350",
+      "source": "Public P(1) As String * 16\nAlias P(1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-unit_p11",
+      "logger": "cr350",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-unit_p11",
+      "logger": "cr350",
+      "source": "Public P(1) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-vec_p3",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-vec_p3",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-vec_p4",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-vec_p4",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-vec_p0",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(0)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-vec_p0",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-vec_p11",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-vec_p11",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(1,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-mat_p23",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-mat_p23",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-mat_p231",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-mat_p231",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-mat_p24",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(2,4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-mat_p24",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P(2,4)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-mat_p31",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-mat_p31",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P(3,1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-mat_p3",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P(3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-mat_p3",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P(3)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-vec_y15",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(15)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-vec_y15",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y(15)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-vec_y16",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(16)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-vec_y16",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-vec_p3_y25",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(25)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-vec_p3_y25",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(25)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-vec_p3_y26",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(3)=Y(26)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-vec_p3_y26",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(3)=Y(26)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-vec_yzw",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-vec_yzw",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-vec_yzwv",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z,W,V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-vec_yzwv",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y,Z,W,V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-vec_y2z",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-vec_y2z",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y(2),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-vec_y3z",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(3),Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-vec_y3z",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y(3),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-vec_y0",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P=Y(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-vec_y0",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-param-vec_p4_yz",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(4)=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-vec_p4_yz",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(4)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-scal_p1_chain",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-public-scal_p1_chain",
+      "logger": "cr350",
+      "source": "Public P As String * 16\nAlias P(1)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 3: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-param-scal_yz_chain",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-public-scal_yz_chain",
+      "logger": "cr350",
+      "source": "Public P As String * 16\nAlias P=Y,Z\nAlias Z=Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-param-scal_yzw",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 16)\nAlias P=Y,Z,W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-scal_yzw",
+      "logger": "cr350",
+      "source": "Public P As String * 16\nAlias P=Y,Z,W\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-param-vec_dup",
+      "logger": "cr350",
+      "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nAlias P(2)=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr350-public-vec_dup",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(2)=Y\nAlias P(2)=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+    },
+    {
+      "id": "cr350-param-mat_y30",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(30)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-mat_y30",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(30)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-param-mat_y31",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As String * 16)\nAlias P=Y(31)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-mat_y31",
+      "logger": "cr350",
+      "source": "Public P(2,3) As String * 16\nAlias P=Y(31)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_p0_y10",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(10)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-public-vec_p0_y11",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(11)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_p0_y16",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-vec_y14z",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y(14),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-local-len16_y5",
+      "logger": "cr6",
+      "source": "Sub S\nDim P As String * 16\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-local-scal_p1",
+      "logger": "cr6",
+      "source": "Sub S\nDim P As String * 16\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-public-trailing_comma",
+      "logger": "cr6",
+      "source": "Public P(2) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public-trailing_comma3",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-vec_p0_y10",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(10)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-public-vec_p0_y11",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(11)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-vec_p0_y16",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-vec_y14z",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y(14),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-local-len16_y5",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim P As String * 16\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-local-scal_p1",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim P As String * 16\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-public-trailing_comma",
+      "logger": "cr1000x",
+      "source": "Public P(2) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public-trailing_comma3",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-public-vec_p0_y10",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(10)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-public-vec_p0_y11",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(11)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-vec_p0_y16",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-vec_y14z",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y(14),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-local-len16_y5",
+      "logger": "cr300",
+      "source": "Sub S\nDim P As String * 16\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-local-scal_p1",
+      "logger": "cr300",
+      "source": "Sub S\nDim P As String * 16\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-public-trailing_comma",
+      "logger": "cr300",
+      "source": "Public P(2) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public-trailing_comma3",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-vec_p0_y10",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(10)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-public-vec_p0_y11",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(11)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-vec_p0_y16",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P(0)=Y(16)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-vec_y14z",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y(14),Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-local-len16_y5",
+      "logger": "cr350",
+      "source": "Sub S\nDim P As String * 16\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-local-scal_p1",
+      "logger": "cr350",
+      "source": "Sub S\nDim P As String * 16\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-public-trailing_comma",
+      "logger": "cr350",
+      "source": "Public P(2) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public-trailing_comma3",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16\nAlias P=Y,\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

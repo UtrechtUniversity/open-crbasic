@@ -166,7 +166,7 @@ def _as_int(v, default=0) -> int:
         return default
     try:
         return int(round(float(v)))
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError):
         return default
 
 

@@ -1150,6 +1150,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     const_tables = const_open = slow_sequences = 0
     seen_endprog = False
     const_shadow_reported = False
+    header_dims_failed = False
     declared_kinds: dict[str, str] = {}
     struct_types = frozenset(
         st.args[0].name.upper() for st in program.statements
@@ -1179,13 +1180,26 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             # The reference declaration handler registers parameter storage before the body.
             # Keep this view local to alias validation; other parameter bounds rules differ.
             alias_declarations = []
-            alias_parameters = _alias_parameter_declaration(stmt, env, declared_kinds)
-            alias_parameter_names = {p.name.upper() for p in stmt.params}
+            # An earlier Const resolves before a same-named parameter in alias indices (round 29).
+            alias_parameter_names = {p.name.upper() for p in stmt.params
+                                     if declared_kinds.get(p.name.upper()) != "CONST"}
             seen_alias_names, seen_alias_sources = set(), {}
             if not in_sub and declared_kinds.get(stmt.name.upper()) == "CONST":
                 _report_numeric_sub_name(stmt, program.consts.get(stmt.name.upper()), diags)
-            if not in_sub:
-                _check_header_types(stmt, structs_seen, profile, diags)
+            if known is None:
+                known = expressions._known_names(program, profile)
+                operands = pass1_operands(program, profile)
+            if profile.single_pass and header_dims_failed:
+                # after a failed header CR300/CR350 neither check nor register later headers
+                alias_parameters = S.Declaration(stmt.line, stmt.file, kind="DIM", vars=[])
+                if not in_sub:
+                    _check_header_types(stmt.text, stmt, structs_seen, profile, diags)
+            else:
+                alias_parameters, failed = _alias_parameter_declaration(
+                    stmt, env, declared_kinds, known,
+                    (set(program.consts) | decl_variables) - set(declared_kinds), profile,
+                    None if in_sub else diags, structs_seen)
+                header_dims_failed |= failed
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
@@ -1477,7 +1491,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 sizes = symbols.declared_dim0_sizes(view, env)
                 dims = symbols.declared_all_dims(view, env)
                 _check_alias_dims(stmt, diags, env, sizes, dims, seen_alias_names,
-                                   seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"), profile)
+                                   seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"), profile,
+                                   _alias_string_slots(view, env))
         if isinstance(stmt, S.If) and (hashed := S.hash_statement(stmt)) is not None:
             diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)
         if profile.known_first_word_pass1 and isinstance(stmt, (S.If, S.ElseIf)):
@@ -4204,15 +4219,20 @@ def _check_member_types(stmt: S.Declaration, structs_seen: set[str], profile, di
                     return  # CR300/CR350 stop at the first one in a statement
 
 
-def _check_header_types(stmt: S.SubDef, structs_seen: set[str], profile, diags: Diagnostics) -> None:
-    """`Variable Type %s not supported` for each `As` type in a `Sub`/`Function` header (parameters
-    in order, then the return type) that is neither a variable type nor an earlier `StructureType`
-    (oracle, all four loggers, 2026-10-03); CR300/CR350 report only the first."""
-    for name in _AS_TYPE_RE.findall(stmt.text):
+def _check_header_types(text: str, stmt: S.SubDef, structs_seen: set[str], profile,
+                        diags: Diagnostics) -> bool:
+    """`Variable Type %s not supported` for each `As` type in `text` (a `Sub`/`Function` header
+    or one part of it) that is neither a variable type nor an earlier `StructureType` (oracle,
+    all four loggers, 2026-10-03); CR300/CR350 report only the first. Returns whether it
+    reported. `_alias_parameter_declaration` calls it per parameter (round 29)."""
+    reported = False
+    for name in _AS_TYPE_RE.findall(text):
         if name.upper() not in _VARIABLE_TYPES and name.upper() not in structs_seen:
             diags.error(stmt.line, f"Variable Type {name} not supported", stmt.file)
+            reported = True
             if profile.single_pass:
-                return
+                break
+    return reported
 
 
 def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnostics) -> None:
@@ -4425,32 +4445,119 @@ def _alias_flat_offset(index: tuple[int, ...], dims: tuple[int, ...]) -> int:
     return flat
 
 
-def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env,
-                                 declared: dict[str, str]) -> S.Declaration:
-    """Alias-only view of measured Float/Long parameter storage (round 28)."""
+def _alias_string_slots(program: S.Program, env: consteval.Env) -> dict[str, tuple[int | None, int]]:
+    """String alias sources (round 29, `docs/checker.md`): name -> (storage words per String,
+    None when the length does not fold; declared rank). A slot is `max(4, L+1)` bytes rounded up
+    to whole words, `L` 23 by default. Last declaration wins; rank-3 Strings are not modelled."""
+    out: dict[str, tuple[int | None, int]] = {}
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC")):
+            continue
+        for v in stmt.vars:
+            out.pop(v.name.upper(), None)
+            if (v.type or "").upper() != "STRING" or v.paren_dim or len(v.dims) > 2:
+                continue
+            try:
+                size = 23 if v.string_size is None else consteval.value_of(v.string_size, env)
+            except consteval.NotConstant:
+                size = None
+            words = None
+            if isinstance(size, (int, float)) and not isinstance(size, bool):
+                # the reference converts to a C long: outside its range (1e10, 1e999) INT_MIN
+                words = -(-max(4, consteval.to_long(size) + 1) // 4)
+            out[v.name.upper()] = (words, len(v.dims))
+    return out
+
+
+def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env, declared: dict[str, str],
+                                 known: set[str], forward: set[str], profile,
+                                 diags: Diagnostics | None,
+                                 structs_seen: set[str] = frozenset()) -> tuple[S.Declaration, bool]:
+    """Header dimension checks and the alias-only view of numeric parameter storage (rounds 28
+    and 29, `docs/checker.md`). Dimensions resolve in declaration order; a reported dimension
+    recovers to 1 and the parameter stays registered. CR300/CR350 stop the header at the first
+    bad parameter. `diags=None` registers without reporting. Returns the view and whether a
+    dimension was reported. Each parameter's `As` type is checked before its dimensions, the
+    return type after the last parameter (round 29); a String length that does not fold, or more
+    than three dimensions, is reported and the parameter stays registered."""
     visible = consteval.Env(env.profile, {name: value for name, value in env.consts.items()
                                        if declared.get(name.upper()) == "CONST"}, env.section)
-    variables = []
-    for param in routine.params:
-        if (param.type or "FLOAT").upper() not in ("FLOAT", "LONG") or len(param.dim_exprs) > 3:
-            continue
-        try:
-            dims = [consteval.value_of(d, visible) for d in param.dim_exprs]
-            valid = all(isinstance(d, (int, float)) and not isinstance(d, bool)
-                        and 1 <= int(d) <= _MAX_DIM_VALUE for d in dims)
-        except (consteval.NotConstant, ValueError, OverflowError):
-            continue
-        if not valid:
-            continue  # Invalid/non-constant parameter dimensions retain their existing diagnostics.
-        variables.append(S.VarDecl(param.name, dims=param.dim_exprs, type=param.type))
-    return S.Declaration(routine.line, routine.file, kind="DIM", vars=variables)
+    header_known = set(known) - forward
+    variables = {name for name, kind in declared.items() if kind == "VAR"}
+    open_at = routine.text.find("(")
+    segments = _group_items(routine.text, open_at) if open_at >= 0 else None
+    split = segments is not None and len(segments) == len(routine.params)
+    if not split:
+        segments = [None] * len(routine.params)
+        if diags is not None:
+            _check_header_types(routine.text, routine, structs_seen, profile, diags)
+    one = S.Number(routine.line, value=1, text="1")
+    view, failed = [], False
+    for index, (param, segment) in enumerate(zip(routine.params, segments)):
+        dim_open = segment.find("(") if segment else -1
+        texts = _group_items(segment, dim_open) if dim_open >= 0 else None
+        if texts is not None and len(texts) != len(param.dim_exprs):
+            texts = None
+        stop = diags is not None and split and _check_header_types(segment, routine, structs_seen,
+                                                                   profile, diags)
+        dims, bad = [], False
+        if len(param.dim_exprs) > _MAX_ARRAY_DIMS and diags is not None and texts is not None:
+            stop = True
+            # ponytail: the parameter stays registered, as a scalar (its recovered shape is unprobed)
+            diags.error(routine.line, f"Variable {param.name}({texts[0].lstrip()} dimension exceeds "
+                        f"max of {_MAX_ARRAY_DIMS}.", routine.file)
+        for pos, d in enumerate(param.dim_exprs if len(param.dim_exprs) <= _MAX_ARRAY_DIMS else []):
+            try:
+                val = consteval.value_of(d, visible)
+                size = int(val) if isinstance(val, (int, float)) and not isinstance(val, bool) else None
+            except (consteval.NotConstant, ValueError, OverflowError):
+                size = None
+            if size is not None and size < 1:
+                if diags is not None:
+                    diags.error(routine.line, _illegal_dim_message(routine), routine.file)
+                dims.append(one)
+                bad = True
+            elif size is not None and size <= _MAX_DIM_VALUE:
+                dims.append(d)
+            elif size is None and diags is not None and texts is not None and _report_decl_expr(
+                    d, texts[pos].lstrip(), header_known, variables, profile, routine, diags):
+                dims.append(one)
+                bad = True
+            else:
+                dims = None
+                break
+        if dims is not None and param.string_size is not None:
+            try:
+                consteval.value_of(param.string_size, visible)
+            except consteval.NotConstant:
+                size_text = _STRING_SIZE_RE.search(segment or "")
+                if diags is not None and size_text:
+                    _report_decl_expr(param.string_size, size_text.group(1).strip(), header_known,
+                                      variables, profile, routine, diags)
+        if dims is not None and (param.type or "FLOAT").upper() in ("FLOAT", "LONG", "BOOLEAN", "DOUBLE",
+                                                                    "STRING"):
+            view.append(S.VarDecl(param.name, dims=dims, type=param.type, string_size=param.string_size))
+        header_known.add(param.name.upper())
+        variables.add(param.name.upper())
+        failed |= bad
+        if (bad or stop) and profile.single_pass:
+            if diags is not None and index + 2 < len(routine.params):
+                diags.error(routine.line, f"Too many parameters:  {routine.params[index + 2].name}.",
+                            routine.file)
+            break
+    else:
+        if diags is not None and split:
+            _check_header_types(routine.text[routine.text.rfind(")") + 1:], routine, structs_seen,
+                                profile, diags)
+    return S.Declaration(routine.line, routine.file, kind="DIM", vars=view), failed
 
 
 def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
                        dim0_sizes: dict[str, int], all_dims: dict[str, tuple[int, ...]],
                        seen_alias_names: set[str],
                        seen_alias_sources: dict[str, set[tuple]],
-                       name_collision: str | None = None, profile=None) -> None:
+                       name_collision: str | None = None, profile=None,
+                       string_slots: dict[str, tuple[int | None, int]] | None = None) -> None:
     """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional. The caller supplies
     preceding declarations and duplicate-tracking state from the current scope (round 27), and
     rejects alias sources before these dimension/RHS checks. The checks are oracle-confirmed:
@@ -4545,6 +4652,12 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         diags.error(stmt.line, "Need closing )", stmt.file)
         diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
         return
+    # A String source is measured in storage words; a subscript past the declared rank selects a
+    # character and ends the statement (round 29, `docs/checker.md`, all four loggers).
+    words, rank = (string_slots or {}).get(name_upper, (1, None))
+    if rank is not None and isinstance(target, S.Index) and len(target.args) > rank:
+        diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+        return
 
     index_key: tuple | None = ()  # scalar `name` (bare, no parens): one implicit index position
     base = total = None
@@ -4582,6 +4695,10 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         for d in dims:
             total *= d
 
+    if words is None:
+        total = None
+    elif total is not None:
+        base, total = (base - 1) * words + 1, total * words
     first = stmt.args[1] if len(stmt.args) > 1 else None
     if total is not None and isinstance(first, S.Index) and len(first.args) != 1 \
             and not (getattr(stmt, "alias_item_junk", None) or [True])[0]:
@@ -4591,7 +4708,9 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         return
     sizes = _alias_name_sizes(stmt, env) if total is not None else None
     cur = base
-    if sizes is not None and not _alias_dim_ok(stmt, diags, cur, sizes[0], total, False):
+    # the String start-range count check applies to an explicitly dimensioned name only (round 29)
+    if sizes is not None and not _alias_dim_ok(stmt, diags, cur, sizes[0], total, False,
+                                               rank is not None and isinstance(first, S.Index)):
         return
     predefined = bool(name_collision) and name_collision.endswith("predefined CONST.")
     if predefined:  # before `Duplicate Alias`, `already declared` after it (oracle, round 9)
@@ -4618,8 +4737,9 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
     lead = _alias_name_lead(stmt)
     for k, rhs in enumerate(stmt.args[1:]):
         if sizes is not None and k:
-            cur += sizes[k - 1]
-            if not _alias_dim_ok(stmt, diags, cur, sizes[k], total):
+            cur += sizes[k - 1] * words
+            if not _alias_dim_ok(stmt, diags, cur, sizes[k], total, True,
+                                 rank is not None and isinstance(rhs, S.Index)):
                 return
             if isinstance(rhs, S.Name) and profile and symbols.is_reserved_predefined_name(rhs.name, profile):
                 diags.error(stmt.line, f"{rhs.name} is a predefined CONST.", stmt.file)
@@ -4635,7 +4755,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         else:
             seen_alias_names.add(rhs_upper)
     if sizes is not None and (stmt.text or "").rstrip().endswith(",") and \
-            not 1 <= cur + sizes[-1] <= total:
+            not 1 <= cur + sizes[-1] * words <= total:
         # a trailing comma is one more, empty, name
         diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
 
@@ -4666,15 +4786,16 @@ def _alias_name_sizes(stmt: S.Instruction, env: consteval.Env) -> list[int] | No
 
 
 def _alias_dim_ok(stmt: S.Instruction, diags: Diagnostics, cur: int, n: int, total: int,
-                  check_start: bool = True) -> bool:
+                  check_start: bool = True, any_start: bool = False) -> bool:
     """One name of an `Alias Var = n1, n2(3), ...` list starting at element `cur` of a variable of
     `total` elements (oracle, round 9, docs/checker.md "Alias name lists"): `Illegally
     dimensioned aliased name` when `cur` is outside 1..total (the first name's own is reported by
     the caller, `check_start` False), then `Alias is illegally dimensioned.` when `n` < 1 or, for
-    `cur` >= 0, `n` > total + cur - 1; False after that second message (it ends the statement)."""
+    `cur` >= 1 (any `cur` for a String source, `any_start`), `n` > total + cur - 1; False after
+    that second message (it ends the statement)."""
     if check_start and not 1 <= cur <= total:
         diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
-    if n < 1 or (cur >= 1 and n > total + cur - 1):
+    if n < 1 or ((cur >= 1 or any_start) and n > total + cur - 1):
         diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
         return False
     return True

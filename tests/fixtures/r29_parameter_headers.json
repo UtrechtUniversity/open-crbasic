@@ -1,0 +1,1268 @@
+{
+  "cases": [
+    {
+      "id": "cr6-c01_bool_scalar",
+      "logger": "cr6",
+      "source": "Sub S(P As Boolean)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c02_bool_1",
+      "logger": "cr6",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c03_bool_over",
+      "logger": "cr6",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-c04_double_scalar",
+      "logger": "cr6",
+      "source": "Sub S(P As Double)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c05_double_over",
+      "logger": "cr6",
+      "source": "Sub S(P(4) As Double)\nAlias P(5)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-c06_bool_2d",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As Boolean)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c07_zero_elem1",
+      "logger": "cr6",
+      "source": "Sub S(P(0))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr6-c08_zero_elem2",
+      "logger": "cr6",
+      "source": "Sub S(P(0))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-c09_keep_other_dim",
+      "logger": "cr6",
+      "source": "Sub S(P(2,-1))\nAlias P(2,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(2,-1))"
+    },
+    {
+      "id": "cr6-c10_two_bad_dims",
+      "logger": "cr6",
+      "source": "Sub S(P(0,-1))\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0,-1))\n\nline 1: Illegally dimension: Sub S(P(0,-1))"
+    },
+    {
+      "id": "cr6-c11_runtime_over",
+      "logger": "cr6",
+      "source": "Public K\nSub S(P(K))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-c12_param_dim",
+      "logger": "cr6",
+      "source": "Sub S(K,P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr6-c13_forward_k2",
+      "logger": "cr6",
+      "source": "Sub S(P(K+2))\nAlias P=Y\nEndSub\nConst K=2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+2."
+    },
+    {
+      "id": "cr6-c14_prior_const",
+      "logger": "cr6",
+      "source": "Const K=2\nSub S(P(K+2))\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c15_frac_low",
+      "logger": "cr6",
+      "source": "Sub S(P(0.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0.9))"
+    },
+    {
+      "id": "cr6-c16_frac_one",
+      "logger": "cr6",
+      "source": "Sub S(P(1.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c17_shadow_over",
+      "logger": "cr6",
+      "source": "Const J=5\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-c18_shadow_expr",
+      "logger": "cr6",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(J+1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+    },
+    {
+      "id": "cr6-c19_shadow_runtime",
+      "logger": "cr6",
+      "source": "Const J=2\nPublic Z\nSub S(P(4),J)\nAlias P(Z)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Variable illegal in Parameter: Z.\nline 4: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-c20_order",
+      "logger": "cr6",
+      "source": "Public K\nSub S(P(0),Q(K),R(-1))\nAlias P=Y\nAlias Q=Z\nAlias R=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0),Q(K),R(-1))\n\nline 2: Variable illegal in Parameter: K.\nline 2: Illegally dimension: Sub S(P(0),Q(K),R(-1))"
+    },
+    {
+      "id": "cr6-b21_double_2d",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-b22_double_2d_over",
+      "logger": "cr6",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-b23_forward_over",
+      "logger": "cr6",
+      "source": "Sub S(P(K))\nAlias P(2)=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-b24_runtime_elem1",
+      "logger": "cr6",
+      "source": "Public K\nSub S(P(K))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr6-b25_zero_long",
+      "logger": "cr6",
+      "source": "Sub S(P(0) As Long)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Long)"
+    },
+    {
+      "id": "cr6-b26_function_zero",
+      "logger": "cr6",
+      "source": "Function F(P(0))\nAlias P(2)=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-b27_shadow_ok_noalias",
+      "logger": "cr6",
+      "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.",
+      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+    },
+    {
+      "id": "cr6-b28_bool_dim0",
+      "logger": "cr6",
+      "source": "Sub S(P(0) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Boolean)\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-b29_undef_unrelated",
+      "logger": "cr6",
+      "source": "Sub S(P(Q))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Q."
+    },
+    {
+      "id": "cr6-b30_shadow_index_undef",
+      "logger": "cr6",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(Q)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid symbol in expression: Q.\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-c01_bool_scalar",
+      "logger": "cr1000x",
+      "source": "Sub S(P As Boolean)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c02_bool_1",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c03_bool_over",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-c04_double_scalar",
+      "logger": "cr1000x",
+      "source": "Sub S(P As Double)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c05_double_over",
+      "logger": "cr1000x",
+      "source": "Sub S(P(4) As Double)\nAlias P(5)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-c06_bool_2d",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As Boolean)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c07_zero_elem1",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr1000x-c08_zero_elem2",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-c09_keep_other_dim",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,-1))\nAlias P(2,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(2,-1))"
+    },
+    {
+      "id": "cr1000x-c10_two_bad_dims",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0,-1))\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0,-1))\n\nline 1: Illegally dimension: Sub S(P(0,-1))"
+    },
+    {
+      "id": "cr1000x-c11_runtime_over",
+      "logger": "cr1000x",
+      "source": "Public K\nSub S(P(K))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-c12_param_dim",
+      "logger": "cr1000x",
+      "source": "Sub S(K,P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr1000x-c13_forward_k2",
+      "logger": "cr1000x",
+      "source": "Sub S(P(K+2))\nAlias P=Y\nEndSub\nConst K=2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+2."
+    },
+    {
+      "id": "cr1000x-c14_prior_const",
+      "logger": "cr1000x",
+      "source": "Const K=2\nSub S(P(K+2))\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c15_frac_low",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0.9))"
+    },
+    {
+      "id": "cr1000x-c16_frac_one",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c17_shadow_over",
+      "logger": "cr1000x",
+      "source": "Const J=5\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-c18_shadow_expr",
+      "logger": "cr1000x",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(J+1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+    },
+    {
+      "id": "cr1000x-c19_shadow_runtime",
+      "logger": "cr1000x",
+      "source": "Const J=2\nPublic Z\nSub S(P(4),J)\nAlias P(Z)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Variable illegal in Parameter: Z.\nline 4: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-c20_order",
+      "logger": "cr1000x",
+      "source": "Public K\nSub S(P(0),Q(K),R(-1))\nAlias P=Y\nAlias Q=Z\nAlias R=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0),Q(K),R(-1))\n\nline 2: Variable illegal in Parameter: K.\nline 2: Illegally dimension: Sub S(P(0),Q(K),R(-1))"
+    },
+    {
+      "id": "cr1000x-b21_double_2d",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b22_double_2d_over",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-b23_forward_over",
+      "logger": "cr1000x",
+      "source": "Sub S(P(K))\nAlias P(2)=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-b24_runtime_elem1",
+      "logger": "cr1000x",
+      "source": "Public K\nSub S(P(K))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr1000x-b25_zero_long",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0) As Long)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Long)"
+    },
+    {
+      "id": "cr1000x-b26_function_zero",
+      "logger": "cr1000x",
+      "source": "Function F(P(0))\nAlias P(2)=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-b27_shadow_ok_noalias",
+      "logger": "cr1000x",
+      "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.",
+      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+    },
+    {
+      "id": "cr1000x-b28_bool_dim0",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Boolean)\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-b29_undef_unrelated",
+      "logger": "cr1000x",
+      "source": "Sub S(P(Q))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Q."
+    },
+    {
+      "id": "cr1000x-b30_shadow_index_undef",
+      "logger": "cr1000x",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(Q)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid symbol in expression: Q.\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-c01_bool_scalar",
+      "logger": "cr300",
+      "source": "Sub S(P As Boolean)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c02_bool_1",
+      "logger": "cr300",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c03_bool_over",
+      "logger": "cr300",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-c04_double_scalar",
+      "logger": "cr300",
+      "source": "Sub S(P As Double)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c05_double_over",
+      "logger": "cr300",
+      "source": "Sub S(P(4) As Double)\nAlias P(5)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-c06_bool_2d",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As Boolean)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c07_zero_elem1",
+      "logger": "cr300",
+      "source": "Sub S(P(0))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr300-c08_zero_elem2",
+      "logger": "cr300",
+      "source": "Sub S(P(0))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-c09_keep_other_dim",
+      "logger": "cr300",
+      "source": "Sub S(P(2,-1))\nAlias P(2,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(2,-1))"
+    },
+    {
+      "id": "cr300-c10_two_bad_dims",
+      "logger": "cr300",
+      "source": "Sub S(P(0,-1))\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0,-1))\n\nline 1: Illegally dimension: Sub S(P(0,-1))"
+    },
+    {
+      "id": "cr300-c11_runtime_over",
+      "logger": "cr300",
+      "source": "Public K\nSub S(P(K))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-c12_param_dim",
+      "logger": "cr300",
+      "source": "Sub S(K,P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr300-c13_forward_k2",
+      "logger": "cr300",
+      "source": "Sub S(P(K+2))\nAlias P=Y\nEndSub\nConst K=2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+2."
+    },
+    {
+      "id": "cr300-c14_prior_const",
+      "logger": "cr300",
+      "source": "Const K=2\nSub S(P(K+2))\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c15_frac_low",
+      "logger": "cr300",
+      "source": "Sub S(P(0.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0.9))"
+    },
+    {
+      "id": "cr300-c16_frac_one",
+      "logger": "cr300",
+      "source": "Sub S(P(1.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c17_shadow_over",
+      "logger": "cr300",
+      "source": "Const J=5\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-c18_shadow_expr",
+      "logger": "cr300",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(J+1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+    },
+    {
+      "id": "cr300-c19_shadow_runtime",
+      "logger": "cr300",
+      "source": "Const J=2\nPublic Z\nSub S(P(4),J)\nAlias P(Z)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Variable illegal in Parameter: Z.\nline 4: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-c20_order",
+      "logger": "cr300",
+      "source": "Public K\nSub S(P(0),Q(K),R(-1))\nAlias P=Y\nAlias Q=Z\nAlias R=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0),Q(K),R(-1))\n\nline 2: Too many parameters:  R.\nline 4: Q not yet declared so cannot be aliased.\nline 5: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-b21_double_2d",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-b22_double_2d_over",
+      "logger": "cr300",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-b23_forward_over",
+      "logger": "cr300",
+      "source": "Sub S(P(K))\nAlias P(2)=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-b24_runtime_elem1",
+      "logger": "cr300",
+      "source": "Public K\nSub S(P(K))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr300-b25_zero_long",
+      "logger": "cr300",
+      "source": "Sub S(P(0) As Long)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Long)"
+    },
+    {
+      "id": "cr300-b26_function_zero",
+      "logger": "cr300",
+      "source": "Function F(P(0))\nAlias P(2)=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-b27_shadow_ok_noalias",
+      "logger": "cr300",
+      "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.",
+      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+    },
+    {
+      "id": "cr300-b28_bool_dim0",
+      "logger": "cr300",
+      "source": "Sub S(P(0) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Boolean)\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-b29_undef_unrelated",
+      "logger": "cr300",
+      "source": "Sub S(P(Q))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Q is not defined.\nline 1: Variable illegal in Parameter: Q."
+    },
+    {
+      "id": "cr300-b30_shadow_index_undef",
+      "logger": "cr300",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(Q)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Q is not defined.\nline 3: Variable illegal in Parameter: Q.\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-c01_bool_scalar",
+      "logger": "cr350",
+      "source": "Sub S(P As Boolean)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c02_bool_1",
+      "logger": "cr350",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c03_bool_over",
+      "logger": "cr350",
+      "source": "Sub S(P(1) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-c04_double_scalar",
+      "logger": "cr350",
+      "source": "Sub S(P As Double)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c05_double_over",
+      "logger": "cr350",
+      "source": "Sub S(P(4) As Double)\nAlias P(5)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-c06_bool_2d",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As Boolean)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c07_zero_elem1",
+      "logger": "cr350",
+      "source": "Sub S(P(0))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr350-c08_zero_elem2",
+      "logger": "cr350",
+      "source": "Sub S(P(0))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-c09_keep_other_dim",
+      "logger": "cr350",
+      "source": "Sub S(P(2,-1))\nAlias P(2,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(2,-1))"
+    },
+    {
+      "id": "cr350-c10_two_bad_dims",
+      "logger": "cr350",
+      "source": "Sub S(P(0,-1))\nAlias P(1,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0,-1))\n\nline 1: Illegally dimension: Sub S(P(0,-1))"
+    },
+    {
+      "id": "cr350-c11_runtime_over",
+      "logger": "cr350",
+      "source": "Public K\nSub S(P(K))\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-c12_param_dim",
+      "logger": "cr350",
+      "source": "Sub S(K,P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr350-c13_forward_k2",
+      "logger": "cr350",
+      "source": "Sub S(P(K+2))\nAlias P=Y\nEndSub\nConst K=2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+2."
+    },
+    {
+      "id": "cr350-c14_prior_const",
+      "logger": "cr350",
+      "source": "Const K=2\nSub S(P(K+2))\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c15_frac_low",
+      "logger": "cr350",
+      "source": "Sub S(P(0.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0.9))"
+    },
+    {
+      "id": "cr350-c16_frac_one",
+      "logger": "cr350",
+      "source": "Sub S(P(1.9))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c17_shadow_over",
+      "logger": "cr350",
+      "source": "Const J=5\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-c18_shadow_expr",
+      "logger": "cr350",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(J+1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+    },
+    {
+      "id": "cr350-c19_shadow_runtime",
+      "logger": "cr350",
+      "source": "Const J=2\nPublic Z\nSub S(P(4),J)\nAlias P(Z)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Variable illegal in Parameter: Z.\nline 4: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-c20_order",
+      "logger": "cr350",
+      "source": "Public K\nSub S(P(0),Q(K),R(-1))\nAlias P=Y\nAlias Q=Z\nAlias R=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0),Q(K),R(-1))\n\nline 2: Too many parameters:  R.\nline 4: Q not yet declared so cannot be aliased.\nline 5: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-b21_double_2d",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(2,3)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-b22_double_2d_over",
+      "logger": "cr350",
+      "source": "Sub S(P(2,3) As Double)\nAlias P(3,1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-b23_forward_over",
+      "logger": "cr350",
+      "source": "Sub S(P(K))\nAlias P(2)=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-b24_runtime_elem1",
+      "logger": "cr350",
+      "source": "Public K\nSub S(P(K))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr350-b25_zero_long",
+      "logger": "cr350",
+      "source": "Sub S(P(0) As Long)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Long)"
+    },
+    {
+      "id": "cr350-b26_function_zero",
+      "logger": "cr350",
+      "source": "Function F(P(0))\nAlias P(2)=Y\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0))\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-b27_shadow_ok_noalias",
+      "logger": "cr350",
+      "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.",
+      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+    },
+    {
+      "id": "cr350-b28_bool_dim0",
+      "logger": "cr350",
+      "source": "Sub S(P(0) As Boolean)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0) As Boolean)\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-b29_undef_unrelated",
+      "logger": "cr350",
+      "source": "Sub S(P(Q))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Q is not defined.\nline 1: Variable illegal in Parameter: Q."
+    },
+    {
+      "id": "cr350-b30_shadow_index_undef",
+      "logger": "cr350",
+      "source": "Const J=2\nSub S(P(4),J)\nAlias P(Q)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Q is not defined.\nline 3: Variable illegal in Parameter: Q.\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-d01_forward_public",
+      "logger": "cr6",
+      "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nPublic K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr6-d02_bad_then_one",
+      "logger": "cr6",
+      "source": "Sub S(P(0),Q)\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q)"
+    },
+    {
+      "id": "cr6-d03_bad_then_two",
+      "logger": "cr6",
+      "source": "Sub S(P(0),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q,R)"
+    },
+    {
+      "id": "cr6-d04_var_then_two",
+      "logger": "cr6",
+      "source": "Public K\nSub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr6-d05_forward_spaces",
+      "logger": "cr6",
+      "source": "Sub S(P( K ))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K ."
+    },
+    {
+      "id": "cr6-d06_header_only",
+      "logger": "cr6",
+      "source": "Sub S(P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr6-d07_two_subs",
+      "logger": "cr6",
+      "source": "Sub S(P(0))\nEndSub\nSub T(Q(-1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 3: Illegally dimension: Sub T(Q(-1))"
+    },
+    {
+      "id": "cr6-d08_bad_last",
+      "logger": "cr6",
+      "source": "Sub S(Q,P(0))\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(Q,P(0))"
+    },
+    {
+      "id": "cr6-d09_undef_then_two",
+      "logger": "cr6",
+      "source": "Sub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr6-d10_comment",
+      "logger": "cr6",
+      "source": "Sub S(P(0)) 'c\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) "
+    },
+    {
+      "id": "cr1000x-d01_forward_public",
+      "logger": "cr1000x",
+      "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nPublic K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-d02_bad_then_one",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0),Q)\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q)"
+    },
+    {
+      "id": "cr1000x-d03_bad_then_two",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q,R)"
+    },
+    {
+      "id": "cr1000x-d04_var_then_two",
+      "logger": "cr1000x",
+      "source": "Public K\nSub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr1000x-d05_forward_spaces",
+      "logger": "cr1000x",
+      "source": "Sub S(P( K ))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K ."
+    },
+    {
+      "id": "cr1000x-d06_header_only",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr1000x-d07_two_subs",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0))\nEndSub\nSub T(Q(-1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 3: Illegally dimension: Sub T(Q(-1))"
+    },
+    {
+      "id": "cr1000x-d08_bad_last",
+      "logger": "cr1000x",
+      "source": "Sub S(Q,P(0))\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(Q,P(0))"
+    },
+    {
+      "id": "cr1000x-d09_undef_then_two",
+      "logger": "cr1000x",
+      "source": "Sub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-d10_comment",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0)) 'c\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) "
+    },
+    {
+      "id": "cr300-d01_forward_public",
+      "logger": "cr300",
+      "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nPublic K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr300-d02_bad_then_one",
+      "logger": "cr300",
+      "source": "Sub S(P(0),Q)\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q)\n\nline 2: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-d03_bad_then_two",
+      "logger": "cr300",
+      "source": "Sub S(P(0),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q,R)\n\nline 1: Too many parameters:  R.\nline 2: Q not yet declared so cannot be aliased.\nline 3: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-d04_var_then_two",
+      "logger": "cr300",
+      "source": "Public K\nSub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 2: Too many parameters:  R.\nline 3: Q not yet declared so cannot be aliased.\nline 4: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-d05_forward_spaces",
+      "logger": "cr300",
+      "source": "Sub S(P( K ))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K ."
+    },
+    {
+      "id": "cr300-d06_header_only",
+      "logger": "cr300",
+      "source": "Sub S(P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr300-d07_two_subs",
+      "logger": "cr300",
+      "source": "Sub S(P(0))\nEndSub\nSub T(Q(-1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr300-d08_bad_last",
+      "logger": "cr300",
+      "source": "Sub S(Q,P(0))\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(Q,P(0))"
+    },
+    {
+      "id": "cr300-d09_undef_then_two",
+      "logger": "cr300",
+      "source": "Sub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 1: Too many parameters:  R.\nline 2: Q not yet declared so cannot be aliased.\nline 3: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-d10_comment",
+      "logger": "cr300",
+      "source": "Sub S(P(0)) 'c\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) "
+    },
+    {
+      "id": "cr350-d01_forward_public",
+      "logger": "cr350",
+      "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nPublic K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr350-d02_bad_then_one",
+      "logger": "cr350",
+      "source": "Sub S(P(0),Q)\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q)\n\nline 2: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-d03_bad_then_two",
+      "logger": "cr350",
+      "source": "Sub S(P(0),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q,R)\n\nline 1: Too many parameters:  R.\nline 2: Q not yet declared so cannot be aliased.\nline 3: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-d04_var_then_two",
+      "logger": "cr350",
+      "source": "Public K\nSub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 2: Too many parameters:  R.\nline 3: Q not yet declared so cannot be aliased.\nline 4: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-d05_forward_spaces",
+      "logger": "cr350",
+      "source": "Sub S(P( K ))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K ."
+    },
+    {
+      "id": "cr350-d06_header_only",
+      "logger": "cr350",
+      "source": "Sub S(P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr350-d07_two_subs",
+      "logger": "cr350",
+      "source": "Sub S(P(0))\nEndSub\nSub T(Q(-1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr350-d08_bad_last",
+      "logger": "cr350",
+      "source": "Sub S(Q,P(0))\nAlias Q=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(Q,P(0))"
+    },
+    {
+      "id": "cr350-d09_undef_then_two",
+      "logger": "cr350",
+      "source": "Sub S(P(K),Q,R)\nAlias Q=Y\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 1: Too many parameters:  R.\nline 2: Q not yet declared so cannot be aliased.\nline 3: R not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-d10_comment",
+      "logger": "cr350",
+      "source": "Sub S(P(0)) 'c\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) "
+    },
+    {
+      "id": "cr6-e01_two_subs_var",
+      "logger": "cr6",
+      "source": "Public K\nSub S(P(K))\nEndSub\nSub T(Q(K))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 4: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr6-e02_two_subs_mixed",
+      "logger": "cr6",
+      "source": "Public K\nSub S(P(0))\nEndSub\nSub T(Q(K))\nAlias Q(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0))\n\nline 4: Variable illegal in Parameter: K.\nline 5: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-e03_sub_then_public",
+      "logger": "cr6",
+      "source": "Sub S(P(0))\nEndSub\nPublic Z(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 3: Illegally dimension: Public Z(0)"
+    },
+    {
+      "id": "cr1000x-e01_two_subs_var",
+      "logger": "cr1000x",
+      "source": "Public K\nSub S(P(K))\nEndSub\nSub T(Q(K))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.\nline 4: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr1000x-e02_two_subs_mixed",
+      "logger": "cr1000x",
+      "source": "Public K\nSub S(P(0))\nEndSub\nSub T(Q(K))\nAlias Q(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0))\n\nline 4: Variable illegal in Parameter: K.\nline 5: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-e03_sub_then_public",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0))\nEndSub\nPublic Z(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\n\nline 3: Illegally dimension: Public Z(0)"
+    },
+    {
+      "id": "cr300-e01_two_subs_var",
+      "logger": "cr300",
+      "source": "Public K\nSub S(P(K))\nEndSub\nSub T(Q(K))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr300-e02_two_subs_mixed",
+      "logger": "cr300",
+      "source": "Public K\nSub S(P(0))\nEndSub\nSub T(Q(K))\nAlias Q(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0))\n\nline 5: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-e03_sub_then_public",
+      "logger": "cr300",
+      "source": "Sub S(P(0))\nEndSub\nPublic Z(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr350-e01_two_subs_var",
+      "logger": "cr350",
+      "source": "Public K\nSub S(P(K))\nEndSub\nSub T(Q(K))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
+    },
+    {
+      "id": "cr350-e02_two_subs_mixed",
+      "logger": "cr350",
+      "source": "Public K\nSub S(P(0))\nEndSub\nSub T(Q(K))\nAlias Q(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Sub S(P(0))\n\nline 5: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-e03_sub_then_public",
+      "logger": "cr350",
+      "source": "Sub S(P(0))\nEndSub\nPublic Z(0)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
+    },
+    {
+      "id": "cr6-f01_comment_then_error",
+      "logger": "cr6",
+      "source": "Sub S(P(0)) 'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) \nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-f02_comment_nospace",
+      "logger": "cr6",
+      "source": "Sub S(P(0))'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-f01_comment_then_error",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0)) 'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) \nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-f02_comment_nospace",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0))'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-f01_comment_then_error",
+      "logger": "cr300",
+      "source": "Sub S(P(0)) 'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) \nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-f02_comment_nospace",
+      "logger": "cr300",
+      "source": "Sub S(P(0))'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-f01_comment_then_error",
+      "logger": "cr350",
+      "source": "Sub S(P(0)) 'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0)) \nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-f02_comment_nospace",
+      "logger": "cr350",
+      "source": "Sub S(P(0))'c\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))\nline 2: Illegally dimensioned aliased name"
+    }
+  ]
+}

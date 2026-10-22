@@ -456,7 +456,10 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 # `Sub Foo (A, B)` -> `Too many parameters:  B.`, `Function F (x) As Long` ->
                 # `... As.`: the second token after the name (oracle, 2026-09-28)
                 m = re.search(r"\((.*)$", stmt.text or "")  # `(x) As Long` -> x, As
-                tokens = [t for t in re.split(r"[\s,()=]+", m.group(1)) if t] if m else []
+                # a parameter's own dimensions are no token (oracle, 2026-10-22: a tainted
+                # `Sub T(Q(-1))` or `Sub T(Q(K))` prints nothing, round 29)
+                tokens = [t for t in re.split(r"[\s,()=]+", re.sub(r"\([^()]*\)", "", m.group(1)))
+                          if t] if m else []
                 if m:
                     # with two or more parameters the second parameter's name is echoed (oracle,
                     # CR300, 2026-10-10: `(a As Long!, rst As Long)` -> `rst`, not `As`)
@@ -668,7 +671,9 @@ def drop_too_many_after_variable_illegal(program: S.Program, profile, diags: Dia
     if profile.name not in ("cr300", "cr350"):
         return
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
-    declarations = {(st.line, st.file) for st in program.statements if isinstance(st, S.Declaration)}
+    # (a routine header too: `Sub S(P(K),Q,R)` -> `... R.`, oracle, 2026-10-22, round 29)
+    declarations = {(st.line, st.file) for st in program.statements
+                    if isinstance(st, (S.Declaration, S.SubDef))}
     bad = {(d.line, d.file) for d in diags.errors
            if d.message.startswith(_VARIABLE_ILLEGAL_PREFIX) and per_line[(d.line, d.file)] == 1
            and (d.line, d.file) not in declarations}  # (a declaration names the variable two on)

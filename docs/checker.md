@@ -7227,3 +7227,131 @@ capacity; explicit array parameters have their declared capacity. Long destinati
 CR300/CR350 diagnostic cascades differ. These measurement rules are not changed here, and the
 two old scalar measurement-parameter observations remain expected failures. Compilation and
 these probes do not establish logger runtime behavior.
+
+## Routine-parameter header dimensions (round 29)
+
+Reference observations, 2026-10-22: `tests/fixtures/r29_parameter_headers.json` records 180
+cases (45 programs on CR6, CR1000X, CR300 and CR350; every case has a reference verdict).
+Round 29 matches 176, with four strict expected failures. The 36 Boolean/Double,
+invalid-dimension, forward-Const and Const-shadow expected failures of
+`r28_parameter_aliases.json` now match; the 48 String cases are resolved by
+[String alias storage](#string-alias-storage-round-29). The
+fixture audit reruns the r26-r29 fixtures with zero differing cases, and the four-profile
+`difftest.py --group all` numbers equal round 28's.
+
+Reverse-engineering trail (Codex, `scratch/codex/re-r29-param-headers.md`, CR6.14.2.0): the
+routine declaration path `FUN_004baf00` starts each parameter's three dimensions at 1, parses
+the type (`FUN_004ba960`), evaluates each written dimension through the constant-expression
+helper `FUN_004b8700`, and replaces a failed or `< 1` dimension with 1 before allocating the
+record (`FUN_004d3560`). The allocator's Const-collision helper `FUN_004b6480` does not stop
+allocation, and expression tokens try constants (`FUN_004b5db0`) before variables. This was a
+hypothesis until the probes below confirmed it; no decompiled code was copied.
+
+Rules implemented in `structure._alias_parameter_declaration` (called from `check_pass1`):
+
+- Header dimensions are constant expressions resolved in declaration order. Only earlier
+  user Consts and earlier variables are visible; a Const or `Public` declared later is an
+  undefined name (`Invalid symbol in expression: K.`; CR300/CR350 `K is not defined.` then
+  `Variable illegal in Parameter: K.`). The echo is the dimension's text with leading blanks
+  removed (`P( K )` -> `K .`).
+- An earlier variable or an earlier parameter of the same header reports `Variable illegal in
+  Parameter: K.`.
+- A constant dimension truncating below 1 (`0`, `-1`, `0.9`) reports `Illegally dimension:` with
+  the whole header, one line per bad dimension, for Sub and Function; `1.9` is accepted. A
+  trailing comment leaves the space before it in the echo.
+- Every reported dimension recovers to 1 and the parameter stays registered, so `Sub S(P(0))`
+  accepts `Alias P(1)` and rejects `Alias P(2)` with `Illegally dimensioned aliased name`; the
+  other dimensions keep their size (`P(2,-1)` accepts `Alias P(2,1)`).
+- Boolean and Double parameters are alias sources with logical element bounds (`P(4) As Double`
+  rejects `Alias P(5)`; `P(2,3) As Double` accepts `P(2,3)` and rejects `P(3,1)`).
+- CR6/CR1000X check every parameter of every header. CR300/CR350 stop the header after the
+  first parameter with a bad dimension: later parameters are not registered (`Q not yet declared
+  so cannot be aliased.`) and the parameter two on is named (`Too many parameters:  R.`, also
+  after `Variable illegal in Parameter`, so `cr3xx.drop_too_many_after_variable_illegal` now
+  exempts routine headers). After one failed header, CR300/CR350 neither check nor register
+  later headers; the existing cascade then rewrites the file, and a tainted header whose only
+  parameter has dimensions (`Sub T(Q(-1))`, `Sub T(Q(K))`) prints nothing, so the cascade's
+  header-token scan now ignores parenthesized dimensions.
+- An alias index naming an earlier Const resolves to the Const even when a parameter has the
+  same name (`Const J=5` / `Sub S(P(4),J)` / `Alias P(J)=Y` -> the header conflict, then
+  `Illegally dimensioned aliased name`); other runtime and undefined index names keep their
+  diagnostics after that conflict.
+- Each parameter's `As` type is checked (`Variable Type Banana not supported`) before its
+  dimensions, and the return type after the last parameter: `Sub S(P(0),Q As Banana)` reports
+  the dimension first, `Sub S(P(0) As Banana)` the type first. On CR300/CR350 a type error also
+  stops the header and names the parameter two on (`Sub S(P As Banana,Q(0),R(0))` -> `Too many
+  parameters:  R.`), and a bad dimension stops it before a later type or the return type.
+- More than three dimensions report `Variable P(1 dimension exceeds max of 3.` (the first
+  dimension's text) and no per-dimension check; the parameter stays registered (as a scalar,
+  `Alias P=Y` and `Alias P(1)=Y` pass, the recovered shape is otherwise unprobed). On
+  CR300/CR350 it stops the header (`Sub S(P(1,1,1,1),Q(0))` reports only that line).
+- A String length that does not fold reports like a dimension (`P As String * K` -> `Invalid
+  symbol in expression: K.`; an earlier parameter `Q` -> `Variable illegal in Parameter: Q.`)
+  and the parameter stays registered with alias range checks skipped. CR300/CR350, and the
+  earlier-parameter form on every profile, add `line <last>: Out of memory.`, not modelled.
+
+Probes that contradicted the Codex predictions: its probe 20 on CR300/CR350 (the header stops
+at `P(0)`, so `Q(K)` is never evaluated and `Too many parameters:  R.` follows) and the
+multi-routine probes (later headers are silent on CR300/CR350). Its other predictions matched
+on all four profiles, with CR300/CR350 differing only by the known undefined-name pair.
+
+Remaining gaps: assignment to a Const-shadow parameter (`J=1` reports `Invalid assignment in
+expression: J=1.`; four fixture cases). Dimensions above the dimension limit, String-literal
+dimensions and nonconstant expressions that are neither undefined nor variables keep the
+round-28 behavior (no header diagnostic; parameter not in the alias view). Whether a type error
+or more than three dimensions also silence later CR300/CR350 headers is unprobed. Whether an earlier non-header error also silences later CR300/CR350 headers is unprobed.
+String parameter storage is covered by [String alias storage](#string-alias-storage-round-29).
+
+## String alias storage (round 29)
+
+Reference observations, 2026-10-22: `tests/fixtures/r29_string_parameters.json` records 320
+cases (80 programs on CR6, CR1000X, CR300 and CR350; every case has a reference verdict): 36
+shapes each as a String routine parameter and as a `Public` String, plus eight `Public`/local
+`Dim` edge programs. All 320 match. The 48 String expected failures of
+`r28_parameter_aliases.json` now match, so that fixture has no expected failures left. The four
+profiles gave identical verdicts and diagnostics; parameters, `Public` and local `Dim` Strings
+behave the same.
+
+Reverse-engineering trail (Codex, `scratch/codex/re-r29-string-params.md`, CR6.14.2.0): the type
+parser `FUN_004ba960` rounds a String's length to its slot bytes, the allocator `FUN_004d3560`
+inserts the byte length as a storage dimension, and the alias handler `FUN_004b8e70` measures
+alias positions in 4-byte storage words. This was a hypothesis until the probes confirmed it; no
+decompiled code was copied.
+
+Rules (`structure._alias_string_slots`, used by `_check_alias_dims`; String parameters now enter
+the alias view built by `_alias_parameter_declaration`):
+
+- A String of length `L` (default 23) occupies `S = ceil(max(4, L+1) / 4)` words per element
+  (`* 3` -> 1, `* 15` -> 4, `* 16` -> 5, default -> 6). The source holds `T = elements * S` words.
+- A subscript count above the declared rank selects a character: `Alias is illegally
+  dimensioned.` and the statement ends without registering its names (scalar `P(1)`, vector
+  `P(1,1)`, `P(1) As String` with `P(1,1)`, matrix `P(2,3,1)`; a later `Alias Y=Z` then reports
+  `Y not yet declared so cannot be aliased.`).
+- Otherwise the element flat offset `f` (round 7 formula) starts the list at word `q = (f-1)*S`;
+  `Illegally dimensioned aliased name` when `q` is outside `[0, T)` (`P(0)`, `P(4)` of `P(3)`).
+- An explicit RHS count `n` must satisfy `1 <= n <= T + q` (`P(3)=Y(25)` passes on `P(3) As
+  String * 16`, `Y(26)` fails). Unlike numeric sources, this also applies when `q < 0`
+  (`P(0)=Y(10)` reports only the start error, `Y(11)` adds `Alias is illegally dimensioned.`).
+  A bare RHS name skips it: `P(1) As String * 16` with `P(0)=Y` reports only the start error and
+  registers `Y` (a later `Alias Y=Z` is `Cannot Alias an Alias.`).
+- `L` converts like a C long: outside its range (`1e10`, `1e999`, `-1e999`) it is
+  -2147483648, so the slot is one word (`String * 1e999` accepts `P=Y` and rejects `P=Y(2)`).
+- Each list item advances `q` by `n * S` (`P=Y(2),Z` on three slots passes, `P=Y(3),Z` and
+  `P=Y(14),Z` report the start error for `Z`, which is still registered: a later `Alias Z=Q` is
+  `Cannot Alias an Alias.`).
+
+Probes that contradicted the Codex model: none. All 24 of its predictions held on all four
+profiles. The existing element-unit handling of `Public` Strings agreed with the reference only
+where element and word units coincide; it is now replaced by the word model, not duplicated.
+
+Review fixes (Codex review `scratch/codex/review-r29.md`, observations 2026-10-22):
+`tests/fixtures/r29_review_fixes.json` records 104 cases (26 programs on all four profiles);
+92 match and 12 are strict expected failures (`Public P As String * K`, which reports nothing,
+and the `Out of memory.` line above). All five review findings were confirmed except finding 3's
+mechanism: `String * 1e999` compiles, but through the long conversion, not a minimum allocation.
+An infinite `Public` String length also raised an implementation exception in the storage and
+ESS estimators (`tables._as_int`, `ess._const_int`); both now fall back to their default.
+
+Remaining gaps: Strings with three declared dimensions and lengths below 1 are unprobed; a
+nonconstant `Public` String length is not reported (`Invalid symbol in expression: K.`). Compilation does not establish
+logger runtime behavior; the reference accepts `Y(n)` counts beyond the remaining slots.

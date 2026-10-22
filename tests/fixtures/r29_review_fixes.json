@@ -1,0 +1,744 @@
+{
+  "cases": [
+    {
+      "id": "cr6-f1_param_k",
+      "logger": "cr6",
+      "source": "Sub S(P As String * K)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr6-f1_param_k_noalias",
+      "logger": "cr6",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr6-f1_public_k",
+      "logger": "cr6",
+      "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
+      "not_modelled": "Public String length expression not checked."
+    },
+    {
+      "id": "cr6-f1_param_q",
+      "logger": "cr6",
+      "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr6-f1_param_const",
+      "logger": "cr6",
+      "source": "Const K=16\nSub S(P As String * K)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f2_param_4d",
+      "logger": "cr6",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr6-f2_param_4d_noalias",
+      "logger": "cr6",
+      "source": "Sub S(P(1,1,1,1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr6-f2_param_4d_idx",
+      "logger": "cr6",
+      "source": "Sub S(P(2,2,2,2))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(2 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr6-f2_param_3d",
+      "logger": "cr6",
+      "source": "Sub S(P(1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f3_param_inf",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3_public_inf",
+      "logger": "cr6",
+      "source": "Public P As String * 1e999\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3_param_neginf",
+      "logger": "cr6",
+      "source": "Sub S(P As String * -1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3_param_big",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 1e10)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f4_public_bare",
+      "logger": "cr6",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-f4_public_y1",
+      "logger": "cr6",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f4_public_yz",
+      "logger": "cr6",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-f4_param_bare",
+      "logger": "cr6",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(0)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-f4_scalar_neg",
+      "logger": "cr6",
+      "source": "Public P As String * 16\nAlias P(-1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f5_dim_then_type",
+      "logger": "cr6",
+      "source": "Sub S(P(0),Q As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q As Banana)\n\nline 1: Variable Type Banana not supported"
+    },
+    {
+      "id": "cr6-f5_type_then_dim",
+      "logger": "cr6",
+      "source": "Sub S(Q As Banana,P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(Q As Banana,P(0))"
+    },
+    {
+      "id": "cr6-f5_same_param",
+      "logger": "cr6",
+      "source": "Sub S(P(0) As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(P(0) As Banana)"
+    },
+    {
+      "id": "cr6-f5_function_ret",
+      "logger": "cr6",
+      "source": "Function F(P(0)) As Banana\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0)) As Banana\n\nline 1: Variable Type Banana not supported"
+    },
+    {
+      "id": "cr1000x-f1_param_k",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * K)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-f1_param_k_noalias",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-f1_public_k",
+      "logger": "cr1000x",
+      "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
+      "not_modelled": "Public String length expression not checked."
+    },
+    {
+      "id": "cr1000x-f1_param_q",
+      "logger": "cr1000x",
+      "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr1000x-f1_param_const",
+      "logger": "cr1000x",
+      "source": "Const K=16\nSub S(P As String * K)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f2_param_4d",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr1000x-f2_param_4d_noalias",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1,1,1,1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr1000x-f2_param_4d_idx",
+      "logger": "cr1000x",
+      "source": "Sub S(P(2,2,2,2))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(2 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr1000x-f2_param_3d",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f3_param_inf",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3_public_inf",
+      "logger": "cr1000x",
+      "source": "Public P As String * 1e999\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3_param_neginf",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * -1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3_param_big",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 1e10)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f4_public_bare",
+      "logger": "cr1000x",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-f4_public_y1",
+      "logger": "cr1000x",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f4_public_yz",
+      "logger": "cr1000x",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-f4_param_bare",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(0)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-f4_scalar_neg",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16\nAlias P(-1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f5_dim_then_type",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0),Q As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q As Banana)\n\nline 1: Variable Type Banana not supported"
+    },
+    {
+      "id": "cr1000x-f5_type_then_dim",
+      "logger": "cr1000x",
+      "source": "Sub S(Q As Banana,P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(Q As Banana,P(0))"
+    },
+    {
+      "id": "cr1000x-f5_same_param",
+      "logger": "cr1000x",
+      "source": "Sub S(P(0) As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(P(0) As Banana)"
+    },
+    {
+      "id": "cr1000x-f5_function_ret",
+      "logger": "cr1000x",
+      "source": "Function F(P(0)) As Banana\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0)) As Banana\n\nline 1: Variable Type Banana not supported"
+    },
+    {
+      "id": "cr300-f1_param_k",
+      "logger": "cr300",
+      "source": "Sub S(P As String * K)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 5: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr300-f1_param_k_noalias",
+      "logger": "cr300",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr300-f1_public_k",
+      "logger": "cr300",
+      "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
+      "not_modelled": "Public String length expression not checked."
+    },
+    {
+      "id": "cr300-f1_param_q",
+      "logger": "cr300",
+      "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr300-f1_param_const",
+      "logger": "cr300",
+      "source": "Const K=16\nSub S(P As String * K)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f2_param_4d",
+      "logger": "cr300",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr300-f2_param_4d_noalias",
+      "logger": "cr300",
+      "source": "Sub S(P(1,1,1,1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr300-f2_param_4d_idx",
+      "logger": "cr300",
+      "source": "Sub S(P(2,2,2,2))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(2 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr300-f2_param_3d",
+      "logger": "cr300",
+      "source": "Sub S(P(1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f3_param_inf",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f3_public_inf",
+      "logger": "cr300",
+      "source": "Public P As String * 1e999\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f3_param_neginf",
+      "logger": "cr300",
+      "source": "Sub S(P As String * -1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f3_param_big",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 1e10)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f4_public_bare",
+      "logger": "cr300",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-f4_public_y1",
+      "logger": "cr300",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f4_public_yz",
+      "logger": "cr300",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-f4_param_bare",
+      "logger": "cr300",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(0)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-f4_scalar_neg",
+      "logger": "cr300",
+      "source": "Public P As String * 16\nAlias P(-1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f5_dim_then_type",
+      "logger": "cr300",
+      "source": "Sub S(P(0),Q As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q As Banana)"
+    },
+    {
+      "id": "cr300-f5_type_then_dim",
+      "logger": "cr300",
+      "source": "Sub S(Q As Banana,P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported"
+    },
+    {
+      "id": "cr300-f5_same_param",
+      "logger": "cr300",
+      "source": "Sub S(P(0) As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(P(0) As Banana)"
+    },
+    {
+      "id": "cr300-f5_function_ret",
+      "logger": "cr300",
+      "source": "Function F(P(0)) As Banana\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0)) As Banana"
+    },
+    {
+      "id": "cr350-f1_param_k",
+      "logger": "cr350",
+      "source": "Sub S(P As String * K)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 5: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr350-f1_param_k_noalias",
+      "logger": "cr350",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr350-f1_public_k",
+      "logger": "cr350",
+      "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
+      "not_modelled": "Public String length expression not checked."
+    },
+    {
+      "id": "cr350-f1_param_q",
+      "logger": "cr350",
+      "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
+      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+    },
+    {
+      "id": "cr350-f1_param_const",
+      "logger": "cr350",
+      "source": "Const K=16\nSub S(P As String * K)\nAlias P=Y(6)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f2_param_4d",
+      "logger": "cr350",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr350-f2_param_4d_noalias",
+      "logger": "cr350",
+      "source": "Sub S(P(1,1,1,1))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr350-f2_param_4d_idx",
+      "logger": "cr350",
+      "source": "Sub S(P(2,2,2,2))\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(2 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr350-f2_param_3d",
+      "logger": "cr350",
+      "source": "Sub S(P(1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f3_param_inf",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f3_public_inf",
+      "logger": "cr350",
+      "source": "Public P As String * 1e999\nAlias P=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f3_param_neginf",
+      "logger": "cr350",
+      "source": "Sub S(P As String * -1e999)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f3_param_big",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 1e10)\nAlias P=Y(5)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f4_public_bare",
+      "logger": "cr350",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-f4_public_y1",
+      "logger": "cr350",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y(1)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f4_public_yz",
+      "logger": "cr350",
+      "source": "Public P(1) As String * 16\nAlias P(0)=Y,Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-f4_param_bare",
+      "logger": "cr350",
+      "source": "Sub S(P(1) As String * 16)\nAlias P(0)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-f4_scalar_neg",
+      "logger": "cr350",
+      "source": "Public P As String * 16\nAlias P(-1)=Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f5_dim_then_type",
+      "logger": "cr350",
+      "source": "Sub S(P(0),Q As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0),Q As Banana)"
+    },
+    {
+      "id": "cr350-f5_type_then_dim",
+      "logger": "cr350",
+      "source": "Sub S(Q As Banana,P(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported"
+    },
+    {
+      "id": "cr350-f5_same_param",
+      "logger": "cr350",
+      "source": "Sub S(P(0) As Banana)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(P(0) As Banana)"
+    },
+    {
+      "id": "cr350-f5_function_ret",
+      "logger": "cr350",
+      "source": "Function F(P(0)) As Banana\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Function F(P(0)) As Banana"
+    },
+    {
+      "id": "cr6-f2_param_4d_then_bad",
+      "logger": "cr6",
+      "source": "Sub S(P(1,1,1,1),Q(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3.\nline 1: Illegally dimension: Sub S(P(1,1,1,1),Q(0))"
+    },
+    {
+      "id": "cr6-f2_param_4d_y2",
+      "logger": "cr6",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3.\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f3_param_inf_y2",
+      "logger": "cr6",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f5_type_then_two_dims",
+      "logger": "cr6",
+      "source": "Sub S(P As Banana,Q(0),R(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(P As Banana,Q(0),R(0))\n\nline 1: Illegally dimension: Sub S(P As Banana,Q(0),R(0))"
+    },
+    {
+      "id": "cr1000x-f2_param_4d_then_bad",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1,1,1,1),Q(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3.\nline 1: Illegally dimension: Sub S(P(1,1,1,1),Q(0))"
+    },
+    {
+      "id": "cr1000x-f2_param_4d_y2",
+      "logger": "cr1000x",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3.\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f3_param_inf_y2",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f5_type_then_two_dims",
+      "logger": "cr1000x",
+      "source": "Sub S(P As Banana,Q(0),R(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Illegally dimension: Sub S(P As Banana,Q(0),R(0))\n\nline 1: Illegally dimension: Sub S(P As Banana,Q(0),R(0))"
+    },
+    {
+      "id": "cr300-f2_param_4d_then_bad",
+      "logger": "cr300",
+      "source": "Sub S(P(1,1,1,1),Q(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr300-f2_param_4d_y2",
+      "logger": "cr300",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3.\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f3_param_inf_y2",
+      "logger": "cr300",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f5_type_then_two_dims",
+      "logger": "cr300",
+      "source": "Sub S(P As Banana,Q(0),R(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Too many parameters:  R."
+    },
+    {
+      "id": "cr350-f2_param_4d_then_bad",
+      "logger": "cr350",
+      "source": "Sub S(P(1,1,1,1),Q(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3."
+    },
+    {
+      "id": "cr350-f2_param_4d_y2",
+      "logger": "cr350",
+      "source": "Sub S(P(1,1,1,1))\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable P(1 dimension exceeds max of 3.\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f3_param_inf_y2",
+      "logger": "cr350",
+      "source": "Sub S(P As String * 1e999)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f5_type_then_two_dims",
+      "logger": "cr350",
+      "source": "Sub S(P As Banana,Q(0),R(0))\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Banana not supported\nline 1: Too many parameters:  R."
+    }
+  ]
+}

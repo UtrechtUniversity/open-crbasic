@@ -1,7 +1,7 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-22 after development round 28**.
-Measurements describe the round-28 implementation. Inspect `git status` before editing;
+Current compiler state and handoff, updated **2026-10-22 after development round 29**.
+Measurements describe the round-29 implementation. Inspect `git status` before editing;
 use Git to check commit and publication state.
 
 Design and parity criteria: [PLAN.md](PLAN.md). Previous measurements, round logs and superseded
@@ -19,22 +19,22 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 44,060 passed, 311 skipped, 255 strict xfail (round-24/26/27/28 fixture gaps) |
+| `pytest -q -n 4 -m 'not server'` | 44,744 passed, 311 skipped, 187 strict xfail (round-24/26/27/29 fixture gaps) |
 | `pytest -q -m server` | 163 passed |
-| Additional forward-Const rejection guards (added after full-suite collection) | 12 passed in a targeted run |
-| Round-28 parameter-alias fixture and audit | 368 reference observations (four profiles): 284 match, 84 strict xfail; audit 0 differing |
-| Round-27 alias-declaration fixture and audit (round-28 implementation) | 152 reference observations: 144 match, eight strict xfail; audit 0 differing |
-| Round-26 measurement-alias fixture and audit (round-28 implementation) | 282 reference observations: 164 match, 118 strict xfail; audit 0 differing |
+| Round-29 fixtures and audit (parameter headers, String parameters, review fixes) | 180 / 320 / 104 reference observations (four profiles): 176 / 320 / 92 match, 4 / 0 / 12 strict xfail; audit 0 differing |
+| Round-28 parameter-alias fixture and audit (round-29 implementation) | 368 reference observations: all match; audit 0 differing |
+| Round-27 alias-declaration fixture and audit | 152 reference observations: 144 match, eight strict xfail; audit 0 differing |
+| Round-26 measurement-alias fixture and audit | 282 reference observations: 164 match, 118 strict xfail; audit 0 differing |
 | Round-25 optional-output/burst fixture and audit | 444 reference observations; all match; audit 0 differing |
 | Round-24 destination/settling/FieldNames fixture | 674 reference observations (CR6/CR1000X/CR300/CR350): 629 match, 45 documented gaps |
 | Integer-TimeOut fixture and fresh four-profile audit (round 23) | 236 cases; 0 differing; 0 missing reference verdicts |
 | Expression-source fixture and its audit (round 22) | 100 cases across four profiles; 0 differing |
-| Saved fuzz replay, 3,158 inputs, round-28 implementation against round-22 reference results | 2,386 exact; 48 false accepts; 689 message differences; 16 mode differences; 19 reference/runner failures retained separately |
-| Round-28 replay comparison against the round-27 checker on current sources | All 3,158 outputs unchanged, including 3,139 usable-reference cases; 19 reference failures kept separate. Reference compilers were not rerun for this replay |
-| Fresh bounded fuzz, seeds 417–420, 40 mutants/profile | 157 exact; one pre-existing false accept and one diagnostic difference; one CR1000X reference fault; six existing seed faults kept separate ([details](docs/fuzz-findings.md#round-28-bounded-refresh-2026-10-22)) |
+| Saved fuzz replay, 3,158 inputs, round-29 implementation against round-22 reference results | 2,391 exact; 48 false accepts; 684 message differences; 16 mode differences; 19 reference/runner failures retained separately |
+| Round-29 replay comparison against the round-28 checker | Six outputs changed: five message differences became exact, one CR6 message difference now also reports the reference's line-35 diagnostic. No new false accept or reject. Reference compilers were not rerun for this replay |
+| Fresh bounded fuzz, seeds 417–420, 40 mutants/profile (round 28; not rerun in round 29) | 157 exact; one pre-existing false accept and one diagnostic difference; one CR1000X reference fault; six existing seed faults kept separate ([details](docs/fuzz-findings.md#round-28-bounded-refresh-2026-10-22)) |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
-Four-profile diagnostic comparison, rerun in round 28 (`tools/difftest.py --group all`):
+Four-profile diagnostic comparison, rerun in round 29 (unchanged from round 28) (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
 |---|---|---|
@@ -50,7 +50,7 @@ The differential gates exit 1 while reference verdicts are missing; this is not 
 The saved-reference replay script reports these failures separately and exits 0. Compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 28 both with the reference compiler and with
+Repository verification passed in round 29 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
@@ -61,7 +61,7 @@ Expected warnings are owned by [repository build status](../STATUS.md#build). Th
 includes the `.CR1X` bench harness; the diagnostic corpus table above covers `.CR6` programs.
 Compilation and host tests do not establish logger runtime behavior. No hardware tests were run.
 
-Rounds 23–28 did not rerun full corpus TDF/table-list comparisons on any profile; round 22 ran CR6 only.
+Rounds 23–29 did not rerun full corpus TDF/table-list comparisons on any profile; round 22 ran CR6 only.
 These rounds did not rerun full timing, message-file, signature and preprocessing coverage;
 round 27 refreshed only the five repository signatures in `tests/test_signature.py`. CDM binary images (`-b`) are
 [explicitly excluded from parity](PLAN.md#explicit-exclusions-from-parity). Distribution policy is
@@ -69,33 +69,36 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
-Round 28 resolves Float/Long routine-parameter alias sources and their declared capacity.
-The declaration handler's parameter registration was traced through `FUN_004baf00` and
-`FUN_004d3560` into `FUN_004b8e70` source lookup. The alias checker now receives a separate
-parameter declaration view, preserving full dimensions and parameter precedence over later
-locals of the same name. Runtime parameter-alias indices retain constant-only diagnostics.
-Header dimensions use only already-declared user constants; forward Consts cannot enable parameter storage. Twelve
-additional verdict guards passed separately after the full-suite collection.
-Rules and limitations are in
-[routine-parameter alias storage](docs/checker.md#routine-parameter-alias-storage-round-28).
+Round 29 closes all 84 round-28 expected failures, in three steps. Two read-only Codex
+(gpt-6.1-sol) research passes traced the CR6 decompilation and predicted rules and probes;
+Claude workers confirmed each rule on all four profiles before implementing it; a Codex review
+of the combined diff found five defects, all confirmed by reference probes and fixed.
 
-The new 368-case fixture improves from 12 to 284 exact observations, with 84 existing gaps
-retained as strict expected failures. The four routine-parameter source gaps from round 27 now
-pass. Invalid/nonconstant header dimensions, String storage, Boolean/Double alias sources,
-forward-Const diagnostics and Const-shadow cascades remain open. An additional 80 measurement
-destination probes are retained in `scratch/r28_probe.json`; no measurement-bound rules were changed.
+- [Routine-parameter header dimensions](docs/checker.md#routine-parameter-header-dimensions-round-29):
+  header dimensions resolve in declaration order; a nonconstant, undefined or <1 dimension is
+  reported and recovers to 1 with the parameter still registered; more than three dimensions
+  and nonconstant String lengths are reported; Boolean and Double parameters are alias
+  sources; an earlier Const wins over a same-named parameter in alias indices; type and
+  dimension diagnostics follow parameter order; CR300/CR350 stop the header at the first bad
+  parameter (`Too many parameters:` two positions on) and silence later failed headers.
+- [String alias storage](docs/checker.md#string-alias-storage-round-29): all String sources
+  (parameter, `Public`, local `Dim`) now use word units. A slot of `String * L` takes
+  ceil(max(4, L+1)/4) words; a character subscript is `Alias is illegally dimensioned.`; list
+  items advance by whole slots; the explicit-count bound applies only to dimensioned RHS names.
+  Nonfinite lengths convert like a C long instead of raising.
+- Codex's research predictions held except for CR300/CR350 multi-parameter and multi-routine
+  header stops, which the probes established.
 
-All four corpus comparisons and the 3,158 saved-replay outputs are unchanged from the round-27
-checker on current sources. The fresh four-profile audit reproduced all 1,246 recorded
-expectations without a difference or missing verdict. Fresh fuzz differences also reproduce
-with the round-27 checker; reference faults remain separate from compiler verdicts.
+Remaining strict xfails: four Const-shadow body assignments (`Invalid assignment in expression:
+J=1.`), four `Public P As String * K` (no diagnostic; predates round 29), and eight `Out of
+memory.` lines after an unresolved String parameter length. Unprobed: three-dimensional
+Strings, recovered shape beyond three dimensions, and whether type or too-many-dimension errors
+also silence later CR300/CR350 headers.
 
-Local probes and validation logs are under `scratch/r28*` (untracked). Prior state is preserved
-in the [round-27 handoff snapshot](docs/progress-history.md#round-27-handoff-snapshot-2026-10-22).
-This handoff includes rounds 27 and 28. Production CRBasic and signature expectations were
-not changed in round 28. No hardware was flashed or tested. TDF bytes of the round-22 expression
-fixture still require `tools/tdf_expression_fixture_gen.py --audit`; diagnostic audits do not
-check them.
+Probe scripts, research reports and validation logs are under `scratch/r29/` and
+`scratch/codex/` (untracked). Prior state is in the
+[round-28 handoff snapshot](docs/progress-history.md#round-28-handoff-snapshot-2026-10-22).
+Production CRBasic was not changed. No hardware was flashed or tested.
 
 ## Next steps
 
@@ -106,9 +109,10 @@ check them.
    CSAT3 negative Reps `Out of memory.`, the timing line of an extreme settling time, and a lone
    table bounds line that should not gate pass 2. Round 25 resolved the 4W/6W doubling and Resistance
    `+1` options and the 4W/6W burst MeasPEx constraint. Round 26 resolved the seven bare-alias cases;
-   round 27 resolved alias source binding and chain diagnostic precedence. Round 28 adds Float/Long
-   routine-parameter sources. Start with the remaining round-28 String/Boolean/Double sources,
-   invalid/forward header dimensions and Const-shadow cascades, or the round-27 global-name collisions.
+   round 27 resolved alias source binding and chain diagnostic precedence. Rounds 28–29 resolved
+   routine-parameter alias sources, header dimensions and String storage. Start with the
+   round-29 leftovers (Const-shadow body assignment, `Public` nonconstant String length,
+   `Out of memory.` after an unresolved String length) or the round-27 global-name collisions.
    Round-26 dimensioned/indexed measurement aliases, scalar parameter measurement bounds and
    CR300/CR350 post-error cascades also remain; use their minimized cases before extending resolution. Not yet probed: the remaining settling-time callers (Thermistor, AM25T, Therm107-109, Resistance),
    SDMGeneric's String destination rule and `EC100` options past its table. Then extend the
@@ -169,9 +173,12 @@ Old scratch briefs, research notes and timing helpers mentioned in history may b
 
 ## Work method
 
-Follow [repository instructions](../AGENTS.md) and the current human request. This session works
-directly without subagents. Historical agent/model assignments, review arrangements and branch
-integration instructions in the archive are not an active workflow. Commit or push only when
+Follow [repository instructions](../AGENTS.md) and the current human request. Round 29 (human
+instruction 2026-10-22) used Claude subagents for implementation and Codex `gpt-6.1-sol` for
+read-only decompilation research and review, run with the ChatGPT app's bundled CLI
+(`/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex exec
+-m gpt-6.1-sol -s read-only`; `~/.local/bin/codex` 0.158 rejects the model). Workers follow
+`scratch/r29/brief-worker.md`; treat Codex output as hypotheses to confirm on the reference. Commit or push only when
 authorized under the repository instructions.
 
 Work on one observed rule family at a time: minimize a reproducer, inspect decompiled behavior,

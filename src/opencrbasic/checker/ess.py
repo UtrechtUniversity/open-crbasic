@@ -33,7 +33,10 @@ def _const_int(expr: S.Expr | None, env: consteval.Env) -> int | None:
         value = consteval.value_of(expr, env)
     except consteval.NotConstant:
         return None
-    return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else None
+    if not isinstance(value, (int, float)) or isinstance(value, bool) or value != value \
+            or value in (float("inf"), float("-inf")):
+        return None                 # (`String * 1e999`: no implementation exception, round 29)
+    return int(value)
 
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:

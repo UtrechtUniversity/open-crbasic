@@ -257,96 +257,84 @@
       "logger": "cr6",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-6-1",
       "logger": "cr6",
       "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr6-alias-6-2",
       "logger": "cr6",
       "source": "Sub S(P As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr6-alias-6-3",
       "logger": "cr6",
       "source": "Sub S(P As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-6-4",
       "logger": "cr6",
       "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
     },
     {
       "id": "cr6-alias-6-5",
       "logger": "cr6",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-alias-7-0",
       "logger": "cr6",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-7-1",
       "logger": "cr6",
       "source": "Sub S(P(3) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-7-2",
       "logger": "cr6",
       "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-7-3",
       "logger": "cr6",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-7-4",
       "logger": "cr6",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-alias-7-5",
       "logger": "cr6",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr6-alias-8-0",
@@ -647,96 +635,84 @@
       "logger": "cr1000x",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-6-1",
       "logger": "cr1000x",
       "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr1000x-alias-6-2",
       "logger": "cr1000x",
       "source": "Sub S(P As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr1000x-alias-6-3",
       "logger": "cr1000x",
       "source": "Sub S(P As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-6-4",
       "logger": "cr1000x",
       "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
     },
     {
       "id": "cr1000x-alias-6-5",
       "logger": "cr1000x",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-alias-7-0",
       "logger": "cr1000x",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-7-1",
       "logger": "cr1000x",
       "source": "Sub S(P(3) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-7-2",
       "logger": "cr1000x",
       "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-7-3",
       "logger": "cr1000x",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-7-4",
       "logger": "cr1000x",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-alias-7-5",
       "logger": "cr1000x",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-alias-8-0",
@@ -1037,96 +1013,84 @@
       "logger": "cr300",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-6-1",
       "logger": "cr300",
       "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr300-alias-6-2",
       "logger": "cr300",
       "source": "Sub S(P As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr300-alias-6-3",
       "logger": "cr300",
       "source": "Sub S(P As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-6-4",
       "logger": "cr300",
       "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
     },
     {
       "id": "cr300-alias-6-5",
       "logger": "cr300",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr300-alias-7-0",
       "logger": "cr300",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-7-1",
       "logger": "cr300",
       "source": "Sub S(P(3) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-7-2",
       "logger": "cr300",
       "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-7-3",
       "logger": "cr300",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-7-4",
       "logger": "cr300",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-alias-7-5",
       "logger": "cr300",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr300-alias-8-0",
@@ -1427,96 +1391,84 @@
       "logger": "cr350",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-6-1",
       "logger": "cr350",
       "source": "Sub S(P As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr350-alias-6-2",
       "logger": "cr350",
       "source": "Sub S(P As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
     },
     {
       "id": "cr350-alias-6-3",
       "logger": "cr350",
       "source": "Sub S(P As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-6-4",
       "logger": "cr350",
       "source": "Sub S(P As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
     },
     {
       "id": "cr350-alias-6-5",
       "logger": "cr350",
       "source": "Sub S(P As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr350-alias-7-0",
       "logger": "cr350",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-7-1",
       "logger": "cr350",
       "source": "Sub S(P(3) As String * 16)\nAlias P(1)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-7-2",
       "logger": "cr350",
       "source": "Sub S(P(3) As String * 16)\nAlias P(2)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-7-3",
       "logger": "cr350",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y(2)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-7-4",
       "logger": "cr350",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y,Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-alias-7-5",
       "logger": "cr350",
       "source": "Sub S(P(3) As String * 16)\nAlias P=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.",
-      "not_modelled": "String parameter aliases need byte-storage and subscript rules."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
     },
     {
       "id": "cr350-alias-8-0",
@@ -1614,24 +1566,21 @@
       "logger": "cr6",
       "source": "Sub S(P(0))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
     },
     {
       "id": "cr6-negative_shape",
       "logger": "cr6",
       "source": "Sub S(P(-1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))"
     },
     {
       "id": "cr6-variable_shape",
       "logger": "cr6",
       "source": "Public K\nSub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
     },
     {
       "id": "cr6-local_redeclare",
@@ -1715,16 +1664,14 @@
       "logger": "cr6",
       "source": "Sub S(P(4) As Boolean)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-double",
       "logger": "cr6",
       "source": "Sub S(P(4) As Double)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-long_matrix",
@@ -1801,24 +1748,21 @@
       "logger": "cr1000x",
       "source": "Sub S(P(0))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
     },
     {
       "id": "cr1000x-negative_shape",
       "logger": "cr1000x",
       "source": "Sub S(P(-1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))"
     },
     {
       "id": "cr1000x-variable_shape",
       "logger": "cr1000x",
       "source": "Public K\nSub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
     },
     {
       "id": "cr1000x-local_redeclare",
@@ -1902,16 +1846,14 @@
       "logger": "cr1000x",
       "source": "Sub S(P(4) As Boolean)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-double",
       "logger": "cr1000x",
       "source": "Sub S(P(4) As Double)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-long_matrix",
@@ -1988,24 +1930,21 @@
       "logger": "cr300",
       "source": "Sub S(P(0))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
     },
     {
       "id": "cr300-negative_shape",
       "logger": "cr300",
       "source": "Sub S(P(-1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))"
     },
     {
       "id": "cr300-variable_shape",
       "logger": "cr300",
       "source": "Public K\nSub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
     },
     {
       "id": "cr300-local_redeclare",
@@ -2089,16 +2028,14 @@
       "logger": "cr300",
       "source": "Sub S(P(4) As Boolean)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-double",
       "logger": "cr300",
       "source": "Sub S(P(4) As Double)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-long_matrix",
@@ -2175,24 +2112,21 @@
       "logger": "cr350",
       "source": "Sub S(P(0))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(0))"
     },
     {
       "id": "cr350-negative_shape",
       "logger": "cr350",
       "source": "Sub S(P(-1))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Sub S(P(-1))"
     },
     {
       "id": "cr350-variable_shape",
       "logger": "cr350",
       "source": "Public K\nSub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K.",
-      "not_modelled": "Invalid or nonconstant routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: K."
     },
     {
       "id": "cr350-local_redeclare",
@@ -2276,16 +2210,14 @@
       "logger": "cr350",
       "source": "Sub S(P(4) As Boolean)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-double",
       "logger": "cr350",
       "source": "Sub S(P(4) As Double)\nAlias P(4)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Boolean and Double parameter alias sources are outside the measured implementation."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-long_matrix",
@@ -2362,8 +2294,7 @@
       "logger": "cr6",
       "source": "Const J=2\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.",
-      "not_modelled": "Extra alias-index diagnostics after a rejected Const-shadow parameter."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
     },
     {
       "id": "cr1000x-global_index",
@@ -2419,8 +2350,7 @@
       "logger": "cr1000x",
       "source": "Const J=2\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.",
-      "not_modelled": "Extra alias-index diagnostics after a rejected Const-shadow parameter."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
     },
     {
       "id": "cr300-global_index",
@@ -2476,8 +2406,7 @@
       "logger": "cr300",
       "source": "Const J=2\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.",
-      "not_modelled": "Extra alias-index diagnostics after a rejected Const-shadow parameter."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
     },
     {
       "id": "cr350-global_index",
@@ -2533,32 +2462,28 @@
       "logger": "cr350",
       "source": "Const J=2\nSub S(P(4),J)\nAlias P(J)=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.",
-      "not_modelled": "Extra alias-index diagnostics after a rejected Const-shadow parameter."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
     },
     {
       "id": "cr6-forward_const",
       "logger": "cr6",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
     },
     {
       "id": "cr6-forward_expr",
       "logger": "cr6",
       "source": "Sub S(P(K+1))\nAlias P=Y\nEndSub\nConst K=3\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+1.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+1."
     },
     {
       "id": "cr6-after_prog_const",
       "logger": "cr6",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\nConst K=4\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
     },
     {
       "id": "cr6-predefined_dim",
@@ -2572,24 +2497,21 @@
       "logger": "cr1000x",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
     },
     {
       "id": "cr1000x-forward_expr",
       "logger": "cr1000x",
       "source": "Sub S(P(K+1))\nAlias P=Y\nEndSub\nConst K=3\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+1.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+1."
     },
     {
       "id": "cr1000x-after_prog_const",
       "logger": "cr1000x",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\nConst K=4\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
     },
     {
       "id": "cr1000x-predefined_dim",
@@ -2603,24 +2525,21 @@
       "logger": "cr300",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K."
     },
     {
       "id": "cr300-forward_expr",
       "logger": "cr300",
       "source": "Sub S(P(K+1))\nAlias P=Y\nEndSub\nConst K=3\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+1.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+1."
     },
     {
       "id": "cr300-after_prog_const",
       "logger": "cr300",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\nConst K=4\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K."
     },
     {
       "id": "cr300-predefined_dim",
@@ -2634,24 +2553,21 @@
       "logger": "cr350",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nConst K=4\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K."
     },
     {
       "id": "cr350-forward_expr",
       "logger": "cr350",
       "source": "Sub S(P(K+1))\nAlias P=Y\nEndSub\nConst K=3\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+1.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+1."
     },
     {
       "id": "cr350-after_prog_const",
       "logger": "cr350",
       "source": "Sub S(P(K))\nAlias P=Y\nEndSub\nBeginProg\nEndProg\nConst K=4\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.",
-      "not_modelled": "Forward Const routine-parameter dimension diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K."
     },
     {
       "id": "cr350-predefined_dim",
