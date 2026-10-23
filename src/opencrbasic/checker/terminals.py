@@ -39,6 +39,8 @@ CR6 ports go through one converter (decompiled `FUN_00515ff0`): `C1..C16` (101..
 2026-10-01: `PortSet(109,1)`, `SPIOpen(105,...)` compile); CR1000X takes `C1..C8`.
 """
 
+import math
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -98,18 +100,25 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if stmt.keyword.upper() == "ACPOWER" and profile.name == "cr6" and _check_acpower(
                 stmt, channels[positions[0][1]], env, diags):
             continue
-        for pos, kind_name in positions:
-            _check_arg(stmt, pos, channels[kind_name], env, diags)
+        for pos, kind_name, *reps_pos in positions:
+            # an optional third item is the Reps position: the last channel used is checked
+            # (CR300/CR350 VoltSe, round 30, docs/checker.md#dimensioned-alias-destinations-round-30)
+            reps = _const_int(stmt, reps_pos[0], env, truncate=True) if reps_pos else None
+            _check_arg(stmt, pos, channels[kind_name], env, diags,
+                       reps - 1 if reps is not None and reps > 1 else 0)
 
 
-def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env) -> int | None:
+def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env, truncate: bool = False) -> int | None:
+    """An integral constant argument; `truncate` takes the integer part of any finite one."""
     if pos > len(stmt.args) or stmt.args[pos - 1] is None or not consteval.is_constant(stmt.args[pos - 1], env):
         return None
     try:
         value = consteval.value_of(stmt.args[pos - 1], env)
     except consteval.NotConstant:
         return None
-    return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) and value == int(value) else None
+    if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
+        return None
+    return int(value) if truncate or value == int(value) else None
 
 
 def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: Diagnostics) -> bool:
@@ -132,7 +141,8 @@ def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: D
     return True
 
 
-def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, diags: Diagnostics) -> None:
+def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, diags: Diagnostics,
+               span: int = 0) -> None:
     idx = pos - 1
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
@@ -168,7 +178,7 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         return
     if _cr6_burst_kind(kind) and value <= -200 and not -212 <= value <= -201:
         return  # CR6 -200 and -213 and below behave irregularly (accepted, odd-start or port messages)
-    in_range, odd_ok, shown = _evaluate(value, kind)
+    in_range, odd_ok, shown = _evaluate(value + span, kind)
     allowed_ok = "allowed" not in kind or (in_range and shown in kind["allowed"])
     if not in_range:
         diags.error(stmt.line, kind["message"].format(v=shown), stmt.file)

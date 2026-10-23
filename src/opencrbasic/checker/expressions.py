@@ -7,6 +7,7 @@ import re
 import json
 from functools import lru_cache
 from pathlib import Path
+from types import SimpleNamespace
 
 from .. import consteval
 from ..profiles import DottedName
@@ -867,7 +868,25 @@ def _known_names(program: S.Program, profile) -> set[str]:
                     items and isinstance(src, S.Index) and any(
                         i.strip().startswith("(") and i.strip().endswith(")") for i in items))
             (failed if bad else valid).add(st.args[1].name.upper())
-        known -= failed - valid
+        # a dimensioned name from the one whose `Alias is illegally dimensioned.` ends the
+        # statement on is not registered (round 30, `Alias X(3) = Y(9)` on `X(6)`); reuse the
+        # declaration check over the preceding declarations of the alias's scope, with String
+        # storage. The names it registered before stopping stay (round 30 review).
+        from . import structure
+        env = consteval.Env(profile, dict(program.consts))
+        for pos, st in enumerate(program.statements):
+            if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and \
+                    any(isinstance(a, S.Index) for a in st.args[1:]):
+                view = symbols.scoped_view(SimpleNamespace(statements=program.statements[:pos + 1]), st)
+                scratch, registered = Diagnostics(), set()
+                structure._check_alias_dims(
+                    st, scratch, env, symbols.declared_dim0_sizes(view, env),
+                    symbols.declared_all_dims(view, env), registered, {}, None, profile,
+                    structure._alias_string_slots(view, env))
+                if any(d.message == "Alias is illegally dimensioned." for d in scratch.items):
+                    failed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Index)} - registered
+        # a Const keeps its own binding (round 30 review, `Alias X = K(2)` with `Const K`)
+        known -= failed - valid - set(program.consts)
     return KnownNames(known, tables=_value_less_tables(program, profile),
                       dotted_tables=profile.single_pass,
                       out_of_scope=symbols.out_of_scope_nodes(program, resolvable))

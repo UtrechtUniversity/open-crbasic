@@ -1,0 +1,712 @@
+{
+  "cases": [
+    {
+      "id": "cr6-f1a",
+      "logger": "cr6",
+      "source": "Public X As String * 16\nAlias X=Y(2)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f1b",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nSub S\nDim X\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f1c",
+      "logger": "cr6",
+      "source": "Public X As String * 16\nAlias X=Y(9)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f1d",
+      "logger": "cr6",
+      "source": "Public X(2) As String * 16\nAlias X=Y(3)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f1e",
+      "logger": "cr6",
+      "source": "Public X\nAlias X=Y(2)\nSub S\nDim X(6)\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f2a",
+      "logger": "cr6",
+      "source": "Const K=2\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-f2b",
+      "logger": "cr6",
+      "source": "Const K=3\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-f2c",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f2d",
+      "logger": "cr6",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3a",
+      "logger": "cr6",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(3),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr6-f3b",
+      "logger": "cr6",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(2),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f3c",
+      "logger": "cr6",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(1),5,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr6-f4a",
+      "logger": "cr6",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV5000,U6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f4b",
+      "logger": "cr6",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV5000,U5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f4c",
+      "logger": "cr6",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1.9,mV5000,U6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f5a",
+      "logger": "cr6",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1e999,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 13 exceeds number of valid channels.\nline 5: Scan interval too short for measurement by -10 Sec.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr6-f5b",
+      "logger": "cr6",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,-1e999,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable X out of bounds.\nline 5: Scan interval too short for measurement by -2157 Sec.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr6-f6a",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f6b",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f6c",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(99),Z(2)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f7a",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X\nAlias X=K(2)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f7b",
+      "logger": "cr6",
+      "source": "Const K=1\nPublic X(6)\nAlias X=K(9)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f1a",
+      "logger": "cr1000x",
+      "source": "Public X As String * 16\nAlias X=Y(2)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f1b",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nSub S\nDim X\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f1c",
+      "logger": "cr1000x",
+      "source": "Public X As String * 16\nAlias X=Y(9)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f1d",
+      "logger": "cr1000x",
+      "source": "Public X(2) As String * 16\nAlias X=Y(3)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f1e",
+      "logger": "cr1000x",
+      "source": "Public X\nAlias X=Y(2)\nSub S\nDim X(6)\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f2a",
+      "logger": "cr1000x",
+      "source": "Const K=2\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-f2b",
+      "logger": "cr1000x",
+      "source": "Const K=3\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-f2c",
+      "logger": "cr1000x",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f2d",
+      "logger": "cr1000x",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3a",
+      "logger": "cr1000x",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(3),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr1000x-f3b",
+      "logger": "cr1000x",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(2),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f3c",
+      "logger": "cr1000x",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(1),5,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr1000x-f4a",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV5000,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f4b",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV5000,5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f4c",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1.9,mV5000,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f5a",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1e999,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 17 exceeds number of valid channels.\nline 5: Scan interval too short for measurement by 2138 Sec.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr1000x-f5b",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,-1e999,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable X out of bounds.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr1000x-f6a",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f6b",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f6c",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(99),Z(2)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f7a",
+      "logger": "cr1000x",
+      "source": "Const K=1\nPublic X\nAlias X=K(2)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f7b",
+      "logger": "cr1000x",
+      "source": "Const K=1\nPublic X(6)\nAlias X=K(9)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f1a",
+      "logger": "cr300",
+      "source": "Public X As String * 16\nAlias X=Y(2)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f1b",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nSub S\nDim X\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f1c",
+      "logger": "cr300",
+      "source": "Public X As String * 16\nAlias X=Y(9)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Y is not defined."
+    },
+    {
+      "id": "cr300-f1d",
+      "logger": "cr300",
+      "source": "Public X(2) As String * 16\nAlias X=Y(3)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f1e",
+      "logger": "cr300",
+      "source": "Public X\nAlias X=Y(2)\nSub S\nDim X(6)\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 7: Y is not defined."
+    },
+    {
+      "id": "cr300-f2a",
+      "logger": "cr300",
+      "source": "Const K=2\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-f2b",
+      "logger": "cr300",
+      "source": "Const K=3\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-f2c",
+      "logger": "cr300",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2d",
+      "logger": "cr300",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f3a",
+      "logger": "cr300",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(3),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr300-f3b",
+      "logger": "cr300",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f3c",
+      "logger": "cr300",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(1),5,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr300-f4a",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr300-f4b",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV2500,5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f4c",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1.9,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f5a",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1e999,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 2147483647 exceeds number of valid channels.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr300-f5b",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,-1e999,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr300-f6a",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f6b",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Z is not defined."
+    },
+    {
+      "id": "cr300-f6c",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(99),Z(2)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Z is not defined."
+    },
+    {
+      "id": "cr300-f7a",
+      "logger": "cr300",
+      "source": "Const K=1\nPublic X\nAlias X=K(2)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f7b",
+      "logger": "cr300",
+      "source": "Const K=1\nPublic X(6)\nAlias X=K(9)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f1a",
+      "logger": "cr350",
+      "source": "Public X As String * 16\nAlias X=Y(2)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f1b",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nSub S\nDim X\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f1c",
+      "logger": "cr350",
+      "source": "Public X As String * 16\nAlias X=Y(9)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Y is not defined."
+    },
+    {
+      "id": "cr350-f1d",
+      "logger": "cr350",
+      "source": "Public X(2) As String * 16\nAlias X=Y(3)\nBeginProg\nY=\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f1e",
+      "logger": "cr350",
+      "source": "Public X\nAlias X=Y(2)\nSub S\nDim X(6)\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 7: Y is not defined."
+    },
+    {
+      "id": "cr350-f2a",
+      "logger": "cr350",
+      "source": "Const K=2\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr350-f2b",
+      "logger": "cr350",
+      "source": "Const K=3\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable X out of bounds."
+    },
+    {
+      "id": "cr350-f2c",
+      "logger": "cr350",
+      "source": "Const K=1\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2d",
+      "logger": "cr350",
+      "source": "Const K=2\nPublic X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(K),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-f3a",
+      "logger": "cr350",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(3),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr350-f3b",
+      "logger": "cr350",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f3c",
+      "logger": "cr350",
+      "source": "Sub S(P(4))\nAlias P=Y(2)\nVoltSe(Y(1),5,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds.\nline 3: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-f4a",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-f4b",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2.5,mV2500,5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-f4c",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1.9,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-f5a",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1e999,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 2147483647 exceeds number of valid channels.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr350-f5b",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,-1e999,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0.",
+      "not_modelled": "Saturated nonfinite Reps not modelled."
+    },
+    {
+      "id": "cr350-f6a",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f6b",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2),Z(99)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Z is not defined."
+    },
+    {
+      "id": "cr350-f6c",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(99),Z(2)\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Z is not defined."
+    },
+    {
+      "id": "cr350-f7a",
+      "logger": "cr350",
+      "source": "Const K=1\nPublic X\nAlias X=K(2)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f7b",
+      "logger": "cr350",
+      "source": "Const K=1\nPublic X(6)\nAlias X=K(9)\nBeginProg\nX=K\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-f2e",
+      "logger": "cr6",
+      "source": "Const K=1.5\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3d",
+      "logger": "cr6",
+      "source": "Sub S(P(4))\nAlias P=Y\nVoltSe(Y,5,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr6-f6d",
+      "logger": "cr6",
+      "source": "Sub S\nDim X(6)\nAlias X=Y(2),Z(99)\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-f2e",
+      "logger": "cr1000x",
+      "source": "Const K=1.5\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3d",
+      "logger": "cr1000x",
+      "source": "Sub S(P(4))\nAlias P=Y\nVoltSe(Y,5,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr1000x-f6d",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X(6)\nAlias X=Y(2),Z(99)\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-f2e",
+      "logger": "cr300",
+      "source": "Const K=1.5\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f3d",
+      "logger": "cr300",
+      "source": "Sub S(P(4))\nAlias P=Y\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds."
+    },
+    {
+      "id": "cr300-f6d",
+      "logger": "cr300",
+      "source": "Sub S\nDim X(6)\nAlias X=Y(2),Z(99)\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr350-f2e",
+      "logger": "cr350",
+      "source": "Const K=1.5\nPublic X(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(K),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f3d",
+      "logger": "cr350",
+      "source": "Sub S(P(4))\nAlias P=Y\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable P out of bounds.\nline 3: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-f6d",
+      "logger": "cr350",
+      "source": "Sub S\nDim X(6)\nAlias X=Y(2),Z(99)\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Alias is illegally dimensioned."
+    }
+  ]
+}

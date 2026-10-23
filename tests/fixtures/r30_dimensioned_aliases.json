@@ -1,0 +1,1264 @@
+{
+  "cases": [
+    {
+      "id": "cr6-c01",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c02",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c03",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(0),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-c04",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c05",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-c06",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c07",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-c08",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c09",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c10",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c11",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c12",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c13",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c14",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c15",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c16",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Z out of bounds."
+    },
+    {
+      "id": "cr6-c17",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(3),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Z out of bounds."
+    },
+    {
+      "id": "cr6-c18",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(8)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c19",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(9)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-c20",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,Y(2)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c21",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,Y(3)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-c22",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),7,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-o01",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o02",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o03",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o04",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o05",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o06",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o07",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o08",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o09",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o10",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(5),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-o11",
+      "logger": "cr6",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o12",
+      "logger": "cr6",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o13",
+      "logger": "cr6",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr6-o14",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2,2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need closing )\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr6-o15",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(2)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o16",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o17",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nX(1)=Y(3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-o18",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c01",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c02",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c03",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(0),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-c04",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c05",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-c06",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c07",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-c08",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c09",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c10",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c11",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c12",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c13",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c14",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c15",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c16",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Z out of bounds."
+    },
+    {
+      "id": "cr1000x-c17",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(3),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Z out of bounds."
+    },
+    {
+      "id": "cr1000x-c18",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(8)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c19",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(9)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-c20",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,Y(2)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c21",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,Y(3)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c22",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),7,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-o01",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o02",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o03",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o04",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o05",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o06",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o07",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o08",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o09",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o10",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(5),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-o11",
+      "logger": "cr1000x",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o12",
+      "logger": "cr1000x",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o13",
+      "logger": "cr1000x",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr1000x-o14",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2,2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need closing )\nline 2: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-o15",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(2)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o16",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o17",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nX(1)=Y(3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-o18",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-c01",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c02",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c03",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(0),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-c04",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c05",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-c06",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c07",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-c08",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c09",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c10",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c11",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c12",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c13",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c14",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c15",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c16",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c17",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(3),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Z out of bounds."
+    },
+    {
+      "id": "cr300-c18",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(8)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c19",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(9)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Too many parameters:  Sec.\nline 5: Y is not defined.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-c20",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,Y(2)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c21",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,Y(3)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-c22",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr300-o01",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o02",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o03",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o04",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o05",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o06",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o07",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o08",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o09",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-o10",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(5),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-o11",
+      "logger": "cr300",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o12",
+      "logger": "cr300",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o13",
+      "logger": "cr300",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-o14",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2,2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need closing )\nline 2: Alias is illegally dimensioned.\nline 4: Too many parameters:  Sec.\nline 5: Y is not defined.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-o15",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(2)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o16",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o17",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nX(1)=Y(3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-o18",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c01",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-c02",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-c03",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(0),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr350-c04",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-c05",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(1)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr350-c06",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c07",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-c08",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-c09",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-c10",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c11",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(4)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c12",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c13",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c14",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(6)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c15",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c16",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(2),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c17",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2),Z(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z(3),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Z out of bounds."
+    },
+    {
+      "id": "cr350-c18",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(8)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c19",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(9)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Alias is illegally dimensioned.\nline 4: Too many parameters:  Sec.\nline 5: Y is not defined.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-c20",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,Y(2)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c21",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,Y(3)+1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c22",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(1),7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-o01",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o02",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-o03",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o04",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-o05",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-o06",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o07",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(4)=Y(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o08",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o09",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr350-o10",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(5),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr350-o11",
+      "logger": "cr350",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-o12",
+      "logger": "cr350",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o13",
+      "logger": "cr350",
+      "source": "Public X(2,3)\nAlias X=Y(4)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(4),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
+    },
+    {
+      "id": "cr350-o14",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2,2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need closing )\nline 2: Alias is illegally dimensioned.\nline 4: Too many parameters:  Sec.\nline 5: Y is not defined.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-o15",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(2)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o16",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o17",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nX(1)=Y(3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-o18",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-p01",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr300-p02",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+    },
+    {
+      "id": "cr300-p03",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-p04",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-p05",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,4,mV2500,3,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-p06",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr300-p07",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,3,mV2500,3,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-p08",
+      "logger": "cr300",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2,mV2500,5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-p09",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr300-p10",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),2,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p01",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p02",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p03",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p04",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p05",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,4,mV2500,3,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p06",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p07",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,3,mV2500,3,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p08",
+      "logger": "cr350",
+      "source": "Public X(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,2,mV2500,5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p09",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 7 exceeds number of valid channels."
+    },
+    {
+      "id": "cr350-p10",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),2,mV2500,6,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
+    }
+  ]
+}

@@ -89,96 +89,84 @@
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-dimensioned-2",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-dimensioned-3",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-dimensioned-4",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-dimensioned-6",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-dimensioned-7",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-indexed-1",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-indexed-2",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-indexed-3",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-indexed-4",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-indexed-6",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-indexed-7",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),7,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-list-1",
@@ -437,96 +425,84 @@
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-dimensioned-2",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-dimensioned-3",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-dimensioned-4",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-dimensioned-6",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-dimensioned-7",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-indexed-1",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-indexed-2",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-indexed-3",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-indexed-4",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-indexed-6",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-indexed-7",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),7,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-list-1",
@@ -736,8 +712,7 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr300-offset-1",
@@ -779,104 +754,91 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(4)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr300-dimensioned-1",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-dimensioned-2",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-dimensioned-3",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-dimensioned-4",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-dimensioned-6",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-dimensioned-7",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr300-indexed-1",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-indexed-2",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-indexed-3",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-indexed-4",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-indexed-6",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr300-indexed-7",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr300-list-1",
@@ -918,8 +880,7 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Z(2),Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr300-chain-1",
@@ -1009,8 +970,7 @@
       "logger": "cr300",
       "source": "Public X(2,3)\nAlias X(2,1)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr300-long-1",
@@ -1093,16 +1053,14 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-bare-7",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-offset-1",
@@ -1137,112 +1095,98 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(4)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-offset-7",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(4)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-dimensioned-1",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-dimensioned-2",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-dimensioned-3",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-dimensioned-4",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-dimensioned-6",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-dimensioned-7",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-indexed-1",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-indexed-2",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-indexed-3",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-indexed-4",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-indexed-6",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-indexed-7",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-list-1",
@@ -1277,16 +1221,14 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Z(2),Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-list-7",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Z(2),Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-chain-1",
@@ -1369,16 +1311,14 @@
       "logger": "cr350",
       "source": "Public X(2,3)\nAlias X(2,1)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-matrix-7",
       "logger": "cr350",
       "source": "Public X(2,3)\nAlias X(2,1)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-long-1",
@@ -1433,48 +1373,42 @@
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-index3-4",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-index3-6",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr6-offindex-1",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr6-offindex-4",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr6-offindex-6",
       "logger": "cr6",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr6-constant-1",
@@ -1586,48 +1520,42 @@
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-index3-4",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-index3-6",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr1000x-offindex-1",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-offindex-4",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr1000x-offindex-6",
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr1000x-constant-1",
@@ -1739,48 +1667,42 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr300-index3-4",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr300-index3-6",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr300-offindex-1",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-offindex-4",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr300-offindex-6",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
     },
     {
       "id": "cr300-constant-1",
@@ -1857,16 +1779,14 @@
       "logger": "cr300",
       "source": "Public X\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr300-scalar-6",
       "logger": "cr300",
       "source": "Public X\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr300-local-1",
@@ -1894,48 +1814,42 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr350-index3-4",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr350-index3-6",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(3),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "Indexed alias bounds and diagnostic are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-offindex-1",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-offindex-4",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-offindex-6",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(3)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "Dimensioned alias names are not registered by the expression checker."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-constant-1",
@@ -1956,8 +1870,7 @@
       "logger": "cr350",
       "source": "Const K=3\nPublic X(6)\nAlias X(K)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-case-1",
@@ -1978,8 +1891,7 @@
       "logger": "cr350",
       "source": "Public Original(6)\nAlias Original=Renamed\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(renamed,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-two-1",
@@ -2000,8 +1912,7 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Z,Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-scalar-1",
@@ -2015,16 +1926,14 @@
       "logger": "cr350",
       "source": "Public X\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds."
     },
     {
       "id": "cr350-scalar-6",
       "logger": "cr350",
       "source": "Public X\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 measurement alias destination bounds or channel-count diagnostics are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-local-1",
@@ -2045,8 +1954,7 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(3)=Y\nSub S\nDim X(1)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "Alias declaration validation incorrectly uses a later local shadow of its backing variable."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr6-case-base",

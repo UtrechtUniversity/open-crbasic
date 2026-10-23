@@ -803,8 +803,8 @@ _REPS_CHECKED = {
     "cr1000x": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
                           "PULSECOUNT", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W",
                           "CS616"}),
-    "cr300": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT"}),
-    "cr350": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT"}),
+    "cr300": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT", "VOLTSE"}),
+    "cr350": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT", "VOLTSE"}),
 }
 _REPS_DEST_SIZE = frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
                              "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE",
@@ -829,13 +829,19 @@ def _measurement_output_count(stmt: S.Instruction, reps: int, env: consteval.Env
 
 
 def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
-    """Bare alias destinations: backing Float storage and its diagnostic name (round 26).
+    """Alias destinations: `(backing elements, start offset, diagnostic name, declared size)`,
+    the size None for a bare alias name (rounds 26 and 30).
 
     Bind at the alias declaration, so a later local shadow of its backing name does not
-    change the storage. Dimensioned/indexed alias uses remain with the expression checker.
+    change the storage.
     """
     aliases = {}
+    routine = None
     for st in program.statements:
+        if isinstance(st, S.SubDef):
+            routine = st
+        elif S.ends_routine(st):
+            routine = None
         if not isinstance(st, S.Instruction) or st.keyword.upper() != "ALIAS" or not st.args:
             continue
         target = st.args[0]
@@ -843,7 +849,14 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
             continue
         scope = tables(st)
         shape = scope.dims.get(target.name.upper())
-        if shape is None or scope.types.get(target.name.upper()) != "FLOAT":
+        param = next((p for p in routine.params if p.name.upper() == target.name.upper()), None) \
+            if routine is not None else None
+        if param is not None and (param.type or "FLOAT").upper() == "FLOAT":
+            # a Float parameter's own header shape backs the alias (round 30 review, `Sub S(P(4))`)
+            shape = tuple(_int_value(d, env) for d in param.dim_exprs) or (1,)
+            if any(n is None or n < 1 for n in shape):
+                continue
+        elif shape is None or scope.types.get(target.name.upper()) != "FLOAT":
             continue
         # Alias declaration subscripts may be named constants.
         if isinstance(target, S.Index):
@@ -872,10 +885,10 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
                 _int_value(alias.args[0], env) if len(alias.args) == 1 else None)
             if size is None or size < 1 or not 0 <= offset < total:
                 break
-            if isinstance(alias, S.Name):
-                entries[alias.name.upper()] = (total - offset,
-                                               declared_names.get(target.name.upper(), target.name)
-                                               if offset == 0 else alias.name)
+            entries[alias.name.upper()] = (total, offset,
+                                           declared_names.get(target.name.upper(), target.name)
+                                           if offset == 0 else alias.name,
+                                           None if isinstance(alias, S.Name) else size)
             offset += size
         aliases[id(st)] = entries
     cache = {}
@@ -883,7 +896,7 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
                   for st in program.statements if isinstance(st, S.SubDef)}
 
     def lookup(stmt, dest):
-        if not isinstance(dest, S.Name) or dest.name.upper() in tables(stmt).dims or \
+        if dest.name.upper() in tables(stmt).dims or \
                 dest.name.upper() in parameters.get(id(tables(stmt)), set()):
             return None
         key = id(tables(stmt))
@@ -892,9 +905,30 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
             for st in symbols.scoped_view(program, stmt).statements:
                 visible.update(aliases.get(id(st), {}))
             cache[key] = visible
-        return cache[key].get(dest.name.upper())
+        entry = cache[key].get(dest.name.upper())
+        if entry is not None and isinstance(dest, S.Index) and entry[3] is None:
+            return None  # a subscripted bare alias is not modelled
+        return entry
 
     return lookup
+
+
+def _alias_overrun(stmt: S.Instruction, dest, alias, count: int, profile: Profile,
+                   env: consteval.Env) -> bool:
+    """An alias destination's explicit index must lie within its declared size; the outputs
+    must then fit the backing storage from the destination element (round 30). CR6/CR1000X
+    count from the alias's own start, CR300/CR350 from the backing variable's start."""
+    total, offset, _, size = alias
+    index = 0
+    if isinstance(dest, S.Index):
+        k = _index_value(dest.args[0], env) if len(dest.args) == 1 else None
+        if k is None:
+            return False
+        if not 1 <= k <= size:
+            return True
+        index = k - 1
+    available = total - index - (0 if profile.single_pass else offset)
+    return count < 0 or count > available
 
 
 def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -909,12 +943,19 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
                 len(stmt.args) < 2:
             continue
         scope = tables(stmt)
-        dims = scope.dims
-        floats = {n for n, t in scope.types.items() if t == "FLOAT"}
         reps = _int_value(stmt.args[1], env)
         if reps is None and profile.single_pass and isinstance(_const_value(stmt.args[1], env), str):
             reps = 0  # `Therm107(T,"fuzz",...)` (oracle, CR300)
         if reps is None:
+            continue
+        if profile.single_pass and stmt.keyword.upper() == "VOLTSE":
+            # destination bounds before the line's other diagnostics (round 30)
+            message = _dest_overrun(stmt, stmt.args[0], reps, profile, env, alias_storage, scope) \
+                if reps > 0 else None
+            if message is not None:
+                at = next((i for i, d in enumerate(diags.items)
+                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+                diags.items.insert(at, Diagnostic("error", stmt.line, message, stmt.file))
             continue
         if profile.single_pass:
             if reps == 0:
@@ -931,26 +972,29 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             continue
         if reps > 0 and stmt.keyword.upper() not in _REPS_DEST_SIZE:
             continue
-        alias = alias_storage(stmt, dest)
-        if alias is not None:
-            available, display_name = alias
-            count = _measurement_output_count(stmt, reps, env)
-            if count < 0 or count > available:
-                diags.error(stmt.line, f"Variable {display_name} out of bounds.", stmt.file)
-            continue
-        if dest.name.upper() not in floats or dest.name.upper() not in dims:
-            continue
-        shape = dims[dest.name.upper()]
-        offset = _flat_offset(dest, shape)
-        if offset is None:
-            continue
-        total = 1
-        for n in shape:
-            total *= n
-        count = _measurement_output_count(stmt, reps, env)
-        if count < 0 or count > total - offset:
-            diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+        message = _dest_overrun(stmt, dest, reps, profile, env, alias_storage, scope)
+        if message is not None:
+            diags.error(stmt.line, message, stmt.file)
     _check_bridge_burst(program, profile, diags, env)
+
+
+def _dest_overrun(stmt, dest, reps, profile, env, alias_storage, scope) -> str | None:
+    """`Variable %s out of bounds.` when the Float destination cannot hold the output count."""
+    if not isinstance(dest, (S.Name, S.Index)):
+        return None
+    count = _measurement_output_count(stmt, reps, env)
+    alias = alias_storage(stmt, dest)
+    if alias is not None:
+        return f"Variable {alias[2]} out of bounds." if _alias_overrun(
+            stmt, dest, alias, count, profile, env) else None
+    if scope.types.get(dest.name.upper()) != "FLOAT" or dest.name.upper() not in scope.dims:
+        return None
+    shape = scope.dims[dest.name.upper()]
+    offset = _flat_offset(dest, shape, env)
+    if offset is None:
+        return None
+    total = math.prod(shape)
+    return f"Variable {dest.name} out of bounds." if count < 0 or count > total - offset else None
 
 
 def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics,
@@ -1132,13 +1176,22 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                 diags.items.append(diag)
 
 
-def _flat_offset(dest: S.Expr, shape: tuple[int, ...]) -> int | None:
-    """0-based row-major offset of the destination's first element, or None if not literal."""
+def _index_value(arg: S.Expr | None, env: consteval.Env | None) -> int | None:
+    """An integer literal index, or with `env` any integer constant (`X(K)`, round 30 review)."""
+    if isinstance(arg, S.Number) and isinstance(arg.value, int):
+        return arg.value
+    v = _const_value(arg, env) if env is not None else None
+    return v if isinstance(v, int) and not isinstance(v, bool) else None
+
+
+def _flat_offset(dest: S.Expr, shape: tuple[int, ...], env: consteval.Env | None = None) -> int | None:
+    """0-based row-major offset of the destination's first element, or None if not literal
+    (or, with `env`, constant)."""
     if isinstance(dest, S.Name) or not dest.args or all(a is None for a in dest.args):
         return 0
-    if not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in dest.args):
+    index = [_index_value(a, env) for a in dest.args]
+    if None in index:
         return None
-    index = [a.value for a in dest.args]
     if len(index) == 1:
         return index[0] - 1 if 1 <= index[0] else None
     if len(index) != len(shape) or any(not 1 <= k <= n for k, n in zip(index, shape)):

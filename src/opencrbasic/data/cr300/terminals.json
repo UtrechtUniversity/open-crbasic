@@ -57,7 +57,8 @@
   "VOLTSE": [
    [
     4,
-    "se_chan"
+    "se_chan",
+    2
    ]
   ],
   "VOLTDIFF": [

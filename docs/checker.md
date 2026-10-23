@@ -7355,3 +7355,82 @@ ESS estimators (`tables._as_int`, `ess._const_int`); both now fall back to their
 Remaining gaps: Strings with three declared dimensions and lengths below 1 are unprobed; a
 nonconstant `Public` String length is not reported (`Invalid symbol in expression: K.`). Compilation does not establish
 logger runtime behavior; the reference accepts `Y(n)` counts beyond the remaining slots.
+
+## Dimensioned alias destinations (round 30)
+
+Reference observations, 2026-10-22: `tests/fixtures/r30_dimensioned_aliases.json` preserves 180
+cases (40 programs on all four profiles, plus 10 CR300/CR350 plain-array and channel-span
+programs). The round-29 implementation matches 8 of them (the two declaration-error programs);
+round 30 matches all 180. In `r26_measurement_aliases.json`, 92 expected failures now match: the
+72 dimensioned/indexed cases, the 19 CR300/CR350 bounds/channel cases, and the CR350 local-shadow
+case whose only remaining gap was the channel span (26 expected failures remain).
+
+Notation: `T` backing elements, `b` the alias's zero-based start, `n` its declared size
+(`Alias X=Y(n)`), `k` a literal destination index, `C` the instruction's output count.
+
+- `Alias X=Y(n)` registers `Y` for expressions. A name whose declaration reports
+  `Alias is illegally dimensioned.` (`n > T + b`, or `Y(2,2)`) is not registered; CR300/CR350
+  then report `Y is not defined.` at its uses.
+- Declaration accepts `n` up to `T + b` (`X(3)=Y(8)` on `X(6)` compiles, `Y(9)` fails), so
+  the declared size can exceed the storage that remains. Measurement capacity is separate.
+- A destination `Y(k)` first requires `1 <= k <= n` on all four profiles (`Y(0)`, `Y(3)` of
+  `Y(2)` fail even with backing storage left).
+- CR6/CR1000X: then `C <= T - b - (k - 1)` (bare `Y`: `k = 1`). Same rule as the round-26 bare
+  alias, now with the index.
+- CR300/CR350: then `C <= T - (k - 1)`: the alias start is ignored, as for round-26 bare aliases
+  (`X(4)=Y(3)`, `VoltSe(Y(3),4,...)` compiles on CR300, fails on CR6). Plain arrays keep their
+  start (`VoltSe(X(2),6,...)` on `X(6)` fails). Only VoltSe was probed; the check is limited to it.
+- The name is the backing declaration's spelling when `b = 0`, else the alias name; one message
+  even when both the index and the span fail.
+- A subscripted alias inside an expression argument (`VoltSe(Y,1,...,Y(3)+1,0)`) and plain
+  statements (`Y(3)=1`, `X(1)=Y(3)`, `Y=1`) compile: no static bound applies there.
+- CR300/CR350 VoltSe channel: the last channel used, `SEChan + Reps - 1`, is checked and shown
+  (`Channel 7 exceeds number of valid channels.` for channel 6, Reps 2; CR350 has 4 SE channels,
+  CR300 6). The destination bounds message precedes it on the same line.
+
+Implementation: `symbols.declared_names` registers single-dimension RHS names;
+`expressions._known_names` removes those that `structure._check_alias_dims` (run into a scratch
+list) did not register before `Alias is illegally dimensioned.`, on single-pass profiles. `instr_measure._measurement_aliases` now records
+`(T, b, name, n)` for bare and dimensioned names; `_alias_overrun` applies the index and the
+profile's capacity rule, and `_dest_overrun` is shared by the CR6/CR1000X path and a new CR300/
+CR350 VoltSe path (inserted before the line's other diagnostics). The channel span is a third
+item, the Reps position, on the CR300/CR350 `VOLTSE` entry of `terminals.json`.
+
+RE trail (Codex, `scratch/codex/re-r30-dim-aliases.md`): CR6 `FUN_004b8e70` creates the alias
+record with its own shape at the backing start; `FUN_004b9f40` gives expression descriptors the
+backing capacity `T - b` with the alias's declared dimensions; the destination evaluator
+`FUN_004a2f60` checks the start against the dimensions and the span against the capacity. All
+twenty-two of its CR6 predictions matched on CR6 and CR1000X. Its CR300/CR350 formula `T - j` was
+confirmed, including the untested boundary (`X(3)=Y(2)`, `Y(2)` Reps 5 compiles on CR300).
+Codex did not anticipate that the CR300/CR350 channel message reports the last channel of the span,
+nor that opencrbasic lacked the plain-array CR300/CR350 VoltSe bounds check. No decompiled code was
+copied.
+
+Review fixes (Codex `scratch/codex/review-r30.md`, seven predicted defects; reference
+observations 2026-10-22 in `tests/fixtures/r30_review_fixes.json`, 25 programs on all four
+profiles, 100 cases: 92 match, 8 expected failures). All seven were confirmed:
+
+- Registration follows the declaration check: names before the failing list item stay registered
+  (`Alias X=Y(2),Z(99)` on `X(6)`: `Y=1` compiles, `Z=1` is `Z is not defined.`; `Y(99),Z(2)`
+  registers neither). The scratch check now sees only the preceding declarations of the alias's
+  scope (`symbols.scoped_view` of the statement prefix) and their String storage
+  (`structure._alias_string_slots`): `Alias X=Y(2)` on `X As String * 16` or on `X(6)` with an
+  unrelated routine-local `Dim X` compiles; `Y(9)` on the String still fails.
+- A failed `Alias X=K(2)` leaves `Const K` defined.
+- A Const destination index (`X(K)`, `Y(K)`) is checked like a literal (all four profiles,
+  `Variable X out of bounds.`); `Const K=1.5` stays unchecked and compiles.
+- A Float routine parameter's header shape backs its aliases: `Sub S(P(4))` / `Alias P=Y(2)`:
+  `VoltSe(Y(3),1,...)` and `VoltSe(Y(1),5,...)` report `Variable P out of bounds.`; a bare
+  `Alias P=Y` with Reps 5 does too.
+- CR300/CR350 VoltSe channel span truncates a fractional Reps (`2.5` on channel 6:
+  `Channel 7 exceeds number of valid channels.`).
+- A nonfinite terminal constant (`Reps=1e999`) no longer raises. The reference saturates it
+  (`1e999` is 2147483647: CR300/CR350 `Variable X out of bounds.` and `Channel 2147483647
+  exceeds ...`; `-1e999` gives `Invalid reps -2147483648, must be > 0.`; CR6/CR1000X add channel
+  and `Scan interval too short` lines); not modelled, the eight expected failures.
+
+Gaps: other CR300/CR350 measurement instructions (destination bounds and channel span not
+probed); CR1000X channel span; runtime destination indices; multi-index uses of a dimensioned
+alias; dimensioned Long/String aliases; a subscripted bare alias (`Alias X=Y`,
+`VoltSe(Y(2),...)`); saturated nonfinite Reps; Long/String parameter alias destinations. These
+are compiler observations only.

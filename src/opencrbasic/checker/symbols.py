@@ -481,7 +481,8 @@ def declared_names(program: S.Program) -> set[str]:
                 names.add(stmt.args[0].name.upper())
             elif kw == "ALIAS":
                 for arg in stmt.args[1:]:
-                    if isinstance(arg, S.Name):
+                    # `Alias X = Y(2)` registers `Y` (round 30)
+                    if isinstance(arg, S.Name) or (isinstance(arg, S.Index) and len(arg.args) == 1):
                         names.add(arg.name.upper())
         # `SNMPVariable(MyTemp, 1.3.6.1..., Float, RONLY)` declares `MyTemp` (oracle, all four
         # loggers, 2026-09-28; a CR350 fuzz false reject). Its dotted OID does not parse here.
