@@ -179,7 +179,7 @@ class Profile:
 
 
 _DECLARABLE_NUMERIC_TYPES = frozenset({
-    "FLOAT", "LONG", "BOOLEAN", "IEEE8", "IEEE4", "BOOL8", "UINT1", "UINT2", "UINT4",
+    "FLOAT", "LONG", "BOOLEAN", "IEEE8", "IEEE4", "BOOL8", "UINT1", "UINT2", "UINT4", "DOUBLE",
 })
 
 PROFILES = {

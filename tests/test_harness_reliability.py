@@ -81,7 +81,7 @@ def test_difftest_keeps_bad_oracle_row_without_losing_good_row(monkeypatch, tmp_
     assert rows[0] == {
         "group": "cli", "file": str(bad), "status": "oracle_error", "class": "oracle_error",
         "ours": "", "theirs": "runner emitted no compiler verdict",
-        "our_exit": None, "their_exit": None,
+        "our_exit": None, "their_exit": None, "logger": "", "impact": "operational failure",
     }
     assert rows[1]["status"] == "exact"
     assert rows[1]["class"] is None
@@ -137,7 +137,8 @@ def test_replay_json_summary_includes_oracle_error(tmp_path):
     path = tmp_path / "replay.json"
     fuzz_replay.write_json_report(path, [_replay_row("oracle_error")])
     report = json.loads(path.read_text())
-    assert report["summary"] == {"total": 1, "counts": {"oracle_error": 1}}
+    assert report["summary"] == {"total": 1, "counts": {"oracle_error": 1},
+                                 "impact": {"operational failure": 1}}
 
 
 def test_prune_fixed_keeps_oracle_error(monkeypatch, tmp_path):
@@ -172,7 +173,8 @@ def test_replay_json_report_shape(tmp_path):
     rows = [_replay_row(None), _replay_row("false_reject"), _replay_row("false_reject")]
     fuzz_replay.write_json_report(path, rows)
     report = json.loads(path.read_text())
-    assert report["summary"] == {"total": 3, "counts": {"exact": 1, "false_reject": 2}}
+    assert report["summary"] == {"total": 3, "counts": {"exact": 1, "false_reject": 2},
+                                 "impact": {"exact": 1, "false reject": 2}}
     assert report["rows"] == rows
 
 

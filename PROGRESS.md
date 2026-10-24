@@ -1,7 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-24 after development round 31 and the
-round-32 v1.0 planning round**. Measurements describe the round-31 implementation. Inspect
+Current compiler state and handoff, updated **2026-10-24 after development round 33** (M1 GEUS
+false rejects, M0 impact gate and CI, first `--strict` check). Measurements describe the round-33
+implementation unless marked otherwise. Inspect
 `git status` before editing; use Git to check commit and publication state.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -20,34 +21,32 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 48,116 passed, 311 skipped, 144 strict xfail |
+| `pytest -q -n 4 -m 'not server'` | 48,384 passed, 311 skipped, 154 strict xfail (round 33) |
 | `pytest -q -m server` | 163 passed |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
 | Earlier alias fixtures (r26–r30) | r26 282/282, r27 152/152, r28 368/368, r29 headers 180/180, r29 Strings 320/320, r29 review 104/104, r30 dimensioned 180/180 match; r30 review 92 match, 8 strict xfail |
 | Round-24 destination/settling/FieldNames fixture | 674 observations: 672 match, 2 strict xfail |
-| Saved fuzz replay, 3,158 inputs, against round-22 reference results | 2,392 exact; 48 false accepts; 683 message differences; 16 accepted-with-different-output (one execution-mode, 15 warning differences); 19 reference/runner failures |
+| Saved fuzz replay, 3,158 inputs, `fuzz_replay.py --recorded` (round 33) | Our output is unchanged from round 31 on every input. Impact classes against the recorded reference results: 2,390 exact; 48 false accepts; no false reject; one mode and 15 warning differences; 60 missing the first error, 35 earlier first location, 220 same location with a different message, 370 later-diagnostic or order differences; 19 operational (one recorded result is a Wine page fault). The two extra first-error misses against the round-31 table are the `hang/dd9cc650482d` reproducers, whose recorded reference result differs from the round-31 rerun |
+| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 33) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Round-31 replay against the round-30 checker | Two outputs changed: one message difference became exact, one changed text but remains a message difference. Reference compilers were not rerun |
 | Fresh bounded fuzz, seeds 417–420 (round 28; not rerun since) | 157 exact; one false accept and one diagnostic difference ([details](docs/fuzz-findings.md#round-28-bounded-refresh-2026-10-22)) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
-Impact classes of the replay differences, the v1.0 measure (`scratch/r32/classify.py`, round-31
-replay): 333 same first error with later diagnostics different, 37 same diagnostics in another
-order, 220 same first location with a different message, 58 missing the reference's first error,
-35 reporting an earlier first location, 15 warning-only and one execution-mode difference.
-[PLAN.md](PLAN.md#where-v10-starts-round-30-measurement) has the per-profile table.
+The impact classes are now produced by `tools/impact.py` (`fuzz_replay.py` and `difftest.py`
+print the per-profile table); [PLAN.md](PLAN.md#where-v10-starts-round-30-measurement) keeps the
+round-30 starting table.
 
 Four 2026-10-24 probes are additional false accepts outside the replay:
 - an unknown table field, an unknown `Settings.` name and an assignment to an unknown `Status.`
   field (CR6, `scratch/r32/lint/`);
 - a `Status.` initializer before `BeginProg` (CR6 and CR1000X, `scratch/r32/status/`).
 
-GEUS corpus, first run (`scratch/r32/geus/`): the reference CR1000X compiler accepted all 66 GEUS
-`.CR1X` programs. opencrbasic matched 64 exactly and falsely rejected two, the first false rejects
-seen on any corpus ([details](PLAN.md#where-v10-starts-round-30-measurement)).
+GEUS corpus: the reference CR1000X compiler accepts all 66 GEUS `.CR1X` programs; since round 33
+opencrbasic matches all 66 exactly ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
-Four-profile diagnostic comparison, rerun in round 31 and unchanged from round 28
+Four-profile diagnostic comparison, rerun in round 33 and unchanged from round 28
 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
@@ -63,7 +62,7 @@ help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strco
 CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 31 both with the reference compiler and with
+Repository verification passed in round 33 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
@@ -79,6 +78,36 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 33** (one session, no subagents or Codex):
+- **M1, GEUS false rejects fixed.** A statement in one pair of parentheses (`(w = 0)`,
+  `If c Then (w = 0)`, `(Delay(0,1,mSec))`) compiles as that statement on all four loggers; an
+  alias named `Status`, `Public` or `Settings` makes the name a value. Probes also found and fixed
+  a CR6/CR1000X false reject of `Double` as a declared or alias name, and of `Public.X` after
+  `Alias D=Public`. Evidence: `tests/fixtures/r33_geus_false_rejects.json`, 256 reference
+  observations on four profiles, 246 match, 10 strict xfail (CR6/CR1000X first-error text for an
+  unclosed `(w = 0` and for `(w = 0)(w=1)`; CR300/CR350 accept both and miss
+  `Dimensions not declared` for `Status(1)` on a scalar alias). Rules:
+  [parenthesized statements](docs/checker.md#parenthesized-statements-round-33),
+  [aliases named Status](docs/checker.md#aliases-named-status-public-or-settings-round-33),
+  [alias names that are CRBasic names](docs/checker.md#alias-names-that-are-crbasic-names-round-33).
+  Whether the logger executes a parenthesized assignment is not observed on hardware.
+- **M0, impact measure and gates.** `tools/impact.py` classifies every row on verdict, mode, first
+  error, warnings and later diagnostics, with operational failures apart. `fuzz_replay.py` gains
+  `--recorded` (no Wine), `--baseline`/`--save-baseline` and a `no-regressions` gate for new
+  CR6/CR1000X false accepts, false rejects, mode differences and first-error regressions;
+  `tests/replay_baseline.json` is the committed baseline. A recorded reference result that is a
+  runner failure now counts as operational, not as a verdict. `difftest.py` reports the impact
+  table and has `--group geus`.
+- **M0, CI.** `.github/workflows/opencrbasic.yml` runs the Wine-free suites and the recorded replay
+  gate. It has not run on GitHub yet; the replay command passed locally.
+- **M3 start, human request.** `crbc --strict` and `src/opencrbasic/checks.py` with check `OCB001`:
+  an `Alias` named after an instruction, function, system table, keyword or special value, which
+  the reference accepts (probed on all four profiles). Output contract: findings on stderr, stdout
+  and `CR6cmple.xxx` unchanged, exit 3 for an accepted program with a strict error
+  (`tests/test_checks.py`, [PLAN](PLAN.md#three-diagnostic-channels)). Controls: no FirnMelt
+  program fires; one GEUS program does (`Alias D2out(3)= Status`, the motivating case).
+- `tools/probe.py` now compares the result line too, so mode differences show.
 
 **Round 31** closed the remaining strict xfails of rounds 24, 26, 27 and 29 and extended
 measurement spans. Four workers ran in parallel; three had Codex (gpt-6.1-sol) research. They
@@ -168,27 +197,19 @@ revision before acting on it.
 
 Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 
-1. **Fix the two GEUS false rejects** (M1, highest priority):
-   - a user `Alias ...=Status` used as a `Sample` source;
-   - a one-line `If ... Then (x = 0)`.
-
-   Details are in [PLAN.md](PLAN.md#where-v10-starts-round-30-measurement). Add both programs, or
-   minimized reproducers, to a fixture. Probe on the logger, or record as unknown, whether
-   `(x = 0)` assigns.
+1. **M0, remaining:**
+   - confirm the CI workflow on GitHub after the next push;
+   - record the configuration format (`opencrbasic.toml`) in PLAN.md;
+   - make the mutation operators more realistic, then run fresh seeds 421–424;
+   - optionally record the parenthesized-assignment runtime on the bench CR6 (unknown so far).
 2. Human decisions of 2026-10-24, recorded in [PLAN.md](PLAN.md#v10-milestones):
    - CR6 and CR1000X gate v1.0; CR300/CR350 are best effort;
    - the GEUS programs may be compiled as a corpus (`AGENTS.md` updated);
    - the `Status` lesson was corrected after the old observation could not be reproduced
-     ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked)).
-3. **M0:**
-   - promote `scratch/r32/classify.py` into `tools/fuzz_replay.py`/`tools/difftest.py`, with
-     independent verdict, mode, first-error, warning and operational dimensions;
-   - add gates for new false accepts, mode changes and first-error regressions;
-   - add a CI workflow running the Wine-free tests and saved-oracle checks;
-   - record the output contract and configuration format in PLAN.md;
-   - turn `scratch/r32/geus/run.py` into a corpus mode of `tools/difftest.py` (66 GEUS `.CR1X`
-     programs, CR1000X);
-   - make the mutation operators more realistic, then run fresh seeds 421–424.
+     ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked));
+   - an `--strict` error for aliases named after CRBasic names (`OCB001`, round 33).
+3. **M3, remaining framework:** `--report FILE`, configuration and suppressions, the separate
+   result field for the language server, then the next checks from the PLAN table.
 4. **M1:** triage the 48 replay false accepts plus the four probe false accepts into rule
    families before sizing the work. The unknown table field case is the editor-visible one.
 5. **M3/M4** can start after M0, in parallel with M1/M2: the check framework, and the CR6 evidence

@@ -212,6 +212,11 @@ first false rejects seen on any corpus.
 Whether that parenthesized body assigns on the logger is not observed. If it compares and discards
 the result, it is a silent no-op and a strong check candidate.
 
+Round 33 fixed both: a parenthesized assignment or instruction is that statement on all four
+loggers, and an alias named `Status`, `Public` or `Settings` makes the name a value
+([checker notes](docs/checker.md#parenthesized-statements-round-33)). `tools/difftest.py --group geus
+--logger cr1000x` now reports 66/66 exact. There are no GEUS `.CR6` programs.
+
 ### Three diagnostic channels
 
 Every finding belongs to exactly one channel. Operational failures (timeouts, checker exceptions,
@@ -238,11 +243,13 @@ as a CRBasic diagnostic.
    [evidence inventory](#v10-milestones). A notice is information only and never counts as verdict
    safety.
 
-**Output contract (decided in M0, tested in M3).** `crbc` default output is unchanged. With
-`crbc --strict`:
-- checks and notices go to stderr, or to a report file with `--report FILE` (JSON);
-- the exit status keeps 0/1 for the reference verdict and uses one new documented code for
-  "reference accepted, strict error".
+**Output contract (decided in round 33, tested in `tests/test_checks.py`).** `crbc` default output
+is unchanged. With `crbc --strict`:
+- checks go to stderr as `<file> line N: <severity> <code>: <message>`; stdout and `CR6cmple.xxx`
+  stay byte-identical;
+- the exit status keeps 0/1 for the reference verdict and is 3 for "reference accepted, strict
+  error";
+- a JSON report file (`--report FILE`) and coverage notices are not implemented yet.
 
 `scripts/cr6comp.py` judges success from the output text, so strict findings must never appear in
 stdout. `--strict` does not imply `-u`; the language server enables `-u`-equivalent unused warnings
@@ -284,6 +291,7 @@ exact form probed before it is implemented.
 
 | Candidate | Reference CR6 | Evidence and boundary |
 |---|---|---|
+| `Alias` named after an instruction, function, system table, keyword or special value (`Alias D(3)=Status`) | compiles, all four (2026-10-24) | **shipped as `OCB001`, error, default on under `--strict`** (human request 2026-10-24); the name shadows the original ([checker notes](docs/checker.md#alias-names-that-are-crbasic-names-round-33)). Predefined CONSTs are reference errors and excluded |
 | Constant index past the declared storage (`A(7)` on `A(6)`) | compiles | outside the declaration; the runtime effect is not observed. Must resolve scope, aliases with backing storage (`docs/checker.md` round 30), flattened multidimensional indexing and String character indices |
 | Whole array to a `Function` parameter whose body uses more than one element | compiles | only the first element arrives (`functionendfunction.htm`, [lessons](../knowledge/crbasic/lessons.md#arrays-passed-to-helpers)); exclude pointer parameters and scalar intent |
 | A String-producing `+` feeding a numeric destination or arithmetic (`L = 2000 + Mid(...)`) | compiles | concatenates ([lessons](../knowledge/crbasic/lessons.md#-with-a-string-operand-concatenates)); deliberate concatenation into a String is legitimate, and left-to-right typing matters |

@@ -39,6 +39,8 @@ crbc [options] program [messagefile]
   --logger L    cr6 | cr1000x | cr300 | cr350 (default: from the file extension
                 .CR6/.CR1X/.CR300/.CR350, else cr6)
   --no-message-file   do not write CR6cmple.xxx
+  --strict      also run opencrbasic checks (likely defects the reference accepts) on stderr;
+                exit 3 when the program compiles but a check reports an error
 ```
 
 Output follows the exe's format: `Program.CR6 -- Compiled in SequentialMode.` (CR300/CR350:

@@ -1,0 +1,1807 @@
+{
+ "observation_date": "2026-10-24",
+ "cases": [
+  {
+   "id": "cr6-paren00",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren00",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren00",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren00",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren01",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: (w)."
+  },
+  {
+   "id": "cr1000x-paren01",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: (w)."
+  },
+  {
+   "id": "cr300-paren01",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: w."
+  },
+  {
+   "id": "cr350-paren01",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: w."
+  },
+  {
+   "id": "cr6-paren02",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: (w + 1)."
+  },
+  {
+   "id": "cr1000x-paren02",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: (w + 1)."
+  },
+  {
+   "id": "cr300-paren02",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: w + 1."
+  },
+  {
+   "id": "cr350-paren02",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: w + 1."
+  },
+  {
+   "id": "cr6-paren03",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren03",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren03",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren03",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren04",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then ((w = 0))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren04",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then ((w = 0))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren04",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then ((w = 0))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren04",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then ((w = 0))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren05",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren05",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren05",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren05",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    (w = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren06",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) : w = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren06",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) : w = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren06",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) : w = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren06",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) : w = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren07",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (L = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren07",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (L = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren07",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (L = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren07",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (L = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren08",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (s = \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren08",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (s = \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren08",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (s = \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren08",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (s = \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren09",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w) = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren09",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w) = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren09",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w) = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: w."
+  },
+  {
+   "id": "cr350-paren09",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w) = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: w."
+  },
+  {
+   "id": "cr6-paren10",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: (w = 0.",
+   "not_modelled": "round 33: unclosed `(w = 0` body: the reference reports `No Matching, or out of place )`"
+  },
+  {
+   "id": "cr1000x-paren10",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: (w = 0.",
+   "not_modelled": "round 33: unclosed `(w = 0` body: the reference reports `No Matching, or out of place )`"
+  },
+  {
+   "id": "cr300-paren10",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "not_modelled": "round 33: CR300/CR350 accept an unclosed `(w = 0` body"
+  },
+  {
+   "id": "cr350-paren10",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "not_modelled": "round 33: CR300/CR350 accept an unclosed `(w = 0` body"
+  },
+  {
+   "id": "cr6-paren11",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Nope = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: (Nope = 0)."
+  },
+  {
+   "id": "cr1000x-paren11",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Nope = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: (Nope = 0)."
+  },
+  {
+   "id": "cr300-paren11",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Nope = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-paren11",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Nope = 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr6-paren12",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (5 = w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid assignment in expression: (5 = w)."
+  },
+  {
+   "id": "cr1000x-paren12",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (5 = w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid assignment in expression: (5 = w)."
+  },
+  {
+   "id": "cr300-paren12",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (5 = w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid assignment in expression: 5 = w."
+  },
+  {
+   "id": "cr350-paren12",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (5 = w)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid assignment in expression: 5 = w."
+  },
+  {
+   "id": "cr6-paren13",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)(w=1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: (w = 0)(w=1).",
+   "not_modelled": "round 33: `(w = 0)(w=1)`: the reference reports `Incomplete expression`"
+  },
+  {
+   "id": "cr1000x-paren13",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)(w=1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: (w = 0)(w=1).",
+   "not_modelled": "round 33: `(w = 0)(w=1)`: the reference reports `Incomplete expression`"
+  },
+  {
+   "id": "cr300-paren13",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)(w=1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "not_modelled": "round 33: CR300/CR350 accept `(w = 0)(w=1)`"
+  },
+  {
+   "id": "cr350-paren13",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)(w=1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "not_modelled": "round 33: CR300/CR350 accept `(w = 0)(w=1)`"
+  },
+  {
+   "id": "cr6-paren14",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else w = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren14",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else w = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren14",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else w = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren14",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0) Else w = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren15",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then w = 0 Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren15",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then w = 0 Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-paren15",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then w = 0 Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren15",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then w = 0 Else (w = 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-paren16",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-paren16",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr300-paren16",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr350-paren16",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-paren17",
+   "logger": "cr6",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Delay(0,1,mSec))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-paren17",
+   "logger": "cr1000x",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Delay(0,1,mSec))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-paren17",
+   "logger": "cr300",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Delay(0,1,mSec))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren17",
+   "logger": "cr350",
+   "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (Delay(0,1,mSec))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias00",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias00",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias00",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias00",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias01",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Public\nDataTable(T,True,-1)\nSample(1,Public,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias01",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Public\nDataTable(T,True,-1)\nSample(1,Public,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias01",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Public\nDataTable(T,True,-1)\nSample(1,Public,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias01",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Public\nDataTable(T,True,-1)\nSample(1,Public,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias02",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Settings\nDataTable(T,True,-1)\nSample(1,Settings,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias02",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Settings\nDataTable(T,True,-1)\nSample(1,Settings,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias02",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Settings\nDataTable(T,True,-1)\nSample(1,Settings,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias02",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Settings\nDataTable(T,True,-1)\nSample(1,Settings,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias03",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias03",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias03",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias03",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias04",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status.Battery,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias04",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status.Battery,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias04",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status.Battery,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias04",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,Status.Battery,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias05",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status.Battery\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias05",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status.Battery\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias05",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status.Battery\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias05",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status.Battery\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias06",
+   "logger": "cr6",
+   "source": "Public D(3), X\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nAlias D(3)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias06",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nAlias D(3)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias06",
+   "logger": "cr300",
+   "source": "Public D(3), X\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nAlias D(3)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias06",
+   "logger": "cr350",
+   "source": "Public D(3), X\nDataTable(T,True,-1)\nSample(1,Status,FP2)\nEndTable\nAlias D(3)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias07",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=T\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias07",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=T\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias07",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=T\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias07",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=T\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias08",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nStatus = 2\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias08",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nStatus = 2\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias08",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nStatus = 2\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias08",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nStatus = 2\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-alias09",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status(1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias09",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status(1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias09",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status(1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: X = Status(1)\n.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "round 33: CR300/CR350 `Status(1)` on a scalar alias: `Dimensions not declared`"
+  },
+  {
+   "id": "cr350-alias09",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(3)=Status\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Status(1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: X = Status(1)\n.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "round 33: CR300/CR350 `Status(1)` on a scalar alias: `Dimensions not declared`"
+  },
+  {
+   "id": "cr6-alias10",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D=Public\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Public.X\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias10",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D=Public\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Public.X\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-alias10",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D=Public\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Public.X\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias10",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D=Public\nDataTable(T,True,-1)\nSample(1,X,FP2)\nEndTable\nSub S\nX = Public.X\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname00",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Battery\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname00",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Battery\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname00",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Battery\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname00",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Battery\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname01",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=VoltSe\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname01",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=VoltSe\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname01",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=VoltSe\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname01",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=VoltSe\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname02",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname02",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname02",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Boolean is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-aname02",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Boolean is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-aname03",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname03",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname03",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-aname03",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-aname04",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=INF\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname04",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=INF\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname04",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=INF\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname04",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=INF\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname05",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Long\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname05",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Long\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname05",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Long\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-aname05",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Long\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-aname06",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Public\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname06",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Public\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname06",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Public\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname06",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Public\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname07",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname07",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname07",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname07",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Status\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname08",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Settings\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname08",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Settings\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname08",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Settings\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname08",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Settings\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname09",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Sin\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname09",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Sin\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname09",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Sin\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname09",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Sin\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname10",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=If\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-aname10",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=If\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If is a predefined CONST."
+  },
+  {
+   "id": "cr300-aname10",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=If\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-aname10",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=If\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-aname11",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Scan\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-aname11",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Scan\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan is a predefined CONST."
+  },
+  {
+   "id": "cr300-aname11",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Scan\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-aname11",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Scan\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-aname12",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Then\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname12",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Then\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname12",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Then\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname12",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Then\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname13",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=AND\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname13",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=AND\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname13",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=AND\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname13",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=AND\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-aname14",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=DataTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-aname14",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=DataTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-aname14",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=DataTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-aname14",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=DataTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw00",
+   "logger": "cr6",
+   "source": "Public D(3), X\nPublic Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw00",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nPublic Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw00",
+   "logger": "cr300",
+   "source": "Public D(3), X\nPublic Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw00",
+   "logger": "cr350",
+   "source": "Public D(3), X\nPublic Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw01",
+   "logger": "cr6",
+   "source": "Public D(3), X\nDim Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw01",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nDim Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw01",
+   "logger": "cr300",
+   "source": "Public D(3), X\nDim Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw01",
+   "logger": "cr350",
+   "source": "Public D(3), X\nDim Double\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw02",
+   "logger": "cr6",
+   "source": "Public D(3), X\nConst Double = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw02",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nConst Double = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw02",
+   "logger": "cr300",
+   "source": "Public D(3), X\nConst Double = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw02",
+   "logger": "cr350",
+   "source": "Public D(3), X\nConst Double = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw03",
+   "logger": "cr6",
+   "source": "Public D(3), X\nSub S(Double)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw03",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nSub S(Double)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw03",
+   "logger": "cr300",
+   "source": "Public D(3), X\nSub S(Double)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw03",
+   "logger": "cr350",
+   "source": "Public D(3), X\nSub S(Double)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Double is a predefined CONST.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw04",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=OR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw04",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=OR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw04",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=OR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw04",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=OR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw05",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=NOT\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw05",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=NOT\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw05",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=NOT\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw05",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=NOT\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw06",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=XOR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw06",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=XOR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw06",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=XOR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw06",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=XOR\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw07",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=MOD\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw07",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=MOD\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw07",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=MOD\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw07",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=MOD\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw08",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Else\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw08",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Else\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw08",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Else\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw08",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Else\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw09",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=To\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw09",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=To\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw09",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=To\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw09",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=To\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw10",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Step\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw10",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Step\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw10",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Step\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw10",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Step\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw11",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=As\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw11",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=As\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw11",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=As\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw11",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=As\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw12",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=EndIf\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw12",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=EndIf\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw12",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=EndIf\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw12",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=EndIf\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw13",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Next\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw13",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Next\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw13",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Next\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw13",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Next\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw14",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Case\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Case is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-kw14",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Case\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Case is a predefined CONST."
+  },
+  {
+   "id": "cr300-kw14",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Case\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Case is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw14",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Case\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Case is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw15",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Sub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-kw15",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Sub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub is a predefined CONST."
+  },
+  {
+   "id": "cr300-kw15",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Sub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw15",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Sub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw16",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Function\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Function is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-kw16",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Function\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Function is a predefined CONST."
+  },
+  {
+   "id": "cr300-kw16",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Function\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Function is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw16",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Function\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Function is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw17",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=TRUE\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: TRUE is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-kw17",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=TRUE\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: TRUE is a predefined CONST."
+  },
+  {
+   "id": "cr300-kw17",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=TRUE\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: TRUE is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw17",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=TRUE\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: TRUE is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-kw18",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=Dim\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw18",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=Dim\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw18",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=Dim\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-kw18",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=Dim\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-kw19",
+   "logger": "cr6",
+   "source": "Public D(3), X\nAlias D(1)=IEEE4\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-kw19",
+   "logger": "cr1000x",
+   "source": "Public D(3), X\nAlias D(1)=IEEE4\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-kw19",
+   "logger": "cr300",
+   "source": "Public D(3), X\nAlias D(1)=IEEE4\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-kw19",
+   "logger": "cr350",
+   "source": "Public D(3), X\nAlias D(1)=IEEE4\nBeginProg\n  Scan(1,Sec,0,0)\n    X = D(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}

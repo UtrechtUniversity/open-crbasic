@@ -3030,8 +3030,9 @@ also accepted as a declaration name; it is a separately recognised expression co
 an entry in the extracted symbol tables.
 
 CR6 and CR1000X have an evidenced exception for these numeric type names even though they occur in
-their symbol tables: `FLOAT`, `LONG`, `BOOLEAN`, `IEEE8`, `IEEE4`, `BOOL8`, `UINT1`, `UINT2`, and
-`UINT4` may be declared. `STRING` and `FP2` remain reserved. CR300 and CR350 do not use that
+their symbol tables: `FLOAT`, `LONG`, `BOOLEAN`, `IEEE8`, `IEEE4`, `BOOL8`, `UINT1`, `UINT2`,
+`UINT4` and `DOUBLE` may be declared (`DOUBLE` as `Public`, `Dim`, `Const`, parameter and `Alias`
+name, oracle 2026-10-24, round 33). `STRING` and `FP2` remain reserved. CR300 and CR350 do not use that
 exception: their per-profile extracted symbols are reserved as listed.
 
 The implemented declaration coverage is:
@@ -7788,3 +7789,48 @@ indices and `Q() As Long` above). All nine findings were confirmed; the rules ar
 owning sections above as "review `fN`". Not predicted by Codex: CR300/CR350 PulseCount channel
 validity and families, `truncate` on CR1000X PulseCount, negative and float-zero fN1, settling
 infinity, later early warnings after the CSAT3 OOM, and routine-scoped aliases in String lengths.
+
+## Parenthesized statements (round 33)
+
+Oracle, all four loggers, 2026-10-24; fixture `tests/fixtures/r33_geus_false_rejects.json`. One
+pair of parentheses around a whole assignment or instruction compiles as that statement, on its
+own line or as a one-line `If`/`Else` body: `(w = 0)`, `If c Then (w = 0) Else (w = 1)`,
+`((w = 0))`, `(L = 0)`, `(s = "a")`, `If c Then (Delay(0,1,mSec))` (SequentialMode, as without the
+parentheses). A group that is not a statement keeps its error: `(w)` and `(w + 1)` are
+`Invalid, or out of place expression`, `(5 = w)` is `Invalid assignment in expression`, CR6/CR1000X
+`(Nope = 0)` is `Invalid, or out of place expression: (Nope = 0).` and CR300/CR350 only
+`Nope is not defined.` The parser unwraps the group in `_parse_segment` when the inner tokens parse
+to an assignment or instruction. GEUS `GIOS_WAT_BR_V4_0.CR1X` (`Then (wind_direction = 0)`) was a
+false reject from this.
+
+Not modelled: CR6/CR1000X report an unclosed `(w = 0` as `No Matching, or out of place ) in
+expression: (w = 0.` and `(w = 0)(w=1)` as `Incomplete expression: (w = 0)(w=1).`; CR300/CR350
+accept both. Whether the logger executes the parenthesized assignment is not observed on hardware.
+
+## Aliases named Status, Public or Settings (round 33)
+
+Oracle, all four loggers, 2026-10-24; same fixture. `Alias D(3)=Status` (or `=Public`, `=Settings`)
+makes the name a plain value throughout the program, also above the `Alias` line:
+`Sample(1,Status,FP2)`, `X = Status` and `Status = 2` compile, like a variable of that name already
+did. `Status.Battery` and `Public.X` still read the system tables. GEUS
+`Archive/QAS_B_LoggerProgramV2.CR1X` (`Alias D2out(3)= Status`, `Sample (1,Status,FP2)`) was a false
+reject from this. Not modelled: CR300/CR350 report `X = Status(1)` on the scalar alias as
+`Dimensions not declared: X = Status(1)` (a best-effort false accept).
+
+## Alias names that are CRBasic names (round 33)
+
+Oracle, all four loggers, 2026-10-24; same fixture (groups `aname` and `kw`). The reference accepts
+an `Alias` named after an instruction (`Battery`, `VoltSe`, `DataTable`), a built-in function
+(`Sin`), a system table (`Public`, `Status`, `Settings`), a special value (`INF`; `NAN` from
+`alias_predefined_name.json`) or a keyword (`Then`, `Else`, `To`, `Step`, `As`, `EndIf`, `Next`,
+`Dim`, `AND`, `OR`, `NOT`, `XOR`, `MOD`). It rejects names in the logger's predefined-CONST table
+(`If`, `Scan`, `Case`, `Sub`, `Function`, `TRUE`, and on CR300/CR350 also `Long`, `Boolean`,
+`Double`, `IEEE4`) with `<name> is a predefined CONST.`. CR6/CR1000X also accept `Double` as a
+`Public`, `Dim`, `Const` or parameter name ([predefined constant name
+collisions](#predefined-constant-name-collisions)).
+
+The accepted set is the scope of opencrbasic check `OCB001` (`checks.py`, `crbc --strict`; human
+request 2026-10-24): such a name shadows the original, and the result is easy to misread
+([aliases named Status](#aliases-named-status-public-or-settings-round-33)). Controls: none of the 19
+FirnMelt programs fires; of the 66 GEUS programs only `QAS_B_LoggerProgramV2.CR1X`
+(`Alias D2out(3)= Status`) does.

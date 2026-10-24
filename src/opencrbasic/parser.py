@@ -796,7 +796,7 @@ class _Parser:
                 stmt = self._parse_units_segment(seg_text_raw, ll.line, ll.file)
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
-            stmt.at_eol = at_eol
+            stmt.at_eol = at_eol and not getattr(stmt, "grouped", False)
             if self.provenance:
                 stmt.origin = (ll, seg_offsets[idx])  # positions only: logical line and segment offset
             if (isinstance(stmt, S.If) and stmt.inline is None and idx < last_idx
@@ -983,7 +983,39 @@ class _Parser:
                         break
         return [u for u in seg if u is not t]
 
+    def _grouped_statement(self, seg: list[Token], line: int, file: str, seg_text: str
+                           ) -> S.Stmt | None:
+        """`(w = 0)`, `(Delay(0,1,mSec))`: one pair of parentheses around a whole assignment or
+        instruction compiles as that statement on all four loggers, alone or as a one-line `If`
+        body; `(w)` and `(w + 1)` stay errors (oracle, 2026-10-24, `docs/checker.md` "Parenthesized
+        statements")."""
+        real = [t for t in seg if t.kind != "EOF"]
+        if not (len(real) > 2 and real[0].kind == "OP" and real[0].text == "("
+                and real[-1].kind == "OP" and real[-1].text == ")"):
+            return None
+        depth = 0
+        for k, t in enumerate(real):
+            if t.kind == "OP" and t.text in "()":
+                depth += 1 if t.text == "(" else -1
+                if depth == 0 and k != len(real) - 1:
+                    return None   # `(a)(b)`: the first group closes before the end
+        kept = len(self.diags.items)
+        inner = self._parse_segment(real[1:-1] + [t for t in seg if t.kind == "EOF"], line, file,
+                                    seg_text)
+        if isinstance(inner, (S.Assignment, S.Instruction)):
+            if self.profile.single_pass:
+                # CR300/CR350 echo the inside of the group (`Invalid assignment in expression:
+                # Double = Z.`, `paren_assignment.json`)
+                inner.text = " ".join(t.text for t in real[1:-1]) if not seg_text else \
+                    seg_text[seg_text.index("(") + 1:seg_text.rindex(")")].strip()
+                inner.grouped = True   # ... with no line break before the `.`
+            return inner
+        del self.diags.items[kept:]   # the whole group is reparsed as written
+        return None
+
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
+        if (grouped := self._grouped_statement(seg, line, file, seg_text)) is not None:
+            return grouped
         if self.profile.single_pass:
             seg = self._cr3xx_argument_semicolon(seg, line, file, seg_text)
         if (len(seg) > 3 and seg[0].upper == "DATATABLE" and seg[1].text == "("

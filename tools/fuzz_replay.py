@@ -28,6 +28,7 @@ sys.path.insert(0, str(HERE))
 
 from opencrbasic import profiles  # noqa: E402
 import fuzz  # noqa: E402
+import impact  # noqa: E402
 
 FUZZ_CORPUS = ROOT / "tests" / "corpus" / "fuzz"
 
@@ -68,6 +69,13 @@ def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
                 path = fuzz.materialise(seed, lines, Path(tmp), cr6_path.name)
                 our_exit, our_out = fuzz.run_ours(path, profile)
             their_exit, their_out = meta["their_exit"], meta["theirs"]
+            if not fuzz.oracle._valid_result({"exit": their_exit, "stdout": their_out},
+                                             cr6_path.name):
+                # a runner failure saved as the reference result is no verdict
+                return {"file": fuzz._display_path(cr6_path), "logger": logger,
+                        "recorded_class": recorded_class, "now_class": "recorded_runner_failure",
+                        "status": "recorded runner failure", "our_exit": our_exit,
+                        "their_exit": None, "ours": our_out, "theirs": their_out}
         else:
             our_exit, our_out, their_exit, their_out = fuzz.run_mutant(
                 seed, lines, profile, name=cr6_path.name
@@ -107,11 +115,17 @@ def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
     }
 
 
-def gate_failed(results: list[dict], gate: str) -> bool:
+def gate_failed(results: list[dict], gate: str, baseline: list[dict] | None = None) -> bool:
     if any(r["now_class"] == "oracle_error" for r in results):
         return True
     if gate == "report":
         return False
+    if baseline is not None and gate == "no-regressions":
+        found = impact.regressions(baseline, results)
+        for line in found:
+            print("REGRESSION " + line)
+        if found:
+            return True
     if any(r["now_class"] == "implementation_exception" for r in results):
         return True
     if gate == "exact":
@@ -121,9 +135,13 @@ def gate_failed(results: list[dict], gate: str) -> bool:
 
 def write_json_report(path: Path, results: list[dict]) -> None:
     counts = Counter(r["now_class"] or "exact" for r in results)
+    for r in results:
+        r.setdefault("impact", impact.impact_class(r))
+    impacts = Counter(r["impact"] for r in results)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({
-        "summary": {"total": len(results), "counts": dict(sorted(counts.items()))},
+        "summary": {"total": len(results), "counts": dict(sorted(counts.items())),
+                    "impact": {c: impacts[c] for c in impact.CLASSES if impacts[c]}},
         "rows": results,
     }, indent=2) + "\n", encoding="utf-8")
 
@@ -167,6 +185,15 @@ def main() -> int:
     ap.add_argument("--gate", choices=["report", "no-regressions", "exact"], default="report",
                     help="exit nonzero for regressions or any non-exact result")
     ap.add_argument("--json", type=Path, help="write summary counts and result rows as JSON")
+    ap.add_argument("--recorded", action="store_true",
+                    help="compare with the recorded reference output instead of rerunning it "
+                         "(no Wine needed)")
+    ap.add_argument("--baseline", type=Path,
+                    help="a previous --json report; with --gate no-regressions, fail on a new "
+                         "CR6/CR1000X false accept, false reject, mode difference or first-error "
+                         "regression (tools/impact.py)")
+    ap.add_argument("--save-baseline", type=Path,
+                    help="write the compact (logger, file, impact) baseline that --baseline reads")
     ap.add_argument("paths", nargs="*", type=Path)
     args = ap.parse_args()
 
@@ -179,10 +206,20 @@ def main() -> int:
         return prune_fixed(files, args.workers)
 
     with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
-        results = list(pool.map(replay_one, files))
+        results = list(pool.map(lambda p: replay_one(p, use_recorded_theirs=args.recorded), files))
+    for r in results:
+        r["impact"] = impact.impact_class(r)
+    baseline = None
+    if args.baseline:
+        baseline = json.loads(args.baseline.read_text())["rows"]
+        for r in baseline:
+            r.setdefault("impact", impact.impact_class(r))
 
     if args.json:
         write_json_report(args.json, results)
+    if args.save_baseline:
+        args.save_baseline.write_text(json.dumps({"rows": [
+            {k: r[k] for k in ("logger", "file", "impact")} for r in results]}, indent=0) + "\n")
 
     still = fixed = changed = oracle_errors = 0
     for r in results:
@@ -198,7 +235,8 @@ def main() -> int:
 
     print(f"\n{len(results)} reproducers: {still} still reproduce, {fixed} fixed, "
           f"{changed} changed class, {oracle_errors} oracle errors")
-    return 1 if gate_failed(results, args.gate) else 0
+    print("\n" + impact.table(results))
+    return 1 if gate_failed(results, args.gate, baseline) else 0
 
 
 if __name__ == "__main__":

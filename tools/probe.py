@@ -29,8 +29,8 @@ for case in cases:
         prof = profiles.get(lg)
         theirs = oracle.run_oracle(path, compiler_path=ROOT.parent / "compiler" / prof.exe_name)
         ours = compile_file(path, prof, provenance=False)
-        t = "\n".join(theirs["stdout"].splitlines()[1:]).strip() if isinstance(theirs, dict) else str(theirs)
-        o = "\n".join(ours.result_lines()[1:]).strip()
+        t = "\n".join(theirs["stdout"].splitlines()).replace(path.name + " -- ", "").strip() if isinstance(theirs, dict) else str(theirs)
+        o = "\n".join(ours.result_lines()).replace(path.name + " -- ", "").strip()
         mark = "==" if t == o else "!="
         print(f"[{lg}] {mark} {case!r}\n   T: {t.replace(chr(10), ' | ')}")
         if mark == "!=":

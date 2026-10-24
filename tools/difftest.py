@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Differential test: compile programs with opencrbasic and with the real compiler, compare.
 
-    python3 tools/difftest.py [--logger cr6] [--group repo|chm|all] [--show N] [paths...]
+    python3 tools/difftest.py [--logger cr6] [--group repo|chm|geus|all] [--show N] [paths...]
 
 Each program is classified as
   exact    identical stdout after normalisation,
@@ -15,7 +15,10 @@ through tools/oracle.py (cached), so the first run of a large corpus is slow.
 import argparse
 import concurrent.futures
 import json
+import re
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -28,11 +31,17 @@ from opencrbasic import profiles  # noqa: E402
 from opencrbasic.compiler import compile_file  # noqa: E402
 import oracle  # noqa: E402
 import fuzz  # noqa: E402
+import impact  # noqa: E402
 
 GROUPS = {
     "repo": (REPO / "crbasic", "*.CR6"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6"),
 }
+# GEUS station programs (human decision 2026-10-24, `PLAN.md` "GEUS corpus"): every program with
+# the profile's extension, Archive/Testing/Development included, compiled beside the files of its
+# own directory
+GEUS = REPO / "examples" / "Logger Programs"
+_GEUS_SIBLINGS = (".crb", ".dld", ".cr1x", ".cr6", ".txt")
 
 
 def display_path(path: Path) -> str:
@@ -79,6 +88,21 @@ def normalise(text: str) -> str:
 
 def compare_one(item: tuple[str, Path, Path | None], profile) -> dict:
     group, path, siblings = item
+    if group == "geus":
+        with tempfile.TemporaryDirectory() as tmp:
+            sib = Path(tmp) / "sib"
+            sib.mkdir()
+            for f in path.parent.iterdir():
+                if f.is_file() and f.suffix.lower() in _GEUS_SIBLINGS:
+                    shutil.copy2(f, sib / f.name)
+            staged = Path(tmp) / re.sub(r"[^A-Za-z0-9_.-]", "_", path.name)
+            shutil.copy2(path, staged)
+            for f in sib.iterdir():
+                if not (Path(tmp) / f.name).exists():
+                    shutil.copy2(f, Path(tmp) / f.name)
+            row = compare_one(("geus-staged", staged, sib), profile)
+        row.update(group="geus", file=display_path(path))
+        return row
     try:
         their_exit, their_out = theirs(path, profile, siblings)
     except oracle.OracleError as exc:
@@ -86,7 +110,8 @@ def compare_one(item: tuple[str, Path, Path | None], profile) -> dict:
         # is not reference-compiler diagnostic output and must never enter semantic classification.
         return {"group": group, "file": display_path(path), "status": "oracle_error",
                 "class": "oracle_error", "ours": "", "theirs": str(exc),
-                "our_exit": None, "their_exit": None}
+                "our_exit": None, "their_exit": None, "logger": getattr(profile, "name", ""),
+                "impact": impact.OPERATIONAL}
 
     our_exit, our_out = ours(path, profile)
     cls = fuzz.classify(our_exit, our_out, their_exit, their_out)
@@ -98,9 +123,11 @@ def compare_one(item: tuple[str, Path, Path | None], profile) -> dict:
         status = "verdict"
     else:
         status = "mismatch"
-    return {"group": group, "file": display_path(path), "status": status, "class": cls,
-            "ours": our_out, "theirs": their_out, "our_exit": our_exit,
-            "their_exit": their_exit}
+    row = {"group": group, "file": display_path(path), "status": status, "class": cls,
+           "ours": our_out, "theirs": their_out, "our_exit": our_exit,
+           "their_exit": their_exit, "logger": getattr(profile, "name", "")}
+    row["impact"] = impact.impact_class(row)
+    return row
 
 
 def summarise(rows: list[dict]) -> dict[str, dict[str, int]]:
@@ -117,7 +144,8 @@ def summarise(rows: list[dict]) -> dict[str, dict[str, int]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--logger", default="cr6")
-    ap.add_argument("--group", choices=["repo", "chm", "all"], default="all")
+    ap.add_argument("--group", choices=["repo", "chm", "geus", "all"], default="all",
+                    help="`all` is repo and chm; geus runs alone")
     ap.add_argument("--gate", choices=["report", "no-regressions", "exact"], default="report",
                     help="exit nonzero for regressions or any non-exact result")
     ap.add_argument("--show", type=int, default=15, help="mismatches to print")
@@ -129,6 +157,10 @@ def main() -> int:
     work: list[tuple[str, Path, Path | None]] = []
     if args.paths:
         work = [("cli", p.resolve(), p.resolve().parent) for p in args.paths]
+    elif args.group == "geus":
+        ext = {"cr6": ".CR6", "cr1000x": ".CR1X"}.get(args.logger)
+        work = [("geus", p, None) for p in sorted(GEUS.rglob("*"))
+                if ext and p.is_file() and p.suffix.upper() == ext]
     else:
         for group, (directory, pattern) in GROUPS.items():
             if args.group in ("all", group):
@@ -144,6 +176,7 @@ def main() -> int:
         print(f"{args.logger} {group}: {total} programs, exact {s['exact']}, verdict {s['verdict']}, "
               f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}, "
               f"implementation_exception {s['implementation_exception']}")
+    print(impact.table(rows))
     shown = 0
     for r in rows:
         if r["status"] != "exact" and shown < args.show:

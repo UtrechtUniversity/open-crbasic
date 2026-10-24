@@ -931,8 +931,13 @@ def _value_less_tables(program: S.Program, profile=None) -> frozenset:
     # CR350 (oracle, 2026-10-08: `X = Status`, `Battery(Public)`; CR6/CR1000X accept `X = Settings`)
     tables |= {"STATUS", "PUBLIC"} | ({"SETTINGS"} if profile is not None and profile.single_pass
                                       else set())
+    # An `Alias D(3)=Status` makes `Status` a value too, even above the `Alias` (oracle, all four
+    # loggers, 2026-10-24; a GEUS false reject, `docs/checker.md` "Aliases named Status").
+    aliases = {a.name.upper() for st in program.statements
+               if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+               for a in st.args[1:] if isinstance(a, S.Name)}
     others = symbols.declared_variable_names(program) | {n.upper() for n in program.consts} | \
-        {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)}
+        {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)} | aliases
     return frozenset(tables - others)
 
 
@@ -1336,7 +1341,8 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
     variables |= {str(n).upper() for n in program.consts}
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" \
-                and len(stmt.args) == 2 and isinstance(stmt.args[1], S.Name):
+                and len(stmt.args) == 2 and isinstance(stmt.args[1], S.Name) \
+                and stmt.args[1].name.upper() != "PUBLIC":   # `Public.X` still reads the table (2026-10-24)
             variables.add(stmt.args[1].name.upper())  # (`Alias Xal = X`: `Xal.Y` is `Could not find Xal.`)
         elif isinstance(stmt, S.SubDef) and stmt.keyword.upper() == "FUNCTION":
             variables.add(stmt.name.upper())

@@ -10,9 +10,10 @@ Public/Dim/Sub-or-Function-parameter, and for an uncalled Sub; `checker/unused.p
 accepted (matching the exe's own option set) but has no implemented effect: oracle-confirmed to
 have none observable from the CLI either. Extra long options: --logger
 {cr6,cr1000x,cr300,cr350} (default: from the file extension, else cr6) and --no-message-file (do
-not write CR6cmple.xxx).
+not write CR6cmple.xxx), --strict (opencrbasic checks, `checks.py`, on stderr only).
 Output goes to stdout and to the message file (CR6cmple.xxx by default, CRLF line endings);
-exit status 0 on success, 1 on failure.
+exit status 0 on success, 1 on failure, and with --strict 3 when the program compiles but a
+check reports an error.
 """
 
 import re
@@ -25,7 +26,8 @@ from . import syntax as S
 
 def _parse(argv: list[str]):
     opts = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
-            "i": False, "t": False, "b": None, "u": False, "logger": None, "message_file": True}
+            "i": False, "t": False, "b": None, "u": False, "logger": None, "message_file": True,
+            "strict": False}
     positional: list[str] = []
     i = 0
     while i < len(argv):
@@ -39,6 +41,8 @@ def _parse(argv: list[str]):
                 opts["logger"] = arg.split("=", 1)[1]
             elif arg == "--no-message-file":
                 opts["message_file"] = False
+            elif arg == "--strict":
+                opts["strict"] = True
             elif arg in ("--help", "-h"):
                 print(__doc__)
                 sys.exit(0)
@@ -250,7 +254,16 @@ def main(argv: list[str] | None = None) -> int:
         for key in ("l", "c"):
             if opts[key] and result.table_list is not None:
                 Path(opts[key]).write_bytes(result.table_list.encode("latin-1", "replace"))
-    return 0 if result.ok else 1
+    if not result.ok:
+        return 1
+    if opts["strict"]:
+        from . import checks
+        findings = checks.run(result.program_ast, profile)
+        for f in findings:
+            print(f.text(program.name), file=sys.stderr)
+        if any(f.severity == "error" for f in findings):
+            return 3
+    return 0
 
 
 if __name__ == "__main__":
