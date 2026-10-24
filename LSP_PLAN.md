@@ -3,6 +3,9 @@
 This request authorizes planning. No server, extension, or new compiler API has been implemented
 by this document. The implementation sequence below is proposed; start it when implementation is
 requested. Compiler parity remains a separate workstream under [PLAN.md](PLAN.md).
+Since 2026-10-24 the compiler's v1.0 roadmap adds opencrbasic checks and coverage notices beside the
+reference diagnostics; carrying those channels through the server is milestone M6 in
+[PLAN.md](PLAN.md#three-diagnostic-channels).
 
 Goal: a VS Code extension backed by a Python language server that imports opencrbasic, so fixes
 to its parser, profiles, instruction rules, and checker also improve editor behaviour. Deliver

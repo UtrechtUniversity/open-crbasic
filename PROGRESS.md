@@ -1,41 +1,52 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-22 after development round 30**.
-Measurements describe the round-30 implementation. Inspect `git status` before editing;
-use Git to check commit and publication state.
+Current compiler state and handoff, updated **2026-10-24 after development round 31 and the
+round-32 v1.0 planning round**. Measurements describe the round-31 implementation. Inspect
+`git status` before editing; use Git to check commit and publication state.
 
-Design and parity criteria: [PLAN.md](PLAN.md). Previous measurements, round logs and superseded
-workflow instructions: [progress history](docs/progress-history.md). Language-server work has its
-own [plan](LSP_PLAN.md) and [progress ledger](LSP_PROGRESS.md).
+Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
+decision of 2026-10-24 makes verdict safety, execution mode and the first error the priorities;
+later-diagnostic order and cascades no longer block a release. Previous measurements, round logs
+and superseded handoffs: [progress history](docs/progress-history.md). Language-server work has
+its own [plan](LSP_PLAN.md) and [progress ledger](LSP_PROGRESS.md).
 
 ## Current status
 
-The CR6, CR1000X, CR300 and CR350 profiles are implemented. Complete parity remains open:
-saved reproducers still contain false accepts, diagnostic differences and mode differences;
-output coverage also has gaps. Exact diagnostic agreement means equal exit codes and normalized
-ordered stdout, not byte parity. Reference crashes and runner failures are not compiler verdicts.
+The CR6, CR1000X, CR300 and CR350 profiles are implemented. Reference crashes and runner
+failures are not compiler verdicts. Exact diagnostic agreement means equal exit codes and
+normalized ordered stdout, not byte parity.
 
 Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.15:
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 45,108 passed, 311 skipped, 103 strict xfail (round-24/26/27/29/30 fixture gaps) |
+| `pytest -q -n 4 -m 'not server'` | 48,116 passed, 311 skipped, 144 strict xfail |
 | `pytest -q -m server` | 163 passed |
-| Round-30 fixtures and audit (dimensioned aliases, review fixes) | 180 / 100 reference observations (four profiles): 180 / 92 match, 0 / 8 strict xfail; audit 0 differing |
-| Round-29 fixtures and audit (parameter headers, String parameters, review fixes) | 180 / 320 / 104 reference observations (four profiles): 176 / 320 / 92 match, 4 / 0 / 12 strict xfail; audit 0 differing |
-| Round-28 parameter-alias fixture and audit (round-29 implementation) | 368 reference observations: all match; audit 0 differing |
-| Round-27 alias-declaration fixture and audit | 152 reference observations: 144 match, eight strict xfail; audit 0 differing |
-| Round-26 measurement-alias fixture and audit (round-30 implementation) | 282 reference observations: 256 match, 26 strict xfail; audit 0 differing |
-| Round-25 optional-output/burst fixture and audit | 444 reference observations; all match; audit 0 differing |
-| Round-24 destination/settling/FieldNames fixture | 674 reference observations (CR6/CR1000X/CR300/CR350): 629 match, 45 documented gaps |
-| Integer-TimeOut fixture and fresh four-profile audit (round 23) | 236 cases; 0 differing; 0 missing reference verdicts |
-| Expression-source fixture and its audit (round 22) | 100 cases across four profiles; 0 differing |
-| Saved fuzz replay, 3,158 inputs, round-30 implementation against round-22 reference results | 2,391 exact; 48 false accepts; 684 message differences; 16 mode differences; 19 reference/runner failures retained separately |
-| Round-30 replay comparison against the round-29 checker | All 3,158 outputs unchanged. Reference compilers were not rerun for this replay |
-| Fresh bounded fuzz, seeds 417–420, 40 mutants/profile (round 28; not rerun in rounds 29–30) | 157 exact; one pre-existing false accept and one diagnostic difference; one CR1000X reference fault; six existing seed faults kept separate ([details](docs/fuzz-findings.md#round-28-bounded-refresh-2026-10-22)) |
+| Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
+| Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
+| Earlier alias fixtures (r26–r30) | r26 282/282, r27 152/152, r28 368/368, r29 headers 180/180, r29 Strings 320/320, r29 review 104/104, r30 dimensioned 180/180 match; r30 review 92 match, 8 strict xfail |
+| Round-24 destination/settling/FieldNames fixture | 674 observations: 672 match, 2 strict xfail |
+| Saved fuzz replay, 3,158 inputs, against round-22 reference results | 2,392 exact; 48 false accepts; 683 message differences; 16 accepted-with-different-output (one execution-mode, 15 warning differences); 19 reference/runner failures |
+| Round-31 replay against the round-30 checker | Two outputs changed: one message difference became exact, one changed text but remains a message difference. Reference compilers were not rerun |
+| Fresh bounded fuzz, seeds 417–420 (round 28; not rerun since) | 157 exact; one false accept and one diagnostic difference ([details](docs/fuzz-findings.md#round-28-bounded-refresh-2026-10-22)) |
+| `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
-Four-profile diagnostic comparison, rerun in round 30 (unchanged from round 28) (`tools/difftest.py --group all`):
+Impact classes of the replay differences, the v1.0 measure (`scratch/r32/classify.py`, round-31
+replay): 333 same first error with later diagnostics different, 37 same diagnostics in another
+order, 220 same first location with a different message, 58 missing the reference's first error,
+35 reporting an earlier first location, 15 warning-only and one execution-mode difference.
+[PLAN.md](PLAN.md#where-v10-starts-round-30-measurement) has the per-profile table.
+
+Three CR6 probes from 2026-10-24 are additional false accepts outside the replay:
+- an unknown table field;
+- an unknown `Settings.` name;
+- an assignment to an unknown `Status.` field.
+
+They are in `scratch/r32/lint/`.
+
+Four-profile diagnostic comparison, rerun in round 31 and unchanged from round 28
+(`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
 |---|---|---|
@@ -45,103 +56,116 @@ Four-profile diagnostic comparison, rerun in round 30 (unchanged from round 28) 
 | CR350 | 9 / 10 | 505 / 2 |
 
 No corpus verdict mismatches, implementation exceptions or lost exact cases were observed on
-usable reference results. The CR300/CR350 repository rejections reflect CR6-specific programs. The help-corpus
-failures are `pointervariable_2.CR6` on all four profiles and `strcomp_3.CR6` on CR300/CR350.
-The differential gates exit 1 while reference verdicts are missing; this is not a clean parity gate.
-The saved-reference replay script reports these failures separately and exits 0. Compare individual
+usable reference results. The CR300/CR350 repository rejections reflect CR6-specific programs. The
+help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strcomp_3.CR6` on
+CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 30 both with the reference compiler and with
+Repository verification passed in round 31 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
-BUILD  host tests 142 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+BUILD  host tests 146 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
 ```
 
-Expected warnings are owned by [repository build status](../STATUS.md#build). This verification
-includes the `.CR1X` bench harness; the diagnostic corpus table above covers `.CR6` programs.
-Compilation and host tests do not establish logger runtime behavior. No hardware tests were run.
+The host-test count includes uncommitted local-maintenance tests present in the checkout. Expected
+warnings are owned by [repository build status](../STATUS.md#build). Compilation and host tests do
+not establish logger runtime behavior. No hardware tests were run.
 
-Rounds 23–30 did not rerun full corpus TDF/table-list comparisons on any profile; round 22 ran CR6 only.
-These rounds did not rerun full timing, message-file, signature and preprocessing coverage;
-round 27 refreshed only the five repository signatures in `tests/test_signature.py`. CDM binary images (`-b`) are
+Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary images (`-b`) are
 [explicitly excluded from parity](PLAN.md#explicit-exclusions-from-parity). Distribution policy is
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
-Round 30 resolves round-26 dimensioned and indexed measurement aliases with the same method as
-round 29: a read-only Codex (gpt-6.1-sol) decompilation pass, a Claude worker that confirmed the
-model on all four profiles before implementing it, and a Codex review whose seven findings were
-all confirmed by reference probes and fixed. Rules and evidence:
-[dimensioned alias destinations](docs/checker.md#dimensioned-alias-destinations-round-30).
+**Round 31** closed the remaining strict xfails of rounds 24, 26, 27 and 29 and extended
+measurement spans. Four workers ran in parallel; three had Codex (gpt-6.1-sol) research. They
+were stopped at the weekly usage limit on 2026-10-23. A fifth worker integrated the four diffs on
+2026-10-24. The integration's 91 failures were overlapping rules from two workers (double-reported
+CR1000X PulseCount and CR6 bridge channel lines, a missing `Reps > 1` gate) and two unfinished
+pieces (the CR300/CR350 `-t` section dropped after a settling error, a destination-overrun guard
+that hid a duplicate bounds line). Rules and evidence are in four `docs/checker.md` sections:
+- [measurement destination and channel spans](docs/checker.md#measurement-destination-and-channel-spans-round-31);
+- [alias cascades](docs/checker.md#alias-cascades-non-float-alias-destinations-and-parameter-capacity-round-31);
+- [alias name collisions](docs/checker.md#alias-name-collisions-const-first-assignment-and-string-lengths-round-31);
+- [bridge spans and settling timing](docs/checker.md#bridge-channel-spans-and-settling-time-timing-round-31).
 
-- `Alias X=Y(n)` registers `Y` with its own shape; the declared count may reach `T+b` (backing
-  count plus zero-based start). A destination index `Y(k)` needs `1<=k<=n`; the span is checked
-  against backing storage, `T-b-(k-1)` on CR6/CR1000X and `T-(k-1)` on CR300/CR350. The message
-  names the backing variable when `b=0`, otherwise the alias.
-- CR300/CR350 VoltSe now has destination bounds (also for plain arrays) and checks the last
-  channel of the span (`SEChan+Reps-1`, truncated Reps).
-- Review fixes: Const destination indices are folded; dimensioned aliases of Float routine
-  parameters use the header shape; CR300/CR350 alias registration follows item order (items
-  before a failing one stay registered), uses String slots and the alias's own scope, and never
-  removes a Const; non-finite Reps no longer raise.
-- 92 round-26 expected failures now match, 20 of them outside the targeted 72 (CR300/CR350
-  destination bounds/channel counts and one later-local-shadow case).
+A Codex review of the integrated round-31 diff (`scratch/codex/review-r31.md`) predicted nine
+defects:
+- routine-scoped alias destination types leaking between routines on CR300/CR350;
+- wrapped PulseCount port codes;
+- fractional CR1000X CurrentSE channels;
+- alias-named String lengths;
+- an indexed Const assignment in a one-line `If`;
+- an `OverflowError` for extreme bridge fN1;
+- the CSAT3 OOM cutoff;
+- alias-collision cutoff across includes;
+- empty-array parameter capacity.
 
-Remaining strict xfails added this round: eight non-finite Reps cases (the reference clamps to
-32-bit limits; output not modelled). Unprobed: other CR300/CR350 measurement instructions'
-destination bounds and spans, VoltDiff and CR1000X spans, fractional/runtime destination
-indices, multi-index uses of a dimensioned alias, Long/String dimensioned aliases, and the
-Const-index fold for FFT/SDI12 destinations.
+A fix worker confirmed each against the reference before changing code.
+[Round-31 review fixes](#round-31-review-fixes) records the outcome.
 
-Probe scripts, research reports and validation logs are under `scratch/r30/` and
-`scratch/codex/` (untracked). Prior state is in the
-[round-29 handoff snapshot](docs/progress-history.md#round-29-handoff-snapshot-2026-10-22).
+### Round-31 review fixes
+
+All nine findings were confirmed on the reference compilers and fixed. None was refuted. The
+probes also exposed and fixed neighbouring gaps:
+- CR300/CR350 PulseCount channel families and an invalid start (false accepts and false
+  rejects);
+- CR1000X PulseCount span families and fractional channel truncation;
+- negative and float-zero fN1 (false rejects and a ZeroDivisionError);
+- infinite settling times reporting the maximum.
+
+Evidence is in `tests/fixtures/r31_review_fixes.json`: 420 observations, 406 match and 14 are
+strict xfail. The remaining gaps are CR300/CR350 dimensionless-parameter indexing and the
+`Q() As Long` header. Rules are in the round-31 `docs/checker.md` sections and the fN1 rule in
+`docs/instructions.md`. Unverified generalizations:
+- the infinite-settling rule (`inf_max`) was observed on VoltSe only;
+- channel truncation was observed on CR1000X CurrentSE/PulseCount and CR300/CR350 PulseCount only.
+
+**Round 32 (planning).** Under the 2026-10-24 decision, [PLAN.md](PLAN.md) now defines v1.0:
+- three diagnostic channels: reference diagnostics, opencrbasic checks, coverage notices;
+- a fix, flag or accept rule for remaining differences;
+- probed check candidates;
+- milestones M0–M7, about 12–22 rounds.
+
+A Codex review of the draft plan (`scratch/codex/review-r32-plan.md`) corrected:
+- the mode-difference count (one, not 16);
+- the corpus provenance (2,983 of 3,158 reproducers are help-example mutants);
+- the classifier's first-error ordering;
+- the claim that a notice can waive verdict safety.
+
+All four corrections are in the plan. Prior state: the
+[round-30 handoff snapshot](docs/progress-history.md#round-30-handoff-snapshot-2026-10-23).
 Production CRBasic was not changed. No hardware was flashed or tested.
 
 ## Next steps
 
-1. Continue the builder-driven approach of round 24: `tools/builder_map.py FUN_xxxxxxxx` lists
-   every instruction builder (compile-function thunks resolved through the PE image) that calls a
-   shared decompiled helper, with the call's arguments. Open neighbours with
-   strict `xfail` observations: CR1000X `Invalid PulseCount reps.`, CR6 4W/6W channel overlap,
-   CSAT3 negative Reps `Out of memory.`, the timing line of an extreme settling time, and a lone
-   table bounds line that should not gate pass 2. Round 25 resolved the 4W/6W doubling and Resistance
-   `+1` options and the 4W/6W burst MeasPEx constraint. Round 26 resolved the seven bare-alias cases;
-   round 27 resolved alias source binding and chain diagnostic precedence. Rounds 28–29 resolved
-   routine-parameter alias sources, header dimensions and String storage. Start with the
-   round-29 leftovers (Const-shadow body assignment, `Public` nonconstant String length,
-   `Out of memory.` after an unresolved String length) or the round-27 global-name collisions.
-   Round 30 resolved round-26 dimensioned/indexed aliases; round-26 scalar parameter
-   measurement bounds, CR300/CR350 Long alias destination types and post-error cascades remain,
-   as do the round-30 unprobed neighbours (other CR300/CR350 measurement destination bounds); use their minimized cases before extending resolution. Not yet probed: the remaining settling-time callers (Thermistor, AM25T, Therm107-109, Resistance),
-   SDMGeneric's String destination rule and `EC100` options past its table. Then extend the
-   constant-folding gaps from round 23 (`KT/2`, `2^0`, `NOT 0`, `1<<31`, Float variable TimeOut,
-   an earlier `IfTime("a",1,Sec)` warning) and the TCPOpen/SerialOpen/Timer/Scan constant
-   arguments ([round-23 observations](docs/instructions.md#integer-timeout-expressions-and-named-negation-all-four-loggers-round-23)).
-2. Resolve remaining Const diagnostics and ordering: `Variable used in CONST expression.`,
-   `X = J(1)`, `Const K = Min(2,3)`, CR300/CR350 `Variable illegal in Parameter: J.`, and a Sub
-   referring to a Const declared later. Evidence and completed neighboring rules are in
-   [checker notes](docs/checker.md), especially the Const sections.
-3. Close interval gaps: zero-interval list units when Scan and DataInterval units differ,
-   fractional intervals, CR300 out-of-range Scan unit display, and integral/constant checks in
-   one-line If bodies. Recheck unprobed numeric-unit auto-size weights and finite Debug values
-   between 2^31 and FLT_MAX. Owners: [TDF rules](docs/tdf-rules.md) and
-   [instruction rules](docs/instructions.md).
-4. Finish table metadata coverage: per-profile Status definitions (including CardBytesFree),
-   CR300/CR350 implicit structure-table headers/units, and zero-argument Date/PPPOpen sources.
-   FFT literals and malformed one-argument IncludeSection inputs currently supply reference
-   faults rather than usable verdicts.
-5. Refresh all-profile output coverage, including timing, message-file bytes, signatures,
-   preprocessing and TDF/table lists. Distinguish missing from empty LST artifacts in
-   `tools/tdftest.py`; retain the non-ASCII diagnostic encoding and compiler-module typing leads
-   from the [archived LSP findings](docs/progress-history.md#compiler-items-found-by-the-lsp-work-recorded-2026-10-11-not-executed).
-6. Rank the current replay differences by rule family before choosing another semantic chunk.
-   Older leads include SlowSequence argument/block combinations and allocation edge cases; their
-   archived task status must be reproduced rather than assumed current. Then run fresh bounded
-   fuzz seeds 421–424, with no competing heavy run. Earlier seeds are recorded in
-   [fuzz findings](docs/fuzz-findings.md).
+Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
+
+1. **Human decisions needed:**
+   - the v1.0 profile scope (all four profiles, or CR6/CR1000X gated with CR300/CR350 best
+     effort);
+   - confirmation of the `Status` lesson conflict
+     ([lessons](../knowledge/crbasic/lessons.md#status-names-are-not-compile-checked) versus the
+     2026-10-24 rejections in `scratch/r32/lint/`).
+2. Human decision: may the GEUS programs in `examples/Logger Programs/` be compiled as a
+   CR1000X differential corpus and as false-positive controls for opencrbasic checks?
+   ([PLAN.md](PLAN.md#where-v10-starts-round-30-measurement); `AGENTS.md` currently says not to
+   compile `examples/`.)
+3. **M0:**
+   - promote `scratch/r32/classify.py` into `tools/fuzz_replay.py`/`tools/difftest.py`, with
+     independent verdict, mode, first-error, warning and operational dimensions;
+   - add gates for new false accepts, mode changes and first-error regressions;
+   - add a CI workflow running the Wine-free tests and saved-oracle checks;
+   - record the output contract and configuration format in PLAN.md;
+   - make the mutation operators more realistic, then run fresh seeds 421–424.
+4. **M1:** triage the 48 replay false accepts plus the three probe false accepts into rule
+   families before sizing the work. The unknown table field case is the editor-visible one.
+5. **M3/M4** can start after M0, in parallel with M1/M2: the check framework, and the CR6 evidence
+   inventory from `tools/builder_map.py` and `tools/message_catalog.py`.
+6. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
+   are kept in the [round-30 snapshot](docs/progress-history.md#round-30-handoff-snapshot-2026-10-23).
+   Re-rank each under the fix, flag or accept rule before working on it.
 
 ## Environment setup
 
@@ -174,12 +198,12 @@ Old scratch briefs, research notes and timing helpers mentioned in history may b
 
 ## Work method
 
-Follow [repository instructions](../AGENTS.md) and the current human request. Rounds 29–30 (human
+Follow [repository instructions](../AGENTS.md) and the current human request. Rounds 29–31 (human
 instruction 2026-10-22) used Claude subagents for implementation and Codex `gpt-6.1-sol` for
 read-only decompilation research and review, run with the ChatGPT app's bundled CLI
 (`/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex exec
 -m gpt-6.1-sol -s read-only`; `~/.local/bin/codex` 0.158 rejects the model). Workers follow
-`scratch/r29/brief-worker.md`; treat Codex output as hypotheses to confirm on the reference. Commit or push only when
+`scratch/r31/brief-worker.md`; treat Codex output as hypotheses to confirm on the reference. Commit or push only when
 authorized under the repository instructions.
 
 Work on one observed rule family at a time: minimize a reproducer, inspect decompiled behavior,
