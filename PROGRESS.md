@@ -38,12 +38,14 @@ order, 220 same first location with a different message, 58 missing the referenc
 35 reporting an earlier first location, 15 warning-only and one execution-mode difference.
 [PLAN.md](PLAN.md#where-v10-starts-round-30-measurement) has the per-profile table.
 
-Three CR6 probes from 2026-10-24 are additional false accepts outside the replay:
-- an unknown table field;
-- an unknown `Settings.` name;
-- an assignment to an unknown `Status.` field.
+Four 2026-10-24 probes are additional false accepts outside the replay:
+- an unknown table field, an unknown `Settings.` name and an assignment to an unknown `Status.`
+  field (CR6, `scratch/r32/lint/`);
+- a `Status.` initializer before `BeginProg` (CR6 and CR1000X, `scratch/r32/status/`).
 
-They are in `scratch/r32/lint/`.
+GEUS corpus, first run (`scratch/r32/geus/`): the reference CR1000X compiler accepted all 66 GEUS
+`.CR1X` programs. opencrbasic matched 64 exactly and falsely rejected two, the first false rejects
+seen on any corpus ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
 Four-profile diagnostic comparison, rerun in round 31 and unchanged from round 28
 (`tools/difftest.py --group all`):
@@ -166,24 +168,28 @@ revision before acting on it.
 
 Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 
-1. **Human decisions needed:**
-   - the v1.0 profile scope (all four profiles, or CR6/CR1000X gated with CR300/CR350 best
-     effort);
-   - confirmation of the `Status` lesson conflict
-     ([lessons](../knowledge/crbasic/lessons.md#status-names-are-not-compile-checked) versus the
-     2026-10-24 rejections in `scratch/r32/lint/`).
-2. Human decision: may the GEUS programs in `examples/Logger Programs/` be compiled as a
-   CR1000X differential corpus and as false-positive controls for opencrbasic checks?
-   ([PLAN.md](PLAN.md#where-v10-starts-round-30-measurement); `AGENTS.md` currently says not to
-   compile `examples/`.)
+1. **Fix the two GEUS false rejects** (M1, highest priority):
+   - a user `Alias ...=Status` used as a `Sample` source;
+   - a one-line `If ... Then (x = 0)`.
+
+   Details are in [PLAN.md](PLAN.md#where-v10-starts-round-30-measurement). Add both programs, or
+   minimized reproducers, to a fixture. Probe on the logger, or record as unknown, whether
+   `(x = 0)` assigns.
+2. Human decisions of 2026-10-24, recorded in [PLAN.md](PLAN.md#v10-milestones):
+   - CR6 and CR1000X gate v1.0; CR300/CR350 are best effort;
+   - the GEUS programs may be compiled as a corpus (`AGENTS.md` updated);
+   - the `Status` lesson was corrected after the old observation could not be reproduced
+     ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked)).
 3. **M0:**
    - promote `scratch/r32/classify.py` into `tools/fuzz_replay.py`/`tools/difftest.py`, with
      independent verdict, mode, first-error, warning and operational dimensions;
    - add gates for new false accepts, mode changes and first-error regressions;
    - add a CI workflow running the Wine-free tests and saved-oracle checks;
    - record the output contract and configuration format in PLAN.md;
+   - turn `scratch/r32/geus/run.py` into a corpus mode of `tools/difftest.py` (66 GEUS `.CR1X`
+     programs, CR1000X);
    - make the mutation operators more realistic, then run fresh seeds 421–424.
-4. **M1:** triage the 48 replay false accepts plus the three probe false accepts into rule
+4. **M1:** triage the 48 replay false accepts plus the four probe false accepts into rule
    families before sizing the work. The unknown table field case is the editor-visible one.
 5. **M3/M4** can start after M0, in parallel with M1/M2: the check framework, and the CR6 evidence
    inventory from `tools/builder_map.py` and `tools/message_catalog.py`.

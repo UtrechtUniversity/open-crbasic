@@ -51,9 +51,9 @@ workstream has its own [plan](LSP_PLAN.md) and [ledger](LSP_PROGRESS.md).
 
 Required profiles: CR6 (`CR6Comp.exe` CR6.14.2.0), CR1000X (`cr1000xcomp.exe` CR1000X.8.2.0),
 CR300 (`cr300comp.exe` CR300.Std.11.02), CR350 (`cr350comp.exe` CR350.Std.1.07), all in
-`compiler/`. The 2026-10-01 continuation made all four required profiles; the 2026-10-24 decision keeps them
-all but leaves open whether v1.0 verdict safety is gated on all four or on CR6/CR1000X only
-([open scope decision](#v10-milestones)). Granite 6/9/10 and legacy CR1000/CR3000/CR800/CR9000X/CR5000 remain
+`compiler/`. The 2026-10-01 continuation made all four required profiles. Under the 2026-10-24
+decision all four stay supported, but only CR6 and CR1000X gate v1.0; CR300/CR350 are best effort
+([profile scope](#v10-milestones)). Granite 6/9/10 and legacy CR1000/CR3000/CR800/CR9000X/CR5000 remain
 outside this plan. All four share the language front end and
 the table-driven design; they differ in instruction set, predefined symbols (terminals, COM
 ports, ranges), parameter type codes of some instructions, and output conventions (CR300/CR350
@@ -154,12 +154,14 @@ diagnostics without a line number:
 | False reject | 0 | 0 | 0 | 0 | 0 | highest (gated) |
 | Reference or runner failure | 19 | 6 | 4 | 3 | 6 | no verdict |
 
-Outside the replay baseline, three 2026-10-24 CR6 probes are also false accepts:
-- an unknown table field (`Tbl.NoSuchField(1,1)`);
-- an unknown `Settings.` name;
-- an assignment to an unknown `Status.` field.
+Outside the replay baseline, four 2026-10-24 probes are also false accepts:
+- an unknown table field (`Tbl.NoSuchField(1,1)`, CR6);
+- an unknown `Settings.` name (CR6);
+- an assignment to an unknown `Status.` field (CR6);
+- a `Public X = Status.NotARealField` initializer, which CR6 and CR1000X reject with
+  `Variable illegal in Parameter`.
 
-The reference rejects each with `Could not find ...` (`scratch/r32/lint/`).
+The first three are in `scratch/r32/lint/`, the last in `scratch/r32/status/`.
 
 The repository programs and the help examples have no verdict mismatch on usable reference
 results on any profile. The parser accepts every corpus program without an exception, but some
@@ -187,10 +189,28 @@ relevant set, only `IncludeSection`, `ExitFunction`, `ClockSet`, `MetaData`, `IP
 `Network` have no rule beyond their signature. This set defines "relevant" in the decision rule
 below and orders M1 triage, M3 check selection and the M4 inventory.
 
-Compiling these programs, with the reference `cr1000xcomp.exe` and with opencrbasic, would give a
-corpus of real programs instead of mutants. It would also give false-positive controls for
-opencrbasic checks. `AGENTS.md` currently says not to compile `examples/`, so this needs a human
-decision (M0).
+**GEUS corpus (human decision, 2026-10-24).** These programs may be compiled with the reference
+compilers and opencrbasic:
+- as a corpus of real programs instead of mutants;
+- as false-positive controls for opencrbasic checks.
+
+The contact sent every program they had, so some may not be functional or compilable. A reference
+rejection is therefore a verdict to match, not a defect in the corpus. The programs stay
+historical prior art for FirnMelt's own CRBasic (`AGENTS.md`).
+
+**First GEUS measurement (2026-10-24, `scratch/r32/geus/`).** All 66 `.CR1X` programs under
+`examples/Logger Programs/`, including `Archive/`, `Testing/` and `Development/`, were compiled with
+`cr1000xcomp.exe` and opencrbasic, with each program's directory supplied as siblings.
+
+The reference accepted all 66. opencrbasic matched 64 exactly and **falsely rejected two**: the
+first false rejects seen on any corpus.
+- **`Archive/QAS_B_LoggerProgramV2.CR1X`:** a user `Alias D2out(3)=Status` followed by
+  `Sample(1,Status,FP2)`; we report `Invalid symbol in expression: Status.`
+- **`GIOS_WAT_BR_V4_0.CR1X`:** a one-line `If ... Then (wind_direction = 0)`; we report
+  `Invalid, or out of place expression`.
+
+Whether that parenthesized body assigns on the logger is not observed. If it compares and discards
+the result, it is a silent no-op and a strong check candidate.
 
 ### Three diagnostic channels
 
@@ -286,9 +306,8 @@ anywhere.
 
 The probes confirm that the reference itself rejects unknown table fields and unknown
 `Status`/`Settings` names, so those stay in the reference channel as the false accepts above.
-This contradicts the lesson
-[`Status` names are not compile-checked](../knowledge/crbasic/lessons.md#status-names-are-not-compile-checked);
-it is pending human confirmation and has not been edited.
+The lesson that said otherwise could not be reproduced and was corrected on 2026-10-24
+([`Status` names are compile-checked](../knowledge/crbasic/lessons.md#status-names-are-compile-checked)).
 
 ### v1.0 milestones
 
@@ -297,8 +316,8 @@ review. M1 and M2 are re-estimated after their family triage.
 
 | # | Milestone | Content | Exit criterion | Rounds |
 |---|---|---|---|---:|
-| M0 | Metric, policy and CI | Separate verdict, mode, first error, warnings, later diagnostics and operational failure as independent dimensions in `fuzz_replay.py`/`difftest.py`, with per-profile denominators. Add machine gates for new false accepts, mode changes and first-error regressions. Run fixtures and saved-oracle tests without Wine in a CI workflow. Decide the output contract, the configuration format, the v1.0 profile scope and whether the GEUS programs become a differential corpus. Improve the realism of the existing mutation operators | Impact table produced by a tool and gated; CI runs on every commit; decisions recorded here | 1–2 |
-| M1 | Verdict safety | Triage the 48 replay plus three probe false accepts into rule families, fix them under the decision rule, and run fresh realistic seeds | No false reject, crash, hang or implementation exception on any corpus. On the gated profiles, no false accept in repository, help or replay corpora, and every flagged exception listed by identity | 3–6 after triage |
+| M0 | Metric, policy and CI | Separate verdict, mode, first error, warnings, later diagnostics and operational failure as independent dimensions in `fuzz_replay.py`/`difftest.py`, with per-profile denominators. Add machine gates for new false accepts, mode changes and first-error regressions. Run fixtures and saved-oracle tests without Wine in a CI workflow. Decide the output contract, the configuration format, and the GEUS corpus harness. Improve the realism of the existing mutation operators | Impact table produced by a tool and gated; CI runs on every commit; decisions recorded here | 1–2 |
+| M1 | Verdict safety | Fix the two GEUS false rejects first. Triage the 48 replay plus four probe false accepts into rule families, fix them under the decision rule, and run fresh realistic seeds | No false reject, crash, hang or implementation exception on any corpus. On the gated profiles, no false accept in repository, help or replay corpora, and every flagged exception listed by identity | 3–6 after triage |
 | M2 | Mode and first error | Fix the mode difference and the 93 first-location differences; review the 220 same-location messages for misleading causes | Mode equal on every corpus. First error (file, line and cause) equal on repository and help corpora; per-profile rate on rejected replay cases reported and not lower than the round-30 baseline; every remaining misleading-cause case listed | 2–4 |
 | M3 | opencrbasic checks | Framework (codes, severities, configuration, `--strict`, report file, separate result field) and the first checks from the table | Every shipped check meets the evidence-quality bar above, with positive tests, accepted controls and its default decision. Each firing on `crbasic/` programs is fixed or justified. The output contract is tested, including `cr6comp.py`, `--no-message-file` and existing option combinations | 2–3 |
 | M4 | Evidence inventory and notices | Generate a CR6 inventory per instruction: builder, helper call sites, direct and reachable diagnostic strings, unresolved calls, linked Python rules and fixtures (`tools/builder_map.py`, `tools/message_catalog.py`). It is an inventory, not a coverage percentage | Generated by a tool with pinned binary hashes; states marked "unknown" or "partially tested" where evidence is missing; notices fire only on an identified missing rule | 1–2 (CR6) |
@@ -311,11 +330,10 @@ Total: about 12–22 rounds, against an open-ended 20–40+ for full parity.
 M0 comes first because it changes what every later round measures and gates. M3 and M4 can then
 run in parallel with M1/M2. M6 follows M3.
 
-**Open scope decision (human, needed in M0):** whether v1.0 gates verdict safety on all four
-profiles, or on CR6 and CR1000X with CR300/CR350 best effort. FirnMelt uses CR6 and the bench
-CR1000X, the GEUS programs are almost all CR1000X, and most later-diagnostic differences are
-CR300/CR350. Until this is decided the plan
-treats all four as required.
+**Profile scope (human decision, 2026-10-24).** v1.0 gates verdict safety, mode and first error on
+CR6 and CR1000X. CR300 and CR350 are best effort: they keep their tests, fixtures and replay
+measurements, and a regression there is reported, but it does not block v1.0. FirnMelt uses CR6 and
+the bench CR1000X, and the GEUS programs are almost all CR1000X.
 
 ### Round method (unchanged in substance)
 
