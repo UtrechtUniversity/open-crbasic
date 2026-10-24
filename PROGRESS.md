@@ -138,6 +138,30 @@ All four corrections are in the plan. Prior state: the
 [round-30 handoff snapshot](docs/progress-history.md#round-30-handoff-snapshot-2026-10-23).
 Production CRBasic was not changed. No hardware was flashed or tested.
 
+### Local maintenance queue (round 32)
+
+A local review queue was prepared on 2026-10-24 at HEAD `356c2258`, following
+[LocalMaintenance.md](../verification/LocalMaintenance.md#quality-first-kickoff). It is in
+`scratch/local-maintenance/r32-2026-10-24/`, with nine packets in `packets.json`:
+- plan versus handoff counts;
+- the README purpose versus the 2026-10-24 decision;
+- the `Status` lesson conflict (a positive control);
+- two scope controls;
+- round-31 handoff versus `docs/checker.md`;
+- the LSP plan scope;
+- two test-overlap candidates.
+
+**Not completed.** The quality-first worker started (supervisor PID 8852, Qwen3.8-27B
+UD-Q4_K_M, `xhigh`, 2,048-token reasoning budget, 4,096 output, 8K context, 1,200 s timeout). The
+runner's memory guard stopped the model server during loading: swap grew from 951 to 5,937 MiB
+(`memory-*.json`, `stopped_for_swap_growth: true`; `kickoff.log`, `server.log`). No packet was
+attempted, and the guard and other applications were left intact.
+
+To resume with more free memory, check that no worker is live, then rerun the launcher from
+`verification/LocalMaintenance.md` with `queue` set to that directory. It processes only
+unattempted packets. Local output is a proposal; check it against the cited sources at the same
+revision before acting on it.
+
 ## Next steps
 
 Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
