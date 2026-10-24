@@ -360,9 +360,30 @@ def variables_oom(program: S.Program, profile, env) -> bool:
         _segment_oom(_var_words(program, env, (k,))) for k in ("DIM", "PUBLIC"))
 
 
+def string_length_oom_line(program: S.Program, diags) -> int | None:
+    """All four loggers: a String length reported as `Variable illegal in Parameter` (a variable,
+    or on CR300/CR350 also an undefined name; `structure._report_decl_expr` tags the message with
+    the variable) leaves a length the end of pass 1 cannot allocate: `Out of memory.` at the
+    program's last statement, or at the declaration when it has an initializer (round 31)."""
+    tagged = {d.stmt for d in diags.errors if d.stmt and d.message.startswith("Variable illegal in Parameter:")}
+    if not tagged:
+        return None
+    for st in program.statements:
+        for v in st.vars if isinstance(st, S.Declaration) else st.params if isinstance(st, S.SubDef) else []:
+            if id(v) in tagged:
+                # (the parser keeps a String's `= init` inside `string_size`)
+                size = getattr(v, "string_size", None)
+                init = getattr(v, "init", None) or (isinstance(size, S.Binary) and size.op == "=")
+                return st.line if init else program.last_line
+    return None
+
+
 def check_pass1(program: S.Program, profile, diags, env) -> None:
-    if variables_oom(program, profile, env):
-        diags.error(program.last_line, MSG_OOM)
+    line = string_length_oom_line(program, diags)
+    if line is None and variables_oom(program, profile, env):
+        line = program.last_line
+    if line is not None:
+        diags.error(line, MSG_OOM)
 
 
 def public_table_oom(program: S.Program, env) -> bool:

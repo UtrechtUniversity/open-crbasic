@@ -3752,6 +3752,8 @@ registered, so a repeat gives the same message, not `Duplicate Alias Name`. CR30
 lines' pass-1 errors vanish after it in the probes (second `Alias`, `Public Zed, Zed`): not
 modelled (message-only difference on already rejected programs). Fixture:
 `tests/fixtures/alias_name_collision.json` (CR300/CR350 multi-line cases omitted).
+Round 31 narrows "only the first comma item", "never registered" and the CR300/CR350 note: see
+[Alias name collisions, Const-first assignment and String lengths](#alias-name-collisions-const-first-assignment-and-string-lengths-round-31).
 
 ## CR300/CR350 follow-ups (2026-10-04)
 
@@ -7434,3 +7436,355 @@ probed); CR1000X channel span; runtime destination indices; multi-index uses of 
 alias; dimensioned Long/String aliases; a subscripted bare alias (`Alias X=Y`,
 `VoltSe(Y(2),...)`); saturated nonfinite Reps; Long/String parameter alias destinations. These
 are compiler observations only.
+
+## Alias name collisions, Const-first assignment and String lengths (round 31)
+
+Reference observations, 2026-10-23: `tests/fixtures/r31_alias_collisions.json` records 514 cases
+(129 programs on CR6, CR1000X, CR300 and CR350; two further runs, `Public Q` / `Public P(K) As
+String * Q` on CR6 and CR350, timed out in the reference compiler and are not recorded). The
+round-30 checker matched 128; round 31 matches 512, with two strict expected failures. All 24
+targeted expected failures now match: 8 in `r27_alias_declarations.json`, 4 in
+`r29_parameter_headers.json` and 12 in `r29_review_fixes.json`; none of these three fixtures has
+expected failures left.
+
+Reverse-engineering trail (Codex, `scratch/codex/re-r31-B.md`, CR6.14.2.0): `FUN_004b8e70`
+registers an alias's RHS record and then scans earlier variable records for its name; expression
+tokens try constants (`FUN_004b5db0`) before variables; the type parser `FUN_004ba960` ignores a
+failed String length, and the end of pass 1 requests the variable segments (`FUN_004b6840`,
+allocator `FUN_00508be0`). The exact retained length behind `Out of memory.` was not derived. The
+rules below come from the probes; no decompiled code was copied.
+
+Alias RHS names (`structure._alias_name_collisions`, used by `_check_alias_dims`):
+
+- In a routine, an RHS name that is an earlier global `Public`/`Dim` (also one declared by a
+  routine-body `Public`), a global alias or a `Const` reports `Y already declared as a variable.` /
+  `Y is already declared as a CONST.`, like a global alias. A local `Dim Y`, a parameter `Y`, a
+  later global or another routine's local does not collide; a global still collides when a local
+  or parameter of the same name exists. `Alias X = Sec` in a routine reports `Sec is a predefined
+  CONST.` as at global scope.
+- Every bare list item is checked, at global scope as well (`Alias X=Q,Y` and `Alias X=Y,Y`
+  report each colliding name; the earlier "first item only" observation, `= Fresh, LevelFt`, has
+  a blank after the comma): an item after a comma with a blank before it (`= Q, Y`), a dimensioned item (`Y(1)`) or one with
+  trailing words (`Y 3`) does not collide. Each item reports after its own start-dimension error
+  (`Alias X(2)=Q,Y` on `X(2)`: `Illegally dimensioned aliased name`, then the collision) and
+  before later items' errors.
+- A colliding name skips `Duplicate Alias Name` (a repeated `Alias X=Y` gives `Duplicate Alias`
+  then the collision). In a routine the name is registered as a local alias: a later `Alias Y=Z`
+  there is `Cannot Alias an Alias.`. At global scope it is not (source lookup finds the earlier
+  global first, so `Alias Y=Z` compiles).
+- CR300/CR350 (`cr3xx.drop_after_alias_collision`): after the first alias `already declared as a
+  variable.` no later line reports anything (later aliases, `Public`, `EndSelect`, `Scan`
+  arguments, a second routine); the rest of its own statement still does. A `Const` or
+  predefined collision does not do this. "Later" is the expanded source order: a collision in an
+  `Include`d file also drops the main file's lines after the `Include` (review, 2026-10-24,
+  `r31_review_fixes.json` `f8a`; CR6/CR1000X keep them).
+
+Const-first assignment (`check_pass1`, assignment branch and one-line `If` bodies): an assignment
+to a name declared by an earlier `Const` is `Invalid assignment in expression: J=1.` (CR300/CR350
+with the line's newline before the period, not in a one-line `If` body), whether or not a
+parameter, local `Dim` or global of that name exists, and also when that `Const` itself failed
+(`Public J` / `Const J=7`). `J(1)=1` gives `Invalid, or out of place expression: J(1)=1.`, also in a one-line `If` body
+(`If 1 Then J(1)=1`, `... Else J(1)=1`, no newline in the echo on CR300/CR350; review `f5`). A
+`Const` declared after the assignment does not apply (`Sub S(J)` / `J=1` / `EndSub` / `Const J=2`
+compiles); reading the Const (`K=J`) is accepted.
+
+String lengths (`_check_decl_exprs`, `_report_decl_expr`, `storage.string_length_oom_line`):
+
+- A `Public`, global `Dim` or local `Dim` String length is checked like a header length, before
+  the variable's dimensions, with only earlier names visible: undefined -> `Invalid symbol in
+  expression: K.` (CR300/CR350 `K is not defined.` then `Variable illegal in Parameter: K.`); an
+  earlier variable, local or parameter -> `Variable illegal in Parameter: Q.`. An alias name is a
+  variable from its `Alias` statement on (`Alias X=Z` / `Public P As String * Z`); before it, or
+  at global scope for a routine's alias, it is undefined (review `f4`). The echo is the
+  text after `*` and one blank, up to an `=` (`*  Q ` -> ` Q `, `* Q = "abc"` -> `Q `). CR300/
+  CR350 then stop the declaration and name the variable two on (`Too many parameters:  U.`).
+- Every String length reported as `Variable illegal in Parameter` (a variable on every profile,
+  an undefined name on CR300/CR350; `Public`, `Dim` or routine parameter) adds `Out of memory.`
+  once, at the last statement (`EndProg`), after the other pass-1 errors; with an initializer it
+  is at the declaration's line. An undefined length on CR6/CR1000X has no OOM. A segment OOM and
+  a length OOM give one message.
+
+Probes that contradicted the Codex model: CR300/CR350 drop not just the chain diagnostic but
+every later line; list items after the first collide too; in a routine a global alias gives the
+collision, not `Duplicate Alias Name`; its probe 8 (`K=J` with `Sub S(J,K)`) adds `K is not
+defined.` on CR300/CR350. Its probes 1-7, 11, 12 and 16-20 held as predicted; 9 and 10 were only
+run as variants (`c03`, `c02`), and 13-15 were covered in round 29.
+
+Remaining gaps: on CR300/CR350 a parameter conflicting with a Const stops the header, so later
+parameters are undefined in the body (`Sub S(J,K)` / `K=J` -> `K is not defined.`, the two
+expected failures). Whether the OOM with an initializer also ends the compile, several poisoned
+declarations with initializers, and String lengths naming another routine's locals are unprobed.
+CR6 and CR350 did not finish `Public Q` / `Public P(K) As String * Q` within 60 s. These are
+compiler observations only.
+
+## Alias cascades, non-Float alias destinations and parameter capacity (round 31)
+
+Reference observations, 2026-10-23: `tests/fixtures/r31_alias_cascades.json` preserves 300
+cases (73 programs on all four profiles, 4 on CR6/CR1000X only; one CR300/CR350 pair was rerun
+after a runner failure). The round-30 implementation matches 165 of them; round 31 matches 288
+(12 expected failures; `cr6-e09`/`cr6-e10`, the CR6 BrHalf overlap, match through the bridge span
+validator of "Bridge channel spans and settling-time timing (round 31)"). All 26 remaining expected failures of `r26_measurement_aliases.json` now
+match.
+
+- CR300/CR350: `Cannot Alias an Alias.` starts the `Too many parameters` cascade like the other
+  declaration errors. The next `Scan(10,Sec,0,0)` reports `Too many parameters:  Sec.`. A
+  declaration after the failed alias (`Public W`, `Dim W(3)`) is dropped (`W is not defined.`).
+  A later instruction reports its second argument (`VoltSe(Z,1,...)`: `Too many parameters:  1.`,
+  no channel check). The unregistered chain name stays undefined (`VoltSe(Y,5,...)`:
+  `Y is not defined.`, then `Too many parameters:  5.`). The chain on a scalar `Public A` or
+  `Dim A`, and `Alias Z(1)=Y`, behave the same. CR6/CR1000X report only the alias line.
+- CR300/CR350: an alias takes its declared source's type, a routine's alias in that routine only
+  (`Sub AA` / `Alias X=Z` of a Float, `Sub BB` / `Alias Y=Z` of a Long: `VoltSe(Z,...)` in `BB`
+  fails, in `AA` compiles; review `f1`, `_destination_types` maps each routine statement to its
+  routine's aliases). An alias of a Long, Boolean or String
+  variable is no Float destination: `VoltSe(Y,R,...)` gives `Illegal destination variable type,
+  expecting Float.` then `Too many parameters:  R.`, with no destination-bounds or channel check
+  (Reps 5, 6, 7, 9 included). This holds for bare, offset (`X(2)=Y`), dimensioned (`X=Y(6)`),
+  indexed (`Y(2)`), scalar-source and `Dim`-source aliases. `Battery(Y)` gives only the type
+  line. A second such VoltSe after the first (the cascade has started) reports it again. A Float
+  alias (`Alias F(6)=G`) compiles. CR6/CR1000X compile all of these.
+- CR300/CR350: a routine's own parameter hides a global alias of that name. `Sub S(Y)` with a
+  global Long alias `Y` compiles `VoltSe(Y,1,...)`, and so does `Function F(Y)`. A routine
+  without that parameter sees the alias (`Sub S` / `VoltSe(Y,1,...)`: the type error). A
+  routine-local `Dim Y` hides it too. A Long alias of a routine-local `Dim L As Long` is rejected.
+- CR300/CR350: a Long or String parameter is no Float destination (`Sub S(Q As Long)` /
+  `VoltSe(Q,1,...)`: the type error, `Too many parameters:  1.`, and `Too many parameters:
+  Sec.` on the later `Scan`). CR6/CR1000X compile it.
+- All four profiles: a Float routine parameter's capacity is its header shape, one element when
+  none (`Q()` too, review `f9`), whatever the call passes (`Call S(X)` with `Public X(6)`). `Sub S(Q)` / `VoltSe(Q,2,...)`
+  gives `Variable Q out of bounds.`; `Q(2)` Reps 3, `Q(2,2)` Reps 5, `Q(N)` with `Const N=2`
+  Reps 3, `Q(3)` / `Q(2)` Reps 3 and `Q(3)` / `Q(4)` fail; Reps equal to the capacity compiles.
+  The same holds for `Function F(Q)`, for two VoltSe lines, and on CR6/CR1000X for TCDiff and
+  BrHalf (`Q(2)`, Reps 3). A parameter named like a global alias (`Alias X=Y`, `Sub S(Y)`) uses
+  the parameter (`Variable Y out of bounds.`). CR6 also reports its channel check (`Invalid
+  channel 1, must use U1..U12.`). CR350 also reports its span (`Channel 5 exceeds number of valid
+  channels.`) after the bounds line.
+- CR6/CR1000X: a subscripted scalar parameter `Q(1)` with Reps 2 is out of bounds. CR300/CR350
+  report `Dimensions not declared: Q(1).` and `Too many parameters:  2.`, as for a scalar
+  `Public P` (not modelled for parameters). `Q()` behaves as such a scalar there (`VoltSe(Q(1),
+  ...)`, and `Q(2)=1` -> `Invalid, or out of place expression: Q(2)=1` plus the line's newline;
+  review `f9d`-`f9i`, not modelled). `Sub SS(Q() As Long)` gives `Invalid symbol in expression:
+  As.` (CR300/CR350 `As is not defined.` first; `f9k`, not modelled).
+
+Implementation: `cr3xx._DECLARATION_TRIGGERS` gains `Cannot Alias an Alias.`.
+`cr3xx._destination_types` extends `symbols.declared_variable_types` with each alias name of a
+declared source; a name declared as a variable keeps its own type, and an alias of an alias passes
+nothing on. `check_float_destinations` lays the enclosing routine's parameter types over it.
+`_report_rewritten_first_arg` uses it too, for the cascade-rewritten statements.
+`symbols.scope_tables(parameters=True)` (used only by `instr_measure.check_reps`) keeps a
+parameter's header shape and type in place of hiding the name, so `_dest_overrun` bounds it.
+`_measurement_aliases.lookup` already refuses an alias shadowed by a parameter.
+
+RE trail (Codex, `scratch/codex/re-r31-A.md`): CR6 `FUN_004b8e70` rejects an alias source that is
+itself an alias. `FUN_004baf00` builds a parameter with dimensions `(1,1,1)` unless the header gives
+them. `FUN_004b9f40` searches the routine's parameters before nonlocal names. `FUN_004a2f60` compares
+the requested span with the descriptor capacity. Its 24 predictions matched where probed, including
+`CT1` (`VoltSe(Z,1,...)` after the failed chain). It did not predict the following: CR300/CR350 also
+bound a parameter (it scoped rule C to CR6/CR1000X); the declaration after a failed alias is
+dropped; a non-Float parameter is rejected; and a parameter hides a Long alias on CR300/CR350. No
+decompiled code was copied.
+
+Gaps (the 12 expected failures): CR300/CR350 subscripted scalar parameters (`Dimensions not
+declared`, which needs parameters in `symbols.declared_dim_counts`); a Sub header after the cascade
+start keeps its parameters (CR300/CR350 report `Q is not defined.`); a later-line error (`Call
+argument required.`, PulseCount outside Scan) gates the earlier destination bound. Not probed: other CR300/CR350 Float-destination instructions
+with non-Float aliases beyond VoltSe and Battery, routine-local aliases of parameters, `ByRef`
+and `Optional` parameters. These are compiler observations only.
+
+## Measurement destination and channel spans (round 31)
+
+Reference observations: `tests/fixtures/r31_measurement_spans.json` records 1014 cases on all four
+profiles (CR6 269, CR1000X 239, CR300 256, CR350 250). 978 come from the round-31 probes of
+2026-10-23 (`scratch/r31/w6/`, untracked): VoltSe, VoltDiff, TCSe, TCDiff, BrHalf, BrHalf3W,
+BrHalf4W, BrFull, BrFull6W, Therm107/108/109, CurrentSE, PeriodAvg and PulseCount, each with
+destination fits and overruns (`d_*`), alias destinations (`a_*`), channel spans at and past the
+last terminal (`c_*`, `px_*`), start-channel values (`s*`), Reps 0, negative and fractional Reps,
+and destination-plus-channel order (`dc_order`). The other 36 (`*-idx-*`, 2026-10-24,
+`scratch/r31/w10/`) pin an index past the dimension. The round-30 checker matched 522 cases;
+round 31 matches 960, with 54 strict expected failures. Four CR1000X PulseCount cases of
+`r24_dest_counts.json` also match. This family had no Codex report: every rule below is fitted to
+the real compilers' output, and no decompiled addresses are claimed.
+
+Destination bounds (`instr_measure.check_reps`):
+
+- CR300/CR350: every instruction above checks its Float destination like the round-30 VoltSe
+  rule (`_SINGLE_PASS_REPS`), before the line's other diagnostics. Reps 0 or negative gives
+  `Invalid reps %d, must be > 0.`, except that a negative Reps on Therm107-109 and PeriodAvg prints
+  no Reps line and overruns the destination (`Variable X out of bounds.`). A negative PulseCount
+  Reps gives both lines.
+- CR6 now also checks PeriodAvg, CurrentSE and Therm107-109; CR1000X also checks Therm107-109.
+  On these two profiles a thermistor has no output-count check (an overrun compiles). An alias
+  destination indexed past the alias size is still out of bounds (`a_index`). The former
+  single-pass Therm entry of `check_dest_bounds` moved here.
+- CR6 CurrentSE with Reps above 1: `Reps >1 not allowed in this device.` after the bounds line.
+- An index past the dimension (`Therm109(A(6),...)` or `VoltSe(A(6),...)` on `Public A(5)`) is
+  found by both this rule and the CR300/CR350 late index check (`expressions.
+  check_instruction_index_bounds`). The real compilers print the line once, also when another line
+  has an error (`idx-th_other_err*`). `checker._place_index_bounds` now drops the index check's copy
+  on CR300/CR350 too, so a destination line printed on that line wins (the `PortGet` reordering
+  stays CR6/CR1000X). Unlike W6's first guard (no destination message past the dimension), this
+  keeps a routine parameter `Q(4)` of `Q(3)` (`r31_alias_cascades.json` `e04`, all four profiles),
+  which the index check does not see. It also keeps CR6 `VoltSe(A(11),1,..,13,..)`
+  (`portget_order_wrap.json` case 11), where the destination line precedes the channel line.
+
+Channel spans (`terminals.py`; an instruction entry `[pos, kind, reps_pos, width]`, a kind's
+`span` key):
+
+- CR6 (`u_terminal_se`, `u_terminal_diff`) and CR1000X (`se_chan`, `diff_chan`): with Reps above
+  1, the start of the last repetition, `start + (Reps-1)*width*step`, must stay in range. `step`
+  is 2 on a differential kind; `width` is 2 for BrHalf3W, BrHalf4W and BrFull6W. Otherwise the
+  line is `Channel N exceeds number of valid channels.`, where N is the first channel past the
+  start's range: 13 on CR6, 17 (SE) or 9 (diff) on CR1000X. This covers VoltSe, VoltDiff, TCSe,
+  TCDiff, Therm107-109 and the CR1000X bridges. A fractional Reps truncates (`2.5` acts as 2).
+- CR6 start above U12 (`213`, `250`): reported as a span, `Channel 13` / `Channel 50` (value
+  minus 200). A differential kind reports an even value as an invalid odd start first (`BrFull`
+  `250`: `Invalid start channel for Differential Measurement...`).
+- CR6 bridges take only their start channel from here. Their span belongs to the bridge span
+  validator ("Bridge channel spans and settling-time timing (round 31)"), because the
+  last-repetition fit misses a 4W/6W second measurement group (see there).
+- CR300/CR350: the last channel used, `start + max(Reps,1)*width - 1`, is tested and shown (VoltSe
+  Reps 2 on SE 6: `Channel 7`), with width 2 for BrHalf3W, BrHalf4W and BrFull6W. Therm107-109 use
+  `therm_chan` (1..6 on CR300, 1..4 on CR350) and print the bare line `Channel exceeds number of
+  valid channels.`. CurrentSE checks its SE span twice (two identical lines, observed). PulseCount
+  (`pulse_chan_span`) must keep Reps channels from the start inside 1..2, else `Invalid PulseCount
+  reps.`.
+- CR1000X PulseCount (`pulse_chan_cr1000x`: `C1..C8` 101-108, `P1`/`P2` 301-302) must keep its
+  repetitions inside the start's own family, else `Invalid PulseCount reps.` (Reps 201 from `C1`
+  fails although 301 is `P1`). The CR6 counterpart is `instr_measure._check_pulse_span` (next
+  section).
+- A span check stays inside the start's own range (`terminals._check_arg`). A kind with
+  `truncate` tests the integer part of a fractional channel: CR1000X CurrentSE (`402.5`,
+  `-402.5`, `402.9` are RG2; `400.5` reports `Invalid channel 400`) and PulseCount (`108.5`,
+  `302.9` compile, `100.5` fails), CR300/CR350 PulseCount (`6.9` compiles, `0.5` fails).
+- CR300/CR350 PulseCount channels (`pulse_chan_span`): CR300 1..6, 8, 9; CR350 1..8; anything
+  else (`0`, `-1`, `7` on CR300, `212`, `412`) is `Invalid PulseCount channel.`. The Reps
+  families are `1..2`, `3..6` and single channels above (CR300 `8`, `9`; CR350 `7`, `8`). An
+  invalid start is spanned as channel 1 (`invalid_start`): Reps 2 adds nothing, Reps 3 adds
+  `Invalid PulseCount reps.` (review `f2-3xx-*`, 2026-10-24; this also removes the former
+  false rejects `3`/`5` with Reps 2).
+- The destination line precedes the channel line on every profile (`dc_order`).
+
+Integration (round 31, W10): W6 and W9 both modelled `Channel %d exceeds` for the CR6 bridges and
+`Invalid PulseCount reps.` for the CR1000X. The integrated tree printed those lines twice (CR6
+bridges in this fixture; CR1000X PulseCount here, in `r31_settling_overlap.json` and in
+`r24_dest_counts.json`). One owner each is kept, as stated above. The 28 CR6 BrFull/BrHalf4W/BrFull6W expected failures (excitation span and
+overlap) now match through W9's validator. The CR300/CR350 settling-range line that W9 added must
+not hide `-t` entries (`cli._SINGLE_PASS_KEEPS`, `docs/cli.md` "-t"; `timing_r16` `cr300_measure`
+and `reps_large`).
+
+Remaining gaps (the 54 expected failures):
+
+- CR300/CR350 `ExChan exceeds number of excitation channels.` (25).
+- CR300 PeriodAvg `Invalid channel: %d.` / `Reps exceeds valid channels.`, and the CR6/CR1000X
+  PeriodAvg negative Reps (11).
+- Thermistor negative Reps and burst-channel spans (9). Two further CR6 Therm107 cases show the
+  bridge-validator overlap and channel lines, which the thermistors do not run.
+- Pulse port and channel-0 messages (5): CR300 `SE1 is not a valid pulse count port.`, CR1000X
+  `Selected PulseCount config option is not compatible with channel type.`, CR300/CR350 VoltDiff
+  channel 0 `Invalid channel number.`.
+- CR1000X BrHalf excitation past `Vx4` (1).
+- A CR1000X BrHalf `mV2500` range-code line, printed twice by the real compiler. It is also absent
+  at round 30, so it belongs to another family (1).
+
+Not probed: Resistance, the AM25T, and CR6 negative burst channels on the bridges.
+
+## Bridge channel spans and settling-time timing (round 31)
+
+Fixture `tests/fixtures/r31_settling_overlap.json` (801 reference observations on all four
+profiles, 2026-10-23; 749 exact, 52 strict expected failures; 254 matched before this round) plus
+43 flipped cases of `r24_dest_counts.json`. CR6 evidence was read from the decompiled CR6Comp (addresses below) and
+confirmed on the real compilers; CR1000X rules are fitted to observations only (no cr1000xcomp
+addresses). `tools/trace_times.py` recorded 269 CR6 bridge/CurrentSE time additions
+(`scratch/r31/trace.json`, untracked); the model reproduces all of them.
+
+**Bridge span validator** (CR6 only; `instr_measure._check_bridge_span`; `FUN_00516170`, called
+from the shared analog builder `FUN_005147a0` for positive channels). With `s`/`e` the zero-based
+`U` index of the measurement and excitation channel, Reps `R`, MeasPEx `M` (below 1 counts as 1),
+`g` measurement groups and stride `d` (BrHalf 1/1, BrHalf3W 2/1, BrFull 1/2, BrHalf4W and
+BrFull6W 2/2):
+
+- `meas_last = s + (R-1)*g*d + (g-1)*d`, `ex_last = e + ceil(R/M) - 1`.
+- `s < e <= meas_last` -> `Measurement channels and excitation channels overlap.` (equal starts
+  and an excitation start below the measurement start are not reported; the binary's second
+  branch, `e < s and meas_last <= ex_last`, cannot hold for Reps >= 1). RevEx and RevDiff do not
+  enter it.
+- Then the first further excitation channel past U12, else (Reps > 1) the first further
+  measurement channel past U12, -> `Channel %d exceeds number of valid channels.` (Reps 1 never
+  reaches the measurement loop: `BrHalf3W(X,1,..,U12,..)` and `BrFull6W(X,1,..,U11,..)` compile,
+  `r31_measurement_spans.json` `c_r1`/`px_r1`; the integrated code first lacked this gate.) The
+  start channel itself (`0`, `-5`, `213`, `250`, an even differential start) stays with
+  `terminals.py`, which skips its own last-repetition span for these five CR6 bridges
+  (`terminals.CR6_BRIDGES`): that fit misses the second group of the last repetition
+  (`BrHalf4W(ZZ,3,..,U3,U1,1,..)` -> `Channel 13`, sweep `ov-4w-r3-m1-u3-*`). (`FUN_005160a0`
+  with a raw index; the excitation failure returns before the measurement loop).
+- Both follow the line's destination bounds error and precede later lines. 152 CR6 sweep
+  programs matched the inequalities exactly, including the boundaries (`U1`/`U3` starts, Reps 1-3,
+  MeasPEx 1-3, every `U1..U12` excitation). CR1000X (separate `Vx` terminals) never reported it;
+  CR300/CR350 report other excitation/channel-count messages (not modelled).
+
+**PulseCount Reps span** (`_check_pulse_span`, CR6 only; `FUN_00510250`). The port index `i`
+(`C1..C4` 0-3, `U1..U12` 4-15, `C5..C16` as `U`; from 201 up the converter `FUN_00515ff0` keeps
+`code % 200 + 3` when `code % 200 <= 12`, so `412` is `U12`, `400` `C4`, `612` `U12`; review `f2`)
+plus `Reps-1` must not exceed the family limit,
+4 for `i < 4`, else 16 (one past C4 and U12, as observed). Else `Invalid PulseCount reps.` after
+the bounds error. CR1000X (fitted: `P1,P2`, `C1..C8`, the same limits) is the `pulse_chan_cr1000x`
+terminal span of "Measurement destination and channel spans (round 31)"; both workers modelled it
+and the integration kept one (the duplicate printed the line twice). CR300/CR350 also report it but
+add `... is not a valid low level AC input port.` (not modelled).
+
+**CSAT3 negative Reps** (CR6 `FUN_00436d60`): Reps is a signed byte; a negative byte (Reps
+128-255, -1..-128 modulo 256) fails the allocation before the destination is resolved ->
+`Out of memory.`, and the compile ends there: errors of later statements (and later `const_ranges`
+findings, deferred index bounds and early warnings such as `Scan never reached at run time.`) are
+dropped, earlier ones stay (`checker/__init__.py`, after tier C; review `f7`).
+
+**Settling time in the scan budget** (`scan_time.analog_units`; `FUN_00516740` returns the value
++810 without clamping, `FUN_00524f90` computes in 32-bit `int`, `NextScan` `FUN_0046a4b0` compares
+unsigned). The settling argument is converted as C `(long)` (a string or a value past Long is
+-2147483648) and counted whatever its range check says; every step wraps to 32 bits, the float to
+int conversions give -2147483648 out of range, the final division truncates toward zero. A
+negative total fails the unsigned `interval < total` test and prints a negative amount:
+`VoltSE(...,"a",...)` -> `by -2148 Sec.` (`-2147574 mSec`, `-36 Min`); two such calls -> `-4295`;
+Reps 2 doubles back to a small positive total (no message), Reps 3 does not. Probed values:
+5999999, 6000000, 6000001, 1E8, 1.5E9, 2^31-1 (wraps on the +810), 2^31, -1, -20, -1E9, strings.
+A settling time that is a float infinity (`1E39`, `1E308`, `INF`; `1E38` and `1E20` are not)
+shows as `Settling time 2147483647 too long` on all four profiles (`inf_max` in `measure.json`)
+and times like `-2147483648`; `-1E300` stays -2147483648 (review `f6-st*`). The bridge timing's
+float casts overflow to infinity instead of raising (`scan_time._f32`, fN1 `1E300`, review
+`f6a`; a float-zero fN1 such as `1E-50` times as 0). The fN1 value rule is in
+`docs/instructions.md` "Invalid fnotch, minimum allowed".
+
+**Bridge and CurrentSE timing** (`scan_time._bridge_units`): one analog call per MeasPEx group
+(one call with all Reps when MeasPEx equals Reps, else `ceil(R/M)` calls of `M` and the
+remainder), each doubled in-call for RevEx, RevDiff (BrFull/4W/6W) and the second measurement
+group (BrHalf3W/4W/6W). Autorange and open-detect ranges are modelled only for one-group bridges
+(BrHalf, BrFull); burst channels are not. CR6 `CurrentSE` ignores MeasOff (and the "C" range) in
+its timing and allows Reps 1 only; CR1000X `CurrentSE` times as `VoltSE` (MeasOff adds one
+measurement). 158 programs of ten identical bridge/CurrentSE lines in `Scan(1,mSec)` matched the
+reported excess exactly on CR6 and CR1000X (this resolves single 100 us units per call). At the
+model's first quiet `mSec` interval and one below it, 16 single-bridge scans gave the same budget
+error / background-calibration warning / clean verdicts except one CR1000X `BrHalf` at 50 Hz,
+where the warning still shows one mSec higher (the CR1000X warning threshold is a fit,
+`docs/instructions.md` "Scan time budget").
+
+**Settling ranges added**: CR6/CR1000X `BrHalf3W` (9th argument), `BrHalf4W`/`BrFull6W` (11th),
+20..6000000. CR300/CR350 `VoltSE`/`VoltDiff` (6th), `TCSE`/`TCDiff` (8th), `BrHalf` (9th),
+`BrFull` (10th): 0 or 10..50000 (`... min time is 10.`/`... max time is 50000.`), after the fnotch
+warning. **CR1000X `CurrentSE` channel**: `RG1`/`RG2` (401/402, also negative, fractions
+truncated) else `Invalid channel %d, must be RG1 or RG2.` before the settling message.
+
+Remaining gaps: on CR6 the 4W/6W settling, `Excitation exceeds 2500.` and `Invalid measurements
+per excitation` messages precede the overlap line but the checker prints the overlap first (or
+does not model them); the CR1000X calibration-warning gap above; a CR1000X channel literal past Long shows as -2147483648 (not modelled);
+`Resistance` and the other callers of the span validator, burst-channel timing and the
+two-group autorange timing are not modelled; the two `r24` "lone first table bounds line" cases
+(a multi-index `Sample` source whose evaluator bounds error does not gate pass 2) remain.
+
+Review of the integrated round-31 diff (Codex, `scratch/codex/review-r31.md`, nine findings with
+predicted outputs): `tests/fixtures/r31_review_fixes.json` records 420 reference observations of
+2026-10-24 on all four profiles (the nine programs, their neighbours and the channel, fN1 and
+settling sweeps; 406 exact, 14 strict expected failures, the CR300/CR350 dimensionless-parameter
+indices and `Q() As Long` above). All nine findings were confirmed; the rules are noted in the
+owning sections above as "review `fN`". Not predicted by Codex: CR300/CR350 PulseCount channel
+validity and families, `truncate` on CR1000X PulseCount, negative and float-zero fN1, settling
+infinity, later early warnings after the CSAT3 OOM, and routine-scoped aliases in String lengths.

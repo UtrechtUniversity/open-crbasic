@@ -35,7 +35,26 @@ _RANGES = {800: (0, False), 802: (1, False), 804: (2, False), 810: (3, False),
 
 
 def _f32(x: float) -> float:
-    return struct.unpack("f", struct.pack("f", x))[0]
+    try:
+        return struct.unpack("f", struct.pack("f", x))[0]
+    except OverflowError:   # (a C float cast overflows to infinity: fN1 `1E300`, round 31)
+        return math.copysign(math.inf, x)
+
+
+def i32(x: int) -> int:
+    """C `int` arithmetic: wrapped to 32 bits."""
+    return (x + 2**31) % 2**32 - 2**31
+
+
+def _cint(x: float) -> int:
+    """x87 float -> int: truncated; out of range gives -2147483648."""
+    return int(x) if -2**31 <= x < 2**31 else -2**31
+
+
+def _cdiv(a: int, b: int) -> int:
+    """C integer division (truncates toward zero)."""
+    q = abs(a) // abs(b)
+    return q if (a < 0) == (b < 0) else -q
 
 
 @dataclass(frozen=True)
@@ -50,7 +69,7 @@ class Model:
     busy_extra: int    # added to the longest integration time (units) for the calibration gap
 
     def integ_code(self, fnotch: float) -> int | None:
-        if fnotch == 0:
+        if _f32(fnotch) == 0:   # (`1E-50` is a float zero, round 31)
             return self.integ_zero
         if not math.isfinite(fnotch) or fnotch <= 0:
             return None
@@ -81,10 +100,10 @@ class _CR6(Model):
         return (k << 5) // 3 + 1
 
     def settle_code(self, settling):
-        return int(_f32(_f32(_f32((settling or 500) + 810) * 3.0) / 32.0) + 0.5)
+        return _cint(_f32(_f32(_f32(i32((settling or 500) + 810)) * 3.0) / 32.0) + 0.5)
 
     def settle_units(self, code):
-        return int(_f32(_f32(code * 32.0) / 3.0)) + 5
+        return i32(_cint(_f32(_f32(code * 32.0) / 3.0)) + 5)
 
     def open_detect_code(self):
         return 5
@@ -98,10 +117,10 @@ class _CR1000X(Model):
         return k * 32 + 180
 
     def settle_code(self, settling):
-        return int(_f32(_f32(settling or 450) / 32.0) + 0.5)
+        return _cint(_f32(_f32(settling or 450) / 32.0) + 0.5)
 
     def settle_units(self, code):
-        return int(_f32(code * 32.0)) + 5
+        return i32(_cint(_f32(code * 32.0)) + 5)
 
     def open_detect_code(self):
         return 2
@@ -118,27 +137,29 @@ MODELS = {
 
 def analog_units(m: Model, reps: int, gain: int, fnotch: float, settling: int, single_ended: bool,
                  meas_off: bool = False, reverse: bool = False, excite: bool = False,
-                 open_detect: bool = False) -> int | None:
+                 open_detect: bool = False, groups: int = 1) -> int | None:
     """Time of one analog measurement call. `meas_off` (single-ended) adds one more measurement,
     `reverse` (differential) and `excite` double the total, autorange (gain 3) settles twice, the
-    open-detect ranges settle longer and add 50 per rep."""
+    open-detect ranges settle longer and add 50 per rep. Any settling time counts as converted
+    (not clamped by its range check), in 32-bit C arithmetic (round 31)."""
     k = m.integ_code(fnotch)
-    if k is None or not 1 <= reps <= 100_000 or not 0 <= settling <= 6_000_000 - 1:
+    if k is None or not 1 <= reps <= 100_000:
         return None
     integ = m.integ_time(k)
     settle = m.settle_units(m.settle_code(settling) + (m.open_detect_code() if open_detect else 0))
-    total = (settle + integ) * reps
+    total = i32((settle + integ) * reps)
     if gain == 3:
-        total += reps * settle
+        total = i32(total + reps * settle)
     if excite:
-        total *= 2
+        total = i32(total * 2)
+    total = i32(total * groups)
     if meas_off and single_ended:
-        total += integ + settle
+        total = i32(total + integ + settle)
     if reverse and not single_ended:
-        total *= 2
+        total = i32(total * 2)
     if open_detect:
-        total += reps * 0x32
-    return (total + m.round_up) // 100 + 1
+        total = i32(total + reps * 0x32)
+    return _cdiv(i32(total + m.round_up), 100) + 1
 
 
 def panel_units(m: Model, fnotch: float) -> int | None:
@@ -192,12 +213,62 @@ def _long(expr: S.Expr | None, env: consteval.Env) -> int | None:
     return consteval.to_long(v) if isinstance(v, (int, float)) else None
 
 
+def _settling(expr: S.Expr | None, env: consteval.Env) -> int | None:
+    """A settling time as the compiler converts it (a string is -2147483648, round 31; `INF`
+    times as a float overflow does, `1E39`)."""
+    if isinstance(expr, S.Name) and expr.name.upper() == "INF" and "INF" not in env.consts:
+        return consteval.to_long(math.inf)
+    v = _value(expr, env)
+    return consteval.to_long(v) if isinstance(v, str) else _long(expr, env)
+
+
 # keyword -> (reps position, range position, flag position, settle position, fnotch position,
 #             single-ended)
 _ANALOG = {
     "VOLTSE": (2, 3, 5, 6, 7, True), "VOLTDIFF": (2, 3, 5, 6, 7, False),
     "TCSE": (2, 3, 7, 8, 9, True), "TCDIFF": (2, 3, 7, 8, 9, False),
+    "CURRENTSE": (2, 3, 5, 6, 7, True),
 }
+# bridges (round 31): keyword -> (ranges, channel, MeasPEx, RevEx, RevDiff, settle, fnotch positions,
+#                                  single-ended, measurement groups)
+_BRIDGE = {
+    "BRHALF": ((3,), 4, 6, 8, None, 9, 10, True, 1),
+    "BRHALF3W": ((3,), 4, 6, 8, None, 9, 10, True, 2),
+    "BRFULL": ((3,), 4, 6, 8, 9, 10, 11, False, 1),
+    "BRHALF4W": ((3, 4), 5, 7, 9, 10, 11, 12, False, 2),
+    "BRFULL6W": ((3, 4), 5, 7, 9, 10, 11, 12, False, 2),
+}
+_PLAIN = ((0, False), (1, False), (2, False))   # fixed ranges without open detect
+
+
+def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple
+                  ) -> tuple[int, bool, int] | None:
+    """One analog call per MeasPEx group of reps (one call when MeasPEx equals Reps); each doubles
+    per RevEx, RevDiff (differential) and second measurement group. Autorange and open-detect
+    ranges of the two-group bridges, burst channels and Reps above 100000 are not modelled
+    (round 31, traced CR6, docs/checker.md "Bridge channel spans and settling-time timing")."""
+    ranges, cp, mp, xp, dp, sp, ip, single, groups = spec
+    if len(args) < ip:
+        return None
+    reps, chan, meas, revex = (_long(args[i - 1], env) for i in (2, cp, mp, xp))
+    revdiff = _long(args[dp - 1], env) if dp else 0
+    rngs = [_long(args[i - 1], env) for i in ranges]
+    settling, fn = _settling(args[sp - 1], env), _num(args[ip - 1], env)
+    if None in (reps, chan, meas, revex, revdiff, settling, fn, *rngs) or chan <= 0 or \
+            not 1 <= reps <= 100_000 or any(r not in _RANGES for r in rngs) or \
+            (groups > 1 and any(_RANGES[r] not in _PLAIN for r in rngs)):
+        return None
+    meas = max(meas, 1)
+    chunks = [reps] if meas == reps else [meas] * (reps // meas) + ([reps % meas] if reps % meas else [])
+    total = 0
+    for n in chunks:
+        units = analog_units(m, n, _RANGES[rngs[0]][0], fn, settling, single,
+                             excite=(revex & 0xFF) != 0, reverse=(revdiff & 0xFF) != 0,
+                             open_detect=_RANGES[rngs[0]][1], groups=groups)
+        if units is None:
+            return None
+        total = i32(total + units)
+    return total, True, m.integ_time(m.integ_code(fn)) // 100
 
 
 def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
@@ -236,19 +307,24 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
         rp, gp, fp, sp, ip, single = _ANALOG[kw]
         if len(args) < ip:
             return None
-        reps, rng, flag, settling = (_long(args[i - 1], env) for i in (rp, gp, fp, sp))
+        reps, rng, flag = (_long(args[i - 1], env) for i in (rp, gp, fp))
+        settling = _settling(args[sp - 1], env)
         fn = _num(args[ip - 1], env)
         if None in (reps, rng, flag, settling, fn) or rng not in _RANGES:
             return None
         gain, open_detect = _RANGES[rng]
-        on = (flag & 0xFF) != 0
+        cr6_current = kw == "CURRENTSE" and profile.name == "cr6"   # MeasOff and "C" ignored
+        on = (flag & 0xFF) != 0 and not cr6_current
+        open_detect = open_detect and not cr6_current
         flags = dict(meas_off=on and single, reverse=on and not single, open_detect=open_detect)
         units = analog_units(m, reps, gain, fn, settling, single, **flags)
-        return (units, True, m.integ_time(m.integ_code(fn)) // 100) if units else None
+        return (units, True, m.integ_time(m.integ_code(fn)) // 100) if units is not None else None
+    if kw in _BRIDGE:
+        return _bridge_units(m, args, env, _BRIDGE[kw])
     if kw in ("THERM107", "THERM108", "THERM109") and len(args) >= 6:
         reps, settling = _long(args[1], env), _long(args[4], env)
         fn = _num(args[5], env)
-        if None in (reps, settling, fn) or not 1 <= reps <= 255:
+        if None in (reps, settling, fn) or not 1 <= reps <= 255 or not 0 <= settling < 6_000_000:
             return None
         units = analog_units(m, reps, 0, fn, settling, True, excite=True)
         return (units, True, m.integ_time(m.integ_code(fn)) // 100) if units else None
@@ -296,9 +372,9 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
             cur.end = stmt
             cur.total = total
             if cur.analog:
-                cur.total += model.overhead
-                if cur.interval - cur.total < 500:
-                    cur.total -= model.refund
+                cur.total = i32(cur.total + model.overhead)
+                if i32(cur.interval - cur.total) < 500:
+                    cur.total = i32(cur.total - model.refund)
             yield cur
             cur = None
         elif kw == "SUBSCAN":
@@ -347,7 +423,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
                     cur.partial = True
                     cur.analog = cur.analog or kw in _ANALOG_KINDS
             else:
-                total += got[0]
+                total = i32(total + got[0])
                 if kw != "PULSECOUNT":
                     cur.pulse_only = False
                 cur.analog = cur.analog or got[1]

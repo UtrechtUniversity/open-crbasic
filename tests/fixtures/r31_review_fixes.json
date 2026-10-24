@@ -1,0 +1,3018 @@
+{
+  "cases": [
+    {
+      "id": "cr6-f1a",
+      "logger": "cr6",
+      "source": "Sub AA\nDim X\nAlias X=Z\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f1b",
+      "logger": "cr6",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f1c",
+      "logger": "cr6",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f1d",
+      "logger": "cr6",
+      "source": "Sub AA\nDim X\nAlias X=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f1e",
+      "logger": "cr6",
+      "source": "Sub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f2a",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr6-f2b",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,212,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr6-f2c",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f2d",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,410,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f2e",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,411,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3a",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3b",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,-402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3c",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,403,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3d",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,400.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f3e",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.9,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f4a",
+      "logger": "cr6",
+      "source": "Public X\nAlias X=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f4b",
+      "logger": "cr6",
+      "source": "Public X\nPublic P As String * Z\nAlias X=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Z."
+    },
+    {
+      "id": "cr6-f4c",
+      "logger": "cr6",
+      "source": "Public X\nPublic P As String * X\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: X.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f4d",
+      "logger": "cr6",
+      "source": "Const K=8\nPublic X\nAlias X=Z\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f4e",
+      "logger": "cr6",
+      "source": "Public X\nAlias X=Z\nDim P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f5a",
+      "logger": "cr6",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr6-f5b",
+      "logger": "cr6",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr6-f5c",
+      "logger": "cr6",
+      "source": "Const J=2\nBeginProg\nJ(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr6-f5d",
+      "logger": "cr6",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf 1 Then Q=1 Else J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr6-f6a",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,U1,U8,1,2500,False,0,1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6b",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,U1,U8,1,2500,False,0,1E39,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6c",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,U1,U8,1,2500,False,0,3.4E38,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6d",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,U1,U8,1,2500,False,0,-1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6e",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,U1,U8,1,2500,False,1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f7a",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f7b",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f7c",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X(2),1,mV5000,U1,False,0,60,1,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f7d",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nX(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f8a",
+      "logger": "cr6",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 3: Y already declared as a variable.\nline 3: Variable not named."
+    },
+    {
+      "id": "cr6-f8b",
+      "logger": "cr6",
+      "source": "Public Y\nSub SS\nDim X\nAlias X=Y\nEndSub\nPublic\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 6: Variable not named."
+    },
+    {
+      "id": "cr6-f8c",
+      "logger": "cr6",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\nPublic\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 3: Y already declared as a variable.\n<part.crb> line 5: Variable not named."
+    },
+    {
+      "id": "cr6-f8d",
+      "logger": "cr6",
+      "source": "Public Y\nPublic\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\n<part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-f9a",
+      "logger": "cr6",
+      "source": "Sub SS(Q())\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-f9b",
+      "logger": "cr6",
+      "source": "Sub SS(Q())\nVoltSe(Q,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f9c",
+      "logger": "cr6",
+      "source": "Sub SS(Q(2))\nVoltSe(Q,3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-f9d",
+      "logger": "cr6",
+      "source": "Sub SS(Q())\nVoltSe(Q(2),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-f9e",
+      "logger": "cr6",
+      "source": "Sub SS(Q)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-f1a",
+      "logger": "cr1000x",
+      "source": "Sub AA\nDim X\nAlias X=Z\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f1b",
+      "logger": "cr1000x",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f1c",
+      "logger": "cr1000x",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f1d",
+      "logger": "cr1000x",
+      "source": "Sub AA\nDim X\nAlias X=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f1e",
+      "logger": "cr1000x",
+      "source": "Sub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f2a",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+    },
+    {
+      "id": "cr1000x-f2b",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,212,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+    },
+    {
+      "id": "cr1000x-f2c",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+    },
+    {
+      "id": "cr1000x-f2d",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,410,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+    },
+    {
+      "id": "cr1000x-f2e",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,411,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+    },
+    {
+      "id": "cr1000x-f3a",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3b",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,-402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3c",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,403,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 403, must be RG1 or RG2."
+    },
+    {
+      "id": "cr1000x-f3d",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,400.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 400, must be RG1 or RG2."
+    },
+    {
+      "id": "cr1000x-f3e",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.9,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f4a",
+      "logger": "cr1000x",
+      "source": "Public X\nAlias X=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f4b",
+      "logger": "cr1000x",
+      "source": "Public X\nPublic P As String * Z\nAlias X=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Z."
+    },
+    {
+      "id": "cr1000x-f4c",
+      "logger": "cr1000x",
+      "source": "Public X\nPublic P As String * X\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: X.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f4d",
+      "logger": "cr1000x",
+      "source": "Const K=8\nPublic X\nAlias X=Z\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f4e",
+      "logger": "cr1000x",
+      "source": "Public X\nAlias X=Z\nDim P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f5a",
+      "logger": "cr1000x",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr1000x-f5b",
+      "logger": "cr1000x",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-f5c",
+      "logger": "cr1000x",
+      "source": "Const J=2\nBeginProg\nJ(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr1000x-f5d",
+      "logger": "cr1000x",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf 1 Then Q=1 Else J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr1000x-f6a",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,1,Vx1,1,2500,False,0,1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6b",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,1,Vx1,1,2500,False,0,1E39,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6c",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,1,Vx1,1,2500,False,0,3.4E38,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6d",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,1,Vx1,1,2500,False,0,-1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6e",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,1,Vx1,1,2500,False,1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f7a",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f7b",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f7c",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X(2),1,mV5000,1,False,0,60,1,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f7d",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nX(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f8a",
+      "logger": "cr1000x",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 3: Y already declared as a variable.\nline 3: Variable not named."
+    },
+    {
+      "id": "cr1000x-f8b",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub SS\nDim X\nAlias X=Y\nEndSub\nPublic\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 6: Variable not named."
+    },
+    {
+      "id": "cr1000x-f8c",
+      "logger": "cr1000x",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\nPublic\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 3: Y already declared as a variable.\n<part.crb> line 5: Variable not named."
+    },
+    {
+      "id": "cr1000x-f8d",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\n<part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-f9a",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q())\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-f9b",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q())\nVoltSe(Q,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f9c",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q(2))\nVoltSe(Q,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-f9d",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q())\nVoltSe(Q(2),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-f9e",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-f1a",
+      "logger": "cr300",
+      "source": "Sub AA\nDim X\nAlias X=Z\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-f1b",
+      "logger": "cr300",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f1c",
+      "logger": "cr300",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1.\nline 8: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-f1d",
+      "logger": "cr300",
+      "source": "Sub AA\nDim X\nAlias X=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f1e",
+      "logger": "cr300",
+      "source": "Sub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-f2a",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2b",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,212,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2c",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2d",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,410,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2e",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,411,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f3a",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr300-f3b",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,-402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr300-f3c",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,403,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr300-f3d",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,400.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr300-f3e",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.9,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr300-f4a",
+      "logger": "cr300",
+      "source": "Public X\nAlias X=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f4b",
+      "logger": "cr300",
+      "source": "Public X\nPublic P As String * Z\nAlias X=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Z is not defined.\nline 2: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f4c",
+      "logger": "cr300",
+      "source": "Public X\nPublic P As String * X\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: X.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-f4d",
+      "logger": "cr300",
+      "source": "Const K=8\nPublic X\nAlias X=Z\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f4e",
+      "logger": "cr300",
+      "source": "Public X\nAlias X=Z\nDim P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f5a",
+      "logger": "cr300",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr300-f5b",
+      "logger": "cr300",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-f5c",
+      "logger": "cr300",
+      "source": "Const J=2\nBeginProg\nJ(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1\n."
+    },
+    {
+      "id": "cr300-f5d",
+      "logger": "cr300",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf 1 Then Q=1 Else J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr300-f6a",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr300-f6b",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,1E39,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr300-f6c",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,3.4E38,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr300-f6d",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,-1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr300-f6e",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr300-f7a",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-f7b",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n."
+    },
+    {
+      "id": "cr300-f7c",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X(2),1,mV2500,1,False,0,60,1,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n."
+    },
+    {
+      "id": "cr300-f7d",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nX(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n."
+    },
+    {
+      "id": "cr300-f8a",
+      "logger": "cr300",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-f8b",
+      "logger": "cr300",
+      "source": "Public Y\nSub SS\nDim X\nAlias X=Y\nEndSub\nPublic\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-f8c",
+      "logger": "cr300",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\nPublic\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-f8d",
+      "logger": "cr300",
+      "source": "Public Y\nPublic\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\n<cpu:part.crb> line 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-f9a",
+      "logger": "cr300",
+      "source": "Sub SS(Q())\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-f9b",
+      "logger": "cr300",
+      "source": "Sub SS(Q())\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f9c",
+      "logger": "cr300",
+      "source": "Sub SS(Q(2))\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-f9d",
+      "logger": "cr300",
+      "source": "Sub SS(Q())\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr300-f9e",
+      "logger": "cr300",
+      "source": "Sub SS(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-f1a",
+      "logger": "cr350",
+      "source": "Sub AA\nDim X\nAlias X=Z\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-f1b",
+      "logger": "cr350",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f1c",
+      "logger": "cr350",
+      "source": "Sub AA\nDim X As Long\nAlias X=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1.\nline 8: Y not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-f1d",
+      "logger": "cr350",
+      "source": "Sub AA\nDim X\nAlias X=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nSub BB\nDim Y As Long\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f1e",
+      "logger": "cr350",
+      "source": "Sub BB\nDim Y As Long\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-f2a",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2b",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,212,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2c",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2d",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,410,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2e",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,411,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f3a",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr350-f3b",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,-402.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr350-f3c",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,403,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr350-f3d",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,400.5,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr350-f3e",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,402.9,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV1000 is not defined.\nline 4: Variable illegal in Parameter: mV1000."
+    },
+    {
+      "id": "cr350-f4a",
+      "logger": "cr350",
+      "source": "Public X\nAlias X=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f4b",
+      "logger": "cr350",
+      "source": "Public X\nPublic P As String * Z\nAlias X=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Z is not defined.\nline 2: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f4c",
+      "logger": "cr350",
+      "source": "Public X\nPublic P As String * X\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: X.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-f4d",
+      "logger": "cr350",
+      "source": "Const K=8\nPublic X\nAlias X=Z\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f4e",
+      "logger": "cr350",
+      "source": "Public X\nAlias X=Z\nDim P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f5a",
+      "logger": "cr350",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr350-f5b",
+      "logger": "cr350",
+      "source": "Const J=2\nBeginProg\nIf 1 Then J=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr350-f5c",
+      "logger": "cr350",
+      "source": "Const J=2\nBeginProg\nJ(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1\n."
+    },
+    {
+      "id": "cr350-f5d",
+      "logger": "cr350",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf 1 Then Q=1 Else J(1)=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr350-f6a",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr350-f6b",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,1E39,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr350-f6c",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,3.4E38,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr350-f6d",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,0,-1E300,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+    },
+    {
+      "id": "cr350-f6e",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV2500,1,Vx1,1,2500,False,1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr350-f7a",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-f7b",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n."
+    },
+    {
+      "id": "cr350-f7c",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X(2),1,mV2500,1,False,0,60,1,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n."
+    },
+    {
+      "id": "cr350-f7d",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nX(3)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n."
+    },
+    {
+      "id": "cr350-f8a",
+      "logger": "cr350",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-f8b",
+      "logger": "cr350",
+      "source": "Public Y\nSub SS\nDim X\nAlias X=Y\nEndSub\nPublic\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-f8c",
+      "logger": "cr350",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\nPublic\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-f8d",
+      "logger": "cr350",
+      "source": "Public Y\nPublic\nInclude \"part.crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\n<cpu:part.crb> line 3: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-f9a",
+      "logger": "cr350",
+      "source": "Sub SS(Q())\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-f9b",
+      "logger": "cr350",
+      "source": "Sub SS(Q())\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f9c",
+      "logger": "cr350",
+      "source": "Sub SS(Q(2))\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-f9d",
+      "logger": "cr350",
+      "source": "Sub SS(Q())\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr350-f9e",
+      "logger": "cr350",
+      "source": "Sub SS(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-f1f",
+      "logger": "cr6",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Z already declared as a variable."
+    },
+    {
+      "id": "cr6-f1g",
+      "logger": "cr6",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=W\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f1h",
+      "logger": "cr6",
+      "source": "Function FF\nDim X As Long\nAlias X=Z\nEndFunction\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f2-cr6-400-r2",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,400,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f2-cr6-400-r3",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,400,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr6-f2-cr6-600-r1",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,600,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f2-cr6-612-r3",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,612,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr6-f2-cr6-1012-r3",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,1012,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr6-f2-cr6-413-r1",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,413,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 413, use C1..C4 or U1..U12."
+    },
+    {
+      "id": "cr6-f2-cr6-300-r1",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,300,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 300, use C1..C4 or U1..U12."
+    },
+    {
+      "id": "cr6-f2-cr6-105-r12",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,12,105,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f2-cr6-105-r13",
+      "logger": "cr6",
+      "source": "Public X(20)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,13,105,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f4f",
+      "logger": "cr6",
+      "source": "Sub S\nDim X\nAlias X=Z\nEndSub\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Z."
+    },
+    {
+      "id": "cr6-f4g",
+      "logger": "cr6",
+      "source": "Public X(3)\nAlias X(2)=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f4h",
+      "logger": "cr6",
+      "source": "Public X\nAlias X=Z\nPublic P(2) As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f5e",
+      "logger": "cr6",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf Q Then J(1)=1 Else Q=2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr6-f5f",
+      "logger": "cr6",
+      "source": "Const J=2\nPublic Q(2)\nBeginProg\nIf 1 Then Q(1)=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f5g",
+      "logger": "cr6",
+      "source": "Public Q\nBeginProg\nIf 1 Then J(1)=1\nEndProg\nConst J=2\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr6-f6-fn-1",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-1E30",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1E30,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-fn-1E39",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1E39,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-fn1E-50",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,1E-50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-fn-1E-50",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1E-50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-fn1E-45",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,1E-45,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-1E-40",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1E-40,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-1E5",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1E5,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-fn-50000",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-50000,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-62499",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-62499,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-62501",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-62501,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-fn-19000",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-19000,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-20834",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-20834,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-25000",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-25000,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is 2 Hz."
+    },
+    {
+      "id": "cr6-f6-fn-1E10",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,-1E10,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f6-st1E10",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,1E10,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-st-1E300",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,-1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-st1E38",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,1E38,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-st1E39",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,1E39,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-st1E308",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,1E308,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-stINF",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,INF,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-st2147483648",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,2147483648,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f6-st-2147483649",
+      "logger": "cr6",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,-2147483649,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr6-f7e",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nScan(1,Sec,0,0)\nX(4)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f7f",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z(3),-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f7g",
+      "logger": "cr6",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f8e",
+      "logger": "cr6",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Alias Q=Y\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 1: Q not yet declared so cannot be aliased.\nline 3: Variable not named."
+    },
+    {
+      "id": "cr6-f8f",
+      "logger": "cr6",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nX = 1\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-f9f",
+      "logger": "cr6",
+      "source": "Sub SS(Q)\nVoltSe(Q(2),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-f9g",
+      "logger": "cr6",
+      "source": "Sub SS(Q())\nVoltSe(Q(1),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f9h",
+      "logger": "cr6",
+      "source": "Sub SS(Q)\nVoltSe(Q(1),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-f9i",
+      "logger": "cr6",
+      "source": "Sub SS(Q())\nQ(2)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-f9j",
+      "logger": "cr6",
+      "source": "Function FF(Q())\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-f9k",
+      "logger": "cr6",
+      "source": "Sub SS(Q() As Long)\nVoltSe(Q,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression:  As.",
+      "not_modelled": "`Q() As type` routine header not modelled."
+    },
+    {
+      "id": "cr1000x-f1f",
+      "logger": "cr1000x",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Z already declared as a variable."
+    },
+    {
+      "id": "cr1000x-f1g",
+      "logger": "cr1000x",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=W\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f1h",
+      "logger": "cr1000x",
+      "source": "Function FF\nDim X As Long\nAlias X=Z\nEndFunction\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-101-r201",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,201,101,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-101-r202",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,202,101,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-101-r200",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,200,101,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-108-r2",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,108,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-302-r2",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,302,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-108.5-r1",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,108.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-107.5-r2",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,107.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-100.5-r1",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,100.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+    },
+    {
+      "id": "cr1000x-f3-cr1000x-pc-302.9-r1",
+      "logger": "cr1000x",
+      "source": "Public X(999)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,302.9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f4f",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X\nAlias X=Z\nEndSub\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Z."
+    },
+    {
+      "id": "cr1000x-f4g",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nAlias X(2)=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f4h",
+      "logger": "cr1000x",
+      "source": "Public X\nAlias X=Z\nPublic P(2) As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f5e",
+      "logger": "cr1000x",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf Q Then J(1)=1 Else Q=2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr1000x-f5f",
+      "logger": "cr1000x",
+      "source": "Const J=2\nPublic Q(2)\nBeginProg\nIf 1 Then Q(1)=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f5g",
+      "logger": "cr1000x",
+      "source": "Public Q\nBeginProg\nIf 1 Then J(1)=1\nEndProg\nConst J=2\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr1000x-f6-fn-1",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is .5 Hz."
+    },
+    {
+      "id": "cr1000x-f6-fn-1E30",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1E30,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-1E39",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1E39,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn1E-50",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,1E-50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-1E-50",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1E-50,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn1E-45",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,1E-45,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is .5 Hz."
+    },
+    {
+      "id": "cr1000x-f6-fn-1E-40",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1E-40,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is .5 Hz."
+    },
+    {
+      "id": "cr1000x-f6-fn-1E5",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1E5,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-50000",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-50000,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-62499",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-62499,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-62501",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-62501,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-19000",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-19000,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid fnotch, minimum allowed is .5 Hz."
+    },
+    {
+      "id": "cr1000x-f6-fn-20834",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-20834,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-25000",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-25000,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-fn-1E10",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,-1E10,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f6-st1E10",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,1E10,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-st-1E300",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,-1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-st1E38",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,1E38,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-st1E39",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,1E39,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-st1E308",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,1E308,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-stINF",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,INF,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-st2147483648",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,2147483648,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f6-st-2147483649",
+      "logger": "cr1000x",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,-2147483649,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
+    },
+    {
+      "id": "cr1000x-f7e",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nScan(1,Sec,0,0)\nX(4)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f7f",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z(3),-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f7g",
+      "logger": "cr1000x",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f8e",
+      "logger": "cr1000x",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Alias Q=Y\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 1: Q not yet declared so cannot be aliased.\nline 3: Variable not named."
+    },
+    {
+      "id": "cr1000x-f8f",
+      "logger": "cr1000x",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nX = 1\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-f9f",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q)\nVoltSe(Q(2),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-f9g",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q())\nVoltSe(Q(1),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f9h",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q)\nVoltSe(Q(1),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-f9i",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q())\nQ(2)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f9j",
+      "logger": "cr1000x",
+      "source": "Function FF(Q())\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-f9k",
+      "logger": "cr1000x",
+      "source": "Sub SS(Q() As Long)\nVoltSe(Q,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression:  As.",
+      "not_modelled": "`Q() As type` routine header not modelled."
+    },
+    {
+      "id": "cr300-f1f",
+      "logger": "cr300",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Z already declared as a variable."
+    },
+    {
+      "id": "cr300-f1g",
+      "logger": "cr300",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=W\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Illegal destination variable type, expecting Float.\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-f1h",
+      "logger": "cr300",
+      "source": "Function FF\nDim X As Long\nAlias X=Z\nEndFunction\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c-1-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,-1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c0-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,0,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c0.5-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,0.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c1.5-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,1.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c6.9-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,6.9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c7-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c8-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c9-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c10-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,10,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c100-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,100,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c212-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,212,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c412-r1",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c1-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c2-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,2,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c3-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,3,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c4-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,4,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c5-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c6-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,6,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c7-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c8-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c9-r2",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c1-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c2-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,2,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c3-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,3,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c4-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,4,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c5-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c6-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,6,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c7-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c8-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c9-r3",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c1-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c2-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,2,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c3-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,3,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f2-3xx-c4-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,4,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c5-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c6-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,6,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c7-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c8-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c9-r4",
+      "logger": "cr300",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c0-r2b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,0,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c0.5-r3b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,0.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c2.5-r2b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,2.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c10-r2b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,10,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f2-3xx-c9-r3b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c7-r9b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,9,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr300-f2-3xx-c412.5-r2b",
+      "logger": "cr300",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,412.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr300-f4f",
+      "logger": "cr300",
+      "source": "Sub S\nDim X\nAlias X=Z\nEndSub\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Z is not defined.\nline 5: Variable illegal in Parameter: Z.\nline 7: Out of memory."
+    },
+    {
+      "id": "cr300-f4g",
+      "logger": "cr300",
+      "source": "Public X(3)\nAlias X(2)=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f4h",
+      "logger": "cr300",
+      "source": "Public X\nAlias X=Z\nPublic P(2) As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f5e",
+      "logger": "cr300",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf Q Then J(1)=1 Else Q=2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr300-f5f",
+      "logger": "cr300",
+      "source": "Const J=2\nPublic Q(2)\nBeginProg\nIf 1 Then Q(1)=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-f5g",
+      "logger": "cr300",
+      "source": "Public Q\nBeginProg\nIf 1 Then J(1)=1\nEndProg\nConst J=2\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined.\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr300-f6-st1E10",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E10,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 10."
+    },
+    {
+      "id": "cr300-f6-st-1E300",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,-1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 10."
+    },
+    {
+      "id": "cr300-f6-st1E38",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E38,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 10."
+    },
+    {
+      "id": "cr300-f6-st1E39",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E39,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr300-f6-st1E308",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E308,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr300-f6-stINF",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,INF,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr300-f6-st2147483648",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,2147483648,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr300-f6-st-2147483649",
+      "logger": "cr300",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,-2147483649,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483647 too short, min time is 10."
+    },
+    {
+      "id": "cr300-f7e",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nScan(1,Sec,0,0)\nX(4)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-f7f",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z(3),-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z(3),-1,3,91,10)\n."
+    },
+    {
+      "id": "cr300-f7g",
+      "logger": "cr300",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n.\nline 5: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-f8e",
+      "logger": "cr300",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Alias Q=Y\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 1: Q not yet declared so cannot be aliased.\nline 3: Variable not named."
+    },
+    {
+      "id": "cr300-f8f",
+      "logger": "cr300",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nX = 1\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-f9f",
+      "logger": "cr300",
+      "source": "Sub SS(Q)\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr300-f9g",
+      "logger": "cr300",
+      "source": "Sub SS(Q())\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr300-f9h",
+      "logger": "cr300",
+      "source": "Sub SS(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr300-f9i",
+      "logger": "cr300",
+      "source": "Sub SS(Q())\nQ(2)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Q(2)=1\n.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr300-f9j",
+      "logger": "cr300",
+      "source": "Function FF(Q())\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-f9k",
+      "logger": "cr300",
+      "source": "Sub SS(Q() As Long)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: As is not defined.\nline 1: Variable illegal in Parameter:  As.\nline 2: Illegal destination variable type, expecting Float.\nline 2: Too many parameters:  1.",
+      "not_modelled": "`Q() As type` routine header not modelled."
+    },
+    {
+      "id": "cr350-f1f",
+      "logger": "cr350",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Z already declared as a variable."
+    },
+    {
+      "id": "cr350-f1g",
+      "logger": "cr350",
+      "source": "Public G As Long\nAlias G=Z\nSub BB\nDim Y\nAlias Y=W\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Illegal destination variable type, expecting Float.\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-f1h",
+      "logger": "cr350",
+      "source": "Function FF\nDim X As Long\nAlias X=Z\nEndFunction\nSub BB\nDim Y\nAlias Y=Z\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c-1-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,-1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c0-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,0,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c0.5-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,0.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c1.5-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,1.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c6.9-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,6.9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c7-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c8-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c9-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c10-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,10,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c100-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,100,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c212-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,212,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c412-r1",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,1,412,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c1-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c2-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,2,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c3-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,3,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c4-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,4,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c5-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c6-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,6,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c7-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c8-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c9-r2",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c1-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c2-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,2,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c3-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,3,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c4-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,4,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c5-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c6-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,6,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c7-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c8-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c9-r3",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c1-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,1,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c2-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,2,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c3-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,3,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f2-3xx-c4-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,4,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c5-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c6-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,6,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c7-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c8-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,8,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c9-r4",
+      "logger": "cr350",
+      "source": "Public X(9)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,4,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c0-r2b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,0,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c0.5-r3b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,0.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c2.5-r2b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,2.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c10-r2b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,10,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f2-3xx-c9-r3b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,3,9,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel.\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c7-r9b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,9,7,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
+    },
+    {
+      "id": "cr350-f2-3xx-c412.5-r2b",
+      "logger": "cr350",
+      "source": "Public X(99)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(X,2,412.5,0,0,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount channel."
+    },
+    {
+      "id": "cr350-f4f",
+      "logger": "cr350",
+      "source": "Sub S\nDim X\nAlias X=Z\nEndSub\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Z is not defined.\nline 5: Variable illegal in Parameter: Z.\nline 7: Out of memory."
+    },
+    {
+      "id": "cr350-f4g",
+      "logger": "cr350",
+      "source": "Public X(3)\nAlias X(2)=Z\nPublic P As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f4h",
+      "logger": "cr350",
+      "source": "Public X\nAlias X=Z\nPublic P(2) As String * Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Z.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f5e",
+      "logger": "cr350",
+      "source": "Const J=2\nPublic Q\nBeginProg\nIf Q Then J(1)=1 Else Q=2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr350-f5f",
+      "logger": "cr350",
+      "source": "Const J=2\nPublic Q(2)\nBeginProg\nIf 1 Then Q(1)=1\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f5g",
+      "logger": "cr350",
+      "source": "Public Q\nBeginProg\nIf 1 Then J(1)=1\nEndProg\nConst J=2\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is not defined.\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr350-f6-st1E10",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E10,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 10."
+    },
+    {
+      "id": "cr350-f6-st-1E300",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,-1E300,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 10."
+    },
+    {
+      "id": "cr350-f6-st1E38",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E38,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 10."
+    },
+    {
+      "id": "cr350-f6-st1E39",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E39,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr350-f6-st1E308",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,1E308,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr350-f6-stINF",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,INF,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr350-f6-st2147483648",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,2147483648,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 2147483647 too long, max time is 50000."
+    },
+    {
+      "id": "cr350-f6-st-2147483649",
+      "logger": "cr350",
+      "source": "Public X(3)\nBeginProg\nScan(1,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,-2147483649,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483647 too short, min time is 10."
+    },
+    {
+      "id": "cr350-f7e",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nNextScan\nScan(1,Sec,0,0)\nX(4)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-f7f",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z(3),-1,3,91,10)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z(3),-1,3,91,10)\n."
+    },
+    {
+      "id": "cr350-f7g",
+      "logger": "cr350",
+      "source": "Public X(1),Z(5)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(Z,-1,3,91,10)\nVoltSe(X,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression: CSAT3(Z,-1,3,91,10)\n.\nline 5: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-f8e",
+      "logger": "cr350",
+      "source": "Public Y\nInclude \"part.crb\"\nPublic\nBeginProg\nEndProg\n",
+      "siblings": {
+        "part.crb": "Alias Q=Y\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 1: Q not yet declared so cannot be aliased.\nline 3: Variable not named."
+    },
+    {
+      "id": "cr350-f8f",
+      "logger": "cr350",
+      "source": "Public Y\nInclude \"part.crb\"\nBeginProg\nX = 1\nEndProg\n",
+      "siblings": {
+        "part.crb": "Sub SS\nDim X\nAlias X=Y\nEndSub\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:part.crb> line 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-f9f",
+      "logger": "cr350",
+      "source": "Sub SS(Q)\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr350-f9g",
+      "logger": "cr350",
+      "source": "Sub SS(Q())\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr350-f9h",
+      "logger": "cr350",
+      "source": "Sub SS(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr350-f9i",
+      "logger": "cr350",
+      "source": "Sub SS(Q())\nQ(2)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Q(2)=1\n.",
+      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+    },
+    {
+      "id": "cr350-f9j",
+      "logger": "cr350",
+      "source": "Function FF(Q())\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-f9k",
+      "logger": "cr350",
+      "source": "Sub SS(Q() As Long)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: As is not defined.\nline 1: Variable illegal in Parameter:  As.\nline 2: Illegal destination variable type, expecting Float.\nline 2: Too many parameters:  1.",
+      "not_modelled": "`Q() As type` routine header not modelled."
+    }
+  ]
+}

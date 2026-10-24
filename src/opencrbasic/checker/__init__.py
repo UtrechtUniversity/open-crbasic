@@ -198,15 +198,18 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         _current_result.reset(token)
 
 
-def _place_index_bounds(bounds: Diagnostics, diags: Diagnostics, program: S.Program) -> None:
+def _place_index_bounds(bounds: Diagnostics, diags: Diagnostics, program: S.Program,
+                        single_pass: bool = False) -> None:
     """CR6/CR1000X `Variable %s out of bounds.` from the index check (`bounds`), which is appended
     after tier C, with two corrections (oracle, round 9, docs/checker.md "Index bounds placement"):
     a message the destination check already printed on the line is not printed twice
     (`VoltSe(A(11),1,..,13,..)`), and for `PortGet` the destination (argument 1) comes before the
     port (argument 2), so it is inserted ahead of `Invalid port ...` (`PortSet(1,A(11))` keeps the
-    port first)."""
-    portget = {(st.file, st.line) for st in program.statements
-               if isinstance(st, S.Instruction) and st.keyword.upper() == "PORTGET"}
+    port first). CR300/CR350 (`single_pass`): only the first correction (round 31, `Therm109(A(6),
+    ..)`, `VoltSe(A(6),..)`; docs/checker.md "Measurement destination and channel spans")."""
+    portget = set() if single_pass else {
+        (st.file, st.line) for st in program.statements
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "PORTGET"}
     kept = []
     printed = list(diags.items)  # before any insertion below
     for n, d in enumerate(bounds.items):
@@ -630,6 +633,23 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
+        oom = next((d for d in diags.items[tier_c_start:] if d.message == "Out of memory."), None)
+        if oom is not None:
+            # A failed builder allocation ends the compile there (CSAT3, round 31): nothing from a
+            # later statement is printed.
+            at = links.positions.get((oom.file, oom.line), oom.line)
+            tail = diags.items[tier_c_start:]
+            last = next(i for i, d in enumerate(tail) if d is oom)
+            diags.items[tier_c_start:] = [
+                d for i, d in enumerate(tail) if d.severity != "error" or not d.line or
+                links.positions.get((d.file, d.line), d.line) < at or (d.line == oom.line and i <= last)]
+            ranges.items = [d for d in ranges.items
+                            if links.positions.get((d.file, d.line), d.line) < at]
+            bounds.items = [d for d in bounds.items   # (a later index too, round 31 review)
+                            if links.positions.get((d.file, d.line), d.line) < at]
+            diags.items[:tier_c_start] = [   # (and a later early warning: `Scan never reached`)
+                d for d in diags.items[:tier_c_start] if d.severity != "warning" or not d.line
+                or links.positions.get((d.file, d.line), d.line) < at]
     if generic_errors:
         diags.items[tier_c_start:] = [d for d in diags.items[tier_c_start:]
                                       if d.severity != "error" or not d.line or before_cutoff(d)]
@@ -690,8 +710,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if table_stop is not None and table_stop in links.positions:
             early.items = [d for d in early.items
                            if links.positions.get((d.file, d.line), 0) <= links.positions[table_stop]]
-    if not profile.single_pass and bounds.items:
-        _place_index_bounds(bounds, diags, flat)
+    if bounds.items:
+        _place_index_bounds(bounds, diags, flat, profile.single_pass)
     diags.items += bounds.items + fields.items + ranges.items + early.items
     last: dict[tuple, Diagnostic] = {}  # (file, line) -> its latest leading finding
     for d in leading.items:
@@ -739,6 +759,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.semicolon_headers, program, profile, diags)
     _run_pass(intervals.fold_timeout_expressions, _with_inline(program), profile, diags, env, pass1_items)
     _run_pass(intervals.order_timeout_negative, diags, profile, program)
+    _run_pass(cr3xx.drop_after_alias_collision, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)

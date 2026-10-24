@@ -140,9 +140,13 @@ Observed 2026-10-02 on `CR6Comp.exe` and `cr1000xcomp.exe` (compiler hashes in
 Unlike CR300/CR350 above (a warning on a fixed value set), this is a hard **error** and has no
 maximum (`1e30` and `15000` compile clean).
 
-Value rule on the folded `fN1` argument: `0`, `+INF` and `-INF` pass; `NAN`, every other negative
-number, a string (including `""` and `"60"`) and `True` (= -1) fail; a positive number fails when it
-is below the minimum. The message always says `2 Hz` (CR6) / `.5 Hz` (CR1000X) but the real cut-off
+Value rule on the folded `fN1` argument, taken as a 32-bit float: `0` (also `1E-50`, `-1E-50`,
+which round to zero), `+INF` and `-INF` (also `1E39`, `-1E300`) pass; `NAN`, a string (including
+`""` and `"60"`) and `True` (= -1) fail; a positive number fails when it is below the minimum. A
+negative number fails only when its integration code `int(N / fN1 + 0.5)` (C truncation; `N`
+93750 on CR6, 31250 on CR1000X, `checker/scan_time.py`) is negative, so a large one passes: CR6
+`-62501`, `-1E5` and `-1E30` compile, `-62499` and `-50000` fail; CR1000X `-20834` and `-25000`
+compile, `-20833` fails (oracle, 2026-10-24, `tests/fixtures/r31_review_fixes.json` `f6-fn*`). The message always says `2 Hz` (CR6) / `.5 Hz` (CR1000X) but the real cut-off
 is not that number. Bisected: CR6 fails at `1.43052` and passes at `1.43053`; CR1000X fails at
 `0.47684` and passes at `0.476845` (`1e6 / f` is about 699,04x us and 2,097,1xx us, the CR1000X
 figure is three times the CR6 one). `min_hz` in the data files is the midpoint of each bracket
@@ -1132,9 +1136,9 @@ string is `-2147483648`); 0 means the default. A nonzero value below 20 is `Sett
 short, min time is 20.`, a value above 6000000 `Settling time %d too long, max time is 6000000.`,
 after the line's channel error. Probed on CR6 and CR1000X for `VoltSE`, `VoltDiff` (6th argument),
 `TCSE`, `TCDiff` (8th), `BrHalf` (9th), `BrFull` (10th) and `CurrentSE` (6th); CR300/CR350 did not
-reach the check with these programs. The other callers are not modelled. Also not modelled: the
-`Scan interval too short for measurement by %d Sec.` line that a huge or INT_MIN settling time adds at
-`NextScan` (the timing model skips such values).
+reach the check with these programs. The other callers are not modelled. The settling time also
+counts, unclamped, in the scan budget (round 31: `docs/checker.md`, "Bridge channel spans and
+settling-time timing", which also adds BrHalf3W/4W/6W and the CR300/CR350 range 10..50000).
 
 ## Instruction-resource and pairing checks (2026-10-03, fixture `tests/fixtures/instruction_resources.json`)
 
@@ -1692,8 +1696,10 @@ scan/instruction programs per logger exact except the listed gaps). Implementati
   (excitation); `MeasOff` (single-ended) adds one more `integ + settle`; `RevDiff` (differential)
   doubles. `PanelTemp(Dest,fN1)` is two calls with a fixed settling argument 900 (code 84 CR6, 28
   CR1000X). Reps above 100000, `Therm` Reps above 255, non-constant arguments and burst (negative)
-  channels are not modelled (the scan is then a lower bound). Not modelled either: bridge,
-  `CurrentSe`, `Resistance`, `PeriodAvg`, `AM25T`, `Thermistor`, `VibratingWire`, `Calibrate`,
+  channels are not modelled (the scan is then a lower bound). Bridges and `CurrentSe` are modelled
+  since round 31 (`docs/checker.md`, "Bridge channel spans and settling-time timing"); any
+  settling value counts in 32-bit arithmetic and the `NextScan` comparison is unsigned. Not
+  modelled: `Resistance`, `PeriodAvg`, `AM25T`, `Thermistor`, `VibratingWire`, `Calibrate`,
   `ExciteV`, `MuxSelect`, `CDM_*` here.
 - **Overhead**: the first analog call of a scan adds the overhead (78 / 16); if then
   `interval - total < 500` the refund (77 / 15) is taken back, so a tight analog scan costs net 1.

@@ -600,8 +600,7 @@
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
     },
     {
       "id": "cr6-other_sub_names",
@@ -615,8 +614,7 @@
       "logger": "cr6",
       "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
     },
     {
       "id": "cr6-bad_rhs",
@@ -728,8 +726,7 @@
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-other_sub_names",
@@ -743,8 +740,7 @@
       "logger": "cr1000x",
       "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
     },
     {
       "id": "cr1000x-bad_rhs",
@@ -856,8 +852,7 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
     },
     {
       "id": "cr300-other_sub_names",
@@ -871,8 +866,7 @@
       "logger": "cr300",
       "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
     },
     {
       "id": "cr300-bad_rhs",
@@ -984,8 +978,7 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X=Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
     },
     {
       "id": "cr350-other_sub_names",
@@ -999,8 +992,7 @@
       "logger": "cr350",
       "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.",
-      "not_modelled": "Alias RHS collisions with global names and their profile-specific registration are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
     },
     {
       "id": "cr350-bad_rhs",

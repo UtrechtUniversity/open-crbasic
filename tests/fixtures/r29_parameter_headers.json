@@ -187,8 +187,7 @@
       "logger": "cr6",
       "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.",
-      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
     },
     {
       "id": "cr6-b28_bool_dim0",
@@ -398,8 +397,7 @@
       "logger": "cr1000x",
       "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.",
-      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
     },
     {
       "id": "cr1000x-b28_bool_dim0",
@@ -609,8 +607,7 @@
       "logger": "cr300",
       "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.",
-      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
     },
     {
       "id": "cr300-b28_bool_dim0",
@@ -820,8 +817,7 @@
       "logger": "cr350",
       "source": "Const J=2\nSub S(P(4),J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.",
-      "not_modelled": "Assignment to a Const-shadow parameter resolves to the Const."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
     },
     {
       "id": "cr350-b28_bool_dim0",

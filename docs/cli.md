@@ -233,7 +233,9 @@ their arguments are constant; anything else prints no entry.
 
 Gate (CR300/CR350, single pass): every error hides the entries except an instruction's own
 argument checks (`cli._SINGLE_PASS_KEEPS`: FileManage/file drive, semaphore, settings-field,
-dimension, out-of-bounds, channel-count, table-lookup errors). Previously these loggers used
+dimension, out-of-bounds, channel-count, table-lookup errors; round 31 adds the settling-time
+range, which the round-31 CR300/CR350 settling check raises in `timing_r16` `cr300_measure` and
+`reps_large`, whose real `-t` runs print the full section beside it, oracle 2026-10-24). Previously these loggers used
 the CR6 pass-1 gate and printed entries the real exe hides.
 
 Instruction set per logger (everything not listed prints nothing):

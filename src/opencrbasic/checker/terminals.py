@@ -85,6 +85,9 @@ def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
     return in_range, odd_ok, int(v)
 
 
+CR6_BRIDGES = frozenset({"BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W"})
+
+
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     terminals = profile.terminals
     checked_instructions: dict = terminals.get("instructions", {})
@@ -100,12 +103,20 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if stmt.keyword.upper() == "ACPOWER" and profile.name == "cr6" and _check_acpower(
                 stmt, channels[positions[0][1]], env, diags):
             continue
-        for pos, kind_name, *reps_pos in positions:
-            # an optional third item is the Reps position: the last channel used is checked
-            # (CR300/CR350 VoltSe, round 30, docs/checker.md#dimensioned-alias-destinations-round-30)
-            reps = _const_int(stmt, reps_pos[0], env, truncate=True) if reps_pos else None
-            _check_arg(stmt, pos, channels[kind_name], env, diags,
-                       reps - 1 if reps is not None and reps > 1 else 0)
+        for pos, kind_name, *extra in positions:
+            # optional third and fourth items: the Reps position and the channels per repetition;
+            # the channel span is then checked (rounds 30-31, docs/checker.md#measurement-
+            # destination-and-channel-spans-round-31)
+            reps = _const_int(stmt, extra[0], env, truncate=True) if extra else None
+            width = extra[1] if len(extra) > 1 else 1
+            kind = channels[kind_name]
+            if reps is not None and profile.name == "cr6" and stmt.keyword.upper() in CR6_BRIDGES:
+                reps = min(reps, 1)  # start channel only: `instr_measure._check_bridge_span` owns the span
+            if reps is not None and "span" in kind:
+                _check_arg(stmt, pos, kind, env, diags, reps=reps, width=width)
+            else:  # CR300/CR350: the last channel used is tested and shown
+                _check_arg(stmt, pos, kind, env, diags,
+                           max(reps, 1) * width - 1 if reps is not None else 0)
 
 
 def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env, truncate: bool = False) -> int | None:
@@ -142,7 +153,7 @@ def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: D
 
 
 def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, diags: Diagnostics,
-               span: int = 0) -> None:
+               span: int = 0, reps: int | None = None, width: int = 1) -> None:
     idx = pos - 1
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
@@ -168,6 +179,8 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         return
     if not isinstance(value, (int, float)):
         return
+    if kind.get("truncate") and math.isfinite(value):
+        value = int(value)  # (CR1000X CurrentSE `402.5` is RG2, PulseCount `108.5` C8, round 31)
     if kind.get("skip_nonpositive") and value <= 0:
         # CR300/CR350 (docs/loggers.md): a channel <= 0 is accepted far outside any range this
         # checker would derive with confidence (oracle: DiffChan -4 compiles with a 1..3 range,
@@ -178,6 +191,15 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         return
     if _cr6_burst_kind(kind) and value <= -200 and not -212 <= value <= -201:
         return  # CR6 -200 and -213 and below behave irregularly (accepted, odd-start or port messages)
+    spec = kind.get("span") if reps is not None else None
+    top = max(hi for _, hi in _ranges(kind))
+    if spec is not None and not spec.get("start_upper", True) and value > top:
+        # CR6: a start channel above U12 is reported as the span (`250`: `Channel 50`, round 31)
+        if kind.get("odd_only") and int(value) % 2 != 1:
+            diags.error(stmt.line, kind["odd_message"].format(v=int(value)), stmt.file)
+        else:
+            diags.error(stmt.line, spec["message"].format(v=int(value) + spec.get("shift", 0)), stmt.file)
+        return
     in_range, odd_ok, shown = _evaluate(value + span, kind)
     allowed_ok = "allowed" not in kind or (in_range and shown in kind["allowed"])
     if not in_range:
@@ -188,3 +210,13 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         diags.error(stmt.line, kind["odd_message"].format(v=shown), stmt.file)
     elif not allowed_ok:
         diags.error(stmt.line, kind["allowed_message"].format(v=shown), stmt.file)
+    elif spec is not None and reps > 1 and (value > 0 or not in_range):
+        # the last repetition's start channel must stay in the start's own range; the message
+        # shows the first channel past it (`spec`: own `ranges`, `step`, display `shift`). CR300/
+        # CR350 PulseCount spans an invalid start from `invalid_start` (round 31)
+        start = value if in_range else spec["invalid_start"]
+        last = start + (reps - 1) * width * spec.get("step", 1)
+        end = next(hi for lo, hi in _ranges(kind) if lo <= start <= hi)
+        if last > end or not _in_range(last, spec if "ranges" in spec else kind):
+            diags.error(stmt.line, spec["message"].format(v=int(end) + 1 + spec.get("shift", 0)),
+                        stmt.file)

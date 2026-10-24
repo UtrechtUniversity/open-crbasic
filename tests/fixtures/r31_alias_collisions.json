@@ -1,0 +1,3604 @@
+{
+  "cases": [
+    {
+      "id": "cr6-a01",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-a01",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-a01",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a01",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a02",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a02",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a02",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a02",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a03",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Z\nAlias Z=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a03",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Z\nAlias Z=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a03",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Z\nAlias Z=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-a03",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Z\nAlias Z=W\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-a04",
+      "logger": "cr6",
+      "source": "Sub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-a04",
+      "logger": "cr1000x",
+      "source": "Sub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-a04",
+      "logger": "cr300",
+      "source": "Sub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-a04",
+      "logger": "cr350",
+      "source": "Sub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-a05",
+      "logger": "cr6",
+      "source": "Sub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-a05",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-a05",
+      "logger": "cr300",
+      "source": "Sub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-a05",
+      "logger": "cr350",
+      "source": "Sub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-a06",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Z(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr1000x-a06",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Z(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Alias is illegally dimensioned."
+    },
+    {
+      "id": "cr300-a06",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Z(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a06",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Z(0)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a07",
+      "logger": "cr6",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr1000x-a07",
+      "logger": "cr1000x",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr300-a07",
+      "logger": "cr300",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr350-a07",
+      "logger": "cr350",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr6-a08",
+      "logger": "cr6",
+      "source": "Dim Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a08",
+      "logger": "cr1000x",
+      "source": "Dim Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a08",
+      "logger": "cr300",
+      "source": "Dim Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a08",
+      "logger": "cr350",
+      "source": "Dim Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a09",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a09",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a09",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a09",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a10",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y(2)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a10",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y(2)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a10",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y(2)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-a10",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(6)\nAlias X=Y(2)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-a11",
+      "logger": "cr6",
+      "source": "Sub T\nDim Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a11",
+      "logger": "cr1000x",
+      "source": "Sub T\nDim Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a11",
+      "logger": "cr300",
+      "source": "Sub T\nDim Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-a11",
+      "logger": "cr350",
+      "source": "Sub T\nDim Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-a12",
+      "logger": "cr6",
+      "source": "Sub S\nDim Y\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-a12",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim Y\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-a12",
+      "logger": "cr300",
+      "source": "Sub S\nDim Y\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-a12",
+      "logger": "cr350",
+      "source": "Sub S\nDim Y\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-a13",
+      "logger": "cr6",
+      "source": "Public Y\nFunction F\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a13",
+      "logger": "cr1000x",
+      "source": "Public Y\nFunction F\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a13",
+      "logger": "cr300",
+      "source": "Public Y\nFunction F\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a13",
+      "logger": "cr350",
+      "source": "Public Y\nFunction F\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a14",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 8: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-a14",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 8: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-a14",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a14",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a15",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-a15",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-a15",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a15",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a16",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-a16",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-a16",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a16",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a17",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-a17",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-a17",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a17",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a18",
+      "logger": "cr6",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a18",
+      "logger": "cr1000x",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a18",
+      "logger": "cr300",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a18",
+      "logger": "cr350",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a19",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-a19",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-a19",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a19",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nY=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a20",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a20",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a20",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a20",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a21",
+      "logger": "cr6",
+      "source": "Public y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a21",
+      "logger": "cr1000x",
+      "source": "Public y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a21",
+      "logger": "cr300",
+      "source": "Public y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a21",
+      "logger": "cr350",
+      "source": "Public y\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a22",
+      "logger": "cr6",
+      "source": "Public Y\nSub S(X(2))\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a22",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S(X(2))\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a22",
+      "logger": "cr300",
+      "source": "Public Y\nSub S(X(2))\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a22",
+      "logger": "cr350",
+      "source": "Public Y\nSub S(X(2))\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a23",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-a23",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-a23",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a23",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nY=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-a24",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X As String * 16\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a24",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X As String * 16\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a24",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X As String * 16\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-a24",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X As String * 16\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b01",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b01",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-b01",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b01",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b02",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y(1)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b02",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y(1)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b02",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y(1)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-b02",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y(1)\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-b03",
+      "logger": "cr6",
+      "source": "Public Y,Z\nSub S\nDim X(2)\nAlias X=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Z already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b03",
+      "logger": "cr1000x",
+      "source": "Public Y,Z\nSub S\nDim X(2)\nAlias X=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Z already declared as a variable."
+    },
+    {
+      "id": "cr300-b03",
+      "logger": "cr300",
+      "source": "Public Y,Z\nSub S\nDim X(2)\nAlias X=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Z already declared as a variable."
+    },
+    {
+      "id": "cr350-b03",
+      "logger": "cr350",
+      "source": "Public Y,Z\nSub S\nDim X(2)\nAlias X=Y,Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Z already declared as a variable."
+    },
+    {
+      "id": "cr6-b04",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b04",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b04",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b04",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b05",
+      "logger": "cr6",
+      "source": "Sub T\nPublic Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y already declared as a variable.\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b05",
+      "logger": "cr1000x",
+      "source": "Sub T\nPublic Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y already declared as a variable.\nline 7: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b05",
+      "logger": "cr300",
+      "source": "Sub T\nPublic Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b05",
+      "logger": "cr350",
+      "source": "Sub T\nPublic Y\nEndSub\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b06",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Duplicate Alias\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b06",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Duplicate Alias\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-b06",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b06",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b07",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b07",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-b07",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b07",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b08",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b08",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-b08",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b08",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b09",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q(1),Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b09",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q(1),Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b09",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q(1),Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b09",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q(1),Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b10",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y ' c\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b10",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y ' c\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b10",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y ' c\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b10",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y ' c\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b11",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y,R\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Illegally dimensioned aliased name\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b11",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y,R\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Illegally dimensioned aliased name\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b11",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y,R\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-b11",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y,R\nAlias R=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-b12",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr1000x-b12",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr300-b12",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr350-b12",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(3)=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name"
+    },
+    {
+      "id": "cr6-b13",
+      "logger": "cr6",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b13",
+      "logger": "cr1000x",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b13",
+      "logger": "cr300",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-b13",
+      "logger": "cr350",
+      "source": "Const Y=1\nSub S\nDim X(2)\nAlias X=Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y is already declared as a CONST.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-b14",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim W(2)\nAlias W=Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 9: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b14",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim W(2)\nAlias W=Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 9: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b14",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim W(2)\nAlias W=Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b14",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nSub T\nDim W(2)\nAlias W=Z\nAlias Z=Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b15",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias Nope=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-b15",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias Nope=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-b15",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias Nope=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-b15",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias Nope=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-b16",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Q(2)\nAlias Q=R\nAlias R=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 8: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-b16",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Q(2)\nAlias Q=R\nAlias R=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 8: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-b16",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Q(2)\nAlias Q=R\nAlias R=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b16",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nPublic Q(2)\nAlias Q=R\nAlias R=Z\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b17",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b17",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-b17",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b17",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec\nAlias X(2)=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-b18",
+      "logger": "cr6",
+      "source": "Public Y\nSub S(X(2))\nDim Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-b18",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S(X(2))\nDim Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-b18",
+      "logger": "cr300",
+      "source": "Public Y\nSub S(X(2))\nDim Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-b18",
+      "logger": "cr350",
+      "source": "Public Y\nSub S(X(2))\nDim Y\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e01",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-e01",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-e01",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e01",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X(2)=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegally dimensioned aliased name\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e02",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q, Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-e02",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q, Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-e02",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q, Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-e02",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q, Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-e03",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-e03",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-e03",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-e03",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-e04",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X(2)=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e04",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X(2)=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-e04",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X(2)=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e04",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X(2)=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e05",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Sec\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr1000x-e05",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Sec\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr300-e05",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Sec\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr350-e05",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Sec\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr6-e06",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e06",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-e06",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e06",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e07",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e07",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-e07",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e07",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e08",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 7: Variable not named."
+    },
+    {
+      "id": "cr1000x-e08",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 7: Variable not named."
+    },
+    {
+      "id": "cr300-e08",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e08",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e09",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndSelect\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 7: EndSelect w/o Select"
+    },
+    {
+      "id": "cr1000x-e09",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndSelect\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 7: EndSelect w/o Select"
+    },
+    {
+      "id": "cr300-e09",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndSelect\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e09",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndSelect\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e10",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e10",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-e10",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e10",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e11",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nPublic Zed, Zed\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Zed already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e11",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nPublic Zed, Zed\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Zed already declared as a variable."
+    },
+    {
+      "id": "cr300-e11",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nPublic Zed, Zed\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e11",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nPublic Zed, Zed\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e12",
+      "logger": "cr6",
+      "source": "Public Zed, Zed\nPublic Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Zed already declared as a variable.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e12",
+      "logger": "cr1000x",
+      "source": "Public Zed, Zed\nPublic Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Zed already declared as a variable.\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-e12",
+      "logger": "cr300",
+      "source": "Public Zed, Zed\nPublic Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Zed already declared as a variable.\nline 5: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr350-e12",
+      "logger": "cr350",
+      "source": "Public Zed, Zed\nPublic Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Zed already declared as a variable.\nline 5: X not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr6-e13",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nDim W(-1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Illegally dimension: Dim W(-1)"
+    },
+    {
+      "id": "cr1000x-e13",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nDim W(-1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Illegally dimension: Dim W(-1)"
+    },
+    {
+      "id": "cr300-e13",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nDim W(-1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e13",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nDim W(-1)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e14",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-e14",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-e14",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e14",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Y=Z\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e15",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nEndSub\nSub T\nDim X(2)\nAlias X=Q\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 9: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-e15",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nEndSub\nSub T\nDim X(2)\nAlias X=Q\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 9: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-e15",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nEndSub\nSub T\nDim X(2)\nAlias X=Q\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e15",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nEndSub\nSub T\nDim X(2)\nAlias X=Q\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-e16",
+      "logger": "cr6",
+      "source": "Const Y=1\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr1000x-e16",
+      "logger": "cr1000x",
+      "source": "Const Y=1\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr300-e16",
+      "logger": "cr300",
+      "source": "Const Y=1\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr350-e16",
+      "logger": "cr350",
+      "source": "Const Y=1\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y is already declared as a CONST."
+    },
+    {
+      "id": "cr6-e17",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nX=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-e17",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nX=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-e17",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nX=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-e17",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nX=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-c01",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J)\nJ=0\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=0."
+    },
+    {
+      "id": "cr1000x-c01",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J)\nJ=0\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=0."
+    },
+    {
+      "id": "cr300-c01",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J)\nJ=0\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=0\n."
+    },
+    {
+      "id": "cr350-c01",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J)\nJ=0\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=0\n."
+    },
+    {
+      "id": "cr6-c02",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J,K)\nK=J\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+    },
+    {
+      "id": "cr1000x-c02",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J,K)\nK=J\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST."
+    },
+    {
+      "id": "cr300-c02",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J,K)\nK=J\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: K is not defined.",
+      "not_modelled": "A Const-conflicting parameter stops the CR300/CR350 header; the later parameter is undefined in the body."
+    },
+    {
+      "id": "cr350-c02",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J,K)\nK=J\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: K is not defined.",
+      "not_modelled": "A Const-conflicting parameter stops the CR300/CR350 header; the later parameter is undefined in the body."
+    },
+    {
+      "id": "cr6-c03",
+      "logger": "cr6",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-c03",
+      "logger": "cr1000x",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-c03",
+      "logger": "cr300",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c03",
+      "logger": "cr350",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c04",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S\nDim J\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c04",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S\nDim J\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c04",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S\nDim J\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c04",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S\nDim J\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c05",
+      "logger": "cr6",
+      "source": "Const J=7\nFunction F(J)\nJ=1\nF=J\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c05",
+      "logger": "cr1000x",
+      "source": "Const J=7\nFunction F(J)\nJ=1\nF=J\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c05",
+      "logger": "cr300",
+      "source": "Const J=7\nFunction F(J)\nJ=1\nF=J\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c05",
+      "logger": "cr350",
+      "source": "Const J=7\nFunction F(J)\nJ=1\nF=J\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c06",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(P(4),J)\nJ=1\nJ=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.\nline 4: Invalid assignment in expression: J=2."
+    },
+    {
+      "id": "cr1000x-c06",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(P(4),J)\nJ=1\nJ=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.\nline 4: Invalid assignment in expression: J=2."
+    },
+    {
+      "id": "cr300-c06",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(P(4),J)\nJ=1\nJ=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.\nline 4: Invalid assignment in expression: J=2\n."
+    },
+    {
+      "id": "cr350-c06",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(P(4),J)\nJ=1\nJ=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.\nline 4: Invalid assignment in expression: J=2\n."
+    },
+    {
+      "id": "cr6-c07",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J As Long)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c07",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J As Long)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c07",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J As Long)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c07",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J As Long)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c08",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J)\nIf J=1 Then J=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=2."
+    },
+    {
+      "id": "cr1000x-c08",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J)\nIf J=1 Then J=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=2."
+    },
+    {
+      "id": "cr300-c08",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J)\nIf J=1 Then J=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=2."
+    },
+    {
+      "id": "cr350-c08",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J)\nIf J=1 Then J=2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=2."
+    },
+    {
+      "id": "cr6-c09",
+      "logger": "cr6",
+      "source": "Sub S(J)\nConst J=2\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c09",
+      "logger": "cr1000x",
+      "source": "Sub S(J)\nConst J=2\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c09",
+      "logger": "cr300",
+      "source": "Sub S(J)\nConst J=2\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c09",
+      "logger": "cr350",
+      "source": "Sub S(J)\nConst J=2\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c10",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.\nline 5: J is already declared as a CONST.\nline 6: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c10",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1.\nline 5: J is already declared as a CONST.\nline 6: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c10",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.\nline 6: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c10",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n.\nline 6: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c11",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J(2))\nJ(1)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr1000x-c11",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J(2))\nJ(1)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid, or out of place expression: J(1)=1."
+    },
+    {
+      "id": "cr300-c11",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J(2))\nJ(1)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid, or out of place expression: J(1)=1\n."
+    },
+    {
+      "id": "cr350-c11",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J(2))\nJ(1)=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid, or out of place expression: J(1)=1\n."
+    },
+    {
+      "id": "cr6-c12",
+      "logger": "cr6",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: J is already declared as a CONST.\nline 6: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c12",
+      "logger": "cr1000x",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: J is already declared as a CONST.\nline 6: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c12",
+      "logger": "cr300",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: J is already declared as a CONST.\nline 6: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c12",
+      "logger": "cr350",
+      "source": "Sub S(J)\nJ=1\nEndSub\nConst J=2\nSub T(J)\nJ=1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: J is already declared as a CONST.\nline 6: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-d01",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d01",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d01",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d01",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d02",
+      "logger": "cr6",
+      "source": "Dim Q\nSub S(P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-d02",
+      "logger": "cr1000x",
+      "source": "Dim Q\nSub S(P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-d02",
+      "logger": "cr300",
+      "source": "Dim Q\nSub S(P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-d02",
+      "logger": "cr350",
+      "source": "Dim Q\nSub S(P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-d03",
+      "logger": "cr6",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d03",
+      "logger": "cr1000x",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d03",
+      "logger": "cr300",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d03",
+      "logger": "cr350",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d04",
+      "logger": "cr6",
+      "source": "Public P As String * K+2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+2."
+    },
+    {
+      "id": "cr1000x-d04",
+      "logger": "cr1000x",
+      "source": "Public P As String * K+2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+2."
+    },
+    {
+      "id": "cr300-d04",
+      "logger": "cr300",
+      "source": "Public P As String * K+2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+2.\nline 3: Out of memory."
+    },
+    {
+      "id": "cr350-d04",
+      "logger": "cr350",
+      "source": "Public P As String * K+2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+2.\nline 3: Out of memory."
+    },
+    {
+      "id": "cr6-d05",
+      "logger": "cr6",
+      "source": "Const K=3\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-d05",
+      "logger": "cr1000x",
+      "source": "Const K=3\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-d05",
+      "logger": "cr300",
+      "source": "Const K=3\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-d05",
+      "logger": "cr350",
+      "source": "Const K=3\nPublic P As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-d06",
+      "logger": "cr6",
+      "source": "Sub S(P As String * MissingLen)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: MissingLen."
+    },
+    {
+      "id": "cr1000x-d06",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * MissingLen)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: MissingLen."
+    },
+    {
+      "id": "cr300-d06",
+      "logger": "cr300",
+      "source": "Sub S(P As String * MissingLen)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: MissingLen is not defined.\nline 1: Variable illegal in Parameter: MissingLen.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d06",
+      "logger": "cr350",
+      "source": "Sub S(P As String * MissingLen)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: MissingLen is not defined.\nline 1: Variable illegal in Parameter: MissingLen.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d07",
+      "logger": "cr6",
+      "source": "Public P As String * MissingLen\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: MissingLen."
+    },
+    {
+      "id": "cr1000x-d07",
+      "logger": "cr1000x",
+      "source": "Public P As String * MissingLen\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: MissingLen."
+    },
+    {
+      "id": "cr300-d07",
+      "logger": "cr300",
+      "source": "Public P As String * MissingLen\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: MissingLen is not defined.\nline 1: Variable illegal in Parameter: MissingLen.\nline 3: Out of memory."
+    },
+    {
+      "id": "cr350-d07",
+      "logger": "cr350",
+      "source": "Public P As String * MissingLen\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: MissingLen is not defined.\nline 1: Variable illegal in Parameter: MissingLen.\nline 3: Out of memory."
+    },
+    {
+      "id": "cr6-d08",
+      "logger": "cr6",
+      "source": "Public Q\nDim P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d08",
+      "logger": "cr1000x",
+      "source": "Public Q\nDim P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d08",
+      "logger": "cr300",
+      "source": "Public Q\nDim P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d08",
+      "logger": "cr350",
+      "source": "Public Q\nDim P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d09",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n\n' end\n\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d09",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n\n' end\n\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d09",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n\n' end\n\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d09",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nEndProg\n\n' end\n\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d10",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q, R As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d10",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q, R As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d10",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q, R As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d10",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q, R As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d11",
+      "logger": "cr6",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nSub T(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr1000x-d11",
+      "logger": "cr1000x",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nSub T(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr300-d11",
+      "logger": "cr300",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nSub T(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 3: Too many parameters:  P.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr350-d11",
+      "logger": "cr350",
+      "source": "Sub S(Q,P As String * Q)\nEndSub\nSub T(Q,P As String * Q)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 3: Too many parameters:  P.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr6-d12",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Variable not named.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-d12",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Variable not named.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-d12",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Variable not named.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-d12",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nPublic\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Variable not named.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-d14",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P(3) As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d14",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P(3) As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d14",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P(3) As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d14",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P(3) As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d15",
+      "logger": "cr6",
+      "source": "Public P As String * Q\nPublic Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Q."
+    },
+    {
+      "id": "cr1000x-d15",
+      "logger": "cr1000x",
+      "source": "Public P As String * Q\nPublic Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Q."
+    },
+    {
+      "id": "cr300-d15",
+      "logger": "cr300",
+      "source": "Public P As String * Q\nPublic Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Q is not defined.\nline 1: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d15",
+      "logger": "cr350",
+      "source": "Public P As String * Q\nPublic Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Q is not defined.\nline 1: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d17",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * (Q)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: (Q).\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d17",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * (Q)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: (Q).\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d17",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * (Q)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: (Q).\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d17",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * (Q)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: (Q).\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d18",
+      "logger": "cr6",
+      "source": "Public P As String * K\nPublic Z As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 2: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-d18",
+      "logger": "cr1000x",
+      "source": "Public P As String * K\nPublic Z As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 2: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr300-d18",
+      "logger": "cr300",
+      "source": "Public P As String * K\nPublic Z As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d18",
+      "logger": "cr350",
+      "source": "Public P As String * K\nPublic Z As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d20",
+      "logger": "cr6",
+      "source": "Public Q As Long\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d20",
+      "logger": "cr1000x",
+      "source": "Public Q As Long\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d20",
+      "logger": "cr300",
+      "source": "Public Q As Long\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d20",
+      "logger": "cr350",
+      "source": "Public Q As Long\nPublic P As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d22",
+      "logger": "cr6",
+      "source": "Public S As String\nPublic P As String * S\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: S.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d22",
+      "logger": "cr1000x",
+      "source": "Public S As String\nPublic P As String * S\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: S.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d22",
+      "logger": "cr300",
+      "source": "Public S As String\nPublic P As String * S\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: S.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d22",
+      "logger": "cr350",
+      "source": "Public S As String\nPublic P As String * S\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: S.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d24",
+      "logger": "cr6",
+      "source": "Public P As String * K\nConst K=3\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-d24",
+      "logger": "cr1000x",
+      "source": "Public P As String * K\nConst K=3\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr300-d24",
+      "logger": "cr300",
+      "source": "Public P As String * K\nConst K=3\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d24",
+      "logger": "cr350",
+      "source": "Public P As String * K\nConst K=3\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d25",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q+1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q+1.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-d25",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q+1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q+1.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-d25",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q+1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q+1.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d25",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q+1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q+1.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d26",
+      "logger": "cr6",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-d26",
+      "logger": "cr1000x",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr300-d26",
+      "logger": "cr300",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-d26",
+      "logger": "cr350",
+      "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-d27",
+      "logger": "cr6",
+      "source": "Public Q\nSub S\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr1000x-d27",
+      "logger": "cr1000x",
+      "source": "Public Q\nSub S\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr300-d27",
+      "logger": "cr300",
+      "source": "Public Q\nSub S\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr350-d27",
+      "logger": "cr350",
+      "source": "Public Q\nSub S\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr6-d28",
+      "logger": "cr6",
+      "source": "Public P As String * K\nBeginProg\nEndProg\nSub S\nEndSub\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-d28",
+      "logger": "cr1000x",
+      "source": "Public P As String * K\nBeginProg\nEndProg\nSub S\nEndSub\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr300-d28",
+      "logger": "cr300",
+      "source": "Public P As String * K\nBeginProg\nEndProg\nSub S\nEndSub\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 3: Out of memory."
+    },
+    {
+      "id": "cr350-d28",
+      "logger": "cr350",
+      "source": "Public P As String * K\nBeginProg\nEndProg\nSub S\nEndSub\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 3: Out of memory."
+    },
+    {
+      "id": "cr1000x-f01",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P(K) As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 2: Invalid symbol in expression: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-f01",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P(K) As String * Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f02",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P(Q) As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K.\nline 2: Variable illegal in Parameter: Q."
+    },
+    {
+      "id": "cr1000x-f02",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P(Q) As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K.\nline 2: Variable illegal in Parameter: Q."
+    },
+    {
+      "id": "cr300-f02",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P(Q) As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-f02",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P(Q) As String * K\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f03",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q, R, U\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f03",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q, R, U\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-f03",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q, R, U\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 2: Too many parameters:  U.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-f03",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q, R, U\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 2: Too many parameters:  U.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f04",
+      "logger": "cr6",
+      "source": "Sub S(Q)\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f04",
+      "logger": "cr1000x",
+      "source": "Sub S(Q)\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f04",
+      "logger": "cr300",
+      "source": "Sub S(Q)\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f04",
+      "logger": "cr350",
+      "source": "Sub S(Q)\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f05",
+      "logger": "cr6",
+      "source": "Sub S\nDim Q\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr1000x-f05",
+      "logger": "cr1000x",
+      "source": "Sub S\nDim Q\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr300-f05",
+      "logger": "cr300",
+      "source": "Sub S\nDim Q\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr350-f05",
+      "logger": "cr350",
+      "source": "Sub S\nDim Q\nDim P As String * Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Q.\nline 6: Out of memory."
+    },
+    {
+      "id": "cr6-f07",
+      "logger": "cr6",
+      "source": "Public P As String * Sec\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-f07",
+      "logger": "cr1000x",
+      "source": "Public P As String * Sec\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-f07",
+      "logger": "cr300",
+      "source": "Public P As String * Sec\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-f07",
+      "logger": "cr350",
+      "source": "Public P As String * Sec\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-f08",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q .\nline 2: Out of memory."
+    },
+    {
+      "id": "cr1000x-f08",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q .\nline 2: Out of memory."
+    },
+    {
+      "id": "cr300-f08",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q .\nline 2: Out of memory."
+    },
+    {
+      "id": "cr350-f08",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q .\nline 2: Out of memory."
+    },
+    {
+      "id": "cr6-f09",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f09",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f09",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f09",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q\nAlias P=Y(2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f12",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q\nPublic A(100000000)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-f12",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q\nPublic A(100000000)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-f12",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q\nPublic A(100000000)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f12",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q\nPublic A(100000000)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f13",
+      "logger": "cr6",
+      "source": "Public P As String * K\nPublic Z\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr1000x-f13",
+      "logger": "cr1000x",
+      "source": "Public P As String * K\nPublic Z\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+    },
+    {
+      "id": "cr300-f13",
+      "logger": "cr300",
+      "source": "Public P As String * K\nPublic Z\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Z is not defined.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-f13",
+      "logger": "cr350",
+      "source": "Public P As String * K\nPublic Z\nBeginProg\nZ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Z is not defined.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-f14",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String *  Q \nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter:  Q .\nline 4: Out of memory."
+    },
+    {
+      "id": "cr1000x-f14",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String *  Q \nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter:  Q .\nline 4: Out of memory."
+    },
+    {
+      "id": "cr300-f14",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String *  Q \nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter:  Q .\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-f14",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String *  Q \nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter:  Q .\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-f15",
+      "logger": "cr6",
+      "source": "Const K=3\nPublic P As String * K+Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K+Q."
+    },
+    {
+      "id": "cr1000x-f15",
+      "logger": "cr1000x",
+      "source": "Const K=3\nPublic P As String * K+Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K+Q."
+    },
+    {
+      "id": "cr300-f15",
+      "logger": "cr300",
+      "source": "Const K=3\nPublic P As String * K+Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q is not defined.\nline 2: Variable illegal in Parameter: K+Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr350-f15",
+      "logger": "cr350",
+      "source": "Const K=3\nPublic P As String * K+Q\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q is not defined.\nline 2: Variable illegal in Parameter: K+Q.\nline 4: Out of memory."
+    },
+    {
+      "id": "cr6-c13",
+      "logger": "cr6",
+      "source": "Const J=7\nPublic J\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c13",
+      "logger": "cr1000x",
+      "source": "Const J=7\nPublic J\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c13",
+      "logger": "cr300",
+      "source": "Const J=7\nPublic J\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c13",
+      "logger": "cr350",
+      "source": "Const J=7\nPublic J\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 4: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c14",
+      "logger": "cr6",
+      "source": "Public J\nConst J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J already declared as a variable.\nline 4: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c14",
+      "logger": "cr1000x",
+      "source": "Public J\nConst J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J already declared as a variable.\nline 4: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c14",
+      "logger": "cr300",
+      "source": "Public J\nConst J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J already declared as a variable.\nline 4: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c14",
+      "logger": "cr350",
+      "source": "Public J\nConst J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J already declared as a variable.\nline 4: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-c15",
+      "logger": "cr6",
+      "source": "Const J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-c15",
+      "logger": "cr1000x",
+      "source": "Const J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-c15",
+      "logger": "cr300",
+      "source": "Const J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-c15",
+      "logger": "cr350",
+      "source": "Const J=7\nBeginProg\nJ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-g02",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X= Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-g02",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X= Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-g02",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X= Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g02",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X= Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-g03",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q ,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-g03",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q ,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-g03",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q ,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g03",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q ,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-g05",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-g05",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-g05",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-g05",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-g06",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-g06",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-g06",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g06",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Sec,Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sec is a predefined CONST.\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-g09",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-g09",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Q not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-g09",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g09",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Y\nAlias Q=R\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-g13",
+      "logger": "cr6",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-g13",
+      "logger": "cr1000x",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-g13",
+      "logger": "cr300",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g13",
+      "logger": "cr350",
+      "source": "Public W\nAlias W=Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-g15",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Q=R\nAlias U=V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Cannot Alias an Alias.\nline 5: U not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-g15",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Q=R\nAlias U=V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable.\nline 4: Cannot Alias an Alias.\nline 5: U not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-g15",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Q=R\nAlias U=V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g15",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nAlias Q=R\nAlias U=V\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-g16",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias U=V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: U not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr1000x-g16",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias U=V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 5: U not yet declared so cannot be aliased."
+    },
+    {
+      "id": "cr300-g16",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias U=V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-g16",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y\nAlias U=V\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-h01",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-h01",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-h01",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr350-h01",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q,Y 3\nAlias Y=Z\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-h02",
+      "logger": "cr6",
+      "source": "Public Y\nSub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-h02",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-h02",
+      "logger": "cr300",
+      "source": "Public Y\nSub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-h02",
+      "logger": "cr350",
+      "source": "Public Y\nSub S(Y)\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-h03",
+      "logger": "cr6",
+      "source": "Public S As String * 16 = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-h03",
+      "logger": "cr1000x",
+      "source": "Public S As String * 16 = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-h03",
+      "logger": "cr300",
+      "source": "Public S As String * 16 = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-h03",
+      "logger": "cr350",
+      "source": "Public S As String * 16 = \"abc\"\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-h04",
+      "logger": "cr6",
+      "source": "Const K=3\nSub S\nDim P As String * K\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-h04",
+      "logger": "cr1000x",
+      "source": "Const K=3\nSub S\nDim P As String * K\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-h04",
+      "logger": "cr300",
+      "source": "Const K=3\nSub S\nDim P As String * K\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-h04",
+      "logger": "cr350",
+      "source": "Const K=3\nSub S\nDim P As String * K\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-h05",
+      "logger": "cr6",
+      "source": "Public P(2) As String * 3+1\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-h05",
+      "logger": "cr1000x",
+      "source": "Public P(2) As String * 3+1\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-h05",
+      "logger": "cr300",
+      "source": "Public P(2) As String * 3+1\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-h05",
+      "logger": "cr350",
+      "source": "Public P(2) As String * 3+1\nAlias P=Y(4)\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-h06",
+      "logger": "cr6",
+      "source": "Const K=3\nSub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-h06",
+      "logger": "cr1000x",
+      "source": "Const K=3\nSub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-h06",
+      "logger": "cr300",
+      "source": "Const K=3\nSub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-h06",
+      "logger": "cr350",
+      "source": "Const K=3\nSub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-h07",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q\nAlias X(2)=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-h07",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q\nAlias X(2)=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable.\nline 6: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-h07",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q\nAlias X(2)=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-h07",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Q\nAlias X(2)=Y\nAlias Q=R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-h08",
+      "logger": "cr6",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nQ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr1000x-h08",
+      "logger": "cr1000x",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nQ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr300-h08",
+      "logger": "cr300",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nQ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr350-h08",
+      "logger": "cr350",
+      "source": "Public Q\nPublic P As String * Q\nBeginProg\nQ=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable illegal in Parameter: Q.\nline 5: Out of memory."
+    },
+    {
+      "id": "cr6-h09",
+      "logger": "cr6",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr1000x-h09",
+      "logger": "cr1000x",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1."
+    },
+    {
+      "id": "cr300-h09",
+      "logger": "cr300",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr350-h09",
+      "logger": "cr350",
+      "source": "Const J=7\nSub S(J)\nJ=1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: J is already declared as a CONST.\nline 3: Invalid assignment in expression: J=1\n."
+    },
+    {
+      "id": "cr6-h10",
+      "logger": "cr6",
+      "source": "Const J=7\nPublic P As String * J\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-h10",
+      "logger": "cr1000x",
+      "source": "Const J=7\nPublic P As String * J\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-h10",
+      "logger": "cr300",
+      "source": "Const J=7\nPublic P As String * J\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-h10",
+      "logger": "cr350",
+      "source": "Const J=7\nPublic P As String * J\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-h11",
+      "logger": "cr6",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 7: Variable not named."
+    },
+    {
+      "id": "cr1000x-h11",
+      "logger": "cr1000x",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable.\nline 7: Variable not named."
+    },
+    {
+      "id": "cr300-h11",
+      "logger": "cr300",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-h11",
+      "logger": "cr350",
+      "source": "Public Y\nSub S\nDim X(2)\nAlias X=Y\nEndSub\nBeginProg\nPublic\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Y already declared as a variable."
+    },
+    {
+      "id": "cr6-h12",
+      "logger": "cr6",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr1000x-h12",
+      "logger": "cr1000x",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr300-h12",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    },
+    {
+      "id": "cr350-h12",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(2)\nAlias X=Q,Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+    }
+  ]
+}

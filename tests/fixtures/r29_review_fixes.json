@@ -19,16 +19,14 @@
       "logger": "cr6",
       "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
-      "not_modelled": "Public String length expression not checked."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
     },
     {
       "id": "cr6-f1_param_q",
       "logger": "cr6",
       "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory."
     },
     {
       "id": "cr6-f1_param_const",
@@ -175,16 +173,14 @@
       "logger": "cr1000x",
       "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.",
-      "not_modelled": "Public String length expression not checked."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
     },
     {
       "id": "cr1000x-f1_param_q",
       "logger": "cr1000x",
       "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory."
     },
     {
       "id": "cr1000x-f1_param_const",
@@ -317,32 +313,28 @@
       "logger": "cr300",
       "source": "Sub S(P As String * K)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 5: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 5: Out of memory."
     },
     {
       "id": "cr300-f1_param_k_noalias",
       "logger": "cr300",
       "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
     },
     {
       "id": "cr300-f1_public_k",
       "logger": "cr300",
       "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
-      "not_modelled": "Public String length expression not checked."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
     },
     {
       "id": "cr300-f1_param_q",
       "logger": "cr300",
       "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory."
     },
     {
       "id": "cr300-f1_param_const",
@@ -475,32 +467,28 @@
       "logger": "cr350",
       "source": "Sub S(P As String * K)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 5: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 5: Out of memory."
     },
     {
       "id": "cr350-f1_param_k_noalias",
       "logger": "cr350",
       "source": "Sub S(P As String * K)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
     },
     {
       "id": "cr350-f1_public_k",
       "logger": "cr350",
       "source": "Public P As String * K\nAlias P=Y\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory.",
-      "not_modelled": "Public String length expression not checked."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Out of memory."
     },
     {
       "id": "cr350-f1_param_q",
       "logger": "cr350",
       "source": "Sub S(Q,P As String * Q)\nAlias P=Y\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory.",
-      "not_modelled": "Out of memory after an unresolved String parameter length not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable illegal in Parameter: Q.\nline 5: Out of memory."
     },
     {
       "id": "cr350-f1_param_const",

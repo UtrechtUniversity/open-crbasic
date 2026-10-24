@@ -238,7 +238,7 @@ _DECLARATION_TRIGGERS = ("instruction must be in a ConstTable", "already declare
                          "Only one ConstTable allowed.", "EndConstTable with no ConstTable.",
                          "Missing variable name.", "; cannot be numeric.",
                          "Too few parameters in instruction.", "Const with no assignment.", "CONST needs assignment.",
-                         " unknown Const type")
+                         " unknown Const type", "Cannot Alias an Alias.")  # (round 31)
 _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Need closing )", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Alias is illegally dimensioned.", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "EndStructure without Structure", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",
@@ -567,6 +567,33 @@ _DEST_MESSAGE = "Illegal destination variable type, expecting Float."
 _variable_types = symbols.declared_variable_types
 
 
+def _destination_types(program: S.Program) -> tuple[dict[str, str], dict[int, dict[str, str]]]:
+    """`declared_variable_types` plus each alias name with its declared source's type, so a Long,
+    Boolean or String alias is no Float destination (round 31). A chain `Alias Z=Y` on an alias
+    `Z` fails, so only a declared variable passes its type on. An alias inside a routine is that
+    routine's only: the second result maps `id(statement)` to its routine's alias types (oracle,
+    CR300/CR350, 2026-10-24, `tests/fixtures/r31_review_fixes.json` f1)."""
+    types = _variable_types(program)
+    declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
+                for v in st.vars}
+    scoped: dict[int, dict[str, str]] = {}
+    local: dict[str, str] | None = None
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            local = {}
+        elif S.ends_routine(st):
+            local = None
+        if local is not None:
+            scoped[id(st)] = local
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and len(st.args) > 1 \
+                and isinstance(st.args[0], (S.Name, S.Index)) and st.args[0].name.upper() in types:
+            for alias in st.args[1:]:
+                if isinstance(alias, (S.Name, S.Index)) and alias.name.upper() not in declared:
+                    (types if local is None else local).setdefault(
+                        alias.name.upper(), types[st.args[0].name.upper()])
+    return types, scoped
+
+
 def _is_bad_destination(expr: S.Expr, types: dict[str, str]) -> bool | None:
     """True when a defined first argument is not a Float variable, None when unknown."""
     if isinstance(expr, (S.Name, S.Index)):
@@ -586,8 +613,13 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         return
     types: dict[str, str] | None = None
     known = None
+    params: dict[str, str] = {}  # the enclosing routine's parameters hide a global (round 31)
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
     for stmt in program.statements:
+        if isinstance(stmt, S.SubDef):
+            params = {p.name.upper(): (p.type or "FLOAT").upper() for p in stmt.params}
+        elif S.ends_routine(stmt):
+            params = {}
         if not isinstance(stmt, S.Instruction) or not stmt.args or stmt.args[0] is None \
                 or per_line[(stmt.line, stmt.file)] > 1:
             continue
@@ -615,7 +647,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         if not info or not info["params"] or info["params"][0] != _FLOAT_DEST:
             continue
         if types is None:
-            types, known = _variable_types(program), expressions._known_names(program, profile)
+            (types, scoped), known = _destination_types(program), \
+                expressions._known_names(program, profile)
             ds = expressions.program_dims(program, profile, known)
         arg = stmt.args[0]
         if isinstance(arg, S.Name) and arg.name.upper() in profile.functions:
@@ -632,7 +665,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             elif not isinstance(arg, (S.Name, S.Index)):
                 continue
             keep = [profile.unresolved_symbol_message.format(name=n) for n in undefined]
-        elif _is_bad_destination(arg, types):
+        elif _is_bad_destination(arg, {**types, **scoped.get(id(stmt), {}), **params}):
             keep = []
         else:
             continue
@@ -780,6 +813,7 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
     known = expressions._known_names(dataclasses.replace(
         program, statements=[st for st in program.statements if id(st) not in dropped]), profile)
     tables = getattr(known, "tables", ())
+    types, scoped = _destination_types(program)
 
     def undefined(name: str) -> bool:
         return name.upper() not in known or name.upper() in tables
@@ -827,7 +861,7 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
             arg = stmt.args[0]
             names_ok = not messages
             if not isinstance(arg, (S.Name, S.Index)) or (
-                    names_ok and _is_bad_destination(arg, _variable_types(program))):
+                    names_ok and _is_bad_destination(arg, {**types, **scoped.get(id(stmt), {})})):
                 messages.append(_DEST_MESSAGE)
         if stmt.keyword.upper() == "SERIALIN" and (instr_rules._serialin_bad_destination(
                 stmt.args[0], instr_rules._serialin_types(program, profile)) or
@@ -2462,3 +2496,23 @@ def order_target_name_first(program: S.Program, profile, diags: Diagnostics) -> 
         first = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == key)
         diags.items.remove(mark)
         diags.items.insert(first, mark)
+
+
+def drop_after_alias_collision(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: after an `Alias` name reports `%s already declared as a variable.` (global or
+    in a routine), no later line reports anything; the rest of that statement still does (oracle,
+    2026-10-23, `tests/fixtures/r31_alias_collisions.json`; a `Const` or predefined collision does
+    not do this). "Later" is in expanded source order, across `Include` files (round 31 review)."""
+    if not profile.single_pass:
+        return
+    aliases = {(st.line, st.file) for st in program.statements
+               if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"}
+    hit = next((d for d in diags.items if d.severity == "error" and (d.line, d.file) in aliases
+                and d.message.endswith(" already declared as a variable.")), None)
+    if hit is not None:
+        order: dict[tuple, int] = {}
+        for i, st in enumerate(program.statements):
+            order.setdefault((st.line, st.file), i)
+        at = order[(hit.line, hit.file)]
+        diags.items[:] = [d for d in diags.items if not (
+            order.get((d.line, d.file), -1) > at or (d.file == hit.file and d.line > hit.line))]

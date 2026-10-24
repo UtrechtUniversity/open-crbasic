@@ -1,0 +1,2116 @@
+{
+  "cases": [
+    {
+      "id": "cr6-a01",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a01",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a01",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  5."
+    },
+    {
+      "id": "cr350-a01",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  5."
+    },
+    {
+      "id": "cr6-a02",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a02",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a02",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-a02",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-a03",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a03",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a03",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-a03",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-a04",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a04",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a04",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-a04",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Z,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-a05",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias X(3)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-a05",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias X(3)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-a05",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias X(3)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-a05",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias X(3)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-a06",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a06",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a06",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-a06",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-a07",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a07",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a07",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined."
+    },
+    {
+      "id": "cr350-a07",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined."
+    },
+    {
+      "id": "cr6-a08",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nZ=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a08",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nZ=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a08",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nZ=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-a08",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nZ=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-a09",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Z)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a09",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Z)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a09",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Z)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-a09",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Z)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-a10",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a10",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a10",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined."
+    },
+    {
+      "id": "cr350-a10",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined."
+    },
+    {
+      "id": "cr6-a11",
+      "logger": "cr6",
+      "source": "Public A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a11",
+      "logger": "cr1000x",
+      "source": "Public A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a11",
+      "logger": "cr300",
+      "source": "Public A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-a11",
+      "logger": "cr350",
+      "source": "Public A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-a12",
+      "logger": "cr6",
+      "source": "Dim A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a12",
+      "logger": "cr1000x",
+      "source": "Dim A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a12",
+      "logger": "cr300",
+      "source": "Dim A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-a12",
+      "logger": "cr350",
+      "source": "Dim A\nAlias A=B\nAlias B=C\nBeginProg\nScan(10,Sec,0,0)\nA=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-a13",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nPublic W\nBeginProg\nScan(10,Sec,0,0)\nW=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a13",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nPublic W\nBeginProg\nScan(10,Sec,0,0)\nW=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a13",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nPublic W\nBeginProg\nScan(10,Sec,0,0)\nW=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 6: Too many parameters:  Sec.\nline 7: W is not defined."
+    },
+    {
+      "id": "cr350-a13",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nPublic W\nBeginProg\nScan(10,Sec,0,0)\nW=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 6: Too many parameters:  Sec.\nline 7: W is not defined."
+    },
+    {
+      "id": "cr6-a14",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z(1)=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-a14",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z(1)=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr300-a14",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z(1)=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-a14",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z(1)=Y\nBeginProg\nScan(10,Sec,0,0)\nX(1)=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-b01",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b01",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b01",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  5."
+    },
+    {
+      "id": "cr350-b01",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,5,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  5."
+    },
+    {
+      "id": "cr6-b02",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b02",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b02",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b02",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b03",
+      "logger": "cr6",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b03",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b03",
+      "logger": "cr300",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-b03",
+      "logger": "cr350",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-b04",
+      "logger": "cr6",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-b04",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-b04",
+      "logger": "cr300",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-b04",
+      "logger": "cr350",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 6 exceeds number of valid channels."
+    },
+    {
+      "id": "cr6-b05",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b05",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b05",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b05",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b06",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(2)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b06",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(2)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b06",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(2)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b06",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(2)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b07",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b07",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b07",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b07",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b08",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b08",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b08",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b08",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X=Y(6)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b09",
+      "logger": "cr6",
+      "source": "Public X(6) As Boolean\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b09",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Boolean\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b09",
+      "logger": "cr300",
+      "source": "Public X(6) As Boolean\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b09",
+      "logger": "cr350",
+      "source": "Public X(6) As Boolean\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b10",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b10",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b10",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b10",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(X(2),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b11",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,9,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b11",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,9,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b11",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,9,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  9."
+    },
+    {
+      "id": "cr350-b11",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,9,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  9."
+    },
+    {
+      "id": "cr6-b12",
+      "logger": "cr6",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-b12",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-b12",
+      "logger": "cr300",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-b12",
+      "logger": "cr350",
+      "source": "Public X(6) As Float\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-b13",
+      "logger": "cr6",
+      "source": "Public L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b13",
+      "logger": "cr1000x",
+      "source": "Public L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b13",
+      "logger": "cr300",
+      "source": "Public L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b13",
+      "logger": "cr350",
+      "source": "Public L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b14",
+      "logger": "cr6",
+      "source": "Dim L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b14",
+      "logger": "cr1000x",
+      "source": "Dim L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b14",
+      "logger": "cr300",
+      "source": "Dim L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b14",
+      "logger": "cr350",
+      "source": "Dim L As Long\nAlias L=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b15",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b15",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b15",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float."
+    },
+    {
+      "id": "cr350-b15",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nBattery(Y)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float."
+    },
+    {
+      "id": "cr6-b16",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b16",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b16",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b16",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nY=1\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b17",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Y)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-b17",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Y)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-b17",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-b17",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-b18",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nVoltSe(Y,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b18",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nVoltSe(Y,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b18",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.\nline 6: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-b18",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.\nline 6: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-b19",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nPublic F\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nF=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b19",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nPublic F\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nF=1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b19",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nPublic F\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nF=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b19",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nPublic F\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nF=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b20",
+      "logger": "cr6",
+      "source": "Public X(6) As String\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b20",
+      "logger": "cr1000x",
+      "source": "Public X(6) As String\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b20",
+      "logger": "cr300",
+      "source": "Public X(6) As String\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-b20",
+      "logger": "cr350",
+      "source": "Public X(6) As String\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-b21",
+      "logger": "cr6",
+      "source": "Public X(6) As Long, F(6)\nAlias X(6)=Y\nAlias F(6)=G\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(G,1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-b21",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long, F(6)\nAlias X(6)=Y\nAlias F(6)=G\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(G,1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-b21",
+      "logger": "cr300",
+      "source": "Public X(6) As Long, F(6)\nAlias X(6)=Y\nAlias F(6)=G\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(G,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-b21",
+      "logger": "cr350",
+      "source": "Public X(6) As Long, F(6)\nAlias X(6)=Y\nAlias F(6)=G\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(G,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c01",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c01",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c01",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c01",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c02",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c02",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-c02",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr350-c02",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c03",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c03",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-c03",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr350-c03",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c04",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c04",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c04",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c04",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c05",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,4,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr1000x-c05",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,4,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr300-c05",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr350-c05",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y(3))\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
+    },
+    {
+      "id": "cr6-c06",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c06",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c06",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c06",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c07",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-c07",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-c07",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-c07",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-c08",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c08",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c08",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c08",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c09",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-c09",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-c09",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-c09",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(2))\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-c10",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12."
+    },
+    {
+      "id": "cr1000x-c10",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c10",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c10",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c11",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c11",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c11",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c11",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c12",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-c12",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-c12",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-c12",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q(3))\nVoltSe(Q(2),3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-c13",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c13",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c13",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  2.\nline 7: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-c13",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  2.\nline 7: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-c14",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c14",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c14",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1.\nline 7: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-c14",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(Q As Long)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1.\nline 7: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-c15",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X=Y\nSub S(P,Q)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds.\nline 8: Call argument required."
+    },
+    {
+      "id": "cr1000x-c15",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X=Y\nSub S(P,Q)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds.\nline 8: Call argument required."
+    },
+    {
+      "id": "cr300-c15",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X=Y\nSub S(P,Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds.\nline 8: Call argument required.",
+      "not_modelled": "CR300/CR350: a later line error gates the earlier routine destination bound."
+    },
+    {
+      "id": "cr350-c15",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X=Y\nSub S(P,Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds.\nline 8: Call argument required.",
+      "not_modelled": "CR300/CR350: a later line error gates the earlier routine destination bound."
+    },
+    {
+      "id": "cr6-c16",
+      "logger": "cr6",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-c16",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-c16",
+      "logger": "cr300",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-c16",
+      "logger": "cr350",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-c17",
+      "logger": "cr6",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,1,mV5000,U1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c17",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,1,mV5000,1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c17",
+      "logger": "cr300",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c17",
+      "logger": "cr350",
+      "source": "Public X(6)\nFunction F(Q)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nF=Q\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(X(2))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c18",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nBattery(Q)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c18",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nBattery(Q)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c18",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q)\nBattery(Q)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c18",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q)\nBattery(Q)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c19",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nVoltSe(Q,3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-c19",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nVoltSe(Q,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-c19",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-c19",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-c20",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,4,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c20",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,4,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c20",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,4,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-c20",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,4,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-c21",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,5,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-c21",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,5,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-c21",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,5,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-c21",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q(2,2))\nVoltSe(Q,5,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 3: Channel 5 exceeds number of valid channels."
+    },
+    {
+      "id": "cr6-c22",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q As String)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-c22",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q As String)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-c22",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q As String)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-c22",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q As String)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr1000x-d01",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S\nDim L As Long\nAlias L=Y\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-d02",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-d03",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nFunction F(Y)\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nF=Y\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-d04",
+      "logger": "cr1000x",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-d05",
+      "logger": "cr1000x",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-d06",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-d07",
+      "logger": "cr1000x",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Q)\nDim Y\nVoltSe(Y,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-d08",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nDim Z(4)\nVoltSe(Q,2,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-d09",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nSub S(Q)\nVoltSe(Q,1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-d10",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nDim W(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(W,2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr1000x-e01",
+      "logger": "cr1000x",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),2,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable P out of bounds."
+    },
+    {
+      "id": "cr1000x-e02",
+      "logger": "cr1000x",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),1,mV5000,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-e03",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-e04",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(4),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-e05",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(3),1,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-e06",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nTCDiff(Q,2,mV200,1,TypeT,PTemp,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: PTemp.\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr1000x-e07",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nTCDiff(Q,1,mV200,1,TypeT,PTemp,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: PTemp."
+    },
+    {
+      "id": "cr1000x-e08",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q)\nPulseCount(Q,2,P1,1,0,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 3: PulseCount must be used within a Scan...NextScan.",
+      "not_modelled": "A PulseCount outside Scan gates its destination bound."
+    },
+    {
+      "id": "cr1000x-e09",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q(2))\nBrHalf(Q,2,mV5000,1,Vx1,1,2500,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-e10",
+      "logger": "cr1000x",
+      "source": "Public X(6)\nSub S(Q(2))\nBrHalf(Q,3,mV5000,1,Vx1,1,2500,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-d01",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S\nDim L As Long\nAlias L=Y\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.\nline 8: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-d02",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1.\nline 7: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-d03",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nFunction F(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nF=Y\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-d04",
+      "logger": "cr300",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-d05",
+      "logger": "cr300",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-d06",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+    },
+    {
+      "id": "cr300-d07",
+      "logger": "cr300",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Q)\nDim Y\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-d08",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q)\nDim Z(4)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-d09",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nSub S(Q)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Q is not defined.\nline 5: Too many parameters:  1.\nline 8: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350: a Sub header after the cascade start does not drop its parameters."
+    },
+    {
+      "id": "cr300-d10",
+      "logger": "cr300",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nDim W(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(W,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 6: Too many parameters:  Sec.\nline 7: W is not defined.\nline 7: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-e01",
+      "logger": "cr300",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: P(1).\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr300-e02",
+      "logger": "cr300",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: P(1).\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-e03",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  1.\nline 6: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+    },
+    {
+      "id": "cr300-e04",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(4),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr300-e05",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(3),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-e08",
+      "logger": "cr300",
+      "source": "Public X(6)\nSub S(Q)\nPulseCount(Q,2,P_SW,1,0,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 3: Invalid PulseCount reps.\nline 3: PulseCount must be used within a Scan...NextScan.",
+      "not_modelled": "A PulseCount outside Scan gates its destination bound."
+    },
+    {
+      "id": "cr350-d01",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S\nDim L As Long\nAlias L=Y\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.\nline 8: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-d02",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  1.\nline 7: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-d03",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nFunction F(Y)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nF=Y\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-d04",
+      "logger": "cr350",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,3,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-d05",
+      "logger": "cr350",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-d06",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+    },
+    {
+      "id": "cr350-d07",
+      "logger": "cr350",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Q)\nDim Y\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-d08",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q)\nDim Z(4)\nVoltSe(Q,2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-d09",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nSub S(Q)\nVoltSe(Q,1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Q is not defined.\nline 5: Too many parameters:  1.\nline 8: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350: a Sub header after the cascade start does not drop its parameters."
+    },
+    {
+      "id": "cr350-d10",
+      "logger": "cr350",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nDim W(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(W,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 6: Too many parameters:  Sec.\nline 7: W is not defined.\nline 7: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-e01",
+      "logger": "cr350",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: P(1).\nline 4: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-e02",
+      "logger": "cr350",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: P(1).\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-e03",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  1.\nline 6: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+    },
+    {
+      "id": "cr350-e04",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(4),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr350-e05",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(3),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-e08",
+      "logger": "cr350",
+      "source": "Public X(6)\nSub S(Q)\nPulseCount(Q,2,P_SW,1,0,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 3: Invalid PulseCount reps.\nline 3: PulseCount must be used within a Scan...NextScan.",
+      "not_modelled": "A PulseCount outside Scan gates its destination bound."
+    },
+    {
+      "id": "cr6-d01",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S\nDim L As Long\nAlias L=Y\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-d02",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-d03",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nFunction F(Y)\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nF=Y\nEndFunction\nBeginProg\nScan(10,Sec,0,0)\nX(1)=F(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-d04",
+      "logger": "cr6",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,3,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-d05",
+      "logger": "cr6",
+      "source": "Const N=2\nPublic X(6)\nSub S(Q(N))\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-d06",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-d07",
+      "logger": "cr6",
+      "source": "Public X(6) As Long\nAlias X(6)=Y\nSub S(Q)\nDim Y\nVoltSe(Y,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-d08",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nDim Z(4)\nVoltSe(Q,2,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-d09",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nSub S(Q)\nVoltSe(Q,1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-d10",
+      "logger": "cr6",
+      "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nDim W(3)\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(W,2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias."
+    },
+    {
+      "id": "cr6-e01",
+      "logger": "cr6",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),2,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable P out of bounds."
+    },
+    {
+      "id": "cr6-e02",
+      "logger": "cr6",
+      "source": "Public P\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(P(1),1,mV5000,U1,False,0,60,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-e03",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-e04",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(4),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-e05",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q(3))\nVoltSe(Q(3),1,mV5000,U1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-e06",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nTCDiff(Q,2,mV200,U1,TypeT,PTemp,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: PTemp.\nline 3: Variable Q out of bounds."
+    },
+    {
+      "id": "cr6-e07",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nTCDiff(Q,1,mV200,U1,TypeT,PTemp,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: PTemp."
+    },
+    {
+      "id": "cr6-e08",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q)\nPulseCount(Q,2,U1,1,0,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 3: PulseCount must be used within a Scan...NextScan.",
+      "not_modelled": "A PulseCount outside Scan gates its destination bound."
+    },
+    {
+      "id": "cr6-e09",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q(2))\nBrHalf(Q,2,mV5000,U1,U2,1,2500,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Measurement channels and excitation channels overlap."
+    },
+    {
+      "id": "cr6-e10",
+      "logger": "cr6",
+      "source": "Public X(6)\nSub S(Q(2))\nBrHalf(Q,3,mV5000,U1,U2,1,2500,True,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds.\nline 3: Measurement channels and excitation channels overlap."
+    }
+  ]
+}

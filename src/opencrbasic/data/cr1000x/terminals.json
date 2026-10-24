@@ -1,6 +1,15 @@
 {
  "channels": {
+  "current_chan_cr1000x": {
+   "ranges": [[401, 402], [-402, -401]],
+   "transform": "none",
+   "truncate": true,
+   "skip_nonpositive": false,
+   "message": "Invalid channel {v}, must be RG1 or RG2.",
+   "string_int_min": true
+  },
   "diff_chan": {
+   "span": {"message": "Channel {v} exceeds number of valid channels."},
    "min": 0,
    "max": 8,
    "transform": "abs",
@@ -8,6 +17,7 @@
    "message": "Invalid channel {v}, must use 1..8."
   },
   "se_chan": {
+   "span": {"message": "Channel {v} exceeds number of valid channels."},
    "min": 1,
    "max": 16,
    "transform": "abs",
@@ -92,24 +102,53 @@
    "secondary_when_invalid": true
   },
   "pulse_chan_cr1000x": {
+   "span": {"message": "Invalid PulseCount reps."},
    "ranges": [[101, 108], [301, 302]],
    "transform": "none",
+   "truncate": true,
    "skip_nonpositive": false,
    "message": "Invalid PulseCount channel, must be P1, P2, or C1..C8."
   }
  },
  "instructions": {
   "TCDIFF": [
-   [4, "diff_chan"]
+   [4, "diff_chan", 2]
   ],
   "TCSE": [
-   [4, "se_chan"]
+   [4, "se_chan", 2]
+  ],
+  "CURRENTSE": [
+   [4, "current_chan_cr1000x"]
   ],
   "VOLTSE": [
-   [4, "se_chan"]
+   [4, "se_chan", 2]
   ],
   "VOLTDIFF": [
-   [4, "diff_chan"]
+   [4, "diff_chan", 2]
+  ],
+  "BRHALF": [
+   [4, "se_chan", 2]
+  ],
+  "BRHALF3W": [
+   [4, "se_chan", 2, 2]
+  ],
+  "BRFULL": [
+   [4, "diff_chan", 2]
+  ],
+  "BRHALF4W": [
+   [5, "diff_chan", 2, 2]
+  ],
+  "BRFULL6W": [
+   [5, "diff_chan", 2, 2]
+  ],
+  "THERM107": [
+   [3, "se_chan", 2]
+  ],
+  "THERM108": [
+   [3, "se_chan", 2]
+  ],
+  "THERM109": [
+   [3, "se_chan", 2]
   ],
   "PORTSET": [
    [1, "port_c1c8"]
@@ -177,7 +216,7 @@
    [2, "quadrature_port_cr1000x"]
   ],
   "PULSECOUNT": [
-   [3, "pulse_chan_cr1000x"]
+   [3, "pulse_chan_cr1000x", 2]
   ]
  }
 }

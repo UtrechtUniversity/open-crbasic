@@ -8,12 +8,14 @@
   },
   "u_terminal_se": {
    "ranges": [[201, 212]],
+   "span": {"message": "Channel {v} exceeds number of valid channels.", "shift": -200, "start_upper": false},
    "transform": "abs",
    "skip_nonpositive": false,
    "message": "Invalid channel {v}, must use U1..U12."
   },
   "u_terminal_diff": {
    "ranges": [[201, 212]],
+   "span": {"message": "Channel {v} exceeds number of valid channels.", "shift": -200, "start_upper": false, "step": 2},
    "transform": "abs",
    "skip_nonpositive": false,
    "message": "Invalid channel {v}, must use U1..U12.",
@@ -70,16 +72,40 @@
  },
  "instructions": {
   "TCDIFF": [
-   [4, "u_terminal_diff"]
+   [4, "u_terminal_diff", 2]
   ],
   "TCSE": [
-   [4, "u_terminal_se"]
+   [4, "u_terminal_se", 2]
   ],
   "VOLTSE": [
-   [4, "u_terminal_se"]
+   [4, "u_terminal_se", 2]
   ],
   "VOLTDIFF": [
-   [4, "u_terminal_diff"]
+   [4, "u_terminal_diff", 2]
+  ],
+  "BRHALF": [
+   [4, "u_terminal_se", 2]
+  ],
+  "BRHALF3W": [
+   [4, "u_terminal_se", 2, 2]
+  ],
+  "BRFULL": [
+   [4, "u_terminal_diff", 2]
+  ],
+  "BRHALF4W": [
+   [5, "u_terminal_diff", 2, 2]
+  ],
+  "BRFULL6W": [
+   [5, "u_terminal_diff", 2, 2]
+  ],
+  "THERM107": [
+   [3, "u_terminal_se", 2]
+  ],
+  "THERM108": [
+   [3, "u_terminal_se", 2]
+  ],
+  "THERM109": [
+   [3, "u_terminal_se", 2]
   ],
   "ACPOWER": [
    [4, "u_terminal"],

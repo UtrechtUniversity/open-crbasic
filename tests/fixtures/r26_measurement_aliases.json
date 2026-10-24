@@ -887,48 +887,42 @@
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  1."
     },
     {
       "id": "cr300-chain-2",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  2.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  2."
     },
     {
       "id": "cr300-chain-3",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  3.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  3."
     },
     {
       "id": "cr300-chain-4",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  4.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  4."
     },
     {
       "id": "cr300-chain-6",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  6.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  6."
     },
     {
       "id": "cr300-chain-7",
       "logger": "cr300",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  7.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  7."
     },
     {
       "id": "cr300-matrix-1",
@@ -977,48 +971,42 @@
       "logger": "cr300",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
     },
     {
       "id": "cr300-long-2",
       "logger": "cr300",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  2.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  2."
     },
     {
       "id": "cr300-long-3",
       "logger": "cr300",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  3.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  3."
     },
     {
       "id": "cr300-long-4",
       "logger": "cr300",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  4.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  4."
     },
     {
       "id": "cr300-long-6",
       "logger": "cr300",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  6.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  6."
     },
     {
       "id": "cr300-long-7",
       "logger": "cr300",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  7.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  7."
     },
     {
       "id": "cr350-bare-1",
@@ -1235,48 +1223,42 @@
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  1."
     },
     {
       "id": "cr350-chain-2",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  2.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  2."
     },
     {
       "id": "cr350-chain-3",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  3.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  3."
     },
     {
       "id": "cr350-chain-4",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  4.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  4."
     },
     {
       "id": "cr350-chain-6",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  6.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  6."
     },
     {
       "id": "cr350-chain-7",
       "logger": "cr350",
       "source": "Public X(6)\nAlias X(2)=Z\nAlias Z=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  7.",
-      "not_modelled": "CR300/CR350 post-alias-error undefined-name and parameter cascades differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Cannot Alias an Alias.\nline 5: Too many parameters:  Sec.\nline 6: Y is not defined.\nline 6: Too many parameters:  7."
     },
     {
       "id": "cr350-matrix-1",
@@ -1325,48 +1307,42 @@
       "logger": "cr350",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,1,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
     },
     {
       "id": "cr350-long-2",
       "logger": "cr350",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,2,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  2.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  2."
     },
     {
       "id": "cr350-long-3",
       "logger": "cr350",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,3,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  3.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  3."
     },
     {
       "id": "cr350-long-4",
       "logger": "cr350",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,4,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  4.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  4."
     },
     {
       "id": "cr350-long-6",
       "logger": "cr350",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,6,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  6.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  6."
     },
     {
       "id": "cr350-long-7",
       "logger": "cr350",
       "source": "Public X(6) As Long\nAlias X(6)=Y\nBeginProg\nScan(10,Sec,0,0)\nVoltSe(Y,7,mV2500,1,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  7.",
-      "not_modelled": "CR300/CR350 Long alias destination type diagnostics differ."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  7."
     },
     {
       "id": "cr6-index3-1",
@@ -1975,8 +1951,7 @@
       "logger": "cr6",
       "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds.\nline 4: Invalid channel 1, must use U1..U12.",
-      "not_modelled": "Scalar routine parameter measurement bounds are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds.\nline 4: Invalid channel 1, must use U1..U12."
     },
     {
       "id": "cr1000x-case-base",
@@ -1997,8 +1972,7 @@
       "logger": "cr1000x",
       "source": "Public X(6)\nAlias X=Y\nSub S(Y)\nVoltSe(Y,3,mV5000,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds.",
-      "not_modelled": "Scalar routine parameter measurement bounds are not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Y out of bounds."
     }
   ]
 }

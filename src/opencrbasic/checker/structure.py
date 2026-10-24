@@ -1160,9 +1160,30 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                       if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
                       for v in st.vars}
 
+    seen_consts: set[str] = set()
+    first_declared: dict[str, int] = {}
+    alias_spans: dict[str, list[list[int]]] = {}  # alias -> [from, to] statement positions seeing it
+    routine_spans: list[list[int]] = []
+    for pos, stmt in enumerate(program.statements):
+        if isinstance(stmt, S.SubDef):
+            routine_spans = []
+        elif S.ends_routine(stmt):
+            for span in routine_spans:
+                span[1] = pos
+            routine_spans = []
+        if _keyword(stmt) == "ALIAS" and isinstance(stmt, S.Instruction):
+            for a in stmt.args[1:]:
+                if isinstance(a, (S.Name, S.Index)):
+                    alias_spans.setdefault(a.name.upper(), []).append(span := [pos, len(program.statements)])
+                    routine_spans.append(span)
+        for name in ([stmt.name] if isinstance(stmt, S.ConstDecl) else
+                     [v.name for v in stmt.vars] if isinstance(stmt, S.Declaration) else []):
+            first_declared.setdefault(name.upper(), pos)
     for pos, stmt in enumerate(program.statements):
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
+        if isinstance(stmt, S.ConstDecl):
+            seen_consts.add(stmt.name.upper())
 
         fire_suppress = suppress_line is not None and stmt.line == suppress_line
         suppress_line = None
@@ -1351,6 +1372,16 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if known is None:
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
+                length_scope = None
+                if any(v.type == "STRING" and v.string_size is not None for v in stmt.vars):
+                    # a String length sees only earlier names (round 31)
+                    # an alias is a variable from its `Alias` on, a routine's only up to its end
+                    seen = {name for name, spans in alias_spans.items()
+                            if any(lo < pos <= hi for lo, hi in spans)}
+                    later = {name for name, at in first_declared.items() if at > pos} | (
+                        set(alias_spans) - seen - {n for n, at in first_declared.items() if at < pos})
+                    length_scope = (known - later,
+                                    ((decl_variables | seen) - later) | alias_parameter_names)
                 if profile.single_pass:
                     # one bad variable stops the declaration: the first of an illegal dimension,
                     # an undefined dimension/initializer name and a redeclared name wins; on the
@@ -1361,7 +1392,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     earlier_errors = any(d.severity == "error" for d in diags.items)
                     dim_at = _check_array_dims(stmt, dims_diags, env, profile)
                     name_at = _check_decl_exprs(stmt, known, decl_variables, profile, names_diags,
-                                                struct_types, dim_at)
+                                                struct_types, dim_at, length_scope)
                     bad_at = name_at if name_at is not None else dim_at
                     own_items = names_diags.items if name_at is not None else \
                         dims_diags.items + names_diags.items
@@ -1391,7 +1422,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         stmt.vars[stop + 1:] = [v for v in stmt.vars[stop + 1:] if v.type in struct_types]
                 else:
                     _check_array_dims(stmt, diags, env, profile)
-                    _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
+                    _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types,
+                                      length_scope=length_scope)
                 _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
             pass
@@ -1453,12 +1485,17 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif (isinstance(stmt, S.Assignment) and (profile.known_first_word_pass1 or profile.single_pass)
               and isinstance(stmt.target, S.Name)
               and stmt.target.name.upper() not in profile.instructions
-              and stmt.target.name.upper() not in symbols.declared_variable_names(program)
-              and (stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
-                   or _assigns_user_const(stmt, program))):
+              and (stmt.target.name.upper() in seen_consts or (
+                  stmt.target.name.upper() not in symbols.declared_variable_names(program)
+                  and (stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
+                       or _assigns_user_const(stmt, program))))):
             # `Sec = 3`, `String = "x"`: a predefined symbol cannot be assigned (oracle, CR6/CR1000X,
-            # 2026-10-10)
+            # 2026-10-10). A `Const` declared above wins over a same-named parameter, local or
+            # variable, even when its declaration failed (round 31, all four loggers).
             diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
+        elif _assigns_const_index(stmt, seen_consts):
+            # `J(1) = 1` over a `Const J` (round 31, all four loggers)
+            diags.error(stmt.line, _pass1_message(profile, stmt, "fallback"), stmt.file)
         elif (isinstance(stmt, S.Call) and profile.known_first_word_pass1 and not stmt.explicit
               and stmt.name.upper() not in profile.instructions
               and stmt.name.upper() not in profile.functions):
@@ -1491,8 +1528,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 sizes = symbols.declared_dim0_sizes(view, env)
                 dims = symbols.declared_all_dims(view, env)
                 _check_alias_dims(stmt, diags, env, sizes, dims, seen_alias_names,
-                                   seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"), profile,
-                                   _alias_string_slots(view, env))
+                                   seen_alias_sources,
+                                   _alias_name_collisions(stmt, declared_kinds, profile, in_sub),
+                                   profile, _alias_string_slots(view, env), in_sub)
         if isinstance(stmt, S.If) and (hashed := S.hash_statement(stmt)) is not None:
             diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)
         if profile.known_first_word_pass1 and isinstance(stmt, (S.If, S.ElseIf)):
@@ -1500,14 +1538,26 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 known = expressions._known_names(program, profile)
                 operands = pass1_operands(program, profile)
             _check_if_pass1(stmt, operands, profile, diags, program)
+            for sub in ((stmt.inline or []) + (stmt.inline_else or [])) if isinstance(stmt, S.If) else []:
+                if isinstance(sub, S.Assignment) and isinstance(sub.target, S.Name) and \
+                        sub.target.name.upper() in seen_consts:  # (round 31, as on its own line)
+                    diags.error(sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False),
+                                                         "invalid_assignment"), sub.file)
+                elif _assigns_const_index(sub, seen_consts):
+                    diags.error(sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False),
+                                                         "fallback"), sub.file)
         elif profile.single_pass and isinstance(stmt, S.If):  # CR300/CR350: only the called keyword
             for sub in (stmt.inline or []) + (stmt.inline_else or []):
-                if _block_keyword_call(sub):
+                if _assigns_const_index(sub, seen_consts):
+                    diags.error(sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False),
+                                                         "fallback"), sub.file)
+                elif _block_keyword_call(sub):
                     diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file)
                 elif (isinstance(sub, S.Assignment) and isinstance(sub.target, S.Name)
-                      and sub.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
                       and sub.target.name.upper() not in profile.instructions
-                      and sub.target.name.upper() not in symbols.declared_variable_names(program)):
+                      and (sub.target.name.upper() in seen_consts or (
+                          sub.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
+                          and sub.target.name.upper() not in symbols.declared_variable_names(program)))):
                     diags.error(sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False),
                                                          "invalid_assignment"), sub.file)
 
@@ -3369,6 +3419,13 @@ def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str])
     return f"Expression expects , : {text}{sep}."
 
 
+def _assigns_const_index(stmt: S.Stmt, consts: set[str]) -> bool:
+    """`J(1) = 1` over a `Const J` declared above, on its own line or in a one-line `If` (round 31,
+    all four loggers)."""
+    return isinstance(stmt, S.Assignment) and isinstance(stmt.target, S.Index) and \
+        stmt.target.name.upper() in consts
+
+
 def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None = None) -> str:
     text = condition_part(stmt.text)
     if kind == "no_matching" and operands is not None \
@@ -4027,24 +4084,10 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
             if isinstance(a, S.Name) and declared.get(a.name.upper()) not in ("VAR", "ALIAS"):
                 diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
-        # An alias name that is already a `Public`/`Dim` variable or a `Const` (not another
-        # alias: that is `Duplicate Alias Name`) -> `%s already declared as a variable.` /
-        # `%s is already declared as a CONST.` (oracle, all four loggers, 2026-10-04,
-        # `docs/checker.md` "Alias name already declared"). Only the first comma item, and only
-        # when it is a bare name with nothing after it; reported by `_check_alias_dims`, after
-        # its own dimension error (stashed here under `declared[stmt]` as the message).
-        for index, a in enumerate(stmt.args[1:]):
+        # The RHS names' collisions with earlier globals are `_alias_name_collisions` (round 31).
+        for a in stmt.args[1:]:
             if isinstance(a, S.Name):
-                prior = declared.setdefault(a.name.upper(), "ALIAS")
-                if index == 0 and not getattr(stmt, "alias_junk", False):
-                    if prior == "VAR":
-                        declared[f"#{id(stmt)}"] = f"{a.name} already declared as a variable."
-                    elif prior == "CONST":
-                        declared[f"#{id(stmt)}"] = f"{a.name} is already declared as a CONST."
-                    elif profile and symbols.is_reserved_predefined_name(a.name, profile):
-                        # `Alias X = Sec` (oracle, all four loggers, 2026-10-10); the name is
-                        # still registered as an alias (`Duplicate Alias Name` follows)
-                        declared[f"#{id(stmt)}"] = f"{a.name} is a predefined CONST."
+                declared.setdefault(a.name.upper(), "ALIAS")
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ESSVARIABLES" and profile:
         # declares its table's variables: a later `Public essBatteryStatus` -> `already declared
         # as a variable.` (oracle, 2026-10-01; `checker/ess.py`)
@@ -4171,11 +4214,13 @@ def _group_items(text: str, open_at: int) -> list[str] | None:
 
 
 def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], profile,
-                      stmt: S.Stmt, diags: Diagnostics, allow_variable: bool = False) -> bool:
+                      stmt: S.Stmt, diags: Diagnostics, allow_variable: bool = False,
+                      tag: object = None) -> bool:
     """An undefined name (`Invalid symbol in expression: %s.`; CR300/CR350: `%s is not defined.`
     per name, then `Variable illegal in Parameter: %s.`) or a live variable (`Variable illegal in
     Parameter: %s.`) inside a declaration's constant expression (`docs/checker.md` "Declaration
-    expressions"). Returns whether anything was reported."""
+    expressions"). Returns whether anything was reported. `tag` marks the `Variable illegal`
+    line for `storage.string_length_oom_line`."""
     names = expressions._undefined_names(expr, known)
     if names:
         if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
@@ -4183,10 +4228,10 @@ def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], pro
         else:
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
+            diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file, stmt=tag)
         return True
     if not allow_variable and expressions._variable_refs(expr, variables):
-        diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
+        diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file, stmt=tag)
         return True
     return False
 
@@ -4267,8 +4312,10 @@ def _adjacent_literals(text: str) -> bool:
 
 def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str], profile,
                       diags: Diagnostics, struct_types: frozenset[str] = frozenset(),
-                      stop_at: int | None = None) -> int | None:
-    """Pass-1 name resolution in `Public`/`Dim`/`Static` array dimensions and initializers.
+                      stop_at: int | None = None,
+                      length_scope: tuple[set[str], set[str]] | None = None) -> int | None:
+    """Pass-1 name resolution in `Public`/`Dim`/`Static` array dimensions and initializers, and
+    with `length_scope` (the names visible at the declaration, its variables) String lengths.
     Oracle, all four loggers (`docs/checker.md` "Declaration expressions"): `Public A(3, Nope)` ->
     `Invalid symbol in expression: Nope.` (each bad dimension, echo left-trimmed); `Dim A(Y)`, `Y`
     a variable -> `Variable illegal in Parameter: Y.`; `Public B As Long = Nope * 2` -> `Invalid
@@ -4284,6 +4331,7 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     for index, (v, seg) in enumerate(zip(stmt.vars, segments)):
         if unsupported_at is not None:
             break  # CR300/CR350: an unsupported type ends the statement after that variable's checks
+        length_bad = False
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
             continue
@@ -4326,6 +4374,13 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                     diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                 stmt.file)
                 return index
+        elif (v.type == "STRING" and v.string_size is not None and length_scope is not None
+              and (stop_at is None or index < stop_at) and (m := _STRING_SIZE_RE.search(seg))):
+            # `Public P As String * K` -> `Invalid symbol in expression: K.`, an earlier variable
+            # `Q` -> `Variable illegal in Parameter: Q.` (echo: after the `*` and one blank, up to
+            # an `=`), before the dimensions (round 31, all four loggers)
+            length_bad = _report_decl_expr(v.string_size, m.group(1), *length_scope, profile, stmt,
+                                           diags, tag=v)
         rest_at = name_at + len(v.name)
         rest = seg[rest_at:]
         if (junk := re.match(r"\s+(?:[\w.\"]+\s*)+?(?=\()", rest)) and not re.match(r"(?i)\s*as\b", rest):
@@ -4353,6 +4408,11 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
                     return index
+        if length_bad and profile.single_pass:
+            if index + 2 < len(stmt.vars):
+                diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                            stmt.file)
+            return index
         if v.init and (stop_at is None or index < stop_at):
             eq = _split_top(seg, "=")
             if len(eq) != 2:
@@ -4533,7 +4593,7 @@ def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env, declared
                 size_text = _STRING_SIZE_RE.search(segment or "")
                 if diags is not None and size_text:
                     _report_decl_expr(param.string_size, size_text.group(1).strip(), header_known,
-                                      variables, profile, routine, diags)
+                                      variables, profile, routine, diags, tag=param)
         if dims is not None and (param.type or "FLOAT").upper() in ("FLOAT", "LONG", "BOOLEAN", "DOUBLE",
                                                                     "STRING"):
             view.append(S.VarDecl(param.name, dims=dims, type=param.type, string_size=param.string_size))
@@ -4552,12 +4612,40 @@ def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env, declared
     return S.Declaration(routine.line, routine.file, kind="DIM", vars=view), failed
 
 
+def _alias_name_collisions(stmt: S.Instruction, declared: dict[str, str], profile,
+                           in_routine: bool) -> dict[int, str]:
+    """Item index -> message for `Alias` RHS names that are earlier global variables, aliases or
+    `Const`s, in a routine as at global scope (`docs/checker.md` "Alias name already declared",
+    round 31). A bare name only: nothing after it, and after a comma no blank before it
+    (`= Q, Y` compiles, `= Q,Y` and `= Q ,Y` collide). The first name may also be predefined
+    (`Alias X = Sec`; later ones are checked in `_check_alias_dims`). In a routine a global alias
+    collides too; at global scope it is `Duplicate Alias Name`."""
+    out = {}
+    lead = _alias_name_lead(stmt)
+    junk = getattr(stmt, "alias_item_junk", None) or []
+    for k, a in enumerate(stmt.args[1:]):
+        if not isinstance(a, S.Name) or (k == 0 and getattr(stmt, "alias_junk", False)) or \
+                (k and ((k < len(junk) and junk[k]) or k >= len(lead) or lead[k][0])):
+            continue
+        prior = declared.get(a.name.upper())
+        if prior == "VAR" or (in_routine and prior == "ALIAS"):
+            out[k] = f"{a.name} already declared as a variable."
+        elif prior == "CONST":
+            out[k] = f"{a.name} is already declared as a CONST."
+        elif k == 0 and profile and symbols.is_reserved_predefined_name(a.name, profile):
+            # `Alias X = Sec` (oracle, all four loggers, 2026-10-10); the name is still registered
+            # as an alias (`Duplicate Alias Name` follows)
+            out[k] = f"{a.name} is a predefined CONST."
+    return out
+
+
 def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
                        dim0_sizes: dict[str, int], all_dims: dict[str, tuple[int, ...]],
                        seen_alias_names: set[str],
                        seen_alias_sources: dict[str, set[tuple]],
-                       name_collision: str | None = None, profile=None,
-                       string_slots: dict[str, tuple[int | None, int]] | None = None) -> None:
+                       collisions: dict[int, str] | None = None, profile=None,
+                       string_slots: dict[str, tuple[int | None, int]] | None = None,
+                       register_collisions: bool = False) -> None:
     """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional. The caller supplies
     preceding declarations and duplicate-tracking state from the current scope (round 27), and
     rejects alias sources before these dimension/RHS checks. The checks are oracle-confirmed:
@@ -4712,6 +4800,8 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
     if sizes is not None and not _alias_dim_ok(stmt, diags, cur, sizes[0], total, False,
                                                rank is not None and isinstance(first, S.Index)):
         return
+    collisions = collisions or {}
+    name_collision = collisions.get(0)
     predefined = bool(name_collision) and name_collision.endswith("predefined CONST.")
     if predefined:  # before `Duplicate Alias`, `already declared` after it (oracle, round 9)
         diags.error(stmt.line, name_collision, stmt.file)
@@ -4743,11 +4833,18 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
                 return
             if isinstance(rhs, S.Name) and profile and symbols.is_reserved_predefined_name(rhs.name, profile):
                 diags.error(stmt.line, f"{rhs.name} is a predefined CONST.", stmt.file)
+        if k and k in collisions:
+            diags.error(stmt.line, collisions[k], stmt.file)
         if not (isinstance(rhs, S.Name) or (sizes is not None and isinstance(rhs, S.Index))):
             continue
         rhs_upper = rhs.name.upper()
-        if name_collision and rhs is stmt.args[1] and not name_collision.endswith("predefined CONST."):
-            continue  # a colliding first name is never registered as an alias
+        if k in collisions and not collisions[k].endswith("predefined CONST."):
+            # A colliding name skips `Duplicate Alias Name`. It is registered, but at global scope
+            # source lookup finds the earlier global first; a routine's lookup finds the alias
+            # (round 31).
+            if register_collisions:
+                seen_alias_names.add(rhs_upper)
+            continue
         if rhs_upper in seen_alias_names:
             # (the echo is the written name with its dimension and, after a comma, its blank)
             written = lead[k] if k < len(lead) else ("", rhs.name)

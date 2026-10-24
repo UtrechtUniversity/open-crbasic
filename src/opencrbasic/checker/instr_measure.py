@@ -189,6 +189,8 @@ def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env, pro
         return None
     if rule.get("string_zero") and isinstance(value, str):
         return 0
+    if rule.get("inf_max") and isinstance(value, (int, float)) and value >= 2**128 - 2**103:
+        return 2147483647   # (a Settling time that is a float infinity, `1E39`/`INF`, round 31)
     if not rule.get("wrap16"):
         # The profile-aware conversion (`checker/longconv.py`) where it covers the expression;
         # `to_long` for the forms it does not (function calls, `TRUE`).
@@ -352,7 +354,7 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
     error (`Dim Z banana`, `Delay(0,5,Foo)`), unlike the tier-C checks of `check`
     (`docs/instructions.md` "fN1 / fnotch"). A statement that already has an error on its line
     (unresolved name, variable in a constant position) is abandoned before these run."""
-    from . import expressions
+    from . import expressions, scan_time
     measure = profile.measure
     fnotch = profile.fnotch
     ranges = measure.get("range_code_instructions", {}) if measure else {}
@@ -382,7 +384,8 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
         if kw in ranges:
             _check_range_code(stmt, measure, ranges[kw], env, diags)
         if kw in fn_pos:
-            _check_fnotch_min(stmt, fnotch, fn_pos[kw], env, diags)
+            _check_fnotch_min(stmt, fnotch, fn_pos[kw], env, diags,
+                              scan_time.MODELS[profile.name].integ_num)
 
 
 _INF_NAMES = {"INF": float("inf"), "NAN": float("nan")}
@@ -400,10 +403,12 @@ def _fnotch_value(arg: S.Expr, env: consteval.Env):
 
 
 def _check_fnotch_min(stmt: S.Instruction, cfg: dict, pos: int, env: consteval.Env,
-                      diags: Diagnostics) -> None:
+                      diags: Diagnostics, integ_num: float) -> None:
     """`Invalid fnotch, minimum allowed is N Hz.` (CR6 2, CR1000X .5; docs/instructions.md). Zero
-    and +-INF pass, NAN, negatives, strings and values under the logger's minimum fail; there is
-    no maximum."""
+    (also as a float, `1E-50`) and +-INF pass, NAN, strings and values under the logger's minimum
+    fail; there is no maximum. A negative value fails when its integration code
+    `int(integ_num / fN1 + 0.5)` is negative, so a large one passes (CR6 `-1E5`, round 31)."""
+    from .scan_time import _f32
     idx = pos - 1
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
@@ -414,8 +419,9 @@ def _check_fnotch_min(stmt: S.Instruction, cfg: dict, pos: int, env: consteval.E
         bad = True
     else:
         value = float(value)
-        bad = value != value or (value != 0 and abs(value) != float("inf") and
-                                 (value < 0 or value < cfg["min_hz"]))
+        f = _f32(value)
+        bad = f != f or (f != 0 and abs(f) != float("inf") and (
+            value < cfg["min_hz"] if f > 0 else _f32(_f32(integ_num) / f) <= -1.5))
     if bad:
         times = 2 if stmt.keyword.upper() in cfg.get("twice", ()) else 1
         for _ in range(times):
@@ -655,8 +661,8 @@ def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnos
         for stmt, amount, unit in b.sub_short:
             diags.error(stmt.line, f"SubScan interval too short for measurement by {amount} "
                         f"{scan_time.UNIT_NAMES[unit]}.", stmt.file)
-        if b.total > b.interval:
-            amount = scan_time.amount(b.total - b.interval, b.msg_unit)
+        if b.total % 2**32 > b.interval:   # unsigned: a negative total also fails (round 31)
+            amount = scan_time.amount(scan_time.i32(b.total - b.interval), b.msg_unit)
             diags.error(b.end.line, f"Scan interval too short for measurement by {amount} "
                         f"{scan_time.UNIT_NAMES[b.msg_unit]}.", b.end.file)
 
@@ -796,15 +802,24 @@ def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
 # out of bounds.` when the Float destination cannot hold the output count (also for negative
 # output counts). Optional outputs adjust that count below. CR300/CR350: `Invalid reps 0, must
 # be > 0.` for Reps 0 only.
+# CR300/CR350 (round 31): all of these check the destination like VoltSe (round 30); Reps <= 0
+# is `Invalid reps %d, must be > 0.`, except a negative Reps on Therm/PeriodAvg, which instead
+# (with PulseCount) overruns the destination.
+_SINGLE_PASS_REPS = frozenset({"VOLTSE", "VOLTDIFF", "TCSE", "TCDIFF", "BRHALF", "BRHALF3W",
+                               "BRHALF4W", "BRFULL", "BRFULL6W", "THERM107", "THERM108", "THERM109",
+                               "CURRENTSE", "PERIODAVG", "PULSECOUNT"})
+_NEGATIVE_REPS_SILENT = frozenset({"THERM107", "THERM108", "THERM109", "PERIODAVG"})
+_NEGATIVE_REPS_DEST = frozenset({"THERM107", "THERM108", "THERM109", "PERIODAVG", "PULSECOUNT"})
 _REPS_CHECKED = {
     "cr6": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "BRHALF", "BRHALF3W", "BRHALF4W",
                       "BRFULL", "BRFULL6W", "RESISTANCE", "RESISTANCE2W", "RESISTANCE3W",
-                      "PULSECOUNT", "CS616"}),
+                      "PULSECOUNT", "CS616", "PERIODAVG", "CURRENTSE", "THERM107", "THERM108",
+                      "THERM109"}),
     "cr1000x": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
                           "PULSECOUNT", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W",
-                          "CS616"}),
-    "cr300": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT", "VOLTSE"}),
-    "cr350": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT", "VOLTSE"}),
+                          "CS616", "THERM107", "THERM108", "THERM109"}),
+    "cr300": _SINGLE_PASS_REPS,
+    "cr350": _SINGLE_PASS_REPS,
 }
 _REPS_DEST_SIZE = frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
                              "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE",
@@ -936,7 +951,7 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
     if not checked:
         return
     from . import symbols
-    tables = symbols.scope_tables(program, env, scalars=True)
+    tables = symbols.scope_tables(program, env, scalars=True, parameters=True)
     alias_storage = _measurement_aliases(program, tables, env)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or \
@@ -948,34 +963,111 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             reps = 0  # `Therm107(T,"fuzz",...)` (oracle, CR300)
         if reps is None:
             continue
-        if profile.single_pass and stmt.keyword.upper() == "VOLTSE":
-            # destination bounds before the line's other diagnostics (round 30)
-            message = _dest_overrun(stmt, stmt.args[0], reps, profile, env, alias_storage, scope) \
-                if reps > 0 else None
-            if message is not None:
-                at = next((i for i, d in enumerate(diags.items)
-                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
-                diags.items.insert(at, Diagnostic("error", stmt.line, message, stmt.file))
-            continue
         if profile.single_pass:
-            if reps == 0:
-                # before this line's fnotch warning (oracle, CR300, fuzz `84bd80cc420c`)
-                at = next((i for i, d in enumerate(diags.items)
-                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
-                diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  "Invalid reps 0, must be > 0.", stmt.file))
+            # before this line's other diagnostics, e.g. its fnotch warning (oracle, CR300, fuzz
+            # `84bd80cc420c`); destination bounds: rounds 30-31
+            kw = stmt.keyword.upper()
+            messages = []
+            if reps == 0 or (reps < 0 and kw not in _NEGATIVE_REPS_SILENT):
+                messages.append(f"Invalid reps {reps}, must be > 0.")
+            if reps > 0 or (reps < 0 and kw in _NEGATIVE_REPS_DEST):
+                messages.append(_dest_overrun(stmt, stmt.args[0], reps, profile, env, alias_storage,
+                                              scope))
+            at = next((i for i, d in enumerate(diags.items)
+                       if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+            diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file) for m in messages if m]
             continue
         if reps <= 0 and stmt.keyword.upper() != "CS616":  # (CS616: `_check_cs616_reps`)
             diags.error(stmt.line, f"Invalid reps {reps}, must be > 0", stmt.file)
         dest = stmt.args[0]
         if reps == 0 or not isinstance(dest, (S.Name, S.Index)):
             continue
-        if reps > 0 and stmt.keyword.upper() not in _REPS_DEST_SIZE:
+        if stmt.keyword.upper() not in _REPS_DEST_SIZE:
+            # Therm107/108/109: no output count, but an alias index past its size (round 31)
+            alias = alias_storage(stmt, dest) if isinstance(dest, (S.Name, S.Index)) else None
+            if alias is not None and _alias_overrun(stmt, dest, alias, 0, profile, env):
+                diags.error(stmt.line, f"Variable {alias[2]} out of bounds.", stmt.file)
             continue
         message = _dest_overrun(stmt, dest, reps, profile, env, alias_storage, scope)
         if message is not None:
             diags.error(stmt.line, message, stmt.file)
+        if reps > 1 and stmt.keyword.upper() == "CURRENTSE" and profile.name == "cr6":
+            diags.error(stmt.line, "Reps >1 not allowed in this device.", stmt.file)  # (round 31)
     _check_bridge_burst(program, profile, diags, env)
+    _check_bridge_span(program, profile, diags, env)
+    _check_pulse_span(program, profile, diags, env)
+
+
+# CR6 bridges: (channel, ExChan, MeasPEx argument indexes, measurement groups, channel stride)
+_BRIDGE_SPAN = {"BRHALF": (3, 4, 5, 1, 1), "BRHALF3W": (3, 4, 5, 2, 1), "BRFULL": (3, 4, 5, 1, 2),
+                "BRHALF4W": (4, 5, 6, 2, 2), "BRFULL6W": (4, 5, 6, 2, 2)}
+
+
+def _check_bridge_span(program: S.Program, profile: Profile, diags: Diagnostics,
+                       env: consteval.Env) -> None:
+    """CR6 bridge span validator (round 31, docs/checker.md "Bridge channel spans"): an excitation
+    start inside the measurement span -> `Measurement channels and excitation channels overlap.`;
+    the first excitation, else (Reps > 1) measurement, channel past U12 -> `Channel %d exceeds
+    number of valid channels.` In line order after the destination bounds error. The start channel
+    itself is `terminals.py`'s."""
+    if profile.name != "cr6":
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _BRIDGE_SPAN:
+            continue
+        cp, xp, mp, groups, stride = _BRIDGE_SPAN[stmt.keyword.upper()]
+        if len(stmt.args) <= mp:
+            continue
+        reps, chan, ex, meas = (_int_value(stmt.args[i], env) for i in (1, cp, xp, mp))
+        if None in (reps, chan, ex, meas) or reps < 1 or not (201 <= chan <= 212 and 201 <= ex <= 212) \
+                or (stride == 2 and chan % 2 == 0):
+            continue
+        s, e, meas = chan - 201, ex - 201, max(meas, 1)
+        meas_last = s + (reps - 1) * groups * stride + (groups - 1) * stride
+        ex_last = e + -(-reps // meas) - 1
+        found = []
+        if s < e <= meas_last:   # (the binary's other branch, e < s, cannot fire for Reps >= 1)
+            found.append("Measurement channels and excitation channels overlap.")
+        past = next((c for c in range(e + 1, ex_last + 1) if c + 1 > 12), None)
+        if past is None and ex_last <= 11 and reps > 1:
+            past = next((c for c in range(s + stride, meas_last + 1, stride) if c + 1 > 12), None)
+        if past is not None:
+            found.append(f"Channel {past + 1} exceeds number of valid channels.")
+        _insert_in_line_order(diags, stmt, found)
+
+
+def _insert_in_line_order(diags: Diagnostics, stmt: S.Instruction, texts: list[str]) -> None:
+    """After this tier's errors on earlier lines and on this line, before later lines."""
+    at = next((i for i, d in enumerate(diags.items) if d.severity == "error" and
+               d.file == stmt.file and d.line > stmt.line), len(diags.items))
+    diags.items[at:at] = [Diagnostic("error", stmt.line, text, stmt.file) for text in texts]
+
+
+def _pulse_index(code: int) -> tuple[int, int] | None:
+    """(port index, highest index Reps may reach) of a CR6 PulseCount channel (round 31). From
+    201 up, the port converter keeps `code % 200` (`412` is U12, `400` C4; docs/checker.md)."""
+    idx = code - 101 if 101 <= code <= 116 else code % 200 + 3 \
+        if code >= 201 and code % 200 <= 12 else None
+    return None if idx is None else (idx, 4 if idx < 4 else 16)   # one past C4 / U12
+
+
+def _check_pulse_span(program: S.Program, profile: Profile, diags: Diagnostics,
+                      env: consteval.Env) -> None:
+    """CR6 `PulseCount`: Reps channels from the start must stay in its terminal family ->
+    `Invalid PulseCount reps.` after the destination bounds error (round 31, docs/checker.md
+    "Bridge channel spans"; CR1000X: the `pulse_chan_cr1000x` terminal span)."""
+    if profile.name != "cr6":
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PULSECOUNT" or \
+                len(stmt.args) < 3:
+            continue
+        reps, chan = _int_value(stmt.args[1], env), _int_value(stmt.args[2], env)
+        port = _pulse_index(chan) if chan is not None else None
+        if reps is None or port is None:
+            continue
+        if max(reps, 1) - 1 + port[0] > port[1]:
+            _insert_in_line_order(diags, stmt, ["Invalid PulseCount reps."])
 
 
 def _dest_overrun(stmt, dest, reps, profile, env, alias_storage, scope) -> str | None:
@@ -1019,12 +1111,10 @@ def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics
 
 # Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds): elements the
 # Float destination must hold from its start -> `Variable %s out of bounds.`. `(per_rep,)` scales the
-# Reps argument (index 1); `REALTIME` needs a fixed nine. Therm107-109 check it on CR300/CR350 only
-# (CR6/CR1000X accept an overrun). Only CalFile also rejects negative Reps.
+# Reps argument (index 1); `REALTIME` needs a fixed nine (Therm107-109: `check_reps`, round 31).
+# Only CalFile also rejects negative Reps.
 _DEST_FIXED = {"REALTIME": 9}
-_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1,
-                 "THERM107": 1, "THERM108": 1, "THERM109": 1}
-_DEST_SINGLE_PASS_ONLY = frozenset({"THERM107", "THERM108", "THERM109"})
+_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1}
 _DEST_NEGATIVE_OOB = frozenset({"CALFILE"})
 
 
@@ -1145,6 +1235,12 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                     reps is not None and reps > 1 and \
                     types.get(name) in ("FLOAT", "STRING"):  # a structure takes Reps 3
                 bad.append(dest)
+        elif kw == "CSAT3" and len(stmt.args) > 1 and _int_value(stmt.args[1], env) is not None and \
+                _byte(_int_value(stmt.args[1], env)) >= 128:
+            # a negative signed-byte Reps fails the builder's allocation before the destination
+            # is resolved; the compile ends there (round 31, docs/checker.md "Bridge channel spans")
+            diags.error(stmt.line, "Out of memory.", stmt.file)
+            return
         elif kw in _BUILDER_FIXED or kw in ("SDMGENERIC", "SDMSW8A", "SDMCD16AC", "CSAT3",
                                               "PEAKVALLEY", "TGA", "EC100") or kw in _SDM_MODE_VALUES:
             # SDMGeneric checks any non-String destination, including a negative count
@@ -1152,8 +1248,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             for i, need in _builder_counts(kw, stmt.args, env):
                 if overruns(stmt.args[i], need, need < 0, kinds):
                     bad.append(stmt.args[i])
-        elif (kw in _DEST_FIXED or kw in _DEST_PER_REP) and \
-                not (kw in _DEST_SINGLE_PASS_ONLY and not profile.single_pass):
+        elif kw in _DEST_FIXED or kw in _DEST_PER_REP:
             negative = False
             if kw in _DEST_FIXED:
                 need = _DEST_FIXED[kw]

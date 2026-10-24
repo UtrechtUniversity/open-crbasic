@@ -129,11 +129,12 @@ def _hides_times(program_ast, diags, main) -> bool:
 
 
 # CR300/CR350 compile in one pass; the errors below come from an instruction's own argument checks
-# and do not hide `[Times]` (CHM corpus, oracle 2026-10-12: every other error kind does).
+# and do not hide `[Times]` (CHM corpus, oracle 2026-10-12: every other error kind does; the settling
+# range, tests/fixtures/timing_r16.json `cr300_measure`, oracle 2026-10-24).
 _SINGLE_PASS_KEEPS = re.compile(
     r"FileManage invalid drive|Invalid file type option|Illegal Semaphore|"
     r"Invalid drive or no drive specified|IF or SELECT without EndIf|Could not find \S+\.BytesPerRecord|"
-    r"Illegal dimension|exceeds number of valid channels|Variable \S+ out of bounds|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)")
+    r"Illegal dimension|exceeds number of valid channels|Settling time -?\d+ too (short|long)|Variable \S+ out of bounds|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)")
 
 
 def _pass1_ok(result, profile=None) -> bool:

@@ -2910,16 +2910,14 @@
    "logger": "cr6",
    "source": "Public SRC As String * 4, L(40) As Long\nPublic ZZ(9)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(ZZ,-2,3,91,10)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory.",
-   "not_modelled": "CSAT3 negative Reps"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
   },
   {
    "id": "cr1000x-dest-e243d748",
    "logger": "cr1000x",
    "source": "Public SRC As String * 4, L(40) As Long\nPublic ZZ(9)\nBeginProg\nScan(1,Sec,0,0)\nCSAT3(ZZ,-2,3,91,10)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory.",
-   "not_modelled": "CSAT3 negative Reps"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Out of memory."
   },
   {
    "id": "cr300-dest-e243d748",
@@ -3136,16 +3134,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,6000000,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 5: Scan interval too short for measurement by 6 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 5: Scan interval too short for measurement by 6 Sec."
   },
   {
    "id": "cr1000x-settle-9bb557ed",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,6000000,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 6 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 6 Sec."
   },
   {
    "id": "cr300-settle-9bb557ed",
@@ -3166,16 +3162,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 6 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 6 Sec."
   },
   {
    "id": "cr1000x-settle-89f50c87",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 6 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 6 Sec."
   },
   {
    "id": "cr300-settle-89f50c87",
@@ -3224,16 +3218,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,999999999999,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr1000x-settle-ab8200c9",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,999999999999,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr300-settle-ab8200c9",
@@ -3254,16 +3246,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,2147483648,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr1000x-settle-9dc4c9cf",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,2147483648,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr300-settle-9dc4c9cf",
@@ -3284,16 +3274,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,1.5E9,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 1500000000 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 1500 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 1500000000 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 1500 Sec."
   },
   {
    "id": "cr1000x-settle-e7b39967",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,1.5E9,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 1500000000 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 1500 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 1500000000 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 1500 Sec."
   },
   {
    "id": "cr300-settle-e7b39967",
@@ -3314,16 +3302,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,\"a\",15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr1000x-settle-e99636db",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(X,1,mV1000,1,0,\"a\",15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr300-settle-e99636db",
@@ -3519,8 +3505,7 @@
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,1,True,19,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must be RG1 or RG2.\nline 4: Settling time 19 too short, min time is 20.",
-   "not_modelled": "CR1000X CurrentSE channel"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must be RG1 or RG2.\nline 4: Settling time 19 too short, min time is 20."
   },
   {
    "id": "cr300-settle-26fd9663",
@@ -3569,16 +3554,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltDiff(X,1,mV1000,1,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr1000x-settle-8fb4eedc",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nVoltDiff(X,1,mV1000,1,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr300-settle-8fb4eedc",
@@ -3599,16 +3582,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nTCDiff(X,1,mV200C,1,TypeT,R,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr1000x-settle-f0cde3f2",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nTCDiff(X,1,mV200C,1,TypeT,R,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr300-settle-f0cde3f2",
@@ -3629,16 +3610,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nTCSE(X,1,mV200C,1,TypeT,R,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr1000x-settle-8dfbadf8",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nTCSE(X,1,mV200C,1,TypeT,R,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr300-settle-8dfbadf8",
@@ -3666,8 +3645,7 @@
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nBrHalf(X,1,mV1000,1,Vx1,1,2500,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr300-settle-89f64d11",
@@ -3695,8 +3673,7 @@
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nBrFull(X,1,mV200,1,Vx1,1,2500,True,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 24 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 24 Sec."
   },
   {
    "id": "cr300-settle-6a74f35c",
@@ -3745,16 +3722,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,1,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 6 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 6 Sec."
   },
   {
    "id": "cr1000x-settle-368482d3",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,1,True,6000001,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must be RG1 or RG2.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must be RG1 or RG2.\nline 4: Settling time 6000001 too long, max time is 6000000.\nline 5: Scan interval too short for measurement by 12 Sec."
   },
   {
    "id": "cr300-settle-368482d3",
@@ -3971,16 +3946,14 @@
    "logger": "cr6",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,1,True,999999999999,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec.",
-   "not_modelled": "timing of an extreme settling time"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time -2147483648 too short, min time is 20.\nline 5: Scan interval too short for measurement by -2148 Sec."
   },
   {
    "id": "cr1000x-settle-cee9df78",
    "logger": "cr1000x",
    "source": "Public X(4), R\nBeginProg\nScan(1,Sec,0,0)\nCurrentSE(X,1,mV1000,1,True,999999999999,15000,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must be RG1 or RG2.\nline 4: Settling time -2147483648 too short, min time is 20.",
-   "not_modelled": "CR1000X CurrentSE channel"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must be RG1 or RG2.\nline 4: Settling time -2147483648 too short, min time is 20."
   },
   {
    "id": "cr300-settle-cee9df78",
@@ -4302,24 +4275,21 @@
    "logger": "cr6",
    "source": "Public ZZ(2)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-0da95eb6",
    "logger": "cr6",
    "source": "Public ZZ(2)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-781dde64",
    "logger": "cr6",
    "source": "Public ZZ(2)\nBeginProg\nScan(1,Sec,0,0)\nBrFull6W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-c9fea6bb",
@@ -4368,24 +4338,21 @@
    "logger": "cr6",
    "source": "Public ZZ(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-19c6617c",
    "logger": "cr6",
    "source": "Public ZZ(3)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-9b2626a7",
    "logger": "cr6",
    "source": "Public ZZ(3)\nBeginProg\nScan(1,Sec,0,0)\nBrFull6W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-caa78aa6",
@@ -4434,24 +4401,21 @@
    "logger": "cr6",
    "source": "Public ZZ(5)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-b04b9568",
    "logger": "cr6",
    "source": "Public ZZ(5)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-a7278e70",
    "logger": "cr6",
    "source": "Public ZZ(5)\nBeginProg\nScan(1,Sec,0,0)\nBrFull6W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-24cbc341",
@@ -4500,24 +4464,21 @@
    "logger": "cr6",
    "source": "Public ZZ(6)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-c1cb682b",
    "logger": "cr6",
    "source": "Public ZZ(6)\nBeginProg\nScan(1,Sec,0,0)\nBrHalf4W(ZZ,3,mV200,mV200,U1,U8,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-43ee0564",
    "logger": "cr6",
    "source": "Public ZZ(6)\nBeginProg\nScan(1,Sec,0,0)\nBrFull6W(ZZ,3,mV200,mV200,U1,U8,1,2500,True,True,0,500,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-   "not_modelled": "CR6 4W/6W channel overlap"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
   },
   {
    "id": "cr6-analog-f5845253",
@@ -4587,8 +4548,7 @@
    "logger": "cr1000x",
    "source": "Public ZZ(2)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(ZZ,3,P1,1,0,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Invalid PulseCount reps.",
-   "not_modelled": "PulseCount reps past the last pulse channel"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable ZZ out of bounds.\nline 4: Invalid PulseCount reps."
   },
   {
    "id": "cr1000x-analog-9824ee9f",
@@ -4644,8 +4604,7 @@
    "logger": "cr1000x",
    "source": "Public ZZ(3)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(ZZ,3,P1,1,0,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.",
-   "not_modelled": "PulseCount reps past the last pulse channel"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
   },
   {
    "id": "cr1000x-analog-36fa6888",
@@ -4701,8 +4660,7 @@
    "logger": "cr1000x",
    "source": "Public ZZ(5)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(ZZ,3,P1,1,0,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.",
-   "not_modelled": "PulseCount reps past the last pulse channel"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
   },
   {
    "id": "cr1000x-analog-ff7e8112",
@@ -4758,8 +4716,7 @@
    "logger": "cr1000x",
    "source": "Public ZZ(6)\nBeginProg\nScan(1,Sec,0,0)\nPulseCount(ZZ,3,P1,1,0,1,0)\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.",
-   "not_modelled": "PulseCount reps past the last pulse channel"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps."
   },
   {
    "id": "cr1000x-analog-f838fbd6",
