@@ -59,6 +59,39 @@ _BAUDS = frozenset({0, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800, 
                     460800})
 
 
+# CR6/CR1000X `SerialOpen` CommsMode values per control port (oracle, 2026-10-24, round 34, 0..20
+# and -1 swept): ComC1/ComC5 take 0..7, ComC3/ComC7 0..4 and 6, else an error; the RS232, ME, U
+# and SDC ports warn for anything but 1 and 2. The port is the predefined constant's value.
+_COMMS_MODES = {"COMC1": frozenset(range(8)), "COMC5": frozenset(range(8)),
+                "COMC3": frozenset({0, 1, 2, 3, 4, 6}), "COMC7": frozenset({0, 1, 2, 3, 4, 6})}
+
+
+def _commsmode_problem(stmt: S.Call, profile, consts: dict | None) -> str | None:
+    if len(stmt.args) < 6 or stmt.args[5] is None:
+        return None
+    env = consteval.Env(profile, dict(consts or {}))
+    try:
+        port, mode = consteval.value_of(stmt.args[0], env), consteval.value_of(stmt.args[5], env)
+    except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+        return None
+    if isinstance(mode, bool) or not isinstance(mode, (int, float)) or mode != int(mode):
+        return None
+    for key, modes in _COMMS_MODES.items():
+        record = profile.symbols.get(key)
+        if record and record["value"] == port:
+            return (True, f"CommsMode Option {int(mode)} not supported on {record['name']}.") \
+                if int(mode) not in modes else None
+    if int(mode) in (1, 2):
+        return None
+    for key, record in profile.symbols.items():
+        if record["value"] == port and (key == "COMRS232" or key == "COMME" or
+                                         re.fullmatch(r"COM(U|SDC)\d+", key)):
+            # a warning only (`COM232`, `COMME` as printed)
+            shown = {"COMRS232": "COM232", "COMME": "COMME"}.get(key, record["name"])
+            return False, f"CommsMode Option {int(mode)} not supported on {shown}."
+    return None
+
+
 def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None) -> None:
     if len(stmt.args) < 2 or not (isinstance(stmt.args[0], S.Name)
                                   and stmt.args[0].name.upper() == "COMRS232"):
@@ -160,6 +193,17 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 # (beyond 32 bits: `Parameter must be a constant integer` only, `intervals.py`)
                 diags.error(stmt.line, f"{int(value)} usec delay before transmit is illegal, must be "
                             "0..14000000", stmt.file)
+        if not (cr3 or names or is_variable or isinstance(arg, S.String)) and \
+                (problem := _commsmode_problem(stmt, profile, program.consts)):
+            if problem[0]:
+                diags.error(stmt.line, problem[1], stmt.file)
+            else:
+                diags.warning(stmt.line, problem[1], stmt.file)
+        if not (cr3 or names or is_variable or isinstance(arg, S.String)) and len(stmt.args) > 4 \
+                and expressions._variable_refs(stmt.args[4], variable_names):
+            # a variable `BufferSize` (oracle, CR6/CR1000X, 2026-10-24, round 34)
+            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
+            continue
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).

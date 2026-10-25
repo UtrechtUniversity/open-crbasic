@@ -154,7 +154,9 @@ diagnostics without a line number:
 | False reject | 0 | 0 | 0 | 0 | 0 | highest (gated) |
 | Reference or runner failure | 19 | 6 | 4 | 3 | 6 | no verdict |
 
-Outside the replay baseline, four 2026-10-24 probes are also false accepts:
+Round 34 fixed the four probe false accepts below and 13 replay false accepts (35 remain, 18 of them on CR6/CR1000X and flagged;
+`PROGRESS.md` has the triage). Outside the replay baseline, four 2026-10-24 probes were also false
+accepts:
 - an unknown table field (`Tbl.NoSuchField(1,1)`, CR6);
 - an unknown `Settings.` name (CR6);
 - an assignment to an unknown `Status.` field (CR6);

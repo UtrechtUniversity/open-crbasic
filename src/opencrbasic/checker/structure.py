@@ -153,11 +153,11 @@ def _assignment_head(text: str, program, profile) -> bool:
 # with the fix once the regression was found (AGENTS.md: verify a generalisation against the whole
 # corpus, not a hand-written probe or a partial metric, before trusting it).
 _BODY_BLOCK_STARTS = frozenset({
-    "DIALSEQUENCE", "MODEMHANGUP", "MENU", "SUBMENU", "VOICE", "BURSTTRIGGER",
+    "DIALSEQUENCE", "MODEMHANGUP", "MENU", "VOICE", "BURSTTRIGGER",
     "APPLYANDRESTARTSEQUENCE", "PROCHIPRI",
 })
 _BODY_BLOCK_ENDS = frozenset({
-    "ENDDIALSEQUENCE", "ENDMODEMHANGUP", "ENDMENU", "ENDSUBMENU", "ENDVOICE", "ENDBURSTTRIGGER",
+    "ENDDIALSEQUENCE", "ENDMODEMHANGUP", "ENDMENU", "ENDVOICE", "ENDBURSTTRIGGER",
     "ENDAPPLYANDRESTARTSEQUENCE", "ENDPROCHIPRI",
 })
 
@@ -1859,6 +1859,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     seen_beginprog = False
 
     in_body_block = False
+    after_endseq = False
     # Narrower than `in_body_block` and used *only* by `_FORBIDDEN_BEFORE_BEGINPROG` below -- kept
     # deliberately separate rather than folded into `_BODY_BLOCK_STARTS`/`_BODY_BLOCK_ENDS`
     # (round 5, `docs/checker.md`): a fuzz-found false reject (`Delay(0,1,Sec)` inserted inside a
@@ -1980,6 +1981,14 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         if S.ends_routine(stmt) or kw in _BODY_BLOCK_ENDS:
             in_body_block = False
             continue
+        if kw in ("ENDSEQUENCE", "SLOWSEQUENCE", "ENDPROG"):
+            after_endseq = kw == "ENDSEQUENCE" and seen_beginprog
+        elif after_endseq and not in_body_block and not in_table and \
+                (display := _before_beginprog_name(stmt, kw, profile, subs)):
+            # code between `EndSequence` and the next `SlowSequence` (oracle, CR6/CR1000X,
+            # 2026-10-24, `docs/checker.md` "Code after EndSequence")
+            diags.error(stmt.line, f"{display} illegally occurs after EndSequence.", stmt.file)
+            return stmt.line
 
         if isinstance(stmt, S.Call):
             stop = _check_call_pass2(stmt, subs, profile, diags, before_bp and not in_table,
@@ -4324,6 +4333,8 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     if stmt.kind != "STRUCTUREMEMBER":
         body = body[len(body.split(None, 1)[0]):] if body else ""
     segments = _split_top(body)
+    while len(segments) > len(stmt.vars) and not segments[-1].strip():
+        segments.pop()   # `Public C As Long2,` (oracle, 2026-10-24: still `not supported`)
     if len(segments) != len(stmt.vars):
         return None
     unsupported = empty_eq = False
@@ -4339,6 +4350,12 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
         junk = re.match(r"\s+(?:[\w.\"]+\s*)+?(?=\()", after_name)
         if junk and not re.match(r"(?i)\s*as\b", after_name):
             after_name = after_name[junk.end():]  # `Public Resul  tString() As ...` (see below)
+        if index == len(stmt.vars) - 1 and not profile.single_pass and \
+                (blank := re.fullmatch(r"\s*\(\s*\)(\s+)", after_name)):
+            # `Public Q(5), Y() 'c`: a trailing blank after the last `()` is echoed (oracle,
+            # CR6/CR1000X, 2026-10-24); `Public Y()` and `Y(), Z` compile
+            diags.error(stmt.line, f"Invalid, or out of place expression: {blank.group(1)}.", stmt.file)
+            continue
         empty_as = _EMPTY_DIMS_AS_RE.match(after_name)
         if empty_as:
             # `Public A() As Long` -> `Invalid symbol in expression:  As.` (CR300/CR350: `As is not
@@ -4435,9 +4452,12 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
             if items is None or len(items) != len(v.init):
                 continue
             bad = False
+            # CR6/CR1000X: a variable or a `Status.`/`Settings.` member is `Variable illegal in
+            # Parameter` (oracle, 2026-10-24, round 34: `Public X = Y`, `Dim X = Status.Battery`)
+            live = variables | {"STATUS", "SETTINGS"}
             for e, text in zip(v.init, items):
-                bad |= _report_decl_expr(e, text.lstrip(), known, variables, profile, stmt,
-                                         diags, allow_variable=True)
+                bad |= _report_decl_expr(e, text.lstrip(), known, live, profile, stmt,
+                                         diags, allow_variable=profile.single_pass)
             if bad:
                 diags.error(stmt.line, f"Variable initialization of {v.name} has bad syntax.",
                             stmt.file)

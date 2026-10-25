@@ -20,6 +20,11 @@ from . import consteval
 from . import syntax as S
 from .tdf import TdfField, TdfTable
 
+# `TableName.<property>` members of a data (or Status) table that are not fields
+# (extracted_chm/Info/datatableaccess.htm "Data Table Access").
+TABLE_PROPERTIES = ("BytesPerRecord", "EventCount", "EventEnd", "Output", "Record", "TableBytes",
+                    "TableFull", "TableSize", "TimeStamp")
+
 DATA = Path(__file__).resolve().parent / "data"
 
 # ---------------------------------------------------------------- type codes (§1, §8)

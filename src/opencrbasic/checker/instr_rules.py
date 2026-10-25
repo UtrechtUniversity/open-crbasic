@@ -1319,6 +1319,11 @@ _AVGRUN_TYPE_ERROR = frozenset({"FLOAT", "STRING"})
 _RUNNING_AVG = frozenset({"AVGRUN", "TOTALRUN", "MINRUN", "MAXRUN", "STDDEVRUN"})
 
 
+# The number-of-instances position of the running statistics; the instance number follows it
+# (oracle, CR6/CR1000X, 2026-10-24: `MinRun(D,1,S,10,R,3)` -> `Missing instance number`).
+_INSTANCES_AT = {"AVGRUN": 6, "TOTALRUN": 6, "STDDEVRUN": 6, "MINRUN": 5, "MAXRUN": 5}
+
+
 def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                          env: consteval.Env) -> None:
     """`AvgRun`'s optional arguments after `ResetVar` (decompiled AvgRun compile function; oracle,
@@ -1368,19 +1373,20 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                 and variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
             # same Count message as `AvgRun` (oracle, CR6 and CR300, 2026-10-08)
             diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
-        if kw == "AVGRUN" and args[4] is not None:
-            if variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
-                diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
-            if args[6] is not None and len(profile.instructions["AVGRUN"]["params"]) >= 8:
-                instances = number(args[6])
-                if instances is not None and instances < 0:
-                    continue  # (`-1` -> `Out of memory.`, not modelled)
-                if variable_type(args[6]) is not None or instances == 0 or (
-                        isinstance(args[6], S.Name) and args[6].name.upper() in variable_names):
-                    diags.error(stmt.line, "Optional number of distinct instances must be a "
-                                "constant of type long.", stmt.file)
-                if args[7] is None:
-                    diags.error(stmt.line, "Missing instance number", stmt.file)
+        if kw == "AVGRUN" and args[4] is not None and variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
+            diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
+        at = _INSTANCES_AT.get(kw)
+        if at is not None and args[4] is not None and args[at] is not None \
+                and len(profile.instructions[kw]["params"]) > at + 1:
+            instances = number(args[at])
+            if instances is not None and instances < 0:
+                continue  # (`-1` -> `Out of memory.`, not modelled)
+            if variable_type(args[at]) is not None or instances == 0 or (
+                    isinstance(args[at], S.Name) and args[at].name.upper() in variable_names):
+                diags.error(stmt.line, "Optional number of distinct instances must be a "
+                            "constant of type long.", stmt.file)
+            if args[at + 1] is None:
+                diags.error(stmt.line, "Missing instance number", stmt.file)
         reps, count = number(args[1]), number(args[3])
         if reps is not None and count is not None and (reps < 1 or count < 1):
             diags.error(stmt.line, f"number of averages {count} and reps {reps} in RunningAvg "
@@ -1732,6 +1738,58 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
         diags.items[at:at] = new
 
 
+def check_serialinrecord(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """CR6/CR1000X `SerialInRecord(Port,Dest,StartWord,NumberBytes,EndWord,...)` (oracle,
+    2026-10-24, round 34, `docs/checker.md` "SerialInRecord, SerialOpen and running-statistic
+    instances"):
+    - StartWord, NumberBytes and EndWord all nonzero and one of them negative: `StartWord,
+      NumberBytes and EndWord cannot all be not used` (a rule fitted to 24 probes; StartWord and EndWord
+      read as signed 16-bit);
+    - NumberBytes, compared unsigned, not below the port's input buffer: `Number of bytes %d must be
+      less than input buffer %d`, after the line above. The buffer is 0 for a port no `SerialOpen`
+      opens (a `Sub` or a later line counts) and otherwise max(256, BufferSize); with several
+      `SerialOpen`s the largest is taken (not probed)."""
+    if profile.single_pass:
+        return
+
+    def value(arg):
+        try:
+            v = consteval.value_of(arg, env) if arg is not None else None
+        except (consteval.NotConstant, consteval.DivideByZero):
+            return None
+        return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+    buffers: dict[int, int | None] = {}
+    unknown_port = False
+    for st in program.statements:
+        name = st.keyword if isinstance(st, S.Instruction) else getattr(st, "name", "") \
+            if isinstance(st, S.Call) else ""
+        if name.upper() != "SERIALOPEN" or not st.args:
+            continue
+        port = value(st.args[0])
+        if port is None:
+            unknown_port = True
+            continue
+        size = value(st.args[4]) if len(st.args) > 4 else 0
+        old = buffers.get(port, 0)
+        buffers[port] = None if size is None or old is None else max(old, 256, size)
+    for st in program.statements:
+        if not isinstance(st, S.Instruction) or st.keyword.upper() != "SERIALINRECORD" \
+                or len(st.args) < 5:
+            continue
+        port, start, count, end = (value(st.args[i]) for i in (0, 2, 3, 4))
+        word = (lambda v: (v + 2**15) % 2**16 - 2**15)   # StartWord/EndWord are 16-bit (65535 is -1)
+        if None not in (start, count, end) and start and count and end and \
+                min(word(start), count, word(end)) < 0:
+            diags.error(st.line, "StartWord, NumberBytes and EndWord cannot all be not used", st.file)
+        if port is None or count is None or unknown_port:
+            continue
+        size = buffers.get(port, 0)
+        if size is not None and count % 2**32 >= size:
+            diags.error(st.line, f"Number of bytes {count} must be less than input buffer {size}",
+                        st.file)
+
+
 _DEBUG_HISTORY_LIMIT = 26843544   # bytes: HistorySize*4 above this gives `Out of memory.`
 _DEBUG_ARG_TYPES = {2: frozenset({"LONG", "BOOLEAN"}), 3: frozenset({"LONG", "BOOLEAN"}),
                     4: frozenset({"STRING"})}
@@ -1952,7 +2010,7 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
                         stmt=stmt)
 
 
-_PULSE_CHANNELS = {"cr6": re.compile(r"C[1-4]|U(?:[1-9]|1[0-2])"), "cr1000x": re.compile(r"C[1-8]")}
+_PULSE_CHANNELS = {"cr6": re.compile(r"C[1-4]|U(?:[1-9]|1[0-2])"), "cr1000x": re.compile(r"C[1-8]|P[12]")}
 
 
 def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -1976,7 +2034,7 @@ def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -
                 and isinstance(stmt.args[2], S.Name) and channel.fullmatch(stmt.args[2].name.upper()):
             name = stmt.args[2].name.upper()
             if name in used:
-                if profile.name == "cr1000x":
+                if profile.name == "cr1000x" and name[0] == "C":   # (not `P1`/`P2`, 2026-10-24)
                     diags.error(stmt.line, f"Pulsecount: channel {name} already in use or unavailable.",
                                 stmt.file)
                 diags.error(stmt.line, f"{name} already used as PulseCount in this scan.", stmt.file)

@@ -7834,3 +7834,72 @@ request 2026-10-24): such a name shadows the original, and the result is easy to
 ([aliases named Status](#aliases-named-status-public-or-settings-round-33)). Controls: none of the 19
 FirnMelt programs fires; of the 66 GEUS programs only `QAS_B_LoggerProgramV2.CR1X`
 (`Alias D2out(3)= Status`) does.
+
+## Positions outside the multi-report order (round 34)
+
+Oracle, CR6/CR1000X, 2026-10-24; fixtures `tests/fixtures/r34_undeclared_positions.json` and
+`tests/fixtures/r34_multi_order_sweep.json`. `_MULTI_REPORT_ORDER` comes from round-14 sweeps with
+every argument undeclared, so it lists only the positions reported in that case. A position missing
+from it is still checked when it is the only bad one: `EC100Configure(R,7,Nope,9600)` and
+`SendVariables(...,Nope,...)` are `Invalid symbol in expression: Nope.` (three replay false
+accepts). The checker now checks the listed positions first and, when none reports, the remaining
+general positions in ascending order, stopping at the first. A sweep over the help examples replaced
+each unlisted position of each listed instruction with an undeclared name (57 mutants, both
+profiles): every verdict and first error agrees, except the two below, now modelled.
+
+- `StdDevRun` position 8 (StdDevType) is never resolved: `StdDevRun(...,D(Nope))` compiles. `AvgRun`
+  position 7 is resolved.
+- `TimedControl` Size and Interval (positions 0 and 1) must be constants: a variable or an undeclared
+  name gives `Size must be a constant.` / `Interval must be a constant.` (both when both are bad;
+  `check_timedcontrol_constants`). A declared variable there was a false accept.
+- `SDMSIO4` position 0 is resolved unless the value count (position 7) is 0; round 14 saw only a
+  zero count. With N values from `D(i)`, `i + N - 1` past a one-dimensional `D` (a scalar holds one)
+  is `Variable D out of bounds.` (`check_sdmsio4_count`).
+
+## DataTable fields, Settings names and Status targets (round 34)
+
+Oracle, all four loggers, 2026-10-24; fixture `tests/fixtures/r34_table_settings.json`. These were
+the 2026-10-24 probe false accepts (`scratch/r32/lint/`).
+
+- An unknown DataTable field read, `X = Tbl.NoSuchField(1,1)` or `Tbl.NoSuchField`, is
+  `Could not find Tbl.NoSuchField(1).`; fields, `Record`, `TimeStamp` and `Output` compile. The field
+  names come from `tables.build_tables` (the TDF naming, byte-identical on the corpus) plus
+  `tables.TABLE_PROPERTIES`; when the tables cannot be built nothing is checked. CR6/CR1000X only in
+  the checker; CR300/CR350 are not modelled.
+- An unknown `Settings.` name, read or assigned, is `Could not find Settings.Nope(1).`; the names are
+  the `SetSetting` list of `settings_fields.json`, all of which read clean on CR6/CR1000X (sweep in
+  the same fixture). An assignment adds `Invalid assignment in expression: <statement>.`
+- An assignment to an unknown `Status.` field gives the same two lines as for `Settings`.
+
+## Code after EndSequence, SubMenu bodies (round 34)
+
+Oracle, CR6/CR1000X, 2026-10-24; fixture `tests/fixtures/r34_false_accepts.json`.
+
+- Between an `EndSequence` and the next `SlowSequence` (or `EndProg`), a statement that would be
+  rejected before `BeginProg` is `<Name> illegally occurs after EndSequence.` with the same name
+  (`Scan`, `Delay`, `Expr` for an assignment), and pass 2 stops (`check_pass2`, `after_endseq`). A
+  second `SlowSequence` right after `EndSequence` compiles; a `Scan` after a `NextScan` with no
+  sequence compiles with the `never reached` warning.
+- `SubMenu .. EndSubMenu` is not a deferred body: `Delay` or `X = 1` inside it before `BeginProg`
+  is rejected as at the top level of `DisplayMenu`. `SUBMENU` left `_BODY_BLOCK_STARTS`.
+
+## SerialInRecord, SerialOpen and running-statistic instances (round 34)
+
+Oracle, CR6/CR1000X, 2026-10-24; same fixture.
+
+- `SerialInRecord(Port,Dest,StartWord,NumberBytes,EndWord,...)` with a constant port that no
+  `SerialOpen` in the program opens (in a `Sub` or on a later line counts; a false `#If` does not):
+  `Number of bytes %d must be less than input buffer 0`, also for 0 bytes. With any `SerialOpen`
+  of that port it compiles, whatever its buffer size. A variable port is not checked.
+- NumberBytes, StartWord and EndWord all nonzero with StartWord or EndWord negative:
+  `StartWord, NumberBytes and EndWord cannot all be not used`, before the buffer line. This rule is
+  fitted to 13 probes, not derived from the binary.
+- `SerialOpen` with a variable `BufferSize` is `Parameter must be a constant integer:
+  <statement>.`, like a variable `TXDelay`.
+- The number of distinct instances of `MinRun`/`MaxRun` is position 5 and of
+  `AvgRun`/`TotalRun`/`StdDevRun` position 6; the instance number follows. A missing instance
+  number is `Missing instance number`; a variable or `0` count is `Optional number of distinct
+  instances must be a constant of type long.` (round 6 had this for `AvgRun` only).
+- CR1000X `PulseCount` on `P1`/`P2` twice in a scan is `P1 already used as PulseCount in this
+  scan.` without the `Pulsecount: channel ... in use` line that a `C` terminal adds.
+- `Public C As Long2,` (trailing comma) is still `Variable Type Long2 not supported`.

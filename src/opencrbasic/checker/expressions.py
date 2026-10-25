@@ -219,9 +219,13 @@ _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
 
 # Round 14 (oracle, CR6/CR1000X only, `docs/checker.md` "Round 14 multi-report order"): an undeclared
 # name here compiles clean (CR300/CR350 still report `NewFile(A,"x",Nope)`: `Nope is not defined.`).
+# `StdDevRun` StdDevType (position 8) is never resolved either (`StdDevRun(...,D(Nope))` compiles;
+# 2026-10-24, round 34). `SDMSIO4` position 0 is resolved unless its value count is 0
+# (`check`, `_sdmsio4_count`).
 _EXEMPT_WHOLE_ECHO: dict[str, frozenset[int]] = {
-    "SDMSIO4": frozenset({0}), "MONITORCOMMS": frozenset({0}), "MODEMCALLBACK": frozenset({0}),
-    "NEWFILE": frozenset({2}),
+    "MONITORCOMMS": frozenset({0}), "MODEMCALLBACK": frozenset({0}),
+    "NEWFILE": frozenset({2}), "STDDEVRUN": frozenset({8}),
+    "TIMEDCONTROL": frozenset({0, 1}),   # `check_timedcontrol_constants`
 }
 
 # Built-in function call arity (this session, oracle-confirmed against `CR6Comp.exe`, byte-for-byte
@@ -1136,7 +1140,14 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         for i in multi:
             if i in positions and _check_position(i):
                 reported = True
-        return reported
+        if reported:
+            return True
+        # a position the all-undefined sweep did not list is still checked on its own (oracle,
+        # 2026-10-24, `docs/checker.md` "Positions outside the multi-report order")
+        for i in sorted(positions):
+            if i not in multi and positions[i] not in _CONST_FAMILY_KINDS and _check_position(i):
+                return True
+        return False
     if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
         order = []
         if families in ("all", "const"):
@@ -1176,6 +1187,9 @@ def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]]
                 return expr.base.name, expr.member, "(1)"
             if table in data_tables and member == "TABLEBYTESX":
                 return expr.base.name, expr.member, "(1)"
+            fields = getattr(data_tables, "fields", {}).get(table)
+            if fields is not None and member not in fields and not member[:1].isdigit():
+                return expr.base.name, expr.member, _member_index_text(expr.args)
             if table in data_tables and f"{table}.{member}" in absent:
                 return expr.base.name, expr.member, _member_index_text(expr.args)
         for arg in expr.args or []:
@@ -1201,10 +1215,30 @@ def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]]
     return None
 
 
-def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None:
-    """Resolved ConstTable fields, plus the observed misspelled `TableBytesX` DataTable member.
+class _TablesWithFields(set):
+    fields: dict[str, set[str]] = {}
 
-    The complete DataTable output-field naming grammar is deliberately not inferred here.
+
+def _data_table_fields(program: S.Program, profile) -> dict[str, set[str]]:
+    """Each DataTable's field names as the TDF names them, plus the table properties
+    (`Tbl.NoSuchField` -> `Could not find Tbl.NoSuchField(1).`; oracle, all four loggers,
+    2026-10-24, round 34). Empty when the tables cannot be built: nothing is then checked."""
+    from .. import tables
+    try:
+        built, _, _ = tables.build_tables(program, profile, dict(program.consts))
+    except Exception:
+        return {}
+    props = {p.upper() for p in tables.TABLE_PROPERTIES}
+    names = {st.args[0].name.upper() for st in program.statements
+             if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE" and st.args
+             and isinstance(st.args[0], S.Name)}
+    return {t.name.upper(): {f.name.upper() for f in t.fields} | props
+            for t in built if t.name.upper() in names}
+
+
+def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Resolved ConstTable fields and, on CR6/CR1000X, DataTable fields (`_data_table_fields`).
+
     """
     const_tables = symbols.const_table_fields(program)
     data_tables = {
@@ -1214,6 +1248,9 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
     }
     if not const_tables and not data_tables:
         return
+    if not profile.single_pass:
+        data_tables = _TablesWithFields(data_tables)
+        data_tables.fields = _data_table_fields(program, profile)
     renamed: set[str] = set()  # tables with a FieldNames entry exactly BytesPerRecord
     table = None
     for st in program.statements:
@@ -1280,6 +1317,11 @@ _TABLE_FIELDS = frozenset({"TIMESTAMP", "RECORD", "RECNUM"})
 def _unknown_status_member(m, profile) -> bool:
     return not m.member[:1].isdigit() and bool(profile.status_members) and \
         m.member.upper() not in profile.status_members
+
+
+def _unknown_setting(m, profile) -> bool:
+    return not m.member[:1].isdigit() and m.member.upper() not in {
+        n.upper() for n in profile.settings_fields["settings"]}
 
 
 def _unknown_public_member(m, variables: set[str]) -> bool:
@@ -1376,7 +1418,10 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
                 if upper not in data_tables:
                     lines.append(f"Could not find DataTable {base}." if profile.single_pass
                                  else f"Could not find {base}.")
-            elif upper == "STATUS" and k >= target and not profile.single_pass and \
+            elif upper == "SETTINGS" and not profile.single_pass and _unknown_setting(m, profile):
+                # `X = Settings.Nope`, `Settings.Nope = 1` (oracle, all four, 2026-10-24, round 34)
+                lines.append(f"Could not find Settings.{m.member}{_member_index_text(m.args)}.")
+            elif upper == "STATUS" and not profile.single_pass and \
                     _unknown_status_member(m, profile):
                 # an unknown Status field read (`Y = Status.Nope`, `If Status.Nope`): oracle, all
                 # four loggers, 2026-10-12; the names: data/**/status_members.json
@@ -1464,6 +1509,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         if stmt.keyword.upper() == "SLOWSEQUENCE" and profile.name in ("cr6", "cr1000x"):
             continue  # `SlowSequence junk` compiles: its argument is never resolved (oracle, 2026-10-10)
         positions = _position_kinds(record["params"], stmt.keyword, profile)
+        if stmt.keyword.upper() == "SDMSIO4" and _sdmsio4_count(stmt, env) == 0:
+            positions.pop(0, None)   # no values: the destination is never resolved
         if (positions and stmt.keyword.upper() == "SERIALOPEN" and stmt.args and stmt.args[0]
                 and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
                 and _undefined_names(stmt.args[0], known)):
@@ -2722,6 +2769,71 @@ def check_splitstr_element_reps(program: S.Program, profile, diags: Diagnostics,
             continue
         if dest.args[0].value + int(reps) - 1 > shape[0]:
             diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+
+
+def _sdmsio4_count(stmt: S.Instruction, env) -> int | None:
+    """`SDMSIO4`'s value count (eighth argument), when constant."""
+    if len(stmt.args) < 8 or stmt.args[7] is None:
+        return None
+    try:
+        n = consteval.value_of(stmt.args[7], env)
+    except (consteval.NotConstant, consteval.DivideByZero):
+        return None
+    return int(n) if isinstance(n, (int, float)) and not isinstance(n, bool) and n == int(n) else None
+
+
+def check_sdmsio4_count(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """`SDMSIO4(D(i),...,N,...)` stores N values from `D(i)`: `Variable D out of bounds.` when
+    `i + N - 1` exceeds a one-dimensional `D` (a scalar holds one); oracle, CR6/CR1000X,
+    2026-10-24: `D(4)` takes 4 from `D(1)` and 3 from `D(2)`, not 5 or 4; `X` takes 1, not 2."""
+    tables = symbols.scope_tables(program, env, scalars=True)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SDMSIO4" or not stmt.args:
+            continue
+        dest, n = stmt.args[0], _sdmsio4_count(stmt, env)
+        if not isinstance(dest, (S.Name, S.Index)) or not n or n < 1:
+            continue
+        shape = tables(stmt).dims.get(dest.name.upper())
+        if not shape or len(shape) != 1:
+            continue
+        start = 1
+        if isinstance(dest, S.Index):
+            if len(dest.args) != 1 or not isinstance(dest.args[0], S.Number) or \
+                    not isinstance(dest.args[0].value, int):
+                continue
+            start = dest.args[0].value
+        if start + n - 1 > shape[0]:
+            diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+
+
+def check_timedcontrol_constants(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X `TimedControl` Size and Interval (positions 0 and 1) must be constants: a
+    variable or an undeclared name gives `Size must be a constant.` / `Interval must be a
+    constant.`, both when both are bad (oracle, 2026-10-24, round 34)."""
+    if profile.name not in _WHOLE_EXPR_ECHO_LOGGERS:
+        return
+    consts = {str(n).upper() for n in program.consts} | set(profile.symbols)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "TIMEDCONTROL":
+            continue
+        for i, what in ((0, "Size"), (1, "Interval")):
+            if i < len(stmt.args) and stmt.args[i] is not None and \
+                    _names_in(stmt.args[i]) - consts:
+                diags.error(stmt.line, f"{what} must be a constant.", stmt.file)
+
+
+def _names_in(expr) -> set[str]:
+    if isinstance(expr, S.Name):
+        return {expr.name.upper()}
+    if isinstance(expr, S.Index):
+        return {expr.name.upper()}.union(*(_names_in(a) for a in expr.args if a is not None))
+    if isinstance(expr, S.Unary):
+        return _names_in(expr.operand)
+    if isinstance(expr, S.Binary):
+        return _names_in(expr.left) | _names_in(expr.right)
+    if isinstance(expr, S.Member):
+        return _names_in(expr.base)
+    return set()
 
 
 _CALIBRATE_MIN = {"cr6": 6, "cr1000x": 6, "cr300": 51, "cr350": 51}

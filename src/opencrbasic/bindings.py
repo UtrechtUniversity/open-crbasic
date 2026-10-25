@@ -34,11 +34,7 @@ _TABLE_KINDS = ("datatable", "consttable")
 _STRUCT_KINDS = ("structuretype", "objecttype")
 _ROUTINE_KINDS = ("sub", "function")
 _VARIABLE_KINDS = ("public", "dim", "static")
-# `TableName.<property>` members of a data (or Status) table that are not fields
-# (extracted_chm/Info/datatableaccess.htm "Data Table Access").
-_TABLE_PROPERTIES = {n.upper(): n for n in (
-    "BytesPerRecord", "EventCount", "EventEnd", "Output", "Record", "TableBytes", "TableFull",
-    "TableSize", "TimeStamp")}
+_TABLE_PROPERTIES = {n.upper(): n for n in tables.TABLE_PROPERTIES}
 
 
 @dataclass(eq=False)

@@ -1,0 +1,538 @@
+{
+ "observation_date": "2026-10-24",
+ "cases": [
+  {
+   "id": "cr6-und00",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    EC100Configure(R,7,Nope,9600)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-und00",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    EC100Configure(R,7,Nope,9600)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-und01",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mV5000,1,True,0,60,Nope,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 34: CR6 reports the VoltSe channel line before the undeclared multiplier (pre-existing order difference)"
+  },
+  {
+   "id": "cr1000x-und01",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mV5000,1,True,0,60,Nope,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-und02",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(Nope),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(Nope)."
+  },
+  {
+   "id": "cr1000x-und02",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(Nope),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(Nope)."
+  },
+  {
+   "id": "cr6-und03",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(D(Nope))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(Nope)."
+  },
+  {
+   "id": "cr1000x-und03",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(D(Nope))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(Nope)."
+  },
+  {
+   "id": "cr6-und04",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SendVariables(R,ComRS232,4094,10,0000,6000,Nope,\"RemoteData\",X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-und04",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SendVariables(R,ComRS232,4094,10,0000,6000,Nope,\"RemoteData\",X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-und05",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SendVariables(R,ComRS232,4094,10,0000,6000,\"Public\",\"RemoteData\",X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-und05",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SendVariables(R,ComRS232,4094,10,0000,6000,\"Public\",\"RemoteData\",X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-und06",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    EC100Configure(R,7,Nope+1,9600)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope+1."
+  },
+  {
+   "id": "cr1000x-und06",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    EC100Configure(R,7,Nope+1,9600)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope+1."
+  },
+  {
+   "id": "cr6-und07",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-und07",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(C1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-timed00",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (Nope,10,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant."
+  },
+  {
+   "id": "cr1000x-timed00",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (Nope,10,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant."
+  },
+  {
+   "id": "cr6-timed01",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (V,10,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant."
+  },
+  {
+   "id": "cr1000x-timed01",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (V,10,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant."
+  },
+  {
+   "id": "cr6-timed02",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,Nope,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Interval must be a constant."
+  },
+  {
+   "id": "cr1000x-timed02",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,Nope,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Interval must be a constant."
+  },
+  {
+   "id": "cr6-timed03",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,V,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Interval must be a constant."
+  },
+  {
+   "id": "cr1000x-timed03",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,V,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Interval must be a constant."
+  },
+  {
+   "id": "cr6-timed04",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS+Nope,10,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant."
+  },
+  {
+   "id": "cr1000x-timed04",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS+Nope,10,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant."
+  },
+  {
+   "id": "cr6-timed05",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (Nope,Nope,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant.\nline 3: Interval must be a constant."
+  },
+  {
+   "id": "cr1000x-timed05",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (Nope,Nope,Sec,&h0000,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size must be a constant.\nline 3: Interval must be a constant."
+  },
+  {
+   "id": "cr6-timed06",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,10,Sec,Nope,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-timed06",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,10,Sec,Nope,index,set_valve,1)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-timed07",
+   "logger": "cr6",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,10,Sec,&h0000,index,set_valve,Nope)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-timed07",
+   "logger": "cr1000x",
+   "source": "Const NS = 4\nPublic index As Long, set_valve(4,2) As Long, V, D(4), R\nTimedControl (NS,10,Sec,&h0000,index,set_valve,Nope)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-pos00",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-pos00",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-pos01",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope(1),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope(1)."
+  },
+  {
+   "id": "cr1000x-pos01",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope(1),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope(1)."
+  },
+  {
+   "id": "cr6-pos02",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(Nope),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(Nope)."
+  },
+  {
+   "id": "cr1000x-pos02",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(Nope),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(Nope)."
+  },
+  {
+   "id": "cr6-pos03",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1)+Nope,1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(1)+Nope."
+  },
+  {
+   "id": "cr1000x-pos03",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1)+Nope,1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: D(1)+Nope."
+  },
+  {
+   "id": "cr6-pos04",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-pos04",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1),1,0,4,0004,0000,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-pos05",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MonitorComms(D(Nope),ComC1,1,0,0,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr1000x-pos05",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MonitorComms(D(Nope),ComC1,1,0,0,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-pos06",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MonitorComms(Nope,ComC1,1,0,0,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr1000x-pos06",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MonitorComms(Nope,ComC1,1,0,0,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-pos07",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    NewFile(R,\"CRD:a.jpg\",D(Nope))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-pos07",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    NewFile(R,\"CRD:a.jpg\",D(Nope))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-pos08",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    NewFile(R,\"CRD:a.jpg\",Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-pos08",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    NewFile(R,\"CRD:a.jpg\",Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-pos09",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,1,X,10,False,0,1,1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-pos09",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,1,X,10,False,0,1,1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-pos10",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,1,X,10,False,0,1,1,D(Nope))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-pos10",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,1,X,10,False,0,1,1,D(Nope))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-pos11",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D,1,X,10,False,0,1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-pos11",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D,1,X,10,False,0,1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-sio400",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,0004,0000,0000,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sio400",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,0004,0000,0000,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sio401",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,2049,3146,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-sio401",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,2049,3146,0000,8,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-sio402",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,0004,0000,0000,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-sio402",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(Nope,1,0,4,0004,0000,0000,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-sio403",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(Nope),1,0,4,0004,0000,0000,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sio403",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(Nope),1,0,4,0004,0000,0000,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sio404",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1),1,0,4,0004,0000,0000,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sio404",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1),1,0,4,0004,0000,0000,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sio405",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1),1,0,4,0004,0000,0000,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-sio405",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(1),1,0,4,0004,0000,0000,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-sio406",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(2),1,0,4,0004,0000,0000,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sio406",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(2),1,0,4,0004,0000,0000,3,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sio407",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(2),1,0,4,0004,0000,0000,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-sio407",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(D(2),1,0,4,0004,0000,0000,4,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-sio408",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(X,1,0,4,0004,0000,0000,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sio408",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(X,1,0,4,0004,0000,0000,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sio409",
+   "logger": "cr6",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(X,1,0,4,0004,0000,0000,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr1000x-sio409",
+   "logger": "cr1000x",
+   "source": "Public X, R, D(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSIO4(X,1,0,4,0004,0000,0000,2,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  }
+ ]
+}
