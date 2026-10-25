@@ -2119,6 +2119,66 @@ def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -
             used.add(name)
 
 
+_SERIAL_TERMINALS = {"cr6": {9: 101, 10: 103, 11: 201, 12: 203, 13: 205, 14: 207, 15: 209, 16: 211},
+                     "cr1000x": {9: 101, 10: 103, 11: 105, 12: 107}}
+_IO_TERMINALS = {"cr6": {*range(101, 105), *range(201, 213)}, "cr1000x": set(range(101, 109))}
+_SDI12_TERMINALS = {"cr6": {101, 103, 201, 203, 205, 207, 209, 211}, "cr1000x": {101, 103, 105, 107}}
+_TERMINAL_ROLES = {"SDI12RECORDER": (1, "sdi12", "SDI12Recorder"),       # (position, role, message label)
+                   "SDI12SENSORSETUP": (1, "sdi12", "SDI12SensorSetup"),
+                   "PORTSET": (0, "output", "PortSet"), "PULSECOUNT": (2, "pulse", "Pulsecount")}
+
+
+def check_terminal_conflicts(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """CR6/CR1000X: a terminal claimed in two roles is `<Instr>: channel <T> already in use or
+    unavailable.` on the later claim (docs/checker.md#terminal-ownership-round-37). A constant
+    `SerialOpen` claims both terminals of its pair for the whole program first; `SDI12Recorder`/
+    `SDI12SensorSetup`, `PortSet`/`WriteIO` and `PulseCount` then claim in textual order, `WriteIO`
+    one terminal per mask bit. Same-role reuse is fine here (`check_pulsecount_channels` owns
+    `PulseCount`'s). Which earlier errors hide an SDI-12 conflict is decided by the caller. A recorder
+    and a sensor on one terminal is `SDI Recorder and Sensor cannot use the same port.`"""
+    serial = _SERIAL_TERMINALS.get(profile.name)
+    if serial is None:
+        return
+    io, sdi12 = _IO_TERMINALS[profile.name], _SDI12_TERMINALS[profile.name]
+
+    def value(arg):
+        try:
+            v = consteval.value_of(arg, env)
+        except consteval.NotConstant:
+            return None
+        return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and v == int(v) else None
+
+    def name(t: int) -> str:
+        return f"{'C' if t < 200 else 'U'}{t % 100}"
+
+    owner: dict[int, str] = {}
+    sdi_kind: dict[int, str] = {}
+    for st in program.statements:    # (a `SerialOpen` statement parses as a `Call`)
+        if isinstance(st, S.Call) and st.name.upper() == "SERIALOPEN" and not st.explicit and st.args \
+                and (t := serial.get(value(st.args[0]))):
+            owner[t] = owner[t + 1] = "serial"
+    for st in program.statements:
+        if not isinstance(st, S.Instruction):
+            continue
+        kw = st.keyword.upper()
+        if kw == "WRITEIO" and st.args and (mask := value(st.args[0])) is not None:
+            claims = [(101 + b, "output") for b in range(sum(t < 200 for t in io)) if mask >> b & 1]
+            label = "WriteIO"
+        elif kw in _TERMINAL_ROLES and len(st.args) > _TERMINAL_ROLES[kw][0]:
+            pos, role, label = _TERMINAL_ROLES[kw]
+            t = value(st.args[pos])
+            if t not in (sdi12 if role == "sdi12" else io):
+                continue
+            claims = [(t, role)]
+        else:
+            continue
+        for t, role in claims:
+            if owner.setdefault(t, role) != role:
+                diags.error(st.line, f"{label}: channel {name(t)} already in use or unavailable.", st.file)
+            if role == "sdi12" and sdi_kind.setdefault(t, kw) != kw:
+                diags.error(st.line, "SDI Recorder and Sensor cannot use the same port.", st.file)
+
+
 _SPI_PORTS = {"cr6": {101, 201, 205, 209}, "cr1000x": {101, 105}}
 _PORT_NAME = re.compile(r"([CU])(\d+)")
 

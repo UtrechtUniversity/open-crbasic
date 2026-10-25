@@ -321,6 +321,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
 
     ranges = Diagnostics()   # `measure.json` `const_ranges` findings, see below
     leading = Diagnostics()  # pass-2 findings that print ahead of their line's other findings
+    claims = Diagnostics()   # terminal-ownership conflicts, see below
     links = structure.CallLinks()
     def before_cutoff(diagnostic) -> bool:  # tier B (below) redefines it once a stop is known
         return True
@@ -452,6 +453,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(expressions.check_subcall_element_bounds, flat, profile, bounds, env)
             _run_pass(instr_rules.check_fieldcal_variable_args, flat, profile, bounds, env)
             _run_pass(instr_rules.check_pulsecount_channels, flat, profile, bounds)
+            _run_pass(instr_rules.check_terminal_conflicts, flat, profile, claims, env)
             _run_pass(instr_rules.check_dnp_update, flat, profile, leading, env)
             _run_pass(instr_rules.check_portbridge_array, flat, profile, bounds, env)
             _run_pass(instr_rules.check_cdm_address_types, flat, profile, bounds, env)
@@ -460,6 +462,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         bounds.items = [d for d in bounds.items if before_cutoff(d)]
         pipe.items = [d for d in pipe.items if before_cutoff(d)]
         leading.items = [d for d in leading.items if before_cutoff(d)]
+        claims.items = [d for d in claims.items if before_cutoff(d)]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # Collected aside like the index bounds: a finding neither hides tier C (oracle: a bad
         # `SemaphoreGet` beside a bad `VoltDiff` channel reports both) nor is hidden by tier B.
@@ -718,6 +721,13 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     if bounds.items:
         _place_index_bounds(bounds, diags, flat, profile.single_pass)
     diags.items += bounds.items + fields.items + ranges.items + early.items
+    # Terminal conflicts hide nothing and print first on their line. An SDI-12 one is reported only
+    # when no error, another conflict included, precedes it (oracle, CR6/CR1000X, round 37).
+    def pos(d):
+        return links.positions.get((d.file, d.line), d.line)
+    others = [pos(d) for d in diags.items + leading.items + claims.items if d.severity == "error" and d.line]
+    leading.items += [d for d in claims.items if not d.message.startswith("SDI12")
+                      or not any(p < pos(d) for p in others)]
     last: dict[tuple, Diagnostic] = {}  # (file, line) -> its latest leading finding
     for d in leading.items:
         # Aside like `bounds` (tier C still runs), but printed first on its own line, in their own

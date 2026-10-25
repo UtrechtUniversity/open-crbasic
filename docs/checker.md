@@ -7983,8 +7983,8 @@ report `ComC7`, which CR6 does not define).
 A constant `SerialIn` ComPort converts to a 32-bit long; its absolute value must be 1..18 or
 32..47 on CR6, 1..14 or 32..47 on CR1000X, else `ComPort N illegal.` with that absolute value
 (`-2147483648` as is, for strings and overflow). Floats truncate (`0.5` is 0, `15.9` is 15). Other
-serial instructions check ports differently and are not modelled here: `SerialOpen` rejects
-negatives and CR1000X 15 with a second `No Matching` line, `SerialBrk` has its own named set,
+serial instructions check ports differently: `SerialOpen` has its own set
+([round 37](#serialopen-comport-codes-round-37)), `SerialBrk` has its own named set,
 `SerialOut`/`SerialFlush`/`SerialClose`/`SerialInBlock` accept 49 and 100.
 
 ### EmailRelay argument count (round 36)
@@ -8022,7 +8022,53 @@ string, is `Invalid channel, must use Vx1..Vx4.` (`measure.json` `const_ranges`)
 ### Flagged
 
 - `7b14df1ed0f8` (CR1000X): `SerialOpen(10,...)` claims the port that a later
-  `SDI12Recorder(...,C3,...)` uses, so the reference reports `SDI12Recorder: channel C3 already in
-  use or unavailable.` A cross-instruction port-ownership model with numeric codes; not modelled.
+  `SDI12Recorder(...,C3,...)` uses. Fixed in round 37 ([terminal ownership](#terminal-ownership-round-37)).
 - Mode difference `e7e12f2d1011`: `TimeIntoInterval(60,"fuzz",sec)` warns twice `Parameter will
   truncate to the nearest integer.`; not modelled.
+
+## Terminal ownership (round 37)
+
+Oracle, CR6/CR1000X, 2026-10-25; fixture `tests/fixtures/r37_terminal_ownership.json` (640
+observations, 3 strict xfail, all CR300/CR350 cascades). The reference keeps one owner role per
+terminal; a claim in another role is `<Instr>: channel <T> already in use or unavailable.` on the
+claiming statement (`instr_rules.check_terminal_conflicts`). Roles:
+- serial: a constant `SerialOpen` ComPort (`ComC1`, `9`, a `Const`, parenthesized; CR6 also
+  `ComU1..ComU11`) claims both terminals of its pair (`ComC1`: C1 and C2) for the whole program,
+  before any other claim. So an `SDI12Recorder(...,C3,...)` reports even when `SerialOpen(ComC3,...)`
+  comes later in the file, in another scan, in a `Sub`, or after `SerialClose`. A variable ComPort
+  claims nothing; `#If 0` code does not count;
+- SDI-12: `SDI12Recorder` and `SDI12SensorSetup` (only valid SDI-12 terminals; `101` is `C1`);
+- digital output: `PortSet` (`C`/`U` names or `101..`/`201..`; `1` is its own `Invalid port`) and
+  `WriteIO`, one claim per set mask bit 0..3 (CR6, C1..C4) or 0..7 (CR1000X, C1..C8), each
+  conflicting bit reported in bit order;
+- pulse: `PulseCount`'s channel.
+
+The other claims are in textual order, `If`/`Else` branches, scans and `Sub` bodies alike; the
+later statement reports. Two statements in one role never conflict here (`SDI12Recorder` twice,
+`PortSet` then `WriteIO`, `SerialOpen` twice); `PulseCount` reuse keeps its own rule
+([PulseCount terminal reuse](instructions.md#pulsecount-terminal-reuse-cr6cr1000x)). `ReadIO`,
+`PortPairConfig` and `PWM` on a serial terminal compile.
+
+A conflict hides nothing: later tier-B, bounds, range and same-line errors still print, and the
+conflict prints first on its line. `PortSet`, `WriteIO` and `PulseCount` conflicts print even after
+an earlier error. An SDI-12 conflict prints only when no error, another conflict included,
+precedes it, so a second `SDI12Recorder` conflict is silent. A pass-1 error hides them all.
+
+An `SDI12Recorder` and an `SDI12SensorSetup` on one terminal, in either order, is `SDI Recorder and
+Sensor cannot use the same port.` on the later one, also after an earlier conflict.
+
+Not modelled: `WriteIO` mask bits past the C terminals (CR6 bit 4 and up compiled beside
+`ComU5`), `TimerIO`, CDM and other port instructions. CR300/CR350 report `Port/Channel: C1 already
+in use or unavailable, cannot be used in SDI12Recorder.` (CR350 accepted `PulseCount` after
+`SDI12Recorder` or `PortSet` on its terminal); best effort, not modelled.
+
+### SerialOpen ComPort codes (round 37)
+
+A constant integer `SerialOpen` ComPort must be 1..18 or 31..99 (CR6) or 1..14 or 31..99 (CR1000X)
+(swept -20..129 and wider values). Any other 32-bit integer, `True` and `-ComC1` included, is
+`ComPort N illegal.` then `No Matching, or out of place ) in expression: <statement>.`; a
+non-integer or a value past 32 bits is `ComPort 0 illegal.` then `Parameter must be a constant
+integer: <statement>.` Both are pass 1 and end the statement: its baud, delay, buffer and arity
+errors are not reported, nor is an argument-count `Expression expects , :` after the older
+variable/string ComPort errors. A bare `SerialOpen()` keeps its `Invalid, or out of place
+expression`. CR300/CR350 not probed.

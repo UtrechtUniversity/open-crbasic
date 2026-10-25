@@ -1163,9 +1163,9 @@ CR1000X `C1..C8`; case-insensitive, parenthesized names too). CR1000X prints `Pu
 `If`/`Else` branches, inline `If` and `SubScan` bodies count, and the options (`PConfig`) do not
 matter. It is an aside like the index bounds: it coexists with a tier-B error elsewhere and is
 hidden by a pass-1 error (`Battery()`). Numeric channels, `P1`/`P2`, `Const` channel names,
-CR300/CR350 (different messages, and CR350 compiled the reuse), a reuse across scans, and the
-sibling clash with `PortSet`/`SDI12Recorder` (`channel C1 already in use or unavailable.`) were
-probed but are not implemented. `instr_rules.check_pulsecount_channels`.
+CR300/CR350 (different messages, and CR350 compiled the reuse), and a reuse across scans were
+probed but are not implemented. The clash with `SerialOpen`, `PortSet`, `WriteIO` or
+`SDI12Recorder` on the same terminal is [terminal ownership](checker.md#terminal-ownership-round-37). `instr_rules.check_pulsecount_channels`.
 
 ### SPIRead/SPIWrite before SPIOpen (CR6/CR1000X)
 `SPIOpen must precede SPIWrite.` / `...SPIRead.` is reported for an `SPIRead`/`SPIWrite` whose port

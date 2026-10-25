@@ -4388,7 +4388,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/false_accept/7b14df1ed0f8.CR6",
-"impact": "false accept"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -8463,7 +8463,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/false_accept/bb6d192052e3.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -9613,7 +9613,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/25498b9865a7.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",

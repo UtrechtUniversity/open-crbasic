@@ -37,6 +37,8 @@ from . import expressions, instr_rules, structure, symbols
 # constant at all" trigger (an undefined name or a live variable, never a resolvable value) is
 # implemented, which never risks flagging a value the real compiler would accept.
 _SERIALOPEN = "SERIALOPEN"
+_SERIALOPEN_PORTS = {"cr6": frozenset(range(1, 19)) | frozenset(range(31, 100)),
+                     "cr1000x": frozenset(range(1, 15)) | frozenset(range(31, 100))}
 _COMPORT_ARG_POSITION = 0
 # Every `Serial*` function whose first argument is a `ComPort` (`data/<logger>/functions.json`:
 # same `argtypes[0]` shape as `SerialOpen`'s own position 0) -- oracle-confirmed for `SerialOpen`/
@@ -177,8 +179,26 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                         stmt.file)
         if name != _SERIALOPEN:
             continue
-        _check_baud(stmt, profile, diags, program.consts)
         is_variable = bool(expressions._variable_refs(arg, variable_names))
+        ports = _SERIALOPEN_PORTS.get(profile.name)
+        if ports and not (names or is_variable or isinstance(arg, S.String)):
+            # a constant ComPort outside the port codes ends the statement (oracle, round 36/37,
+            # docs/checker.md#serialopen-comport-codes-round-37)
+            try:
+                port = consteval.value_of(arg, consteval.Env(profile, dict(program.consts or {})))
+            except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+                port = None
+            if isinstance(port, (int, float)) and not isinstance(port, bool):
+                if port != int(port) or not -2**31 <= port < 2**31:
+                    diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
+                    diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
+                    continue
+                if int(port) not in ports:
+                    diags.error(stmt.line, f"ComPort {int(port)} illegal.", stmt.file)
+                    diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.",
+                                stmt.file)
+                    continue
+        _check_baud(stmt, profile, diags, program.consts)
         if not (names or is_variable or isinstance(arg, S.String)) and len(stmt.args) > 3 \
                 and stmt.args[3] is not None:
             # `TXDelay` (oracle, all four loggers, 2026-10-12): a constant outside 0..14000000 is

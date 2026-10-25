@@ -2335,6 +2335,10 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                         and d.message.startswith("Parameter must be a constant integer:")
                         for d in diags.items)):
                     continue
+                if not profile.single_pass and stmt.name.upper() == "SERIALOPEN" and stmt.args and any(
+                        d.line == stmt.line and d.file == stmt.file and d.message.startswith("ComPort ")
+                        for d in diags.items):
+                    continue  # the ComPort error ends the statement (oracle, CR6/CR1000X, round 37)
                 if in_arg is not None:
                     diags.error(stmt.line, _arity_message(
                         problem, _call_arg_text(stmt.text, in_arg).strip(), profile, False), stmt.file)
