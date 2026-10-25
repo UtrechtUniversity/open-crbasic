@@ -367,6 +367,63 @@ _CONST_INTEGER_TYPE_ARGS = {"HTTPPUT": frozenset({8}), "FTPCLIENT": frozenset({1
 # `Timer`'s third argument is the same error whatever came before (it resets the mode first; oracle,
 # CR6/CR350, 2026-10-16: also after an `IfTime`).
 _CONST_INTEGER_TYPE_ARGS_ALWAYS = {"TIMER": frozenset({2})}
+# `Timer`'s Units and Option (second and third arguments) must be integer-typed constants: a
+# variable, a function call, `/`, `^`, a float literal, `INF` or a `Const` whose value is not an
+# integer or is above INT_MAX is `Parameter must be a constant integer`; an integer Option outside
+# 0..4 is `Legal options are 0..4` (oracle, all four loggers, 2026-10-25, `docs/checker.md` "Timer
+# arguments"). `(env, declared variables)` is set per program by `check_function_arity`.
+_TIMER_CONTEXT: list = [None]
+
+
+def _timer_arg(arg, env, declared: frozenset[str]):
+    """`("int", value)`, `"float"` (the constant-integer error) or `None` (not judged here).
+    An integer past the signed 32-bit range is float on CR6/CR1000X; CR300/CR350 take it as out of
+    range up to magnitude 2**32. `&H` and `&B` literals wrap (`&HFFFFFFFF` is -1)."""
+    def wide(value: int):
+        return ("int", -2**31) if env.profile.name in ("cr300", "cr350") and abs(value) < 2**32 \
+            else "float"
+    if isinstance(arg, S.Number):
+        if isinstance(arg.value, float):
+            return "float"
+        if arg.text[:1] == "&":
+            return ("int", (arg.value + 2**31) % 2**32 - 2**31)
+        return ("int", arg.value) if -2**31 <= arg.value < 2**31 else wide(arg.value)
+    if isinstance(arg, S.Name):
+        name = arg.name.upper()
+        if name in ("INF", "NAN"):
+            return "float"
+        if name in declared:
+            return "float"
+        try:
+            value = consteval.value_of(arg, env)
+        except consteval.NotConstant:
+            return None
+        if isinstance(value, str):
+            return None
+        if value != value or value != int(value):
+            return "float"
+        return wide(int(value)) if value > 2**31 - 1 else ("int", int(value))
+    if isinstance(arg, S.Index):
+        return "float" if arg.name.upper() in declared or arg.name.upper() in env.profile.functions \
+            else None
+    if isinstance(arg, S.Unary):
+        inner = _timer_arg(arg.operand, env, declared)
+        if inner is None or inner == "float":
+            return inner
+        value = {"-": -inner[1], "+": inner[1]}.get(arg.op, ~inner[1])
+        return ("int", (value + 2**31) % 2**32 - 2**31)
+    if isinstance(arg, S.Binary):
+        sides = [_timer_arg(arg.left, env, declared), _timer_arg(arg.right, env, declared)]
+        if None in sides:
+            return None
+        if "float" in sides or arg.op in ("/", "^"):
+            return "float"
+        try:
+            value = consteval.value_of(arg, env)
+        except consteval.NotConstant:
+            return None
+        return ("int", (int(value) + 2**31) % 2**32 - 2**31)
+    return None
 
 
 def _timeout_wide(arg, profile) -> bool:
@@ -412,7 +469,8 @@ _ARITY_ALLOWED = {"HTTPPUT": {5: frozenset({4, 8, 9})}, "FTPCLIENT": {6: frozens
                   "UDPDATAGRAM": {6: frozenset({6, 7, 8})}, "XMLPARSE": {6: frozenset({8})},
                   "HTTPGET": {3: frozenset({3, 4})}, "UDPOPEN": {3: frozenset({3, 4})},
                   "TCPOPEN": {3: frozenset({3, 4, 6})}, "HTTPPOST": {5: frozenset({4, 8, 9})},
-                  "CHECKSUM": {3: frozenset({3, 4, 6})}}
+                  "CHECKSUM": {3: frozenset({3, 4, 6})}, "EMAILRELAY": {0: frozenset({4, 5, 9, 10})}}
+# (`EmailRelay`, table nargs 0, takes 4, 5, 9 or 10; oracle, all four loggers, 2026-10-25)
 
 # CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
 # embedded newline, then the closing `.` alone on the next line -- CR6/CR1000X put the `.`
@@ -786,7 +844,7 @@ def _call_arg_text(text: str, index: int) -> str:
     return ""
 
 
-_IF_COND_RE = re.compile(r"(?is)^\s*(?:Else)?If\s(.*?)\bThen\b")
+_IF_COND_RE = re.compile(r"(?is)^\s*(?:Else)?If(?:\s|(?=\())(.*?)\bThen\b")   # `If(` too (round 36)
 
 
 def _if_condition_text(stmt: S.Stmt) -> str | None:
@@ -795,10 +853,10 @@ def _if_condition_text(stmt: S.Stmt) -> str | None:
     m = _IF_COND_RE.match(stmt.text or "")
     if m is None and isinstance(stmt, S.If) and stmt.inline is None:
         # no `Then`: the condition runs to the end of the statement (oracle, 2026-10-08)
-        m = re.match(r"(?is)^\s*If\s(.*)$", stmt.text or "")
+        m = re.match(r"(?is)^\s*If(?:\s|(?=\())(.*)$", stmt.text or "")
     return m.group(1) if m else None
 
-_IF_NO_THEN_RE = re.compile(r"(?is)^\s*If\s([^'_]*)$")
+_IF_NO_THEN_RE = re.compile(r"(?is)^\s*If(?:\s|(?=\())([^'_]*)$")
 
 
 def _if_condition_text_no_then(stmt: S.Stmt) -> str | None:
@@ -1940,6 +1998,12 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
         return "constint"
     if any(i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS_ALWAYS.get(upper, ())):
         return "constint"
+    if upper == "TIMER" and n == 3 and _TIMER_CONTEXT[0] is not None:
+        kinds = [_timer_arg(a, *_TIMER_CONTEXT[0]) if a is not None else None for a in args[1:]]
+        if "float" in kinds:
+            return "constint"
+        if kinds[1] is not None and not 0 <= kinds[1][1] <= 4:
+            return "timer_option"
     if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
             and isinstance(args[-1], S.String)):
         return "constint"
@@ -2011,6 +2075,8 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
 
 def _arity_message(kind: str, text: str, profile, at_eol: bool = True,
                    whole_statement: bool = False) -> str:
+    if kind == "timer_option":
+        return "Legal options are 0..4"
     if kind in ("constint", "incomplete"):
         verb = ("Parameter must be a constant integer: " if kind == "constint"
                 else "Incomplete expression: ")
@@ -2191,6 +2257,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
     in_table = False
     seen_timeint = False
     _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
+    _TIMER_CONTEXT[0] = (consteval.Env(profile, dict(program.consts)),
+                         frozenset(n.upper() for n in declared_variables))
     for stmt in program.statements:
         _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, intervals.gate_text(stmt))
         if isinstance(stmt, S.Instruction):
@@ -2217,7 +2285,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile),
                                 stmt.file)
                     break
-                if problem == "many_member" and table_only:
+                if problem in ("many_member", "constint", "timer_option") and table_only:
                     break  # the "must be used inside a table declaration" error wins
                 if problem:
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile, False), stmt.file)
@@ -2285,6 +2353,10 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
             text = _if_condition_text(stmt)
             if problem == "empty" and text is not None:
                 diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
+            elif problem == "timer_option" and text is not None:
+                diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
+            elif problem == "constint" and text is not None:
+                diags.error(stmt.line, f"Parameter must be a constant integer: {text}.", stmt.file)
             elif problem and text is not None:
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")

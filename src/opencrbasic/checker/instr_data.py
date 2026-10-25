@@ -356,6 +356,7 @@ def check_table_structure(program: S.Program, profile: Profile,
     table's first use) rather than an "EndTable"/"not matched" pairing error, so no attempt is made
     to detect it here (`docs/instructions.md`).
     """
+    env = consteval.Env(profile, dict(program.consts))
     in_table = False
     table_name = ""
     has_field = False
@@ -386,7 +387,7 @@ def check_table_structure(program: S.Program, profile: Profile,
             in_table = False
             continue
         if in_table:
-            if kw in _FIELD_PRODUCING_INSTRUCTIONS:
+            if kw in _FIELD_PRODUCING_INSTRUCTIONS and not _fieldless(stmt, profile, env):
                 has_field = True
             elif kw == "GOESTABLE":
                 goes_seen = True
@@ -1177,17 +1178,44 @@ def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Di
     diags.items[:] = [d for d in diags.items if d.severity != "error"] + [first]
 
 
-# Codes in 1..30 that the real compiler rejects with `Illegal data type parameter %d in %s
-# instruction.` alone (oracle sweep 0..30 of `Sample(1,X,n)`, 2026-10-12; 0, 16, 29 and 30 also print
-# a `declared with no output fields` line and 1, 14, 17 (CR6 family) / 1, 17, 23 (CR300 family)
-# other messages, so they are left out).
+# CR300/CR350: codes in 1..30 that the real compiler rejects with `Illegal data type parameter %d
+# in %s instruction.` alone (oracle sweep 0..30 of `Sample(1,X,n)`, 2026-10-12; 0, 16, 29 and 30
+# also print a `declared with no output fields` line and 1, 17, 23 other messages, so they are
+# left out there).
+# CR6/CR1000X, round 36 (sweep 0..255 of `Sample`, alone and beside a second field): every code in
+# 0..127 but the legal ones and 1, 14, 17 is illegal; the codes in `_FIELDLESS_DATA_TYPES` also
+# give no field (with `_SILENT_FIELDLESS`, which print nothing), so a table of only those is
+# `declared with no output fields` (docs/checker.md#output-data-type-codes-round-36).
+_CR6_ILLEGAL = frozenset(range(128)) - {1, 2, 3, 6, 7, 9, 11, 14, 17, 18, 20, 24, 25, 28}
+_FIELDLESS_DATA_TYPES = frozenset({0, 16, *range(29, 44), *range(48, 57), *range(60, 64), 94})
+_SILENT_FIELDLESS = frozenset({*range(156, 160), *range(180, 184), *range(204, 212),
+                               *range(220, 224), *range(236, 240), *range(252, 256)})
 _ILLEGAL_DATA_TYPES = {
-    "cr6": frozenset({4, 5, 8, 10, 12, 13, 15, 19, 21, 22, 23, 26, 27}),
-    "cr1000x": frozenset({4, 5, 8, 10, 12, 13, 15, 19, 21, 22, 23, 26, 27}),
+    "cr6": _CR6_ILLEGAL,
+    "cr1000x": _CR6_ILLEGAL,
     "cr300": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
     "cr350": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
 }
-_DATA_TYPE_ARG = {"SAMPLE": 2, "AVERAGE": 2, "MAXIMUM": 2}
+_DATA_TYPE_ARG = {"SAMPLE": 2, "AVERAGE": 2, "MAXIMUM": 2, "WINDVECTOR": 3}   # WindVector: round 36
+
+
+def _constant_data_type(stmt: S.Instruction, pos: int, env: consteval.Env) -> int | None:
+    """The truncated constant `DataType` at `pos`, or None (not constant, negative, past 255)."""
+    try:
+        value = consteval.value_of(stmt.args[pos], env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value < 256:
+        return None
+    return int(value)
+
+
+def _fieldless(stmt: S.Instruction, profile: Profile, env: consteval.Env) -> bool:
+    pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
+    if profile.name not in ("cr6", "cr1000x") or pos is None or pos >= len(stmt.args) \
+            or stmt.args[pos] is None:
+        return False
+    return _constant_data_type(stmt, pos, env) in _FIELDLESS_DATA_TYPES | _SILENT_FIELDLESS
 
 
 def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnostics,
@@ -1199,19 +1227,26 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
     bad = _ILLEGAL_DATA_TYPES.get(profile.name)
     if not bad:
         return
+    in_table = False   # outside a table, `must be used inside a table declaration` wins
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
-        pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
-        if pos is None or pos >= len(stmt.args) or stmt.args[pos] is None:
+        kw = stmt.keyword.upper()
+        in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
+        pos = _DATA_TYPE_ARG.get(kw)
+        if pos is None or not in_table or pos >= len(stmt.args) or stmt.args[pos] is None:
             continue
-        try:
-            value = consteval.value_of(stmt.args[pos], env)
-        except consteval.NotConstant:
-            continue
-        if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
-            continue
-        if int(value) in bad:
+        value = _constant_data_type(stmt, pos, env)
+        if value is not None and value in bad:
             name = profile.instructions[stmt.keyword.upper()]["name"]
             diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.",
                         stmt.file)
+        elif value in (1, 17) and profile.name in ("cr6", "cr1000x") and stmt.args[0] is not None:
+            # UINT1 / BOOL8 pack bits or bytes in pairs (round 36)
+            try:
+                reps = consteval.value_of(stmt.args[0], env)
+            except consteval.NotConstant:
+                continue
+            if isinstance(reps, int) and not isinstance(reps, bool) and reps > 0 and reps % 2:
+                diags.error(stmt.line, f"Reps {reps} illegal; with BOOL8 and UINT1 data types, reps "
+                            "must be evenly divisible by 2", stmt.file)

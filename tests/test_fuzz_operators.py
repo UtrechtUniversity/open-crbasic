@@ -19,3 +19,12 @@ def test_realistic_operators():
         for out in changed:
             assert len(out) == len(LINES) and sum(a != b for a, b in zip(out, LINES)) == 1
     assert fuzz.op_typo_identifier(["BeginProg", "EndProg"], random.Random(0)) is None
+
+
+def test_relevant_names():
+    from opencrbasic import profiles
+    names = fuzz.relevant_names(profiles.get("cr6"))
+    if not fuzz.CRBASIC_DIR.is_dir():
+        return
+    assert {"battery", "sdi12recorder", "serialopen"} <= names
+    assert "cdm_fftfilt" not in names

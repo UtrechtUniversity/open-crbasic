@@ -7935,3 +7935,94 @@ CR1000X seeds found three false rejects and these false-accept families.
 Not modelled: a negative `Delay` option-0 interval (`Program too big for task memory`, repeated; an
 allocation model), and `Scan interval too short ... by N` is one second high on our side for long
 delays (`Delay(0,3600,Sec)` in a 10 s scan: 3590 on the reference, 3591 here).
+
+## Relevant-instruction seeds (round 36)
+
+Oracle, 2026-10-25; fixture `tests/fixtures/r36_relevant_seeds.json` (2,414 observations, 51
+strict xfail). Seeds 425-428 ran with `tools/fuzz.py --relevant`: help examples only where every
+instruction and function they use is also used by a FirnMelt or GEUS program (49 CR6 and 56
+CR1000X examples, next to the repository and GEUS seeds). They found 13 false accepts and no false
+reject; 12 are fixed below.
+
+### Timer arguments (round 36)
+
+`Timer(TimNo, Units, Option)`: Units and Option must be integer-typed constants, on all four
+loggers. A variable, a function call (`Abs(2)`), `/`, `^`, a float literal, `INF`/`NAN`, or a
+`Const` whose value is not an integer is `Parameter must be a constant integer: <statement>.` (the
+`If` condition alone for an `If`; CR300/CR350 end the echo with a newline). An integer `Const` with
+a float value (`Const K = 2.0`) is accepted. Above INT_MAX the value is the constant-integer error
+on CR6/CR1000X; CR300/CR350 accept magnitudes below 2^32 as out-of-range options. `&H` literals
+wrap (`&HFFFFFFFF` is -1). An integer Option outside 0..4 (`7`, `-1`, `True`, `K+5`, `1>0`) is
+`Legal options are 0..4`. TimNo is not checked. Inside an output instruction outside a table the
+table-only error wins. Not modelled: CR300/CR350 also print the constant-integer line after
+`Nope is not defined.`
+
+### IIF arm types (round 36)
+
+An `IIF` whose second and third arguments are one String-typed and one numeric is `type mismatch`
+on its line, wherever the call sits (assignment of any type, `If` condition, instruction argument,
+nested `IIF`), on all four loggers. String-typed: a string literal or `Const`, a String variable, a
+String function (`Left`, `Chr`), `+` with a String side (`"1"+1`, `S+1`). Both arms String or both
+numeric compile, and the condition may be a string.
+
+### Settings name must be constant (round 36)
+
+`SetSetting`/`SetStatus` with a first argument that is not a constant string (a number, `(1+2)`, a
+variable, a String variable, `NAN`, `True`, `Status.X`, `S+"x"`, `CHR(80)+"..."`, an undeclared
+name) is `Status Field name must be constant.`, on all four loggers; after `Invalid symbol` for an
+undeclared name. Not modelled: CR6 `SetSetting((1+2), ComC7)` reports only this line (we also
+report `ComC7`, which CR6 does not define).
+
+### String operands of INTDV (round 36)
+
+`INTDV` and `\` reject String operands like `*`, `/` and `MOD`: `Illegal String operand` (left),
+`Illegal operand of type STRING` (right), all four loggers.
+
+### SerialIn ComPort codes (round 36)
+
+A constant `SerialIn` ComPort converts to a 32-bit long; its absolute value must be 1..18 or
+32..47 on CR6, 1..14 or 32..47 on CR1000X, else `ComPort N illegal.` with that absolute value
+(`-2147483648` as is, for strings and overflow). Floats truncate (`0.5` is 0, `15.9` is 15). Other
+serial instructions check ports differently and are not modelled here: `SerialOpen` rejects
+negatives and CR1000X 15 with a second `No Matching` line, `SerialBrk` has its own named set,
+`SerialOut`/`SerialFlush`/`SerialClose`/`SerialInBlock` accept 49 and 100.
+
+### EmailRelay argument count (round 36)
+
+`EmailRelay` takes 4, 5, 9 or 10 arguments: fewer and 6 to 8 are `Expression expects , :`, 11 and
+more `No Matching, or out of place )`, all four loggers.
+
+### If( without a blank (round 36)
+
+`If(c) Then` and `ElseIf(c) Then` are checked like `If (c) Then`; the echo starts at the `(`.
+
+### Output data type codes (round 36)
+
+`Sample` data types 0..255, swept alone and beside a second field (CR6 and CR1000X identical, and
+`Average`, `Maximum` and `WindVector` agree on the probed codes):
+- legal: 2, 3, 6, 7, 9, 11, 18, 20, 24, 25, 28 and 128..255 except the silent set below;
+- `Illegal data type parameter N in <Instruction> instruction.`: every other code in 0..127 except
+  1, 14 and 17. Of those, 0, 16, 29..43, 48..56, 60..63 and 94 also produce no field;
+- no message and no field: 156..159, 180..183, 204..211, 220..223, 236..239, 252..255;
+- a table whose only fields are fieldless is `Table T declared with no output fields.` at
+  `EndTable`;
+- 1 (UINT1) and 17 (BOOL8) with odd constant Reps: `Reps N illegal; with BOOL8 and UINT1 data
+  types, reps must be evenly divisible by 2`.
+
+`WindVector`'s DataType is its fourth argument. Not modelled: values outside 0..255 (256..260 and
+65536 are illegal, 511, 65535 and -1 follow other rules); `Sample type UINT1 can only sample a
+variable of type UINT1.`; `Float to NSEC expects source array size >= 7` and `NSEC type is legal
+only with Sample()` for 14. CR300/CR350 keep the round-17 set.
+
+### ExciteV channels on CR1000X (round 36)
+
+CR1000X `ExciteV` takes only `Vx1..Vx4` (601..604): any other constant, including 1..4 and a
+string, is `Invalid channel, must use Vx1..Vx4.` (`measure.json` `const_ranges`).
+
+### Flagged
+
+- `7b14df1ed0f8` (CR1000X): `SerialOpen(10,...)` claims the port that a later
+  `SDI12Recorder(...,C3,...)` uses, so the reference reports `SDI12Recorder: channel C3 already in
+  use or unavailable.` A cross-instruction port-ownership model with numeric codes; not modelled.
+- Mode difference `e7e12f2d1011`: `TimeIntoInterval(60,"fuzz",sec)` warns twice `Parameter will
+  truncate to the nearest integer.`; not modelled.

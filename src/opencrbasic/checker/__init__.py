@@ -273,6 +273,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(instr_rules.check_snmp_oid, program, profile, diags, env)
     _run_pass(instr_rules.check_modemcallback_baud, program, profile, diags)
     _run_pass(instr_rules.check_serialin_destination, program, profile, diags)
+    _run_pass(instr_rules.check_serialin_comport, _with_inline(program), profile, diags, env)
     _run_pass(instr_rules.check_emailrecv_destination, program, profile, diags)
     _run_pass(instr_rules.check_tcpopen_connections, program, profile, diags, env)
     _run_pass(instr_rules.check_tcpopen_handle_type, program, profile, diags)
@@ -280,6 +281,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,
     # unconditional -- oracle-confirmed the same way as the two calls just above.
     _run_pass(instr_rules.check_precision_variable, program, profile, diags)
+    _run_pass(instr_rules.check_iif_types, _with_inline(program), profile, diags)
     # Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     # in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, own module docstring
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-

@@ -155,7 +155,9 @@ diagnostics without a line number:
 | Reference or runner failure | 19 | 6 | 4 | 3 | 6 | no verdict |
 
 Rounds 34-35 fixed the four probe false accepts below and 13 replay false accepts, then fresh
-seeds 421-424 added 17 more, 8 of them fixed; `PROGRESS.md` lists the flagged rest. Outside the replay baseline, four 2026-10-24 probes were also false
+seeds 421-424 added 17 more, 8 of them fixed. Round 36 seeds 425-428, weighted to the relevant
+instruction set (`tools/fuzz.py --relevant`), added 13, 12 of them fixed; `PROGRESS.md` lists the
+flagged rest. Outside the replay baseline, four 2026-10-24 probes were also false
 accepts:
 - an unknown table field (`Tbl.NoSuchField(1,1)`, CR6);
 - an unknown `Settings.` name (CR6);

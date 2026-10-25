@@ -91,7 +91,7 @@ _SNMP_ALLOWED = {"FLOAT": {"FLOAT"}, "STRING": {"STRING", "FLOAT"}}
 # Operators that reject a String operand (oracle, all four loggers): the logical and shift
 # operators with one shared message, `* / MOD` with one message per String side.
 _STRING_ILLEGAL_OPS = {"AND", "OR", "XOR", "IMP", "EQV", "<<", ">>"}
-_STRING_ARITH_OPS = {"*", "/", "MOD"}
+_STRING_ARITH_OPS = {"*", "/", "\\", "MOD"}   # `\` is also `INTDV` (round 36)
 
 
 def _subexpressions(expr: S.Expr | None):

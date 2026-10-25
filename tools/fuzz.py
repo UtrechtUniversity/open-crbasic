@@ -37,6 +37,7 @@ first-line marker comment `' fuzz-needs-siblings: crbasic` that `tools/fuzz_repl
 Usage:
     python3 tools/fuzz.py --logger cr6 --count 1500 --seed 1
     python3 tools/fuzz.py --logger all               # cr6 1500, others 300, seed 1
+    python3 tools/fuzz.py --logger cr6 --relevant    # help seeds limited to FirnMelt/GEUS instructions
 
 Budget: real compiles run under Wine at ~2s each; a 4-worker pool overlaps them (`--workers`).
 """
@@ -100,13 +101,36 @@ def _accepted(path: Path, siblings: Path | None, exe: Path) -> bool:
     return r["exit"] == 0
 
 
+def _names_used(path: Path, names: set[str]) -> set[str]:
+    text = "\n".join(line.split("'", 1)[0] for line in
+                     path.read_text(encoding="utf-8", errors="replace").splitlines())
+    return {w.lower() for w in _IDENT_RE.findall(text)} & names
+
+
+def relevant_names(profile: profiles.Profile) -> set[str]:
+    """Instructions and functions the FirnMelt and GEUS programs use, `Archive/` left out
+    (`PLAN.md` "Relevant instruction set")."""
+    names = {n.lower() for n in (*profile.instructions, *profile.functions)}
+    files = [*CRBASIC_DIR.glob("*.CR6"), *CRBASIC_DIR.glob("*.crb")]
+    if GEUS_DIR.is_dir():
+        files += [p for p in GEUS_DIR.rglob("*") if p.suffix.upper() in (".CR6", ".CR1X")
+                  and "Archive" not in p.relative_to(GEUS_DIR).parts]
+    return set().union(*(_names_used(p, names) for p in files))
+
+
 def load_seeds(profile: profiles.Profile, exe: Path, workers: int,
-               oracle_errors: list[dict] | None = None) -> list[Seed]:
+               oracle_errors: list[dict] | None = None, relevant: bool = False) -> list[Seed]:
     candidates: list[Seed] = []
     if CRBASIC_DIR.is_dir():
         for p in sorted(CRBASIC_DIR.glob("*.CR6")):
             candidates.append(Seed("repo", p, CRBASIC_DIR))
-    for p in sorted(CHM_DIR.glob("*.CR6")):
+    chm = sorted(CHM_DIR.glob("*.CR6"))
+    if relevant:
+        # only help examples whose every instruction and function is in the relevant set
+        names = {n.lower() for n in (*profile.instructions, *profile.functions)}
+        allowed = relevant_names(profile)
+        chm = [p for p in chm if (used := _names_used(p, names)) and used <= allowed]
+    for p in chm:
         candidates.append(Seed("chm", p, None))
     if getattr(profile, "name", None) == "cr1000x" and GEUS_DIR.is_dir():
         # real station programs; ones that include other files are left out so a reproducer
@@ -784,6 +808,8 @@ def main() -> int:
     ap.add_argument("--shrink-budget-total", type=int, default=400,
                      help="max real compiles spent shrinking across the whole run")
     ap.add_argument("--out", type=Path, default=FUZZ_CORPUS)
+    ap.add_argument("--relevant", action="store_true",
+                     help="help-example seeds only where they use just FirnMelt/GEUS instructions")
     args = ap.parse_args()
 
     loggers = list(DEFAULT_COUNTS) if args.logger == "all" else [args.logger]
@@ -803,7 +829,7 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
 
     t0 = time.time()
     oracle_errors: list[dict] = []
-    seeds = load_seeds(profile, exe, args.workers, oracle_errors)
+    seeds = load_seeds(profile, exe, args.workers, oracle_errors, getattr(args, "relevant", False))
     summary_path = args.out / f"summary-{logger}.json"
     if not seeds:
         print(f"{logger}: no accepted seeds found", file=sys.stderr)
@@ -815,7 +841,8 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
         return False
     print(f"{logger}: {len(seeds)} accepted seeds "
           f"({sum(1 for s in seeds if s.group == 'repo')} repo, "
-          f"{sum(1 for s in seeds if s.group == 'chm')} chm), generating {count} mutants "
+          f"{sum(1 for s in seeds if s.group == 'chm')} chm, "
+          f"{sum(1 for s in seeds if s.group == 'geus')} geus), generating {count} mutants "
           f"(seed={args.seed})")
 
     mutants = []

@@ -1,8 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-25 after development round 35** (M0 fuzzer
-realism and fresh seeds, M1 fixes). Rounds 33 to 35 are committed.
-Measurements describe the round-35 implementation unless marked otherwise. Inspect
+Current compiler state and handoff, updated **2026-10-25 after development round 36** (M1 fixes
+from fresh seeds weighted to the relevant instruction set). Rounds 33 to 35 are committed; check
+`git log` for round 36. Measurements describe the round-36 implementation unless marked otherwise. Inspect
 `git status` before editing; use Git to check commit and publication state.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -21,15 +21,16 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 50,239 passed, 311 skipped, 231 strict xfail (round 35) |
-| `pytest -q -m server` | 163 passed |
+| `pytest -q -n 4 -m 'not server'` | 52,603 passed, 311 skipped, 282 strict xfail (round 36) |
+| `pytest -q -m server` | 163 passed (round 36) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
 | Earlier alias fixtures (r26–r30) | r26 282/282, r27 152/152, r28 368/368, r29 headers 180/180, r29 Strings 320/320, r29 review 104/104, r30 dimensioned 180/180 match; r30 review 92 match, 8 strict xfail |
 | Round-24 destination/settling/FieldNames fixture | 674 observations: 672 match, 2 strict xfail |
-| Saved fuzz replay, `fuzz_replay.py --recorded` (round 35) | Round 35, 3,221 inputs (63 new from seeds 421-424): 2,423 exact, 44 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 8), no false reject, gate passes. Round 34, 3,158 inputs: 2,410 exact and 35 false accepts (CR6 11, CR1000X 7, CR300 9, CR350 8), no false reject; the gate against `tests/replay_baseline.json` passes. Round 33, whose output was unchanged from round 31 on every input: 2,390 exact; 48 false accepts; no false reject; one mode and 15 warning differences; 60 missing the first error, 35 earlier first location, 220 same location with a different message, 370 later-diagnostic or order differences; 19 operational (one recorded result is a Wine page fault). The two extra first-error misses against the round-31 table are the `hang/dd9cc650482d` reproducers, whose recorded reference result differs from the round-31 rerun |
-| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 34) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
+| Saved fuzz replay, `fuzz_replay.py --recorded` (round 36) | Round 36, 3,295 inputs (74 new from seeds 425-428): 2,436 exact, 44 false accepts (CR6 18, CR1000X 10, CR300 9, CR350 7), no false reject; the gate against the refreshed `tests/replay_baseline.json` passes, and no round-35 row regressed (one CR350 false accept became exact). Round 35, 3,221 inputs (63 new from seeds 421-424): 2,423 exact, 44 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 8), no false reject, gate passes. Round 34, 3,158 inputs: 2,410 exact and 35 false accepts (CR6 11, CR1000X 7, CR300 9, CR350 8), no false reject; the gate against `tests/replay_baseline.json` passes. Round 33, whose output was unchanged from round 31 on every input: 2,390 exact; 48 false accepts; no false reject; one mode and 15 warning differences; 60 missing the first error, 35 earlier first location, 220 same location with a different message, 370 later-diagnostic or order differences; 19 operational (one recorded result is a Wine page fault). The two extra first-error misses against the round-31 table are the `hang/dd9cc650482d` reproducers, whose recorded reference result differs from the round-31 rerun |
+| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 36) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Round-31 replay against the round-30 checker | Two outputs changed: one message difference became exact, one changed text but remains a message difference. Reference compilers were not rerun |
+| Fresh fuzz, seeds 425-428 (round 36, `--relevant`, 500 mutants each, CR6 425/426 and CR1000X 427/428) | 1,913 exact, no false reject, 13 false accepts, 64 message differences, one warning difference, 15 runner failures; 12 false accepts fixed in round 36 |
 | Fresh fuzz, seeds 421-424 (round 35, 500 mutants each, CR6 421/422 and CR1000X 423/424 with GEUS seeds and the new operators) | 1,923 exact, 3 false rejects, 17 false accepts, 48 message differences, 18 runner failures; all three false rejects and 8 false accepts fixed in round 35 |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
@@ -45,7 +46,7 @@ CR6/CR1000X since round 34.
 GEUS corpus: the reference CR1000X compiler accepts all 66 GEUS `.CR1X` programs; since round 33
 opencrbasic matches all 66 exactly ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
-Four-profile diagnostic comparison, rerun in round 34 and unchanged from round 28
+Four-profile diagnostic comparison, rerun in round 36 and unchanged from round 28
 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
@@ -61,7 +62,7 @@ help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strco
 CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 34 both with the reference compiler and with
+Repository verification passed in round 36 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
@@ -77,6 +78,32 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 36** (M1; one session, no subagents or Codex):
+- **Relevant seeds.** `tools/fuzz.py --relevant` keeps only help examples whose every instruction
+  and function a FirnMelt or GEUS program also uses (`relevant_names`, computed from the programs,
+  `Archive/` left out), beside the repository and GEUS seeds. Seeds 425-428 found 13 false accepts
+  and no false reject.
+- **M1 fixes**, all probed against the reference (all four profiles unless noted):
+  - `Timer` Units and Option must be integer-typed constants; Option outside 0..4 is `Legal
+    options are 0..4` (FirnMelt's `Timer(..., TimerResetAndStart)` shape);
+  - `IIF` with one String and one numeric arm is `type mismatch`;
+  - a `SetSetting`/`SetStatus` name that is not a constant string is `Status Field name must be
+    constant.`;
+  - `INTDV` and `\` reject String operands like `*`, `/`, `MOD`;
+  - CR6/CR1000X `SerialIn` constant ComPort codes;
+  - `EmailRelay` takes 4, 5, 9 or 10 arguments;
+  - `If(`/`ElseIf(` with no blank before the condition was never name-checked;
+  - CR6/CR1000X output data types 0..255 (swept), fieldless codes and `declared with no output
+    fields`, odd Reps with `BOOL8`/`UINT1`, and `WindVector`'s data type;
+  - CR1000X `ExciteV` takes only `Vx1..Vx4`.
+- Evidence: `tests/fixtures/r36_relevant_seeds.json` (2,414 observations, 51 strict xfail: data
+  types past 255, the UINT1 variable-type line, NSEC with `WindVector`, a CR6 `SetSetting` cascade
+  and a CR300/CR350 line after `is not defined`). Rules:
+  [relevant-instruction seeds](docs/checker.md#relevant-instruction-seeds-round-36).
+- Flagged: `7b14df1ed0f8` (CR1000X, `SerialOpen(10,...)` claiming `SDI12Recorder`'s `C3`) and the
+  warning difference `e7e12f2d1011` (`TimeIntoInterval` with a string interval).
+- The 74 reproducers of seeds 425-428 are in `tests/corpus/fuzz/` and the replay baseline.
 
 **Round 35** (one session, no subagents or Codex):
 - **M0, fuzzer realism.** `tools/fuzz.py` gains three operators for plausible mistakes (a typo in a
@@ -245,8 +272,9 @@ revision before acting on it.
 
 Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 
-1. **M0, remaining:** confirm the CI workflow on GitHub after the next push; optionally record
-   the parenthesized-assignment runtime on the bench CR6 (unknown so far).
+1. **M0, remaining:** the CI workflow passed on GitHub on 2026-10-25 (run 40184946232, after the
+   round-35 TDF fixture refresh); optionally record the parenthesized-assignment runtime on the
+   bench CR6 (unknown so far).
 2. Human decisions of 2026-10-24, recorded in [PLAN.md](PLAN.md#v10-milestones):
    - CR6 and CR1000X gate v1.0; CR300/CR350 are best effort;
    - the GEUS programs may be compiled as a corpus (`AGENTS.md` updated);
@@ -255,7 +283,7 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    - an `--strict` error for aliases named after CRBasic names (`OCB001`, round 33).
 3. **M3, remaining framework:** `--report FILE`, configuration and suppressions, the separate
    result field for the language server, then the next checks from the PLAN table.
-4. **M1, remaining false accepts.** The 27 left on CR6/CR1000X fall under the PLAN's flag rule:
+4. **M1, remaining false accepts.** The 28 left on CR6/CR1000X fall under the PLAN's flag rule:
    instructions neither FirnMelt nor GEUS uses, or allocation and 32-bit clamping models. Round 34's
    18: `072c74da6af5` (`&H0  10a0101`), `51f39a5f2393` and `7b4b2177d56b` (`CDM_FFTFilt`),
    `55821bbfb248` (`Program too big for task memory` cascade), `870ca9a9562e`/`e8c854e3493d` (I2C/SPI
@@ -266,9 +294,13 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    (`SNMPVariable`). Round 35's 9: `0e23c61229f4` (`CS7500`), `39a03364be83` (`FieldCalStrain`),
    `52138d7bd179` (`CDM_PulsePort`), `577a59ecb08c` (`AVW200` destination), `778ea45e64b7`
    (`CDM_BrFull6W` settling clamp), `9c6367a2c598` (`MenuRecompile`), `ecc509dd06de`/`f61f825392f2`
-   (`TableFile`), `fa923ecef6f4` (`MenuPick`). Coverage notices for them wait for M4. The 17
-   CR300/CR350 false accepts are best effort. Next: more fresh seeds, weighted to the relevant
-   instruction set, and the message-level first-error differences (M2).
+   (`TableFile`), `fa923ecef6f4` (`MenuPick`). Round 36's 1: `7b14df1ed0f8` (numeric `SerialOpen`
+   port claiming an `SDI12Recorder` terminal; both are GEUS instructions, so this port-ownership
+   model is the next relevant M1 candidate rather than a flag). Coverage notices for them wait for M4. The 16
+   CR300/CR350 false accepts are best effort. Next: more `--relevant` seeds (also CR300/CR350
+   rules found in passing: `SerialOpen` negative and CR1000X port 15, `SerialBrk` ports, data types
+   past 255, `Sample` with UINT1), and the message-level first-error differences (M2): round 36's
+   new rows add 9 missed first errors and 28 same-location messages.
 5. **M3/M4** can start after M0, in parallel with M1/M2: the check framework, and the CR6 evidence
    inventory from `tools/builder_map.py` and `tools/message_catalog.py`.
 6. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)

@@ -1227,6 +1227,62 @@ def _string_consts(program: S.Program) -> set[str]:
     return out
 
 
+def _string_typed(expr: S.Expr | None, typer, str_consts: set[str], profile) -> bool | None:
+    """Whether `expr` is String-typed for `IIF`: a string literal or `Const`, a String variable, a
+    String-returning function (`kind` 312) or a `+`/`&` with a String side; `None` when unknown."""
+    if isinstance(expr, S.String):
+        return True
+    if isinstance(expr, S.Number):
+        return False
+    if isinstance(expr, (S.Name, S.Index)):
+        name = expr.name.upper()
+        if isinstance(expr, S.Name) and name in str_consts:
+            return True
+        if typer.variable(expr) is not None:
+            return typer.of(expr) == "STRING"
+        record = profile.functions.get(name)
+        if name == "IIF" and isinstance(expr, S.Index) and len(expr.args) == 3:
+            arms = {_string_typed(a, typer, str_consts, profile) for a in expr.args[1:]}
+            return arms.pop() if len(arms) == 1 else None
+        if record is not None and isinstance(expr, S.Index):
+            return record.get("kind") == 312
+        return False if isinstance(expr, S.Name) and (name in ("TRUE", "FALSE") or
+                                                      name in profile.symbols) else None
+    if isinstance(expr, S.Unary):
+        return False
+    if isinstance(expr, S.Binary):
+        if expr.op not in ("+", "&"):
+            return False
+        sides = {_string_typed(expr.left, typer, str_consts, profile),
+                 _string_typed(expr.right, typer, str_consts, profile)}
+        return True if True in sides else None if None in sides else False
+    return None
+
+
+def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`type mismatch` for an `IIF` whose second and third arguments are one String-typed and one
+    numeric (oracle, CR6/CR1000X, 2026-10-25, docs/checker.md#iif-arm-types-round-36). One report
+    per line, only on a line with no earlier error."""
+    from .expressions import _index_nodes, _stmt_exprs
+    from .var_types import _Typer
+    if "IIF" not in profile.functions:
+        return
+    typer = _Typer(program)
+    str_consts = _string_consts(program)
+    busy = {(d.line, d.file) for d in diags.items if d.severity == "error"}
+    for stmt in program.statements:
+        if (stmt.line, stmt.file) in busy:
+            continue
+        for ix in (ix for e in _stmt_exprs(stmt) for ix in _index_nodes(e)):
+            if ix.name.upper() != "IIF" or len(ix.args) != 3 or typer.variable(ix) is not None:
+                continue
+            arms = [_string_typed(a, typer, str_consts, profile) for a in ix.args[1:]]
+            if None not in arms and arms[0] != arms[1]:
+                diags.error(stmt.line, "type mismatch", stmt.file)
+                busy.add((stmt.line, stmt.file))
+                break
+
+
 def check_precision_variable(program: S.Program, profile, diags: Diagnostics) -> None:
     """`Invalid Variable or Array: %s.` for `AddPrecise`/`MovePrecise`'s own `PrecisionVariable`
     argument when it has no genuine variable reference (declared or undeclared) anywhere in it.
@@ -1677,6 +1733,28 @@ def _is_integer_token(text: str, arg: S.Expr, env: consteval.Env) -> bool:
     except consteval.NotConstant:
         return False
     return not isinstance(value, str) and isinstance(value, (int, float)) and value == int(value)
+
+
+# `SerialIn` constant ComPort codes, compared by absolute value (oracle, 2026-10-25,
+# docs/checker.md#serialin-comport-codes-round-36); CR300/CR350 not probed
+_SERIALIN_PORTS = {"cr6": frozenset(range(1, 19)) | frozenset(range(32, 48)),
+                   "cr1000x": frozenset(range(1, 15)) | frozenset(range(32, 48))}
+
+
+def check_serialin_comport(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`ComPort N illegal.` for a constant `SerialIn` ComPort whose 32-bit value, sign dropped, is
+    not a port code of the logger (`N` is that absolute value)."""
+    from . import longconv
+    ports = _SERIALIN_PORTS.get(profile.name)
+    if ports is None:
+        return
+    names = longconv.float_names(program.statements)
+    literals = longconv.literal_names(program.statements)
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SERIALIN" and len(stmt.args) > 1:
+            v = longconv.long_value(stmt.args[1], env, profile, names, literals)
+            if v is not None and (abs(v) if v != -2**31 else v) not in ports:
+                diags.error(stmt.line, f"ComPort {abs(v) if v != -2**31 else v} illegal.", stmt.file)
 
 
 _SERIALIN_DEST_MESSAGE = "A string variable destination is required"
@@ -2826,6 +2904,10 @@ def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found
             continue
         name = _constant_name_text(stmt.args[0], env)
         if name is None:
+            # a number, variable or other non-string-constant name
+            # (docs/checker.md#settings-name-must-be-constant-round-36)
+            if stmt.args[0] is not None:
+                found.error(stmt.line, "Status Field name must be constant.", stmt.file)
             continue
         if "." in name:
             table, field = name.split(".", 1)
