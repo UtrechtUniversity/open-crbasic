@@ -285,10 +285,10 @@ export PYTHONPATH="$PWD/src"
 uv sync
 ```
 
-Python 3.15+ is required. Never create a repository `.venv`. The explicit `PYTHONPATH` also keeps
+Python 3.15+ is required. The explicit `PYTHONPATH` also keeps
 worktree runs from importing the main checkout through the shared editable installation.
 
-The current macOS Wine setup is documented in [scripts/README.md](../scripts/README.md#compiling-on-macos).
+The current macOS Wine setup is documented in [openloggernet/README.md](../openloggernet/README.md#compiling-on-macos).
 The oracle uses `~/.wine-cr6`, `WINEDEBUG=-all`, and defaults to disabling GUI drivers through
 `WINEDLLOVERRIDES=winemac.drv,winex11.drv,winewayland.drv=d`; explicit overrides are preserved.
 For a new prefix, disable crash dialogs as recorded in the

@@ -16,7 +16,7 @@ Runner selection:
     - else on win32: the exe is run directly.
     - else (Linux/macOS): ``wine`` is used. env CR6_WINE overrides the wine binary path;
       otherwise the first of ``$HOME/.local/wine/Wine Devel.app/Contents/Resources/wine/bin/wine``
-      (the macOS install documented in scripts/README.md) or ``wine`` on PATH is used.
+      (the macOS install documented in openloggernet/README.md) or ``wine`` on PATH is used.
 
 Results are cached in ``opencrbasic/.oracle-cache/<sha256>.json``, keyed by a hash of the compiler
 exe bytes, the program name and bytes, and the sorted (name, bytes) of every sibling file, so a
