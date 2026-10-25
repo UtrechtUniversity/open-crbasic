@@ -244,6 +244,29 @@ All four corrections are in the plan. Prior state: the
 [round-30 handoff snapshot](docs/progress-history.md#round-30-handoff-snapshot-2026-10-23).
 Production CRBasic was not changed. No hardware was flashed or tested.
 
+### Local maintenance queue (round 36)
+
+Prepared on 2026-10-25 at HEAD `0fab9b15` with the uncommitted round-36 changes (dirty inputs
+hashed), following [LocalMaintenance.md](../verification/LocalMaintenance.md#quality-first-kickoff),
+in `scratch/local-maintenance/r36-2026-10-25/` (`packets.json`, `HANDOFF.md`). Eight packets: two
+round-36 handoff-versus-`docs/checker.md` checks, the PLAN-versus-PROGRESS false-accept tally,
+three code-versus-doc rule checks (Timer, output data types, SerialIn), a historical-counts scope
+control and a test-structure control.
+
+**Completed.** Supervisor PID 5901, Qwen3.8-27B UD-Q4_K_M, `xhigh`, 2,048-token reasoning budget,
+4,096 output, 8K context, 1,200 s timeout: 8/8 packets valid, no errors, 2,806 s of generation;
+the memory guard did not stop it (swap 3.6-4.1 GiB). Both controls answered as expected
+(consistent; insufficient_evidence). Hosted review of the proposals:
+- 01 (contradiction: Settings fix without its CR6 exception) rejected: the round-36 entry lists the
+  CR6 `SetSetting` cascade among the strict xfails;
+- 03 (contradiction: PLAN tally) rejected: PLAN counts fixed false accepts and PROGRESS the
+  remaining ones; they reconcile;
+- 04 consistent, with a valid nit: the `_TIMER_CONTEXT` comment in `checker/expressions.py`
+  states the INT_MAX rule without the CR300/CR350 qualifier its code and docs carry; not edited;
+- 02, 05, 06 consistent.
+
+No change was accepted. Round 36 was committed after the worker finished.
+
 ### Local maintenance queue (round 32)
 
 A local review queue was prepared on 2026-10-24 at HEAD `356c2258`, following
