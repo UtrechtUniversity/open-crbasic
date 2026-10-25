@@ -93,8 +93,14 @@ def _commsmode_problem(stmt: S.Call, profile, consts: dict | None) -> str | None
 
 
 def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None) -> None:
-    if len(stmt.args) < 2 or not (isinstance(stmt.args[0], S.Name)
-                                  and stmt.args[0].name.upper() == "COMRS232"):
+    port = stmt.args[0] if stmt.args else None
+    rs232 = isinstance(port, S.Name) and port.name.upper() == "COMRS232"
+    # CR6/CR1000X check every valid port (oracle, 2026-10-25, round 35: ComUSB, ComC1, ComSDC7,
+    # ComME, 32); an unknown port name is `ComPort 0 illegal.` only
+    known_port = isinstance(port, S.Number) or (
+        isinstance(port, S.Name) and (port.name.upper() in profile.symbols
+                                      or port.name.upper() in {str(c).upper() for c in consts or {}}))
+    if len(stmt.args) < 2 or not (rs232 or (not profile.single_pass and known_port)):
         return
     arg = stmt.args[1]
     sign = 1

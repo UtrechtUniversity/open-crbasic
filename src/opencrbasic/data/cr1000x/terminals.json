@@ -10,6 +10,7 @@
   },
   "diff_chan": {
    "span": {"message": "Channel {v} exceeds number of valid channels."},
+   "overflow_add": 7,
    "min": 0,
    "max": 8,
    "transform": "abs",
@@ -18,6 +19,7 @@
   },
   "se_chan": {
    "span": {"message": "Channel {v} exceeds number of valid channels."},
+   "huge_int_min": true,
    "min": 1,
    "max": 16,
    "transform": "abs",

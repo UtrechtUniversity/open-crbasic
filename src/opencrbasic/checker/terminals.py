@@ -158,7 +158,20 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
     arg = stmt.args[idx]
-    if isinstance(arg, S.String) and kind.get("string_int_min"):
+    huge = False
+    if kind.get("huge_int_min") or "overflow_add" in kind:
+        # CR1000X (oracle, 2026-10-25, round 35): a constant outside int32 becomes INT_MIN; a
+        # single-ended channel then reports it, a differential one compiles, as does one whose
+        # `|channel| + overflow_add` passes INT_MAX (from 2147483641, any Reps)
+        try:
+            folded = consteval.value_of(arg, env) if consteval.is_constant(arg, env) else None
+        except consteval.NotConstant:
+            folded = None
+        if isinstance(folded, (int, float)) and not isinstance(folded, bool) and math.isfinite(folded):
+            huge = not -2**31 < int(folded) < 2**31   # (INT_MIN itself too: `abs` keeps it)
+            if "overflow_add" in kind and (huge or abs(int(folded)) + kind["overflow_add"] > 2**31 - 1):
+                return
+    if (isinstance(arg, S.String) or huge) and kind.get("string_int_min" if not huge else "huge_int_min"):
         # a string literal (`PortSet("fuzz",1)`, `"102"`, `""`) folds to INT_MIN (oracle, all
         # four loggers, 2026-10-12)
         value = -2147483648

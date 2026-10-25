@@ -298,8 +298,8 @@ def cr6_table_oom(m: dict, auto_n: int | None = None, name: str = "") -> str | N
     else:
         return None
     b = m["bytes_per_record"]
-    if not b or not m["called"]:
-        return None
+    if not b or not m["called"] or b > 2147483647:
+        return None     # (a String field past INT_MAX compiles; oracle, 2026-10-25, round 35)
     lap = (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if m["display_interval"] else 0
     a = _tdiv(_wrap32(abs(lap) * 16 if lap != _INT_MIN else 0), b) + 1 if lap else 0
     mm = _wrap32(n + a)
@@ -335,6 +335,8 @@ def _var_words(program: S.Program, env, kinds: tuple) -> list[tuple[int, int]]:
             if len(dims) > 3 or any(not 1 <= d <= 2147483647 for d in dims):
                 continue                    # `Illegally dimension`: never allocated
             info = T._make_var_info(v, env)
+            if t == "STRING" and info.stored_len > 2147483647:
+                continue    # the length wraps negative: compiles (oracle, 2026-10-25, round 35)
             n = 1
             for d in dims:
                 n *= d

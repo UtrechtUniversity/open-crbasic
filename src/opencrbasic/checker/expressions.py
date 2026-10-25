@@ -927,6 +927,14 @@ class KnownNames(set):
         self.dotted_tables = dotted_tables  # CR300/CR350: `Undeclared.member` names a table
 
 
+def _alias_names(program: S.Program) -> set[str]:
+    """`Alias` names: a variable for the const-only positions (`Sample(1,IEEE4,Ux)` with
+    `Alias A(1) = Ux` is `Variable illegal in Parameter: Ux.`; oracle, CR6/CR1000X, 2026-10-25)."""
+    return {a.name.upper() for st in program.statements
+            if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+            for a in st.args[1:] if isinstance(a, S.Name)}
+
+
 def _value_less_tables(program: S.Program, profile=None) -> frozenset:
     tables = {st.args[0].name.upper() for st in program.statements
               if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
@@ -937,9 +945,7 @@ def _value_less_tables(program: S.Program, profile=None) -> frozenset:
                                       else set())
     # An `Alias D(3)=Status` makes `Status` a value too, even above the `Alias` (oracle, all four
     # loggers, 2026-10-24; a GEUS false reject, `docs/checker.md` "Aliases named Status").
-    aliases = {a.name.upper() for st in program.statements
-               if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
-               for a in st.args[1:] if isinstance(a, S.Name)}
+    aliases = _alias_names(program)
     others = symbols.declared_variable_names(program) | {n.upper() for n in program.consts} | \
         {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)} | aliases
     return frozenset(tables - others)
@@ -1457,7 +1463,8 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
         return
     known = _known_names(program, profile)
     variable_names = {name for name in symbols.declared_variable_names(program)
-                      if not symbols.is_reserved_predefined_name(name, profile)}
+                      if not symbols.is_reserved_predefined_name(name, profile)} | {
+        name for name in _alias_names(program) if name not in profile.symbols}
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -1495,11 +1502,14 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     is implemented, `_CONST_ONLY_VARIABLE_REJECT_KINDS`).
     """
     known = _known_names(program, profile)
-    variable_names = symbols.declared_variable_names(program)
+    variable_names = symbols.declared_variable_names(program) | (
+        {n for n in _alias_names(program) if n not in profile.symbols}   # (`Alias X = Sec` fails)
+        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else set())
     ds = program_dims(program, profile, known)
     dim_counts = symbols.declared_dim_counts(
         program, strings=True)
 
+    seen_avw200 = False
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or id(stmt) in skip:
             continue
@@ -1511,6 +1521,13 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         positions = _position_kinds(record["params"], stmt.keyword, profile)
         if stmt.keyword.upper() == "SDMSIO4" and _sdmsio4_count(stmt, env) == 0:
             positions.pop(0, None)   # no values: the destination is never resolved
+        if stmt.keyword.upper() == "AVW200" and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            if seen_avw200:
+                # after an earlier `AVW200` the ComPort and NeighborAddr are not resolved
+                # (oracle, 2026-10-25, round 35; positions 3..10 give garbled value messages)
+                positions.pop(1, None)
+                positions.pop(2, None)
+            seen_avw200 = True
         if (positions and stmt.keyword.upper() == "SERIALOPEN" and stmt.args and stmt.args[0]
                 and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
                 and _undefined_names(stmt.args[0], known)):

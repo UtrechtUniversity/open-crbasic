@@ -7903,3 +7903,35 @@ Oracle, CR6/CR1000X, 2026-10-24; same fixture.
 - CR1000X `PulseCount` on `P1`/`P2` twice in a scan is `P1 already used as PulseCount in this
   scan.` without the `Pulsecount: channel ... in use` line that a `C` terminal adds.
 - `Public C As Long2,` (trailing comma) is still `Variable Type Long2 not supported`.
+
+## Fresh-seed findings (round 35)
+
+Oracle, CR6/CR1000X, 2026-10-25; fixture `tests/fixtures/r35_fresh_seeds.json`. Seeds 421-424 with
+the round-35 operators (typos, neighbouring numbers, swapped arguments) and the GEUS programs as
+CR1000X seeds found three false rejects and these false-accept families.
+
+- **A second `AVW200`.** After an earlier `AVW200` in the program, an undeclared name at positions 1
+  and 2 (ComPort, NeighborAddr) compiles; at 3 to 10 the reference prints garbled or value messages
+  (one echoes uninitialised bytes), at 0 and 11 to 13 `Invalid symbol`. Positions 1 and 2 are not
+  resolved then. Round 34's check of positions outside the multi-report order had made this a false
+  reject.
+- **32-bit conversions.** A `String * N` whose padded storage length passes INT_MAX
+  (`* 2147483647` and up) compiles; `* 2147483584` is still `Out of memory.` Such a variable and a
+  table field that size are left out of the storage model. A CR1000X differential channel compiles
+  when `|channel| + 7` passes INT_MAX (from 2147483641, any Reps) or the constant is outside int32
+  (`overflow_add` in `terminals.json`); a single-ended channel outside int32 is reported as
+  `Invalid channel -2147483648, must use 1..16.` (`huge_int_min`). CR6 prints other messages for
+  these values (both reject; not modelled).
+- **Aliases at constant-only positions.** An `Alias` name where a constant is required is a
+  variable: `Sample(1,IEEE4,Ux)`, `VoltSe(A(),Vy,...)`, `Delay(Ux,1,Sec)`, `PanelTemp(X,Vy)`, `Public
+  B(Vy)` are `Variable illegal in Parameter`. An alias of a predefined constant (`Alias X = Sec`,
+  itself an error) stays the constant.
+- **String Reps.** A string as a measurement's Reps (`PulseCount(R(1),"2",C1,...)`, even `""`) is
+  INT_MIN: `Invalid reps -2147483648, must be > 0`, then the destination bounds of a negative Reps.
+- **`Delay(2,0,Sec)`** is `Invalid time specified.` (option 2 with interval 0; 1 and -1 compile).
+- **Running statistics.** `MinRun`, `MaxRun`, `TotalRun` and `StdDevRun` bound their destination by
+  Reps like `AvgRun`, including a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`).
+
+Not modelled: a negative `Delay` option-0 interval (`Program too big for task memory`, repeated; an
+allocation model), and `Scan interval too short ... by N` is one second high on our side for long
+delays (`Delay(0,3600,Sec)` in a 10 s scan: 3590 on the reference, 3591 here).

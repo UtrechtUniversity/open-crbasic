@@ -573,7 +573,11 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
             diags.error(stmt.line, "Measurement delay must have constant interval.", stmt.file)
             return
         us = _delay_interval_us(interval_arg, units_arg, env)
-        if us is not None and us > cfg["option0_limit"]:
+        negative = isinstance(interval_value, (int, float)) and not isinstance(interval_value, bool) \
+            and math.isfinite(interval_value) and int(interval_value) < 0
+        if negative or (us is not None and us > cfg["option0_limit"]):
+            # a negative interval is too long as well (oracle, CR6/CR1000X, 2026-10-25, round 35;
+            # the `Program too big for task memory` lines after it are not modelled)
             diags.error(stmt.line, "Measurement Delay Exceeds 60 min.", stmt.file)
     elif option == 1 and cfg.get("option1_limit"):
         us = _delay_interval_us(interval_arg, units_arg, env)
@@ -582,6 +586,9 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
     elif option == 2 and cfg.get("option2_constant", True):
         if interval_arg is not None and not consteval.is_constant(interval_arg, env):
             diags.error(stmt.line, "SDM Delay interval must be constant.", stmt.file)
+        elif interval_value == 0 and cfg.get("option0_limit"):   # (CR6/CR1000X data only)
+            # `Delay(2,0,Sec)` (oracle, CR6/CR1000X, 2026-10-25, round 35; 1 and -1 compile)
+            diags.error(stmt.line, "Invalid time specified.", stmt.file)
 
 
 def _delay_interval_us(interval_arg, units_arg, env: consteval.Env) -> float | None:
@@ -959,8 +966,10 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             continue
         scope = tables(stmt)
         reps = _int_value(stmt.args[1], env)
-        if reps is None and profile.single_pass and isinstance(_const_value(stmt.args[1], env), str):
-            reps = 0  # `Therm107(T,"fuzz",...)` (oracle, CR300)
+        if reps is None and isinstance(_const_value(stmt.args[1], env), str):
+            # `Therm107(T,"fuzz",...)` is 0 on CR300; CR6/CR1000X take any string as INT_MIN
+            # (`PulseCount(R(1),"2",C1,...)`, oracle, 2026-10-25, round 35)
+            reps = 0 if profile.single_pass else -2147483648
         if reps is None:
             continue
         if profile.single_pass:
@@ -1114,8 +1123,10 @@ def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics
 # Reps argument (index 1); `REALTIME` needs a fixed nine (Therm107-109: `check_reps`, round 31).
 # Only CalFile also rejects negative Reps.
 _DEST_FIXED = {"REALTIME": 9}
-_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1}
+_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1, "MINRUN": 1, "MAXRUN": 1, "TOTALRUN": 1,
+                 "STDDEVRUN": 1}   # (the other running statistics: oracle, CR6/CR1000X, round 35)
 _DEST_NEGATIVE_OOB = frozenset({"CALFILE"})
+_RUNNING_STATS = frozenset({"MINRUN", "MAXRUN", "TOTALRUN", "STDDEVRUN"})   # (AvgRun not probed)
 
 
 # Element counts the CR6 instruction builders pass to the shared destination resolver, read from the
@@ -1181,6 +1192,9 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                       env: consteval.Env) -> None:
     from . import symbols
     tables = symbols.scope_tables(program, env, scalars=True)
+    # the running statistics also bound a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`
+    # is `Variable Q out of bounds.`; oracle, CR6/CR1000X, 2026-10-25, round 35)
+    with_parameters = symbols.scope_tables(program, env, scalars=True, parameters=True)
     dims: dict[str, tuple[int, ...]] = {}
     types: dict[str, str] = {}
     arrays: set[str] = set()
@@ -1217,6 +1231,9 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                 not isinstance(stmt.args[0], (S.Name, S.Index)):
             continue
         kw = stmt.keyword.upper()
+        if kw in _RUNNING_STATS:
+            scope = with_parameters(stmt)
+            dims, types, arrays = scope.dims, scope.types, scope.arrays
         dest = stmt.args[0]
         name = dest.name.upper()
         bad: list[S.Expr] = []

@@ -154,8 +154,8 @@ diagnostics without a line number:
 | False reject | 0 | 0 | 0 | 0 | 0 | highest (gated) |
 | Reference or runner failure | 19 | 6 | 4 | 3 | 6 | no verdict |
 
-Round 34 fixed the four probe false accepts below and 13 replay false accepts (35 remain, 18 of them on CR6/CR1000X and flagged;
-`PROGRESS.md` has the triage). Outside the replay baseline, four 2026-10-24 probes were also false
+Rounds 34-35 fixed the four probe false accepts below and 13 replay false accepts, then fresh
+seeds 421-424 added 17 more, 8 of them fixed; `PROGRESS.md` lists the flagged rest. Outside the replay baseline, four 2026-10-24 probes were also false
 accepts:
 - an unknown table field (`Tbl.NoSuchField(1,1)`, CR6);
 - an unknown `Settings.` name (CR6);
@@ -265,6 +265,29 @@ per-profile overrides, holds:
 CLI options and LSP settings override the file in a documented precedence. The configuration is
 part of the analysis identity, including the LSP cache key. Source comments are never used, because
 owned `crbasic/` files allow only pointer comments.
+
+Format (recorded in round 35, implemented with M3; `tomllib`, so still no runtime dependency):
+
+```toml
+[checks]                      # severity per code: "error" | "warning" | "info" | "off"
+OCB001 = "error"
+
+[profile.cr300.checks]        # per logger profile
+OCB001 = "warning"
+
+[entry."crbasic/Main.CR6".checks]   # per entry program, path relative to the file
+OCB001 = "off"
+
+[[suppress]]                  # one finding site; `reason` is required
+code = "OCB001"
+file = "crbasic/OldStation.CR6"     # glob, relative to the file
+line = 12                     # optional; without it the whole file
+reason = "alias kept for data continuity with the 2025 tables"
+```
+
+Precedence, highest first: CLI option, LSP setting, `entry`, `profile`, `[checks]`, the check's
+built-in default. An unknown code, an unknown severity or a suppression without `reason` is a
+configuration error reported on stderr; it never changes the reference verdict.
 
 ### Which gaps to fix and which to flag
 

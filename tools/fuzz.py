@@ -68,6 +68,8 @@ import oracle  # noqa: E402
 
 CRBASIC_DIR = REPO / "crbasic"
 CHM_DIR = ROOT / "tests" / "corpus" / "chm"
+# GEUS station programs (human decision 2026-10-24, `PLAN.md` "GEUS corpus"): CR1000X seeds
+GEUS_DIR = REPO / "examples" / "Logger Programs"
 FUZZ_CORPUS = ROOT / "tests" / "corpus" / "fuzz"
 
 DEFAULT_COUNTS = {"cr6": 1500, "cr1000x": 300, "cr300": 300, "cr350": 300}
@@ -86,7 +88,7 @@ SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"
 
 @dataclass(frozen=True)
 class Seed:
-    group: str            # "repo" or "chm"
+    group: str            # "repo", "chm" or "geus"
     path: Path            # the accepted source file
     siblings: Path | None  # directory to copy alongside it, or None
 
@@ -106,6 +108,12 @@ def load_seeds(profile: profiles.Profile, exe: Path, workers: int,
             candidates.append(Seed("repo", p, CRBASIC_DIR))
     for p in sorted(CHM_DIR.glob("*.CR6")):
         candidates.append(Seed("chm", p, None))
+    if getattr(profile, "name", None) == "cr1000x" and GEUS_DIR.is_dir():
+        # real station programs; ones that include other files are left out so a reproducer
+        # stays one self-contained file
+        for p in sorted(GEUS_DIR.rglob("*.CR1X")):
+            if not re.search(r"\bInclude", p.read_text(encoding="utf-8", errors="replace"), re.I):
+                candidates.append(Seed("geus", p, None))
 
     def check(seed):
         try:
@@ -433,6 +441,68 @@ def op_change_interval(lines, rng):
     return new
 
 
+def _declared_names(lines: list[str]) -> list[str]:
+    names = []
+    for line in lines:
+        m = re.match(r"\s*(?:Public|Dim|Const)\s+([A-Za-z_]\w*)", line, re.I)
+        if m:
+            names.append(m.group(1))
+    return names
+
+
+def op_typo_identifier(lines, rng):
+    """A misspelt use of a declared name (one character dropped, doubled or swapped)."""
+    names = [n for n in _declared_names(lines) if len(n) > 2]
+    if not names:
+        return None
+    name = rng.choice(names)
+    uses = [(i, m) for i, m in _candidate_lines(lines, re.compile(r"\b" + re.escape(name) + r"\b", re.I))]
+    if not uses:
+        return None
+    i, m = rng.choice(uses)
+    word, k = m.group(0), rng.randrange(1, len(m.group(0)) - 1)
+    kind = rng.choice(["drop", "double", "swap"])
+    typo = (word[:k] + word[k + 1:] if kind == "drop" else word[:k] + word[k] + word[k:]
+            if kind == "double" else word[:k - 1] + word[k] + word[k - 1] + word[k + 1:])
+    if typo.upper() == word.upper():
+        return None
+    new = list(lines)
+    new[i] = lines[i][: m.start()] + typo + lines[i][m.end():]
+    return new
+
+
+def op_neighbour_number(lines, rng):
+    """A plausible wrong number: off by one, zero, or a factor of ten (a channel, a count, an
+    index one past the end)."""
+    cands = [(i, m) for i, m in _candidate_lines(lines, _NUMBER_RE) if m.group(0).isdigit()]
+    if not cands:
+        return None
+    i, m = rng.choice(cands)
+    n = int(m.group(0))
+    repl = str(rng.choice([n + 1, max(n - 1, 0), 0, n * 10]))
+    if repl == m.group(0):
+        return None
+    new = list(lines)
+    new[i] = lines[i][: m.start()] + repl + lines[i][m.end():]
+    return new
+
+
+def op_swap_arguments(lines, rng):
+    """Two arguments of one call in the wrong order."""
+    calls = [(i, m) for i, m in _find_calls(lines) if len(_split_call_args(m.group(2))) >= 2]
+    if not calls:
+        return None
+    i, m = rng.choice(calls)
+    args = _split_call_args(m.group(2))
+    a, b = rng.sample(range(len(args)), 2)
+    if args[a].strip() == args[b].strip():
+        return None
+    args[a], args[b] = args[b], args[a]
+    new = list(lines)
+    new[i] = lines[i][: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + lines[i][m.end():]
+    return new
+
+
 OPERATORS = [
     ("delete_line", op_delete_line),
     ("duplicate_line", op_duplicate_line),
@@ -450,6 +520,9 @@ OPERATORS = [
     ("toggle_two_word", op_toggle_two_word),
     ("change_declared_type", op_change_declared_type),
     ("change_interval", op_change_interval),
+    ("typo_identifier", op_typo_identifier),
+    ("neighbour_number", op_neighbour_number),
+    ("swap_arguments", op_swap_arguments),
 ]
 
 
@@ -563,7 +636,7 @@ def materialise(seed: Seed, lines: list[str], tmp_dir: Path, name: str) -> Path:
 
 
 def run_mutant(seed: Seed, lines: list[str], profile: profiles.Profile, name: str | None = None) -> Quad:
-    name = name or seed.path.name
+    name = name or re.sub(r"[^A-Za-z0-9_.-]", "_", seed.path.name)   # GEUS names have blanks
     with tempfile.TemporaryDirectory(prefix="fuzz-") as tmp:
         tmp_dir = Path(tmp)
         path = materialise(seed, lines, tmp_dir, name)

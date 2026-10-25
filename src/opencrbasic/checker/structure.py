@@ -1373,11 +1373,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
                 length_scope = None
+                # an alias is a variable from its `Alias` on, a routine's only up to its end
+                seen = {name for name, spans in alias_spans.items()
+                        if any(lo < pos <= hi for lo, hi in spans)}
                 if any(v.type == "STRING" and v.string_size is not None for v in stmt.vars):
                     # a String length sees only earlier names (round 31)
-                    # an alias is a variable from its `Alias` on, a routine's only up to its end
-                    seen = {name for name, spans in alias_spans.items()
-                            if any(lo < pos <= hi for lo, hi in spans)}
                     later = {name for name, at in first_declared.items() if at > pos} | (
                         set(alias_spans) - seen - {n for n, at in first_declared.items() if at < pos})
                     length_scope = (known - later,
@@ -1422,7 +1422,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         stmt.vars[stop + 1:] = [v for v in stmt.vars[stop + 1:] if v.type in struct_types]
                 else:
                     _check_array_dims(stmt, diags, env, profile)
-                    _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types,
+                    # CR6/CR1000X: a visible alias is a variable too (`Public B(Vy)`, round 35)
+                    _check_decl_exprs(stmt, known, decl_variables | seen, profile, diags, struct_types,
                                       length_scope=length_scope)
                 _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
