@@ -28,6 +28,7 @@ import argparse
 import base64
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -57,6 +58,24 @@ def _iter_sibling_files(siblings_dir: Path):
     for entry in sorted(siblings_dir.iterdir()):
         if entry.is_file():
             yield entry
+
+
+_INCLUDE_RE = re.compile(r'"(?:CPU:)?([^"/\\:]+\.crb)"', re.I)
+
+
+def source_hash(program_path: Path, siblings_dir: Path) -> str:
+    """sha256 of a program and every `.crb` file it names, followed transitively: a committed
+    fixture is only evidence for the sources it was made from."""
+    h, todo, seen = hashlib.sha256(), [program_path], set()
+    while todo:
+        path = todo.pop(0)
+        if path.name in seen or not path.is_file():
+            continue
+        seen.add(path.name)
+        data = path.read_bytes()
+        h.update(path.name.encode("utf-8") + b"\0" + data)
+        todo += [siblings_dir / name for name in _INCLUDE_RE.findall(data.decode("latin-1"))]
+    return h.hexdigest()
 
 
 def _cache_key(compiler_path: Path, program_path: Path, siblings_dir: Path) -> str:
@@ -291,6 +310,7 @@ def main(argv=None) -> int:
                                       else f"{args.logger}_{group}_{path.stem}.json")
             fixture.write_text(json.dumps({
                 "program": path.name, "group": group,
+                "source_sha256": source_hash(path, path.parent),
                 "tdf_b64": base64.b64encode(theirs_tdf).decode("ascii"),
                 "lst_b64": base64.b64encode(theirs_lst).decode("ascii"),
             }))

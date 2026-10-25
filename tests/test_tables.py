@@ -62,6 +62,10 @@ def _expected(path: Path):
     fixture = FIXTURES_DIR / f"repo_{path.stem}.json"
     if fixture.is_file():
         rec = json.loads(fixture.read_text())
+        import tdftest
+        if rec.get("source_sha256") != tdftest.source_hash(path, CRBASIC_DIR):
+            pytest.skip("cached fixture is stale: refresh with tools/tdftest.py --group repo "
+                        "--write-fixtures")
         return base64.b64decode(rec["tdf_b64"]), base64.b64decode(rec["lst_b64"])
     return None, None
 
