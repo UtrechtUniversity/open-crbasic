@@ -110,6 +110,19 @@ _EXTRA_PREDEFINED_SYMBOLS = frozenset({"NAN", "INF"})
 _CONST_ONLY_VARIABLE_REJECT_KINDS = frozenset({"const_expr", "const_expr_only"})
 
 
+def _has_dotted_field(expr: S.Expr | None) -> bool:
+    """Whether `expr` holds a `Member` on a plain name (`Status.Battery`, `T.Field`)."""
+    if isinstance(expr, S.Member):
+        return isinstance(expr.base, S.Name) or _has_dotted_field(expr.base)
+    if isinstance(expr, S.Unary):
+        return _has_dotted_field(expr.operand)
+    if isinstance(expr, S.Binary):
+        return _has_dotted_field(expr.left) or _has_dotted_field(expr.right)
+    if isinstance(expr, S.Index):
+        return any(_has_dotted_field(a) for a in expr.args)
+    return False
+
+
 def _variable_refs(expr: S.Expr | None, variable_names: set[str]) -> list[str]:
     """Every reference to a genuine runtime variable (`variable_names`) anywhere inside `expr`,
     in source order -- the const-only-family counterpart of `_undefined_names` above, same
@@ -1190,7 +1203,9 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             return True
 
         if is_const_family:
-            var_refs = _variable_refs(arg, variable_names)
+            # a `Status.`/`Settings.`/`Public.`/table field is a variable here too (oracle, all four
+            # loggers, round 38: `Sample(1,B,Status.SerialNumber)`)
+            var_refs = _variable_refs(arg, variable_names) or _has_dotted_field(arg)
             if names or var_refs:
                 diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file,
                             stmt=stmt)
@@ -2024,7 +2039,7 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     return None
 
 
-def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
+def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = None) -> str | None:
     """The first (left-to-right, outer-before-inner) built-in-function call anywhere inside `expr`
     with a bad argument count, `_call_arity_problem`'s own `"few"`/`"many"`/`None`. Same recursion
     shape as `_undefined_names`/`_variable_refs` above (`Unary`/`Binary`/`Index`'s own name and
@@ -2040,22 +2055,36 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
     *doubly* bad-arity nested call (both the outer and an inner call wrong) is not oracle-tested
     either way and is left as this function's own documented order (outer first) rather than guessed
     at further.
+
+    With `known` (CR6/CR1000X), a bad call whose own arguments name something undefined is
+    `"deferred"`: the statement goes to pass 2's `Invalid symbol in expression` instead (oracle,
+    round 38: `S = Right(Nope)`, `Battery(Sin(Nope,1))`; `Sin(1,2) + Nope` and a name in a surplus
+    argument keep the arity error).
     """
     if expr is None:
         return None
     if isinstance(expr, S.Index):
         direct = _call_arity_problem(expr.name, expr.args, profile)
+        if direct and known is not None:
+            # only names the parser reaches: a surplus argument is never read (`Right(S,10,Nope)`
+            # keeps `No Matching`, round 38)
+            read = expr.args
+            while direct != "few" and read and \
+                    _call_arity_problem(expr.name, read, profile) not in (None, "few"):
+                read = read[:-1]
+            if any(_undefined_names(a, known) for a in read):
+                return "deferred"
         if direct:
             return direct
         for a in expr.args:
-            found = _find_arity_problem(a, profile)
+            found = _find_arity_problem(a, profile, known)
             if found:
                 return found
         return None
     if isinstance(expr, S.Unary):
-        return _find_arity_problem(expr.operand, profile)
+        return _find_arity_problem(expr.operand, profile, known)
     if isinstance(expr, S.Binary):
-        return _find_arity_problem(expr.left, profile) or _find_arity_problem(expr.right, profile)
+        return _find_arity_problem(expr.left, profile, known) or _find_arity_problem(expr.right, profile, known)
     if isinstance(expr, S.Member):
         if expr.args is not None and len(expr.args) > 2:
             # a table field takes at most (index, records back): `Tb.X(1,1,1)`, `Public.V(1,1,1)`
@@ -2063,10 +2092,10 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
             # the pass-2 compile of the statement, not by pass 1 (message tracer, 2026-10-10), so
             # `check_function_arity` reports it through `held`.
             return "many_member"
-        return _find_arity_problem(expr.base, profile)
+        return _find_arity_problem(expr.base, profile, known)
     if isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
-            found = _find_arity_problem(item, profile)
+            found = _find_arity_problem(item, profile, known)
             if found:
                 return found
         return None
@@ -2259,6 +2288,12 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
     _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
     _TIMER_CONTEXT[0] = (consteval.Env(profile, dict(program.consts)),
                          frozenset(n.upper() for n in declared_variables))
+    arity_known = _known_names(program, profile) if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else None
+
+    def arity(expr):
+        problem = _find_arity_problem(expr, profile, arity_known)
+        return None if problem == "deferred" else problem
+
     for stmt in program.statements:
         _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, intervals.gate_text(stmt))
         if isinstance(stmt, S.Instruction):
@@ -2280,7 +2315,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                     msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
                     diags.error(stmt.line, msg, stmt.file)
                     break
-                problem = _find_arity_problem(arg, profile)
+                problem = _find_arity_problem(arg, profile)   # (not deferred: `PanelTemp(X,Sin(Nope,1))`)
                 if problem == "empty":
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile),
                                 stmt.file)
@@ -2321,7 +2356,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
             in_arg = None
             if not problem:
                 for k, a in enumerate(call_exprs):
-                    problem = _find_arity_problem(a, profile)
+                    problem = arity(a)
                     if problem:
                         # inside a `Sub` call the offending argument alone is echoed (oracle,
                         # 2026-10-13, all four loggers); a `Function` statement echoes it whole
@@ -2351,7 +2386,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
             # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
             # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
             # (the condition echo, no CR300/CR350 newline).
-            problem = _find_arity_problem(stmt.cond, profile)
+            problem = arity(stmt.cond)
             struct_cond = not problem and _multi_indexed_struct(stmt.cond, struct_vars)
             problem = problem or ("many" if struct_cond else None)
             text = _if_condition_text(stmt)
@@ -2402,7 +2437,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
             if _find_bare_function_ref(stmt.value, profile, declared_variables):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
                 continue
-            problem = _find_arity_problem(stmt.value, profile)
+            problem = arity(stmt.value)
             struct_value = not problem and _multi_indexed_struct(stmt.value, struct_vars)
             if struct_value:
                 problem = "many"
@@ -2766,7 +2801,7 @@ _BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
 # Codes 27/29 only for oracle-probed instructions (2026-10-02, docs/checker.md "Destination bounds").
 _BOUNDS_PROBED = {
     24: frozenset({"SDMIO16", "PORTPAIRCONFIG"}),   # (Float and Long, oracle 2026-10-12)
-    27: frozenset({"MOVE", "ERASE", "GETRECORD", "SPLITSTR", "MOVEBYTES"}),
+    27: frozenset({"MOVE", "ERASE", "GETRECORD", "SPLITSTR", "MOVEBYTES", "SDI12RECORDER"}),
     29: frozenset({"REALTIME", "READIO", "PORTGET", "AVGSPA", "MAXSPA", "MINSPA", "RMSSPA",
                    "STDDEVSPA", "SORTSPA", "SORTSPAINDEXED"}),
 }
@@ -2777,7 +2812,7 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
     """`Battery(A(9))` for `Public A(5)` -> `Variable A out of bounds.` (oracle, 2026-10-01): pass 2
     on CR6/CR1000X, the late stage on CR300/CR350 (only in a file with no other error). Only an
     argument that is itself an element of a Float array, indexed by number literals: index 0 or
-    past its dimension (a single index on a multi-dimensional array against the element count).
+    past its dimension (a single index on a multi-dimensional array against the first dimension).
     On CR6/CR1000X a scalar is shape `(1,)` and subscripts beyond the declared dimensions count as
     size-1 dimensions (`R(1,2)`, `X(2)`, `B(1,1,2)` are out of bounds; `R(4,1)`, `X(1,1)` compile);
     CR300/CR350 report those as `Dimensions not declared`. An expression (`A(6)+1`), `A(-1)`, a
@@ -2820,10 +2855,9 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                 continue
             index = [a.value for a in arg.args]
             if len(index) == 1 and len(shape) > 1:
-                total = 1
-                for n in shape:
-                    total *= n
-                bad = not 1 <= index[0] <= total
+                # against the first dimension, not the element count (oracle, all four loggers,
+                # round 38: `Battery(M(4))` of `M(3,4)` is out of bounds)
+                bad = not 1 <= index[0] <= shape[0]
             elif len(index) == len(shape) or (padded and len(index) > len(shape)):
                 shape = shape + (1,) * (len(index) - len(shape))
                 bad = any(not 1 <= k <= n for k, n in zip(index, shape))

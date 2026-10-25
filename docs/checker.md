@@ -8072,3 +8072,87 @@ integer: <statement>.` Both are pass 1 and end the statement: its baud, delay, b
 errors are not reported, nor is an argument-count `Expression expects , :` after the older
 variable/string ComPort errors. A bare `SerialOpen()` keeps its `Invalid, or out of place
 expression`. CR300/CR350 not probed.
+
+## Fresh-seed findings (round 38)
+
+Oracle, 2026-10-25; fixture `tests/fixtures/r38_fresh_seeds.json` (688 observations, 17 strict
+xfail: 12 CR6/CR1000X message-level rows listed below, 5 CR300/CR350 cascades). `--relevant`
+seeds 429-432 (CR6 429/430, CR1000X 431/432, 500 mutants each) found 2 false accepts, no false
+reject, 44 message and 3 warning differences; both false accepts and the families below are fixed.
+
+### SDI12Recorder NAN fill (round 38)
+
+CR6/CR1000X: an integer constant `SDI12Recorder` seventh argument (NAN fill) must be -1, 0 or
+1..room, room being the elements from the numeric destination's first one to the end of its
+storage (`A()` of `A(12)`: 12; `A(2)`: 11; a scalar: 1; `M(2,1)` of `M(3,4)`: 8; `Long` arrays
+alike). An alias of a Float array counts to the end of its backing array (`Alias A(3) = Third`:
+10). Otherwise `Illegal NAN fill locations, legal is -1 or 1..<room>(room in the destination
+array)`, without a period. Non-integers (`1.5`, `-1.5`), values past 32 bits, strings and `True`
+compile; a variable is `Variable illegal in Parameter`. String destinations are not checked, and a
+single index on a multidimensional destination is not modelled. The message is an aside like the
+index bounds (`instr_rules.check_sdi12_nan_fill`): tier-B, range, bounds and placement errors on
+other lines still print, and it follows `Invalid SDI-12 port` on its own line. CR300/CR350 not
+probed.
+
+### SDI12Recorder destination bounds (round 38)
+
+`SDI12Recorder`'s destination (type code 27) is index-checked like `Move`'s, on all four loggers:
+Float, Long and String arrays, index 0, `A(1,2)` and a scalar `B(2)`; CR300/CR350 report the
+over-subscripted forms as `Dimensions not declared`.
+
+### Single index on a multidimensional array (round 38)
+
+A single constant index on a multidimensional array is checked against the first dimension, not
+the element count: `Battery(M(4))`, `PanelTemp(M(4),60)`, `Move(M(4),...)`, `ReadIO`, `PortGet`,
+`SplitStr`, `Erase` and `SDI12Recorder` of `M(3,4)` are `Variable M out of bounds.`, `M(3)`
+compiles (all four loggers). This replaces the element-count rule of
+`expressions.check_instruction_index_bounds`; no earlier fixture observation contradicted it.
+
+### Dotted fields at constant positions (round 38)
+
+At a constant-only position (an output `DataType`, `PanelTemp`'s integration, a measurement's
+range or reference) a `Status.`, `Settings.`, `Public.` or table field is `Variable illegal in
+Parameter: <text>.`, like a plain variable, ahead of an unknown-field `Could not find` (all four
+loggers; `Sample(1,UINT2,status.SerialNumber)` from GCNETv3_1.CR1X).
+
+### Odd UINT1/BOOL8 Reps order (round 38)
+
+The round-36 odd-Reps message prints first on its line: before a same-line `Invalid symbol in
+expression` (it now goes with the line-leading findings), and before a source overrun, which is a
+stage-2a error ending the stage (`Sample(9,B,1)`, `Sample(String,S,1)`; CR6/CR1000X).
+
+### Undefined table source ends the table checks (round 38)
+
+CR6/CR1000X: stage 2a checks table-output statements in order and stops at the first whose source
+names something undefined, so a later `Illegal Reps` or source overrun is not reported and pass 2
+reports the name. Stage-2a findings outside tables (`Battery((1+2))`) still win.
+
+### Arity beside undefined names (round 38)
+
+CR6/CR1000X: a built-in call with the wrong argument count whose own arguments name something
+undefined is not an arity error; the statement goes to pass 2 and gets `Invalid symbol in
+expression` (`S = Right(Nope)`, `X = 1 + Right(Nope)`, `If Sin(Nope,1) Then`). `Sin(1,2) + Nope`
+keeps the arity error, as does a name in a surplus argument the parser never reads
+(`Right(S,10,Nope)`, `TimeIsBetween(0,15,60,sec,Nope)`, `MQTTPublish(...,Nope)`'s `Incomplete
+expression`); an arity error on another line still hides it. Instruction arguments
+keep the arity error: at a constant-only position (`PanelTemp(X,Sin(Nope,1))`) nothing else would
+report it. CR300/CR350 report both lines and are unchanged.
+
+### Logical String operands in a chain (round 38)
+
+`If X AND S AND Y` (S a String) reports `String is illegal here` once per logical operator next to
+the string, so twice (all four loggers). A statement whose findings are all this message now
+reports each; mixed findings keep reporting nothing.
+
+### Accepted or flagged (round 38)
+
+- Message-level, strict xfail: `Battery(Sin(Nope,1))` and `PanelTemp(X,Sin(Nope,1))` (the arity
+  error instead of `Invalid symbol`); `Sin(Status.Nope,1)` (the `Could not find` line first);
+  `Sample type UINT1 can only sample a variable of type UINT1.` (round 36); a `GetRecord` of an
+  unknown table beside an out-of-bounds destination (order).
+- `TimeIntoInterval` with an undefined argument prints several `Parameter will truncate to the
+  nearest integer.` warnings before the same first error (nine, six or three for argument 1, 2
+  or 3 in an `If`; four in an assignment). A cascade that does not mislead; accepted.
+- Fragments that start at an orphan `Case Else` (`114315fdb7cf`, `e406ca2fdda2`): the reference
+  reports `Else with no If.`, `EndSelect w/o Select` or an earlier `Sub ... not defined` depending
+  on what precedes the fragment. Not a realistic mistake; flagged.

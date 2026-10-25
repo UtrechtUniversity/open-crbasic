@@ -2039,7 +2039,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 for message in var_types._string_operand_messages(
                         var_types._Typer(program), S.Assignment(
                             stmt.line, stmt.file, target=S.Name(stmt.line, name="_"),
-                            value=stmt.expr), every=True):
+                            value=stmt.expr)):
                     diags.error(stmt.line, message, stmt.file)
                 continue
             bare = _bare_sub_link_name(stmt.text, link_ctx.subs)
@@ -2901,8 +2901,7 @@ def _unparsed_string_messages(stmt: S.Unparsed, program: S.Program, profile) -> 
     from . import var_types
     return var_types._string_operand_messages(
         var_types._Typer(program),
-        S.Assignment(stmt.line, stmt.file, target=S.Name(stmt.line, name="_"), value=expr),
-        every=True)
+        S.Assignment(stmt.line, stmt.file, target=S.Name(stmt.line, name="_"), value=expr))
 
 
 def string_reached(text: str, operands: set[str], profile) -> str | None:

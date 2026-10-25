@@ -941,9 +941,10 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
     from . import expressions
     reported = False
     tables = symbols.scope_tables(program, env)
-    known = expressions._known_names(program, profile) if not destinations else set()
+    known = expressions._known_names(program, profile)
     source_vars = None
     in_table = False
+    sources_ok = True   # CR6/CR1000X: an undefined table source ends the table checks (round 38)
     for st in program.statements:
         if not isinstance(st, S.Instruction):
             continue
@@ -971,7 +972,10 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                     diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
                                 st.file)
                     reported = True
-        if kw in _TABLE_OUTPUT and len(st.args) >= 2:
+        if destinations and in_table and kw in _TABLE_OUTPUT and sources_ok:
+            from .structure import _undefined_table_source
+            sources_ok = _undefined_table_source(st, profile, known) is None
+        if kw in _TABLE_OUTPUT and len(st.args) >= 2 and sources_ok:
             reps = _reps_value(st.args[0], env)
             if reps is not None and reps < 1:
                 diags.error(st.line, f"Illegal Reps {reps}", st.file)
@@ -1015,6 +1019,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                     offset = offset * n + sub - 1
             total = math.prod(shape)
             if offset + reps > total:
+                if destinations and in_table and (message := _odd_pair_reps(st, env)):
+                    diags.error(st.line, message, st.file)   # (first on the line, round 38)
                 name = next((v.name for d in program.statements if isinstance(d, S.Declaration)
                              for v in d.vars if v.name.upper() == source.name.upper()), source.name)
                 if not isinstance(source, S.Index) or all(isinstance(a, S.Number) for a in source.args):
@@ -1241,12 +1247,34 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
             name = profile.instructions[stmt.keyword.upper()]["name"]
             diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.",
                         stmt.file)
-        elif value in (1, 17) and profile.name in ("cr6", "cr1000x") and stmt.args[0] is not None:
-            # UINT1 / BOOL8 pack bits or bytes in pairs (round 36)
-            try:
-                reps = consteval.value_of(stmt.args[0], env)
-            except consteval.NotConstant:
-                continue
-            if isinstance(reps, int) and not isinstance(reps, bool) and reps > 0 and reps % 2:
-                diags.error(stmt.line, f"Reps {reps} illegal; with BOOL8 and UINT1 data types, reps "
-                            "must be evenly divisible by 2", stmt.file)
+
+
+def _odd_pair_reps(stmt: S.Instruction, env: consteval.Env) -> str | None:
+    """CR6/CR1000X: UINT1 / BOOL8 pack bits or bytes in pairs, so odd constant Reps is illegal
+    (round 36); the message, or None."""
+    pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
+    if pos is None or pos >= len(stmt.args) or stmt.args[pos] is None or stmt.args[0] is None \
+            or _constant_data_type(stmt, pos, env) not in (1, 17):
+        return None
+    try:
+        reps = consteval.value_of(stmt.args[0], env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(reps, int) and not isinstance(reps, bool) and reps > 0 and reps % 2:
+        return f"Reps {reps} illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    return None
+
+
+def check_odd_pair_reps(program: S.Program, profile: Profile, diags: Diagnostics,
+                        env: consteval.Env) -> None:
+    """`_odd_pair_reps` inside a table, with pass 2 but printed first on its line (oracle, round 38:
+    ahead of `Invalid symbol in expression: Nope.` in `Sample(9,Nope,UINT1)`)."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    in_table = False
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction):
+            kw = stmt.keyword.upper()
+            in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
+            if in_table and (message := _odd_pair_reps(stmt, env)):
+                diags.error(stmt.line, message, stmt.file)

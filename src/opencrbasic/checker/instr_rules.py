@@ -2119,6 +2119,53 @@ def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -
             used.add(name)
 
 
+def check_sdi12_nan_fill(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """CR6/CR1000X: an integer constant `SDI12Recorder` NAN-fill count (seventh argument) outside -1,
+    0 and 1..room, room being the numeric destination's elements from its first one to the end, is
+    `Illegal NAN fill locations, legal is -1 or 1..<room>(room in the destination array)`
+    (docs/checker.md#sdi12recorder-nan-fill-round-38); an alias of a Float array counts from its
+    own element. String destinations, parameters and a partly indexed multidimensional destination
+    are not checked."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    from .instr_measure import _flat_offset, _index_value, _measurement_aliases
+    tables = symbols.scope_tables(program, env, scalars=True)
+    aliases = _measurement_aliases(program, tables, env)
+    for st in program.statements:
+        if not (isinstance(st, S.Instruction) and st.keyword.upper() == "SDI12RECORDER" and len(st.args) > 6
+                and isinstance(st.args[0], (S.Name, S.Index))):
+            continue
+        dest, scope = st.args[0], tables(st)
+        kind = scope.types.get(dest.name.upper())
+        if kind is None and (alias := aliases(st, dest)):
+            total, offset, _, size = alias
+            if isinstance(dest, S.Index) and dest.args:
+                k = _index_value(dest.args[0], env) if len(dest.args) == 1 else None
+                if k is None or not 1 <= k <= size:
+                    continue
+                offset += k - 1
+        elif kind is None or kind.startswith("STRING"):
+            continue
+        else:
+            shape = scope.dims.get(dest.name.upper()) or (1,)
+            indexed = isinstance(dest, S.Index) and any(a is not None for a in dest.args)
+            if indexed and len(dest.args) != len(shape) or (shape == (1,) and isinstance(dest, S.Index)):
+                continue
+            offset = _flat_offset(dest, shape, env)
+            total = math.prod(shape)
+        try:
+            fill = consteval.value_of(st.args[6], env)
+        except consteval.NotConstant:
+            continue
+        if offset is None or offset >= total or isinstance(fill, (bool, str)) or fill != int(fill) \
+                or not -2**31 <= fill < 2**31:
+            continue
+        room = total - offset
+        if not (-1 <= fill <= room):
+            diags.error(st.line, f"Illegal NAN fill locations, legal is -1 or 1..{room}(room in the "
+                        "destination array)", st.file)
+
+
 _SERIAL_TERMINALS = {"cr6": {9: 101, 10: 103, 11: 201, 12: 203, 13: 205, 14: 207, 15: 209, 16: 211},
                      "cr1000x": {9: 101, 10: 103, 11: 105, 12: 107}}
 _IO_TERMINALS = {"cr6": {*range(101, 105), *range(201, 213)}, "cr1000x": set(range(101, 109))}
