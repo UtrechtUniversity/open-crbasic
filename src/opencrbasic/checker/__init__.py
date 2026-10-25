@@ -244,7 +244,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # `expressions.check` below.
     _run_pass(expressions.check_consts, program, profile, diags)
     # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
+    n_family = len(diags.items)
     _run_pass(expressions.check_const_family_args, program, profile, diags)
+    const_family = diags.items[n_family:]
     # CR6/CR1000X: `Range` code and `fN1` value checks, same pass (`docs/instructions.md`).
     _run_pass(instr_measure.check_pass1_values, program, profile, diags, env)
     # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
@@ -347,6 +349,19 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     unknown_table_diags: list = []   # `Could not find DataTable T.`: ends the walk, gates nothing above it
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
+    if diags.errors and not profile.single_pass and all(
+            any(d is f for f in const_family) for d in diags.errors):
+        # CR6/CR1000X: a constant destination (`Invalid Variable or Array`) is reported in the same
+        # stage as the constant-only arguments, in statement order, before them on one line
+        # (oracle, round 40: `PanelTemp(15000,Nope)`, docs/checker.md#constant-destinations-beside-constant-only-arguments-round-40)
+        found = Diagnostics()
+        _run_pass(instr_data.check_stage2a, program, profile, found, env)
+        dest = [d for d in found.items if d.message.startswith("Invalid Variable or Array")]
+        if dest:
+            order = {(st.file, st.line): i for i, st in reversed(list(enumerate(program.statements)))}
+            errors = sorted([*dest, *[d for d in diags.items if d.severity == "error"]], key=lambda d: (
+                order.get((d.file, d.line), 0), not any(d is x for x in dest)))
+            diags.items[:] = [d for d in diags.items if d.severity != "error"] + errors
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
@@ -433,6 +448,24 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(expressions.check_table_members, flat, profile, diags)
         _run_pass(expressions.check_digit_members, flat, profile, diags)
         _run_pass(instr_rules.check_debug_args, flat, profile, diags, env)
+        if not profile.single_pass:
+            # compiled after the included file was read: no `<file>` prefix (oracle, CR6/CR1000X,
+            # round 40, docs/checker.md#include-prefix-of-pass-2-symbols-round-40)
+            renamed = {id(d): dataclasses.replace(d, show_file=False) for d in diags.items[pass2_start:]
+                       if d.message.startswith("Invalid symbol in expression")}
+            diags.items[pass2_start:] = [renamed.get(id(d), d) for d in diags.items[pass2_start:]]
+            # (tier C gates on the identity of these: keep `generic_errors` pointing at them)
+            generic_errors[:] = [renamed.get(id(d), d) for d in generic_errors]
+            # `PulseCount must be used within a Scan...NextScan.` follows its own statement's symbol
+            # error (oracle, CR6/CR1000X, round 40)
+            window = diags.items[pass2_start:]
+            for d in [d for d in window if d.message.endswith("must be used within a Scan...NextScan.")]:
+                after = [i for i, o in enumerate(window) if (o.file, o.line) == (d.file, d.line)
+                         and o.message.startswith("Invalid symbol in expression")]
+                if after and after[-1] > window.index(d):
+                    window.remove(d)
+                    window.insert(after[-1], d)
+            diags.items[pass2_start:] = window
         generic_errors += diags.items[n_generic:]
         _run_pass(instr_rules.check_mqtt_publish_payload, flat, profile, diags)
         if not profile.single_pass:
@@ -517,6 +550,18 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             d for d in diags.items[pass2_start:]
             if d.severity != "error" or not d.line or before_cutoff(d)
         ]
+        over = [d for d in diags.items[pass2_start:]
+                if d.severity == "error" and d.message.startswith("Dimensions not declared")]
+        if over and not profile.single_pass:
+            # CR6/CR1000X: more than three subscripts is a pass-1 error: it hides the pass-2
+            # symbol errors, the asides and tier C (oracle, round 40,
+            # docs/checker.md#over-subscripted-arrays-are-pass-1-round-40)
+            diags.items = diags.items[:pass2_start] + [
+                d for d in diags.items[pass2_start:]
+                if not d.message.startswith("Invalid symbol in expression")]
+            generic_errors = [g for g in generic_errors if not any(g is d for d in over)]
+            for aside in (bounds, fields, ranges, leading, pipe, claims, early):
+                aside.items = []
 
     if profile.single_pass:
         _run_pass(structure.commit_deferred_sub_error, links, profile, diags)

@@ -4713,7 +4713,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/false_accept/cca13e3dfce5.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5038,7 +5038,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/0504734d0862.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5163,7 +5163,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/1088b86d0dfc.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5468,7 +5468,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/36a19f33431a.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5488,7 +5488,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/3861e3021d94.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5508,7 +5508,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/3c479fce98fd.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5583,7 +5583,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/44830b8bb39b.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -5728,7 +5728,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/58ebdffb1bc6.CR6",
-"impact": "same first error, same diagnostics in another order"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6048,7 +6048,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/8ea9380a3a65.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6213,7 +6213,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/a109eb243265.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6278,7 +6278,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/a9ed1f126df8.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6303,7 +6303,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/ad69e36f0155.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6358,7 +6358,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/b4c30b9c0fc4.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6568,7 +6568,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/ce2c85db7fc8.CR6",
-"impact": "same first error, same diagnostics in another order"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6593,7 +6593,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/cf1a93e5b7d3.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6708,7 +6708,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/dee38c138389.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6763,7 +6763,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/e43676821c1c.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6838,7 +6838,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/f16f4ce805b8.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -7648,7 +7648,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/false_accept/483e00ea345c.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -8263,7 +8263,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/false_accept/8d8f35f9fd9b.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -8608,7 +8608,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/false_accept/bde4d924a9fc.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -8693,7 +8693,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/false_accept/c8500417d0d5.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -9383,7 +9383,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/077c84b27d9a.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -9558,7 +9558,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/15f48c303afc.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -9593,7 +9593,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/186b1b7abbe9.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -9653,7 +9653,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/1d8f5862920c.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -9918,7 +9918,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/35b1bae2ebdc.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -10118,7 +10118,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/429793bd99a2.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -10253,7 +10253,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/4d76a7279a6f.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -10273,7 +10273,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/504871747969.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -10753,7 +10753,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/71233e3d49be.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -11558,7 +11558,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/ab74aef9aa46.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -11678,7 +11678,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/b2c511a519cf.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -11793,7 +11793,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/ba56c8b4d92b.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -11828,7 +11828,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/bfd370333936.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -12168,7 +12168,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/da26b4808418.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -12233,7 +12233,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/e0fff2a9138d.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -12353,7 +12353,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/eb3703dc8681.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -12493,7 +12493,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/f6e9c6482557.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -12588,7 +12588,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/ffb7ded73a83.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",

@@ -8212,3 +8212,52 @@ table closes. An unresolved name met first wins and pass 2 reports it: any name 
 (`DataInterval(0,Nope,...)`). The nested table's own sources resolve after its close and do not
 (`Sample(1,Nope,FP2)` there still gives only `DataTable without EndTable.`). Not modelled: an
 unparsed word inside the first table (`EndTable_Mut`) is printed before it (strict xfail).
+
+## Messages and stale recordings (round 40)
+
+Oracle, CR6/CR1000X unless noted, 2026-10-25; fixture `tests/fixtures/r40_messages.json` (122
+observations, 4 strict xfail: two later-diagnostic and two order rows, listed below).
+
+### Stale sibling recordings (round 40)
+
+121 saved reproducers compile against the live `crbasic/` files (`' fuzz-needs-siblings`). Their
+recorded reference output goes stale when those files change: the SBD schema v5 work added
+`GPS_Lat` to `SbdPayloadLib.crb`, and five recordings still showed the pre-v5 first error.
+`tools/fuzz.py` now stores `siblings_sha256` (a SHA-256 over the sibling files) with a recording;
+`fuzz_replay.py --recorded` reports a reproducer whose digest differs, or is missing, as
+`stale_recording` (operational, no verdict, never a regression); `--rerecord-stale` reruns the
+reference for those with the current files and stores the result and digest. All 121 were
+re-recorded on 2026-10-25: five results changed (the `GPS_Lat` rows); `75f68395c4e8` stays stale
+because the reference faults under Wine on every try. The reproducers themselves are unchanged.
+
+### Include prefix of pass-2 symbols (round 40)
+
+`Invalid symbol in expression` from the pass-2 statement compile (a call, assignment, instruction
+or `If` in a `Sub` of an included file) has no `<file>` prefix, with `Include` and
+`IncludeSection` alike; from pass 1 (`Const K = Nope`, `Public Y(Nope)`) and for an arity error it
+keeps the prefix.
+
+### Over-subscripted arrays are pass 1 (round 40)
+
+More than three subscripts (`Dimensions not declared`) is a pass-1 error: it hides the pass-2
+`Invalid symbol in expression` errors on any line, the asides and tier C, while the structural
+errors after it (`Case outside Select.`, `EndSelect w/o Select`) still print. Not modelled: beside
+a pass-1 arity error it is also printed (strict xfail; only the arity error is printed by us).
+
+### Constant destinations beside constant-only arguments (round 40)
+
+`Invalid Variable or Array: <constant>` (a constant where a destination variable is needed) is
+reported in the same stage as the constant-only argument errors (`Invalid symbol` or `Variable
+illegal in Parameter` there), in statement order and before them on one line: `PanelTemp(15000,Nope)`
+gives both. Other pass-1 errors still hide it. Not modelled: `SortSpaIndexed(6,A)` prints both
+lines in the other order (strict xfail).
+
+### Stray #Else, #ElseIf and #EndIf (round 40)
+
+All four loggers: one with no open `#If` is an unknown `#` statement, `Unknown instruction: <line>`,
+which ends the compile, rather than `#EndIf without #If.`.
+
+### Scan-only placement order (round 40)
+
+`PulseCount must be used within a Scan...NextScan.` follows a symbol error of its own statement
+(`PulseCount(Nope,1,C1,...)` outside a `Scan`).

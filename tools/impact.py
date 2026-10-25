@@ -56,7 +56,8 @@ def impact_class(row: dict) -> str:
     ours, theirs = row.get("our_exit"), row.get("their_exit")
     cls = row.get("now_class", row.get("class", ""))
     if theirs not in (0, 1) or ours not in (0, 1) or cls in (
-            "oracle_error", "recorded_runner_failure", "implementation_exception", "crash", "hang"):
+            "oracle_error", "recorded_runner_failure", "stale_recording", "implementation_exception",
+            "crash", "hang"):
         return OPERATIONAL
     if cls is None:
         return EXACT

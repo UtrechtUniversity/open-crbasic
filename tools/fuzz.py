@@ -83,6 +83,16 @@ HANG_TIMEOUT = 8.0
 SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"
 
 
+def siblings_digest(directory: Path = CRBASIC_DIR) -> str:
+    """SHA-256 over the sibling files a `needs_siblings` reproducer compiles against: a recorded
+    reference result is stale once they change (round 40)."""
+    h = hashlib.sha256()
+    for entry in sorted(directory.iterdir()):
+        if entry.is_file():
+            h.update(entry.name.encode() + b"\0" + entry.read_bytes() + b"\0")
+    return h.hexdigest()
+
+
 # --------------------------------------------------------------------------------------
 # Seeds
 # --------------------------------------------------------------------------------------
@@ -781,6 +791,7 @@ def save_reproducer(out_dir: Path, logger: str, cls: str, seed: Seed, lines: lis
         "class": final_class,
         "seed": f"{seed.group}/{seed.path.name}",
         "needs_siblings": bool(needs_siblings),
+        **({"siblings_sha256": siblings_digest()} if needs_siblings else {}),
         "operators": ops,
         "our_exit": our_exit,
         "their_exit": their_exit,

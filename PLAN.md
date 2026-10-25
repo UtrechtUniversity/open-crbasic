@@ -159,7 +159,9 @@ seeds 421-424 added 17 more, 8 of them fixed. Round 36 seeds 425-428, weighted t
 instruction set (`tools/fuzz.py --relevant`), added 13, 12 of them fixed; round 37 fixed the
 thirteenth with a terminal-ownership model. Round 38 seeds 429-432 added 2, both fixed.
 `PROGRESS.md` lists the flagged rest. M2 started in round 39: CR6/CR1000X first-error misses in
-the replay fell from 58 to 32 and earlier first locations from 13 to 6. Outside the replay baseline, four 2026-10-24 probes were also false
+the replay fell from 58 to 24 (round 40) and earlier first locations from 13 to 6. Recordings of
+reproducers that compile against `crbasic/` carry a sibling digest since round 40, so a stale one
+is reported instead of measured. Outside the replay baseline, four 2026-10-24 probes were also false
 accepts:
 - an unknown table field (`Tbl.NoSuchField(1,1)`, CR6);
 - an unknown `Settings.` name (CR6);

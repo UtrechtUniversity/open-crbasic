@@ -660,6 +660,10 @@ class _Parser:
                 self.diags.error(ll.line, "Line exceeds max characters of 512.", ll.file)
                 break
             m = _DIRECTIVE_RE.match(ll.text)
+            if m and m.group(1).upper() in ("ELSEIF", "ELSE", "ENDIF") and not self.cond_stack:
+                # a stray one is an unknown `#` statement: `Unknown instruction` ends the compile
+                # (oracle, all four loggers, round 40)
+                m = None
             if m:
                 kind = m.group(1).upper()
                 if kind == "IF_NO_REMOVE":

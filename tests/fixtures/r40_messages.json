@@ -1,0 +1,959 @@
+{
+ "observation_date": "2026-10-25",
+ "cases": [
+  {
+   "id": "cr6-dims-000",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = A(1,1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared:     X = A(1,1,1,1)."
+  },
+  {
+   "id": "cr6-dims-001",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = A(1,1,1,1)\r\n    X = Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X = A(1,1,1,1)."
+  },
+  {
+   "id": "cr6-dims-002",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = A(1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: X = Nope."
+  },
+  {
+   "id": "cr6-dims-003",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = ASCII(A(1,1,1,1))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared:     X = ASCII(A(1,1,1,1))."
+  },
+  {
+   "id": "cr6-dims-005",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    If A(1,1,1,1) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared: A(1,1,1,1) ."
+  },
+  {
+   "id": "cr6-dims-006",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = A(1,1,1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X = A(1,1,1,1,1)."
+  },
+  {
+   "id": "cr6-dims-007",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = A(1,1,1,1) + 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared:     X = A(1,1,1,1) + 1."
+  },
+  {
+   "id": "cr6-dims-008",
+   "logger": "cr6",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Sin(1,2)\r\n    X = A(1,1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2).\nline 5: Dimensions not declared:     X = A(1,1,1,1).",
+   "not_modelled": "round 40: message differs"
+  },
+  {
+   "id": "cr1000x-dims-009",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = A(1,1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared:     X = A(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-dims-010",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = A(1,1,1,1)\r\n    X = Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X = A(1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-dims-011",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = A(1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: X = Nope."
+  },
+  {
+   "id": "cr1000x-dims-012",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = ASCII(A(1,1,1,1))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared:     X = ASCII(A(1,1,1,1))."
+  },
+  {
+   "id": "cr1000x-dims-014",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    If A(1,1,1,1) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared: A(1,1,1,1) ."
+  },
+  {
+   "id": "cr1000x-dims-015",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = A(1,1,1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X = A(1,1,1,1,1)."
+  },
+  {
+   "id": "cr1000x-dims-016",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    X = A(1,1,1,1) + 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Dimensions not declared:     X = A(1,1,1,1) + 1."
+  },
+  {
+   "id": "cr1000x-dims-017",
+   "logger": "cr1000x",
+   "source": "Public X, A(4,4)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Sin(1,2)\r\n    X = A(1,1,1,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2).\nline 5: Dimensions not declared:     X = A(1,1,1,1).",
+   "not_modelled": "round 40: message differs"
+  },
+  {
+   "id": "cr6-constdest-000",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(15000,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-constdest-001",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(X,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-constdest-002",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(15000,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-constdest-003",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSortSpaIndexed(6,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-constdest-004",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSortSpaIndexed(6,A)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Variable illegal in Parameter: A.",
+   "not_modelled": "round 40: message differs"
+  },
+  {
+   "id": "cr6-constdest-005",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(15000,60)\r\n    PanelTemp(X,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-constdest-006",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(X,Nope)\r\n    PanelTemp(15000,60)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 5: Invalid Variable or Array: 15000."
+  },
+  {
+   "id": "cr6-constdest-007",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nBattery(1)\r\n    X = Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-constdest-008",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    Battery(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-constdest-009",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nVoltSe(1,1,mV5000,1,Nope,0,60,1,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-constdest-010",
+   "logger": "cr6",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nVoltSe(A(),1,mV5000,1,Nope,0,60,1,0)\r\n    Battery(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-constdest-011",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(15000,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-constdest-012",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(X,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-constdest-013",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(15000,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-constdest-014",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSortSpaIndexed(6,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-constdest-015",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSortSpaIndexed(6,A)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Variable illegal in Parameter: A.",
+   "not_modelled": "round 40: message differs"
+  },
+  {
+   "id": "cr1000x-constdest-016",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(15000,60)\r\n    PanelTemp(X,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-constdest-017",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nPanelTemp(X,Nope)\r\n    PanelTemp(15000,60)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 5: Invalid Variable or Array: 15000."
+  },
+  {
+   "id": "cr1000x-constdest-018",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nBattery(1)\r\n    X = Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-constdest-019",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = Nope\r\n    Battery(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-constdest-020",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nVoltSe(1,1,mV5000,1,Nope,0,60,1,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-constdest-021",
+   "logger": "cr1000x",
+   "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nVoltSe(A(),1,mV5000,1,Nope,0,60,1,0)\r\n    Battery(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-strayif-000",
+   "logger": "cr6",
+   "source": "#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr6-strayif-001",
+   "logger": "cr6",
+   "source": "Public X\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr6-strayif-002",
+   "logger": "cr6",
+   "source": "Public X\r\n#EndIf\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr6-strayif-003",
+   "logger": "cr6",
+   "source": "#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr6-strayif-004",
+   "logger": "cr6",
+   "source": "Public X\r\n#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr6-strayif-005",
+   "logger": "cr6",
+   "source": "#ElseIf 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #ElseIf 1\n."
+  },
+  {
+   "id": "cr6-strayif-006",
+   "logger": "cr6",
+   "source": "Public X\r\n#If 1\r\n#EndIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr6-strayif-007",
+   "logger": "cr6",
+   "source": "#EndIf : X = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf ."
+  },
+  {
+   "id": "cr6-strayif-008",
+   "logger": "cr6",
+   "source": "Public X\r\n#endif\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #endif\n."
+  },
+  {
+   "id": "cr1000x-strayif-009",
+   "logger": "cr1000x",
+   "source": "#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr1000x-strayif-010",
+   "logger": "cr1000x",
+   "source": "Public X\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr1000x-strayif-011",
+   "logger": "cr1000x",
+   "source": "Public X\r\n#EndIf\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr1000x-strayif-012",
+   "logger": "cr1000x",
+   "source": "#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr1000x-strayif-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\n#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr1000x-strayif-014",
+   "logger": "cr1000x",
+   "source": "#ElseIf 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #ElseIf 1\n."
+  },
+  {
+   "id": "cr1000x-strayif-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\n#If 1\r\n#EndIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr1000x-strayif-016",
+   "logger": "cr1000x",
+   "source": "#EndIf : X = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf ."
+  },
+  {
+   "id": "cr1000x-strayif-017",
+   "logger": "cr1000x",
+   "source": "Public X\r\n#endif\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #endif\n."
+  },
+  {
+   "id": "cr300-strayif-018",
+   "logger": "cr300",
+   "source": "#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr300-strayif-019",
+   "logger": "cr300",
+   "source": "Public X\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr300-strayif-020",
+   "logger": "cr300",
+   "source": "Public X\r\n#EndIf\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr300-strayif-021",
+   "logger": "cr300",
+   "source": "#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr300-strayif-022",
+   "logger": "cr300",
+   "source": "Public X\r\n#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr300-strayif-023",
+   "logger": "cr300",
+   "source": "#ElseIf 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #ElseIf 1\n."
+  },
+  {
+   "id": "cr300-strayif-024",
+   "logger": "cr300",
+   "source": "Public X\r\n#If 1\r\n#EndIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr300-strayif-025",
+   "logger": "cr300",
+   "source": "#EndIf : X = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf ."
+  },
+  {
+   "id": "cr300-strayif-026",
+   "logger": "cr300",
+   "source": "Public X\r\n#endif\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #endif\n."
+  },
+  {
+   "id": "cr350-strayif-027",
+   "logger": "cr350",
+   "source": "#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr350-strayif-028",
+   "logger": "cr350",
+   "source": "Public X\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr350-strayif-029",
+   "logger": "cr350",
+   "source": "Public X\r\n#EndIf\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr350-strayif-030",
+   "logger": "cr350",
+   "source": "#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr350-strayif-031",
+   "logger": "cr350",
+   "source": "Public X\r\n#Else\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #Else\n."
+  },
+  {
+   "id": "cr350-strayif-032",
+   "logger": "cr350",
+   "source": "#ElseIf 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #ElseIf 1\n."
+  },
+  {
+   "id": "cr350-strayif-033",
+   "logger": "cr350",
+   "source": "Public X\r\n#If 1\r\n#EndIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #EndIf\n."
+  },
+  {
+   "id": "cr350-strayif-034",
+   "logger": "cr350",
+   "source": "#EndIf : X = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #EndIf ."
+  },
+  {
+   "id": "cr350-strayif-035",
+   "logger": "cr350",
+   "source": "Public X\r\n#endif\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #endif\n."
+  },
+  {
+   "id": "cr6-scanonly-000",
+   "logger": "cr6",
+   "source": "Public X\r\nPulseCount(X,1,C1,2,0,1,0)\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr6-scanonly-001",
+   "logger": "cr6",
+   "source": "Public X\r\nPulseCount(Nope,1,C1,2,0,1,0)\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.\nline 2: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr6-scanonly-002",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nPulseCount(Nope,1,C1,2,0,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 3: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr6-scanonly-003",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nPulseCount(X,1,C1,2,0,1,0)\r\nX = Nope\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr6-scanonly-004",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nX = Nope\r\nPulseCount(X,1,C1,2,0,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Nope.\nline 4: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr6-scanonly-005",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nPulseCount(X,1,C1,2,Nope,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-scanonly-006",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nVoltSe(Nope,1,mV5000,1,1,0,60,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 3: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr6-scanonly-007",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nSDI12Recorder(Nope,C1,0,\"M!\",1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-scanonly-008",
+   "logger": "cr1000x",
+   "source": "Public X\r\nPulseCount(X,1,C1,2,0,1,0)\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-scanonly-009",
+   "logger": "cr1000x",
+   "source": "Public X\r\nPulseCount(Nope,1,C1,2,0,1,0)\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.\nline 2: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-scanonly-010",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nPulseCount(Nope,1,C1,2,0,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 3: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-scanonly-011",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nPulseCount(X,1,C1,2,0,1,0)\r\nX = Nope\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-scanonly-012",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nX = Nope\r\nPulseCount(X,1,C1,2,0,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Nope.\nline 4: PulseCount must be used within a Scan...NextScan."
+  },
+  {
+   "id": "cr1000x-scanonly-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nPulseCount(X,1,C1,2,Nope,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-scanonly-014",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nVoltSe(Nope,1,mV5000,1,1,0,60,1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-scanonly-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nSDI12Recorder(Nope,C1,0,\"M!\",1,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-inc-sub_call",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub T(A)\r\nEndSub\r\nSub S\r\n  Call T(Nope)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-inc-sub_call",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub T(A)\r\nEndSub\r\nSub S\r\n  Call T(Nope)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-inc-sub_assign",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  X = Nope\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:   X = Nope."
+  },
+  {
+   "id": "cr1000x-include-inc-sub_assign",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  X = Nope\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:   X = Nope."
+  },
+  {
+   "id": "cr6-include-inc-sub_instr",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  Battery(Nope)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-inc-sub_instr",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  Battery(Nope)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-inc-sub_if",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  If Nope Then X = 1\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr1000x-include-inc-sub_if",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  If Nope Then X = 1\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr6-include-inc-const",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Const K = Nope\r\nSub S\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-inc-const",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Const K = Nope\r\nSub S\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-inc-public_dim",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Public Y(Nope)\r\nSub S\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-inc-public_dim",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Public Y(Nope)\r\nSub S\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-inc-sub_bare",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  Foo(1)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:   Foo(1)."
+  },
+  {
+   "id": "cr1000x-include-inc-sub_bare",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  Foo(1)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:   Foo(1)."
+  },
+  {
+   "id": "cr6-include-inc-sub_arity",
+   "logger": "cr6",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  X = Sin(1,2)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 2: No Matching, or out of place ) in expression:   X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-include-inc-sub_arity",
+   "logger": "cr1000x",
+   "source": "Public X\r\nInclude \"CPU:Lib.crb\"\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "Sub S\r\n  X = Sin(1,2)\r\nEndSub\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 2: No Matching, or out of place ) in expression:   X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-include-sec-sub_call",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub T(A)\r\nEndSub\r\nSub S\r\n  Call T(Nope)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-sec-sub_call",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub T(A)\r\nEndSub\r\nSub S\r\n  Call T(Nope)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-sec-sub_assign",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  X = Nope\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   X = Nope."
+  },
+  {
+   "id": "cr1000x-include-sec-sub_assign",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  X = Nope\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   X = Nope."
+  },
+  {
+   "id": "cr6-include-sec-sub_instr",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  Battery(Nope)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-sec-sub_instr",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  Battery(Nope)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-sec-sub_if",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  If Nope Then X = 1\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr1000x-include-sec-sub_if",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  If Nope Then X = 1\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr6-include-sec-const",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nConst K = Nope\r\nSub S\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-sec-const",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nConst K = Nope\r\nSub S\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-sec-public_dim",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nPublic Y(Nope)\r\nSub S\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include-sec-public_dim",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nPublic Y(Nope)\r\nSub S\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-include-sec-sub_bare",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  Foo(1)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Foo(1)."
+  },
+  {
+   "id": "cr1000x-include-sec-sub_bare",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  Foo(1)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Foo(1)."
+  },
+  {
+   "id": "cr6-include-sec-sub_arity",
+   "logger": "cr6",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  X = Sin(1,2)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 3: No Matching, or out of place ) in expression:   X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-include-sec-sub_arity",
+   "logger": "cr1000x",
+   "source": "Public X\r\nIncludeSection(\"Definitions\", \"CPU:Lib.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+   "siblings": {
+    "Lib.crb": "#If Section = \"Definitions\" Then\r\nSub S\r\n  X = Sin(1,2)\r\nEndSub\r\n#EndIf\r\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib.crb> line 3: No Matching, or out of place ) in expression:   X = Sin(1,2)."
+  }
+ ]
+}

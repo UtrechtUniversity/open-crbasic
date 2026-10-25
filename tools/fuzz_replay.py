@@ -31,6 +31,7 @@ import fuzz  # noqa: E402
 import impact  # noqa: E402
 
 FUZZ_CORPUS = ROOT / "tests" / "corpus" / "fuzz"
+SIBLINGS_DIGEST = fuzz.siblings_digest()
 
 
 def find_reproducers(logger: str | None, paths: list[Path]) -> list[Path]:
@@ -43,6 +44,30 @@ def find_reproducers(logger: str | None, paths: list[Path]) -> list[Path]:
         if d.is_dir():
             out += sorted(d.glob("*/*.CR6"))
     return out
+
+
+def rerecord(cr6_path: Path) -> bool:
+    """Re-run the reference for a stale `needs_siblings` reproducer against the current
+    `crbasic/` files and store its result and their digest (the reproducer itself is kept).
+    Returns whether the recording changed."""
+    meta_path = cr6_path.with_suffix(".json")
+    meta = json.loads(meta_path.read_text())
+    profile = profiles.get(meta.get("logger") or cr6_path.parent.parent.name)
+    lines = cr6_path.read_text(encoding="utf-8", errors="replace").splitlines()
+    with tempfile.TemporaryDirectory(prefix="fuzz-rerecord-") as tmp:
+        path = fuzz.materialise(fuzz.Seed("replay", cr6_path, fuzz.CRBASIC_DIR), lines, Path(tmp),
+                                cr6_path.name)
+        for attempt in range(3):
+            try:
+                their_exit, their_out = fuzz.run_theirs(path, profile, Path(tmp))
+                break
+            except fuzz.oracle.OracleError:
+                if attempt == 2:
+                    return False   # no verdict: the row stays stale
+    changed = (their_exit, their_out) != (meta.get("their_exit"), meta.get("theirs"))
+    meta.update(their_exit=their_exit, theirs=their_out, siblings_sha256=SIBLINGS_DIGEST)
+    meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+    return changed
 
 
 def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
@@ -65,6 +90,12 @@ def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
     # overhead this mode is meant to avoid.
     try:
         if use_recorded_theirs and "their_exit" in meta and "theirs" in meta:
+            if needs_siblings and meta.get("siblings_sha256") != SIBLINGS_DIGEST:
+                # recorded against other `crbasic/` files: no verdict until `--rerecord-stale`
+                return {"file": fuzz._display_path(cr6_path), "logger": logger,
+                        "recorded_class": recorded_class, "now_class": "stale_recording",
+                        "status": "stale recording", "our_exit": None, "their_exit": None,
+                        "ours": "", "theirs": "crbasic/ changed since this was recorded"}
             with tempfile.TemporaryDirectory(prefix="fuzz-replay-") as tmp:
                 path = fuzz.materialise(seed, lines, Path(tmp), cr6_path.name)
                 our_exit, our_out = fuzz.run_ours(path, profile)
@@ -194,6 +225,9 @@ def main() -> int:
                          "regression (tools/impact.py)")
     ap.add_argument("--save-baseline", type=Path,
                     help="write the compact (logger, file, impact) baseline that --baseline reads")
+    ap.add_argument("--rerecord-stale", action="store_true",
+                    help="re-run the reference for reproducers whose crbasic/ siblings changed "
+                         "since they were recorded, store the new result, then replay")
     ap.add_argument("paths", nargs="*", type=Path)
     args = ap.parse_args()
 
@@ -204,6 +238,14 @@ def main() -> int:
 
     if args.prune_fixed:
         return prune_fixed(files, args.workers)
+
+    if args.rerecord_stale:
+        stale = [p for p in files if p.read_text(encoding="utf-8", errors="replace").startswith(
+            fuzz.SIBLINGS_MARKER) and json.loads(p.with_suffix(".json").read_text()).get(
+            "siblings_sha256") != SIBLINGS_DIGEST]
+        with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
+            changed = sum(pool.map(rerecord, stale))
+        print(f"re-recorded {len(stale)} stale reproducers, {changed} with a different reference result")
 
     with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
         results = list(pool.map(lambda p: replay_one(p, use_recorded_theirs=args.recorded), files))
