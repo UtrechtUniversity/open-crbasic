@@ -1,0 +1,1585 @@
+{
+ "observation_date": "2026-10-25",
+ "cases": [
+  {
+   "id": "cr6-frag-000",
+   "logger": "cr6",
+   "source": "X = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-001",
+   "logger": "cr6",
+   "source": "X = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-002",
+   "logger": "cr6",
+   "source": "X = 1\r\nCall Foo(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-003",
+   "logger": "cr6",
+   "source": "Foo(1)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo(1).\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-004",
+   "logger": "cr6",
+   "source": "Foo(1)\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo(1).\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-005",
+   "logger": "cr6",
+   "source": "Public X\r\nX = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-006",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-007",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-008",
+   "logger": "cr6",
+   "source": "X = 1\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-009",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-010",
+   "logger": "cr6",
+   "source": "'c\r\nX = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-011",
+   "logger": "cr6",
+   "source": "X = 1\r\nPublic Y\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-012",
+   "logger": "cr6",
+   "source": "EndIf_Fz\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: EndIf_Fz.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-013",
+   "logger": "cr6",
+   "source": "Public X\r\nEndIf_Fz\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: EndIf_Fz.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-014",
+   "logger": "cr6",
+   "source": "X = 1\r\nY = 2\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag-015",
+   "logger": "cr6",
+   "source": "X = Y + 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = Y + 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-016",
+   "logger": "cr1000x",
+   "source": "X = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-017",
+   "logger": "cr1000x",
+   "source": "X = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-018",
+   "logger": "cr1000x",
+   "source": "X = 1\r\nCall Foo(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-019",
+   "logger": "cr1000x",
+   "source": "Foo(1)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo(1).\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-020",
+   "logger": "cr1000x",
+   "source": "Foo(1)\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo(1).\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-021",
+   "logger": "cr1000x",
+   "source": "Public X\r\nX = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-022",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-023",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-024",
+   "logger": "cr1000x",
+   "source": "X = 1\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-025",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-026",
+   "logger": "cr1000x",
+   "source": "'c\r\nX = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-027",
+   "logger": "cr1000x",
+   "source": "X = 1\r\nPublic Y\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-028",
+   "logger": "cr1000x",
+   "source": "EndIf_Fz\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: EndIf_Fz.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-029",
+   "logger": "cr1000x",
+   "source": "Public X\r\nEndIf_Fz\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: EndIf_Fz.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-030",
+   "logger": "cr1000x",
+   "source": "X = 1\r\nY = 2\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag-031",
+   "logger": "cr1000x",
+   "source": "X = Y + 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = Y + 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-000",
+   "logger": "cr6",
+   "source": "Public X\r\nX = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag2-001",
+   "logger": "cr6",
+   "source": "Public X(0)\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(0)"
+  },
+  {
+   "id": "cr6-frag2-002",
+   "logger": "cr6",
+   "source": "Y = 1\r\nPublic X(0)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(0)"
+  },
+  {
+   "id": "cr6-frag2-003",
+   "logger": "cr6",
+   "source": "Y = 1\r\nNext\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-004",
+   "logger": "cr6",
+   "source": "Next\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: NEXT without FOR.\nline 1: NEXT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-005",
+   "logger": "cr6",
+   "source": "Y = 1\r\nConst K = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-frag2-006",
+   "logger": "cr6",
+   "source": "Y = 1\r\nSub S\r\nEndSub\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-007",
+   "logger": "cr6",
+   "source": "Sub S\r\nY = 1\r\nEndSub\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 4: END IF without IF or END SELECT without SELECT.\nline 4: EndSelect illegally occurs before BeginProg.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr6-frag2-008",
+   "logger": "cr6",
+   "source": "Y = 1\r\nEndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-009",
+   "logger": "cr6",
+   "source": "Y = 1\r\nEndSub\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-010",
+   "logger": "cr6",
+   "source": "Y = 1\r\nDim Z(0)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Z(0)"
+  },
+  {
+   "id": "cr6-frag2-011",
+   "logger": "cr6",
+   "source": "Public X\r\nX = Nope\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-012",
+   "logger": "cr6",
+   "source": "Public X\r\nCall Foo\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag2-013",
+   "logger": "cr6",
+   "source": "Public X\r\nFoo\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Foo.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-frag2-014",
+   "logger": "cr6",
+   "source": "Y = 1\r\nString Q\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: String Q."
+  },
+  {
+   "id": "cr6-frag2-015",
+   "logger": "cr6",
+   "source": "Public X\r\nX = Sin(1,2)\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: X = Sin(1,2).\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag2-016",
+   "logger": "cr6",
+   "source": "Y = 1\r\n#If\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid expression in #If statement."
+  },
+  {
+   "id": "cr6-frag2-017",
+   "logger": "cr6",
+   "source": "DataTable(T,1,1)\r\nY = 1\r\nEndTable\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 3: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-frag2-018",
+   "logger": "cr1000x",
+   "source": "Public X\r\nX = 1\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag2-019",
+   "logger": "cr1000x",
+   "source": "Public X(0)\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(0)"
+  },
+  {
+   "id": "cr1000x-frag2-020",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nPublic X(0)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(0)"
+  },
+  {
+   "id": "cr1000x-frag2-021",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nNext\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-022",
+   "logger": "cr1000x",
+   "source": "Next\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: NEXT without FOR.\nline 1: NEXT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-023",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nConst K = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-frag2-024",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nSub S\r\nEndSub\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-025",
+   "logger": "cr1000x",
+   "source": "Sub S\r\nY = 1\r\nEndSub\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 4: END IF without IF or END SELECT without SELECT.\nline 4: EndSelect illegally occurs before BeginProg.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr1000x-frag2-026",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nEndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-027",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nEndSub\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Y = 1.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-028",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nDim Z(0)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Z(0)"
+  },
+  {
+   "id": "cr1000x-frag2-029",
+   "logger": "cr1000x",
+   "source": "Public X\r\nX = Nope\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-030",
+   "logger": "cr1000x",
+   "source": "Public X\r\nCall Foo\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag2-031",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFoo\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Foo.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-frag2-032",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\nString Q\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: String Q."
+  },
+  {
+   "id": "cr1000x-frag2-033",
+   "logger": "cr1000x",
+   "source": "Public X\r\nX = Sin(1,2)\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: X = Sin(1,2).\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag2-034",
+   "logger": "cr1000x",
+   "source": "Y = 1\r\n#If\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid expression in #If statement."
+  },
+  {
+   "id": "cr1000x-frag2-035",
+   "logger": "cr1000x",
+   "source": "DataTable(T,1,1)\r\nY = 1\r\nEndTable\r\nEndSelect\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = 1.\nline 3: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-frag3-000",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nBattery(Nope)\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 4: END IF without IF or END SELECT without SELECT.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr6-frag3-001",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nIf Nope Then X = 1\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag3-002",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nX = Nope\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Nope.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-frag3-003",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nY = 1\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Y = 1.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-frag3-004",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nFoo(1)\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Foo(1).\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-frag3-005",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nEndSelect\r\nY = 1\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag3-006",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nY = 1\r\nCase 1\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+  },
+  {
+   "id": "cr6-frag3-007",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nX = 1 +\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X = 1 +.\nline 4: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag3-008",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nCall Foo\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndSelect w/o Select"
+  },
+  {
+   "id": "cr6-frag3-009",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nX = Status.Nope\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.Nope(1).\nline 4: END IF without IF or END SELECT without SELECT.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr1000x-frag3-010",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nBattery(Nope)\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 4: END IF without IF or END SELECT without SELECT.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr1000x-frag3-011",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nIf Nope Then X = 1\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag3-012",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nX = Nope\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Nope.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-frag3-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nY = 1\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Y = 1.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-frag3-014",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nFoo(1)\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Foo(1).\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-frag3-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nEndSelect\r\nY = 1\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag3-016",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nY = 1\r\nCase 1\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+  },
+  {
+   "id": "cr1000x-frag3-017",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nX = 1 +\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X = 1 +.\nline 4: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag3-018",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nCall Foo\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-frag3-019",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nX = Status.Nope\r\nEndSelect\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.Nope(1).\nline 4: END IF without IF or END SELECT without SELECT.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr6-pif-000",
+   "logger": "cr6",
+   "source": "#If\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid expression in #If statement."
+  },
+  {
+   "id": "cr6-pif-001",
+   "logger": "cr6",
+   "source": "#If Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Then."
+  },
+  {
+   "id": "cr6-pif-002",
+   "logger": "cr6",
+   "source": "#If 1 +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr6-pif-003",
+   "logger": "cr6",
+   "source": "#If (1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1."
+  },
+  {
+   "id": "cr6-pif-004",
+   "logger": "cr6",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-pif-005",
+   "logger": "cr6",
+   "source": "#If 1 Then\r\n#ElseIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-pif-006",
+   "logger": "cr6",
+   "source": "#If \"a\" +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: \"a\" +."
+  },
+  {
+   "id": "cr6-pif-007",
+   "logger": "cr6",
+   "source": "#If 1 2\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-pif-008",
+   "logger": "cr1000x",
+   "source": "#If\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid expression in #If statement."
+  },
+  {
+   "id": "cr1000x-pif-009",
+   "logger": "cr1000x",
+   "source": "#If Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Then."
+  },
+  {
+   "id": "cr1000x-pif-010",
+   "logger": "cr1000x",
+   "source": "#If 1 +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-pif-011",
+   "logger": "cr1000x",
+   "source": "#If (1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1."
+  },
+  {
+   "id": "cr1000x-pif-012",
+   "logger": "cr1000x",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-pif-013",
+   "logger": "cr1000x",
+   "source": "#If 1 Then\r\n#ElseIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-pif-014",
+   "logger": "cr1000x",
+   "source": "#If \"a\" +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: \"a\" +."
+  },
+  {
+   "id": "cr1000x-pif-015",
+   "logger": "cr1000x",
+   "source": "#If 1 2\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-pif-016",
+   "logger": "cr300",
+   "source": "#If\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid expression in #If statement."
+  },
+  {
+   "id": "cr300-pif-017",
+   "logger": "cr300",
+   "source": "#If Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Then is not defined."
+  },
+  {
+   "id": "cr300-pif-018",
+   "logger": "cr300",
+   "source": "#If 1 +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr300-pif-019",
+   "logger": "cr300",
+   "source": "#If (1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1."
+  },
+  {
+   "id": "cr300-pif-020",
+   "logger": "cr300",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr300-pif-021",
+   "logger": "cr300",
+   "source": "#If 1 Then\r\n#ElseIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-pif-022",
+   "logger": "cr300",
+   "source": "#If \"a\" +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: \"a\" +."
+  },
+  {
+   "id": "cr300-pif-023",
+   "logger": "cr300",
+   "source": "#If 1 2\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-pif-024",
+   "logger": "cr350",
+   "source": "#If\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid expression in #If statement."
+  },
+  {
+   "id": "cr350-pif-025",
+   "logger": "cr350",
+   "source": "#If Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Then is not defined."
+  },
+  {
+   "id": "cr350-pif-026",
+   "logger": "cr350",
+   "source": "#If 1 +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr350-pif-027",
+   "logger": "cr350",
+   "source": "#If (1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1."
+  },
+  {
+   "id": "cr350-pif-028",
+   "logger": "cr350",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr350-pif-029",
+   "logger": "cr350",
+   "source": "#If 1 Then\r\n#ElseIf\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-pif-030",
+   "logger": "cr350",
+   "source": "#If \"a\" +\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: \"a\" +."
+  },
+  {
+   "id": "cr350-pif-031",
+   "logger": "cr350",
+   "source": "#If 1 2\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-outside-000",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(3,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-001",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(0,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-002",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(1,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-003",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(3,A(4),FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-004",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nDataInterval(0,10,Min,10)\r\nSample(3,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataInterval must be used inside a table declaration.\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-005",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(3,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-outside-006",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nAverage(9,A(),FP2,False)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-007",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(1,B+1,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-008",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(3,B+1,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-009",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(9,B,UINT1)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-outside-010",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nBattery((1+2))\r\nSample(1,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr6-outside-011",
+   "logger": "cr6",
+   "source": "Public B, A(5)\r\nSample(1,B,FP2)\r\nBattery((1+2))\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr1000x-outside-012",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(3,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-013",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(0,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-014",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(1,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-015",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(3,A(4),FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-016",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nDataInterval(0,10,Min,10)\r\nSample(3,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DataInterval must be used inside a table declaration.\nline 3: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-017",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(3,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-outside-018",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nAverage(9,A(),FP2,False)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-019",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(1,B+1,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-020",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(3,B+1,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-021",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(9,B,UINT1)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-outside-022",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nBattery((1+2))\r\nSample(1,B,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr1000x-outside-023",
+   "logger": "cr1000x",
+   "source": "Public B, A(5)\r\nSample(1,B,FP2)\r\nBattery((1+2))\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr6-units-000",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits Y=V\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-units-001",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Y, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr6-units-002",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan without NextScan."
+  },
+  {
+   "id": "cr6-units-003",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits Y=V\r\nBattery((1+2))\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr6-units-004",
+   "logger": "cr6",
+   "source": "Public X\r\nBattery((1+2))\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr6-units-005",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nIf X Then\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-units-006",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nX=1\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-units-007",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nX=1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Y, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr1000x-units-008",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits Y=V\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-units-009",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Y, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr1000x-units-010",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan without NextScan."
+  },
+  {
+   "id": "cr1000x-units-011",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits Y=V\r\nBattery((1+2))\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr1000x-units-012",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBattery((1+2))\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr1000x-units-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nIf X Then\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-units-014",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nX=1\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-units-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits Y=V\r\nBeginProg\r\nX=1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Y, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr6-arityorder-000",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\nX = Sin(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-arityorder-001",
+   "logger": "cr6",
+   "source": "Public X\r\nX = Sin(1,2)\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-arityorder-002",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nY = 1\r\nX = Sin(1,2)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-arityorder-003",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\nX = Nope\r\nX = Sin(1,2)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-arityorder-004",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\nCall Foo(Sin(1,2))\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2).",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr6-arityorder-005",
+   "logger": "cr6",
+   "source": "Public X\r\nSub S\r\nY = 1\r\nX = Sin(1,2)\r\nEndSub\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-arityorder-006",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\nX = 1 +\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X = 1 +."
+  },
+  {
+   "id": "cr6-arityorder-007",
+   "logger": "cr6",
+   "source": "Public X\r\nY = 1\r\nIf X Then\r\nX = Sin(1,2)\r\nEndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-arityorder-008",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\nX = Sin(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-arityorder-009",
+   "logger": "cr1000x",
+   "source": "Public X\r\nX = Sin(1,2)\r\nY = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-arityorder-010",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nY = 1\r\nX = Sin(1,2)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-arityorder-011",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\nX = Nope\r\nX = Sin(1,2)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-arityorder-012",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\nCall Foo(Sin(1,2))\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2).",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr1000x-arityorder-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub S\r\nY = 1\r\nX = Sin(1,2)\r\nEndSub\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-arityorder-014",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\nX = 1 +\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X = 1 +."
+  },
+  {
+   "id": "cr1000x-arityorder-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\nY = 1\r\nIf X Then\r\nX = Sin(1,2)\r\nEndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: X = Sin(1,2)."
+  },
+  {
+   "id": "cr6-lefttoright-000",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Nope + Sin(1,2)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Nope + Sin(1,2)."
+  },
+  {
+   "id": "cr6-lefttoright-001",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Sin(1,2) + Nope\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Sin(1,2) + Nope."
+  },
+  {
+   "id": "cr6-lefttoright-002",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nCall Foo(Nope, Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(1,2)."
+  },
+  {
+   "id": "cr6-lefttoright-003",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nCall Foo(Sin(1,2), Nope)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(1,2)."
+  },
+  {
+   "id": "cr6-lefttoright-004",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nFoo(Nope, Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(1,2)."
+  },
+  {
+   "id": "cr6-lefttoright-005",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Round(Nope, Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Round(Nope, Sin(1,2))."
+  },
+  {
+   "id": "cr6-lefttoright-006",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Round(Sin(1,2), Nope)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Round(Sin(1,2), Nope)."
+  },
+  {
+   "id": "cr6-lefttoright-007",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nIf Nope + Sin(1,2) > 0 Then X = 1\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope + Sin(1,2) > 0 ."
+  },
+  {
+   "id": "cr6-lefttoright-008",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nBattery(Nope + Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope + Sin(1,2).",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr6-lefttoright-009",
+   "logger": "cr6",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nCall Foo(Nope, \"len=\" + FormatLong(\"%d\"))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : \"len=\" + FormatLong(\"%d\")."
+  },
+  {
+   "id": "cr1000x-lefttoright-010",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Nope + Sin(1,2)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Nope + Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-lefttoright-011",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Sin(1,2) + Nope\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Sin(1,2) + Nope."
+  },
+  {
+   "id": "cr1000x-lefttoright-012",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nCall Foo(Nope, Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-lefttoright-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nCall Foo(Sin(1,2), Nope)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-lefttoright-014",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nFoo(Nope, Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-lefttoright-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Round(Nope, Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Round(Nope, Sin(1,2))."
+  },
+  {
+   "id": "cr1000x-lefttoright-016",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nX = Round(Sin(1,2), Nope)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Round(Sin(1,2), Nope)."
+  },
+  {
+   "id": "cr1000x-lefttoright-017",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nIf Nope + Sin(1,2) > 0 Then X = 1\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope + Sin(1,2) > 0 ."
+  },
+  {
+   "id": "cr1000x-lefttoright-018",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nBattery(Nope + Sin(1,2))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope + Sin(1,2).",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr1000x-lefttoright-019",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub Foo(A, B)\r\nEndSub\r\nBeginProg\r\nCall Foo(Nope, \"len=\" + FormatLong(\"%d\"))\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : \"len=\" + FormatLong(\"%d\")."
+  },
+  {
+   "id": "cr6-nested-000",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-nested-001",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(T,1,-1)\r\nDataInterval(0,Nope,Sec,10)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-nested-002",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr6-nested-003",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nDataTable(U,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr6-nested-004",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nX = Nope\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr6-nested-005",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable_Mut\r\nDataTable(U,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable_Mut.\nline 5: DataTable without EndTable.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr6-nested-006",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable_Mut\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-nested-007",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-nested-008",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nPublic Q(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegally dimension: Public Q(0)"
+  },
+  {
+   "id": "cr1000x-nested-009",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-nested-010",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(T,1,-1)\r\nDataInterval(0,Nope,Sec,10)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-nested-011",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested-012",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nDataTable(U,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested-013",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nX = Nope\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested-014",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable_Mut\r\nDataTable(U,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable_Mut.\nline 5: DataTable without EndTable.",
+   "not_modelled": "round 39: message differs"
+  },
+  {
+   "id": "cr1000x-nested-015",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable_Mut\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-nested-016",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-nested-017",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nPublic Q(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegally dimension: Public Q(0)"
+  },
+  {
+   "id": "cr6-nested2-000",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr6-nested2-001",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nDataInterval(0,Nope,Sec,10)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-nested2-002",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr6-nested2-003",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr6-nested2-004",
+   "logger": "cr6",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nDataTable(V,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested2-005",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested2-006",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nDataInterval(0,Nope,Sec,10)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-nested2-007",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(T,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested2-008",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-nested2-009",
+   "logger": "cr1000x",
+   "source": "Public B\r\nDataTable(T,1,-1)\r\nDataTable(U,1,-1)\r\nSample(1,B,FP2)\r\nEndTable\r\nDataTable(V,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable without EndTable."
+  }
+ ]
+}

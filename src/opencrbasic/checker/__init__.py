@@ -637,8 +637,6 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                       len(diags.items))
             diags.items.insert(at, extra)
         _run_pass(instr_rules.check_samplefieldcal, _with_inline(program), profile, diags)
-        if not early.items and not generic_errors:  # hidden by a `Scan` value error (oracle, CR6/CR1000X, 2026-10-03)
-            _run_pass(instr_data.check_units_targets, program, profile, diags)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
@@ -695,6 +693,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # After tier C, not before (oracle, all four loggers: an unclosed `Scan`/`If`/`For` or a
         # missing `BeginProg` plus a tier-C finding reports only the tier-C finding).
         _run_pass(structure.check_end_blocks, program, diags)
+    if not diags.errors and not early.items and not pipe.items and not fields.items \
+            and not bounds.items and not ranges.items and not leading.items:
+        # last: any other error, a missing `BeginProg` or an unclosed block included, hides it
+        # (oracle, CR6/CR1000X, 2026-10-03 and round 39)
+        _run_pass(instr_data.check_units_targets, program, profile, diags)
     argument_error_first = structure.pipeline_argument_error_first_locations(program, profile)
     ordinary_pipe = []
     delayed_pipe = []

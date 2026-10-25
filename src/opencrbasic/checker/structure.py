@@ -1131,6 +1131,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     in_table = False
     table_name: str | None = None
     nested_table_line: int | None = None
+    open_table: list[S.Instruction] = []
+    table_unresolved = nested_closed = False   # see `DataTable without EndTable.` below
     last_line = program.statements[-1].line if program.statements else 1
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
@@ -1160,6 +1162,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                       if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
                       for v in st.vars}
 
+    deferred = False   # an earlier statement pass 1 left unresolved (round 39)
+    all_known: set[str] | None = None   # (kept apart from `known`, which the loop gates on)
     seen_consts: set[str] = set()
     first_declared: dict[str, int] = {}
     alias_spans: dict[str, list[list[int]]] = {}  # alias -> [from, to] statement positions seeing it
@@ -1567,6 +1571,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
         # `check_pass2` below.
 
+        if not deferred and not profile.single_pass and isinstance(stmt, (S.Assignment, S.Call)):
+            # CR6/CR1000X: an assignment or bare call naming something undefined is left to pass 2,
+            # which then reports a later orphan `EndSelect` itself (oracle, round 39:
+            # docs/checker.md#unresolved-statements-and-orphan-endselect-round-39)
+            if all_known is None:
+                all_known = expressions._known_names(program, profile)
+            parts = [stmt.target, stmt.value] if isinstance(stmt, S.Assignment) else list(stmt.args)
+            deferred = any(expressions._undefined_names(e, all_known) for e in parts if e is not None) or (
+                isinstance(stmt, S.Call) and not stmt.explicit and stmt.name.upper() not in all_known)
         if isinstance(stmt, S.If) and stmt.inline is not None and select_depth == 0:
             # `If C Then Case 1` outside a `Select` (oracle, all four loggers, 2026-10-12)
             for sub in (stmt.inline or []) + (stmt.inline_else or []):
@@ -1584,7 +1597,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             select_depth += kw == "SELECT"
         elif kw == "ENDSELECT" or (kw == "END" and _block_word(args) == "SELECT"):
             cond_depth = max(0, cond_depth - 1)
-            if select_depth == 0:
+            if select_depth == 0 and not deferred:
                 # Parser errors (decompiled `FUN_0049fe50`, `FUN_0049ce10`), all four loggers:
                 # a later `X = Q` or an earlier stray `Else`/`Exit Do` is not reported on CR6.
                 diags.error(stmt.line, "EndSelect w/o Select", stmt.file)
@@ -1604,10 +1617,24 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif kw == "DATATABLE" and not in_table:
             in_table = True
             table_name = args[0].name if args and isinstance(args[0], S.Name) else None
+            open_table = []
         elif kw == "DATATABLE" and in_table and nested_table_line is None:
             nested_table_line = stmt.line
+            # the open table's sources resolve here, a pass-1 error that wins (round 39)
+            if all_known is None:
+                all_known = expressions._known_names(program, profile)
+            table_unresolved |= any(_names_unresolved(all_known, st) for st in open_table)
         elif kw == "ENDTABLE":
             in_table = False
+            nested_closed = nested_closed or nested_table_line is not None
+        elif in_table and isinstance(stmt, S.Instruction):
+            if nested_table_line is None:
+                open_table.append(stmt)
+            elif not nested_closed:
+                # the nested table's own sources resolve only after its `EndTable`
+                if all_known is None:
+                    all_known = expressions._known_names(program, profile)
+                table_unresolved |= _names_unresolved(all_known, stmt, sources=False)
 
     # Round 6 finding, oracle-confirmed: these three block-balance summary checks are themselves
     # suppressed entirely once *any* other pass-1 error already fired in this same loop --
@@ -1633,7 +1660,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # Reported at the *second* `DataTable`'s own line (`nested_table_line`, captured above), and,
     # like the other four checks in this section, stops here rather than falling through to them.
     if nested_table_line is not None:
-        diags.error(nested_table_line, "DataTable without EndTable.")
+        # raised when the nested table closes, after any unresolved table name met first, which
+        # pass 2 then reports (oracle, CR6/CR1000X, round 39)
+        if not (table_unresolved and not profile.single_pass):
+            diags.error(nested_table_line, "DataTable without EndTable.")
         return
     # `No BeginProg in Program.` is also reported after pass 2: `check_end_blocks`.
     # `Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.`, `IF or SELECT without
@@ -2189,9 +2219,20 @@ _CLOSER_MESSAGES = {
 }
 
 
+def _names_unresolved(known: set[str], stmt: S.Instruction, sources: bool = True) -> bool:
+    """Whether a table statement's arguments name something undefined (with `sources=False`, not
+    counting a table-output source, which resolves later)."""
+    from . import instr_data
+    skip = 1 if not sources and stmt.keyword.upper() in instr_data._TABLE_OUTPUT else None
+    return any(expressions._undefined_names(a, known) for i, a in enumerate(stmt.args)
+               if a is not None and i != skip)
+
+
 def _unparsed_opener(text: str) -> str | None:
     if re.match(r"\s*IF\b", text, re.I) and not re.search(r"\bTHEN\s*\S", text, re.I):
         return "IF"
+    if re.match(r"\s*SELECT\s+CASE\b", text, re.I):
+        return "SELECT"
     return "DO" if re.match(r"\s*(?:DO\s+(?:WHILE|UNTIL)|WHILE)\b", text, re.I) else None
 
 
@@ -2200,7 +2241,8 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
     it is; a closing `EndIf`/`EndSelect`/`Next`/`Loop` pops whatever block is innermost; if that was a `Scan`/`SubScan` it reports `<kind> statement illegally has SCAN
     without NEXT SCAN.`, and with no block of its own kind open it reports `END IF without IF or
     END SELECT without SELECT.`/`NEXT without FOR.`/`LOOP without DO.`; an `EndSelect` with no
-    `Select` open reports only `EndSelect w/o Select` (`docs/checker.md` "Unmatched block ends").
+    `Select` open reports only `EndSelect w/o Select` (`docs/checker.md` "Unmatched block ends"), a
+    pass-1 error, unless pass 1 deferred it (CR6/CR1000X, round 39: then it is a stray `EndIf`).
     `While`/`Wend` are `Do`/`Loop` here and in `check_end_blocks` (oracle, all four loggers,
     2026-10-12: `Do` ... `Wend` and `While` ... `Loop` compile, `While X` alone is `DO without LOOP.`,
     a stray `Wend` is `LOOP without DO.`).
@@ -2242,8 +2284,10 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
             push(kw)
             open_count[kw] += 1
         elif isinstance(stmt, S.Unparsed) and (opener := _unparsed_opener(stmt.text)):
-            # an `If`/`Do` whose condition fails to parse still opens its block (oracle,
-            # CR6/CR1000X, 2026-10-08: `If Nope X Then` ... `EndIf` reports only the symbol)
+            # an `If`/`Do`/`Select Case` whose condition fails to parse still opens its block
+            # (oracle, CR6/CR1000X, 2026-10-08: `If Nope X Then` ... `EndIf` reports only the symbol)
+            selects += opener == "SELECT"
+            opener = "IF" if opener == "SELECT" else opener
             push(opener)
             open_count[opener] += 1
         elif kw in ("SCAN", "SUBSCAN"):
@@ -2265,8 +2309,9 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
                 depth -= 1
         elif kw in ("ENDIF", "ENDSELECT", "NEXT", "LOOP") or (kw == "END" and word in ("IF", "SELECT")):
             is_select = kw == "ENDSELECT" or (kw == "END" and word == "SELECT")
-            if is_select and selects == 0:
+            if is_select and selects == 0 and profile.single_pass:
                 return  # `EndSelect w/o Select` is a pass-1 error (`check_pass1`)
+            # (CR6/CR1000X reach this only when pass 1 deferred it: it is a stray `EndIf`, round 39)
             kind = {"NEXT": "FOR", "LOOP": "DO"}.get(kw, "IF")
             illegal_scan, without = _CLOSER_MESSAGES[kind]
             if depth > 0:

@@ -8156,3 +8156,59 @@ reports each; mixed findings keep reporting nothing.
 - Fragments that start at an orphan `Case Else` (`114315fdb7cf`, `e406ca2fdda2`): the reference
   reports `Else with no If.`, `EndSelect w/o Select` or an earlier `Sub ... not defined` depending
   on what precedes the fragment. Not a realistic mistake; flagged.
+
+## First-error families (round 39)
+
+Oracle, CR6/CR1000X unless noted, 2026-10-25; fixture `tests/fixtures/r39_first_errors.json` (224
+observations, 12 strict xfail, all message-level and listed below). Taken from the saved replay's
+CR6/CR1000X first-error misses (58) and earlier first locations (13); 26 and 7 of them were fixed.
+
+### Unresolved statements and orphan EndSelect (round 39)
+
+An assignment or bare call that names something undefined (target, value or an unknown bare call)
+is left to pass 2, and from then on pass 1 no longer reports `EndSelect w/o Select`. Pass 2 reports
+the statement first and treats the orphan `EndSelect` as a stray `EndIf`: `END IF without IF or END
+SELECT without SELECT.` A declared target with a placement error (`X = 1` before `BeginProg`), an
+undefined `If` condition, an explicit `Call` and a syntax error (`X = 1 +`) leave `EndSelect w/o
+Select` as it was (`structure.check_pass1`, `check_block_closers`). A `Select Case` whose
+condition fails to parse still opens its block in pass 2. Not modelled: undefined names in
+instruction arguments (`Battery(Nope)`) and unknown `Status.` fields, which also turn it off, and
+the `EndSelect illegally occurs before BeginProg.` line after a `Sub` (strict xfail).
+
+### #If conditions (round 39)
+
+All four loggers: an empty `#If` is `Invalid expression in #If statement.`; a dangling operator
+`Invalid, or out of place expression: <text>.`; an unclosed `(` `No Matching, or out of place )
+in expression: <text>.`; two operands `Incomplete expression: <text>.`; an undefined name `Invalid
+symbol in expression: <text>.` (CR300/CR350 `<name> is not defined.`). The condition ends at `:`
+or a mid-line `Then`. These replace the parser's own wording, which no compiler prints.
+
+### Table output outside a table (round 39)
+
+A `Sample`/`Average`/... outside a table reports only `<Instruction> must be used inside a table
+declaration.`: stage 2a's `Illegal Reps`, source overrun and expression-source checks apply only in
+a table body.
+
+### Units targets last (round 39)
+
+`Can't assign units to <name>, ...` comes after everything else: a missing `BeginProg`, an
+unclosed `Scan` or `If`, and a stage-2a error each replace it. It now runs only when nothing else
+was reported.
+
+### Arity read left to right (round 39)
+
+The round-38 deferral reads each expression left to right: an undefined name read before the
+failing call defers the statement to `Invalid symbol in expression` (`X = Nope + Sin(1,2)`,
+`Round(Nope, Sin(1,2))`, a `Call` argument `"len=" + FormatLong(Undefined, "%d") + FormatLong("%d")`),
+while `Sin(1,2) + Nope` and `Round(Sin(1,2), Nope)` keep the arity error. Each argument of a `Sub`
+call is its own expression (`Call Foo(Nope, Sin(1,2))` keeps it). Instruction arguments are still
+not deferred (`Battery(Nope + Sin(1,2))`, strict xfail).
+
+### Nested DataTable after unresolved names (round 39)
+
+`DataTable without EndTable.` (a header inside an open table, any name) is raised when the nested
+table closes. An unresolved name met first wins and pass 2 reports it: any name in the open table
+(its sources resolve at the nested header), or a non-source argument of the nested table
+(`DataInterval(0,Nope,...)`). The nested table's own sources resolve after its close and do not
+(`Sample(1,Nope,FP2)` there still gives only `DataTable without EndTable.`). Not modelled: an
+unparsed word inside the first table (`EndTable_Mut`) is printed before it (strict xfail).

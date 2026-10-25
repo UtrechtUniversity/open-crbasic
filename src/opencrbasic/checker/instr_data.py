@@ -975,7 +975,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if destinations and in_table and kw in _TABLE_OUTPUT and sources_ok:
             from .structure import _undefined_table_source
             sources_ok = _undefined_table_source(st, profile, known) is None
-        if kw in _TABLE_OUTPUT and len(st.args) >= 2 and sources_ok:
+        if kw in _TABLE_OUTPUT and len(st.args) >= 2 and sources_ok and (in_table or not destinations):
+            # (CR6/CR1000X: outside a table only `must be used inside a table declaration`, round 39)
             reps = _reps_value(st.args[0], env)
             if reps is not None and reps < 1:
                 diags.error(st.line, f"Illegal Reps {reps}", st.file)

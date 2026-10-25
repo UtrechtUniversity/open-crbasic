@@ -2063,6 +2063,10 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
     """
     if expr is None:
         return None
+    if known is not None and isinstance(expr, (S.Name, S.Index)) and expr.name.upper() not in known:
+        # read left to right: an undefined name before the failing call defers it too (round 39:
+        # `X = Nope + Sin(1,2)`, `Round(Nope, Sin(1,2))`; each `Sub` argument is its own expression)
+        return "deferred"
     if isinstance(expr, S.Index):
         direct = _call_arity_problem(expr.name, expr.args, profile)
         if direct and known is not None:

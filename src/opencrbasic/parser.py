@@ -746,25 +746,33 @@ class _Parser:
             self.env.consts.pop(name, None)
 
     def _eval_directive_cond(self, rest: str, line: int, file: str) -> bool:
+        # malformed conditions: oracle, all four loggers, round 39 (docs/checker.md#if-conditions-round-39)
         text = rest.strip()
         m = _THEN_SUFFIX_RE.search(text)
-        if m:
+        if m and text[: m.start()].strip():
             text = text[: m.start()].rstrip()
+        if not text:
+            self.diags.error(line, "Invalid expression in #If statement.", file)
+            return False
         try:
             tokens = lexer.tokenize(text, line)
-        except lexer.LexError as e:
-            self.diags.error(line, f"invalid #If expression: {e.message}", file)
-            return False
-        p = _TokStream(tokens)
-        try:
+            p = _TokStream(tokens)
             expr = self._parse_expr(p, line, file)
-        except _ParseError as e:
-            self.diags.error(line, f"invalid #If expression: {e}", file)
+        except (lexer.LexError, _ParseError):
+            verb = ("No Matching, or out of place ) in expression: " if text.count("(") > text.count(")")
+                    else "Invalid, or out of place expression: ")
+            self.diags.error(line, f"{verb}{text}.", file)
+            return False
+        if not (p.at_end() or p.is_op(":") or p.is_ident("THEN")):   # (`#If True Then #Foo : #EndIf`)
+            self.diags.error(line, f"Incomplete expression: {text}.", file)
             return False
         try:
             value = consteval.value_of(expr, self.env)
         except consteval.NotConstant:
-            self.diags.error(line, f"Invalid symbol in expression: {text}.", file)
+            if self.profile.single_pass and isinstance(expr, S.Name):
+                self.diags.error(line, self.profile.unresolved_symbol_message.format(name=text), file)
+            else:
+                self.diags.error(line, f"Invalid symbol in expression: {text}.", file)
             return False
         return consteval.truthy(value)
 
