@@ -282,6 +282,16 @@ def _pull_decl_initializer(text: str, physical: list[str], i: int, trace: list |
     return text, i + pulls, pulls, None
 
 
+def bad_include_extension(spec: str, own_ext: str | None,
+                          cr3xx_exts: tuple[str, ...] | None) -> bool:
+    """Shared by literal includes in the loader and folded include names in the parser."""
+    if cr3xx_exts is not None:
+        ext = spec.rpartition(".")[2].upper() if "." in spec else ""
+        return (len(ext) == 3 and ext != "CRB") or (
+            len(ext) == 5 and ext.startswith("CR3") and ext not in cr3xx_exts)
+    return own_ext is not None and not spec.rpartition(".")[2].upper().startswith(("CRB", own_ext))
+
+
 class _Loader:
     """Turns one file's raw text into `LogicalLine`s, expanding includes as it goes."""
 
@@ -471,12 +481,7 @@ class _Loader:
         """CR6/CR1000X: an include name whose text after the last `.` (none: empty) starts with
         neither `crb` nor the logger's own extension is an error whether or not the file exists, and
         an existing file contributes nothing (oracle, 2026-10-08/10)."""
-        if self.cr3xx_exts is not None:
-            ext = spec.rpartition(".")[2].upper() if "." in spec else ""
-            return (len(ext) == 3 and ext != "CRB") or (
-                len(ext) == 5 and ext.startswith("CR3") and ext not in self.cr3xx_exts)
-        return self.own_ext is not None and not spec.rpartition(".")[2].upper().startswith(
-            ("CRB", self.own_ext))
+        return bad_include_extension(spec, self.own_ext, self.cr3xx_exts)
 
     def _unloadable(self, spec: str) -> bool:
         """CR300/CR350: an include whose extension passes `_bad_extension` still opens only with

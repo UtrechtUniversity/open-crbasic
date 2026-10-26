@@ -8332,3 +8332,43 @@ by the existing symbol check and never reaches this statement builder. Controls 
 shapes and valid calls on every profile. These are compiler observations; runtime port behavior
 has not been tested. Constant function calls and unprobed malformed-statement cascades are
 outside this round's rule.
+
+## Folded include filenames (round 43)
+
+A fresh CR6 seed-433 mutation, `d1cd86d16934`, replaces a filename with `(1+2)` in
+`IncludeSection("Definitions",(1+2))`. The reference reports
+`Include file 3 must have valid program file extension.` while the old loader/parser silently
+kept the unexpanded include and reported missing definitions later. Minimized probes also expose
+false accepts when the program does not use the omitted definitions.
+
+CR6's read loop `FUN_004b6840`, cases `0xa6`/`0xa5`, resolves the Section/filename with
+`FUN_004ba5f0` and `FUN_004ba850`, then validates the extension with `FUN_004b66f0` before
+opening a file. That resolution happens while reading, before pass-2 symbol diagnostics.
+The implementation adds a bounded parser check against the constants defined so far; literal
+include expansion and folded-name validation share `source.bad_include_extension`.
+
+Observed on 2026-10-26, four profiles: `tests/fixtures/r43_include_names.json` has 148 observations
+(138 match, 10 strict xfail). Both `Include` and `IncludeSection` accept constant expressions as
+filenames. Small numeric constants, named numeric constants and `Abs(-3)` render as numeric
+text, including seven significant digits (`1.23456789` -> `1.234568`), exponent notation,
+`True` -> `-1`, `&HFFFFFFFF` -> `-1`, `NAN` -> `-nan`, and `INF` -> `inf`.
+CR6/CR1000X reject the resulting invalid extensions; CR300/CR350 generally warn that the file
+cannot be opened, but reject the three-character extension in `1.234`. Prior string constants
+with invalid extensions are checked too. The check is silent in inactive `#If` branches and
+after the first `EndProg`. CR6/CR1000X include errors hide pass-2 unresolved assignments on
+either side; CR300/CR350 retain their warning alongside an unresolved assignment.
+
+This does not add loading for filenames expressed as constants or string expressions with a
+valid extension. Existing literal-path loading remains in the source loader. Controls include
+literal and expression-shaped valid filenames, but their acceptance alone does not demonstrate
+that their file contents were included. Remaining fixture gaps: variable/undefined filenames on
+CR6/CR1000X (four), integer overflow rendered as `NAN` (four), and the pre-existing CR300/CR350
+literal `"x"` warning difference when `x.crb` exists (two).
+
+Raw probe matrices stay in ignored `scratch/r43/observations.json` and `extra.json` (156 total
+observations). Eight are deliberately outside the deterministic fixture: four have corrupted
+replacement-character filename echoes (`CHR(51)` and `-0.0` on CR6/CR1000X), and four have a
+control-character filename for a variable/undefined name on CR300/CR350. These are observed
+reference outputs, not a proposed rule for emulating memory artifacts. Their verdicts were
+usable; their filename text is not a sound deterministic regression expectation. No logger
+runtime test was performed.

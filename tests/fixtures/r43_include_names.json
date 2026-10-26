@@ -1,0 +1,1495 @@
+{
+  "observation_date": "2026-10-26",
+  "cases": [
+    {
+      "id": "cr6-section-0",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-0",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-0",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-0",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-section-1",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-1",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-1",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-1",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-section-2",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3.0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-2",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3.0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-2",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3.0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-2",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3.0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-section-3",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",-1)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -1 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-3",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",-1)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -1 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-3",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",-1)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -1."
+    },
+    {
+      "id": "cr350-section-3",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",-1)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -1."
+    },
+    {
+      "id": "cr6-section-4",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",9/2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 4.5 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-4",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",9/2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 4.5 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-4",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",9/2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  4.5."
+    },
+    {
+      "id": "cr350-section-4",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",9/2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  4.5."
+    },
+    {
+      "id": "cr6-section-5",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",True)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -1 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-5",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",True)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -1 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-5",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",True)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -1."
+    },
+    {
+      "id": "cr350-section-5",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",True)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -1."
+    },
+    {
+      "id": "cr6-section-6",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",NAN)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -nan must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-6",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",NAN)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -nan must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-6",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",NAN)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -nan."
+    },
+    {
+      "id": "cr350-section-6",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",NAN)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -nan."
+    },
+    {
+      "id": "cr6-section-7",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",K)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-7",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",K)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-7",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",K)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-7",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",K)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-section-8",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",F)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-section-8",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",F)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-section-8",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",F)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-section-8",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",F)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-section-9",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",S)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-9",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",S)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-9",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",S)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "cr350-section-9",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",S)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "cr6-section-10",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",Nope)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Include file NULL must have valid program file extension.",
+      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+    },
+    {
+      "id": "cr1000x-section-10",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",Nope)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Include file NULL must have valid program file extension.",
+      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+    },
+    {
+      "id": "cr6-section-11",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",P)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: P.\nline 5: Include file NULL must have valid program file extension.",
+      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+    },
+    {
+      "id": "cr1000x-section-11",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",P)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: P.\nline 5: Include file NULL must have valid program file extension.",
+      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+    },
+    {
+      "id": "cr6-section-12",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file x must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-12",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file x must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-12",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.",
+      "not_modelled": "Existing CR300/CR350 literal extensionless filename warning differs when x.crb exists."
+    },
+    {
+      "id": "cr350-section-12",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.",
+      "not_modelled": "Existing CR300/CR350 literal extensionless filename warning differs when x.crb exists."
+    },
+    {
+      "id": "cr6-section-13",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-section-13",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-section-13",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-section-13",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-section-14",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\"+\".crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-section-14",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\"+\".crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-section-14",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\"+\".crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-section-14",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",\"x\"+\".crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-section-15",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",( \"x.crb\" ))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-section-15",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",( \"x.crb\" ))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-section-15",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",( \"x.crb\" ))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-section-15",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",( \"x.crb\" ))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-section-16",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",CHR(51))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-16",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",CHR(51))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-section-17",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",Abs(-3))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-17",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",Abs(-3))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-17",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",Abs(-3))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-17",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",Abs(-3))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-plain-0",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude 3\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-plain-0",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude 3\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-plain-0",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude 3\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-plain-0",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude 3\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-plain-1",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (1+2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-plain-1",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (1+2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-plain-1",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (1+2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-plain-1",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (1+2)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-plain-2",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude K\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-plain-2",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude K\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-plain-2",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude K\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-plain-2",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude K\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-plain-3",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude S\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-plain-3",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude S\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "cr300-plain-3",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude S\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "cr350-plain-3",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude S\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "cr6-plain-4",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude \"x\"+\".crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-plain-4",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude \"x\"+\".crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-plain-4",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude \"x\"+\".crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-plain-4",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude \"x\"+\".crb\"\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-plain-5",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-plain-5",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-plain-5",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-plain-5",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nInclude (\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-inactive",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\n#If 0\nIncludeSection(\"Definitions\",(1+2))\n#EndIf\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-inactive",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\n#If 0\nIncludeSection(\"Definitions\",(1+2))\n#EndIf\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-inactive",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\n#If 0\nIncludeSection(\"Definitions\",(1+2))\n#EndIf\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-inactive",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\n#If 0\nIncludeSection(\"Definitions\",(1+2))\n#EndIf\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-after-end",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nBeginProg\nEndProg\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-after-end",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nBeginProg\nEndProg\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-after-end",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nBeginProg\nEndProg\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-after-end",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nBeginProg\nEndProg\nIncludeSection(\"Definitions\",(1+2))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-section-name",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-section-name",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-section-name",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-section-name",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,\"x.crb\")\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-section-both",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-section-both",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-section-both",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-section-both",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(3,3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-prior-symbol",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nQ = 1\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-prior-symbol",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nQ = 1\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-prior-symbol",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nQ = 1\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Q is not defined.\nline 6: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr350-prior-symbol",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nQ = 1\nIncludeSection(\"Definitions\",3)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Q is not defined.\nline 6: Warning: Cannot open include file  3."
+    },
+    {
+      "id": "cr6-later-symbol",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nQ = 1\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr1000x-later-symbol",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nQ = 1\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 3 must have valid program file extension."
+    },
+    {
+      "id": "cr300-later-symbol",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nQ = 1\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Cannot open include file  3.\nline 6: Q is not defined."
+    },
+    {
+      "id": "cr350-later-symbol",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",3)\nQ = 1\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Cannot open include file  3.\nline 6: Q is not defined."
+    },
+    {
+      "id": "extra-cr6-section-0",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.234)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1.234 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-0",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.234)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1.234 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-0",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.234)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1.234 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr350-section-0",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.234)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1.234 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr6-section-1",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.23456789)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1.234568 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-1",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.23456789)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1.234568 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-1",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.23456789)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  1.234568."
+    },
+    {
+      "id": "extra-cr350-section-1",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1.23456789)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  1.234568."
+    },
+    {
+      "id": "extra-cr6-section-2",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e10)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1e+10 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-2",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e10)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1e+10 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-2",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e10)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  1e+10."
+    },
+    {
+      "id": "extra-cr350-section-2",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e10)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  1e+10."
+    },
+    {
+      "id": "extra-cr6-section-3",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e-6)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1e-06 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-3",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e-6)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 1e-06 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-3",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e-6)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  1e-06."
+    },
+    {
+      "id": "extra-cr350-section-3",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",1e-6)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  1e-06."
+    },
+    {
+      "id": "extra-cr6-section-4",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",INF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file inf must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-4",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",INF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file inf must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-4",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",INF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  inf."
+    },
+    {
+      "id": "extra-cr350-section-4",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",INF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  inf."
+    },
+    {
+      "id": "extra-cr300-section-5",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",-0.0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -0."
+    },
+    {
+      "id": "extra-cr350-section-5",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",-0.0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -0."
+    },
+    {
+      "id": "extra-cr6-section-6",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(2147483647+1))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file NAN must have valid program file extension.",
+      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+    },
+    {
+      "id": "extra-cr1000x-section-6",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(2147483647+1))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file NAN must have valid program file extension.",
+      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+    },
+    {
+      "id": "extra-cr300-section-6",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(2147483647+1))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  NAN.",
+      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+    },
+    {
+      "id": "extra-cr350-section-6",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",(2147483647+1))\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  NAN.",
+      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+    },
+    {
+      "id": "extra-cr6-section-7",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 0 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-7",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file 0 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-7",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  0."
+    },
+    {
+      "id": "extra-cr350-section-7",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",0)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  0."
+    },
+    {
+      "id": "extra-cr6-section-8",
+      "logger": "cr6",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",&HFFFFFFFF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -1 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr1000x-section-8",
+      "logger": "cr1000x",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",&HFFFFFFFF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file -1 must have valid program file extension."
+    },
+    {
+      "id": "extra-cr300-section-8",
+      "logger": "cr300",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",&HFFFFFFFF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -1."
+    },
+    {
+      "id": "extra-cr350-section-8",
+      "logger": "cr350",
+      "source": "Public P\nConst K = 3\nConst F = \"x.crb\"\nConst S = \"Definitions\"\nIncludeSection(\"Definitions\",&HFFFFFFFF)\nBeginProg\nEndProg\n",
+      "siblings": {
+        "x.crb": "Public Included\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  -1."
+    }
+  ]
+}

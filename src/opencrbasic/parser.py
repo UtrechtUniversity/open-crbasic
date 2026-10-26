@@ -820,6 +820,8 @@ class _Parser:
                 stmt = self._parse_units_segment(seg_text_raw, ll.line, ll.file)
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
+            if self._folded_include_error(stmt):
+                continue
             stmt.at_eol = at_eol and not getattr(stmt, "grouped", False)
             if self.provenance:
                 stmt.origin = (ll, seg_offsets[idx])  # positions only: logical line and segment offset
@@ -841,6 +843,49 @@ class _Parser:
             if isinstance(stmt, S.Instruction) and stmt.keyword == "ENDPROG":
                 self._done = True
                 return
+
+    def _folded_include_error(self, stmt: S.Stmt) -> bool:
+        """Include names missed by the literal loader: bounded constant-name diagnostics.
+
+        Parsing-time, with prior constants and active branches only. Evidence and exclusions:
+        docs/checker.md#folded-include-filenames-round-43.
+        """
+        if not isinstance(stmt, S.Instruction) or stmt.keyword not in ("INCLUDE", "INCLUDESECTION"):
+            return False
+        index = int(stmt.keyword == "INCLUDESECTION")
+        if len(stmt.args) != index + 1:
+            return False
+        arg = stmt.args[index]
+        try:
+            value = consteval.value_of(arg, self.env)
+        except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+            if isinstance(arg, S.Name) and arg.name.upper() in ("NAN", "INF"):
+                value = "-nan" if arg.name.upper() == "NAN" else "inf"
+            else:
+                return False
+        if isinstance(value, str):
+            spec = value
+        elif isinstance(value, (int, float)):
+            if isinstance(arg, S.Number) and arg.text.upper().startswith(("&H", "&B")) \
+                    and 2**31 <= value < 2**32:
+                value -= 2**32
+            if not -2**31 <= value < 2**31 and not consteval.is_float(arg, self.env):
+                return False  # overflow conversions are not modelled here
+            spec = format(value, ".7g")
+        else:
+            return False
+        bad = source.bad_include_extension(spec, _INCLUDE_OWN_EXT.get(self.profile.name),
+                                          _CR3XX_INCLUDE_EXTS.get(self.profile.name))
+        if bad:
+            self.diags.error(stmt.line, f"Include file {spec} must have valid program file extension.",
+                             stmt.file)
+            self.program.include_error_at.append(len(self.program.statements))
+        elif self.profile.single_pass and not spec.upper().endswith(
+                (".CRB", *_CR3XX_INCLUDE_EXTS[self.profile.name])):
+            self.diags.warning(stmt.line, f"Cannot open include file  {spec}.", stmt.file)
+        else:
+            return False  # loading files named by expressions is outside this bounded rule
+        return True
 
     def _inline_body_after_bad_condition(self, stmt: S.Unparsed, seg_text_raw: str) -> list[S.Stmt]:
         """CR300/CR350: `If X Y Then Y = Nope` reports the unreadable condition and still checks the
