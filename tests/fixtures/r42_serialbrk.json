@@ -1,0 +1,1209 @@
+{
+  "observation_date": "2026-10-26",
+  "cases": [
+    {
+      "id": "cr6-port-0",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-0",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-0",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-0",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-1",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(1,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-1",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(1,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-1",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-1",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-2",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-2",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-2",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-2",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-3",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-3",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-3",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-3",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-4",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(10,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-4",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(10,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-4",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(10,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-4",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(10,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-5",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(11,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-5",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(11,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-5",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(11,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-5",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(11,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-6",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(12,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-6",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(12,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-6",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(12,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-6",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(12,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-7",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(13,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-7",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(13,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-7",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(13,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-7",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(13,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-8",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(14,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-8",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(14,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-8",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(14,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-8",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(14,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-9",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(15,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-9",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(15,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-9",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(15,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-9",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(15,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-10",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-10",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-10",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-10",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-11",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-11",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-11",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-11",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-12",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(18,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-12",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(18,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-12",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(18,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-12",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(18,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-13",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(31,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-13",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(31,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-13",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(31,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-13",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(31,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-14",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(32,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-14",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(32,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-14",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(32,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-14",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(32,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-15",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(99,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-15",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(99,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-15",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(99,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-15",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(99,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-16",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(-9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-16",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(-9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-16",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(-9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-16",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(-9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-17",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-17",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-17",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-17",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(9.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-18",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8.9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-18",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8.9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-18",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-18",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(8.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-19",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-19",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16.9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-19",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-19",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(16.9,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-20",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17.1,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-20",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17.1,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-20",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17.1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-20",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(17.1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-21",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(\"9\",100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-21",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(\"9\",100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-21",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(\"9\",100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-21",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(\"9\",100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-22",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(NAN,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-22",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(NAN,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-22",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(NAN,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-22",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(NAN,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-23",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(2147483648,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-23",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(2147483648,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-23",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(2147483648,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-23",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(2147483648,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-24",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&H100000009,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-24",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&H100000009,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-24",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&H100000009,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-24",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&H100000009,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-25",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&HFFFFFFFF,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-port-25",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&HFFFFFFFF,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-port-25",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&HFFFFFFFF,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-25",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(&HFFFFFFFF,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-26",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(P,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-26",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(P,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-26",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(P,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-26",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(P,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-27",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(Nope,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+    },
+    {
+      "id": "cr1000x-port-27",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(Nope,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+    },
+    {
+      "id": "cr300-port-27",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(Nope,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined.\nline 6: Too many parameters:  100."
+    },
+    {
+      "id": "cr350-port-27",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(Nope,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined.\nline 6: Too many parameters:  100."
+    },
+    {
+      "id": "cr6-port-28",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-28",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-28",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-28",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-port-29",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K+1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-port-29",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K+1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-port-29",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K+1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-port-29",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(K+1,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-assign-bad",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P = SerialBrk(0,100)."
+    },
+    {
+      "id": "cr1000x-assign-bad",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P = SerialBrk(0,100)."
+    },
+    {
+      "id": "cr300-assign-bad",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: P = SerialBrk(0,100)\n."
+    },
+    {
+      "id": "cr350-assign-bad",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: P = SerialBrk(0,100)\n."
+    },
+    {
+      "id": "cr6-assign-good",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P = SerialBrk(9,100)."
+    },
+    {
+      "id": "cr1000x-assign-good",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P = SerialBrk(9,100)."
+    },
+    {
+      "id": "cr300-assign-good",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: P = SerialBrk(9,100)\n."
+    },
+    {
+      "id": "cr350-assign-good",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = SerialBrk(9,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: P = SerialBrk(9,100)\n."
+    },
+    {
+      "id": "cr6-nested",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = 1 + SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P = 1 + SerialBrk(0,100)."
+    },
+    {
+      "id": "cr1000x-nested",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = 1 + SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P = 1 + SerialBrk(0,100)."
+    },
+    {
+      "id": "cr300-nested",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = 1 + SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: P = 1 + SerialBrk(0,100)\n."
+    },
+    {
+      "id": "cr350-nested",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nP = 1 + SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: P = 1 + SerialBrk(0,100)\n."
+    },
+    {
+      "id": "cr6-condition",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf SerialBrk(0,100) Then P = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: SerialBrk(0,100) ."
+    },
+    {
+      "id": "cr1000x-condition",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf SerialBrk(0,100) Then P = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: SerialBrk(0,100) ."
+    },
+    {
+      "id": "cr300-condition",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf SerialBrk(0,100) Then P = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: SerialBrk(0,100) ."
+    },
+    {
+      "id": "cr350-condition",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf SerialBrk(0,100) Then P = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SerialBrk is not defined.\nline 6: Dimensions not declared: SerialBrk(0,100) ."
+    },
+    {
+      "id": "cr6-inline",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf P Then SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-inline",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf P Then SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-inline",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf P Then SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-inline",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nIf P Then SerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-short",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+    },
+    {
+      "id": "cr1000x-short",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+    },
+    {
+      "id": "cr300-short",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+    },
+    {
+      "id": "cr350-short",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+    },
+    {
+      "id": "cr6-long",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100,1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr1000x-long",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100,1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-long",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100,1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-long",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100,1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-unknown-break",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7\nline 6: Invalid symbol in expression: Nope."
+    },
+    {
+      "id": "cr1000x-unknown-break",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7\nline 6: Invalid symbol in expression: Nope."
+    },
+    {
+      "id": "cr300-unknown-break",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined."
+    },
+    {
+      "id": "cr350-unknown-break",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined."
+    },
+    {
+      "id": "cr6-variable-break",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,P)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-variable-break",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,P)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-variable-break",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,P)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-variable-break",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,P)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-prior-error",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nQ = 1\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: Q = 1.\nline 7: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7"
+    },
+    {
+      "id": "cr1000x-prior-error",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nQ = 1\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: Q = 1.\nline 7: Invalid COM port, must use COMC1, COMC3..COMC7"
+    },
+    {
+      "id": "cr300-prior-error",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nQ = 1\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Q is not defined.\nline 7: Too many parameters:  100."
+    },
+    {
+      "id": "cr350-prior-error",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nQ = 1\nSerialBrk(0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Q is not defined.\nline 7: Too many parameters:  100."
+    },
+    {
+      "id": "cr6-later-error",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nQ = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7\nline 7: Invalid, or out of place expression: Q = 1."
+    },
+    {
+      "id": "cr1000x-later-error",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nQ = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid COM port, must use COMC1, COMC3..COMC7\nline 7: Invalid, or out of place expression: Q = 1."
+    },
+    {
+      "id": "cr300-later-error",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nQ = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+    },
+    {
+      "id": "cr350-later-error",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(0,100)\nQ = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+    },
+    {
+      "id": "cr6-const-string",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(S,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const-string",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(S,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-const-string",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(S,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-const-string",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(S,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-const-float",
+      "logger": "cr6",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(F,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const-float",
+      "logger": "cr1000x",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(F,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-const-float",
+      "logger": "cr300",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(F,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-const-float",
+      "logger": "cr350",
+      "source": "Public P As Long\nConst K = 9\nConst S = \"9\"\nConst F = 9.9\nBeginProg\nSerialBrk(F,100)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

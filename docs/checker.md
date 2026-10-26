@@ -8305,3 +8305,30 @@ Spaces inserted inside a number or name by the fuzzer (`SerialOpen(ComC5,11520  
 `DataTable (Table  1,...)`, `StationName=MtLoganCR1  000X`): the reference reads the first part
 (`11520 is illegal baud rate.`, `Too many parameters:  -1.`) where we give a generic message.
 Not a realistic mistake; left.
+
+## SerialBrk ports (round 42)
+
+CR6's `SerialBrk` statement builder is `FUN_004731f0` (instruction thunk `0x4019d3`):
+`FUN_005077e0` resolves the port, `FUN_00507ee0` tests whether it is a numeric constant,
+and the builder compares the converted long against 9..16. Its message is
+`Invalid COM port, must use COMC1, COMC3, or COMU1..COMU7` (no final period).
+The independent implementation uses the shared long conversion and a pass-2 leading finding.
+It does not copy the decompiled implementation.
+
+Four-profile evidence, observed 2026-10-26: `tests/fixtures/r42_serialbrk.json` (172
+observations). CR1000X accepts 9..12 and reports
+`Invalid COM port, must use COMC1, COMC3..COMC7` otherwise. The numeric boundary sweep covers
+0, 1, 8..18, 31, 32 and 99. Negative ports retain their sign; floats truncate toward zero
+(9.9 accepts, 8.9 rejects; 16.9 accepts only on CR6). Named numeric constants and arithmetic
+use the same rule. NAN, a numeric float overflow and `&HFFFFFFFF` reject. A hex literal
+above eight digits was accepted in the probed case; shared conversion leaves that form unchecked.
+Strings (literal and named constant) and runtime variables bypass this validation. CR300/CR350
+accept all tested numeric ports, including invalid CR6/CR1000X codes, and receive no new check.
+
+The port diagnostic precedes an unresolved Break argument on the same line, coexists with
+unresolved assignments before and after it, and also applies to a one-line `If` body. Too few
+or too many arguments suppress this builder check. A `SerialBrk` in an expression is rejected
+by the existing symbol check and never reaches this statement builder. Controls cover those
+shapes and valid calls on every profile. These are compiler observations; runtime port behavior
+has not been tested. Constant function calls and unprobed malformed-statement cascades are
+outside this round's rule.

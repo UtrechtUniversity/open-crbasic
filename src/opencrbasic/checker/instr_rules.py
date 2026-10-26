@@ -1741,6 +1741,34 @@ _SERIALIN_PORTS = {"cr6": frozenset(range(1, 19)) | frozenset(range(32, 48)),
                    "cr1000x": frozenset(range(1, 15)) | frozenset(range(32, 48))}
 
 
+def check_serialbrk_comport(program: S.Program, profile, diags: Diagnostics,
+                            env: consteval.Env) -> None:
+    """Numeric constant ports of the statement builder, not expression calls.
+
+    CR6 FUN_004731f0 and four-profile observations: docs/checker.md#serialbrk-ports-round-42.
+    Strings and runtime variables bypass this builder's constant numeric check.
+    """
+    bounds = {"cr6": (16, "COMC1, COMC3, or COMU1..COMU7"),
+              "cr1000x": (12, "COMC1, COMC3..COMC7")}.get(profile.name)
+    if bounds is None:
+        return
+    names = longconv.float_names(program.statements)
+    literals = longconv.literal_names(program.statements)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SERIALBRK" \
+                or len(stmt.args) != 2 or any(a is None for a in stmt.args):
+            continue
+        try:
+            value = consteval.value_of(stmt.args[0], env)
+        except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+            value = None
+        if isinstance(value, str):
+            continue
+        port = longconv.long_value(stmt.args[0], env, profile, names, literals)
+        if port is not None and not 9 <= port <= bounds[0]:
+            diags.error(stmt.line, f"Invalid COM port, must use {bounds[1]}", stmt.file)
+
+
 def check_serialin_comport(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`ComPort N illegal.` for a constant `SerialIn` ComPort whose 32-bit value, sign dropped, is
     not a port code of the logger (`N` is that absolute value)."""

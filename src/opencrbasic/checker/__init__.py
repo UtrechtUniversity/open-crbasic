@@ -448,6 +448,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(expressions.check_table_members, flat, profile, diags)
         _run_pass(expressions.check_digit_members, flat, profile, diags)
         _run_pass(instr_rules.check_debug_args, flat, profile, diags, env)
+        _run_pass(instr_rules.check_serialbrk_comport, flat, profile, leading, env)
         if not profile.single_pass:
             # compiled after the included file was read: no `<file>` prefix (oracle, CR6/CR1000X,
             # round 40, docs/checker.md#include-prefix-of-pass-2-symbols-round-40)
