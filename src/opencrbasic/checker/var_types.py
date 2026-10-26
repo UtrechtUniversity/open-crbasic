@@ -297,10 +297,14 @@ def _array_size(typer: _Typer, dims: dict[str, tuple[int, ...]], expr: S.Expr | 
     return 1
 
 
-def _ctype_illegal(typer: _Typer, node: S.Index) -> bool:
-    """`CType(x)` (no type) or `CType(x,Boolean|UINT2|<Const>|<constant number expression>)`:
-    `Illegal type`, a pass-1 finding. Other bad second arguments (a variable, an undefined name, a
-    string) add further messages and are left alone."""
+_CTYPE_NAMES = frozenset({"LONG", "FLOAT", "DOUBLE", "STRING"})
+
+
+def _ctype_illegal(node: S.Index, env, legal: frozenset, known: set | None) -> bool:
+    """`CType(x)` (no type), or a type that is neither `Long`/`Float`/`Double`/`String` nor a
+    constant equal to the logger's `UINT1`/`IEEE4`/`IEEE8` code: `Illegal type`, a pass-1 finding
+    (oracle, all four loggers, round 41: `Boolean`, `FP2`, `2`, `1.5`, a variable, a string or an
+    undefined name; with `known`, CR6/CR1000X, also an undefined first argument)."""
     args = node.args
     if None in args:
         return False
@@ -309,24 +313,39 @@ def _ctype_illegal(typer: _Typer, node: S.Index) -> bool:
     if len(args) != 2:
         return False
     kind = args[1]
-    if isinstance(kind, S.Name):
-        return kind.name.upper() in ("BOOLEAN", "UINT2") or kind.name.upper() in typer.consts
-    if isinstance(kind, (S.Unary, S.Binary)):
-        return typer.of(kind) in _NUMERIC and not any(
-            isinstance(n, (S.Name, S.Index)) for n in _subexpressions(kind))
-    return False
+    from . import expressions
+    if known is not None and expressions._undefined_names(args[0], known):
+        return True
+    if isinstance(kind, S.Name) and kind.name.upper() in _CTYPE_NAMES:
+        return False
+    try:
+        value = consteval.value_of(kind, env)
+    except consteval.NotConstant:
+        return True
+    return isinstance(value, (str, bool)) or value != int(value) or int(value) not in legal
 
 
 def check_ctype(program: S.Program, profile, diags: Diagnostics) -> None:
     if "CTYPE" not in profile.functions:
         return
-    typer = _Typer(program)
+    env = consteval.Env(profile, dict(program.consts))
+    legal = frozenset(v for n in ("UINT1", "IEEE4", "IEEE8")
+                      if isinstance(v := _symbol_value(env, n), int))
+    from . import expressions
+    known = None if profile.single_pass else expressions._known_names(program, profile)
     for stmt in program.statements:
         for top in _statement_expressions(stmt):
             for node in _subexpressions(top):
                 if isinstance(node, S.Index) and node.name.upper() == "CTYPE" and \
-                        _ctype_illegal(typer, node):
+                        _ctype_illegal(node, env, legal, known):
                     diags.error(stmt.line, "Illegal type", stmt.file)
+
+
+def _symbol_value(env, name: str):
+    try:
+        return consteval.value_of(S.Name(0, name=name), env)
+    except consteval.NotConstant:
+        return None
 
 
 # Instructions whose arguments are plain expressions: the probed ones. `Scan`, `CallTable`,

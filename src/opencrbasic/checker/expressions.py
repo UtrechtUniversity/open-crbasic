@@ -1842,9 +1842,10 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         if stmt.type and stmt.type.upper() not in _CONST_TYPES:
             continue  # `unknown Const type` is the only message (oracle, 2026-10-10)
-        names = _undefined_names(stmt.value, known - unready.get(id(stmt), frozenset()))
-        if not names:
-            continue
+        visible = known - unready.get(id(stmt), frozenset())
+        names = _undefined_names(stmt.value, visible)
+        if not names or _find_arity_problem(stmt.value, profile, visible) not in (None, "deferred"):
+            continue  # a wrong-arity call read before the name wins (oracle, all four loggers, round 41)
         if whole_echo:
             if stmt.value_span is not None:
                 text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
@@ -2410,7 +2411,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
         elif isinstance(stmt, S.ConstDecl) and stmt.value_span:
             # `Const CRLF = CHR(13,1) + CHR(10)` -> `No Matching, or out of place ) in expression:
             # CHR(13,1) + CHR(10).`, the value echoed, all four loggers (oracle, 2026-10-01)
-            problem = _find_arity_problem(stmt.value, profile)
+            problem = arity(stmt.value)   # (deferred: round 41)
             text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
             if problem == "empty":
                 # `Const Pi = 4*ATN() 'c` -> `Invalid, or out of place expression: 4*ATN() .`,

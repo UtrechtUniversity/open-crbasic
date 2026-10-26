@@ -1,0 +1,1370 @@
+{
+ "observation_date": "2026-10-25",
+ "cases": [
+  {
+   "id": "cr6-ifthen-000",
+   "logger": "cr6",
+   "source": "#If Nope < 1 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope < 1 ."
+  },
+  {
+   "id": "cr6-ifthen-001",
+   "logger": "cr6",
+   "source": "#If Nope < 1  Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope < 1  ."
+  },
+  {
+   "id": "cr6-ifthen-002",
+   "logger": "cr6",
+   "source": "#If Nope Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr6-ifthen-003",
+   "logger": "cr6",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-ifthen-004",
+   "logger": "cr6",
+   "source": "#If Nope Then : X = 1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr6-ifthen-005",
+   "logger": "cr6",
+   "source": "#If 1 + Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 + ."
+  },
+  {
+   "id": "cr6-ifthen-006",
+   "logger": "cr6",
+   "source": "#If (1 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1 ."
+  },
+  {
+   "id": "cr6-ifthen-007",
+   "logger": "cr6",
+   "source": "#If 1 2 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 ."
+  },
+  {
+   "id": "cr6-ifthen-008",
+   "logger": "cr6",
+   "source": "#If Nope Then X = 1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr1000x-ifthen-009",
+   "logger": "cr1000x",
+   "source": "#If Nope < 1 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope < 1 ."
+  },
+  {
+   "id": "cr1000x-ifthen-010",
+   "logger": "cr1000x",
+   "source": "#If Nope < 1  Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope < 1  ."
+  },
+  {
+   "id": "cr1000x-ifthen-011",
+   "logger": "cr1000x",
+   "source": "#If Nope Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr1000x-ifthen-012",
+   "logger": "cr1000x",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-ifthen-013",
+   "logger": "cr1000x",
+   "source": "#If Nope Then : X = 1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr1000x-ifthen-014",
+   "logger": "cr1000x",
+   "source": "#If 1 + Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 + ."
+  },
+  {
+   "id": "cr1000x-ifthen-015",
+   "logger": "cr1000x",
+   "source": "#If (1 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1 ."
+  },
+  {
+   "id": "cr1000x-ifthen-016",
+   "logger": "cr1000x",
+   "source": "#If 1 2 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 ."
+  },
+  {
+   "id": "cr1000x-ifthen-017",
+   "logger": "cr1000x",
+   "source": "#If Nope Then X = 1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr300-ifthen-018",
+   "logger": "cr300",
+   "source": "#If Nope < 1 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr300-ifthen-019",
+   "logger": "cr300",
+   "source": "#If Nope < 1  Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr300-ifthen-020",
+   "logger": "cr300",
+   "source": "#If Nope Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr300-ifthen-021",
+   "logger": "cr300",
+   "source": "#If Nope\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr300-ifthen-022",
+   "logger": "cr300",
+   "source": "#If Nope Then : X = 1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr300-ifthen-023",
+   "logger": "cr300",
+   "source": "#If 1 + Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 1 + ."
+  },
+  {
+   "id": "cr300-ifthen-024",
+   "logger": "cr300",
+   "source": "#If (1 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: (1 ."
+  },
+  {
+   "id": "cr300-ifthen-025",
+   "logger": "cr300",
+   "source": "#If 1 2 Then\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 ."
+  },
+  {
+   "id": "cr300-ifthen-026",
+   "logger": "cr300",
+   "source": "#If Nope Then X = 1\r\n#EndIf\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr6-constsplit-000",
+   "logger": "cr6",
+   "source": "Const Max  Length1 = 22\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Length1 = 22."
+  },
+  {
+   "id": "cr6-constsplit-001",
+   "logger": "cr6",
+   "source": "Const A B = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B = 1."
+  },
+  {
+   "id": "cr6-constsplit-002",
+   "logger": "cr6",
+   "source": "Const A  B As Long = 0   \r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B As Long = 0   ."
+  },
+  {
+   "id": "cr6-constsplit-003",
+   "logger": "cr6",
+   "source": "Const A B C = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B C = 1."
+  },
+  {
+   "id": "cr6-constsplit-004",
+   "logger": "cr6",
+   "source": "Const A B\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  A."
+  },
+  {
+   "id": "cr6-constsplit-005",
+   "logger": "cr6",
+   "source": "Const A = 1 2\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-constsplit-006",
+   "logger": "cr6",
+   "source": "Public X\r\nConst A B = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: B = 1."
+  },
+  {
+   "id": "cr6-constsplit-007",
+   "logger": "cr6",
+   "source": "Const A B = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B = Nope."
+  },
+  {
+   "id": "cr6-constsplit-008",
+   "logger": "cr6",
+   "source": "Const A\tB = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B = 1."
+  },
+  {
+   "id": "cr1000x-constsplit-009",
+   "logger": "cr1000x",
+   "source": "Const Max  Length1 = 22\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Length1 = 22."
+  },
+  {
+   "id": "cr1000x-constsplit-010",
+   "logger": "cr1000x",
+   "source": "Const A B = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B = 1."
+  },
+  {
+   "id": "cr1000x-constsplit-011",
+   "logger": "cr1000x",
+   "source": "Const A  B As Long = 0   \r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B As Long = 0   ."
+  },
+  {
+   "id": "cr1000x-constsplit-012",
+   "logger": "cr1000x",
+   "source": "Const A B C = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B C = 1."
+  },
+  {
+   "id": "cr1000x-constsplit-013",
+   "logger": "cr1000x",
+   "source": "Const A B\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  A."
+  },
+  {
+   "id": "cr1000x-constsplit-014",
+   "logger": "cr1000x",
+   "source": "Const A = 1 2\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-constsplit-015",
+   "logger": "cr1000x",
+   "source": "Public X\r\nConst A B = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: B = 1."
+  },
+  {
+   "id": "cr1000x-constsplit-016",
+   "logger": "cr1000x",
+   "source": "Const A B = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B = Nope."
+  },
+  {
+   "id": "cr1000x-constsplit-017",
+   "logger": "cr1000x",
+   "source": "Const A\tB = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B = 1."
+  },
+  {
+   "id": "cr300-constsplit-018",
+   "logger": "cr300",
+   "source": "Const Max  Length1 = 22\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Length1 is not defined.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-constsplit-019",
+   "logger": "cr300",
+   "source": "Const A B = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-constsplit-020",
+   "logger": "cr300",
+   "source": "Const A  B As Long = 0   \r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.\nline 1: As is not defined.\nline 1: Incomplete expression: B As Long = 0   .",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-constsplit-021",
+   "logger": "cr300",
+   "source": "Const A B C = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.\nline 1: C is not defined.\nline 1: Incomplete expression: B C = 1.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-constsplit-022",
+   "logger": "cr300",
+   "source": "Const A B\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  A."
+  },
+  {
+   "id": "cr300-constsplit-023",
+   "logger": "cr300",
+   "source": "Const A = 1 2\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-constsplit-024",
+   "logger": "cr300",
+   "source": "Public X\r\nConst A B = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: B is not defined.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-constsplit-025",
+   "logger": "cr300",
+   "source": "Const A B = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.\nline 1: Nope is not defined.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-constsplit-026",
+   "logger": "cr300",
+   "source": "Const A\tB = 1\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-constarity-000",
+   "logger": "cr6",
+   "source": "Const K = 4*ATN(1,Nope)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: 4*ATN(1,Nope)."
+  },
+  {
+   "id": "cr6-constarity-001",
+   "logger": "cr6",
+   "source": "Const K = ATN(Nope,1)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: ATN(Nope,1)."
+  },
+  {
+   "id": "cr6-constarity-002",
+   "logger": "cr6",
+   "source": "Const K = Nope + ATN(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope + ATN(1,2)."
+  },
+  {
+   "id": "cr6-constarity-003",
+   "logger": "cr6",
+   "source": "Const K = ATN(1,2) + Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: ATN(1,2) + Nope."
+  },
+  {
+   "id": "cr6-constarity-004",
+   "logger": "cr6",
+   "source": "Const K = Round(Nope)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Round(Nope)."
+  },
+  {
+   "id": "cr6-constarity-005",
+   "logger": "cr6",
+   "source": "Const K = ATN(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: ATN(1,2)."
+  },
+  {
+   "id": "cr6-constarity-006",
+   "logger": "cr6",
+   "source": "Const K = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-constarity-007",
+   "logger": "cr1000x",
+   "source": "Const K = 4*ATN(1,Nope)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: 4*ATN(1,Nope)."
+  },
+  {
+   "id": "cr1000x-constarity-008",
+   "logger": "cr1000x",
+   "source": "Const K = ATN(Nope,1)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: ATN(Nope,1)."
+  },
+  {
+   "id": "cr1000x-constarity-009",
+   "logger": "cr1000x",
+   "source": "Const K = Nope + ATN(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope + ATN(1,2)."
+  },
+  {
+   "id": "cr1000x-constarity-010",
+   "logger": "cr1000x",
+   "source": "Const K = ATN(1,2) + Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: ATN(1,2) + Nope."
+  },
+  {
+   "id": "cr1000x-constarity-011",
+   "logger": "cr1000x",
+   "source": "Const K = Round(Nope)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Round(Nope)."
+  },
+  {
+   "id": "cr1000x-constarity-012",
+   "logger": "cr1000x",
+   "source": "Const K = ATN(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: ATN(1,2)."
+  },
+  {
+   "id": "cr1000x-constarity-013",
+   "logger": "cr1000x",
+   "source": "Const K = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-constarity-014",
+   "logger": "cr300",
+   "source": "Const K = 4*ATN(1,Nope)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: 4*ATN(1,Nope)."
+  },
+  {
+   "id": "cr300-constarity-015",
+   "logger": "cr300",
+   "source": "Const K = ATN(Nope,1)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined.\nline 1: No Matching, or out of place ) in expression: ATN(Nope,1)."
+  },
+  {
+   "id": "cr300-constarity-016",
+   "logger": "cr300",
+   "source": "Const K = Nope + ATN(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined.\nline 1: No Matching, or out of place ) in expression: Nope + ATN(1,2)."
+  },
+  {
+   "id": "cr300-constarity-017",
+   "logger": "cr300",
+   "source": "Const K = ATN(1,2) + Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: ATN(1,2) + Nope."
+  },
+  {
+   "id": "cr300-constarity-018",
+   "logger": "cr300",
+   "source": "Const K = Round(Nope)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined.\nline 1: Expression expects , : Round(Nope)."
+  },
+  {
+   "id": "cr300-constarity-019",
+   "logger": "cr300",
+   "source": "Const K = ATN(1,2)\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: ATN(1,2)."
+  },
+  {
+   "id": "cr300-constarity-020",
+   "logger": "cr300",
+   "source": "Const K = Nope\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined."
+  },
+  {
+   "id": "cr6-ctype-000",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long_Mut)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(1.0,Long_Mut).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-001",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctype-002",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = 1 + CType(1.0,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = 1 + CType(1.0,Nope).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-003",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,X).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-004",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,\"Long\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,\"Long\").",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-005",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctype-006",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(Nope,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(Nope,Long).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-007",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(Nope,Nope2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(Nope,Nope2).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-008",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nS = CType(3,String_Fz) + CType(3,String)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: S = CType(3,String_Fz) + CType(3,String).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-009",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nIf CType(1,Nope) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: CType(1,Nope) .",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctype-010",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nBattery(CType(1,Nope))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: CType(1,Nope).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-011",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long_Mut)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(1.0,Long_Mut).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-012",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctype-013",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = 1 + CType(1.0,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = 1 + CType(1.0,Nope).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-014",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,X).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-015",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,\"Long\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,\"Long\").",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-016",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctype-017",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(Nope,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(Nope,Long).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-018",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(Nope,Nope2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(Nope,Nope2).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-019",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nS = CType(3,String_Fz) + CType(3,String)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: S = CType(3,String_Fz) + CType(3,String).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-020",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nIf CType(1,Nope) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: CType(1,Nope) .",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctype-021",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nBattery(CType(1,Nope))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: CType(1,Nope).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-022",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long_Mut)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Long_Mut is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,Long_Mut)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-023",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctype-024",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = 1 + CType(1.0,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = 1 + CType(1.0,Nope)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-025",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,X)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-026",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,\"Long\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,\"Long\")\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-027",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctype-028",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(Nope,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-ctype-029",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(Nope,Nope2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(Nope,Nope2)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-030",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nS = CType(3,String_Fz) + CType(3,String)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String_Fz is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: S = CType(3,String_Fz) + CType(3,String)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-031",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nIf CType(1,Nope) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: CType(1,Nope) .",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctype-032",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nBattery(CType(1,Nope))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: CType(1,Nope).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctypekind-000",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-001",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Float)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-002",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Double)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-003",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,String)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-004",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Boolean)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-005",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-006",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-007",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-008",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,IEEE4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-009",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,IEEE8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-010",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,FP2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-011",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Bool8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-012",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,NSEC)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-013",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Short)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(1.0,Short).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctypekind-014",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Integer)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(1.0,Integer).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctypekind-015",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-016",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-017",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-018",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,3)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-019",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-020",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-021",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-022",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,9)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-023",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,-1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-ctypekind-024",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1.5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,1.5).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr6-ctypekind-025",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,(1))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ctypekind-026",
+   "logger": "cr6",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-027",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-028",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Float)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-029",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Double)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-030",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,String)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-031",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Boolean)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-032",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-033",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-034",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-035",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,IEEE4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-036",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,IEEE8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-037",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,FP2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-038",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Bool8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-039",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,NSEC)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-040",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Short)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(1.0,Short).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctypekind-041",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Integer)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Invalid symbol in expression: X = CType(1.0,Integer).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctypekind-042",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-043",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-044",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-045",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,3)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-046",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-047",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-048",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-049",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,9)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-050",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,-1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-ctypekind-051",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1.5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,1.5).",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr1000x-ctypekind-052",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,(1))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ctypekind-053",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-054",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Long)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-055",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Float)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-056",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Double)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-057",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,String)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-058",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Boolean)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-059",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-060",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-061",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,UINT4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-062",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,IEEE4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-063",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,IEEE8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-064",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,FP2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-065",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Bool8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-066",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,NSEC)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-067",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Short)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Short is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,Short)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctypekind-068",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Integer)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Integer is not defined.\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,Integer)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctypekind-069",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-070",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-071",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-072",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,3)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-073",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,4)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-074",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-075",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,8)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-076",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,9)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-077",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,-1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr300-ctypekind-078",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,1.5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Parameter must be a constant integer: X = CType(1.0,1.5)\n.",
+   "not_modelled": "round 41: message differs"
+  },
+  {
+   "id": "cr300-ctypekind-079",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,(1))\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ctypekind-080",
+   "logger": "cr300",
+   "source": "Public X, S As String * 8\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nX = CType(1.0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  }
+ ]
+}

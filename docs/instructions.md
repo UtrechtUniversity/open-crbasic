@@ -974,8 +974,10 @@ Pass 1, all four loggers (fixture cases `*-ctype-*`). `CType(Value,Type)` takes 
 per call, so two bad calls print two). A one-argument call also prints the ordinary `Expression
 expects , : <echo>.` after it, a three-argument call only `No Matching, or out of place )` (no `Illegal
 type`). The function table lists `CType` with `nargs` 0, so `_call_arity_problem` special-cases it.
-Not modelled, each prints further messages: a variable, undefined name or string as the type, and
-zero or empty arguments (`Illegal type` plus `Invalid, or out of place expression`).
+A variable, undefined name, string or any other constant type is `Illegal type` too since round 41
+([CType type arguments](checker.md#ctype-type-arguments-round-41)); the further message each prints
+after it is not modelled, nor are zero or empty arguments (`Illegal type` plus `Invalid, or out of
+place expression`).
 
 Echo detail found on the way, affecting every arity message on CR300/CR350: the closing `.` goes on
 its own line only when the echo is a statement that reaches the end of its line; a trailing `'`

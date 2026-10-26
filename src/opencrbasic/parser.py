@@ -749,12 +749,23 @@ class _Parser:
             name = rest.strip().split()[0].upper() if rest.strip() else ""
             self.env.consts.pop(name, None)
 
+    def _undefined_directive_names(self, expr: S.Expr) -> list[str]:
+        if isinstance(expr, S.Name):
+            try:
+                consteval.value_of(expr, self.env)
+                return []
+            except consteval.NotConstant:
+                return [expr.name]
+        parts = [getattr(expr, a, None) for a in ("left", "right", "operand")] + list(getattr(expr, "args", None) or [])
+        return [n for p in parts if isinstance(p, S.Expr) for n in self._undefined_directive_names(p)]
+
     def _eval_directive_cond(self, rest: str, line: int, file: str) -> bool:
         # malformed conditions: oracle, all four loggers, round 39 (docs/checker.md#if-conditions-round-39)
-        text = rest.strip()
-        m = _THEN_SUFFIX_RE.search(text)
-        if m and text[: m.start()].strip():
-            text = text[: m.start()].rstrip()
+        echo = rest.strip()   # echoed up to `Then`, its spacing kept (round 41: `Nope < 1 .`)
+        m = re.search(r"(?i)\bThen\b", echo)
+        if m and echo[: m.start()].strip():
+            echo = echo[: m.start()]
+        text = echo.strip()
         if not text:
             self.diags.error(line, "Invalid expression in #If statement.", file)
             return False
@@ -765,18 +776,19 @@ class _Parser:
         except (lexer.LexError, _ParseError):
             verb = ("No Matching, or out of place ) in expression: " if text.count("(") > text.count(")")
                     else "Invalid, or out of place expression: ")
-            self.diags.error(line, f"{verb}{text}.", file)
+            self.diags.error(line, f"{verb}{echo}.", file)
             return False
         if not (p.at_end() or p.is_op(":") or p.is_ident("THEN")):   # (`#If True Then #Foo : #EndIf`)
-            self.diags.error(line, f"Incomplete expression: {text}.", file)
+            self.diags.error(line, f"Incomplete expression: {echo}.", file)
             return False
         try:
             value = consteval.value_of(expr, self.env)
         except consteval.NotConstant:
-            if self.profile.single_pass and isinstance(expr, S.Name):
-                self.diags.error(line, self.profile.unresolved_symbol_message.format(name=text), file)
+            if self.profile.single_pass:   # each undefined name (`#If Nope < 1` -> `Nope is not defined.`)
+                for name in self._undefined_directive_names(expr):
+                    self.diags.error(line, self.profile.unresolved_symbol_message.format(name=name), file)
             else:
-                self.diags.error(line, f"Invalid symbol in expression: {text}.", file)
+                self.diags.error(line, f"Invalid symbol in expression: {echo}.", file)
             return False
         return consteval.truthy(value)
 
@@ -1920,6 +1932,13 @@ class _Parser:
                 pass  # (`Const = X Y`: `Y` is the value)
             elif p.is_op("(") and any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
                 pass  # `Const J (5) = 7` is `Const J = (5) = 7`: the `=` is implied (oracle, "Round 19")
+            elif not lead and p.peek().kind == "IDENT" and not p.is_ident("AS") and any(
+                    t.kind == "OP" and t.text == "=" for t in p.remaining()):
+                # `Const Max  Length1 = 22`: everything after the name is the value (oracle, all
+                # four loggers, round 41: `Invalid symbol in expression: Length1 = 22.`)
+                rest_col = p.peek().col
+                p.i = len(p.toks) - 1
+                return S.Unparsed(line, file, text="", reason="Const bad value: " + p.seg_text[rest_col:])
             else:
                 p.expect_op("=")
             eq_at = p.i

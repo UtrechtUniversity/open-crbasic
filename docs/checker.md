@@ -8261,3 +8261,47 @@ which ends the compile, rather than `#EndIf without #If.`.
 
 `PulseCount must be used within a Scan...NextScan.` follows a symbol error of its own statement
 (`PulseCount(Nope,1,C1,...)` outside a `Scan`).
+
+## Message families (round 41)
+
+Oracle, 2026-10-25; fixture `tests/fixtures/r41_messages.json` (189 observations, 42 strict xfail:
+24 CR6/CR1000X `CType` follow-up lines and 18 CR300/CR350 rows, all after a matching first error).
+
+### #If echo up to Then (round 41)
+
+A malformed `#If` condition echoes the text up to `Then` with its spacing (`Invalid symbol in
+expression: Nope < 1 .`, two spaces kept when written); without `Then` the trimmed text. On
+CR300/CR350 each undefined name is reported (`#If Nope < 1 Then`: `Nope is not defined.`). This
+corrects round 39, which trimmed the space.
+
+### Const names split by whitespace (round 41)
+
+`Const A B = 1` (all four loggers) takes `A` as the name and the rest (`B = 1`, `B As Long = 0   `,
+`B C = 1`) as the value: CR6/CR1000X `Invalid symbol in expression: <rest>.`, CR300/CR350 each
+undefined name. Not modelled: the CR300/CR350 `Incomplete expression` after names, and our extra
+`Invalid, or out of place expression` there.
+
+### Const arity beside undefined names (round 41)
+
+The round-39 left-to-right rule holds in a `Const` value on all four loggers: an undefined name
+read before a wrong-arity call gives `Invalid symbol` alone on CR6/CR1000X (the name and the arity
+error on CR300/CR350); a wrong-arity call read first (`4*ATN(1,Nope)`, `ATN(1,2) + Nope`) gives
+only the arity error.
+
+### CType type arguments (round 41)
+
+The type must be `Long`, `Float`, `Double` or `String`, or a constant equal to the logger's
+`UINT1`, `IEEE4` or `IEEE8` code (1, 9, 18 on CR6/CR1000X; a literal 9 is illegal on CR300, whose
+`IEEE4` differs). Anything else is `Illegal type` (pass 1), all four loggers: `Boolean`, `UINT2`,
+`UINT4`, `FP2`, `Bool8`, `NSEC`, `Sec`, `0`, `2`..`8`, `-1`, `1.5`, a variable, a string, an
+undefined name. On CR6/CR1000X an undefined first argument (`CType(Nope,Long)`) is `Illegal type`
+too. A variable or string type was a false accept. Not modelled: the statement's own message after
+it (`Invalid symbol in expression`, or `Parameter must be a constant integer: <statement>.`), which
+our pass-1 placement hides (strict xfail).
+
+### Flagged (round 41)
+
+Spaces inserted inside a number or name by the fuzzer (`SerialOpen(ComC5,11520  0,...)`,
+`DataTable (Table  1,...)`, `StationName=MtLoganCR1  000X`): the reference reads the first part
+(`11520 is illegal baud rate.`, `Too many parameters:  -1.`) where we give a generic message.
+Not a realistic mistake; left.
