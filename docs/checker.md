@@ -3361,7 +3361,8 @@ group outright. After `NextScan` the CR1000X group keeps the `never reached` war
 `PulsePort` and `SerialInRecord` do not (`hides_unreached` in the data file).
 `SerialInRecord` (CR6/CR1000X, explicit `PipeLineMode`) prints `SerialInRecord illegally used
 inside conditional statement.` in a conditional and `SDM instruction must be in Scan..NextScan,
-unless SequentialMode is used.` outside a `Scan` (`messages` in the data file). `MuxSelect` and
+unless SequentialMode is used.` outside a `Scan` (`messages` in the data file). After a `SlowSequence` the rule does not apply (`main_sequence_only`; reference compiles it, and
+in automatic mode a conditional one there gives SequentialMode, `SerialOutBlock` likewise). `MuxSelect` and
 `SerialOutBlock` are accepted everywhere. Not implemented because not probed: the `CDM_*`
 instructions, `CS7500`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`, `Calibrate`
 and the other `mode.json` task instructions.

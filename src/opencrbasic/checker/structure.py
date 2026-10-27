@@ -547,9 +547,10 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
         implicit = False
     pipeline, sequential = implicit, False
     scans = depth = 0
+    slow = False
 
     def visit(stmt: S.Stmt, inline: bool) -> None:
-        nonlocal pipeline, sequential, scans, depth
+        nonlocal pipeline, sequential, scans, depth, slow
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT") else None
@@ -557,6 +558,8 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
             sequential = True
         elif kw == "PIPELINEMODE":
             pipeline = True
+        elif kw == "SLOWSEQUENCE":
+            slow = True
         elif kw == "SCAN":
             scans += 1
         elif kw == "NEXTSCAN" or (kw == "NEXT" and word == "SCAN"):
@@ -568,6 +571,8 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
                 kw == "NEXT" and word != "SUBSCAN") or (kw == "END" and word in ("IF", "SELECT")):
             depth = max(0, depth - 1)
         elif kw in task_rules and pipeline and not sequential and isinstance(stmt, S.Instruction):
+            if slow and task_rules[kw].get("main_sequence_only"):
+                return
             constants = task_rules[kw].get("constant_values", {})
             for position, allowed in constants.items():
                 index = int(position) - 1

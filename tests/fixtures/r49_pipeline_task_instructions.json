@@ -3406,6 +3406,62 @@
    "source": "Public Volt1, x, R, Rcv, Temp(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  SerialOpen(COMC1,115200,0,0,1000)\n  Scan(3,Sec,1,0)\n    If x Then\n      SerialInRecord(COMC1,Str,37,0,&H0D0A,Rcv,01)\n    EndIf\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: COMC1 is not defined.\nline 5: ComPort 0 illegal.\nline 5: Parameter must be a constant integer:   SerialOpen(COMC1,115200,0,0,1000)\n.\nline 6: Too many parameters:  Sec.\nline 8: COMC1 is not defined.\nline 8: Too many parameters:  Str."
+  },
+  {
+   "id": "cr6-serialinrecord-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public b As String * 100\nPublic n As Long\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SerialInRecord(COMC1,b,0,1,0,n,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-serialinrecord-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public b As String * 100\nPublic n As Long\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SerialInRecord(COMC1,b,0,1,0,n,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-serialinrecord-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public b As String * 100\nPublic n As Long\nPipeLineMode\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SerialInRecord(COMC1,b,0,1,0,n,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialinrecord-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public b As String * 100\nPublic n As Long\nPipeLineMode\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SerialInRecord(COMC1,b,0,1,0,n,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialinrecord-slowsequence-plain-auto",
+   "logger": "cr6",
+   "source": "Public b As String * 100\nPublic n As Long\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    SerialInRecord(COMC1,b,0,1,0,n,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialinrecord-slowsequence-plain-auto",
+   "logger": "cr1000x",
+   "source": "Public b As String * 100\nPublic n As Long\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    SerialInRecord(COMC1,b,0,1,0,n,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialinrecord-slowsequence-plain-explicit",
+   "logger": "cr6",
+   "source": "Public b As String * 100\nPublic n As Long\nPipeLineMode\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    SerialInRecord(COMC1,b,0,1,0,n,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialinrecord-slowsequence-plain-explicit",
+   "logger": "cr1000x",
+   "source": "Public b As String * 100\nPublic n As Long\nPipeLineMode\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    SerialInRecord(COMC1,b,0,1,0,n,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   }
  ]
 }

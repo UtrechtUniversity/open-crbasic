@@ -76,7 +76,7 @@ def decide(statements: list[S.Stmt], profile: Profile, is_constant: Callable, va
                 elif kw == "DELAY":
                     sequential = _const_value(_arg(args, 0), value_of) in (0, 2)
                 elif kw in ("SERIALOUTBLOCK", "SERIALINRECORD"):
-                    sequential = not in_slow
+                    sequential = not in_slow or depth > 0
                 else:
                     sequential = True
             elif kw in nonconstant_arg:

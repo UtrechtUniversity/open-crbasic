@@ -20,7 +20,7 @@
   "THERM108": {},
   "THERM109": {},
   "AM25T": {},
-  "SERIALINRECORD": {"hides_unreached": true, "messages": {
+  "SERIALINRECORD": {"hides_unreached": true, "main_sequence_only": true, "messages": {
     "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
     "conditional": "SerialInRecord illegally used inside conditional statement."}},
   "PULSEPORT": {"hides_unreached": true},

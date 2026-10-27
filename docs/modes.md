@@ -17,7 +17,8 @@ State: `sequential` (starts false), `pipeline_forced` (set by a `PipeLineMode` s
 - Measurement-task instructions (64 names, list in `mode.py`) force sequential when `depth > 0`
   or when not inside a Scan (for example in a `Sub` or before `BeginProg`), with exceptions:
   `SW12` only when its option argument equals 1; `Delay` only when its option is 0 or 2;
-  `SerialOutBlock`/`SerialInRecord` only outside slow sequences.
+  `SerialOutBlock`/`SerialInRecord` only outside slow sequences, or inside a conditional in one
+  (`SerialInRecord` in an `If` in a slow `Scan`: SequentialMode, round 49).
 - A non-constant argument forces sequential: `ExciteV`/`ExciteI`/`PortSet` 2nd argument,
   `MuxSelect` 4th, `VibratingWire` 4th and 5th, `CDM_ExciteV`/`CDM_ExciteI`/`CDM_SW12`/`CDM_SW5`
   4th, `CDM_MuxSelect` 6th, `CDM_SWPower` 3rd. Only numbers and numeric `Const` names joined by
