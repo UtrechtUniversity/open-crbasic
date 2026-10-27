@@ -393,7 +393,7 @@ class _Loader:
             if text.strip() == "":
                 i += 1
                 continue
-            pulls = 0
+            pulls, bad = 0, None
             orig = text
             orig_pieces = pieces
             pos = (*self.site.get(filename, ()), start_line - shift)

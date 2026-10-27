@@ -1,6 +1,7 @@
 """Portable regressions for the Windows host findings; Win32 calls are simulated explicitly."""
 
-from pathlib import PureWindowsPath
+from pathlib import Path, PureWindowsPath
+from typing import cast
 from types import SimpleNamespace
 from unittest.mock import Mock
 
@@ -49,12 +50,12 @@ def test_venv_executable(monkeypatch, tmp_path, platform, directory, suffix, nam
 def test_unopened_windows_file_uri_uses_client_root(root_uri):
     # PureWindowsPath exercises Windows drive matching on any host, without pretending
     # the Windows filesystem exists. Publishing is independent of filesystem access.
-    root = PureWindowsPath("C:/Users/Test É")
-    path = PureWindowsPath("c:/Users/Test É/sub/A #é.CR6")
+    root = cast(Path, PureWindowsPath("C:/Users/Test É"))
+    path = cast(Path, PureWindowsPath("c:/Users/Test É/sub/A #é.CR6"))
     published = []
     session = Session(lambda *args: published.append(args))
     session.folder_uris[root] = root_uri
-    session._compose = lambda _: [Diag(0, 0, 1, "error", "bad", "opencrbasic")]
+    session._compose = lambda path: [Diag(0, 0, 1, "error", "bad", "opencrbasic")]
     session._publish({path})
     assert published[0][0] == root_uri.rstrip("/") + "/sub/A%20%23%C3%A9.CR6"
     session._uris[path] = "file:///C:/Users/Test%20%C3%89/sub/./A%20%23%C3%A9.CR6"
@@ -63,13 +64,13 @@ def test_unopened_windows_file_uri_uses_client_root(root_uri):
 
 @pytest.mark.parametrize("overlapping", [True, False])
 def test_unopened_diagnostics_clear_previous_folder_spelling(overlapping):
-    root = PureWindowsPath("C:/x")
+    root = cast(Path, PureWindowsPath("C:/x"))
     path = root / "sub/Bad.CR6"
     published = []
     session = Session(lambda *args: published.append(args))
     session.folder_uris[root] = "file:///C:/x"
     diags = [Diag(0, 0, 1, "error", "bad", "opencrbasic")]
-    session._compose = lambda _: list(diags)
+    session._compose = lambda path: list(diags)
     session._publish({path})
     session._publish({path})
     assert published == [("file:///C:/x/sub/Bad.CR6", None, diags)]

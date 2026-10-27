@@ -70,7 +70,7 @@ def _names(expr: S.Expr | None) -> list[str]:
     return ["?"]
 
 
-def _member_chain(expr: S.Member) -> tuple[S.Expr, list[str]] | None:
+def _member_chain(expr: S.Member) -> tuple[S.Name | S.Index, list[str]] | None:
     """`(root, [member, ...])` for `a.b.c` / `a(i).b`, or `None` when an inner link has index
     arguments."""
     path: list[str] = []
@@ -94,7 +94,7 @@ def _member_errors(expr: S.Expr | None, kinds: dict[str, str], structs: dict) ->
             return _UNMODELLED  # (`G.x`, `Sample1.x` on a plain variable: other messages)
         if kind is None:
             return []  # a table or system-table reference (`Public.Record`)
-        path = chain[1]
+        root, path = chain
         first = structs[kind[7:]].get(path[0].upper())
         index = 1
         if expr.args:

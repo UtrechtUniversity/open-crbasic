@@ -174,7 +174,7 @@ def test_signature_type_codes_and_kinds():
     assert s.parameters[1].kind == "const_expr"
     s = H.signature_help("Sample", 0, "cr6", None)
     assert s is not None
-    assert required(s.parameters)[3].type_code >= 100 and s.parameters[3].optional
+    assert required(required(s.parameters)[3].type_code) >= 100 and s.parameters[3].optional
     assert s.parameters[3].kind == "const_expr"      # code 101 is the optional form of 1
     assert not s.parameters[0].optional
 

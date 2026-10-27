@@ -38,7 +38,7 @@ _DEFERRED_COMMON = (
     r"IF or SELECT statement illegally has", r"LOOP statement illegally has", r"Variable .* out of bounds",
     r"FileManage ", r"Out of memory\.", r"Illegal Semaphore",
 )
-_DEFERRED = {
+_DEFERRED_PATTERNS = {
     False: _DEFERRED_COMMON + (  # CR6 / CR1000X
         r"Case with no Select", r"Next SubScan without SubScan", r"Delay not allowed outside",
         r"Scan \S+ invalid", r"Scan interval too short", r"Scan (Interval|BufferOption|Count) parameter",
@@ -64,7 +64,7 @@ _DEFERRED = {
         r"\S+ is not a Status or Settings Field Name", r"DataTable name .* too long",
     ),
 }
-_DEFERRED = {k: re.compile("|".join(f"(?:{p})" for p in v)) for k, v in _DEFERRED.items()}
+_DEFERRED = {k: re.compile("|".join(f"(?:{p})" for p in v)) for k, v in _DEFERRED_PATTERNS.items()}
 
 
 @dataclass(frozen=True)
@@ -115,6 +115,7 @@ class Diagnostic:
 @dataclass
 class Diagnostics(LoadProvenance):
     items: list[Diagnostic] = field(default_factory=list)
+    cascade_gone: set[str] = field(default_factory=set)  # CR300/CR350 names a declaration cascade left unregistered
 
     def error(self, line: int, message: str, file: str = "", show_file: bool | str = True,
               stmt: object = None) -> None:

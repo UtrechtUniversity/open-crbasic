@@ -80,10 +80,10 @@ def build(logger: str) -> Path:
     CACHE.mkdir(parents=True, exist_ok=True)
     data = bytearray(src.read_bytes())
     pe = pefile.PE(data=bytes(data))
-    base = pe.OPTIONAL_HEADER.ImageBase
+    base = getattr(pe.OPTIONAL_HEADER, "ImageBase")
     text = next(s for s in pe.sections if s.Name.startswith(b".text\0"))
     iat = {}
-    for e in pe.DIRECTORY_ENTRY_IMPORT:
+    for e in getattr(pe, "DIRECTORY_ENTRY_IMPORT"):  # (set by pefile's full parse)
         for i in e.imports:
             if i.name in (b"GetStdHandle", b"WriteFile"):
                 iat[i.name] = i.address
@@ -106,7 +106,7 @@ def build(logger: str) -> Path:
 
 def _cstr(pe: pefile.PE, raw: bytes, va: int) -> str:
     try:
-        off = pe.get_offset_from_rva(va - pe.OPTIONAL_HEADER.ImageBase)
+        off = pe.get_offset_from_rva(va - getattr(pe.OPTIONAL_HEADER, "ImageBase"))
     except Exception:
         return ""
     end = raw.index(b"\0", off)

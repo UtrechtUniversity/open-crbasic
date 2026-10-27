@@ -122,7 +122,7 @@ def _statement_expressions(stmt: S.Stmt):
             yield from _statement_expressions(inner)
 
 
-def _string_typed(typer: _Typer, node: S.Expr) -> bool:
+def _string_typed(typer: _Typer, node: S.Expr | None) -> bool:
     """A String operand, or a logical word whose right operand is one (`X AND "a" AND X`: the
     first `AND` keeps its string operand's type, so the second also reports; `"a" AND X AND X`
     reports once; oracle, all four loggers, 2026-10-12)."""
@@ -165,7 +165,7 @@ def _same_type(dest: str, source: str) -> bool:
     return dest == source or (dest == "STRING" and source == "FLOAT")
 
 
-def _indexed_past_first(typer: _Typer, dest: S.Expr, env: consteval.Env) -> bool:
+def _indexed_past_first(typer: _Typer, dest: S.Expr | None, env: consteval.Env) -> bool:
     """`RoutersNeighbors` takes the whole array: a subscript that is a variable, a binary
     expression or a literal of 2 or more is `Destination variable cannot be indexed` (oracle,
     2026-10-08: `L(1)`, `L(1.5)`, `L(-1)` and `(1,1)` compile, `L(0)` adds an out-of-bounds line
@@ -263,7 +263,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 if size is not None and isinstance(reps, int) and reps >= 1 and size < 7 * reps:
                     message = "Float to NSEC expects source array size >= 7"
         elif kw in ("SDMCD16MASK", "SDMCD16AC") and args:
-            if kw == "SDMCD16MASK" and any(typer.types.get(typer.variable(a), "") == "BOOLEAN"
+            if kw == "SDMCD16MASK" and any(typer.types.get(typer.variable(a) or "", "") == "BOOLEAN"
                                            for a in args[:2]):
                 message = "Source and Mask type must be LONG."
             if isinstance(args[0], S.Number) or (isinstance(args[0], S.Name) and
@@ -291,8 +291,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
 
 def _array_size(typer: _Typer, dims: dict[str, tuple[int, ...]], expr: S.Expr | None) -> int | None:
     """Element count of the variable behind `expr`; 1 for an expression that is no variable."""
-    if isinstance(expr, (S.Name, S.Index)) and typer.variable(expr) is not None:
-        shape = dims.get(typer.variable(expr))
+    if isinstance(expr, (S.Name, S.Index)) and (variable := typer.variable(expr)) is not None:
+        shape = dims.get(variable)
         return None if shape is None else math.prod(shape)
     return 1
 
@@ -451,6 +451,6 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
                         expressions._arg_text(stmt, i) if isinstance(stmt, S.Instruction)
                         else expressions._call_arg_text(stmt.text, i)) + "."
                     break
-        if name is not None and re.search(rf"!\s*{re.escape(name)}\b", stmt.text or "", re.I):
+        if name is not None and echo is not None and re.search(rf"!\s*{re.escape(name)}\b", stmt.text or "", re.I):
             diags.error(stmt.line, POINTER_MESSAGE.format(name=name), stmt.file)
             diags.error(stmt.line, echo, stmt.file)

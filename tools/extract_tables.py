@@ -29,8 +29,11 @@ IDENT = re.compile(rb"^[A-Za-z_][A-Za-z0-9_$]*$")
 class Image:
     def __init__(self, path: Path):
         self.pe = pefile.PE(str(path))
-        self.base = self.pe.OPTIONAL_HEADER.ImageBase
-        self.d = self.pe.__data__
+        self.base = getattr(self.pe.OPTIONAL_HEADER, "ImageBase")  # (a dynamic pefile field)
+        data = self.pe.__data__
+        if data is None:
+            raise SystemExit(f"{path}: pefile kept no image data")
+        self.d = data
 
     def section(self, va: int):
         rva = va - self.base
@@ -118,13 +121,12 @@ def function_table(img: Image) -> list[dict]:
         code, kind, argspec, fn = struct.unpack_from("<iiiI", img.d, off + 96)
         row = {"name": name(off), "code": code, "kind": kind, "argspec": argspec}
         if kind in (295, 309, 311, 312):
-            nargs = argspec & 0xF if kind != 295 else None
             if kind == 295:
                 row["nargs"] = argspec if argspec < 16 else argspec & 0xF
                 row["argtypes"] = None if argspec < 16 else [(argspec >> (4 + 2 * i)) & 3 for i in range(argspec & 0xF)]
             else:
-                row["nargs"] = nargs
-                row["argtypes"] = [(argspec >> (4 + 2 * i)) & 3 for i in range(nargs)]
+                row["nargs"] = argspec & 0xF
+                row["argtypes"] = [(argspec >> (4 + 2 * i)) & 3 for i in range(argspec & 0xF)]
         rows.append(row)
     return rows
 

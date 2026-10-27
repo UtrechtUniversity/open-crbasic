@@ -37,9 +37,9 @@ def build() -> Path:
     te.CACHE.mkdir(parents=True, exist_ok=True)
     data = bytearray(src.read_bytes())
     pe = pefile.PE(data=bytes(data))
-    base = pe.OPTIONAL_HEADER.ImageBase
+    base = getattr(pe.OPTIONAL_HEADER, "ImageBase")
     text = next(s for s in pe.sections if s.Name.startswith(b".text\0"))
-    iat = {i.name: i.address for e in pe.DIRECTORY_ENTRY_IMPORT for i in e.imports
+    iat = {i.name: i.address for e in getattr(pe, "DIRECTORY_ENTRY_IMPORT") for i in e.imports
            if i.name in (b"GetStdHandle", b"WriteFile")}
     slack_off = text.PointerToRawData + text.Misc_VirtualSize
     cave_va = base + text.VirtualAddress + text.Misc_VirtualSize

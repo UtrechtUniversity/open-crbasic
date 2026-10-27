@@ -34,6 +34,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from typing import TypedDict
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -97,8 +98,17 @@ class NotCached(RuntimeError):
     """Raised by `run_oracle_tdf(..., cache_only=True)` for a program with no cached result."""
 
 
+class OracleTdf(TypedDict):
+    ok: bool
+    exit: int
+    stdout: str
+    stderr: str
+    tdf: bytes | None
+    lst: bytes | None
+
+
 def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path = DEFAULT_COMPILER,
-                    use_cache: bool = True, cache_only: bool = False):
+                    use_cache: bool = True, cache_only: bool = False) -> OracleTdf:
     """Compile with the real exe under Wine; return {"ok", "stdout", "tdf": bytes|None,
     "lst": bytes|None}, cached under TDF_CACHE_DIR. `cache_only=True` never invokes Wine, raising
     `NotCached` instead of a cache miss (used to report on a partially-warmed cache quickly)."""
@@ -270,17 +280,17 @@ def main(argv=None) -> int:
         if not oracle_result["ok"]:
             skipped += 1
             continue
-        if oracle_result["tdf"] is None or oracle_result["lst"] is None:
+        theirs_tdf, theirs_lst = oracle_result["tdf"], oracle_result["lst"]
+        if theirs_tdf is None or theirs_lst is None:
             missing_artifacts += 1
             continue
         compiled_ok += 1
 
         our_tdf, our_lst, err = ours_tdf(path, profile)
-        if err is not None:
+        if err is not None or our_tdf is None or our_lst is None:
             mismatches.append((group, path.name, f"ours failed: {err}"))
             continue
 
-        theirs_tdf, theirs_lst = oracle_result["tdf"], oracle_result["lst"] or b""
         theirs_sizes = _user_sizes(theirs_tdf)
         if theirs_sizes is not None and theirs_sizes == _user_sizes(our_tdf):
             size_match += 1

@@ -876,7 +876,7 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
             }
             return i, "oracle_error", None, error
 
-    results: list[tuple[str | None, Quad | None, dict | None]] = [None] * count
+    results: list[tuple[str | None, Quad | None, dict | None]] = [(None, None, None)] * count
     with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
         for i, cls, quad, error in pool.map(work, mutants):
             results[i] = (cls, quad, error)

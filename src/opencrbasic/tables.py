@@ -13,6 +13,7 @@ import json
 import math
 import struct
 from dataclasses import dataclass, field
+from typing import TypedDict
 from fractions import Fraction
 from pathlib import Path
 
@@ -314,7 +315,22 @@ class DataTableDecl:
     line: int
 
 
-def _scan_program(program: S.Program):
+class _Scanned(TypedDict):
+    uses_ch400: bool
+    struct_types: dict[str, dict]
+    uses_cpi: bool
+    publics: list[S.VarDecl]
+    all_vars: list[S.VarDecl]
+    const_tables: list[ConstTableDecl]
+    data_tables: list[DataTableDecl]
+    alias_stmts: list[S.Instruction]
+    units_stmts: list[S.Instruction]
+    readonly_names: set[str]
+    slow_seq_count: int
+    called: set[str]
+
+
+def _scan_program(program: S.Program) -> _Scanned:
     """One pass over the flat statement list: collects Public/Dim declarations (in order),
     ConstTable blocks, DataTable blocks, Alias/Units statements and the SlowSequence count.
     DataTable and ConstTable bodies do not nest (CRBasic), so simple non-nested pairing suffices.
@@ -420,7 +436,7 @@ def _scan_program(program: S.Program):
     uses_ch400 = any(_kw(s) == "CH400STATUS" for s in stmts)
     uses_cpi = any(_kw(s).startswith("CDM_") or _kw(s) == "CPIFILESEND" for s in stmts)
 
-    return dict(uses_ch400=uses_ch400, struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
+    return _Scanned(uses_ch400=uses_ch400, struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
                 readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
 
@@ -615,7 +631,8 @@ def _ch400status_table() -> TdfTable:
 
 def _cpistatus_table() -> TdfTable:
     """docs/tdf-rules.md §2: present iff a `CDM_*` instruction or `CPIFileSend` is used."""
-    f = lambda t, ro, name, dim=1, sub=(): TdfField(t, ro, name, [], "", "", "", 1, dim, list(sub))  # noqa: E731
+    def f(t: int, ro: bool, name: str, dim: int = 1, sub: tuple[int, ...] = ()) -> TdfField:
+        return TdfField(t, ro, name, [], "", "", "", 1, dim, list(sub))
     fields = [f(9, True, "BusLoad")] + [f(6, False, n) for n in (
         "ModuleReportCount", "ActiveModules", "BuffErr", "RxErrMax", "TxErrMax", "FrameErr")]
     fields.append(f(11, False, "ModuleInfo", 6400, (50, 128)))
@@ -632,10 +649,10 @@ def _resolve_alias_target(expr: S.Expr | None, var_info: dict | None = None) -> 
         return expr.name.upper(), None
     if isinstance(expr, S.Index) and len(expr.args) > 1 and var_info is not None:
         info = var_info.get(expr.name.upper())
-        if (info is not None and len(info.shape) == len(expr.args)
-                and all(isinstance(a, S.Number) for a in expr.args)):
+        numbers = [a for a in expr.args if isinstance(a, S.Number)]
+        if info is not None and len(info.shape) == len(expr.args) == len(numbers):
             flat = 0
-            for k, a in enumerate(expr.args):
+            for k, a in enumerate(numbers):
                 stride = 1
                 for d in info.shape[k + 1:]:
                     stride *= d
@@ -1390,7 +1407,7 @@ def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: 
         return (0, 0), (0, 0), float(interval_val or 0), "MON"
     if unit_val is not None and unit_val not in _UNIT_NAME_BY_VALUE:
         into_val, interval_val, unit_val = 0, 1, 2
-    unit_name = _UNIT_NAME_BY_VALUE.get(unit_val, "SEC")
+    unit_name = "SEC" if unit_val is None else _UNIT_NAME_BY_VALUE.get(unit_val, "SEC")
     ns_per_unit = _UNIT_NS[unit_name]
     into_ns = int(round(float(into_val or 0) * ns_per_unit))
     interval_ns = int(round(float(interval_val or 0) * ns_per_unit))
@@ -1455,7 +1472,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
                 pending = _apply_fieldnames(pending, s.args[0].value, env.profile.name)
                 out_fields.extend(split_pending())
                 pending, pending_src = [], None
-        elif kw in _OUTPUT_KEYWORDS:
+        elif kw in _OUTPUT_KEYWORDS and isinstance(s, S.Instruction):
             if pending:
                 out_fields.extend(split_pending())
             s = _alias_source(s, var_info, by_display, by_base)
@@ -1724,7 +1741,7 @@ def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
     by_name = {v.name.upper(): v for v in scanned["all_vars"]}
     payloads = []
     for s in stmts:
-        if _kw(s) != "PRESERVEONEVARIABLE" or not s.args:
+        if _kw(s) != "PRESERVEONEVARIABLE" or not isinstance(s, S.Instruction) or not s.args:
             continue
         a = s.args[0]
         v = by_name.get(getattr(a, "name", "").upper())

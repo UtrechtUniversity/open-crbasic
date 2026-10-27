@@ -4,7 +4,6 @@ bare (no-`Call`-keyword) name is a legal statement. Rules and oracle evidence: `
 
 import re
 from dataclasses import replace
-from types import SimpleNamespace
 
 from .. import consteval
 from .. import syntax as S
@@ -170,7 +169,7 @@ def out_of_scope_nodes(program: S.Program, resolvable: frozenset | set = frozens
     every = set().union(*locals_.values()) if locals_ else set()
     if not every:
         return frozenset()
-    outer = declared_names(SimpleNamespace(statements=[
+    outer = declared_names(S.Program("", [
         replace(st, params=[]) if isinstance(st, S.SubDef) else st for st, r in owners
         if not (r is not None and isinstance(st, S.Declaration) and st.kind == "DIM")]))
     hidden_all = every - outer - set(resolvable)
@@ -344,7 +343,7 @@ class DimCounts(dict):
     strings: frozenset = frozenset()
 
 
-def scoped_view(program: S.Program | SimpleNamespace, stmt: S.Stmt) -> S.Program:
+def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
     """`program` restricted to the declarations visible at `stmt`: everything outside `Sub`/`Function`
     bodies plus `stmt`'s own routine's body. Other routines' local `Dim`s are dropped, and the
     routine's own sit later in the list so a local shadows a global (last declaration wins)."""
@@ -358,7 +357,7 @@ def scoped_view(program: S.Program | SimpleNamespace, stmt: S.Stmt) -> S.Program
             owner = cur
         tagged.append((st, cur))
     stmts = [st for st, c in tagged if c is None] + [st for st, c in tagged if c is not None and c is owner]
-    return SimpleNamespace(statements=stmts)
+    return S.Program("", stmts)
 
 
 class ScopeTables:

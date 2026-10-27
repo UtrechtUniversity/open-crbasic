@@ -6,7 +6,8 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 
 import dataclasses
 import re
-from collections.abc import Container
+from collections.abc import Container, Set as AbstractSet
+from typing import TypeGuard
 
 from .. import consteval
 from .. import lexer
@@ -189,9 +190,9 @@ def _track_tables(stmt: S.Stmt, kw: str, state: dict) -> None:
         state.setdefault("closed", set()).add(state.pop("open"))
 
 
-def _calltable_known(stmt: S.Stmt, state: dict) -> bool:
+def _calltable_known(stmt: S.Stmt, state: dict) -> TypeGuard[S.Instruction]:
     args = getattr(stmt, "args", []) or []
-    return bool(args) and isinstance(args[0], S.Name) and \
+    return isinstance(stmt, S.Instruction) and bool(args) and isinstance(args[0], S.Name) and \
         args[0].name.upper() in state.get("closed", set())
 
 
@@ -267,9 +268,9 @@ def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags
         diags.error(stmt.line, f"Cannot autoallocate memory for DataTable {table.args[0].name} "
                     "called outside of Scan, e.g., called by Sub.", stmt.file)
 
-def _accept_known(stmt: S.Stmt, state: dict) -> bool:
+def _accept_known(stmt: S.Stmt, state: dict) -> TypeGuard[S.Instruction]:
     args = getattr(stmt, "args", []) or []
-    return len(args) > 2 and isinstance(args[2], S.Name) and \
+    return isinstance(stmt, S.Instruction) and len(args) > 2 and isinstance(args[2], S.Name) and \
         args[2].name.upper() in state.get("closed", set())
 
 
@@ -282,7 +283,9 @@ def _check_accept_table(stmt: S.Instruction, program: S.Program, diags: Diagnost
     driven.` at the statement, after it. Inside a `Scan` a fixed or auto table without interval is
     fine."""
     from .. import tables as T
-    name = stmt.args[2].name.upper()
+    source = stmt.args[2]
+    assert isinstance(source, S.Name)  # `_accept_known`
+    name = source.name.upper()
     table = None
     driven = False
     for st in program.statements:
@@ -462,7 +465,7 @@ def check_apply_restart_sequence(program: S.Program, profile, diags: Diagnostics
             for_do_depth = max(0, for_do_depth - 1)
 
 
-def first_misplaced_data_table(program: S.Program, profile) -> S.Instruction | None:
+def first_misplaced_data_table(program: S.Program, profile) -> S.Stmt | None:
     """First `DataTable` declared in executable code, if any.
 
     Oracle, all four loggers, 2026-10-02: a table between `BeginProg` and the first sequence,
@@ -917,7 +920,7 @@ def subscan_controls(program: S.Program, profile) -> dict[int, tuple[str, bool]]
     return found
 
 
-def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int | None:
+def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> tuple[str, int] | None:
     """CR6/CR1000X pass 2 (`stray_controls`); returns the `(file, line)` pass 2 stops at, if any. CR300/CR350
     report these in `check_scan_placement_late`."""
     if profile.single_pass:
@@ -953,7 +956,7 @@ def _before_beginprog_name(stmt: S.Stmt, kw: str, profile, subs: set[str]) -> st
     if control or isinstance(stmt, S.Instruction) and \
             (kw in _FORBIDDEN_BEFORE_BEGINPROG or kw in profile.before_beginprog):
         record = profile.instructions.get(control or kw)
-        return record["name"] if record else (control or stmt.keyword)
+        return record["name"] if record else (control or getattr(stmt, "keyword", kw))
     if isinstance(stmt, S.Unparsed) and kw == "UNPARSED" and re.match(r"(?i)\s*ESSInitialize\s*\(", stmt.text) \
             and _quote_in_first_arg(stmt.text):
         return "ESSInitialize"   # a cut-off first string is still `ESSInitialize` (round 16)
@@ -1314,12 +1317,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
 
         if isinstance(stmt, S.Declaration):
             for v in stmt.vars:
-                if getattr(v, "size_missing", None) is not None:
+                if (size_missing := getattr(v, "size_missing", None)) is not None:
                     # `Public A As String *` (oracle, all four loggers, 2026-10-10), once per
                     # statement, the first one only on CR300/CR350. The echo is the text after the
                     # `*` minus one blank; empty or a comma next -> `Size of string missing.`, else
                     # the generic fallback on the blanks (`*  'c`, `*  `)
-                    echo = stmt.text[v.size_missing + 1:]
+                    echo = stmt.text[size_missing + 1:]
                     message = ("Size of string missing." if not echo or echo.lstrip().startswith(",")
                                else f"Invalid, or out of place expression: {echo}.")
                     if not (profile.single_pass and any(
@@ -2156,7 +2159,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                         for stage, message, _ in findings[1:]:
                             if stage == 5:
                                 diags.error(stmt.line, message, stmt.file)
-                        ikw = re.match(r"\s*(\w*)", stmt.text).group(1).upper()
+                        ikw = re.split(r"\W", stmt.text.lstrip(), maxsplit=1)[0].upper()
                         record = profile.instructions.get(ikw)
                         if (record and not in_body_block and not in_table and not in_decl_block
                                 and before_bp and ikw in profile.before_beginprog):
@@ -2539,7 +2542,7 @@ def _semicolons_dropped(text: str, profile) -> bool:
     return len(parser._drop_semicolons(toks, profile)) < len(toks)
 
 
-def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | None:
+def _pass1_scan(text: str, operands: Container[str], profile) -> tuple[str, str] | None:
     """Replays the CR6/CR1000X pass-1 left-to-right statement scan (`docs/checker.md` "Pass-1
     fallback: statements that start with a known word") over an unparsable statement.
 
@@ -2704,6 +2707,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
 def _assigns_user_const(stmt: S.Assignment, program: S.Program) -> bool:
     """`K = 1` with `K` a program `Const` (and no variable or enclosing-`Sub` parameter of that
     name): `Invalid assignment in expression` (oracle, all four loggers, 2026-10-12)."""
+    if not isinstance(stmt.target, S.Name):
+        return False
     name = stmt.target.name.upper()
     if not any(isinstance(st, S.ConstDecl) and st.name.upper() == name for st in program.statements):
         return False
@@ -3133,14 +3138,14 @@ def _symbol_stage(code: int | None) -> int:
     constant-family parameter, else 2 (pass 2). Oracle, CR6/CR1000X, 2026-10-12: `PanelTemp(x,
     Zork Y)`, `MQTTPublishTable(MQTT QoS, 5)`, `Scan (1,S  ec,3,1)` hide the generic fallback
     lines before and after them; `PanelTemp(Zork Y, 15000)` does not."""
-    kind = expressions._type_code_kinds().get(code - 100 if code and code >= 100 else code)
+    kind = None if code is None else expressions._type_code_kinds().get(code - 100 if code >= 100 else code)
     if kind == "deferred_text":
         return 6    # a table-output source: pass 2, and inside a table it ends pass 2
     return 4 if kind in expressions._CONST_FAMILY_KINDS else 2
 _CONST_ONLY_CODES = frozenset({1, 5, 20, 38})
 
 
-def _later_arg_unknown(args, operands: set[str], functions: dict) -> bool:
+def _later_arg_unknown(args, operands: Container[str], functions: dict) -> bool:
     """A subscript scan stops at its first top-level comma; a later argument that names an unknown
     symbol (`cv(4, 5, & 6) with x`, `&` before a non-literal is a name) still leaves the line to
     pass 2 (oracle, CR6/CR1000X, 2026-10-12)."""
@@ -3349,7 +3354,7 @@ def _for_header_incomplete(text: str, profile) -> tuple[str, bool] | None:
     if not m:
         return None
     init = _FOR_INIT_RE.match(text)
-    parts = [(init.group(1), True)] * bool(init) + [(h, False) for h in _FOR_STEP_RE.split(
+    parts = ([(init.group(1), True)] if init else []) + [(h, False) for h in _FOR_STEP_RE.split(
         m.group(1), maxsplit=1)]
     for part, is_init in parts:
         try:
@@ -3402,7 +3407,7 @@ def _for_header_parts(text: str, profile) -> list[tuple[str, str]]:
         return out
     halves = _FOR_STEP_RE.split(m.group(1), maxsplit=1)
     init = _FOR_INIT_RE.match(text)
-    for part, is_init in [(init.group(1), True)] * bool(init) + [(h, False) for h in halves]:
+    for part, is_init in ([(init.group(1), True)] if init else []) + [(h, False) for h in halves]:
         try:
             toks = [t for t in lexer.tokenize(part, 0) if t.kind != "EOF"]
         except lexer.LexError:
@@ -4168,13 +4173,13 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
             if row["count"]:
                 declared.setdefault(row["name"].upper(), "VAR")
 
-def _illegal_dim_message(stmt: S.Declaration) -> str:
+def _illegal_dim_message(stmt: S.Declaration | S.SubDef) -> str:
     # the echo ends with the statement's newline unless a comment follows (oracle, all four loggers)
     return f"Illegally dimension: {stmt.text}{chr(10) if stmt.at_eol else ''}"
 
 
 def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env,
-                      profile=None) -> None:
+                      profile=None) -> int | None:
     """`Public`/`Dim` array-dimension limits (oracle-confirmed, `docs/checker.md` "Array
     dimension limits"): more than `_MAX_ARRAY_DIMS` dimensions on one variable, checked before any
     per-dimension value, reports `Variable %s dimension exceeds max of %d.` naming the variable
@@ -4336,7 +4341,7 @@ def _check_member_types(stmt: S.Declaration, structs_seen: set[str], profile, di
                     return  # CR300/CR350 stop at the first one in a statement
 
 
-def _check_header_types(text: str, stmt: S.SubDef, structs_seen: set[str], profile,
+def _check_header_types(text: str, stmt: S.SubDef, structs_seen: AbstractSet[str], profile,
                         diags: Diagnostics) -> bool:
     """`Variable Type %s not supported` for each `As` type in `text` (a `Sub`/`Function` header
     or one part of it) that is neither a variable type nor an earlier `StructureType` (oracle,
@@ -4638,10 +4643,10 @@ def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env, declared
     view, failed = [], False
     for index, (param, segment) in enumerate(zip(routine.params, segments)):
         dim_open = segment.find("(") if segment else -1
-        texts = _group_items(segment, dim_open) if dim_open >= 0 else None
+        texts = _group_items(segment, dim_open) if segment and dim_open >= 0 else None
         if texts is not None and len(texts) != len(param.dim_exprs):
             texts = None
-        stop = diags is not None and split and _check_header_types(segment, routine, structs_seen,
+        stop = diags is not None and split and segment is not None and _check_header_types(segment, routine, structs_seen,
                                                                    profile, diags)
         dims, bad = [], False
         if len(param.dim_exprs) > _MAX_ARRAY_DIMS and diags is not None and texts is not None:
@@ -4831,7 +4836,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         return
 
     index_key: tuple | None = ()  # scalar `name` (bare, no parens): one implicit index position
-    base = total = None
+    base, total = 1, None
     if isinstance(target, S.Index):
         index_key = ()
         for a in target.args:
@@ -4880,7 +4885,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
     sizes = _alias_name_sizes(stmt, env) if total is not None else None
     cur = base
     # the String start-range count check applies to an explicitly dimensioned name only (round 29)
-    if sizes is not None and not _alias_dim_ok(stmt, diags, cur, sizes[0], total, False,
+    if sizes is not None and total is not None and words is not None and not _alias_dim_ok(stmt, diags, cur, sizes[0], total, False,
                                                rank is not None and isinstance(first, S.Index)):
         return
     collisions = collisions or {}
@@ -4909,7 +4914,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
 
     lead = _alias_name_lead(stmt)
     for k, rhs in enumerate(stmt.args[1:]):
-        if sizes is not None and k:
+        if sizes is not None and total is not None and words is not None and k:
             cur += sizes[k - 1] * words
             if not _alias_dim_ok(stmt, diags, cur, sizes[k], total, True,
                                  rank is not None and isinstance(rhs, S.Index)):
@@ -4934,7 +4939,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
             diags.error(stmt.line, f"Duplicate Alias Name: {written[0]}{written[1]}.", stmt.file)
         else:
             seen_alias_names.add(rhs_upper)
-    if sizes is not None and (stmt.text or "").rstrip().endswith(",") and \
+    if sizes is not None and total is not None and words is not None and (stmt.text or "").rstrip().endswith(",") and \
             not 1 <= cur + sizes[-1] * words <= total:
         # a trailing comma is one more, empty, name
         diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
@@ -5064,7 +5069,8 @@ def _const_undefined_names(text: str, program, profile) -> list[str]:
     return out
 
 
-def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics, program=None, profile=None) -> None:
+def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics, program: S.Program,
+                          profile: Profile) -> None:
     """The specific-reason `Unparsed` diagnoses only -- true pass-1 (`docs/checker.md` "Pass
     model": `Need '=' in units definition: %s.`/`Const with no assignment.`/`Need '=' in alias
     definition: %s.`/`Invalid Variable declaration %s.` are all in the coordinator's own pass-1
@@ -5124,7 +5130,7 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics, program=None, pr
             text, generic = text[2:], "No Matching, or out of place ) in expression: {}."
         elif text.startswith(parser.CONST_INCOMPLETE):
             text, generic = text[2:], "Incomplete expression: {}."
-        names = _const_undefined_names(text, program, profile) if program is not None else []
+        names = _const_undefined_names(text, program, profile)
         if names and profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
             return

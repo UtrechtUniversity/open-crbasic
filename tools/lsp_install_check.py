@@ -303,9 +303,11 @@ def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) 
     notes: list[dict] = []
     faults: list[str] = []
     result: dict = {}
+    stdin, stderr = proc.stdin, proc.stderr
+    assert stdin is not None and stderr is not None  # (both are pipes)
 
     def drain_stderr() -> None:
-        for raw in proc.stderr:
+        for raw in stderr:
             stderr_lines.append(text(raw).rstrip("\r\n"))
 
     threading.Thread(target=read_frames, args=(proc.stdout, frames), daemon=True).start()
@@ -314,8 +316,8 @@ def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) 
 
     def send(msg: dict) -> None:
         body = json.dumps(msg).encode("utf-8")
-        proc.stdin.write(b"Content-Length: %d\r\n\r\n" % len(body) + body)
-        proc.stdin.flush()
+        stdin.write(b"Content-Length: %d\r\n\r\n" % len(body) + body)
+        stdin.flush()
 
     def await_response(rid: int) -> dict:
         deadline = time.monotonic() + timeout
@@ -385,7 +387,7 @@ def check_lsp(report: Report, venv: Path, tmp: Path) -> None:
     if not match:
         problems.append(f"first stderr line is not the startup banner: {first!r}")
     else:
-        where = Path(banner_path)
+        where = Path(match["path"])
         if not where.resolve().is_relative_to(venv.resolve()):
             problems.append(f"banner names {where}, not a package under {venv}")
         if where.resolve().is_relative_to(ROOT.resolve()):

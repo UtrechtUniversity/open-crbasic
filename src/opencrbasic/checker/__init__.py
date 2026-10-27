@@ -314,6 +314,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         diags.items[early_start:] = [d for d in diags.items[early_start:] if d.severity != "error"]
 
     bounds = Diagnostics()
+    pass2_start, flat = 0, program  # (both set before pass 2 reports anything they bound)
     fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
     # CR6/CR1000X `X not allowed outside of Scan..NextScan in PipeLine Mode.` and `DO .. LOOP
     # cannot span across sequences.`: pass 2 errors that do not hide tier C (oracle: printed
@@ -693,10 +694,10 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             # later statement is printed.
             at = links.positions.get((oom.file, oom.line), oom.line)
             tail = diags.items[tier_c_start:]
-            last = next(i for i, d in enumerate(tail) if d is oom)
+            oom_index = next(i for i, d in enumerate(tail) if d is oom)
             diags.items[tier_c_start:] = [
                 d for i, d in enumerate(tail) if d.severity != "error" or not d.line or
-                links.positions.get((d.file, d.line), d.line) < at or (d.line == oom.line and i <= last)]
+                links.positions.get((d.file, d.line), d.line) < at or (d.line == oom.line and i <= oom_index)]
             ranges.items = [d for d in ranges.items
                             if links.positions.get((d.file, d.line), d.line) < at]
             bounds.items = [d for d in bounds.items   # (a later index too, round 31 review)

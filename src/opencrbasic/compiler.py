@@ -207,7 +207,7 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     return _finish(result, path, warn_unused, source, signature)
 
 
-def _compile_once(path: Path, profile: Profile, name: str, pull_limit: int | None,
+def _compile_once(path: Path, profile: Profile, name: str, pull_limit: tuple[int, ...] | None,
                   source: SourceProvider | None = None, provenance: bool = True):
     from . import checker, parser
     try:
@@ -253,7 +253,7 @@ def _compile_once(path: Path, profile: Profile, name: str, pull_limit: int | Non
 def _finish(result: CompileResult, path: Path, warn_unused: bool,
             source: SourceProvider | None = None, signature: bool = True) -> CompileResult:
     program, diags = result.program_ast, result.diagnostics
-    if warn_unused and not diags.errors:
+    if warn_unused and program is not None and not diags.errors:
         # `-u` (`docs/cli.md` "-u", `checker/unused.py`): oracle-confirmed to add nothing at all
         # once any error is present anywhere in the file, so this only ever runs on an otherwise-
         # clean pass -- matching the ordinary checker's own post-check tier (`checker/__init__.py`:

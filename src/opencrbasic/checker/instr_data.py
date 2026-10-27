@@ -513,7 +513,7 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
         kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
         if kw in ("STRUCTURETYPE", "OBJECTTYPE", "ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
             in_struct = not kw.startswith("END")
-        if in_struct or kw != "UNITS" or not st.args:
+        if in_struct or kw != "UNITS" or not isinstance(st, S.Instruction) or not st.args:
             continue  # inside a `StructureType`, `Units` names a member (`structuretype_1.CR6`)
         for extra in getattr(st, "extra_targets", ()):
             if extra.name.upper() not in allowed:
@@ -537,8 +537,10 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
             units = st.args[1].value if len(st.args) > 1 and isinstance(st.args[1], S.String) else None
             if units is None:
                 continue
+            target = st.args[0]
+            assert isinstance(target, S.Name)  # (only bare-name targets are collected)
             for _ in range(len(statements) - 1):
-                diags.error(st.line, f"{st.args[0].name} already assigned Units {units}.", st.file)
+                diags.error(st.line, f"{target.name} already assigned Units {units}.", st.file)
 
 
 _SEQUENCE_OPENERS = frozenset({"DIALSEQUENCE", "MODEMHANGUP"})
@@ -548,7 +550,7 @@ _SEQUENCE_CLOSERS = {"ENDDIALSEQUENCE": ("Missing DialSequence().", "DIALSEQUENC
 
 
 def check_table_and_menu_placement(program: S.Program, profile: Profile,
-                                   diags: Diagnostics, env=None) -> int | None:
+                                   diags: Diagnostics, env=None) -> tuple[str, int] | None:
     """Pass 2 (oracle, suppressed by a pass-1 error): a second `DataInterval` in one table ->
     `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers), and the display
     menu structure (CR6/CR1000X; CR300/CR350 have no menus), following the decompiled menu builder
@@ -659,7 +661,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                                      and (not math.isfinite(value) or value != int(value)) else None)
                     else:
                         item_kind = {"LONG": "int", "FLOAT": "float", "STRING": "string"}.get(
-                            types.get(target.name.upper()))
+                            types.get(target.name.upper(), ""))
                 first_is_const = False
                 if kw == "SUBMENU":
                     levels.append([])
@@ -1012,8 +1014,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if isinstance(source, S.Index) and not empty:
                 if len(source.args) != len(shape) or any(a is None for a in source.args):
                     continue
-                subs = [_reps_value(a, env) for a in source.args]
-                if None in subs:
+                subs = [k for a in source.args if (k := _reps_value(a, env)) is not None]
+                if len(subs) != len(source.args):
                     continue
                 start = subs[0] if len(shape) == 1 else 1
                 for sub, n in zip(subs, shape):
@@ -1110,8 +1112,8 @@ def _declared_table_name(st: S.Instruction) -> str | None:
         return first.name
     if isinstance(first, S.String) and re.fullmatch(r"[0-9A-Za-z_.]+", first.value):
         return first.value
-    if isinstance(first, S.Binary) and st.arg_spans:
-        text = st.text[st.arg_spans[0][0]:st.arg_spans[0][1]].strip()
+    if isinstance(first, S.Binary) and st.arg_spans and (span := st.arg_spans[0]):
+        text = st.text[span[0]:span[1]].strip()
         if text.startswith("(") and text.endswith(")"):
             text = text[1:-1]
         if _EXPR_NAME.match(text):

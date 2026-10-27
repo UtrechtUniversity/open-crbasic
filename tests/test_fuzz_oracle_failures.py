@@ -5,6 +5,7 @@ import json
 import pytest
 
 import fuzz
+from opencrbasic import profiles
 
 
 def test_load_seeds_collects_only_oracle_error(monkeypatch, tmp_path):
@@ -23,7 +24,7 @@ def test_load_seeds_collects_only_oracle_error(monkeypatch, tmp_path):
 
     monkeypatch.setattr(fuzz, "_accepted", accepted)
     errors = []
-    seeds = fuzz.load_seeds(object(), tmp_path / "exe", 1, errors)
+    seeds = fuzz.load_seeds(profiles.get("cr6"), tmp_path / "exe", 1, errors)
     assert [s.path for s in seeds] == [good]
     assert errors == [{
         "stage": "seed", "seed": "chm/bad.CR6", "source": str(bad),
@@ -41,7 +42,7 @@ def test_load_seeds_default_still_propagates(monkeypatch, tmp_path):
         lambda *args: (_ for _ in ()).throw(fuzz.oracle.OracleError("failure")),
     )
     with pytest.raises(fuzz.oracle.OracleError, match="failure"):
-        fuzz.load_seeds(object(), tmp_path / "exe", 1)
+        fuzz.load_seeds(profiles.get("cr6"), tmp_path / "exe", 1)
 
 
 def test_run_logger_records_mutant_oracle_error_and_fails(monkeypatch, tmp_path):

@@ -77,9 +77,10 @@ if __name__ == "__main__":
             expected = {}
             for lg in LOGGERS:
                 r = tdftest.run_oracle_tdf(p, Path(d), tdftest.REPO / "compiler" / profiles.get(lg).exe_name)
-                if not r["ok"]:
+                blob = r["tdf"]
+                if not r["ok"] or blob is None:
                     sys.exit(f"{cid} {lg}: real compiler rejected: {r['stdout']}")
-                expected[lg] = summarize(r["tdf"])
+                expected[lg] = summarize(blob)
         out["cases"].append({"id": cid, "source": src, "expected": expected})
     FIX.write_text(json.dumps(out, indent=1))
     print(len(out["cases"]), "cases")

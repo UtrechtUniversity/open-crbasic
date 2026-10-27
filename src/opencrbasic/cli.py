@@ -271,8 +271,8 @@ def main(argv: list[str] | None = None) -> int:
             from . import tdf
             Path(opts["z"]).write_bytes(tdf.serialize(result.tables))
         for key in ("l", "c"):
-            if opts[key] and result.table_list is not None:
-                Path(opts[key]).write_bytes(result.table_list.encode("latin-1", "replace"))
+            if (listing := opts[key]) and result.table_list is not None:
+                Path(listing).write_bytes(result.table_list.encode("latin-1", "replace"))
     if not result.ok:
         return 1
     if opts["strict"]:

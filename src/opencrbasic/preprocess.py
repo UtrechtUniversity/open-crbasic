@@ -174,6 +174,7 @@ def _walk_file(
                 if in_include:
                     out.append(g.raw)
                     continue
+                assert m_inc is not None  # (`m_sec or m_inc`)
                 spec = m_inc.group(1)
                 new_section, new_in_include = None, True
             target = source._resolve_include_path(spec, directory)

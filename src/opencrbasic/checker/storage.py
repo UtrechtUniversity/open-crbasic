@@ -335,12 +335,13 @@ def _var_words(program: S.Program, env, kinds: tuple) -> list[tuple[int, int]]:
             if len(dims) > 3 or any(not 1 <= d <= 2147483647 for d in dims):
                 continue                    # `Illegally dimension`: never allocated
             info = T._make_var_info(v, env)
-            if t == "STRING" and info.stored_len > 2147483647:
+            stored = info.stored_len or 0   # (set for every String)
+            if t == "STRING" and stored > 2147483647:
                 continue    # the length wraps negative: compiles (oracle, 2026-10-25, round 35)
             n = 1
             for d in dims:
                 n *= d
-            out.append((n, 2 if t == "DOUBLE" else info.stored_len // 4 if t == "STRING" else 1))
+            out.append((n, 2 if t == "DOUBLE" else stored // 4 if t == "STRING" else 1))
     return out
 
 

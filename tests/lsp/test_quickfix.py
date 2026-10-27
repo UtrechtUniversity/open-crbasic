@@ -290,7 +290,7 @@ def _misspell(rng: random.Random, word: str) -> str:
 def sweep(seed: str = "lsp-07c", budget: float = 25.0):
     """One seeded misspelled identifier per `crbasic/*.CR6` program. Returns per-program rows
     `(name, original, misspelled, outcome, rank)`; outcome is exact | case | other | none."""
-    rows = []
+    rows: list[tuple[str, str, str, str, int | None]] = []
     start = time.monotonic()
     for entry in sorted(CRBASIC.glob("*.CR6")):
         if time.monotonic() - start > budget:

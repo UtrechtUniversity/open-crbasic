@@ -44,10 +44,10 @@ class Env:
     """
 
     profile: Profile
-    consts: dict[str, object] = field(default_factory=dict)
+    consts: dict[str, S.ConstValue] = field(default_factory=dict)
     section: str | None = None
 
-    def define(self, name: str, value: object, is_float: bool | None = None) -> None:
+    def define(self, name: str, value: S.ConstValue, is_float: bool | None = None) -> None:
         """`is_float` (see `is_float`) travels with the stored value, so the `dict(consts)` copies
         the checker makes keep it: `CFloat` is float-typed, an `int` integer-typed, a plain float
         not established."""
@@ -65,7 +65,7 @@ class Env:
 
 # Pure builtins usable in constant expressions (see mathematicalexpressions.htm / the CHM function
 # pages for CHR/ABS/INT/SQR/LEN). Each takes already-evaluated argument values.
-def _fn_chr(args):
+def _fn_chr(args: list[S.ConstValue]) -> str:
     # any numeric argument is accepted by the real compilers (CHR(-1), CHR(1e300) probed 2026-10-10).
     # A NUL byte adds nothing: CHR(256), CHR(0)+"A"+CHR(0)+"B" are "", "AB" (round 10, see checker.md)
     v = _num(args[0])
@@ -73,21 +73,24 @@ def _fn_chr(args):
     return chr(code) if code else ""
 
 
-def _fn_abs(args):
+def _fn_abs(args: list[S.ConstValue]) -> float:
     return abs(_num(args[0]))
 
 
-def _fn_int(args):
+def _fn_int(args: list[S.ConstValue]) -> float:
     v = _num(args[0])
     import math
     return float(math.floor(v))
 
 
-def _fn_sqr(args):
-    return _num(args[0]) ** 0.5
+def _fn_sqr(args: list[S.ConstValue]) -> float:
+    root = _num(args[0]) ** 0.5
+    if isinstance(root, complex):
+        raise NotConstant("SQR() of a negative constant is not folded")
+    return root
 
 
-def _fn_len(args):
+def _fn_len(args: list[S.ConstValue]) -> int:
     v = args[0]
     if not isinstance(v, str):
         raise NotConstant("LEN() of a non-string constant")
@@ -127,7 +130,7 @@ def _truth(v: bool) -> int:
     return -1 if v else 0
 
 
-def value_of(expr: S.Expr | None, env: Env) -> object:
+def value_of(expr: S.Expr | None, env: Env) -> S.ConstValue:
     """The constant value of `expr` (int/float/str), or raise `NotConstant`."""
     if expr is None:
         raise NotConstant("empty expression")
@@ -209,7 +212,7 @@ def is_constant(expr: S.Expr | None, env: Env) -> bool:
         return False
 
 
-def _lookup(name: str, env: Env) -> object:
+def _lookup(name: str, env: Env) -> S.ConstValue:
     upper = name.upper()
     if upper == "SECTION" and env.section is not None:
         return env.section
@@ -228,7 +231,7 @@ def _as_str(v: object) -> str:
     return str(int(n)) if n == int(n) else str(n)
 
 
-def _binary(op: str, left: object, right: object) -> object:
+def _binary(op: str, left: S.ConstValue, right: S.ConstValue) -> S.ConstValue:
     if op == "TO":  # `Scan(1 To 2,..)` is interval 0, `PortGet(X,5 To 2)` port 0 (oracle, round 9).
         # A string left operand is accepted too: `Const K = "a" To 3` gives K=0; a string right is not
         _num(right)
@@ -248,7 +251,10 @@ def _binary(op: str, left: object, right: object) -> object:
     if op == "\\":
         return float(int(_num(left)) // int(_num(right)))
     if op == "^":
-        return _num(left) ** _num(right)
+        power = _num(left) ** _num(right)
+        if isinstance(power, complex):
+            raise NotConstant("a negative base to a fractional power is not folded")
+        return power
     if op == "MOD":
         return float(int(_num(left)) % int(_num(right)))
     if op == "<<":

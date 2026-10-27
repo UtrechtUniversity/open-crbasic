@@ -249,7 +249,7 @@ def test_format_refusal(tmp_path):
     bad = tmp_path / "b.CR6"
     bad.write_bytes(b"BeginProg\nNoSuchThing 1\nEndProg\n")
     assert format_refusal(analyze(AnalysisRequest(good))) is None
-    assert "errors" in format_refusal(analyze(AnalysisRequest(bad)))
+    assert "errors" in (format_refusal(analyze(AnalysisRequest(bad))) or "")
 
 
 # ------------------------------------------------------------------ semantic preservation

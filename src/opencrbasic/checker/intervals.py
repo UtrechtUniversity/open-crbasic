@@ -500,10 +500,10 @@ def _decimal(magnitude: int, sign: int, profile, literal: bool):
         return ("wide", 0)
     return ("int", sign * magnitude)
 
-def _check_call(call: S.Index, scan, stmt: S.Stmt, diags: Diagnostics, env,
+def _check_call(call: S.Index | S.Call, scan, stmt: S.Stmt, diags: Diagnostics, env,
                 after_error: bool = False) -> None:
-    values = [_int(a, env) for a in call.args[:3]]
-    if len(call.args) != 3 or None in values or values[2] == _MONTH or \
+    values = [v for a in call.args[:3] if (v := _int(a, env)) is not None]
+    if len(call.args) != 3 or len(values) != 3 or values[2] == _MONTH or \
             values[2] not in instr_rules._US_PER_UNIT or _INT_MIN in values[:2]:
         return
     if after_error and min(values[:2]) < 0:
@@ -603,7 +603,7 @@ def _calls(stmt: S.Stmt, names=_FUNCTIONS):
             if expr.name.upper() in names:
                 yield expr
             stack += [a for a in expr.args if a is not None]
-        elif isinstance(expr, S.Unary):
+        elif isinstance(expr, S.Unary) and expr.operand is not None:
             stack.append(expr.operand)
         elif isinstance(expr, S.Binary):
             stack += [expr.left, expr.right]

@@ -223,7 +223,7 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         diags.error(stmt.line, kind["odd_message"].format(v=shown), stmt.file)
     elif not allowed_ok:
         diags.error(stmt.line, kind["allowed_message"].format(v=shown), stmt.file)
-    elif spec is not None and reps > 1 and (value > 0 or not in_range):
+    elif spec is not None and reps is not None and reps > 1 and (value > 0 or not in_range):
         # the last repetition's start channel must stay in the start's own range; the message
         # shows the first channel past it (`spec`: own `ranges`, `step`, display `shift`). CR300/
         # CR350 PulseCount spans an invalid start from `invalid_start` (round 31)

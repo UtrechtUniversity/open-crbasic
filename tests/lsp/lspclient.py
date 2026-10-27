@@ -60,6 +60,7 @@ class LspClient:
                 name, _, value = line.decode("ascii").partition(":")
                 if name.lower() == "content-length":
                     length = int(value)
+            assert length is not None, "message without Content-Length"
             msg = json.loads(out.read(length).decode("utf-8"))
             if "method" in msg and "id" in msg:
                 self._answer_request(msg)

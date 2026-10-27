@@ -110,11 +110,13 @@ def tokenize(text: str, line: int = 0) -> list[Token]:
                                               and text[i - 1] == "_"):
             tokens.append(Token("OP", ".", ".", i, line))   # `Tmp.001`: a member name, not a number
             m = re.compile(r"\w+").match(text, i + 1)
+            assert m is not None  # (a digit follows the `.`)
             tokens.append(Token("IDENT", m.group(0), m.group(0).upper(), i + 1, line))
             i = m.end()
             continue
         if ch.isdigit() or (ch == "." and i + 1 < n and text[i + 1].isdigit()):
             m = _NUMBER_RE.match(text, i)
+            assert m is not None  # (a digit, or `.` and a digit)
             raw = m.group(0)
             value = _number_value(raw)
             end = m.end()

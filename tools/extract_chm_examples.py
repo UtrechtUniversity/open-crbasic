@@ -67,8 +67,9 @@ class _ExampleParser(HTMLParser):
         self.in_p = False
         self.p_buffer: list[str] = []
         self.groups: list[list[str]] = []
-        self.current_group: list[str] | None = [] if implicit_start else None
+        self.current_group: list[str] | None = None
         if implicit_start:
+            self.current_group = []
             self.groups.append(self.current_group)
 
     def handle_starttag(self, tag, attrs):

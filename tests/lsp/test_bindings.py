@@ -4,6 +4,7 @@ docs/lsp-api.md "Binding index (LSP-05a)"."""
 from .assertions import required
 from collections import Counter
 from pathlib import Path
+from typing import cast
 
 import pytest
 
@@ -203,7 +204,7 @@ def test_table_fields_are_named_as_the_tdf_derivation_names_them():
 
 def test_table_field_references_resolve_by_table_and_case_insensitively():
     ix = index(FIELD_SRC)
-    fields = {(f.container.name, required(f).name): f for d in ix.declarations if d.kind == "datatable"
+    fields = {(required(f.container).name, f.name): f for d in ix.declarations if d.kind == "datatable"
               for f in ix.fields_of(d)}
     want = {"X_Avg": [("Tab", "X_Avg"), ("Tab", "X_Avg"), ("Other", "X_Avg")], "One": [("Tab", "One")],
             "Two": [("Tab", "Two")], "TC_Tot": [("Tab", "TC_Tot")], "x_max": [("Tab", "X_Max")],
@@ -237,7 +238,7 @@ def test_table_field_sites_fieldnames_string_token_is_quoted_and_instruction_has
         assert isinstance(f.node, S.Instruction) and f.node.keyword.upper() == "SAMPLE"
     f = by["X_Avg"]
     assert (f.site, f.quoted, f.line, ix.token_of(f)) == ("instruction", False, 5, None)
-    assert f.node.keyword.upper() == "AVERAGE" and f.stmt is f.node
+    assert isinstance(f.node, S.Instruction) and f.node.keyword.upper() == "AVERAGE" and f.stmt is f.node
     assert ix.references_to(by["X_Avg"]) and all(r.name == "X_Avg" for r in ix.references_to(f))
     assert "ONE" not in [d.name.upper() for d in ix.declarations_named("One")]      # not in the name table
 
@@ -479,7 +480,7 @@ def test_unparsed_statements_are_counted_not_indexed():
 
 def test_build_with_no_program_and_garbage():
     assert bindings.build(None, "cr6").declarations == ()
-    ix = bindings.build(S.Program(name="x", statements=[object(), S.Unparsed(1, "f", reason="r")]),
+    ix = bindings.build(S.Program(name="x", statements=[cast(S.Stmt, object()), S.Unparsed(1, "f", reason="r")]),
                         "cr6")
     assert ix.failures == () and len(ix.unparsed) == 1
     with pytest.raises(ValueError):

@@ -1,9 +1,7 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-27 during development round 47**
-(repository-wide Pyrefly gate). Round 46 is committed at `c5877c5c`; round 47 is in progress.
-The live Codex usage tool reported the five-hour window **100% used** at this handoff;
-stop at the human-requested usage boundary, with round 47 incomplete and uncommitted.
+Current compiler state and handoff, updated **2026-10-27 after development round 47**
+(repository-wide Pyrefly gate). Round 46 is committed at `c5877c5c`.
 Inspect `git status` before editing; use Git to check publication state.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -22,8 +20,8 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 55,324 passed, 311 skipped, 440 strict xfail (round 46) |
-| `pytest -q -m server` | 163 passed (round 46) |
+| `pytest -q -n 4 -m 'not server'` | 55,325 passed, 311 skipped, 440 strict xfail (round 47) |
+| `pytest -q -m server` | 163 passed (round 47) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
 | Earlier alias fixtures (r26–r30) | r26 282/282, r27 152/152, r28 368/368, r29 headers 180/180, r29 Strings 320/320, r29 review 104/104, r30 dimensioned 180/180 match; r30 review 92 match, 8 strict xfail |
@@ -82,46 +80,42 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
-**Round 47** (repository-wide Python type checking, current human request; in progress).
-- Add Pyrefly to `scripts/verify.py` for every tracked or new, non-ignored Python file, including
-  tests, tools, field scripts and drawing helpers. The initial tracked inventory has 461 files.
-  Ignored environments, caches and scratch probes are outside the source inventory.
-- Initial default-preset run: 1,030 errors; after import roots and the development dependencies
-  were configured, 1,014 errors remained. The current check is recorded in `scratch/r47/checkpoint.json` and
-  `checkpoint.log`; the inventory now includes the two new shared helper modules. Baseline JSON,
-  exact inventory and commands are in `scratch/r47/`. No error baseline or blanket suppression is being introduced.
-- `pyrefly.toml` at the repository root owns the common configuration; the old LSP-only include
-  list is removed. `scripts/` pins Pyrefly 1.3.1 and installs the type-checking import dependencies
-  with uv. `verify.py` now propagates type-check failures into its BUILD summary and exit status;
-  inventory and failure-propagation tests are added (6/6 pass). Corrections and validation remain
-  before commit; this round is intentionally uncommitted while the type gate fails.
-- Corrected profile/AST/provenance contracts, a structural help-lookup interface, explicit numeric
-  optional guards, CLI option types and positive test assertions. The parser/constant/hover focused
-  suites pass 134 tests. An intermediate indentation regression in a pointer-type annotation edit
-  was caught by the focused tests and corrected; retain both logs in `scratch/r47/`.
-- No error baseline, broad ignores or Any replacement is being used to silence remaining issues.
-  In particular, scalar conversions not established by the existing code remain type errors.
-  Current default-preset result: **402 errors across 463 files** (`scratch/r47/imports-corrected.json`).
-  Full non-server validation first reported 55,001 passed, 311 skipped, 440 xfail and 11
-  collection errors caused by the new helper import path. The package-relative import correction
-  collects all 824 LSP tests successfully. The corrected full run passes **55,324 tests,
-  311 skipped, 440 strict xfail**, with no errors (`scratch/r47/pytest-final.log`).
-  `scratch/r47/validate-rest.py` then runs server tests, corpus comparisons, replay, fixture
-  audits and both verify backends sequentially. Final results: server **163 passed**; saved
-  replay regression gate passed; both fixtures have zero differences and zero missing verdicts;
-  four-profile corpus results are unchanged, including known reference faults, and GEUS is 66/66.
-  Both reference and opencrbasic verify backends exit 1 solely at the new type gate:
+**Round 47** (repository-wide Python type checking, human request; two sessions).
+- `scripts/verify.py` runs Pyrefly 1.3.1 (root `pyrefly.toml`, default preset) on every tracked
+  or new, non-ignored Python file and fails the BUILD on any error. Errors went 1,014 -> 402
+  (first session, committed as part 1) -> **0 across 463 files**. No error baseline, blanket
+  suppression or new ignore comment (the 11 existing ones are unchanged since round 46).
+- Root-cause typing instead of per-caller patches: `consteval.value_of` returns
+  `syntax.ConstValue` (`int | float | str`); `^` and `SQR` of a negative base/argument would fold
+  to a Python `complex` and now raise `NotConstant` (inference: no oracle evidence either way;
+  before, the complex value leaked into callers). `Diagnostics.cascade_gone` is a field,
+  `_known_names` returns `KnownNames`, `tables._scan_program` and `tdftest.run_oracle_tdf` return
+  TypedDicts.
+- Pyrefly found one confirmed latent crash: `cr3xx.check_unknown_line_words` reused `first` for an
+  inline-`If` scan, so a later prose line on CR300/CR350 raised `AttributeError` (`Internal error:
+  unable to compile program.`); regression test in `tests/test_cr3xx.py`, reproduced against the
+  round-46 code. Other unproven `None` paths (SDI12Recorder bare-alias index, `integ_code` None,
+  `arg_spans` None) now take the existing unmodelled exits; probes did not reach them.
+- Outside opencrbasic: `pakbus.require_port()` for the field-test scripts (no logger now raises
+  `PakBusError` instead of opening `Serial(None)`); `freezer.py` skips non-numeric battery
+  readings instead of a `TypeError`. The power/solar model refactors leave every generated
+  number, CSV and figure byte-identical; only the input-digest lines and the workbook changed,
+  regenerated with `solar_model`, `battery_model`, `power_sim`, `finapp_power`, `power_workbook`.
+- A first full validation caught one regression of this round (`v.size_missing` read on a
+  declaration without that attribute: CHM `not_1.CR6` implementation exception, 3 LSP tests,
+  replay gate); fixed and the whole validation rerun. Logs: `scratch/r47/final-1-size-missing-regression/`
+  and `scratch/r47/final/`. Final: pytest **55,325 passed, 311 skipped, 440 strict xfail**;
+  server **163 passed**; replay gate passes (2,569 exact, unchanged); round-45/46 fixture audits
+  0 differing, 0 without verdict; four-profile corpus logs unchanged apart from a Wine thread id
+  in the known reference page fault; GEUS 66/66. Both verify backends:
 
   ```text
-  BUILD  Pyrefly 463 files FAIL | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+  BUILD  Pyrefly 463 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
   ```
 
-  Warnings are the existing uncalled-table warnings. Read `validation-exits.json`,
-  `corpus-exits.json` and individual logs; the corpus wrapper exits zero even when a child
-  comparison exits one for the known missing reference verdicts. No hardware tests ran.
-  Resume details and exact commands: `scratch/r47/RESUME.md`.
-- The new round-46 CR1000X mode candidate is deferred until this requested round is complete.
-  Do not execute local maintenance. Continue the user's committed-round workflow after validation.
+  The 6 warnings are the existing uncalled-table warnings. No hardware tests ran.
+- Next: the deferred round-46 CR1000X mode candidate `scratch/r46/final/fuzz/cr1000x/mode_diff/00b7a2ff9df4.*`
+  (reference SequentialMode, ours PipelineMode).
 
 **Round 46** (M1/M2, Timer TimNo and nonfinite integral arguments; one session, no subagents).
 - Fresh seed-438 `cr1000x/message_diff/71107f867ad9` minimized to `Timer(1.5,Sec,2)`,

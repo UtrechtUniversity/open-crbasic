@@ -252,7 +252,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             # entirely once a `SlowSequence` is seen -- AGENTS.md: never guess into a false warning.
             return
 
-        if kw == "SCAN":
+        if kw == "SCAN" and isinstance(stmt, S.Instruction):
             if dead:
                 diags.warning(stmt.line, f"{_display_name(stmt, profile)} never reached at run time.", stmt.file)
                 return
@@ -382,7 +382,7 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
         if kw == "SLOWSEQUENCE":
             in_slow = True
             continue
-        if kw != "SCAN" or in_slow:
+        if kw != "SCAN" or in_slow or not isinstance(stmt, S.Instruction):
             continue
         main_scan_index += 1
         interval_ms = _scan_interval_ms(stmt, env)

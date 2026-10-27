@@ -8,7 +8,6 @@ from typing import cast
 import json
 from functools import lru_cache
 from pathlib import Path
-from types import SimpleNamespace
 
 from .. import consteval
 from ..profiles import DottedName
@@ -896,7 +895,7 @@ _CONTROL_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "IF", "SCAN", "S
                                "SUBSCAN", "WHILE"})
 
 
-def _known_names(program: S.Program, profile) -> set[str]:
+def _known_names(program: S.Program, profile) -> KnownNames:
     """Every name a checked expression position may legally reference: this program's own
     declarations (`symbols.declared_names`), this logger's predefined symbols/functions/
     instruction keywords (`profile.*`), its always-or-conditionally-valid system table names
@@ -957,7 +956,7 @@ def _known_names(program: S.Program, profile) -> set[str]:
         for pos, st in enumerate(program.statements):
             if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and \
                     any(isinstance(a, S.Index) for a in st.args[1:]):
-                view = symbols.scoped_view(SimpleNamespace(statements=program.statements[:pos + 1]), st)
+                view = symbols.scoped_view(S.Program("", program.statements[:pos + 1]), st)
                 scratch, registered = Diagnostics(), set()
                 structure._check_alias_dims(
                     st, scratch, env, symbols.declared_dim0_sizes(view, env),
@@ -991,7 +990,7 @@ def _unclosed_structure_variables(program: S.Program) -> set[str]:
     return unclosed
 
 
-class KnownNames(set):
+class KnownNames(set[str]):
     """`_known_names`, plus the `DataTable` names that are known only as table references: a bare
     `T` used as a value is undefined (`X = T`, `Battery(T)`, `Foo(X, T)`; oracle, all four
     loggers, 2026-09-28) while `T.Field` and `CallTable T` resolve."""

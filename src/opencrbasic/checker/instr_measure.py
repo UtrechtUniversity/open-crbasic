@@ -9,7 +9,7 @@ error. All rules below are oracle-confirmed per logger this round; see `docs/ins
 """
 
 import math
-from typing import cast
+from typing import TypeGuard, cast
 
 import re
 
@@ -978,7 +978,7 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             # before this line's other diagnostics, e.g. its fnotch warning (oracle, CR300, fuzz
             # `84bd80cc420c`); destination bounds: rounds 30-31
             kw = stmt.keyword.upper()
-            messages = []
+            messages: list[str | None] = []
             if reps == 0 or (reps < 0 and kw not in _NEGATIVE_REPS_SILENT):
                 messages.append(f"Invalid reps {reps}, must be > 0.")
             if reps > 0 or (reps < 0 and kw in _NEGATIVE_REPS_DEST):
@@ -1148,31 +1148,33 @@ def _byte(value: int) -> int:
 
 def _builder_counts(kw: str, args: list, env: consteval.Env) -> list[tuple[int, int]]:
     """`(argument, elements)` pairs a destination or source must hold from its start."""
-    def arg(i):
+    def arg(i: int) -> int | None:
         return _int_value(args[i], env) if i < len(args) else None
     if kw in _BUILDER_FIXED:
         return [(i, n) for i, n in _BUILDER_FIXED[kw] if i < len(args)]
     if kw == "SDMGENERIC":
-        return [(0, arg(5))] if arg(5) is not None else []
+        return [(0, count)] if (count := arg(5)) is not None else []
     if kw == "SDMSW8A":
-        return [(0, _byte(arg(1)))] if arg(1) is not None else []
+        return [(0, _byte(count))] if (count := arg(1)) is not None else []
     if kw == "SDMCD16AC":
-        return [(0, 16 * _byte(arg(1)))] if arg(1) is not None else []
+        return [(0, 16 * _byte(count))] if (count := arg(1)) is not None else []
     if kw == "CSAT3":
-        if arg(1) is None:
+        if (count := arg(1)) is None:
             return []
-        reps = _byte(arg(1))
+        reps = _byte(count)
         return [(0, 5 * reps)] if reps < 128 else []  # a signed byte: negative is `Out of memory.`
     if kw == "PEAKVALLEY":
-        return [(i, arg(2)) for i in (0, 1, 3) if i < len(args)] if arg(2) is not None else []
+        return [(i, count) for i in (0, 1, 3) if i < len(args)] if (count := arg(2)) is not None else []
     if kw in _SDM_MODE_VALUES:
-        if arg(1) is None or arg(3) is None or _byte(arg(3)) > 7:
+        reps, mode = arg(1), arg(3)
+        if reps is None or mode is None or _byte(mode) > 7:
             return []
-        return [(0, _SDM_MODE_VALUES[kw][_byte(arg(3))] * _byte(arg(1)))]
+        return [(0, _SDM_MODE_VALUES[kw][_byte(mode)] * _byte(reps))]
     if kw == "TGA":
-        if arg(2) is None or arg(3) is None or not (1 <= _byte(arg(2)) <= 5 and 1 <= _byte(arg(3)) <= 3):
+        first, second = arg(2), arg(3)
+        if first is None or second is None or not (1 <= _byte(first) <= 5 and 1 <= _byte(second) <= 3):
             return []
-        return [(0, _TGA_VALUES[_byte(arg(2)) - 1][_byte(arg(3)) - 1])]
+        return [(0, _TGA_VALUES[_byte(first) - 1][_byte(second) - 1])]
     if kw == "EC100":
         option = arg(2)
         if option is None or (option != 2718 and _byte(option) > 3):
@@ -1201,7 +1203,8 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
     types: dict[str, str] = {}
     arrays: set[str] = set()
 
-    def overruns(arg: S.Expr, need: int, negative: bool, kinds: tuple[str, ...]) -> bool:
+    def overruns(arg: S.Expr | None, need: int, negative: bool,
+                 kinds: tuple[str, ...]) -> TypeGuard[S.Name | S.Index]:
         if not isinstance(arg, (S.Name, S.Index)):
             return False
         shape = dims.get(arg.name.upper())
@@ -1238,7 +1241,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             dims, types, arrays = scope.dims, scope.types, scope.arrays
         dest = stmt.args[0]
         name = dest.name.upper()
-        bad: list[S.Expr] = []
+        bad: list[S.Name | S.Index] = []
         if kw in _SPA_SOURCE and len(stmt.args) > 2:
             swath = _int_value(stmt.args[1], env)
             if swath is not None:
@@ -1246,16 +1249,16 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                 if (fixed or per) and overruns(dest, fixed + per * swath, per > 0 and swath < 0,
                                                ("FLOAT",)):
                     bad.append(dest)
-                if overruns(stmt.args[2], swath, swath < 0, ("FLOAT", "LONG")):
-                    bad.append(stmt.args[2])
+                if overruns(source := stmt.args[2], swath, swath < 0, ("FLOAT", "LONG")):
+                    bad.append(source)
         elif kw == "SPLITSTR":  # a scalar destination takes one value (Reps > 1 overruns it)
             reps = _int_value(stmt.args[3], env) if len(stmt.args) > 3 else None
             if isinstance(dest, S.Name) and name in dims and name not in arrays and \
                     reps is not None and reps > 1 and \
                     types.get(name) in ("FLOAT", "STRING"):  # a structure takes Reps 3
                 bad.append(dest)
-        elif kw == "CSAT3" and len(stmt.args) > 1 and _int_value(stmt.args[1], env) is not None and \
-                _byte(_int_value(stmt.args[1], env)) >= 128:
+        elif kw == "CSAT3" and len(stmt.args) > 1 and (reps := _int_value(stmt.args[1], env)) is not None and \
+                _byte(reps) >= 128:
             # a negative signed-byte Reps fails the builder's allocation before the destination
             # is resolved; the compile ends there (round 31, docs/checker.md "Bridge channel spans")
             diags.error(stmt.line, "Out of memory.", stmt.file)
@@ -1265,8 +1268,8 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             # SDMGeneric checks any non-String destination, including a negative count
             kinds = ("FLOAT", "LONG", "BOOLEAN") if kw == "SDMGENERIC" else ("FLOAT",)
             for i, need in _builder_counts(kw, stmt.args, env):
-                if overruns(stmt.args[i], need, need < 0, kinds):
-                    bad.append(stmt.args[i])
+                if overruns(target := stmt.args[i], need, need < 0, kinds):
+                    bad.append(target)
         elif kw in _DEST_FIXED or kw in _DEST_PER_REP:
             negative = False
             if kw in _DEST_FIXED:
@@ -1298,13 +1301,13 @@ def _index_value(arg: S.Expr | None, env: consteval.Env | None) -> int | None:
     return v if isinstance(v, int) and not isinstance(v, bool) else None
 
 
-def _flat_offset(dest: S.Expr, shape: tuple[int, ...], env: consteval.Env | None = None) -> int | None:
+def _flat_offset(dest: S.Name | S.Index, shape: tuple[int, ...], env: consteval.Env | None = None) -> int | None:
     """0-based row-major offset of the destination's first element, or None if not literal
     (or, with `env`, constant)."""
     if isinstance(dest, S.Name) or not dest.args or all(a is None for a in dest.args):
         return 0
-    index = [_index_value(a, env) for a in dest.args]
-    if None in index:
+    index = [k for a in dest.args if (k := _index_value(a, env)) is not None]
+    if len(index) != len(dest.args):
         return None
     if len(index) == 1:
         return index[0] - 1 if 1 <= index[0] else None

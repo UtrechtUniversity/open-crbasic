@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from opencrbasic import cli, profiles
+from opencrbasic import syntax as S
 from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.commands import (CompilerOutput, compiler_output, render_table_fields,
                                   table_fields)
@@ -126,6 +127,7 @@ def test_table_fields_match_tdf_derivation(program):
     if not res.ok:
         assert tables == []
         return
+    assert isinstance(res.program, S.Program)
     tdf_tables, _, _ = build_tables(res.program, profiles.get("cr6"), dict(res.program.consts))
     assert [t.name for t in tables] == [t.name for t in tdf_tables]
     for info, ref in zip(tables, tdf_tables):

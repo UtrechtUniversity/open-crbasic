@@ -94,6 +94,7 @@ def observe(case_id, source, logger, use_cache):
     with tempfile.TemporaryDirectory() as directory:
         path = Path(directory) / "t.CR6"
         path.write_text(source, encoding="utf-8")
+        result = None
         for attempt in range(2):
             try:
                 result = tdftest.run_oracle_tdf(path, Path(directory),
@@ -103,12 +104,13 @@ def observe(case_id, source, logger, use_cache):
             except tdftest.oracle.OracleError:
                 if attempt:
                     raise
+    assert result is not None  # (the second failed attempt re-raised)
     case = {"id": f"{logger}-{case_id}", "logger": logger, "source": source,
             "expected_exit": result["exit"], "expected_stdout": result["stdout"].rstrip("\n")}
-    if result["ok"]:
+    if result["ok"] and (blob := result["tdf"]) is not None:
         names = re.findall(r"(?im)^\s*DataTable\s*\(\s*(\w+)", source)
         case["table_names"] = [name.upper() for name in names]
-        case["expected_tdf"] = user_tdf(tdf.parse(result["tdf"])[1], case["table_names"])
+        case["expected_tdf"] = user_tdf(tdf.parse(blob)[1], case["table_names"])
     return case
 
 
@@ -126,7 +128,7 @@ def main():
             case = observe(case_id, source, logger, not args.no_cache)
             result["cases"].append(case)
             print(case["id"], "accepted" if case["expected_exit"] == 0 else "rejected", flush=True)
-    if args.audit:
+    if recorded is not None:
         different = sum(a != b for a, b in zip(result["cases"], recorded["cases"]))
         different += abs(len(result["cases"]) - len(recorded["cases"]))
         if result["compiler_sha256"] != recorded["compiler_sha256"]:

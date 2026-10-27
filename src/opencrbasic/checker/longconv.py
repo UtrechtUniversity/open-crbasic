@@ -88,7 +88,7 @@ def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset(
     if isinstance(arg, S.Number) and arg.text.startswith("&"):
         if value > 0xFFFFFFFF:
             return None
-        return value - 2**32 if value >= 2**31 else int(value)
+        return int(value) - 2**32 if value >= 2**31 else int(value)
     if _hex_inside(arg):
         return None
     if not (_float_typed(arg, names) or value != int(value)):

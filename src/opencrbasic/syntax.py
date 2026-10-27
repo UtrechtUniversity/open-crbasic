@@ -16,6 +16,8 @@ if TYPE_CHECKING:
     from .lexer import Token
     from .source import LogicalLine
 
+type ConstValue = int | float | str  # a folded constant (see `consteval.value_of`)
+
 
 @dataclass
 class Node:
@@ -284,11 +286,11 @@ def cut_after_hash(st: Stmt) -> Stmt:
     then, other = getattr(st, "inline", None) or [], getattr(st, "inline_else", None) or []
     for body, name in ((then, "inline"), (other, "inline_else")):
         k = next((i for i, sub in enumerate(body) if hash_statement(sub)), None)
-        if k is not None:
-            fields = {name: body[:k] + [cut_after_hash(body[k])]}
+        if k is not None and isinstance(st, If):
+            cut = body[:k] + [cut_after_hash(body[k])]
             if name == "inline":
-                fields["inline_else"] = []
-            return dataclasses.replace(st, **fields)
+                return dataclasses.replace(st, inline=cut, inline_else=[])
+            return dataclasses.replace(st, inline_else=cut)
     return st
 
 
@@ -301,6 +303,6 @@ class Program(LoadProvenance):
     unclosed_if: bool = False  # a `#If` still open at the end of the file (before any `EndProg`)
     include_error_at: list[int] = field(default_factory=list)  # statement count when each reported
     # include error (extension, nested include) was read: where the CR300/CR350 cascade starts
-    consts: dict[str, object] = field(default_factory=dict)   # name (upper) -> resolved value,
+    consts: dict[str, ConstValue] = field(default_factory=dict)   # name (upper) -> resolved value,
     # for every `Const` the parser could constant-fold in an active branch; `checker.py` reuses
     # this (via `consteval.Env`) instead of re-walking the program to rebuild it.

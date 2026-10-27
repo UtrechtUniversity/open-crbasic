@@ -244,6 +244,7 @@ def measure_warm(programs: list[Path], runs: int) -> dict:
             start = time.perf_counter()
             last = analyze(AnalysisRequest(entry))
             times.append((time.perf_counter() - start) * 1000)
+        assert last is not None, "runs must be at least 1"
         out[path.name] = {**summary(times), "diagnostics": len(last.diagnostics), "ok": last.ok}
         _progress(f"warm {path.name}: p50 {out[path.name]['p50_ms']} ms")
     return out
@@ -276,7 +277,7 @@ def measure_positions(count: int, help_dir: Path | None) -> dict:
                              lambda r: len(r) > 0),
         "folding_ranges": (lambda: editing.folding_ranges(text, PROFILE), whole, lambda r: len(r) > 0),
     }
-    out = {"positions": len(spots), "signature_positions": len(sig_args),
+    out: dict[str, object] = {"positions": len(spots), "signature_positions": len(sig_args),
            "call_positions_available": len(call_spots),
            "help_directory": str(help_dir) if help_dir else None}
     if provider is not None:
@@ -296,9 +297,10 @@ def measure_positions(count: int, help_dir: Path | None) -> dict:
             res = fn(*args)
             times.append((time.perf_counter() - start) * 1000)
             hits += bool(hit(res))
-        out[name] = {**summary(times), "hits": hits, "first_call_ms": round(first_ms, 3),
-                     "first_call_hit": bool(hit(first))}
-        _progress(f"position {name}: p50 {out[name]['p50_ms']} ms, hits {hits}/{len(args_list)}")
+        stats = {**summary(times), "hits": hits, "first_call_ms": round(first_ms, 3),
+                 "first_call_hit": bool(hit(first))}
+        out[name] = stats
+        _progress(f"position {name}: p50 {stats['p50_ms']} ms, hits {hits}/{len(args_list)}")
     return out
 
 

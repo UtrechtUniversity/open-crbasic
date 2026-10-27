@@ -111,7 +111,7 @@ def test_unsaved_new_include_resolves(tmp_path):
     res = analyze(AnalysisRequest(entry, overlays={inc: LIB}))
     assert res.ok and not inc.exists()
     assert res.dependencies.reads[inc] is not None
-    assert "Lib.crb" in res.dependencies.listings[tmp_path]
+    assert "Lib.crb" in (res.dependencies.listings[tmp_path] or [])
 
 
 def test_missing_include_is_recorded_as_miss(tmp_path, monkeypatch):

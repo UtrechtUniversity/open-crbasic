@@ -62,7 +62,8 @@ def test_public_multi_with_types_and_array():
     assert len(d.vars[2].dims) == 2 and d.vars[2].type == "LONG"
     assert d.vars[3].type == "STRING"
     assert isinstance(d.vars[3].string_size, S.Number) and d.vars[3].string_size.value == 32
-    assert isinstance(required(d.vars)[4].init[0], S.Number) and d.vars[4].init[0].value == 5
+    init = required(d.vars[4].init)
+    assert isinstance(init[0], S.Number) and init[0].value == 5
 
 
 def test_public_array_literal_init():
@@ -81,8 +82,9 @@ def test_const_typed_and_array():
     assert isinstance(c, S.ConstDecl) and c.type == "LONG"
     prog, _ = parse("Const A = {1,2,3}\n")
     c2 = prog.statements[0]
-    assert isinstance(as_node(c2, S.ConstDecl).value, S.ArrayLiteral)
-    assert [as_valued(e).value for e in c2.value.items] == [1, 2, 3]
+    literal = as_node(c2, S.ConstDecl).value
+    assert isinstance(literal, S.ArrayLiteral)
+    assert [as_valued(e).value for e in literal.items] == [1, 2, 3]
 
 
 def test_alias_multi_target():
@@ -205,8 +207,9 @@ def test_if_then_optional_for_block_form():
 def test_if_inline_no_else():
     node = one("If NOT DebugTrace Then ExitFunction\n", S.If)
     assert isinstance(node, S.If)
-    assert len(required(node.inline)) == 1
-    assert isinstance(required(node.inline)[0], S.Instruction) and node.inline[0].keyword == "EXITFUNCTION"
+    inline = required(node.inline)
+    assert len(inline) == 1
+    assert isinstance(inline[0], S.Instruction) and inline[0].keyword == "EXITFUNCTION"
     assert node.inline_else is None
 
 
@@ -277,7 +280,8 @@ def test_for_next():
 def test_next_scan_two_word():
     ss = stmts("Scan (1,Sec,3,0)\n  X = 1\nNext Scan\n")
     nxt = ss[-1]
-    assert as_node(nxt, S.Instruction).keyword == "NEXT" and as_node(nxt, S.Instruction).args[0].name == "Scan"
+    word = as_node(nxt, S.Instruction).args[0]
+    assert as_node(nxt, S.Instruction).keyword == "NEXT" and isinstance(word, S.Name) and word.name == "Scan"
     ss2 = stmts("Scan (1,Sec,3,0)\n  X = 1\nNextScan\n")
     assert as_node(ss2[-1], S.Instruction).keyword == "NEXTSCAN" and as_node(ss2[-1], S.Instruction).args == []
 

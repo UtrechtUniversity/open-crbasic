@@ -274,7 +274,10 @@ def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple
         if units is None:
             return None
         total = i32(total + units)
-    return total, True, m.integ_time(m.integ_code(fn)) // 100
+    code = m.integ_code(fn)
+    if code is None:
+        return None
+    return total, True, m.integ_time(code) // 100
 
 
 def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile

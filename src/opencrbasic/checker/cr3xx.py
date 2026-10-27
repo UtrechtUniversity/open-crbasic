@@ -7,6 +7,8 @@ evidence: `docs/loggers.md`.
 
 import collections
 import dataclasses
+from collections.abc import Set as AbstractSet
+from typing import TypedDict
 
 import re
 
@@ -374,7 +376,7 @@ def _tainted_prose_instruction(stmt: S.Unparsed, profile) -> str | None:
     a token: the surplus second parameter; `None`: not such a line."""
     lead = _INSTRUCTION_PROSE_RE.match(stmt.text or "")
     info = profile.instructions.get(lead.group(1).upper()) if lead else None
-    if not info or not info["params"] or lead.group(1).upper() in ("DATA", "DATALONG"):
+    if not lead or not info or not info["params"] or lead.group(1).upper() in ("DATA", "DATALONG"):
         return None
     codes, rest = info["params"], lead.group(2)
     if codes[0] % 100 == 11 and "," not in rest and len(codes) > 1 and codes[1] < 100:
@@ -682,7 +684,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
     if profile.name not in ("cr300", "cr350"):
         return
     types: dict[str, str] | None = None
-    known = None
+    scoped: dict[int, dict[str, str]] = {}
+    known = ds = None
     params: dict[str, str] = {}  # the enclosing routine's parameters hide a global (round 31)
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
     for stmt in program.statements:
@@ -962,12 +965,12 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
     for st in program.statements:
         if id(st) in dropped:
             continue
-        statements.append(dataclasses.replace(st, params=[]) if id(st) in tainted_subs else st)
+        statements.append(dataclasses.replace(st, params=[]) if isinstance(st, S.SubDef) and id(st) in tainted_subs else st)
     modified = dataclasses.replace(program, statements=statements)
     unregistered = expressions._known_names(program, profile) - \
         expressions._known_names(modified, profile)
     functions = {st.name.upper() for st in program.statements
-                 if id(st) in tainted_subs and st.keyword == "FUNCTION"}
+                 if isinstance(st, S.SubDef) and id(st) in tainted_subs and st.keyword == "FUNCTION"}
     affected: set[tuple[int, str]] = set()
     for st in program.statements[taint_at + 1:]:
         if id(st) in dropped or id(st) in rewritten or isinstance(st, S.SubDef):
@@ -1235,6 +1238,7 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
         # a line that starts with a comparison operator reads the next word as its first operand
         # and stops there (oracle, CR300/CR350, 2026-10-11: `= Year   ` -> `Year`)
         word = _LINE_WORD_RE.match(text, lead_op.end())
+        assert word is not None  # (`lead_op` ends before a letter)
         return [word.group(0)] if word.group(0).upper() not in known else []
     # The chain starts at the first word or number (a leading `2 when the` reports `when`).
     pos = len(text) - len(text.lstrip(" \t"))
@@ -1333,7 +1337,7 @@ def _adjacent_operands(arg: str) -> bool:
 _ADJACENT_TABLE_SOURCES = frozenset({"SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "STDDEV"})
 
 
-def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variables: frozenset,
+def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variables: AbstractSet[str],
                                 profile, in_table: bool) -> list[str] | None:
     params = record["params"]
     args = _split_args_quoted(inner)
@@ -1599,7 +1603,7 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
             return False
         key = (d.line, d.file)
         idxs = [i for i, st in enumerate(stmts) if (st.line, st.file) == key]
-        if any(isinstance(stmts[i], S.Unparsed) and stmts[i].reason == structure._FOR_MISSING
+        if any(isinstance(st := stmts[i], S.Unparsed) and st.reason == structure._FOR_MISSING
                for i in idxs):
             return False  # a `For` without `=` is never hidden by names (oracle, CR300, 2026-10-10)
         short = [i for i in idxs if is_short(stmts[i])]
@@ -1667,7 +1671,9 @@ def check_for_header(program: S.Program, profile, diags: Diagnostics) -> None:
         if known is None:
             known = prose_known(program, profile)
         here = known - declared_later(first_declarations(program), stmt.line, stmt.file)
-        start = structure._FOR_TO_RE.match(text).start(1)
+        header = structure._FOR_TO_RE.match(text)
+        assert header is not None  # (`_for_header_incomplete` matched it)
+        start = header.start(1)
         eq = re.search(r"=(.*?)\sTo\s", text[:start], re.I | re.S)
         words = ([] if is_init or not eq else _leading_unknown_words(eq.group(1), here)) + \
             _leading_unknown_words(echo, here)
@@ -1715,6 +1721,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
     if not unparsed_lines:
         return
     known: set[str] | None = None
+    first: dict[str, tuple[str, int]] | None = None
     new_items: list[Diagnostic] = []
     changed = False
     for d in diags.items:
@@ -1725,6 +1732,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 in unparsed_text):
             if known is None:
                 known = prose_known(program, profile)
+            if first is None:
                 first = first_declarations(program)
             here = known - declared_later(first, d.line, d.file)
             text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
@@ -1758,7 +1766,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     re.match(r"(?i)\s*(?:DO|LOOP)\b", bare) and any(
                         e.severity == "error" and e.line and e.line < d.line for e in diags.items)
                     ) and (empty := structure._pass1_scan(
-                    bare, structure._Everything(), profile)) in (("pass1", "missing_expr"),
+                    bare, structure._Everything(), profile)) is not None and empty in (("pass1", "missing_expr"),
                                                                  ("pass1", "fallback")):
                 # a block keyword with no condition at all: the same pass-1 verdicts as CR6/CR1000X
                 # (oracle, CR300/CR350, 2026-10-11: bare `If`/`ElseIf`/`Case`/`Loop While` are
@@ -1779,7 +1787,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 continue
             call = re.match(r"\s*([A-Za-z_]\w*)\s*\((.*)$", bare, re.S)
             cinfo = profile.instructions.get(call.group(1).upper()) if call else None
-            if cinfo and cinfo["params"] and call.group(1).upper() not in _CALL_ADJACENT_EXCLUDED and (
+            if call and cinfo and cinfo["params"] and call.group(1).upper() not in _CALL_ADJACENT_EXCLUDED and (
                     found := _call_adjacent_arg_messages(call.group(2), cinfo, here,
                                                          symbols.declared_variable_names(program),
                                                          profile, _inside_table(program, d.line, d.file))) is not None:
@@ -1787,7 +1795,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     new_items.append(Diagnostic("error", d.line, message, d.file))
                 changed = True
                 continue
-            if cinfo and cinfo["params"] and cinfo["params"][0] % 100 not in (6, 11) and call.group(
+            if call and cinfo and cinfo["params"] and cinfo["params"][0] % 100 not in (6, 11) and call.group(
                     1).upper() not in ("DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION", "IF", "ELSEIF",
                                       "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "DO", "LOOP") and \
                     (carg := _split_top_commas(call.group(2))[0].rstrip()) and re.search(
@@ -1809,7 +1817,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 continue
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
-            if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
+            if lead and info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
                     and not (structure.condition_part(text) or "").strip() \
                     and not structure.inline_if_condition(text):
                 # `Battery sensor using the`: the instruction reads the prose as its argument
@@ -1871,7 +1879,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             if cond_text is None and re.match(r"(?i)\s*if\b", text):
                 cond_text = structure.inline_if_condition(text) or None  # (a one-line `If`'s condition)
             words = _leading_unknown_words(text if cond_text is None else cond_text, here, callables)
-            if needs_paren:
+            if needs_paren and fw:
                 # the operands after a parenthesis-less function are named (oracle, CR300,
                 # 2026-10-10: `Timer is bar baz` -> `bar`, `baz`)
                 rest = text[fw.end():]  # (a leading `is` counts as an operand, never named)
@@ -1910,8 +1918,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     # `If X Y Then Y = 1`: an unreadable condition is reported alone, as for a block
                     # `If` (oracle, CR300/CR350 and CR6, 2026-10-10)
                     scan_text = "If " + inline + "Then"
-                    first = structure._pass1_scan(scan_text, structure._Everything(), profile)
-                    if first and first[0] == "pass1" and first[1] in ("incomplete", "no_matching", "fallback"):
+                    inline_scan = structure._pass1_scan(scan_text, structure._Everything(), profile)
+                    if inline_scan and inline_scan[0] == "pass1" and inline_scan[1] in ("incomplete", "no_matching", "fallback"):
                         cond = inline
                 verdict = (structure._pass1_scan(scan_text, structure._Everything(), profile)
                            if cond is not None
@@ -1923,8 +1931,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 head = {"invalid_assignment": "Invalid assignment in expression: ",
                         "incomplete": "Incomplete expression: ",
                         "no_matching": "No Matching, or out of place ) in expression: ",
-                        "expects_comma": "Expression expects , : "}.get(
-                            verdict[1] if verdict and verdict[0] == "pass1" else None)
+                        "expects_comma": "Expression expects , : "}.get(verdict[1]) \
+                    if verdict and verdict[0] == "pass1" else None
                 call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)", stmt.text)
                 juxt = call and stmt.reason != "lex error: unterminated string" and re.search(
                     r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]", call.group(2), re.I)
@@ -1993,7 +2001,14 @@ _ARITY_PREFIXES = {"many": "No Matching, or out of place ) in expression: ",
                    "empty": "Invalid, or out of place expression: "}
 
 
-def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: dict) -> None:
+class _ArityState(TypedDict, total=False):
+    names: list[str]
+    kind: str
+    bad: bool
+    stop: bool
+
+
+def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: _ArityState) -> None:
     """Left-to-right parse-order walk collecting `state["names"]` (undefined names met) until a
     built-in call with too many arguments stops it at its first surplus argument
     (`state["kind"] == "many"`); too few arguments only mark `state["kind"] == "few"`."""
@@ -2060,7 +2075,7 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
                and d.severity == "error"]
         if known is None:
             known = expressions._known_names(program, profile)
-        state = {"names": []}
+        state: _ArityState = {"names": []}
         for e in exprs:
             _arity_walk(e, known, profile, state)
         kind = state.get("kind")
@@ -2364,7 +2379,7 @@ def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -
             if known is None:
                 known = prose_known(program, profile)
             here = known - declared_later(first_declarations(program), stmt.line, stmt.file) \
-                - getattr(diags, "cascade_gone", set())
+                - diags.cascade_gone
             words = _leading_unknown_words(m.group(1), here) + (
                 [m.group(2)] if m.group(2).upper() not in here else [])
             names = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w),
@@ -2499,7 +2514,7 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics, early:
         return
     types = symbols.declared_variable_types(program)
     known = expressions._known_names(program, profile)
-    gone = getattr(diags, "cascade_gone", set())
+    gone = diags.cascade_gone
     params: dict[str, str | None] = {}  # the enclosing Sub/Function's plain parameters: name -> type
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):

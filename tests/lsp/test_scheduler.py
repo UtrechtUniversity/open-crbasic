@@ -99,16 +99,16 @@ def test_cancelled_isolated_retry_returns_every_permit():
     async def scenario() -> None:
         session = Session(lambda *a: None, workers=2)
         hold = asyncio.Event()
-        outcomes: dict[str, object] = {"H": "hold", "B": session_mod._BROKEN,
-                                       "C": session_mod._BROKEN, "N": ServerError("normal")}
+        outcomes: dict[str, ServerError | session_mod._Broken] = {
+            "B": session_mod._BROKEN, "C": session_mod._BROKEN, "N": ServerError("normal")}
         calls: list[str] = []
 
-        async def attempt(entry, snap):
+        async def attempt(entry: Entry, snap: Snapshot) -> ServerError | session_mod._Broken:
             calls.append(entry.path.name)
-            outcome = outcomes[entry.path.name]
-            if outcome == "hold":
+            if entry.path.name == "H":
                 await hold.wait()
                 return ServerError("held")
+            outcome = outcomes[entry.path.name]
             if entry.path.name == "C" and calls.count("C") == 2:
                 return ServerError("recovered")
             return outcome

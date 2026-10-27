@@ -155,7 +155,9 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
             diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
                         stmt.file)
         elif shape == "if":
-            rest = re.search(r"(?i)\bThen\b\s*(.*)$", stmt.text).group(1)
+            then = re.search(r"(?i)\bThen\b\s*(.*)$", stmt.text)
+            assert then is not None  # (`unterminated_string_shape` found it)
+            rest = then.group(1)
             diags.error(stmt.line, "String without end quote", stmt.file)
             diags.error(stmt.line, f"Invalid, or out of place expression: {rest}:endif.",
                         stmt.file)
@@ -1016,7 +1018,7 @@ def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None
     `1` Sec scan is clean because it truncates to `1`).
     """
     us = _interval_us(interval_arg, units_arg, env, truncate_units)
-    if us is None:
+    if us is None or units_arg is None:
         return None
     try:
         value = consteval.value_of(interval_arg, env)
@@ -1301,7 +1303,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
         positions = _PRECISION_VARIABLE_POSITIONS.get(kw)
         if not positions or kw not in profile.instructions:
             continue
-        if known is None:
+        if known is None or variable_names is None:
             known = _known_names(program, profile)
             variable_names = symbols.declared_variable_names(program)
         record = profile.instructions[kw]
@@ -1439,7 +1441,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
             if instances is not None and instances < 0:
                 continue  # (`-1` -> `Out of memory.`, not modelled)
             if variable_type(args[at]) is not None or instances == 0 or (
-                    isinstance(args[at], S.Name) and args[at].name.upper() in variable_names):
+                    isinstance(instance_arg := args[at], S.Name) and instance_arg.name.upper() in variable_names):
                 diags.error(stmt.line, "Optional number of distinct instances must be a "
                             "constant of type long.", stmt.file)
             if args[at + 1] is None:
@@ -2000,7 +2002,7 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
                 and isinstance(stmt, S.Assignment):
             args = []  # `X = EmailSend` with its arguments wrapped onto the next line
         elif isinstance(stmt, S.Assignment):
-            nested = [n for n in _index_nodes(call) if n.name.upper() in _EMAIL_FUNCTIONS
+            nested = [n for n in _index_nodes(stmt.value) if n.name.upper() in _EMAIL_FUNCTIONS
                       and len(n.args) >= 9]  # inside a larger expression (oracle: `...+1`)
             if not nested:
                 continue
@@ -2170,7 +2172,7 @@ def check_sdi12_nan_fill(program: S.Program, profile, diags: Diagnostics, env) -
             total, offset, _, size = alias
             if isinstance(dest, S.Index) and dest.args:
                 k = _index_value(dest.args[0], env) if len(dest.args) == 1 else None
-                if k is None or not 1 <= k <= size:
+                if k is None or size is None or not 1 <= k <= size:
                     continue
                 offset += k - 1
         elif kind is None or kind.startswith("STRING"):
@@ -2231,7 +2233,7 @@ def check_terminal_conflicts(program: S.Program, profile, diags: Diagnostics, en
     sdi_kind: dict[int, str] = {}
     for st in program.statements:    # (a `SerialOpen` statement parses as a `Call`)
         if isinstance(st, S.Call) and st.name.upper() == "SERIALOPEN" and not st.explicit and st.args \
-                and (t := serial.get(value(st.args[0]))):
+                and (port := value(st.args[0])) is not None and (t := serial.get(port)):
             owner[t] = owner[t + 1] = "serial"
     for st in program.statements:
         if not isinstance(st, S.Instruction):
@@ -2566,7 +2568,7 @@ def cdm_unsupported_module(stmt: S.Instruction, env) -> str | None:
         kind = _cdm_type_value(consteval.value_of(stmt.args[0], env))
     except consteval.NotConstant:
         return None
-    return _CDM_MODULE_NAMES.get(kind) if kind not in _CDM_PORT_MODULES else None
+    return None if kind is None or kind in _CDM_PORT_MODULES else _CDM_MODULE_NAMES.get(kind)
 
 
 def _delay_option(stmt: S.Instruction, env):
@@ -2640,7 +2642,7 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
         if option in (1, 2, 3) and len(args) > 6:
             known = args[6]
             shape = dims.get(known.name.upper()) if dims is not None and isinstance(known, S.Index) else None
-            outside = bool(shape) and len(shape) == 1 and len(known.args) == 1 and \
+            outside = bool(shape) and isinstance(known, S.Index) and len(shape) == 1 and len(known.args) == 1 and \
                 isinstance(known.args[0], S.Number) and isinstance(known.args[0].value, int) and \
                 not 1 <= known.args[0].value <= shape[0]     # (printed after `Variable K out of bounds.`)
             bad = outside or _fieldcal_bad_variable(known) or isinstance(known, S.Unary) or (
@@ -2654,10 +2656,13 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
             sizes = []
             for var in (known, measure):
                 shape = dims.get(var.name.upper()) if isinstance(var, (S.Name, S.Index)) else None
-                sizes.append(None if shape is None or len(shape) > 1 or
-                             types.get(var.name.upper()) == "STRING" else shape[0])
+                sizes.append(None if shape is None or len(shape) > 1 or not isinstance(var, (S.Name, S.Index))
+                             or types.get(var.name.upper()) == "STRING" else shape[0])
+            if None in sizes or sizes[0] == sizes[1]:
+                continue
+            assert isinstance(known, (S.Name, S.Index)) and isinstance(measure, (S.Name, S.Index))
             text = f"{known.name} and {measure.name} must be declared the same size."
-            if None not in sizes and sizes[0] != sizes[1] and text not in size_reported:
+            if text not in size_reported:
                 size_reported.add(text)     # (printed once per program, oracle 2026-10-12)
                 diags.error(stmt.line, text, stmt.file)
 
@@ -2871,7 +2876,7 @@ def check_avw200_scan_time(program: S.Program, profile, diags: Diagnostics, env)
         return
     scan = None            # the open main-sequence Scan statement
     slow = False
-    sums: list[tuple[S.Instruction, int, list]] = []   # (scan, interval seconds, [(stmt, reps)])
+    sums: list[tuple[S.Instruction, int | None, list]] = []   # (scan, interval seconds, [(stmt, reps)])
     for st in stmts:
         if not isinstance(st, S.Instruction):
             if scan is not None:

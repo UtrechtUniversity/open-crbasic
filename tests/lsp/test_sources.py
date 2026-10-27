@@ -18,7 +18,7 @@ def test_disk_source_read_and_list(tmp_path):
     assert disk.read(tmp_path / "a.CR6") == b"x"
     assert disk.read(tmp_path / "missing") is None
     assert disk.read(tmp_path / "sub") is None
-    assert sorted(disk.list_dir(tmp_path)) == ["Lib.crb", "a.CR6"]
+    assert sorted(disk.list_dir(tmp_path) or []) == ["Lib.crb", "a.CR6"]
     assert disk.list_dir(tmp_path / "nodir") is None
     assert disk.list_dir(tmp_path / "a.CR6") is None
 

@@ -10,13 +10,15 @@ hook's own effect.
 import pytest
 
 from opencrbasic import checker, parser, profiles
+from opencrbasic import syntax as S
+from opencrbasic.diagnostics import Diagnostics
 from opencrbasic.checker import cr3xx
 from opencrbasic.compiler import CompileResult
 
 PROFILE = profiles.get("cr300")
 
 
-def compile_result(text: str) -> CompileResult:
+def compile_result(text: str) -> tuple[S.Program, Diagnostics, CompileResult]:
     program, diags = parser.parse_text(text, "t.cr300", profile=PROFILE)
     result = CompileResult("t.cr300", PROFILE, diags)
     checker.check(program, PROFILE, diags, result)
@@ -614,3 +616,11 @@ def test_unknown_call_stops_at_a_table_member(call, expected):
             f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {call}\n  NextScan\nEndProg\n")
     _, diags, _ = compile_result(text)
     assert [d.message for d in diags.errors] == expected
+
+
+def test_inline_if_scan_keeps_later_prose_lines_checkable():
+    # An unreadable one-line `If` condition followed by a prose line: the inline scan once
+    # replaced the first-declaration map, and the later line crashed the checker (round 47).
+    _, diags, _ = compile_result("Public Y\nBeginProg\n  Scan (1,Sec,0,0)\n    If Y Z Then Y = 1\n"
+                                 "    foo bar baz\n  NextScan\nEndProg\n")
+    assert "Internal error: unable to compile program." not in [d.message for d in diags.items]

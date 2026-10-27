@@ -57,6 +57,7 @@ def rerecord(cr6_path: Path) -> bool:
     with tempfile.TemporaryDirectory(prefix="fuzz-rerecord-") as tmp:
         path = fuzz.materialise(fuzz.Seed("replay", cr6_path, fuzz.CRBASIC_DIR), lines, Path(tmp),
                                 cr6_path.name)
+        their_exit = their_out = None
         for attempt in range(3):
             try:
                 their_exit, their_out = fuzz.run_theirs(path, profile, Path(tmp))

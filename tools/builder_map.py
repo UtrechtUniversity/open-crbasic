@@ -31,7 +31,7 @@ def main() -> None:
     args = ap.parse_args()
 
     pe = pefile.PE(str(args.exe), fast_load=True)
-    base = pe.OPTIONAL_HEADER.ImageBase
+    base = getattr(pe.OPTIONAL_HEADER, "ImageBase")
 
     def target(va: int) -> int:
         code = pe.get_data(va - base, 5)
