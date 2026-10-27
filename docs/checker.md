@@ -8408,3 +8408,33 @@ Explicit remaining fixture gaps: quoted `Then` inside a condition operand (eight
 all four profiles), malformed one-line `ElseIf` (four), pre-existing `Public = 1` parsing/gating
 (four), and a later inline-body symbol diagnostic after an unknown CR6/CR1000X condition (two).
 These do not change acceptance in the observed matrix. No logger runtime behavior was tested.
+
+## Quoted routine-parameter names (round 45)
+
+Oracle, 2026-10-27; fixture `tests/fixtures/r45_quoted_parameters.json`: 172 observations across
+CR6, CR1000X, CR300 and CR350, 132 exact and 40 strict expected failures.
+
+A complete quoted token without whitespace or parentheses in a `Sub` or `Function` parameter
+position is accepted as a literal declaration name, including its quotes. `Sub S("Q")` does not
+introduce the ordinary identifier `Q`: an `X = Q` body reports `Invalid symbol in expression:
+X = Q.` on CR6/CR1000X and `Q is not defined.` on CR300/CR350. The header itself is accepted.
+An unused quoted parameter, a call supplying its argument, a typed or dimensioned quoted
+parameter, an empty quoted name, an embedded comma or doubled quote, and an optional quoted
+parameter with a default all retain the accepted header. Ordinary parameters before and after
+it, globals and constants with the unquoted name, and routine-call arity retain their behavior.
+This fixes fresh round-42 reproducer `cr6/message_diff/0a9af24e1266`'s misplaced header error.
+
+CR6 trace: `Sub` and `Function` share thunk `0x403ff8` -> builder `FUN_00451f70`.
+The pass-1 resolver `FUN_004baf00`, cases 12/35, reads the header using `FUN_004b9700`, splits
+its declaration using raw whitespace delimiters, and registers it through `FUN_004d3560`.
+The latter checks an initial digit and otherwise copies the name up to whitespace or `(`;
+it does not remove quotation marks. This supports retaining the raw token spelling in
+`parser._parse_param`, without changing ordinary identifier parsing or expression strings.
+
+The bounded rule excludes whitespace and parentheses inside a quoted token: the reference
+interprets them through its raw declaration/dimension parser. Its diagnostic for initializing a
+required quoted parameter is also unmodelled, so the existing rejection is retained rather than
+accepting that header. Other strict gaps preserved in the matrix are numeric/signed parameter
+names, empty parameter slots, whitespace-split declarations, and unterminated quoted parameters.
+The 40 expected failures are these ten four-profile boundaries; none is silently treated as
+matching. No logger runtime behavior was tested.

@@ -1832,9 +1832,17 @@ class _Parser:
                          return_type=return_type)
 
     def _parse_param(self, p: _TokStream, line: int, file: str) -> S.Param:
-        if p.is_ident("OPTIONAL"):
+        optional = p.is_ident("OPTIONAL")
+        if optional:
             p.next()
-        name_tok = p.expect_ident()
+        # Routine headers read a quoted token as the literal declaration name, including
+        # quotes, not as the identifier inside it (oracle, all four loggers, round 45).
+        # Whitespace and parentheses inside the token enter the reference's raw declaration
+        # parser; those shapes are outside this bounded rule.
+        if p.peek().kind == "STRING" and not re.search(r"[\s()]", p.peek().text):
+            name_tok = p.next()
+        else:
+            name_tok = p.expect_ident()
         dims = 0
         dim_exprs: list[S.Expr] = []
         if p.is_op("("):
@@ -1860,6 +1868,10 @@ class _Parser:
                 strsize = self._parse_expr(p, line, file)
         default = None
         if p.is_op("="):
+            if name_tok.kind == "STRING" and not optional:
+                # Required quoted parameters cannot be initialized. Keep the existing
+                # rejection until the profile-specific header diagnostic is modelled.
+                raise _ParseError("required quoted parameter cannot be initialized")
             p.next()
             default = self._parse_expr(p, line, file)
         return S.Param(name=name_tok.text, by_ref=None, type=vtype, string_size=strsize,

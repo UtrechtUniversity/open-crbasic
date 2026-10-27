@@ -3133,7 +3133,7 @@
 {
 "logger": "cr350",
 "file": "tests/corpus/fuzz/cr350/message_diff/b742a625c540.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr350",
@@ -5018,7 +5018,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/02dc7bbfed0e.CR6",
-"impact": "we report an earlier first location"
+"impact": "same first error, later diagnostics differ"
 },
 {
 "logger": "cr1000x",
@@ -11428,7 +11428,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/9ef49412d39d.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -11943,7 +11943,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/c713ff7ea6c2.CR6",
-"impact": "we miss the reference's first error"
+"impact": "exact"
 },
 {
 "logger": "cr6",
@@ -12023,7 +12023,7 @@
 {
 "logger": "cr6",
 "file": "tests/corpus/fuzz/cr6/message_diff/cde3028b5353.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr6",

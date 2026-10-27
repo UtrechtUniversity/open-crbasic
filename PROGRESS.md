@@ -1,8 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-26 after development round 44**
-(unreadable one-line If conditions). Round 43 is committed at `2ab22027`; round 44 is
-uncommitted. Inspect `git status` before editing; use Git to check publication state.
+Current compiler state and handoff, updated **2026-10-27 after development round 45**
+(quoted routine-parameter names). Previous round 44 is committed at `9826fd93`.
+Inspect `git status` before editing; use Git to check publication state.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
 decision of 2026-10-24 makes verdict safety, execution mode and the first error the priorities;
@@ -20,15 +20,16 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 54,812 passed, 311 skipped, 388 strict xfail (round 44) |
-| `pytest -q -m server` | 163 passed (round 44) |
+| `pytest -q -n 4 -m 'not server'` | 54,944 passed, 311 skipped, 428 strict xfail (round 45) |
+| `pytest -q -m server` | 163 passed (round 45) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
 | Earlier alias fixtures (r26–r30) | r26 282/282, r27 152/152, r28 368/368, r29 headers 180/180, r29 Strings 320/320, r29 review 104/104, r30 dimensioned 180/180 match; r30 review 92 match, 8 strict xfail |
 | Round-24 destination/settling/FieldNames fixture | 674 observations: 672 match, 2 strict xfail |
-| Saved fuzz replay, `fuzz_replay.py --recorded` (round 44) | Round 44, 3,338 inputs: 2,565 exact; two more CR1000X same-location messages become exact, other impact counts unchanged from round 43; no regression, baseline refreshed for those rows. Round 43, 3,338 inputs: 2,563 exact; one same-location message becomes exact, all other impact counts unchanged from round 41; no regression, baseline refreshed for that row. Round 41, 3,338 inputs: 2,562 exact; CR6/CR1000X same-location messages 112, first-error misses 24, earlier first locations 6; 43 false accepts, no false reject; gate against the round-40 baseline passes, baseline refreshed. Round 40, 3,338 inputs after re-recording the 121 sibling reproducers: 2,552 exact; CR6/CR1000X first-error misses 24, earlier first locations 6, same-location messages 133; 43 false accepts, no false reject; one stale recording (operational); gate against the round-39 baseline passes, baseline refreshed. Round 39, 3,338 inputs: 2,512 exact; CR6/CR1000X first-error misses 32 and earlier first locations 6 (58 and 13 before); 43 false accepts, no false reject; gate against the round-38 baseline passes, baseline refreshed. Round 38, 3,338 inputs (43 new from seeds 429-432): 2,455 exact, 43 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 7), no false reject; the gate against the round-37 baseline passes with no regression, and the baseline is refreshed. Round 37, 3,295 inputs: 2,439 exact, 43 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 7), no false reject; the gate against the round-36 baseline passes with no regression, and `tests/replay_baseline.json` is refreshed. Round 36, 3,295 inputs (74 new from seeds 425-428): 2,436 exact, 44 false accepts (CR6 18, CR1000X 10, CR300 9, CR350 7), no false reject; the gate against the refreshed `tests/replay_baseline.json` passes, and no round-35 row regressed (one CR350 false accept became exact). Round 35, 3,221 inputs (63 new from seeds 421-424): 2,423 exact, 44 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 8), no false reject, gate passes. Round 34, 3,158 inputs: 2,410 exact and 35 false accepts (CR6 11, CR1000X 7, CR300 9, CR350 8), no false reject; the gate against `tests/replay_baseline.json` passes. Round 33, whose output was unchanged from round 31 on every input: 2,390 exact; 48 false accepts; no false reject; one mode and 15 warning differences; 60 missing the first error, 35 earlier first location, 220 same location with a different message, 370 later-diagnostic or order differences; 19 operational (one recorded result is a Wine page fault). The two extra first-error misses against the round-31 table are the `hang/dd9cc650482d` reproducers, whose recorded reference result differs from the round-31 rerun |
-| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 44) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
+| Saved fuzz replay, `fuzz_replay.py --recorded` (round 45) | Round 45, 3,338 inputs: 2,569 exact (four more); CR6/CR1000X first-error misses 23, earlier first locations 5, same-location messages 107; verdict/mode counts unchanged; regression gate passes and baseline records five improvements. Round 44, 3,338 inputs: 2,565 exact; two more CR1000X same-location messages become exact, other impact counts unchanged from round 43; no regression, baseline refreshed for those rows. Round 43, 3,338 inputs: 2,563 exact; one same-location message becomes exact, all other impact counts unchanged from round 41; no regression, baseline refreshed for that row. Round 41, 3,338 inputs: 2,562 exact; CR6/CR1000X same-location messages 112, first-error misses 24, earlier first locations 6; 43 false accepts, no false reject; gate against the round-40 baseline passes, baseline refreshed. Round 40, 3,338 inputs after re-recording the 121 sibling reproducers: 2,552 exact; CR6/CR1000X first-error misses 24, earlier first locations 6, same-location messages 133; 43 false accepts, no false reject; one stale recording (operational); gate against the round-39 baseline passes, baseline refreshed. Round 39, 3,338 inputs: 2,512 exact; CR6/CR1000X first-error misses 32 and earlier first locations 6 (58 and 13 before); 43 false accepts, no false reject; gate against the round-38 baseline passes, baseline refreshed. Round 38, 3,338 inputs (43 new from seeds 429-432): 2,455 exact, 43 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 7), no false reject; the gate against the round-37 baseline passes with no regression, and the baseline is refreshed. Round 37, 3,295 inputs: 2,439 exact, 43 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 7), no false reject; the gate against the round-36 baseline passes with no regression, and `tests/replay_baseline.json` is refreshed. Round 36, 3,295 inputs (74 new from seeds 425-428): 2,436 exact, 44 false accepts (CR6 18, CR1000X 10, CR300 9, CR350 7), no false reject; the gate against the refreshed `tests/replay_baseline.json` passes, and no round-35 row regressed (one CR350 false accept became exact). Round 35, 3,221 inputs (63 new from seeds 421-424): 2,423 exact, 44 false accepts (CR6 18, CR1000X 9, CR300 9, CR350 8), no false reject, gate passes. Round 34, 3,158 inputs: 2,410 exact and 35 false accepts (CR6 11, CR1000X 7, CR300 9, CR350 8), no false reject; the gate against `tests/replay_baseline.json` passes. Round 33, whose output was unchanged from round 31 on every input: 2,390 exact; 48 false accepts; no false reject; one mode and 15 warning differences; 60 missing the first error, 35 earlier first location, 220 same location with a different message, 370 later-diagnostic or order differences; 19 operational (one recorded result is a Wine page fault). The two extra first-error misses against the round-31 table are the `hang/dd9cc650482d` reproducers, whose recorded reference result differs from the round-31 rerun |
+| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 45) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Round-31 replay against the round-30 checker | Two outputs changed: one message difference became exact, one changed text but remains a message difference. Reference compilers were not rerun |
+| Fresh fuzz, seeds 437/438 (round 45, `--relevant`, 100 mutants each, CR6/CR1000X, no shrinking) | 196 exact, 3 message differences, 1 mutant without a reference verdict; no false accept/reject, crash, hang or implementation exception. Both seed loaders also exclude the known `pointervariable_2.CR6` reference fault |
 | Fresh fuzz, seeds 429-432 (round 38, `--relevant`, 500 mutants each, CR6 429/430 and CR1000X 431/432) | 1,942 exact, no false reject, 2 false accepts (both fixed), 44 message differences, 3 warning differences, 17 runner failures |
 | Fresh fuzz, seeds 425-428 (round 36, `--relevant`, 500 mutants each, CR6 425/426 and CR1000X 427/428) | 1,913 exact, no false reject, 13 false accepts, 64 message differences, one warning difference, 15 runner failures; 12 false accepts fixed in round 36 |
 | Fresh fuzz, seeds 421-424 (round 35, 500 mutants each, CR6 421/422 and CR1000X 423/424 with GEUS seeds and the new operators) | 1,923 exact, 3 false rejects, 17 false accepts, 48 message differences, 18 runner failures; all three false rejects and 8 false accepts fixed in round 35 |
@@ -46,7 +47,7 @@ CR6/CR1000X since round 34.
 GEUS corpus: the reference CR1000X compiler accepts all 66 GEUS `.CR1X` programs; since round 33
 opencrbasic matches all 66 exactly ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
-Four-profile diagnostic comparison, rerun in round 44 and unchanged from round 28
+Four-profile diagnostic comparison, rerun in round 45 and unchanged from round 28
 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
@@ -62,7 +63,7 @@ help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strco
 CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 44 both with the reference compiler and with
+Repository verification passed in round 45 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
@@ -77,6 +78,40 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 45** (M1/M2, quoted routine-parameter names; one session, no subagents).
+- Fixed fresh round-42 `cr6/message_diff/0a9af24e1266`: a quoted parameter token in a `Sub`
+  header is a literal declaration name, including its quotes. It does not declare the ordinary
+  identifier inside the quotes. An undefined body name is now diagnosed in the body, and a
+  header whose quoted parameter is unused compiles. The same rule applies to `Function`.
+- CR6 trace: `Sub`/`Function` thunk `0x403ff8` -> `FUN_00451f70`; pass-1 resolver
+  `FUN_004baf00` cases 12/35 -> `FUN_004b9700` -> `FUN_004d3560`. Evidence:
+  `tests/fixtures/r45_quoted_parameters.json`, 172 observations, 132 exact and 40 strict xfail;
+  independent audit: 0 differing, 0 without verdict. Focused suites: 688 passed, 40 xfail.
+  Rules, accepted controls and gaps: [quoted parameters](docs/checker.md#quoted-routine-parameter-names-round-45).
+- Recorded replay: 3,338 rows, 2,569 exact (four more); one CR1000X earlier first location now
+  has the correct first error, retaining later-diagnostic differences. CR6/CR1000X first-error
+  misses 23, earlier first locations 5 and same-location messages 107. No impact regression
+  against round 44; the compact baseline records these five improvements. The fresh motivating
+  reproducer is exact too. Verdict and execution-mode counts are unchanged.
+- Fresh relevant fuzz: CR6 seed 437 and CR1000X seed 438, 100 mutants each, no shrinking:
+  196 exact, three diagnostic differences, one mutant with no reference verdict; no false
+  accept/reject, crash, hang or implementation exception. Each seed loader also excludes the
+  known `pointervariable_2.CR6` reference fault. Logs, summaries and three saved reproducers:
+  `scratch/r45/fuzz/`; these are not added to the saved corpus.
+- Validation: non-server suite 54,944 passed, 311 skipped, 428 strict xfail; server suite
+  163 passed. Four-profile repository/help results unchanged, including known reference faults;
+  GEUS CR1000X 66/66 exact. Both repository verification backends pass with the BUILD line above.
+  Commands and exit states: `scratch/r45/validation-exits.json`; individual logs stay alongside it.
+  `git diff --check` passes. No hardware tests or push.
+- Next bounded candidates: numeric routine-parameter declaration diagnostics (round-45 fixture
+  gaps), or fresh seed-438 first-error `71107f867ad9` (earlier `Parameter must be integral.`
+  versus our later unmatched-block error). The other fresh findings are `cf7630a9abd7` (SW12
+  port diagnostic) and `f67f1e2a1258` (unterminated string in a call). These need minimization
+  and fresh probes before implementation.
+- Human instruction, 2026-10-27: finish, verify and commit each round, then continue further
+  rounds until the current five-hour Codex usage window is consumed. Do not execute local
+  maintenance. No hardware test or push is requested.
 
 **Round 44** (M2, unreadable one-line If conditions; one session, no subagents).
 - Fixed fresh GEUS/CR1000X seed-434 `0818efcb5653`: a split condition name in

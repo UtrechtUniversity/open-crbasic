@@ -1,0 +1,1249 @@
+{
+  "observation_date": "2026-10-27",
+  "cases": [
+    {
+      "id": "cr6-plain",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-plain",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-plain",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-plain",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-quoted",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-quoted",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-quoted",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-quoted",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-quoted-typed",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-quoted-typed",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-quoted-typed",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-quoted-typed",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-quoted-string",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-quoted-string",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-quoted-string",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-quoted-string",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-quoted-second",
+      "logger": "cr6",
+      "source": "Public X\nSub S(R, \"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-quoted-second",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(R, \"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-quoted-second",
+      "logger": "cr300",
+      "source": "Public X\nSub S(R, \"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-quoted-second",
+      "logger": "cr350",
+      "source": "Public X\nSub S(R, \"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-quoted-first",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\", R As Boolean)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-quoted-first",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\", R As Boolean)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-quoted-first",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\", R As Boolean)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-quoted-first",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\", R As Boolean)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-empty",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-empty",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-empty",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-empty",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-spaces",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R\".",
+      "not_modelled": "Whitespace inside a quoted parameter uses the raw declaration parser."
+    },
+    {
+      "id": "cr1000x-spaces",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R\".",
+      "not_modelled": "Whitespace inside a quoted parameter uses the raw declaration parser."
+    },
+    {
+      "id": "cr300-spaces",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R\".\nline 3: Q is not defined.",
+      "not_modelled": "Whitespace inside a quoted parameter uses the raw declaration parser."
+    },
+    {
+      "id": "cr350-spaces",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R\".\nline 3: Q is not defined.",
+      "not_modelled": "Whitespace inside a quoted parameter uses the raw declaration parser."
+    },
+    {
+      "id": "cr6-comma",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q,R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-comma",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q,R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-comma",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q,R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-comma",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q,R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-paren",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q(R)\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: R.",
+      "not_modelled": "Parentheses inside a quoted parameter use the raw dimension parser."
+    },
+    {
+      "id": "cr1000x-paren",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q(R)\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: R.",
+      "not_modelled": "Parentheses inside a quoted parameter use the raw dimension parser."
+    },
+    {
+      "id": "cr300-paren",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q(R)\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: R is not defined.\nline 2: Variable illegal in Parameter: R.\nline 3: Q is not defined.",
+      "not_modelled": "Parentheses inside a quoted parameter use the raw dimension parser."
+    },
+    {
+      "id": "cr350-paren",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q(R)\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: R is not defined.\nline 2: Variable illegal in Parameter: R.\nline 3: Q is not defined.",
+      "not_modelled": "Parentheses inside a quoted parameter use the raw dimension parser."
+    },
+    {
+      "id": "cr6-escaped",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-escaped",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-escaped",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-escaped",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-number",
+      "logger": "cr6",
+      "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr1000x-number",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr300-number",
+      "logger": "cr300",
+      "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr350-number",
+      "logger": "cr350",
+      "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr6-decimal",
+      "logger": "cr6",
+      "source": "Public X\nSub S(1.5)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1.5 illegal, starts with a number.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr1000x-decimal",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(1.5)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1.5 illegal, starts with a number.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr300-decimal",
+      "logger": "cr300",
+      "source": "Public X\nSub S(1.5)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1.5 illegal, starts with a number.\nline 3: Q is not defined.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr350-decimal",
+      "logger": "cr350",
+      "source": "Public X\nSub S(1.5)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1.5 illegal, starts with a number.\nline 3: Q is not defined.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr6-negative",
+      "logger": "cr6",
+      "source": "Public X\nSub S(-1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q.",
+      "not_modelled": "Signed numeric parameter names use the raw declaration parser."
+    },
+    {
+      "id": "cr1000x-negative",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(-1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q.",
+      "not_modelled": "Signed numeric parameter names use the raw declaration parser."
+    },
+    {
+      "id": "cr300-negative",
+      "logger": "cr300",
+      "source": "Public X\nSub S(-1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined.",
+      "not_modelled": "Signed numeric parameter names use the raw declaration parser."
+    },
+    {
+      "id": "cr350-negative",
+      "logger": "cr350",
+      "source": "Public X\nSub S(-1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined.",
+      "not_modelled": "Signed numeric parameter names use the raw declaration parser."
+    },
+    {
+      "id": "cr6-number-second",
+      "logger": "cr6",
+      "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr1000x-number-second",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr300-number-second",
+      "logger": "cr300",
+      "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr350-number-second",
+      "logger": "cr350",
+      "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
+      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+    },
+    {
+      "id": "cr6-missing-first",
+      "logger": "cr6",
+      "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+      "not_modelled": "Empty parameter slots are skipped by the reference."
+    },
+    {
+      "id": "cr1000x-missing-first",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+      "not_modelled": "Empty parameter slots are skipped by the reference."
+    },
+    {
+      "id": "cr300-missing-first",
+      "logger": "cr300",
+      "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.",
+      "not_modelled": "Empty parameter slots are skipped by the reference."
+    },
+    {
+      "id": "cr350-missing-first",
+      "logger": "cr350",
+      "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.",
+      "not_modelled": "Empty parameter slots are skipped by the reference."
+    },
+    {
+      "id": "cr6-split",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
+      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+    },
+    {
+      "id": "cr1000x-split",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
+      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+    },
+    {
+      "id": "cr300-split",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
+      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+    },
+    {
+      "id": "cr350-split",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
+      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+    },
+    {
+      "id": "cr6-optional",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-optional",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-optional",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-optional",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-default",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter \"Q\" cannot be initialized.",
+      "not_modelled": "Required quoted parameters cannot be initialized; header wording differs by profile."
+    },
+    {
+      "id": "cr1000x-default",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter \"Q\" cannot be initialized.",
+      "not_modelled": "Required quoted parameters cannot be initialized; header wording differs by profile."
+    },
+    {
+      "id": "cr300-default",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 3: Q is not defined.",
+      "not_modelled": "Required quoted parameters cannot be initialized; header wording differs by profile."
+    },
+    {
+      "id": "cr350-default",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\" = 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 3: Q is not defined.",
+      "not_modelled": "Required quoted parameters cannot be initialized; header wording differs by profile."
+    },
+    {
+      "id": "cr6-array",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-array",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-array",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-array",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-array-typed",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr1000x-array-typed",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Q."
+    },
+    {
+      "id": "cr300-array-typed",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-array-typed",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-control",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Q As Long, R As Boolean, Z As String * 200)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-control",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Q As Long, R As Boolean, Z As String * 200)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-control",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Q As Long, R As Boolean, Z As String * 200)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-control",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Q As Long, R As Boolean, Z As String * 200)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-quoted",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-quoted",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-quoted",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-quoted",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-used-other",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\", R As Long)\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-used-other",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\", R As Long)\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-used-other",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\", R As Long)\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-used-other",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\", R As Long)\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-call-quoted",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-call-quoted",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-call-quoted",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-call-quoted",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-function-quoted",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(\"Q\")\nF = Q\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: F = Q."
+    },
+    {
+      "id": "cr1000x-function-quoted",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(\"Q\")\nF = Q\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: F = Q."
+    },
+    {
+      "id": "cr300-function-quoted",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(\"Q\")\nF = Q\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr350-function-quoted",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(\"Q\")\nF = Q\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q is not defined."
+    },
+    {
+      "id": "cr6-truncated-quote",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+    },
+    {
+      "id": "cr1000x-truncated-quote",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+    },
+    {
+      "id": "cr300-truncated-quote",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.",
+      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+    },
+    {
+      "id": "cr350-truncated-quote",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.",
+      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+    },
+    {
+      "id": "cr6-unused-0",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-0",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-0",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-0",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\" As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-1",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-1",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-1",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-1",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\" As String * 20)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-2",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-2",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-2",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-2",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Optional \"Q\" = 1)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-3",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-3",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-3",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-3",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\"(2))\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-4",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-4",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-4",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-4",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\"(2) As Long)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-5",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-5",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-5",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-5",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q,R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-6",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q,R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-6",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q,R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-6",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q,R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-unused-7",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-unused-7",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-unused-7",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-unused-7",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\"\"R\")\nX = 1\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-global",
+      "logger": "cr6",
+      "source": "Public X,Q\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-global",
+      "logger": "cr1000x",
+      "source": "Public X,Q\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-global",
+      "logger": "cr300",
+      "source": "Public X,Q\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-global",
+      "logger": "cr350",
+      "source": "Public X,Q\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-plain-neighbor",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\", Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-plain-neighbor",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\", Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-plain-neighbor",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\", Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-plain-neighbor",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\", Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-call-missing",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required."
+    },
+    {
+      "id": "cr1000x-call-missing",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required."
+    },
+    {
+      "id": "cr300-call-missing",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required."
+    },
+    {
+      "id": "cr350-call-missing",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required."
+    },
+    {
+      "id": "cr6-call-extra",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call to S with 2 parameters, requires 1 arguments."
+    },
+    {
+      "id": "cr1000x-call-extra",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call to S with 2 parameters, requires 1 arguments."
+    },
+    {
+      "id": "cr300-call-extra",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call to S with 2 parameters, requires 1 arguments."
+    },
+    {
+      "id": "cr350-call-extra",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\")\nX = 1\nEndSub\nBeginProg\nCall S(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call to S with 2 parameters, requires 1 arguments."
+    },
+    {
+      "id": "cr6-function-unused",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(\"Q\") As Long\nF = 1\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-function-unused",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(\"Q\") As Long\nF = 1\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-function-unused",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(\"Q\") As Long\nF = 1\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-function-unused",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(\"Q\") As Long\nF = 1\nEndFunction\nBeginProg\nX = F(1)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-neighbor-before",
+      "logger": "cr6",
+      "source": "Public X\nSub S(R As Long, \"Q\")\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-neighbor-before",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(R As Long, \"Q\")\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-neighbor-before",
+      "logger": "cr300",
+      "source": "Public X\nSub S(R As Long, \"Q\")\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-neighbor-before",
+      "logger": "cr350",
+      "source": "Public X\nSub S(R As Long, \"Q\")\nX = R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-before-error",
+      "logger": "cr6",
+      "source": "Public X\nSub S(\"Q\")\nX = Missing\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Missing."
+    },
+    {
+      "id": "cr1000x-before-error",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(\"Q\")\nX = Missing\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Missing."
+    },
+    {
+      "id": "cr300-before-error",
+      "logger": "cr300",
+      "source": "Public X\nSub S(\"Q\")\nX = Missing\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr350-before-error",
+      "logger": "cr350",
+      "source": "Public X\nSub S(\"Q\")\nX = Missing\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr6-global-const",
+      "logger": "cr6",
+      "source": "Const Q = 2\nPublic X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-global-const",
+      "logger": "cr1000x",
+      "source": "Const Q = 2\nPublic X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-global-const",
+      "logger": "cr300",
+      "source": "Const Q = 2\nPublic X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-global-const",
+      "logger": "cr350",
+      "source": "Const Q = 2\nPublic X\nSub S(\"Q\")\nX = Q\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}
