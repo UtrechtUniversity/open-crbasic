@@ -4,6 +4,48 @@ Archived snapshots and development logs. [Current state and next steps](../PROGR
 live in `PROGRESS.md`. Branches, pending work, machine state and workflow policies below
 describe their recorded dates; they are not current instructions.
 
+## Round 48 log (2026-10-27)
+
+Moved from `PROGRESS.md` after round 51.
+
+Round 48 (M1/M2, mode-decision argument constancy; `Delay`/`SW12` PipeLine Mode placement; one
+session, no subagents).
+- Deferred round-46 candidate `00b7a2ff9df4` (CR1000X, reference SequentialMode, ours
+  PipelineMode) minimizes to `PortSet(C1,"fuzz")` in a Scan; CR6 behaves identically. At a
+  `nonconstant_arg` position (`PortSet` 2nd, `ExciteV` 2nd, `MuxSelect` 4th, ...) only numbers and
+  numeric `Const` names joined by operators keep PipelineMode. String literals, string `Const`s,
+  string expressions and any function call (`ABS(1)`, `LEN("ab")-1`) force SequentialMode; a
+  `Const` whose value came from a function does not. Rule: [modes](modes.md).
+- Probing found two related false accepts on CR6/CR1000X, both fixed. (1) A string `Delay`
+  option (`"0"`, `"1"`, a string `Const`, `"0"+0`) in a conditional keeps automatic mode Pipeline
+  and is rejected with `Delay not allowed inside of a conditional statement in PipeLine Mode.`,
+  with or without `PipeLineMode`. (2) `SW12` with option other than 1 in a conditional is
+  rejected the same way (`Sw12 ...`); CR1000X also rejects it outside a Scan (a `Sub`), CR6
+  accepts that, as for `PortSet`. `structure.pipeline_task_errors` now also runs when there is no
+  `PipeLineMode` but the automatic decision is Pipeline. Rules and gaps:
+  [task instructions in PipeLine Mode](checker.md#task-instructions-in-pipeline-mode).
+- Evidence: `tests/fixtures/r48_mode_string_arguments.json`, 284 observations over four
+  profiles, 280 exact, 4 strict xfail (CR1000X SW12 before `BeginProg` adds a later
+  `illegally occurs before BeginProg` line, as CR1000X `PortSet` already did; CR300 one-line `If`
+  message order). Binary hashes included; fixture audit: 0 differing, 0 without verdict.
+  Generator and probes: `scratch/r48/`.
+- Final validation (`scratch/r48/final/`, driver `validate-rest.py`, exits in
+  `validation-exits.json`): pytest **55,605 passed, 311 skipped, 444 strict xfail**; server
+  **163 passed**; recorded replay 2,570 exact (one more, see table), gate passes, baseline
+  refreshed (`replay-baseline.log`); round-46/48 fixture audits 0 differing; four-profile corpus
+  logs unchanged apart from a Wine thread id in the known reference page fault; GEUS 66/66. Both
+  verify backends:
+
+  ```text
+  BUILD  Pyrefly 464 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+  ```
+
+  The 6 warnings are the existing uncalled-table warnings. No hardware tests, fresh fuzz, push
+  or local maintenance.
+- Next: the other `mode.json` task instructions in PipeLine Mode (`CDM_*`, `CS7500`, `EC100`,
+  `SerialOutBlock`/`SerialInRecord`) remain unprobed; the CR1000X before-`BeginProg` extra line
+  for `PortSet`/`SW12`; then a fresh relevant fuzz round.
+
 ## Round 24 latest-changes snapshot (2026-10-19)
 
 Superseded by round 25 in `PROGRESS.md`. Validation: 43,014 non-server tests passed,
