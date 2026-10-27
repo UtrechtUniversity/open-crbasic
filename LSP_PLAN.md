@@ -1,8 +1,8 @@
 # CR6 language server implementation plan
 
-This request authorizes planning. No server, extension, or new compiler API has been implemented
-by this document. The implementation sequence below is proposed; start it when implementation is
-requested. Compiler parity remains a separate workstream under [PLAN.md](PLAN.md).
+The language server and VS Code extension shipped (rounds LSP-00..R7); live state and remaining
+work are in [LSP_PROGRESS.md](LSP_PROGRESS.md). This file keeps the design, contracts and
+acceptance criteria. Compiler parity remains a separate workstream under [PLAN.md](PLAN.md).
 Since 2026-10-24 the compiler's v1.0 roadmap adds opencrbasic checks and coverage notices beside the
 reference diagnostics; carrying those channels through the server is milestone M6 in
 [PLAN.md](PLAN.md#three-diagnostic-channels).
@@ -11,7 +11,7 @@ Goal: a VS Code extension backed by a Python language server that imports opencr
 to its parser, profiles, instruction rules, and checker also improve editor behaviour. Deliver
 useful features in bounded rounds without sacrificing the existing compiler contract.
 
-This file owns the language-server design, round sequence, and acceptance criteria. Live work,
+This file owns the language-server design and acceptance criteria. Live work,
 measured results, and the next session's starting point belong in
 [LSP_PROGRESS.md](LSP_PROGRESS.md). Compiler state and compiler-worker policy remain in
 [PROGRESS.md](PROGRESS.md); do not duplicate its counts or backlog here. Station requirements
@@ -64,7 +64,8 @@ Proposed package layout, created only in the applicable rounds:
 - `tests/lsp/`: request transcripts, workspace fixtures, integration and edit-sequence tests.
 - `vscode/`: TypeScript client, grammar, language configuration, extension tests and packaging.
 - `docs/lsp-api.md`: implemented API contracts and extension setup, added as code becomes real.
-- `docs/lsp-rounds/`: durable round briefs, worker handoffs, reviews, and gate summaries.
+- `docs/lsp-rounds/`: round briefs, worker handoffs, reviews, and gate summaries. LSP-00..R7 were
+  removed on 2026-10-27; read them with `git show 2612abad:opencrbasic/docs/lsp-rounds/<file>`.
 
 Use the existing opencrbasic uv project for package code and tests, with environments outside
 the repository. Keep compiler installation dependency-free; server protocol dependencies go in
@@ -188,29 +189,6 @@ Test the importer with permitted minimal fixtures and record provenance. Missing
 back to the metadata actually known. Help-only information does not override checker rules.
 No public packaging is planned ([docs/legal.md](docs/legal.md)). Documentation coverage and compiler-rule coverage are separate measurements.
 
-## Implementation rounds
-
-Use IDs `LSP-00`, `LSP-01`, etc. They do not reuse compiler round numbers. A round is a bounded
-acceptance milestone; split it into named chunks if it cannot fit one session. Each chunk owns
-one behaviour family or contract change and includes its focused tests. Later rounds may be
-split or reordered in LSP_PROGRESS.md when dependencies and evidence justify it.
-
-| Round | Deliverable | Exit criterion |
-|---|---|---|
-| LSP-00 | Baseline and contracts | Record checkout/import identity, existing gates and failures; inventory driver semantics and scope evidence; select transport library; specify snapshot/facade contracts, configured entry format, test matrix and package boundaries. No compiler behaviour change. |
-| LSP-01 | Shared analysis and minimal server | CLI and snapshot APIs use the same pipeline; disk vs equivalent snapshot results agree; unsaved entry/include diagnostics work; tested initialize/open/change/save/close/shutdown, version rejection and worker failure recovery. Client can launch locally. |
-| LSP-02 | Physical source mapping | Verified ranges through continuations, colon segments, pulled initializers, includes and conditional branches; CRLF and Unicode position tests; compiler-rendered locations remain unchanged. |
-| LSP-03 | Basic editing features | Grammar, language configuration, catalog completion, include links, outline and folding work on repository programs and incomplete edits; generated names stay synchronized with profiles. |
-| LSP-04 | Hover and signature help | Instruction help provider, friendly parameter signatures, nested-call/current-argument selection, constants/types/units hover; missing documentation fallback and provenance checks. |
-| LSP-05 | Binding and navigation | Evidence-backed scope/alias/table binding, definition, references, occurrence highlighting and semantic tokens; cross-include and same-name-local tests; ambiguity remains explicit. |
-| LSP-06 | Workspace correctness and resilience | Multiple configured entries, conditional IncludeSection contexts, transitive invalidation, missing/created/renamed/deleted includes, stale result suppression, bounded jobs, timeouts and edit-sequence replay all pass. Earlier rounds already implement basic invalidation. |
-| LSP-07 | Safe edits | Rename limited to proven bindings across affected entries, collision detection and versioned edits; refuse unsupported cases. Optional indentation/quick-fix families each have semantic-preservation tests. |
-| LSP-08 | Release validation | Tested install and packaged VSIX/server pair, dependency and help provenance, host matrix, startup/latency/memory evidence, documented setup and limitations. Private release is distinct from public redistribution. |
-
-Navigation depends on LSP-02 and LSP-05. Rename depends additionally on LSP-06. LSP-03/04 can
-share a round only when they have disjoint ownership and the facade/catalog contracts are stable.
-Do not schedule parallel source-loader, parser, or driver rewrites against the same base.
-
 ## Verification and compiler improvements
 
 Keep three kinds of evidence separate:
@@ -267,86 +245,6 @@ they remain development oracle dependencies. Protocol and feature implementation
 [LSP 3.17 specification](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/)
 and [VS Code language extension API](https://code.visualstudio.com/api/language-extensions/programmatic-language-features).
 
-## Round workflow and session handoff
-
-Follow the established coordinator/worker/reviewer roles in PROGRESS.md "Work method" for shared
-compiler implementation. Do not silently replace its designated worker models or tools when
-unavailable. Record the unavailable role/tool and perform only work authorized for the current
-agent. Use the same pattern for LSP chunks; do not infer new free-commit permission from this plan.
-No parallel workers are necessary to write the plan itself.
-
-### Start a round
-
-1. Read AGENTS.md, this plan, LSP_PROGRESS.md, compiler PROGRESS.md and relevant owned code/docs.
-   Reconcile recorded base revisions and local changes before touching files.
-2. The coordinator writes `docs/lsp-rounds/LSP-NN.md`: objective, chunk IDs, dependencies,
-   acceptance criteria, exact file ownership, base SHA, environment/import paths, gate commands,
-   known baseline failures, integration order, and checkpoints. Write this before dispatch.
-3. Create isolated worker worktrees on named branches, normally `codex/lsp-nn-<chunk>` unless
-   the human specifies another convention. Resolve and record the actual integration branch;
-   do not hard-code the compiler's present branch. One chunk per worker; maximum four workers
-   including any limits imposed by the coordinating environment. Prefer one or two until
-   contracts settle. Do not run concurrent mutating uv operations on a shared environment.
-4. Coordinator owns LSP_PROGRESS.md and the round summary. Workers own disjoint implementation
-   files and their own `LSP-NN-<chunk>-handoff.md`. Conflicts in shared compiler files are serialized.
-
-### Implement and integrate
-
-1. Reproduce the issue or encode the feature's acceptance case first. For semantic language
-   uncertainty, minimize and probe the real compiler using the existing compiler workflow.
-2. Make one small change; focused checks immediately. Save each regression case before moving
-   to the next family. Report observations separately from expectations and inference.
-3. After a milestone, update the worker handoff on disk with paths/revision, changed behaviour,
-   commands and exit codes, saved evidence, remaining gaps and the exact next action.
-4. When commits are authorized, make one verified commit per chunk using explicit file staging.
-   Never use `git add -A`, stash, amend integrated commits, or destructive cleanup.
-5. The coordinator independently verifies worker output, integrates by fast-forward, rebase or
-   cherry-pick without merge commits, then runs the applicable round gates on the combined tree.
-   Do not mark a chunk integrated because a worker merely reported success.
-6. Perform a fresh read-only review after the batch using the existing review policy. Save it
-   under `docs/lsp-rounds/`, triage each finding, reproduce actionable defects and fix them in a
-   bounded follow-up chunk. Do not declare a release round accepted with unresolved correctness
-   findings. Record deferred lower-priority findings with reasons.
-7. Update the live ledger, accepted capabilities, observed gate results and next actions.
-   Retain worker branches/worktrees until their work and evidence are safely integrated or saved.
-
-### Usage limits and interruption safety
-
-Chat history and ignored scratch files are not the sole record. Round briefs, handoffs and live
-state are durable files. Review outputs and small reproductions needed to resume belong in
-`docs/lsp-rounds/` or tests, not only `scratch/`. Large/private local evidence may remain ignored,
-but the handoff records its exact path, content hash, retention requirements and a reproduction
-command. Never include credentials, vendor binaries or restricted help in tracked handoffs.
-
-- Check available usage at round start, before dispatch, after each chunk and before broad gates.
-  Record the tool and window used; account windows may differ between providers. If unavailable,
-  record that fact and use one small active chunk with milestone checkpoints.
-- At about 70% consumed, dispatch no new chunks; finish or checkpoint active work. At about 80%,
-  request worker handoffs and reserve the remaining budget for verification and preservation.
-  By about 85%, stop implementation and leave an explicit resume point, matching the existing
-  compiler wrap-up threshold. Stop earlier if estimated gate time exceeds the reserve.
-- Checkpoint after every completed behaviour family and before a long oracle/test run. Long
-  runs write results to durable files, with PID/session identifier and completion marker where
-  available. A started command is not a completed or passing check.
-- With commit authorization, preserve interrupted edits in a clearly marked WIP commit on the
-  worker branch. Without it, retain the worktree and source, save a binary-capable tracked-file
-  patch plus copies/inventory of untracked files under a durable local checkpoint directory,
-  and verify that the checkpoint is readable. Do not rely on a patch to capture untracked files.
-- Record base SHA, WIP SHA or patch path/hash, worktree path, untracked-file inventory, last
-  passing gate, pending commands, worker state and the next concrete step in LSP_PROGRESS.md
-  before ending. Preserve needed ignored files separately before any worktree archive/removal.
-- On an abrupt cutoff, the next coordinator inventories branches, worktrees, diffs, untracked
-  files and saved logs first. Preserve recovered work before editing. Treat partial commits and
-  partial test logs as unverified; rerun only incomplete or invalidated checks.
-
-### Resume in a new session
-
-Read LSP_PROGRESS.md first, then the active round and worker handoffs. Confirm revision/import
-identity and inspect actual worktree state. Resolve pending process completion, review findings
-and unverified work before starting a new round. Continue an interrupted chunk under its existing
-ID; do not recreate or overwrite it. After compiler-only integration, rerun the affected bridge
-and server tests before claiming the editor benefits are verified.
-
 ## Completion definitions
 
 A chunk is **accepted** only after focused checks and its required evidence are saved. A round
@@ -354,6 +252,4 @@ is **accepted** only after integration, applicable combined gates and review res
 capability is **released** only after real protocol and VS Code acceptance, packaging/install
 validation and documentation of its supported contexts.
 
-If usage runs out before these conditions, record **checkpointed, unverified** or **verified,
-not integrated** as appropriate. Preserve the work and list what remains; never rename an
-unfinished milestone complete merely to end a session.
+The round table and the round workflow, usage-limit and session-handoff procedure are in git history: `git show 2612abad:opencrbasic/LSP_PLAN.md`.

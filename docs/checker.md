@@ -5570,7 +5570,7 @@ the `#If` line alone even then, CR300/CR350 the errors alone).
 
 ## Round 13: builtin argument counts from the host sweep (2026-10-12, PROGRESS "Compiler items" 5)
 
-The CR6 sweep `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/function-arity-fixture.json` (T-08, audited
+The CR6 sweep `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/function-arity-fixture.json` (T-08, audited
 0 differing) was repeated on all four loggers from the same 130 sources; the result, with
 `TCPOpen-5` left out on CR6/CR1000X, is `tests/fixtures/r13_function_arity.json` (518 cases, our output
 identical). Accepted counts, now in `expressions._ARITY_ALLOWED` (fewer than the largest is

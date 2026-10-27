@@ -2,7 +2,7 @@
 """Benchmarks for the language-server core and its stdio transport (LSP-08a).
 
     uv run --no-sync python tools/lsp_bench.py --json scratch/lsp/bench.json \
-        --label "cloud container under concurrent load" > docs/lsp-rounds/LSP-08a-bench-cloud.md
+        --label "cloud container under concurrent load" > scratch/lsp/bench.md
 
 The Markdown report goes to stdout, progress to stderr, the full data to `--json`. Measured:
 
@@ -22,7 +22,7 @@ The Markdown report goes to stdout, progress to stderr, the full data to `--json
 
 Nothing is asserted against the targets in LSP_PLAN.md; the report only compares. Timings are
 wall-clock on whatever host runs the tool and are recorded with the host's load average and CPU
-count. Percentiles are nearest-rank. Procedure: docs/lsp-rounds/LSP-08.md.
+count. Percentiles are nearest-rank. Procedure: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-08.md`.
 """
 
 import argparse

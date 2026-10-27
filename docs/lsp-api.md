@@ -1,6 +1,6 @@
 # Language-server API
 
-Contracts for editor tooling on top of the compiler. Specification history: `docs/lsp-rounds/LSP-00.md`
+Contracts for editor tooling on top of the compiler. Specification history: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-00.md`
 ("Contracts for LSP-01"). The server section is "Language server (LSP-01)" below.
 
 ## Analysis facade (API_VERSION 1)
@@ -134,10 +134,10 @@ function_arg_count_classes(profile, provider, names=None) -> tuple[ArgCountRow(n
   differs from `nargs` as `packing_cap` (`nargs` 6, the 16-bit `argspec` maximum), `optional_tail`
   (help required count equals `nargs`) or `other`. It is a classification only. Signature help uses help names only where the checker's
   accepted-count tables support them (LSP-04e, see Hover); otherwise `argN`. Evidence and the decision are in
-  [LSP-04d-handoff.md](lsp-rounds/LSP-04d-handoff.md).
+  `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04d-handoff.md`.
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
-  [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md) and, after the 2026-10-11 rules,
-  [LSP-04a-rules-handoff.md](lsp-rounds/LSP-04a-rules-handoff.md). Documentation coverage is not
+  `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04a-handoff.md` and, after the 2026-10-11 rules,
+  `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04a-rules-handoff.md`. Documentation coverage is not
   compiler-rule coverage.
 
 ## Instruction catalog (LSP-03a)
@@ -222,7 +222,7 @@ intended text under Python `re`; it does not prove how VS Code renders the gramm
 
 `opencrbasic.positions` (LSP-02a) maps what the compiler reports back to the physical files. It is
 read-only over provenance the loader records; no compiler output changed (`tools/selfdiff.py
---compare` 0 differ). Brief and criteria: `docs/lsp-rounds/LSP-02.md`.
+--compare` 0 differ). Brief and criteria: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-02.md`.
 
 ### Recorded provenance
 
@@ -513,7 +513,7 @@ with `tests/lsp/lspclient.py`.
 `lsp/features.py` turns the core modules' answers into LSP types (a synchronous adapter that runs in
 a worker thread via `asyncio.to_thread`); `lsp/server.py` registers the handlers; `lsp/session.py`
 supplies the program. No CRBasic rule is in `lsp/`. Handoff with the measurements and the host
-checklist: [LSP-wire-handoff.md](lsp-rounds/LSP-wire-handoff.md).
+checklist: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-wire-handoff.md`.
 
 **Where the program comes from (option b).** The analysis job in the worker pool also returns the
 parsed program pickled (`JobResult.program`, about 0.5 MB for `Main.CR6`, about 30 ms to pickle).
@@ -604,7 +604,7 @@ an empty prefix returns every catalog name (about a thousand items).
 `lsp/server.py` (handlers), `lsp/features.py` (conversion to LSP types), `lsp/session.py`
 (`entries_reading`, `current`, `unknown_entries`, `fresh_contributors`). No CRBasic rule is in
 `lsp/`: the cores are `rename.py`, `formatting.py` and `quickfix.py`. Handoff and host-test list:
-[LSP-07-wire-handoff.md](lsp-rounds/LSP-07-wire-handoff.md).
+`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07-wire-handoff.md`.
 
 **Inputs.** `Analysed` now also keeps the job's `reads` (path to sha256), the raw diagnostics and
 `ok`/`failures`, and `build()` returns them in the rebuilt `AnalysisResult` (`dependencies.reads`,
@@ -653,7 +653,7 @@ edits outside the requested file are dropped.
 
 ### Inlay hints and commands (LSP-09c)
 
-Handoff: [LSP-09c-handoff.md](lsp-rounds/LSP-09c-handoff.md). The cores are "Inlay hints (LSP-09a)"
+Handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-09c-handoff.md`. The cores are "Inlay hints (LSP-09a)"
 and "Commands (LSP-09b)"; the adapter adds no CRBasic rule.
 
 **`textDocument/inlayHint`.** Answers from `inlay.parameter_hints` over the whole file, computed once per
@@ -704,7 +704,7 @@ active CRBasic file; running the command again refreshes it.
 `opencrbasic.bindings` is a read-only index over the parsed program: every declaration, every name
 use, and the declarations each use resolves to. Nothing in the compiler or the checkers calls it,
 so compiler acceptance is unchanged (`tools/selfdiff.py`: 0 differ). Handoff with the observed
-corpus counts: [LSP-05a-handoff.md](lsp-rounds/LSP-05a-handoff.md).
+corpus counts: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-05a-handoff.md`.
 
 ```python
 ix = bindings.build(result.program, "cr6")      # AnalysisResult.program, or parser.parse_file()[0]
@@ -756,7 +756,7 @@ statement, resolved to the catalog).
 | Policy | Evidence |
 |---|---|
 | Resolution is case-insensitive on AST names; the declared spelling is kept. | `symbols.py` upper-cases every lookup. |
-| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction` or the two-word `End Sub`/`End Function` (`bindings.closes_routine`, shared with hover; LSP-R1 finding 1). | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). The compiler's `scoped_view` tests only the one-word closers; see [LSP-R1-handoff.md](lsp-rounds/LSP-R1-handoff.md). |
+| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction` or the two-word `End Sub`/`End Function` (`bindings.closes_routine`, shared with hover; LSP-R1 finding 1). | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). The compiler's `scoped_view` tests only the one-word closers; see `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-R1-handoff.md`. |
 | `Dim`, `Const` and parameters inside a routine are local and win over a global of the same name; the same parameter name in two routines is two declarations. | `docs/checker.md` ("`Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow"); `tests/fixtures/const_shadow_sub.json` and `sub_param_const.json` (a parameter named like a `Const` declared after the Sub is local). |
 | A local that shadows a global `Const` declared earlier is a compile error the index does not model; the local still wins. | `const_shadow_sub.json`. |
 | `Sub`/`Function` names are global and order-free (forward references resolve). Variables and constants are also resolved order-free, but `Reference.forward` is true when every candidate is declared in a later statement. | `symbols.declared_subs` (whole program); order for variables is unverified (`declared_names` "deliberately global"), hence the flag. |
@@ -765,7 +765,7 @@ statement, resolved to the catalog).
 | Two or more global candidates stay `ambiguous` with a reason: duplicate declarations (the compiler rejects them), the same include used twice, or a table sharing a variable's spelling. | `tests/fixtures/routine_names.json` (duplicate Sub, variable/Function clash). The vendor sample `avgrun_1.CR6` declares `Public TCTemp` and `DataTable (TCTemp,...)`; whether the namespaces are separate is not established here, so no choice is made. |
 | `Table.Field` of a user `DataTable`: resolves to the `field` declaration of that table (see "Table fields"). `Public.X` resolves to a global `Public`/`Alias` of that name (inference from the Public table's contents, not oracle-tested). `ConstTable.Name` resolves to the `Const` inside that table. | `symbols.system_table_names`, `const_table_fields`; `tests/fixtures/table_members_scope.json`; field names come from `tables.py`. |
 | Structure members resolve through the base variable's declared type (also through nested members); an unknown member is `unresolved`. | `checker/structs.py` model (`_structure_members`, `_member_chain`). |
-| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction, and a token the parser made an instruction (`instruction` role) never resolves to a user declaration of the same spelling (LSP-R1 finding 2). | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`; the parser's `S.Instruction` classification ([LSP-R1-handoff.md](lsp-rounds/LSP-R1-handoff.md)). |
+| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction, and a token the parser made an instruction (`instruction` role) never resolves to a user declaration of the same spelling (LSP-R1 finding 2). | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`; the parser's `S.Instruction` classification (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-R1-handoff.md`). |
 | `Alias A(1) = N1, N2`: each right-hand name is an `alias` declaration with `alias_target` = the reference of `A`; `Units V = label`: `V` is a `units_target` reference. | `parser._parse_alias`, `_parse_units_segment`. |
 
 ### Inactive code, strings, includes
@@ -851,7 +851,7 @@ to the fields of the table's declaration.
 `opencrbasic.hover` is the protocol-independent logic behind hover and signature help (pure
 functions and frozen dataclasses; no pygls). Positions in and out are physical: 0-based line and
 decoded-character column, as in "Source positions"; the server converts encodings. Brief:
-`docs/lsp-rounds/LSP-04.md`; handoff: `docs/lsp-rounds/LSP-04b-core-handoff.md`.
+`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04.md`; handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04b-core-handoff.md`.
 
 ```python
 call_context(text, line, column) -> CallContext(name, active, line, column) | None
@@ -937,8 +937,8 @@ verbatim-reduced (internal use, `docs/legal.md`); help names never change checke
 
 `opencrbasic.editing` holds the logic behind the outline, folding, document links and completion.
 It is pure Python (no pygls), changes no compiler module (`tools/selfdiff.py --compare` 0 differ)
-and is wired to the protocol by LSP-03b-wire. Brief and criteria: `docs/lsp-rounds/LSP-03.md`;
-hand-off notes: `docs/lsp-rounds/LSP-03b-core-handoff.md`.
+and is wired to the protocol by LSP-03b-wire. Brief and criteria: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03.md`;
+hand-off notes: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03b-core-handoff.md`.
 
 ### Ranges
 
@@ -1057,7 +1057,7 @@ walk with a caller-built list. Program names sort before catalog names, then cas
 LSP-03c: at most `editing.COMPLETION_LIMIT` (200) items are returned, program names first, so the
 list is the first 200 of the complete order. `is_incomplete` is True when more matched; the server
 must then send `CompletionList.isIncomplete = true` so the client re-asks as the prefix grows (the
-current `lsp/features.py` sends `False`; see `docs/lsp-rounds/LSP-03c-handoff.md`). The cap applies
+current `lsp/features.py` sends `False`; see `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03c-handoff.md`). The cap applies
 to member lists too. The catalog's completion items are built once per profile (`_catalog_items`,
 cached; the items are immutable), not per call.
 
@@ -1066,7 +1066,7 @@ find the current Sub / Function, and folding uses) is cached in a bounded LRU of
 (`_SCAN_CACHE_SIZE`), keyed by `(text, profile)`; the key is the text itself, so a hit is exact. It
 returns a tuple. `_scan.__wrapped__` is the uncached function. A call on a buffer already scanned
 skips the scan: on `Main.CR6` the completion call drops from about 16 ms to about 2.4 ms (p50, see
-`docs/lsp-rounds/LSP-03d-handoff.md`). A changed buffer is a miss and costs what it did before. The
+`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03d-handoff.md`). A changed buffer is a miss and costs what it did before. The
 cache changes no result: `test_completion_on_main_cr6_cached_equals_uncached` compares every line
 of `Main.CR6` through the cache and through the uncached scan.
 
@@ -1087,7 +1087,7 @@ references, document highlights and semantic tokens (no pygls). It reads an `Ana
 the binding index ("Binding index (LSP-05a)"); it changes no compiler output. Positions in and out
 are physical: 0-based line and decoded-character column (a byte offset into the line, "Source
 positions"); the server converts to the client's position encoding with `positions.lsp_position`.
-Handoff: [LSP-05b-core-handoff.md](lsp-rounds/LSP-05b-core-handoff.md).
+Handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-05b-core-handoff.md`.
 
 ```python
 definition(result, path, line, col, *, index=None)                  -> [Location]
@@ -1211,7 +1211,7 @@ table field-level references, references through a stale AST while typing.
 
 `opencrbasic.inlay` is the protocol-independent logic behind parameter-name inlay hints (no pygls).
 Positions are physical: 0-based line and decoded-character column ("Source positions"); the server
-converts encodings. Handoff: [LSP-09a-handoff.md](lsp-rounds/LSP-09a-handoff.md).
+converts encodings. Handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-09a-handoff.md`.
 
 ```python
 parameter_hints(result, path, start_line, end_line, profile, help_provider) -> [InlayHint]
@@ -1246,7 +1246,7 @@ InlayHint(line, column, label, kind="parameter", padding_right=True)
 `opencrbasic.formatting` is the protocol-independent indentation formatter (no pygls, no other
 module changed). It imports `editing`'s private `_roles`, `_classify`, `_block_events` and
 `_tolerant_tokens`, so the block structure is the one folding and the outline use. Brief:
-`docs/lsp-rounds/LSP-07.md`; evidence and counts: `docs/lsp-rounds/LSP-07b-handoff.md`.
+`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07.md`; evidence and counts: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07b-handoff.md`.
 
 | Function | Result |
 |---|---|
@@ -1296,7 +1296,7 @@ separate statements.
 `opencrbasic.quickfix` is the protocol-independent core of quick fixes (no pygls; server wiring is
 a separate chunk). It imports `bindings` (resolution, `lookup`), `navigation` (exact token ranges;
 it reads `Navigation._site_of`, a private mapping) and `catalog`. Brief:
-`docs/lsp-rounds/LSP-07.md`; handoff: `docs/lsp-rounds/LSP-07c-handoff.md`.
+`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07.md`; handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07c-handoff.md`.
 
 ```python
 quickfix.code_actions(result, path, diagnostic, profile, *, index=None, source=None) -> list[CodeAction]
@@ -1375,7 +1375,7 @@ edits are the declaration's range plus the range of every reference that resolve
 entry. No source text is searched to find occurrences. Positions in and out are physical, a 0-based
 line and a decoded-character column (a byte offset into the line, "Source positions"); the server
 converts to the client's encoding. Handoff with the observed sweep counts:
-[LSP-07a-handoff.md](lsp-rounds/LSP-07a-handoff.md).
+`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07a-handoff.md`.
 
 ```python
 prepare_rename(results, path, line, column, source=None)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder, files)

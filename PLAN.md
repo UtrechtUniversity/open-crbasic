@@ -113,21 +113,6 @@ This exclusion stays in force under the v1.0 roadmap.
     the decision.
   - Decision: human, 2026-10-12.
 
-## Phases completed before v1.0
-
-| # | Phase | State (details in `PROGRESS.md`) |
-|---|---|---|
-| 0 | Oracle harness under Wine, corpus collection | done; runner failures are excluded from verdicts |
-| 1 | Binary reverse engineering: CLI, tables, type codes, error catalog | done (`docs/cli.md`, `docs/binary.md`, `docs/type-codes.md`) |
-| 2 | Lexer, preprocessor, parser | every corpus program parses without an exception; some constructs remain `Unparsed` |
-| 3 | Semantic checker and diagnostics | repository and help-example verdicts agree on usable reference results, all four profiles |
-| 4 | Differential fuzzing | ongoing; it is the main source of evidence for v1.0 |
-| 5 | Mode, warnings, TDF, ProgSignature | CR6 TDF and table list: 210/210 compared artifacts byte-identical (round 22), with 308 reference rejections, six missing expected artifacts and one reference fault; other artifacts partial |
-
-The former Phase 6 exit criterion (zero known differences of any kind on all four profiles) is
-retired by the 2026-10-24 decision. It was an unbounded target: message order and cascade text
-after the first error made up most of the remaining differences.
-
 ## Remaining-work strategy
 
 ### Where v1.0 starts (round-30 measurement)

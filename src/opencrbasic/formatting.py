@@ -4,8 +4,7 @@
 nothing else: no text after the first non-blank character changes, the line count and the line
 endings stay, and no physical line is made longer than the loader's 510-character buffer allows.
 The language server converts a `TextEdit` to an LSP edit like a `editing.Span`. Rules, refusals and
-the preservation evidence: `docs/lsp-api.md` "Formatting (LSP-07b)" and
-`docs/lsp-rounds/LSP-07b-handoff.md`.
+the preservation evidence: `docs/lsp-api.md` "Formatting (LSP-07b)".
 
 Block words are not listed here: the structure comes from `editing` (`_roles`, `_classify`,
 `_block_events`), the same classification folding and the outline use.

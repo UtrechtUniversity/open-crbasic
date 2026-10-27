@@ -74,7 +74,7 @@ when `analysis.API_VERSION` is not the version it was written for (`lsp-api.md`,
 
 Installed package: `tools/lsp_install_check.py` builds the wheel, installs it into fresh environments
 outside the repository, and checks `crbc`, `crbc-lsp` and the core import without pygls. It passed 15 of 15
-checks on a cloud Linux VM with Python 3.13.16 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md))
+checks on a cloud Linux VM with Python 3.13.16 (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-08c-install-cloud.md`)
 and on macOS at `7d6db3b1` and `679f2f70` (host records in section 8). The later
 Windows/WSL record (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`) reports Windows path
 failures (H-13); its passing Windows run used a host shim.
@@ -470,7 +470,7 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 | Completion cap (200) and `isIncomplete` | 200 items with `isIncomplete=true`; `Vo` gives 14 items including `VoltSe` (provider level; list refresh not seen) | `7d6db3b1`, `679f2f70` |
 | Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts; whether the files the rename opened are then open, clean or dirty varies (VS Code behaviour; section 9) | `7d6db3b1`, `679f2f70`, `ccba3666`, `e18cdf52` |
 | Unmatched `.CR300` information note (H-06) and rename of an unsaved library collision (R2a), Latin-1 positions (R2b) | Pass at provider level | `679f2f70` |
-| Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md)); Windows **untested** | `7d6db3b1`, `679f2f70` |
+| Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-08c-install-cloud.md`); Windows **untested** | `7d6db3b1`, `679f2f70` |
 | Packaged `.vsix` installs into an empty profile, activates, uninstalls (LSP-08f, T-14) | Pass | `ccba3666`, `e18cdf52` |
 | Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | e18cdf52 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md`) |
 | Review round 3 fixes, macOS items (LSP-R3, T-16); references across entries and comment refusal (LSP-R4a) | Pass | `e18cdf52` |
@@ -496,12 +496,12 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 - **Problems after closing an out-of-glob file.** VS Code sent `didClose` about three minutes
   after its tab closed on Windows and Remote-WSL. Its Problems entries remain until that
   notification; the server then clears them (both host records above).
-- **Review findings from round 2** ([review](lsp-rounds/review-2026-10-11-f3069825.md)) are fixed
+- **Review findings from round 2** (review (`git show 2612abad:opencrbasic/docs/lsp-rounds/review-2026-10-11-f3069825.md`)) are fixed
   in LSP-R2a (`463a565`: rename checks every dependency's current bytes and `Public.<name>`
   captures) and LSP-R2b (`3d76e93`: positions map through the editor text when the encoding
   replaces characters); the server passes open buffers to rename's freshness check (LSP-06c).
   Remaining rename limit: a file that did not exist at analysis time and appears later is not
-  detected ([LSP-R2a handoff](lsp-rounds/LSP-R2a-handoff.md)). The unsaved-library collision and the
+  detected (LSP-R2a handoff (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-R2a-handoff.md`)). The unsaved-library collision and the
   Latin-1 position checks passed at provider level at `679f2f70`.
 - **Undo after a multi-file rename**: one Ctrl+Z restores all texts (observed in every host run).
   The open and dirty state of the files the rename opened is VS Code's, not the server's, and it
@@ -564,4 +564,4 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 
 - [lsp-api.md](lsp-api.md): contracts, provenance and known limits for each module.
 - [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md): the host checks still pending (T-04, T-09 to T-12).
-- [LSP_PROGRESS.md](../LSP_PROGRESS.md): the round ledger.
+- [LSP_PROGRESS.md](../LSP_PROGRESS.md): current state and remaining work.

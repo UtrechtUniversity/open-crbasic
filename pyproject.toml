@@ -7,7 +7,7 @@ requires-python = ">=3.15"
 dependencies = []
 
 [project.optional-dependencies]
-# The language server (`crbc-lsp`, docs/lsp-rounds/LSP-00.md "Package boundaries"); the compiler
+# The language server (`crbc-lsp`, docs/lsp-api.md "Language server (LSP-01)"); the compiler
 # itself has no runtime dependencies.
 lsp = ["pygls>=2.1.1,<3"]
 
