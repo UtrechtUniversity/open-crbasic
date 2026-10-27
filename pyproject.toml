@@ -38,7 +38,7 @@ packages = ["src/opencrbasic"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src", "tools"]
-addopts = "--strict-markers"
+addopts = "--strict-markers --dist worksteal"
 markers = [
     "slow: corpus sweeps and other tests above ~3 s; skip with -m 'not slow' for the fast tier",
     "server: tests that start the language server as a subprocess; run alone with -m server",
