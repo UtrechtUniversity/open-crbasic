@@ -3351,10 +3351,20 @@ PipeLine Mode error; opencrbasic adds `Sw12 illegally occurs before BeginProg.` 
 already did for CR1000X `PortSet` (same verdict and first error; strict xfail in
 `tests/fixtures/r48_mode_string_arguments.json`). `PortSet` is a measured exception on CR6: outside a Scan is accepted, but conditional
 placement remains rejected; CR1000X rejects both. `tests/fixtures/pipeline_tasks.json` records an
-accepted in-Scan call and both boundary placements for each member on each logger. Not implemented
-because not probed or different: the other
-`mode.json` task instructions (`CDM_*`, `CS7500`, `EC100`, ...) and
-`SerialOutBlock`/`SerialInRecord` (accepted outside a `Scan`).
+accepted in-Scan call and both boundary placements for each member on each logger. Round 49 added
+(`tests/fixtures/r49_pipeline_task_instructions.json`, 484 observations, all four profiles, all
+match): on CR1000X `BrHalf3W`, `BrHalf4W`, `BrFull6W`, `Therm108`, `Therm109`, `AM25T` and
+`PulseCount` (display name `Pulsecount`, conditional placement only: outside a `Scan` it prints
+`PulseCount must be used within a Scan...NextScan.`); on CR6 and CR1000X `PulsePort`; all only
+after an explicit `PipeLineMode` (automatic mode is sequential for them). CR6 rejects the first
+group outright. After `NextScan` the CR1000X group keeps the `never reached` warning, while
+`PulsePort` and `SerialInRecord` do not (`hides_unreached` in the data file).
+`SerialInRecord` (CR6/CR1000X, explicit `PipeLineMode`) prints `SerialInRecord illegally used
+inside conditional statement.` in a conditional and `SDM instruction must be in Scan..NextScan,
+unless SequentialMode is used.` outside a `Scan` (`messages` in the data file). `MuxSelect` and
+`SerialOutBlock` are accepted everywhere. Not implemented because not probed: the `CDM_*`
+instructions, `CS7500`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`, `Calibrate`
+and the other `mode.json` task instructions.
 
 The error is pass 2 and accumulating: it does not end the pass, prints together with `x=q`
 errors in line order, and is cut off by an earlier placement error. Unlike other tier-B errors it

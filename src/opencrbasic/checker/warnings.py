@@ -218,8 +218,9 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
     open_depth = 0
     sub_depth = 0
     begun = False
+    tasks = profile.pipeline_tasks["tasks"]
     pipeline_delays = {id(st) for st, _ in structure.pipeline_task_errors(program, profile)
-                       if _kw(st) == "DELAY"}
+                       if _kw(st) == "DELAY" or tasks.get(_kw(st), {}).get("hides_unreached")}
     i = 0
     while i < n:
         stmt = statements[i]
@@ -282,7 +283,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             if open_depth:
                 i += 1
                 continue
-        if dead and kw == "DELAY" and id(stmt) in pipeline_delays:
+        if dead and id(stmt) in pipeline_delays:
             i += 1  # its pipeline-mode error replaces its own warning (oracle); later ones follow
             continue
         if dead and (kw in structure.SCAN_ONLY or kw == "SUBSCAN"):

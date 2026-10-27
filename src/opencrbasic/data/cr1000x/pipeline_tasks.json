@@ -14,6 +14,17 @@
   "PERIODAVG": {},
   "CS616": {},
   "EXCITEV": {},
+  "BRHALF3W": {},
+  "BRHALF4W": {},
+  "BRFULL6W": {},
+  "THERM108": {},
+  "THERM109": {},
+  "AM25T": {},
+  "SERIALINRECORD": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "SerialInRecord illegally used inside conditional statement."}},
+  "PULSEPORT": {"hides_unreached": true},
+  "PULSECOUNT": {"conditional_only": true},
   "DELAY": {"constant_values": {"1": [0]}},
   "SW12": {"exempt_values": {"3": [1]}}
  },

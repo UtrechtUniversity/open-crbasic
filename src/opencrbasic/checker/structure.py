@@ -589,11 +589,13 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
                     return
             record = profile.instructions.get(kw)
             name = record["name"] if record else stmt.keyword
+            custom = task_rules[kw].get("messages", {})
             if not scans and not task_rules[kw].get("conditional_only"):
-                found.append((stmt, f"{name} not allowed outside of Scan..NextScan in PipeLine "
-                              "Mode."))
+                found.append((stmt, custom.get("outside") or
+                              f"{name} not allowed outside of Scan..NextScan in PipeLine Mode."))
             elif depth or inline:
-                found.append((stmt, f"{name} not allowed inside of a conditional statement in "
+                found.append((stmt, custom.get("conditional") or
+                              f"{name} not allowed inside of a conditional statement in "
                               "PipeLine Mode."))
         if isinstance(stmt, S.If) and stmt.inline is not None:
             for inner in (stmt.inline or []) + (stmt.inline_else or []):

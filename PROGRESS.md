@@ -1,8 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-27 after development round 48**
-(string and call arguments in the mode decision; `Delay`/`SW12` PipeLine Mode placement). Round 47
-is committed at `fc5d3964`.
+Current compiler state and handoff, updated **2026-10-27 after development round 49**
+(further task instructions in PipeLine Mode). Round 48 is committed at `6d2e4123`; round 49 is on
+branch `opencrbasic-rounds-49`.
 Inspect `git status` before editing; use Git to check publication state.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -21,8 +21,8 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 55,605 passed, 311 skipped, 444 strict xfail (round 48) |
-| `pytest -q -m server` | 163 passed (round 48) |
+| `pytest -q -n 4 -m 'not server'` | 56,089 passed, 311 skipped, 444 strict xfail (round 49) |
+| `pytest -q -m server` | 163 passed (round 49) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
 | Earlier alias fixtures (r26–r30) | r26 282/282, r27 152/152, r28 368/368, r29 headers 180/180, r29 Strings 320/320, r29 review 104/104, r30 dimensioned 180/180 match; r30 review 92 match, 8 strict xfail |
@@ -80,6 +80,23 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 49** (M1, PipeLine Mode placement of the remaining `mode.json` task instructions; one
+session, no subagents).
+- 484 reference observations (`tests/fixtures/r49_pipeline_task_instructions.json`, generator
+  `scratch/r49/make-fixture.py`): 11 instructions x scan/conditional/before/after/`Sub` x explicit/
+  automatic mode x four profiles. 41 mismatches before, all false accepts or missing messages after
+  explicit `PipeLineMode`; 0 after. Data-only change in `pipeline_tasks.json` (CR1000X: `BrHalf3W/4W`,
+  `BrFull6W`, `Therm108/109`, `AM25T`, `PulseCount` conditional only; CR6 and CR1000X: `PulsePort`,
+  `SerialInRecord` with its own messages) plus two small data-driven options (`messages`,
+  `hides_unreached`). `MuxSelect`, `SerialOutBlock` accepted everywhere. Rules and gaps:
+  [task instructions in PipeLine Mode](docs/checker.md#task-instructions-in-pipeline-mode).
+- Validation (`scratch/r49/final/`): pytest **56,089 passed, 311 skipped, 444 strict xfail**; server
+  **163 passed**; replay unchanged (2,570 exact, gate passes); fixture audits 0 differing; both
+  verify backends: `BUILD  Pyrefly 465 files pass | host tests 148 pass | CRBasic 20/20 compiled,
+  6 warning(s) | repository pass`. No hardware tests.
+- Next: `CDM_*`, `CS7500`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`, `Calibrate`
+  remain unprobed; then a fresh relevant fuzz round (seeds 441/442).
 
 **Round 48** (M1/M2, mode-decision argument constancy; `Delay`/`SW12` PipeLine Mode placement; one
 session, no subagents).
