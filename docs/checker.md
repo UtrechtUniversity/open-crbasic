@@ -8372,3 +8372,39 @@ control-character filename for a variable/undefined name on CR300/CR350. These a
 reference outputs, not a proposed rule for emulating memory artifacts. Their verdicts were
 usable; their filename text is not a sound deterministic regression expectation. No logger
 runtime test was performed.
+
+## Unreadable one-line If conditions (round 44)
+
+Fresh CR1000X seed-434 `0818efcb5653` splits `BattThreshold` in
+`If BattVolt <= Batt  Threshold Then SW12(SW12_2,0)`. The reference reports
+`Invalid symbol in expression: BattVolt <= Batt  Threshold .`; the old checker echoed the whole
+line as an out-of-place expression. A minimized four-profile matrix confirms that CR6/CR1000X
+scan an unreadable one-line condition like the corresponding block condition.
+
+Reverse-engineering trail: CR6 `If` instruction thunk `0x40625d` resolves to `FUN_00450b20`,
+which delegates to the common conditional builder `FUN_0045a9e0`; its parameter code is 7.
+`FUN_004b6840` finds `Then` through `FUN_004bdec0` and separates the inline body before the
+parameter resolver `FUN_004baf00`'s case-7 expression scan (`FUN_004b5c50`). This supports
+reusing the existing condition scanner, rather than adding a competing expression grammar.
+No decompiled implementation is copied.
+
+`_inline_condition_stmt` supplies a condition-only view to pass-1 and pass-2 fallback scanning
+for CR6/CR1000X `Unparsed` Ifs with the parser's `expected THEN` or `expected ')'` failure.
+Original syntax records and source ranges remain available. It does not alter parsed inline
+bodies or the CR300/CR350 path. Whitespace before `Then` remains in the diagnostic echo.
+
+Evidence, 2026-10-26: `tests/fixtures/r44_inline_conditions.json`, 132 observations on four
+profiles; 114 exact, 18 strict xfail. Covered boundaries include adjacent known operands,
+unknown first/second operands, a missing operand before `Then`, comma/extra closing parenthesis,
+grouped operands, no space after `If`, extra spaces, an `Else` body, following/preceding symbol
+errors, before-`BeginProg` placement, and block-form/valid-condition controls. Left-to-right
+classification is preserved: `If Nope Y Then Y=1` is a pass-2 symbol error, while `If X Nope
+Then Y=1` is a pass-1 incomplete expression because the adjacent second operand is already a
+syntax error. A pass-1 condition error hides later symbol errors; an unknown condition followed
+by another unresolved assignment reports both. CR300/CR350 retain their existing condition
+and inline-body diagnostics.
+
+Explicit remaining fixture gaps: quoted `Then` inside a condition operand (eight observations,
+all four profiles), malformed one-line `ElseIf` (four), pre-existing `Public = 1` parsing/gating
+(four), and a later inline-body symbol diagnostic after an unknown CR6/CR1000X condition (two).
+These do not change acceptance in the observed matrix. No logger runtime behavior was tested.

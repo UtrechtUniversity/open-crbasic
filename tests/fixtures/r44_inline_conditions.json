@@ -1,0 +1,948 @@
+{
+  "observation_date": "2026-10-26",
+  "cases": [
+    {
+      "id": "cr6-cond-0",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-cond-0",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-cond-0",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr350-cond-0",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr6-cond-1",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe ."
+    },
+    {
+      "id": "cr1000x-cond-1",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe ."
+    },
+    {
+      "id": "cr300-cond-1",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe ."
+    },
+    {
+      "id": "cr350-cond-1",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe ."
+    },
+    {
+      "id": "cr6-cond-2",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf Nope Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope Y ."
+    },
+    {
+      "id": "cr1000x-cond-2",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf Nope Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope Y ."
+    },
+    {
+      "id": "cr300-cond-2",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf Nope Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: Nope Y ."
+    },
+    {
+      "id": "cr350-cond-2",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf Nope Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: Nope Y ."
+    },
+    {
+      "id": "cr6-cond-3",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Nope ."
+    },
+    {
+      "id": "cr1000x-cond-3",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Nope ."
+    },
+    {
+      "id": "cr300-cond-3",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X Nope ."
+    },
+    {
+      "id": "cr350-cond-3",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X Nope ."
+    },
+    {
+      "id": "cr6-cond-4",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X =  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X =  ."
+    },
+    {
+      "id": "cr1000x-cond-4",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X =  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X =  ."
+    },
+    {
+      "id": "cr300-cond-4",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X =  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X =  ."
+    },
+    {
+      "id": "cr350-cond-4",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X =  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X =  ."
+    },
+    {
+      "id": "cr6-cond-5",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X +  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X +  ."
+    },
+    {
+      "id": "cr1000x-cond-5",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X +  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X +  ."
+    },
+    {
+      "id": "cr300-cond-5",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X +  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X +  ."
+    },
+    {
+      "id": "cr350-cond-5",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X +  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X +  ."
+    },
+    {
+      "id": "cr6-cond-6",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X, Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X, Y ."
+    },
+    {
+      "id": "cr1000x-cond-6",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X, Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X, Y ."
+    },
+    {
+      "id": "cr300-cond-6",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X, Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X, Y ."
+    },
+    {
+      "id": "cr350-cond-6",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X, Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X, Y ."
+    },
+    {
+      "id": "cr6-cond-7",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X )  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X )  ."
+    },
+    {
+      "id": "cr1000x-cond-7",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X )  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X )  ."
+    },
+    {
+      "id": "cr300-cond-7",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X )  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X )  ."
+    },
+    {
+      "id": "cr350-cond-7",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X )  Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X )  ."
+    },
+    {
+      "id": "cr6-cond-8",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf (X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr1000x-cond-8",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf (X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr300-cond-8",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf (X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr350-cond-8",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf (X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr6-cond-9",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + ."
+    },
+    {
+      "id": "cr1000x-cond-9",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + ."
+    },
+    {
+      "id": "cr300-cond-9",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + ."
+    },
+    {
+      "id": "cr350-cond-9",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + ."
+    },
+    {
+      "id": "cr6-cond-10",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + Nope ."
+    },
+    {
+      "id": "cr1000x-cond-10",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + Nope ."
+    },
+    {
+      "id": "cr300-cond-10",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + Nope ."
+    },
+    {
+      "id": "cr350-cond-10",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y + Nope Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y + Nope ."
+    },
+    {
+      "id": "cr6-cond-11",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf Nope + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope + ."
+    },
+    {
+      "id": "cr1000x-cond-11",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf Nope + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope + ."
+    },
+    {
+      "id": "cr300-cond-11",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf Nope + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression: Nope + ."
+    },
+    {
+      "id": "cr350-cond-11",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf Nope + Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression: Nope + ."
+    },
+    {
+      "id": "cr6-cond-12",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf 1 2 Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 2 ."
+    },
+    {
+      "id": "cr1000x-cond-12",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf 1 2 Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 2 ."
+    },
+    {
+      "id": "cr300-cond-12",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf 1 2 Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 2 ."
+    },
+    {
+      "id": "cr350-cond-12",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf 1 2 Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 2 ."
+    },
+    {
+      "id": "cr6-body-rhs",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-body-rhs",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-body-rhs",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr350-body-rhs",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr6-body-lhs",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Nope = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-body-lhs",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Nope = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-body-lhs",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Nope = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr350-body-lhs",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Nope = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr6-body-unknown-cond",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Nope ."
+    },
+    {
+      "id": "cr1000x-body-unknown-cond",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Nope ."
+    },
+    {
+      "id": "cr300-body-unknown-cond",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X Nope .\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr350-body-unknown-cond",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Nope Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X Nope .\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr6-else-body",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1 Else Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-else-body",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1 Else Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-else-body",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1 Else Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr350-else-body",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1 Else Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr6-good-cond-bad-body",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = 1 +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Y = 1 +."
+    },
+    {
+      "id": "cr1000x-good-cond-bad-body",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = 1 +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Y = 1 +."
+    },
+    {
+      "id": "cr300-good-cond-bad-body",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = 1 +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Y = 1 +."
+    },
+    {
+      "id": "cr350-good-cond-bad-body",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = 1 +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Y = 1 +."
+    },
+    {
+      "id": "cr6-good-cond-unknown-body",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Y = Nope."
+    },
+    {
+      "id": "cr1000x-good-cond-unknown-body",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Y = Nope."
+    },
+    {
+      "id": "cr300-good-cond-unknown-body",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr350-good-cond-unknown-body",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Then Y = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+    },
+    {
+      "id": "cr6-following",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nY = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-following",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nY = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-following",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nY = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 4: Nope is not defined."
+    },
+    {
+      "id": "cr350-following",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Y = 1\nY = Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 4: Nope is not defined."
+    },
+    {
+      "id": "cr6-preceding",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nY = Nope\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-preceding",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nY = Nope\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-preceding",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nY = Nope\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 4: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr350-preceding",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nY = Nope\nIf X Y Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 4: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr6-pre-begin",
+      "logger": "cr6",
+      "source": "Public X,Y\nIf X Y Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-pre-begin",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nIf X Y Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-pre-begin",
+      "logger": "cr300",
+      "source": "Public X,Y\nIf X Y Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr350-pre-begin",
+      "logger": "cr350",
+      "source": "Public X,Y\nIf X Y Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr6-spacing",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\n  If X <= No pe  Then  Y = 1  \nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe  ."
+    },
+    {
+      "id": "cr1000x-spacing",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\n  If X <= No pe  Then  Y = 1  \nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe  ."
+    },
+    {
+      "id": "cr300-spacing",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\n  If X <= No pe  Then  Y = 1  \nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe  ."
+    },
+    {
+      "id": "cr350-spacing",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\n  If X <= No pe  Then  Y = 1  \nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe  ."
+    },
+    {
+      "id": "cr6-no-space",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf(X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr1000x-no-space",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf(X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr300-no-space",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf(X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr350-no-space",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf(X Y) Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: (X Y) ."
+    },
+    {
+      "id": "cr6-block",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then\nY = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-block",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then\nY = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-block",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then\nY = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr350-block",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then\nY = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr6-quoted-tail",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X \"Then\" Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X \"Then\" .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr1000x-quoted-tail",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X \"Then\" Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X \"Then\" .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr300-quoted-tail",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X \"Then\" Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X \"Then\" .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr350-quoted-tail",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X \"Then\" Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X \"Then\" .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr6-quoted-head",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf \"Then\" X Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: \"Then\" X .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr1000x-quoted-head",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf \"Then\" X Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: \"Then\" X .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr300-quoted-head",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf \"Then\" X Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: \"Then\" X .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr350-quoted-head",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf \"Then\" X Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: \"Then\" X .",
+      "not_modelled": "Then inside a quoted condition operand is outside the current condition-text scanner."
+    },
+    {
+      "id": "cr6-quoted-body",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Printf(\"Then\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr1000x-quoted-body",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Printf(\"Then\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y ."
+    },
+    {
+      "id": "cr300-quoted-body",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Printf(\"Then\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Printf is not defined.\nline 3: Invalid, or out of place expression: Printf(\"Then\")."
+    },
+    {
+      "id": "cr350-quoted-body",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Y Then Printf(\"Then\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X Y .\nline 3: Printf is not defined.\nline 3: Invalid, or out of place expression: Printf(\"Then\")."
+    },
+    {
+      "id": "cr6-unknown-pre",
+      "logger": "cr6",
+      "source": "Public X,Y\nIf X <= No pe Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X <= No pe .\nline 2: If illegally occurs before BeginProg."
+    },
+    {
+      "id": "cr1000x-unknown-pre",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nIf X <= No pe Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X <= No pe .\nline 2: If illegally occurs before BeginProg."
+    },
+    {
+      "id": "cr300-unknown-pre",
+      "logger": "cr300",
+      "source": "Public X,Y\nIf X <= No pe Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No is not defined.\nline 2: pe is not defined.\nline 2: Incomplete expression: X <= No pe ."
+    },
+    {
+      "id": "cr350-unknown-pre",
+      "logger": "cr350",
+      "source": "Public X,Y\nIf X <= No pe Then Y = 1\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: No is not defined.\nline 2: pe is not defined.\nline 2: Incomplete expression: X <= No pe ."
+    },
+    {
+      "id": "cr6-unknown-follow",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nY = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe .\nline 4: Invalid symbol in expression: Y = Missing."
+    },
+    {
+      "id": "cr1000x-unknown-follow",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nY = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe .\nline 4: Invalid symbol in expression: Y = Missing."
+    },
+    {
+      "id": "cr300-unknown-follow",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nY = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe .\nline 4: Missing is not defined."
+    },
+    {
+      "id": "cr350-unknown-follow",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = 1\nY = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe .\nline 4: Missing is not defined."
+    },
+    {
+      "id": "cr6-unknown-body",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe .\nline 3: Invalid symbol in expression: Y = Missing.",
+      "not_modelled": "Later diagnostic of the discarded inline body after an unknown condition symbol."
+    },
+    {
+      "id": "cr1000x-unknown-body",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X <= No pe .\nline 3: Invalid symbol in expression: Y = Missing.",
+      "not_modelled": "Later diagnostic of the discarded inline body after an unknown condition symbol."
+    },
+    {
+      "id": "cr300-unknown-body",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe .\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr350-unknown-body",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X <= No pe Then Y = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No is not defined.\nline 3: pe is not defined.\nline 3: Incomplete expression: X <= No pe .\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr6-pass1-before",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nPublic = 1\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration 1.",
+      "not_modelled": "Pre-existing Public = 1 declaration parsing and its pass-1 gate."
+    },
+    {
+      "id": "cr1000x-pass1-before",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nPublic = 1\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration 1.",
+      "not_modelled": "Pre-existing Public = 1 declaration parsing and its pass-1 gate."
+    },
+    {
+      "id": "cr300-pass1-before",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nPublic = 1\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration 1.\nline 4: No is not defined.\nline 4: pe is not defined.\nline 4: Incomplete expression: X <= No pe .",
+      "not_modelled": "Pre-existing Public = 1 declaration parsing and its pass-1 gate."
+    },
+    {
+      "id": "cr350-pass1-before",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nPublic = 1\nIf X <= No pe Then Y = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration 1.\nline 4: No is not defined.\nline 4: pe is not defined.\nline 4: Incomplete expression: X <= No pe .",
+      "not_modelled": "Pre-existing Public = 1 declaration parsing and its pass-1 gate."
+    },
+    {
+      "id": "cr6-elseif",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nIf X Then\nElseIf X Y Then Y = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .",
+      "not_modelled": "Malformed one-line ElseIf remains outside the If-only rule."
+    },
+    {
+      "id": "cr1000x-elseif",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nIf X Then\nElseIf X Y Then Y = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .",
+      "not_modelled": "Malformed one-line ElseIf remains outside the If-only rule."
+    },
+    {
+      "id": "cr300-elseif",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nIf X Then\nElseIf X Y Then Y = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .",
+      "not_modelled": "Malformed one-line ElseIf remains outside the If-only rule."
+    },
+    {
+      "id": "cr350-elseif",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nIf X Then\nElseIf X Y Then Y = 1\nEndIf\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .",
+      "not_modelled": "Malformed one-line ElseIf remains outside the If-only rule."
+    }
+  ],
+  "no_verdict": []
+}

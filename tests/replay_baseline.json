@@ -5968,7 +5968,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/87115edb8712.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",
@@ -6843,7 +6843,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/message_diff/f21f0323bbb8.CR6",
-"impact": "same first location, different message"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",

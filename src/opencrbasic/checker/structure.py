@@ -1459,7 +1459,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 # (oracle, CR6/CR1000X, 2026-10-08: `If TCTemp is <26` above `Public TCTemp`)
                 earlier = pass1_operands(dataclasses.replace(program, statements=program.statements[:pos]),
                                          profile)
-                verdict = (None if findings else _pass1_scan(stmt.text, earlier, profile))
+                scan_stmt = _inline_condition_stmt(stmt, profile)
+                verdict = (None if findings else _pass1_scan(scan_stmt.text, earlier, profile))
                 later = symbols.declared_variable_names(program) - symbols.declared_variable_names(
                     dataclasses.replace(program, statements=program.statements[:pos]))
                 if verdict is None and stmt.reason == _UNCLOSED_PAREN_EXPR and \
@@ -1469,7 +1470,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if verdict and verdict[0] == "pass1":
                     for message in _unparsed_string_messages(stmt, program, profile):
                         diags.error(stmt.line, message, stmt.file)
-                    diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1], earlier),
+                    diags.error(stmt.line, _pass1_message(profile, scan_stmt, verdict[1], earlier),
                                 stmt.file)
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
                     cond_depth += 1  # an unresolved `Select Case` still opens its block
@@ -2162,10 +2163,11 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                                         "BeginProg.", stmt.file)
                             return stmt.line
                     continue
-                verdict = (_pass1_scan(stmt.text, pass1_operands(program, profile), profile)
+                scan_stmt = _inline_condition_stmt(stmt, profile)
+                verdict = (_pass1_scan(scan_stmt.text, pass1_operands(program, profile), profile)
                            if profile.known_first_word_pass1 else None)
                 if verdict == ("pass2", "symbol"):
-                    diags.error(stmt.line, _pass1_message(profile, stmt, "symbol"), stmt.file,
+                    diags.error(stmt.line, _pass1_message(profile, scan_stmt, "symbol"), stmt.file,
                                 show_file="cr3xx")
                 elif verdict and verdict[0] == "pass1" and (verdict[1] != "fallback"
                                                           or condition_part(stmt.text) is not None):
@@ -2442,6 +2444,21 @@ def inline_if_condition(text: str) -> str | None:
     the `Then`), left-trimmed; `None` for any other statement."""
     m = _INLINE_IF.match(text)
     return m.group(1).lstrip() if m else None
+
+
+def _inline_condition_stmt(stmt: S.Stmt, profile) -> S.Stmt:
+    """Scan an unreadable one-line If condition as its block-form counterpart.
+
+    Only parser failures before Then; malformed inline bodies keep their own diagnostics.
+    Four-profile evidence: docs/checker.md#unreadable-one-line-if-conditions-round-44.
+    """
+    if not profile.single_pass and isinstance(stmt, S.Unparsed) \
+            and stmt.reason.startswith(("expected THEN", "expected ')'")) \
+            and re.match(r"\s*IF\b", stmt.text, re.I):
+        cond = inline_if_condition(stmt.text)
+        if cond is not None:
+            return dataclasses.replace(stmt, text="If " + cond, at_eol=False)
+    return stmt
 
 
 def condition_part(text: str) -> str | None:
