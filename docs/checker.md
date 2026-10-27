@@ -8527,3 +8527,146 @@ inline body or earlier Sub argument (6), later integral messages after a bad Dat
 on CR6/CR1000X (2), and an extra CR300/CR350 dimensions message for a local `Dim Timer` (2).
 The table-trigger case defers TimNo so it cannot hide the earlier header error. These later
 cascades remain bounded gaps, not matched observations.
+
+## Constant destinations inside a one-line If (round 52)
+
+Oracle, CR6/CR1000X, 2026-10-27; fixture `tests/fixtures/r52_inline_constant_destination.json` (44
+observations, all matched). Reproducer: round-51 fuzz `e261e8e17146` (CR1000X, GEUS `GCNETv2_7`
+mutant). A foreign `FuzzVar = 1` (never declared) sat inside an `If .. ElseIf` chain and line 900
+was `If FanU_on Then SDI12Recorder(1,C3,FanU,"XLs!",1.0,0)`. The reference prints only
+`line 900: Invalid Variable or Array: 1.`; we printed `line 880: Invalid, or out of place
+expression: FuzzVar = 1.`
+
+- **Not an acceptance.** The undeclared assignment is rejected on its own on all four profiles (`If x
+  Then / Fuzz = 1 / EndIf` and `Fuzz = 1`: `Invalid, or out of place expression: Fuzz = 1.`,
+  CR300/CR350 `Fuzz is not defined.`), in every block position probed (top level, an `If` body, after
+  a nested `EndIf`, before an `ElseIf`). It is a pass-2 error. A constant destination
+  (`Invalid Variable or Array`) belongs to stage 2a and hides pass 2 (round 39/40), on either side of
+  the assignment. So the undeclared assignment is only hidden, never accepted: no false-reject risk.
+- **The gap was ours.** Stage 2a looked only at top-level statements, so a constant destination in a
+  one-line `If` (`If x Then PanelTemp(3,15000)`, `... Else Battery((1+2))`, `Erase(5)`,
+  `AddPrecise(3,1)`) was not seen at all: a false accept alone, and the wrong first location beside
+  any pass-2 error. The reference reports the constant destination there, in statement order with
+  the top-level ones, and it hides an undeclared assignment before or after it and an undeclared
+  argument after it (`PanelTemp(Nope,250)`).
+- **Implemented.** `instr_data._check_stage2a` walks the one-line `If` statements too
+  (`_with_inline`) but applies only the destination check to them; its other checks (`WindVector`,
+  `Debug`, table-output `Reps` and bounds) stay on top-level statements, unobserved inline.
+  `instr_rules.check_precision_variable` (`AddPrecise`/`MovePrecise`) walks them as well. Accepted
+  controls: an inline `PanelTemp(y(1),250)`, `AddPrecise(P(1),1)`, `Battery("a")` and
+  `Battery(x+1)` compile; `Battery(Nope)` stays `Invalid symbol in expression: Nope.`; a short
+  `PanelTemp(15000)` gives `Invalid Variable or Array: 15000.` then `Invalid or missing parameter.`
+- **Not modelled (CR300/CR350, best effort).** The inline forms of the destination checks are not
+  reported there: `Erase(5)`/`RealTime(5)` inline compile in our checker but print `Invalid Variable
+  or Array: 5.`; inline `PanelTemp(15000)` and `Battery(3)` print `Illegal destination variable type,
+  expecting Float.`, in statement order with the other errors. Also unobserved: inline `Sample`/`WindVector`/`Debug` stage-2a errors.
+
+## Check configuration and report file (round 52)
+
+M3 framework pieces for the opencrbasic checks ([channels](../PLAN.md#three-diagnostic-channels)).
+No reference probes: the reference channel is untouched. The contract is tested in
+`tests/test_check_config.py` and `tests/test_checks.py`. Code: `checkconfig.py`, `checks.analyze`,
+`checks.report`, `cli._run_checks`.
+
+**Result field.** `checks.analyze(result, entry, config, cli=, lsp=)` fills
+`CompileResult.findings` and `CompileResult.suppressed` (a `Finding` carrying the suppression's
+`reason`). Nothing enters `Diagnostics.items`, so `CompileResult.ok` and the error filter are
+unchanged. The language server does not run checks yet. For M6 it calls `analyze` with its
+settings as `lsp={"OCB001": "warning"}` (`checkconfig.parse_overrides` validates them) and reads the
+two fields; the configuration file's content belongs in the LSP cache key.
+
+**`opencrbasic.toml`.** Found as the nearest ancestor directory of the entry file that holds it, or
+`--config FILE`. Format as in PLAN (`[checks]`, `[profile.<logger>.checks]`,
+`[entry."<path>".checks]`, `[[suppress]]`); precedence CLI > LSP > entry > profile > `[checks]` >
+built-in default (`checks.DEFAULT_SEVERITY`). Severities are `error`, `warning`, `info`, `off`
+(`off` drops the finding). Entry keys and `suppress.file` are paths relative to the directory of the
+configuration file, compared case-insensitively (CRBasic file names are); `suppress.file` is a glob
+(`fnmatch`; `*` crosses `/`). An included file is matched as written in the `Include` (drive prefix
+removed), relative to the entry's directory. `line` is optional. An unknown top-level key, check
+code, severity or logger profile, a missing or blank `reason`, an unreadable file or invalid TOML is
+a `ConfigError`.
+
+**CLI.** `--strict` (stderr lines, exit 3 for an error-severity finding), `--report FILE`,
+`--config FILE`, `--check CODE=SEVERITY` (repeatable, highest precedence). `--config` and `--check`
+act only with `--strict` or `--report`. `--report` alone runs the checks but prints nothing on
+stderr and never changes the exit status. Checks run only when the reference accepted the program.
+A configuration error prints `opencrbasic: configuration error: ...` on stderr, runs no checks and
+is recorded in the report; stdout, `CR6cmple.xxx` and the 0/1 verdict are unchanged. With
+`--strict` an accepted program then exits 4. That exit code is a decision of this round, not in
+PLAN: a CI gate must not read an unreadable policy as clean.
+
+**Report schema (`schema_version` 1).** One JSON object: `program`, `logger`;
+`reference` = `{ok, mode, diagnostics: [{severity, file, line, message}]}` (all reference
+diagnostics, errors and warnings); `strict` (whether `--strict` was given); `config` =
+`{file, error}`; `findings` = `[{code, severity, file, line, message}]` after severity and
+suppression; `suppressed` = the same plus `reason`. `file` is the entry's name, or the included name
+as written. A rejected program has empty `findings`.
+
+Not done: coverage notices and the config-aware LSP wiring (M6). A missing entry file returns before the report is written, so an older report file stays in place. A configuration file on another Windows drive than the entry matches no entry or suppression glob (absolute paths are compared).
+
+## Foldable builtins with the wrong argument count in a Const (round 52)
+
+`Const K=CHR()` made the constant folder index an empty argument list; the parser caught the
+`IndexError` and kept the whole declaration as an `Unparsed` statement, so we printed the full line
+plus `Expr illegally occurs before BeginProg.` (round-51 fuzz `cfb47653ff50`, CR1000X). The folder
+now treats any foldable builtin (`CHR`, `ABS`, `INT`, `SQR`, `LEN`, all unary) called with other than
+one argument as not constant, and the existing arity check reports the value only. Reference, all
+four loggers (2026-10-27): `CHR()`, `ABS()`, `LEN()`, `4*ATN()` give `Invalid, or out of place
+expression: <value>.`; `CHR(13,10)` and `SQR(4,1)` give `No Matching, or out of place ) in
+expression: <value>.`; CR6/CR1000X stop there, CR300/CR350 continue. Fixture
+`tests/fixtures/r52_const_builtin_arity.json` (32 observations, all matched).
+
+**Stdout bytes (round 52).** `crbc` wrote stdout as UTF-8 text while the message file is Latin-1
+bytes, so a UTF-8 `°` in an echoed source line came out double-encoded (`Â°`) on stdout only
+(round-51 fuzz `5a642d9a0c61`). Stdout is now Latin-1 too, so both carry the source bytes unchanged
+(`tests/test_cli.py`).
+
+## DataInterval before a table Reps error (round 52)
+
+Oracle, 2026-10-27; fixture `tests/fixtures/r52_datainterval_first_error.json` (56 observations, all
+matched; CR6/CR1000X for every case, CR300/CR350 for four). Origin: round-51 fuzz case
+`DataInterval (-1,15,Sec,10)` followed by `Minimum (999999999999,Batt_volt,FP2,False,False)`: the reference
+printed `DataInterval TintoInt and Interval parameters must be non-negative` before `Illegal Reps
+-2147483648`; we printed only the second.
+
+- **Cause.** Every `early` finding (`Scan`/`DataInterval` value errors) was dropped whenever stage 2a
+  (`instr_data.check_stage2a`) reported anything. That is right for the `Scan` errors and for
+  `Invalid Variable or Array` (below), but not for the `DataInterval` non-negative error.
+- **Rule (CR6/CR1000X).** The negative-`DataInterval` check is part of the table walk, in statement order.
+  It is printed when it precedes the first stage-2a table error (`Illegal Reps <n>`, `Variable X out of
+  bounds.`, `Variable X, index i, reps n, out of bounds.`, `Out of memory.` from a table `WindVector`),
+  across tables too (two negative intervals before a Reps error print both). A `DataInterval` after the
+  failing statement, in the same or a later table, is not printed (`Sample (0,..)` then `DataInterval
+  (-1,..)` gives only `Illegal Reps 0`). Either argument negative, or `TintoInt` above 2^31-1, counts
+  (`DataInterval (0,-15,..)`, `(2147483648,15,..)`); a non-negative `DataInterval` adds nothing. The
+  `Scan` value errors stay hidden by the Reps error (`Scan (-1,Sec,0,0)` plus `Sample (0,..)` gives
+  `DataInterval` and `Illegal Reps` only). CR300/CR350 have no such check and are unchanged. Implemented in
+  `checker/__init__.py` where `early` is cleared after stage 2a, by statement order.
+- **Constant destinations first.** A constant where a destination variable is required
+  (`PanelTemp(1,15000)`, `Battery(2)`) is found over the whole program before any `Reps`/bounds check
+  and replaces them, wherever it sits (a `Sub` before the table, or the main program after it): only
+  `Invalid Variable or Array: 1.` (all of them, in order) is printed, and the negative `DataInterval` is
+  hidden as well. Previously the single stage-2a walk met the table's `Illegal Reps` first and stopped.
+  `_check_stage2a` now runs the destination loop first and returns if it reported. An undefined name or
+  an unresolved assignment in the body (`PanelTemp(Nope,15000)`, `Nope = 1`) is not a destination error:
+  the `DataInterval` and `Illegal Reps` lines are still printed.
+- **Already matched, kept as controls.** `Sample (1,Ptemp,Bogus)` hides the `DataInterval` error (an
+  invalid-symbol finding); `Sample (1,Nope,FP2)` does not.
+- **RE trail.** None needed; the order was derived from probes only. The decompiled function of the
+  message is `FUN_004f11d0` (see the `check_data_interval` docstring).
+- **Gaps.** `WindVector (-5,..)` in the main program (outside a table) gives the reference's
+  `WindVector must be used inside a table declaration.`, not our `Out of memory.` (seen while probing; not
+  modelled, not in the fixture). A `Scan` value error ahead of a later stage-2a error could not be built in a
+  valid program, so whether it survives like `DataInterval` is unobserved.
+- **Replay (2026-10-27, recorded reference, all four loggers).** 27 cases still miss the reference's first
+  error, none sharing this rule: `Could not find DataTable` (2), `EndTable without DataTable.` (2),
+  `Illegally dimension` (2), `Invalid symbol in expression: UndeclaredFuzzName123.` (2), `Table with
+  DataInterval must be called within Scan..NextScan.` (cr1000x, 2: a `CallTable` of a `DataInterval` table
+  outside `Scan`; the placement message is missed), `Invalid Variable or Array: (1+2).` (cr1000x, hidden by
+  our pass-1 arity error; the reference prints both), `DataInterval must be used inside a table
+  declaration.` (cr300), `Warning: Invalid fnotch ...` (cr300), and one each of `END IF without IF...`,
+  `EndSub without Sub...`, `Expr illegally occurs before BeginProg.`, `GoesTable not active.`, `I2COpen must
+  precede I2CWrite.`, `IF or SELECT statement illegally has SCAN without NEXT SCAN.`, `Illegal ! operation`,
+  `Invalid, or out of place expression: EndTable2.`, `LongX unknown Const type`, `Miss match of types`,
+  `SDM instruction must be in Scan..NextScan...`, `SetSetting illegally occurs before BeginProg.`,
+  `Structure inside Structure`, `Variable RTD_C out of bounds.`.

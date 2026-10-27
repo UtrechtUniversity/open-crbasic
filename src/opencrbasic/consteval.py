@@ -165,6 +165,8 @@ def value_of(expr: S.Expr | None, env: Env) -> S.ConstValue:
         fn = _BUILTINS.get(expr.name.upper())
         if fn is None:
             raise NotConstant(f"{expr.name} is not a constant-foldable function")
+        if len(expr.args) != 1:
+            raise NotConstant(f"{expr.name} takes one argument")
         args = [value_of(a, env) for a in expr.args]
         return fn(args)
     raise NotConstant(f"{type(expr).__name__} has no constant value")

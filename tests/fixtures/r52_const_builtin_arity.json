@@ -1,0 +1,247 @@
+{
+ "observation_date": "2026-10-27",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-chr-empty-in-sum",
+   "logger": "cr6",
+   "source": "Const CRLF=CHR(13)+CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR(13)+CHR()."
+  },
+  {
+   "id": "cr1000x-chr-empty-in-sum",
+   "logger": "cr1000x",
+   "source": "Const CRLF=CHR(13)+CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR(13)+CHR()."
+  },
+  {
+   "id": "cr300-chr-empty-in-sum",
+   "logger": "cr300",
+   "source": "Const CRLF=CHR(13)+CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR(13)+CHR().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-chr-empty-in-sum",
+   "logger": "cr350",
+   "source": "Const CRLF=CHR(13)+CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR(13)+CHR().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr6-chr-empty",
+   "logger": "cr6",
+   "source": "Const K=CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR()."
+  },
+  {
+   "id": "cr1000x-chr-empty",
+   "logger": "cr1000x",
+   "source": "Const K=CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR()."
+  },
+  {
+   "id": "cr300-chr-empty",
+   "logger": "cr300",
+   "source": "Const K=CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-chr-empty",
+   "logger": "cr350",
+   "source": "Const K=CHR()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: CHR().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr6-chr-two-args",
+   "logger": "cr6",
+   "source": "Const K=CHR(13,10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: CHR(13,10)."
+  },
+  {
+   "id": "cr1000x-chr-two-args",
+   "logger": "cr1000x",
+   "source": "Const K=CHR(13,10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: CHR(13,10)."
+  },
+  {
+   "id": "cr300-chr-two-args",
+   "logger": "cr300",
+   "source": "Const K=CHR(13,10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: CHR(13,10).\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-chr-two-args",
+   "logger": "cr350",
+   "source": "Const K=CHR(13,10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: CHR(13,10).\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr6-abs-empty",
+   "logger": "cr6",
+   "source": "Const K=ABS()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ABS()."
+  },
+  {
+   "id": "cr1000x-abs-empty",
+   "logger": "cr1000x",
+   "source": "Const K=ABS()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ABS()."
+  },
+  {
+   "id": "cr300-abs-empty",
+   "logger": "cr300",
+   "source": "Const K=ABS()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ABS().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-abs-empty",
+   "logger": "cr350",
+   "source": "Const K=ABS()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ABS().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr6-len-empty",
+   "logger": "cr6",
+   "source": "Const K=LEN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: LEN()."
+  },
+  {
+   "id": "cr1000x-len-empty",
+   "logger": "cr1000x",
+   "source": "Const K=LEN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: LEN()."
+  },
+  {
+   "id": "cr300-len-empty",
+   "logger": "cr300",
+   "source": "Const K=LEN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: LEN().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-len-empty",
+   "logger": "cr350",
+   "source": "Const K=LEN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: LEN().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr6-sqr-two-args",
+   "logger": "cr6",
+   "source": "Const K=SQR(4,1)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: SQR(4,1)."
+  },
+  {
+   "id": "cr1000x-sqr-two-args",
+   "logger": "cr1000x",
+   "source": "Const K=SQR(4,1)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: SQR(4,1)."
+  },
+  {
+   "id": "cr300-sqr-two-args",
+   "logger": "cr300",
+   "source": "Const K=SQR(4,1)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: SQR(4,1).\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-sqr-two-args",
+   "logger": "cr350",
+   "source": "Const K=SQR(4,1)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: SQR(4,1).\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr6-chr-sum-ok",
+   "logger": "cr6",
+   "source": "Const K=CHR(13)+CHR(10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chr-sum-ok",
+   "logger": "cr1000x",
+   "source": "Const K=CHR(13)+CHR(10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-chr-sum-ok",
+   "logger": "cr300",
+   "source": "Const K=CHR(13)+CHR(10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-chr-sum-ok",
+   "logger": "cr350",
+   "source": "Const K=CHR(13)+CHR(10)\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-atn-empty",
+   "logger": "cr6",
+   "source": "Const K=4*ATN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr1000x-atn-empty",
+   "logger": "cr1000x",
+   "source": "Const K=4*ATN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 4*ATN()."
+  },
+  {
+   "id": "cr300-atn-empty",
+   "logger": "cr300",
+   "source": "Const K=4*ATN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 4*ATN().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-atn-empty",
+   "logger": "cr350",
+   "source": "Const K=4*ATN()\nPublic x\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: 4*ATN().\nline 4: Too many parameters:  Sec.\nline 5: x is not defined."
+  }
+ ]
+}

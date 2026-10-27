@@ -945,28 +945,14 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
     tables = symbols.scope_tables(program, env)
     known = expressions._known_names(program, profile)
     source_vars = None
-    in_table = False
-    sources_ok = True   # CR6/CR1000X: an undefined table source ends the table checks (round 38)
-    for st in program.statements:
-        if not isinstance(st, S.Instruction):
-            continue
-        dims = tables(st).dims
-        kw = st.keyword.upper()
-        in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
-        record = profile.instructions.get(kw)
-        if not record:
-            continue
-        if kw == "WINDVECTOR" and st.args:
-            reps = _reps_value(st.args[0], env)
-            if reps is not None and _INT32_MIN < reps < 0:
-                diags.error(st.line, "Out of memory.", st.file)
-                return True
-        if kw == "DEBUG":
-            from .instr_rules import debug_history_oom
-            if debug_history_oom(st, env, profile, program):
-                diags.error(st.line, "Out of memory.", st.file)
-                return True
-        if destinations and kw not in _OWN_VARIABLE_CHECK:
+    if destinations:
+        # whole program first: any constant destination hides every `Reps`/bounds check, wherever it
+        # sits (oracle, round 52, docs/checker.md#datainterval-before-a-table-reps-error-round-52),
+        # a one-line If's statement too (docs/checker.md#constant-destinations-inside-a-one-line-if-round-52)
+        for st in _with_inline(program.statements):
+            record = profile.instructions.get(st.keyword.upper()) if isinstance(st, S.Instruction) else None
+            if not record or st.keyword.upper() in _OWN_VARIABLE_CHECK:
+                continue
             for i, code in enumerate(record["params"][:len(st.args)]):
                 arg = st.args[i]
                 if code in (8, 27, 29) and arg is not None and not isinstance(arg, S.String) \
@@ -974,6 +960,36 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                     diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
                                 st.file)
                     reported = True
+        if reported:
+            return True
+    in_table = False
+    sources_ok = True   # CR6/CR1000X: an undefined table source ends the table checks (round 38)
+    top_level = {id(st) for st in program.statements}
+    for st in _with_inline(program.statements):
+        if not isinstance(st, S.Instruction):
+            continue
+        dims = tables(st).dims
+        kw = st.keyword.upper()
+        inline = id(st) not in top_level   # a one-line If's statement: only the destination check (round 52)
+        if not inline:
+            in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
+        record = profile.instructions.get(kw)
+        if not record:
+            continue
+        if inline and not destinations:
+            continue
+        if kw == "WINDVECTOR" and st.args and not inline:
+            reps = _reps_value(st.args[0], env)
+            if reps is not None and _INT32_MIN < reps < 0:
+                diags.error(st.line, "Out of memory.", st.file)
+                return True
+        if kw == "DEBUG" and not inline:
+            from .instr_rules import debug_history_oom
+            if debug_history_oom(st, env, profile, program):
+                diags.error(st.line, "Out of memory.", st.file)
+                return True
+        if inline:
+            continue
         if destinations and in_table and kw in _TABLE_OUTPUT and sources_ok:
             from .structure import _undefined_table_source
             sources_ok = _undefined_table_source(st, profile, known) is None

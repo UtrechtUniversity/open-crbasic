@@ -1,10 +1,18 @@
 """opencrbasic checks: likely defects the reference compiler accepts (`PLAN.md` "Three diagnostic
 channels"). Findings never enter `Diagnostics`; `crbc --strict` prints them on stderr."""
 
-from dataclasses import dataclass
+import os
+import re
+from dataclasses import dataclass, replace
+from pathlib import Path
 
+from . import checkconfig
 from . import syntax as S
 from .checker import symbols
+
+# Built-in default severity per check code; also the code set the configuration validates against.
+DEFAULT_SEVERITY = {"OCB001": "error"}
+SCHEMA_VERSION = 1
 
 
 @dataclass
@@ -14,6 +22,7 @@ class Finding:
     line: int
     file: str
     message: str
+    reason: str = ""     # the suppression's reason, on `CompileResult.suppressed` only
 
     def text(self, program: str) -> str:
         return f"{self.file or program} line {self.line}: {self.severity} {self.code}: {self.message}"
@@ -65,3 +74,57 @@ def _alias_keyword(program: S.Program, profile) -> list[Finding]:
 
 def run(program: S.Program | None, profile) -> list[Finding]:
     return [] if program is None else _alias_keyword(program, profile)
+
+
+def analyze(result, entry: Path, config: checkconfig.Config | None = None,
+            cli: dict[str, str] | None = None, lsp: dict[str, str] | None = None) -> None:
+    """Run the checks on a compiled `result` and store them, after severity and suppression
+    configuration, in `result.findings` / `result.suppressed` (never in `result.diagnostics`, so
+    `result.ok` is unchanged). `cli` and `lsp` are severity maps (`checkconfig.parse_overrides`)."""
+    cfg = config or checkconfig.Config()
+    entry = entry.resolve()
+    root = cfg.root or entry.parent
+
+    def rel(p: Path) -> str:
+        try:
+            return Path(os.path.relpath(p, root)).as_posix().lower()
+        except ValueError:   # another Windows drive: no relative path, so no entry or glob matches
+            return p.as_posix().lower()
+
+    for f in run(result.program_ast, result.profile):
+        sev = checkconfig.severity(cfg, f.code, DEFAULT_SEVERITY[f.code], result.profile.name,
+                                   rel(entry), cli or {}, lsp or {})
+        if sev == "off":
+            continue
+        f = replace(f, severity=sev)
+        # an included file is named as written in the `Include` (drive prefix and all), relative
+        # to the entry file's directory; the entry itself by its name
+        file = entry if f.file in ("", entry.name) else entry.parent / re.sub(r"^[A-Za-z]+:", "", f.file).replace("\\", "/")
+        if s := checkconfig.suppression(cfg, f.code, rel(file), f.line):
+            result.suppressed.append(replace(f, reason=s.reason))
+        else:
+            result.findings.append(f)
+
+
+def report(result, program: str, strict: bool, config_file: Path | None, config_error: str | None) -> dict:
+    """The `crbc --report` document (`docs/checker.md` "Check configuration and report file")."""
+
+    def item(f: Finding) -> dict:
+        return {"code": f.code, "severity": f.severity, "file": f.file or program, "line": f.line,
+                "message": f.message}
+
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "program": program,
+        "logger": result.profile.name,
+        "reference": {
+            "ok": result.ok,
+            "mode": result.mode,
+            "diagnostics": [{"severity": d.severity, "file": d.file or program, "line": d.line,
+                             "message": d.message} for d in result.diagnostics.items],
+        },
+        "strict": strict,
+        "config": {"file": str(config_file) if config_file else None, "error": config_error},
+        "findings": [item(f) for f in result.findings],
+        "suppressed": [{**item(f), "reason": f.reason} for f in result.suppressed],
+    }

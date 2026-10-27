@@ -369,8 +369,15 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instr_data.check_stage2a, program, profile, diags, env)
         if diags.errors:
             diags.items[:] = [d for d in diags.items if not _is_unreached(d)]  # (oracle, 2026-10-12)
-            early.items = []  # hidden by a stage-2a error too (oracle, CR6/CR1000X, 2026-10-04:
-            # `PanelTemp(1,15000)` under `Scan(0,Sec,3,0)` reports only `Invalid Variable or Array`)
+            # hidden by a stage-2a error too (oracle, CR6/CR1000X, 2026-10-04: `PanelTemp(1,15000)`
+            # under `Scan(0,Sec,3,0)` reports only `Invalid Variable or Array`); only a negative
+            # `DataInterval` ahead of a table `Reps`/bounds error survives (round 52,
+            # docs/checker.md#datainterval-before-a-table-reps-error-round-52)
+            order = {(st.file, st.line): i for i, st in enumerate(program.statements)}
+            first = min(order.get((d.file, d.line), 0) for d in diags.errors)
+            keep = not any(d.message.startswith("Invalid Variable or Array") for d in diags.errors)
+            early.items = [d for d in early.items if keep and d.message.startswith("DataInterval TintoInt")
+                           and order.get((d.file, d.line), 0) < first]
     if not diags.errors or profile.single_pass:
         # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
         # fallback (`structure.check_pass2`) and the undefined-symbol/constant-only-family checks

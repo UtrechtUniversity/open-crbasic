@@ -41,7 +41,13 @@ crbc [options] program [messagefile]
   --no-message-file   do not write CR6cmple.xxx
   --strict      also run opencrbasic checks (likely defects the reference accepts) on stderr;
                 exit 3 when the program compiles but a check reports an error
+                (exit 4: invalid opencrbasic.toml)
+  --report FILE write a JSON report (reference verdict and diagnostics, check findings)
+  --config FILE use this opencrbasic.toml (default: nearest ancestor of the program)
+  --check CODE=SEVERITY   set a check severity (error|warning|info|off); repeatable
 ```
+
+Check configuration and the report schema: `docs/checker.md` "Check configuration and report file".
 
 Output follows the exe's format: `Program.CR6 -- Compiled in SequentialMode.` (CR300/CR350:
 `-- Compiled OK.`), `Warning: ...` lines, or `-- Compile Failed!` followed by `line N: message`

@@ -1,0 +1,401 @@
+{
+ "observation_date": "2026-10-27",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-inline-bad-alone",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-inline-bad-alone",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-inline-bad-else",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then x=1 Else SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-inline-bad-else",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then x=1 Else SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-inline-bad-undecl-before",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  Fuzz = 1\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-inline-bad-undecl-before",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  Fuzz = 1\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-inline-bad-undecl-after",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  Fuzz = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-inline-bad-undecl-after",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  Fuzz = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-chain-undecl-then-inline-bad",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If y(1) Then\n    x=1\n    Fuzz = 1\n  ElseIf y(2) Then\n    x=2\n  ElseIf y(3) Then\n    If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-chain-undecl-then-inline-bad",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If y(1) Then\n    x=1\n    Fuzz = 1\n  ElseIf y(2) Then\n    x=2\n  ElseIf y(3) Then\n    If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-inline-bad-undecl-inline-before",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Fuzz = 1\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-inline-bad-undecl-inline-before",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Fuzz = 1\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-inline-bad-undecl-arg-after",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  PanelTemp(Nope,250)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-inline-bad-undecl-arg-after",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then SDI12Recorder(1,C3,FanU,\"XLs!\",1.0,0)\n  PanelTemp(Nope,250)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-inline-panel-const",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(3,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-inline-panel-const",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(3,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-inline-panel-const-undecl-after",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(3,15000)\n  Fuzz = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-inline-panel-const-undecl-after",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(3,15000)\n  Fuzz = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-inline-battery-expr-undecl-before",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  Fuzz = 1\n  If x Then Battery((1+2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr1000x-inline-battery-expr-undecl-before",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  Fuzz = 1\n  If x Then Battery((1+2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable or Array: (1+2)."
+  },
+  {
+   "id": "cr6-inline-erase-const",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Erase(5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-inline-erase-const",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Erase(5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr6-inline-addprecise-const",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then AddPrecise(3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-inline-addprecise-const",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then AddPrecise(3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-inline-addprecise-const-else",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then x=1 Else AddPrecise(3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-inline-addprecise-const-else",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then x=1 Else AddPrecise(3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-inline-addprecise-ok",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then AddPrecise(P(1),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-inline-addprecise-ok",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then AddPrecise(P(1),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-inline-moveprecise-const",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then MovePrecise(3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-inline-moveprecise-const",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then MovePrecise(3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-inline-panel-ok",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(y(1),250)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-inline-panel-ok",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(y(1),250)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-inline-battery-string-ok",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(\"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-inline-battery-string-ok",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(\"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-inline-battery-name-expr-ok",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(x+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-inline-battery-name-expr-ok",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(x+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-inline-short-const",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 15000.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-inline-short-const",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then PanelTemp(15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 15000.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-inline-undecl-dest",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-inline-undecl-dest",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-top-bad-undecl-after-control",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(3,15000)\n  Fuzz = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-top-bad-undecl-after-control",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(3,15000)\n  Fuzz = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-inline-const-then-block-undecl-arg",
+   "logger": "cr6",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(3)\n  If x Then\n    PanelTemp(Nope,250)\n  EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-inline-const-then-block-undecl-arg",
+   "logger": "cr1000x",
+   "source": "Public fan As String, x, y(3), FanU As String\nPublic P(2) As Float\nBeginProg\n  Scan(1,Sec,0,0)\n  If x Then Battery(3)\n  If x Then\n    PanelTemp(Nope,250)\n  EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr6-trailing-empty-If X Then AddPrecise(3,)",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then AddPrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-trailing-empty-If X Then AddPrecise(3,)",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then AddPrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-trailing-empty-AddPrecise(3,)",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-trailing-empty-AddPrecise(3,)",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-trailing-empty-If X Then MovePrecise(3,)",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then MovePrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-trailing-empty-If X Then MovePrecise(3,)",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then MovePrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-trailing-empty-MovePrecise(3,)",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-trailing-empty-MovePrecise(3,)",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(3,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-trailing-empty-AddPrecise(3,,)",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(3,,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-trailing-empty-AddPrecise(3,,)",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(3,,)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3.\nline 4: Invalid or missing parameter."
+  }
+ ]
+}

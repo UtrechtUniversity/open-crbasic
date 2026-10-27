@@ -8,7 +8,8 @@
   "TCDIFF": 3,
   "CURRENTSE": 3
  },
- "sw12_ports": [501, 502],
+ "sw12_ports": [501, 502, 503],
+ "sw12_port_messages": {"0": "Invalid port 6642484, must be NULL.", "-1": "Invalid port 6642484, must be ."},
  "delay": {
   "option0_limit": 3600000000,
   "option1_limit": 86400000000

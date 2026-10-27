@@ -520,7 +520,8 @@ def _check_sw12(stmt: S.Instruction, measure: dict, env: consteval.Env, diags: D
     if value is None:
         return
     if value not in measure["sw12_ports"]:
-        diags.error(stmt.line, f"Invalid SW12 port {value}.", stmt.file)
+        text = measure.get("sw12_port_messages", {}).get(str(value), f"Invalid SW12 port {value}.")
+        diags.error(stmt.line, text, stmt.file)
 
 
 # --- `Delay`: `Delay(Option, Interval, Units)`. Three checks, oracle-confirmed per logger

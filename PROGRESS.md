@@ -1,10 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-27 after development round 51**
-(PipeLine Mode placement of further task instructions, rounds 49-50; fresh fuzz, round 51). Rounds
-49-51 are committed on branch `opencrbasic-rounds-49` (`56909bb9`, `c0986161`, `8a90bae3`,
-`2bb449a1`, `8b485946`) on top of round 48 (`6d2e4123`); not pushed, not merged into `main`.
-Inspect `git status` before editing; use Git to check publication state.
+Current compiler state and handoff, updated **2026-10-27 after development round 52** (round-51
+fuzz triage, M3 report and configuration). Rounds 49-52 are on `main`; use Git to check publication
+state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
 decision of 2026-10-24 makes verdict safety, execution mode and the first error the priorities;
@@ -22,10 +20,10 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 56,487 passed, 311 skipped, 444 strict xfail (round 51) |
-| `pytest -q -m server` | 163 passed (round 51) |
+| `pytest -q -n 4 -m 'not server'` | 56,708 passed, 311 skipped, 444 strict xfail (round 52, `-n 8`) |
+| `pytest -q -m server` | 163 passed (round 52) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded` (round 51) | 3,338 inputs: 2,571 exact (one more than round 48, CR6; a one-line `If` constant-family argument), other counts unchanged; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| Saved fuzz replay, `fuzz_replay.py --recorded` (round 52) | 3,338 inputs: 2,574 exact (round 51: 2,571); CR6/CR1000X: 23 first-error misses, 5 earlier first locations, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 46) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Fresh fuzz, seeds 441 (CR6) / 442 (CR1000X) (round 51, `--relevant`, 500 mutants each, no shrinking) | CR6 492 exact, 6 message differences; CR1000X 490 exact, 8 message differences, 1 false accept (`a66ad5f9beb3`, fixed); no false reject, crash, hang, implementation exception or mode difference. The 14 message differences are not triaged; raw output in `scratch/r51/` (git-ignored) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
@@ -74,6 +72,28 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 52** (M2/M3, triage of the round-51 fuzz differences; one session, Sonnet workers A-C,
+Codex `gpt-6.1-sol` research and review). Four of the 14 round-51 message differences are now exact.
+- **False reject fixed:** CR1000X accepts `SW12(SW12_CSIO,...)` (port 503); its invalid-port message
+  is a reference formatting bug (`Invalid port 6642484, must be NULL.` for 0), modelled as profile
+  data ([instructions](docs/instructions.md#sw12-invalid-sw12-port-d)). Fixture `r52_sw12_ports.json`.
+- **False accept fixed:** constant destinations (`PanelTemp(3,...)`, `Erase(5)`, `AddPrecise(3,1)`)
+  inside a one-line `If` were unchecked (`e261e8e17146`); fixture `r52_inline_constant_destination.json`.
+- **First error:** a negative `DataInterval` is reported before a later table `Reps`/bounds error, and
+  a constant destination anywhere hides every `Reps`/bounds check (`3a4aa2c0910b`); fixture
+  `r52_datainterval_first_error.json`.
+- **Implementation exception hidden as `Unparsed`:** `Const K=CHR()` crashed the constant folder
+  (`cfb47653ff50`); fixture `r52_const_builtin_arity.json`. `crbc` stdout now carries source bytes
+  like the message file (a UTF-8 `°` was double-encoded); the in-process replay still counts
+  `5a642d9a0c61` because it decodes the two sides differently.
+- **M3:** `--report FILE`, `opencrbasic.toml` (`--config`, `--check CODE=SEVERITY`, suppressions with
+  reasons), `CompileResult.findings`/`suppressed`; exit 4 for an invalid configuration under
+  `--strict` (a round-52 decision) ([checker notes](docs/checker.md#check-configuration-and-report-file-round-52)).
+  Codex review findings fixed: duplicate inline `AddPrecise(3,)` diagnostic, cross-drive `relpath`,
+  non-string suppression codes, backslash include paths.
+- Gates: fixture audit of the r51/r52 fixtures 0 differing; four-profile difftest and GEUS unchanged;
+  replay gate passes; `verify.py` passes with both compilers.
+
 **Round 51** (M1, fresh relevant fuzz, seeds 441 CR6 / 442 CR1000X, 500 mutants each, no
 shrinking; one session).
 - CR6: 492 exact, 6 message differences. CR1000X: 490 exact, 8 message differences, 1 false accept
@@ -103,8 +123,9 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    - the `Status` lesson was corrected after the old observation could not be reproduced
      ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked));
    - an `--strict` error for aliases named after CRBasic names (`OCB001`, round 33).
-3. **M3, remaining framework:** `--report FILE`, configuration and suppressions, the separate
-   result field for the language server, then the next checks from the PLAN table.
+3. **M3, remaining:** the language server does not run checks yet (M6: call `checks.analyze` with
+   its settings, put the configuration in the cache key); a missing entry file writes no report;
+   then the next checks from the PLAN table.
 4. **M1, remaining false accepts.** The 27 left on CR6/CR1000X fall under the PLAN's flag rule:
    instructions neither FirnMelt nor GEUS uses, or allocation and 32-bit clamping models. Round 34's
    18: `072c74da6af5` (`&H0  10a0101`), `51f39a5f2393` and `7b4b2177d56b` (`CDM_FFTFilt`),
@@ -126,10 +147,10 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 5. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is unprobed for `CDM_*`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`,
      `VibratingWire`; plain `Calibrate` in a slow scan lacks a `may skip scans` warning;
-   - triage the 14 round-51 message differences (`scratch/r51/`); `VoltSE(...,Undecl)` in a
+   - 10 round-51 message differences remain (`scratch/r51/`; all later-diagnostic or same-location text except `8f0c2a005513`, warnings before the error); PipeLine probing of the instructions above was not started in round 52 (Codex cannot reach the Wine server from its sandbox, so it does research and review only); `VoltSE(...,Undecl)` in a
      one-line `If` prints the `Invalid symbol` line without the earlier `Invalid channel` line;
    - older fuzz findings: `0a9af24e1266` (malformed `Sub` parameter first error), `71107f867ad9`,
-     `cf7630a9abd7` (SW12 port), `f67f1e2a1258` (unterminated string in a call), `522ddaa3d29c`
+`f67f1e2a1258` (unterminated string in a call), `522ddaa3d29c`
      (warning only); numeric routine-parameter declaration diagnostics, quoted-Then condition
      boundary and malformed one-line ElseIf (strict fixture gaps).
 6. **M3/M4** can start after M0, in parallel with M1/M2: the check framework, and the CR6 evidence

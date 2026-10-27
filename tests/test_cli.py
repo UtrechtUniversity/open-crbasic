@@ -87,3 +87,11 @@ def test_no_message_file_flag(tmp_path):
     result = _run(tmp_path, ["--no-message-file", "sample.CR6"])
     assert result.returncode == 1  # sample.CR6 fails to compile (PortSet channel)
     assert not (tmp_path / "CR6cmple.xxx").exists()
+
+
+def test_stdout_echoes_source_bytes_like_message_file(tmp_path):
+    # The exe echoes source bytes unchanged; a UTF-8 degree sign must not be re-encoded (round 52).
+    (tmp_path / "deg.CR6").write_bytes(b"BeginProg\r\n  x = \"\xc2\xb0\" +\r\nEndProg\r\n")
+    out = _run(tmp_path, ["deg.CR6"]).stdout
+    assert b"\xc2\xb0" in out and b"\xc3\x82" not in out
+    assert out.replace(b"\r\n", b"\n") == (tmp_path / "CR6cmple.xxx").read_bytes().replace(b"\r\n", b"\n")

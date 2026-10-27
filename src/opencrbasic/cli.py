@@ -10,12 +10,16 @@ Public/Dim/Sub-or-Function-parameter, and for an uncalled Sub; `checker/unused.p
 accepted (matching the exe's own option set) but has no implemented effect: oracle-confirmed to
 have none observable from the CLI either. Extra long options: --logger
 {cr6,cr1000x,cr300,cr350} (default: from the file extension, else cr6) and --no-message-file (do
-not write CR6cmple.xxx), --strict (opencrbasic checks, `checks.py`, on stderr only).
+not write CR6cmple.xxx), --strict (opencrbasic checks, `checks.py`, on stderr only), --report FILE
+(JSON report, `docs/checker.md` "Check configuration and report file"), --config FILE and
+--check CODE=SEVERITY (check configuration; both only act together with --strict or --report).
 Output goes to stdout and to the message file (CR6cmple.xxx by default, CRLF line endings);
 exit status 0 on success, 1 on failure, and with --strict 3 when the program compiles but a
-check reports an error.
+check reports an error, 4 when it compiles but the check configuration is invalid.
 """
 
+import io
+import json
 import re
 import sys
 from pathlib import Path
@@ -40,24 +44,35 @@ class _Options(TypedDict):
     logger: str | None
     message_file: bool
     strict: bool
+    report: str | None
+    config: str | None
+    check: list[str]
 
 
 def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
     opts: _Options = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
             "i": False, "t": False, "b": None, "u": False, "logger": None, "message_file": True,
-            "strict": False}
+            "strict": False, "report": None, "config": None, "check": []}
     positional: list[str] = []
     i = 0
     while i < len(argv):
         arg = argv[i]
         if arg.startswith("--"):
-            if arg == "--logger":
-                opts["logger"] = argv[i + 1]
+            if arg in ("--logger", "--report", "--config", "--check"):
+                value = argv[i + 1] if i + 1 < len(argv) else ""
                 i += 2
+            elif arg.split("=", 1)[0] in ("--logger", "--report", "--config", "--check"):
+                arg, value = arg.split("=", 1)
+                i += 1
+            else:
+                value = None
+            if value is not None:
+                if arg == "--check":
+                    opts["check"].append(value)
+                else:
+                    opts[cast(Literal["logger", "report", "config"], arg[2:])] = value
                 continue
-            if arg.startswith("--logger="):
-                opts["logger"] = arg.split("=", 1)[1]
-            elif arg == "--no-message-file":
+            if arg == "--no-message-file":
                 opts["message_file"] = False
             elif arg == "--strict":
                 opts["strict"] = True
@@ -173,7 +188,9 @@ def _pass1_ok(result, profile=None) -> bool:
 def main(argv: list[str] | None = None) -> int:
     from .compiler import compile_file
 
-    argv = sys.argv[1:] if argv is None else argv
+    if argv is None:   # a process run: stdout carries the source bytes, like the message file
+        cast(io.TextIOWrapper, sys.stdout).reconfigure(encoding="latin-1", errors="replace")
+        argv = sys.argv[1:]
     opts, positional = _parse(argv)
     profile = profiles.get(opts["logger"]) if opts["logger"] else None
     version_line = None
@@ -273,16 +290,43 @@ def main(argv: list[str] | None = None) -> int:
         for key in ("l", "c"):
             if (listing := opts[key]) and result.table_list is not None:
                 Path(listing).write_bytes(result.table_list.encode("latin-1", "replace"))
-    if not result.ok:
-        return 1
+    status = 0 if result.ok else 1
+    if opts["strict"] or opts["report"]:
+        status = _run_checks(opts, result, program, status)
+    return status
+
+
+def _run_checks(opts: _Options, result, program: Path, status: int) -> int:
+    """opencrbasic checks (`checks.py`), after the reference output is final: stderr and the
+    report file only, and the exit status moves from 0 only (3: a check error, 4: invalid check
+    configuration, `--strict` only). Checks run only when the reference accepted the program."""
+    from . import checkconfig, checks
+    config_file, error = None, None
+    try:
+        config_file = Path(opts["config"]) if opts["config"] else checkconfig.find(program)
+        config = checkconfig.load(config_file, checks.DEFAULT_SEVERITY) if config_file else checkconfig.Config()
+        cli = checkconfig.parse_overrides(opts["check"], checks.DEFAULT_SEVERITY)
+        if result.ok:
+            checks.analyze(result, program, config, cli=cli)
+    except checkconfig.ConfigError as e:
+        error = str(e)
+        print(f"opencrbasic: configuration error: {error}", file=sys.stderr)
     if opts["strict"]:
-        from . import checks
-        findings = checks.run(result.program_ast, profile)
-        for f in findings:
+        for f in result.findings:
             print(f.text(program.name), file=sys.stderr)
-        if any(f.severity == "error" for f in findings):
+    if opts["report"]:
+        try:
+            Path(opts["report"]).write_text(
+                json.dumps(checks.report(result, program.name, opts["strict"], config_file, error), indent=2) + "\n",
+                encoding="utf-8")
+        except OSError as e:
+            print(f"opencrbasic: cannot write report: {e}", file=sys.stderr)
+    if status == 0 and opts["strict"]:
+        if error:
+            return 4
+        if any(f.severity == "error" for f in result.findings):
             return 3
-    return 0
+    return status
 
 
 if __name__ == "__main__":

@@ -1293,10 +1293,11 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
     rule. Gated per-`profile.instructions` (not just the keyword spelling) so this is a no-op on
     CR300/CR350, which do not have either instruction at all.
     """
+    from . import instr_data   # (a one-line If's statement too, round 52)
     known: set[str] | None = None
     variable_names: set[str] | None = None
     str_consts: set[str] | None = None
-    for stmt in program.statements:
+    for stmt in instr_data._with_inline(program.statements):
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
@@ -1307,7 +1308,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
             known = _known_names(program, profile)
             variable_names = symbols.declared_variable_names(program)
         record = profile.instructions[kw]
-        if len(stmt.args) < _required_count(_real_params(record["params"])) and \
+        if given_count(stmt, profile) < _required_count(_real_params(record["params"])) and \
                 profile.name in ("cr6", "cr1000x"):
             continue  # reported with the missing-parameter line, `_report_constant_destinations`
         for i in sorted(positions):
