@@ -23,6 +23,28 @@
   "SERIALINRECORD": {"hides_unreached": true, "main_sequence_only": true, "messages": {
     "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
     "conditional": "SerialInRecord illegally used inside conditional statement."}},
+  "CS7500": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "CS7500 illegally used inside conditional statement."}},
+  "CSAT3": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "CSAT3 illegally used inside conditional statement."}},
+  "LI7200": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "LI7200 illegally used inside conditional statement."}},
+  "LI7700": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "LI7700 illegally used inside conditional statement."}},
+  "SDMINT8": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "SDMINT8 illegally used inside conditional statement."}},
+  "SDMSW8A": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "SDMSW8A illegally used inside conditional statement."}},
+  "SDMX50": {"hides_unreached": true, "messages": {
+    "outside": "SDM instruction must be in Scan..NextScan, unless SequentialMode is used.",
+    "conditional": "SDMX50 illegally used inside conditional statement."}},
+  "CALIBRATE": {"hides_unreached": true},
   "PULSEPORT": {"hides_unreached": true},
   "PULSECOUNT": {"conditional_only": true},
   "DELAY": {"constant_values": {"1": [0]}},

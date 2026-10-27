@@ -3462,6 +3462,2470 @@
    "source": "Public b As String * 100\nPublic n As Long\nPipeLineMode\nBeginProg\n  SerialOpen(COMC1,9600,0,0,1000)\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    SerialInRecord(COMC1,b,0,1,0,n,0)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cs7500-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cs7500-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-cs7500-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:     CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:     CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-cs7500-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-cs7500-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-cs7500-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 is not defined.\nline 7: Invalid, or out of place expression:       CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 is not defined.\nline 7: Invalid, or out of place expression:       CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-cs7500-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-cs7500-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-cs7500-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cs7500-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cs7500-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-cs7500-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-cs7500-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 is not defined.\nline 7: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 is not defined.\nline 7: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-cs7500-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-cs7500-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-cs7500-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cs7500-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cs7500-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cs7500-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-cs7500-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:     CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CS7500(CO2(),1,7,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:     CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-cs7500-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-cs7500-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-cs7500-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:       CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:       CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-cs7500-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-cs7500-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-cs7500-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cs7500-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CS7500(CO2(),1,7,6)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cs7500-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: CS7500 never reached at run time."
+  },
+  {
+   "id": "cr1000x-cs7500-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: CS7500 never reached at run time."
+  },
+  {
+   "id": "cr300-cs7500-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CS7500(CO2(),1,7,6)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-cs7500-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-cs7500-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-cs7500-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cs7500-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CS7500(CO2(),1,7,6)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(CO2(),1,7,6)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-cs7500-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-cs7500-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-cs7500-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 is not defined.\nline 7: Invalid, or out of place expression:       CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr350-cs7500-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CS7500 is not defined.\nline 7: Invalid, or out of place expression:       CS7500(CO2(),1,7,6)\n."
+  },
+  {
+   "id": "cr6-csat3-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-csat3-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-csat3-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CSAT3 is not defined.\nline 6: Invalid, or out of place expression:     CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CSAT3 is not defined.\nline 6: Invalid, or out of place expression:     CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-csat3-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-csat3-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-csat3-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 is not defined.\nline 7: Invalid, or out of place expression:       CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 is not defined.\nline 7: Invalid, or out of place expression:       CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-csat3-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-csat3-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-csat3-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-csat3-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-csat3-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-csat3-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-csat3-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 is not defined.\nline 7: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 is not defined.\nline 7: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-csat3-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-csat3-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-csat3-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-csat3-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-csat3-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-csat3-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-csat3-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression:     CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    CSAT3(Ux(),1,3,91,20)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CSAT3 is not defined.\nline 5: Invalid, or out of place expression:     CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-csat3-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-csat3-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-csat3-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CSAT3 is not defined.\nline 6: Invalid, or out of place expression:       CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CSAT3 is not defined.\nline 6: Invalid, or out of place expression:       CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-csat3-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-csat3-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-csat3-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-csat3-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  CSAT3(Ux(),1,3,91,20)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-csat3-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: CSAT3 never reached at run time."
+  },
+  {
+   "id": "cr1000x-csat3-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: CSAT3 never reached at run time."
+  },
+  {
+   "id": "cr300-csat3-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CSAT3 is not defined.\nline 6: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  CSAT3(Ux(),1,3,91,20)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CSAT3 is not defined.\nline 6: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-csat3-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-csat3-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-csat3-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-csat3-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  CSAT3(Ux(),1,3,91,20)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CSAT3 is not defined.\nline 4: Invalid, or out of place expression:   CSAT3(Ux(),1,3,91,20)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-csat3-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-csat3-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-csat3-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 is not defined.\nline 7: Invalid, or out of place expression:       CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr350-csat3-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: CSAT3 is not defined.\nline 7: Invalid, or out of place expression:       CSAT3(Ux(),1,3,91,20)\n."
+  },
+  {
+   "id": "cr6-li7200-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-li7200-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-li7200-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:     LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:     LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7200-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-li7200-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-li7200-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 is not defined.\nline 7: Invalid, or out of place expression:       LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 is not defined.\nline 7: Invalid, or out of place expression:       LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7200-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-li7200-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-li7200-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7200-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7200-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-li7200-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-li7200-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 is not defined.\nline 7: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 is not defined.\nline 7: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7200-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-li7200-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-li7200-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7200-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7200-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-li7200-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-li7200-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:     LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7200(CO2(),1,7,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:     LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7200-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7200-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7200-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:       LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:       LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7200-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7200-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7200-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7200-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7200(CO2(),1,7,5)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7200-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: LI7200 never reached at run time."
+  },
+  {
+   "id": "cr1000x-li7200-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: LI7200 never reached at run time."
+  },
+  {
+   "id": "cr300-li7200-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7200(CO2(),1,7,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7200-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7200-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7200-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7200-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7200(CO2(),1,7,5)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(CO2(),1,7,5)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7200-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7200-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7200-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 is not defined.\nline 7: Invalid, or out of place expression:       LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr350-li7200-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7200(CO2(),1,7,5)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7200 is not defined.\nline 7: Invalid, or out of place expression:       LI7200(CO2(),1,7,5)\n."
+  },
+  {
+   "id": "cr6-li7700-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-li7700-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-li7700-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:     LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:     LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-li7700-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-li7700-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-li7700-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 is not defined.\nline 7: Invalid, or out of place expression:       LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 is not defined.\nline 7: Invalid, or out of place expression:       LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-li7700-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-li7700-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-li7700-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7700-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7700-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-li7700-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-li7700-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 is not defined.\nline 7: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 is not defined.\nline 7: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-li7700-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-li7700-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-li7700-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7700-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7700-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-li7700-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-li7700-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:     LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    LI7700(LI(),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:     LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-li7700-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7700-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7700-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:       LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:       LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-li7700-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7700-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7700-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7700-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  LI7700(LI(),1,3,1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7700-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: LI7700 never reached at run time."
+  },
+  {
+   "id": "cr1000x-li7700-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: LI7700 never reached at run time."
+  },
+  {
+   "id": "cr300-li7700-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  LI7700(LI(),1,3,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-li7700-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7700-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7700-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-li7700-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  LI7700(LI(),1,3,1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(LI(),1,3,1)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-li7700-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7700-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-li7700-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 is not defined.\nline 7: Invalid, or out of place expression:       LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr350-li7700-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: LI7700 is not defined.\nline 7: Invalid, or out of place expression:       LI7700(LI(),1,3,1)\n."
+  },
+  {
+   "id": "cr6-sdmint8-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmint8-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sdmint8-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMInt8 is not defined.\nline 6: Invalid, or out of place expression:     SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMInt8 is not defined.\nline 6: Invalid, or out of place expression:     SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmint8-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMINT8 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-sdmint8-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMINT8 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-sdmint8-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMInt8 is not defined.\nline 7: Invalid, or out of place expression:       SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMInt8 is not defined.\nline 7: Invalid, or out of place expression:       SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmint8-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmint8-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmint8-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMInt8 is not defined.\nline 5: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmint8-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMInt8 is not defined.\nline 5: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmint8-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmint8-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmint8-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMInt8 is not defined.\nline 7: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMInt8 is not defined.\nline 7: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmint8-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmint8-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmint8-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMInt8 is not defined.\nline 5: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmint8-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMInt8 is not defined.\nline 5: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmint8-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmint8-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sdmint8-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMInt8 is not defined.\nline 5: Invalid, or out of place expression:     SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMInt8 is not defined.\nline 5: Invalid, or out of place expression:     SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmint8-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmint8-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmint8-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMInt8 is not defined.\nline 6: Invalid, or out of place expression:       SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMInt8 is not defined.\nline 6: Invalid, or out of place expression:       SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmint8-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmint8-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmint8-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMInt8 is not defined.\nline 4: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmint8-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMInt8 is not defined.\nline 4: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmint8-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: SDMINT8 never reached at run time."
+  },
+  {
+   "id": "cr1000x-sdmint8-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: SDMINT8 never reached at run time."
+  },
+  {
+   "id": "cr300-sdmint8-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMInt8 is not defined.\nline 6: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMInt8 is not defined.\nline 6: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmint8-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmint8-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmint8-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMInt8 is not defined.\nline 4: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmint8-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMInt8 is not defined.\nline 4: Invalid, or out of place expression:   SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmint8-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmint8-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmint8-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMInt8 is not defined.\nline 7: Invalid, or out of place expression:       SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr350-sdmint8-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMInt8 is not defined.\nline 7: Invalid, or out of place expression:       SDMInt8(Int8(),0,0002,2222,0002,2222,0,1,1.75,.2)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sdmsw8a-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMSw8a is not defined.\nline 6: Invalid, or out of place expression:     SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMSw8a is not defined.\nline 6: Invalid, or out of place expression:     SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSW8A illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSW8A illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-sdmsw8a-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSw8a is not defined.\nline 7: Invalid, or out of place expression:       SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSw8a is not defined.\nline 7: Invalid, or out of place expression:       SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmsw8a-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMSw8a is not defined.\nline 5: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmsw8a-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMSw8a is not defined.\nline 5: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmsw8a-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmsw8a-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSw8a is not defined.\nline 7: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSw8a is not defined.\nline 7: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmsw8a-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMSw8a is not defined.\nline 5: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmsw8a-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMSw8a is not defined.\nline 5: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmsw8a-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sdmsw8a-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMSw8a is not defined.\nline 5: Invalid, or out of place expression:     SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMSw8a is not defined.\nline 5: Invalid, or out of place expression:     SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmsw8a-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMSw8a is not defined.\nline 6: Invalid, or out of place expression:       SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMSw8a is not defined.\nline 6: Invalid, or out of place expression:       SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmsw8a-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMSw8a is not defined.\nline 4: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmsw8a-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMSw8a is not defined.\nline 4: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmsw8a-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: SDMSW8A never reached at run time."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: SDMSW8A never reached at run time."
+  },
+  {
+   "id": "cr300-sdmsw8a-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMSw8a is not defined.\nline 6: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMSw8a is not defined.\nline 6: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmsw8a-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmsw8a-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMSw8a is not defined.\nline 4: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmsw8a-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMSw8a is not defined.\nline 4: Invalid, or out of place expression:   SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmsw8a-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmsw8a-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSw8a is not defined.\nline 7: Invalid, or out of place expression:       SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr350-sdmsw8a-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMSw8a is not defined.\nline 7: Invalid, or out of place expression:       SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n."
+  },
+  {
+   "id": "cr6-sdmx50-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sdmx50-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMX50 is not defined.\nline 6: Invalid, or out of place expression:     SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMX50 is not defined.\nline 6: Invalid, or out of place expression:     SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-sdmx50-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr1000x-sdmx50-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 illegally used inside conditional statement."
+  },
+  {
+   "id": "cr300-sdmx50-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 is not defined.\nline 7: Invalid, or out of place expression:       SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 is not defined.\nline 7: Invalid, or out of place expression:       SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-sdmx50-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmx50-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmx50-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMX50 is not defined.\nline 5: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmx50-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMX50 is not defined.\nline 5: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmx50-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmx50-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmx50-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 is not defined.\nline 7: Invalid, or out of place expression:   SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 is not defined.\nline 7: Invalid, or out of place expression:   SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-sdmx50-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr1000x-sdmx50-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDM instruction must be in Scan..NextScan, unless SequentialMode is used."
+  },
+  {
+   "id": "cr300-sdmx50-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMX50 is not defined.\nline 5: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmx50-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMX50 is not defined.\nline 5: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmx50-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sdmx50-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMX50 is not defined.\nline 5: Invalid, or out of place expression:     SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    SDMX50(1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SDMX50 is not defined.\nline 5: Invalid, or out of place expression:     SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-sdmx50-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmx50-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMX50 is not defined.\nline 6: Invalid, or out of place expression:       SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMX50 is not defined.\nline 6: Invalid, or out of place expression:       SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-sdmx50-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmx50-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMX50 is not defined.\nline 4: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmx50-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  SDMX50(1,4)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMX50 is not defined.\nline 4: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmx50-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: SDMX50 never reached at run time."
+  },
+  {
+   "id": "cr1000x-sdmx50-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: SDMX50 never reached at run time."
+  },
+  {
+   "id": "cr300-sdmx50-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMX50 is not defined.\nline 6: Invalid, or out of place expression:   SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  SDMX50(1,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SDMX50 is not defined.\nline 6: Invalid, or out of place expression:   SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-sdmx50-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmx50-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMX50 is not defined.\nline 4: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdmx50-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  SDMX50(1,4)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SDMX50 is not defined.\nline 4: Invalid, or out of place expression:   SDMX50(1,4)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdmx50-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-sdmx50-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 is not defined.\nline 7: Invalid, or out of place expression:       SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr350-sdmx50-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDMX50 is not defined.\nline 7: Invalid, or out of place expression:       SDMX50(1,4)\n."
+  },
+  {
+   "id": "cr6-calibrate-explicit-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-calibrate-explicit-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-calibrate-explicit-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-explicit-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-explicit-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Calibrate not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "cr1000x-calibrate-explicit-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Calibrate not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "cr300-calibrate-explicit-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-explicit-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-explicit-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Calibrate not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "cr1000x-calibrate-explicit-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Calibrate not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "cr300-calibrate-explicit-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-explicit-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-explicit-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Calibrate not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "cr1000x-calibrate-explicit-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Calibrate not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "cr300-calibrate-explicit-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds.\nline 7: Warning: Calibrate never reached at run time."
+  },
+  {
+   "id": "cr350-calibrate-explicit-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds.\nline 7: Warning: Calibrate never reached at run time."
+  },
+  {
+   "id": "cr6-calibrate-explicit-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Calibrate not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "cr1000x-calibrate-explicit-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Calibrate not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "cr300-calibrate-explicit-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-explicit-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nPipeLineMode\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-auto-scan",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-calibrate-auto-scan",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-calibrate-auto-scan",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-auto-scan",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    Calibrate(Calib1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-auto-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-calibrate-auto-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-calibrate-auto-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-auto-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-auto-before",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-calibrate-auto-before",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-calibrate-auto-before",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-auto-before",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Calibrate(Calib1)\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-auto-after",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: Calibrate never reached at run time."
+  },
+  {
+   "id": "cr1000x-calibrate-auto-after",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 6: Warning: Calibrate never reached at run time."
+  },
+  {
+   "id": "cr300-calibrate-auto-after",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Calib1 out of bounds.\nline 6: Warning: Calibrate never reached at run time."
+  },
+  {
+   "id": "cr350-calibrate-auto-after",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\n  Calibrate(Calib1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Calib1 out of bounds.\nline 6: Warning: Calibrate never reached at run time."
+  },
+  {
+   "id": "cr6-calibrate-auto-sub",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-calibrate-auto-sub",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-calibrate-auto-sub",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-auto-sub",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSub P\n  Calibrate(Calib1)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-sequential-cond",
+   "logger": "cr6",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-calibrate-sequential-cond",
+   "logger": "cr1000x",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-calibrate-sequential-cond",
+   "logger": "cr300",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr350-calibrate-sequential-cond",
+   "logger": "cr350",
+   "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds."
   }
  ]
 }

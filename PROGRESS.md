@@ -21,7 +21,7 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 56,089 passed, 311 skipped, 444 strict xfail (round 49) |
+| `pytest -q -n 4 -m 'not server'` | 56,449 passed, 311 skipped, 444 strict xfail (round 49) |
 | `pytest -q -m server` | 163 passed (round 49) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-31 fixtures (four profiles): measurement spans / settling and overlap / alias cascades / alias collisions / review fixes | 1,014 / 801 / 300 / 514 / 420 reference observations; 960 / 749 / 288 / 512 / 406 match; 54 / 52 / 12 / 2 / 14 strict xfail |
@@ -91,11 +91,13 @@ session, no subagents).
   `SerialInRecord` with its own messages) plus two small data-driven options (`messages`,
   `hides_unreached`). `MuxSelect`, `SerialOutBlock` accepted everywhere. Rules and gaps:
   [task instructions in PipeLine Mode](docs/checker.md#task-instructions-in-pipeline-mode).
-- Validation (`scratch/r49/final/`): pytest **56,089 passed, 311 skipped, 444 strict xfail**; server
+- Validation (`scratch/r49/final/`): pytest **56,449 passed, 311 skipped, 444 strict xfail**; server
   **163 passed**; replay unchanged (2,570 exact, gate passes); fixture audits 0 differing; both
   verify backends: `BUILD  Pyrefly 465 files pass | host tests 148 pass | CRBasic 20/20 compiled,
   6 warning(s) | repository pass`. No hardware tests.
-- Next: `CDM_*`, `CS7500`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`, `Calibrate`
+- Round 50 (same session, same fixture, +352 observations): `Calibrate` and seven SDM-family
+  instructions (`CS7500`, `CSAT3`, `LI7200`, `LI7700`, `SDMInt8`, `SDMSw8a`, `SDMX50`), data only.
+- Next: `CDM_*`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`
   remain unprobed; then a fresh relevant fuzz round (seeds 441/442).
 
 **Round 48** (M1/M2, mode-decision argument constancy; `Delay`/`SW12` PipeLine Mode placement; one

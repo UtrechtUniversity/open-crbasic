@@ -3363,9 +3363,14 @@ group outright. After `NextScan` the CR1000X group keeps the `never reached` war
 inside conditional statement.` in a conditional and `SDM instruction must be in Scan..NextScan,
 unless SequentialMode is used.` outside a `Scan` (`messages` in the data file). After a `SlowSequence` the rule does not apply (`main_sequence_only`; reference compiles it, and
 in automatic mode a conditional one there gives SequentialMode, `SerialOutBlock` likewise). `MuxSelect` and
-`SerialOutBlock` are accepted everywhere. Not implemented because not probed: the `CDM_*`
-instructions, `CS7500`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`, `Calibrate`
-and the other `mode.json` task instructions.
+`SerialOutBlock` are accepted everywhere. Round 50 (same fixture, 352 more observations): `Calibrate` follows the standard rule on CR6 and
+CR1000X. `CS7500`, `CSAT3`, `LI7200`, `LI7700`, `SDMInt8`, `SDMSw8a` and `SDMX50` print `SDM
+instruction must be in Scan..NextScan, unless SequentialMode is used.` outside a `Scan` and
+`<NAME> illegally used inside conditional statement.` in a conditional, with the name in upper
+case as the reference prints it (`SDMINT8`); none prints `never reached` after `NextScan`.
+`EC100` is left out: its control did not compile cleanly with a plain `Public` array, so its
+rule is unprobed. Not implemented because not probed: the `CDM_*` instructions, `EC100`,
+`ExciteI`, `Resistance`, `SetDAC`, `VibratingWire` and the other `mode.json` task instructions.
 
 The error is pass 2 and accumulating: it does not end the pass, prints together with `x=q`
 errors in line order, and is cut off by an earlier placement error. Unlike other tier-B errors it
