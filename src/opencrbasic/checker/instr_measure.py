@@ -9,6 +9,7 @@ error. All rules below are oracle-confirmed per logger this round; see `docs/ins
 """
 
 import math
+from typing import cast
 
 import re
 
@@ -391,7 +392,7 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
 _INF_NAMES = {"INF": float("inf"), "NAN": float("nan")}
 
 
-def _fnotch_value(arg: S.Expr, env: consteval.Env):
+def _fnotch_value(arg: S.Expr | None, env: consteval.Env):
     """Folded `fN1` value; `NAN`/`INF` (not named constants in `consteval`) handled here."""
     inner, sign = arg, 1.0
     while isinstance(inner, S.Unary) and inner.op == "-":
@@ -725,7 +726,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
             kw = "NEXTSUBSCAN"
         if kw.startswith("CDM_") and kw != "CDM_TCCOMP" or kw == "CPIADDMODULE2":
             return
-        if kw == "SCAN":
+        if isinstance(stmt, S.Instruction) and (kw == "SCAN"):
             raw = _scan_raw(stmt, env)
             if raw is None:
                 return
@@ -737,7 +738,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
             if sub is not None:
                 return
             scan = None
-        elif kw == "SUBSCAN":
+        elif isinstance(stmt, S.Instruction) and (kw == "SUBSCAN"):
             args = [_value(a, env) for a in stmt.args]
             count = args[2] if len(args) == 3 else None
             step = 0
@@ -765,7 +766,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
                         scan["short"].append((addr, (length - step) * 100))
                     scan["times"][addr] = units + (step or length) * (count - 1)
             sub = None
-        elif kw == "CDM_TCCOMP":
+        elif isinstance(stmt, S.Instruction) and (kw == "CDM_TCCOMP"):
             module, addr, reps = (_int_value(stmt.args[i], env) if i < len(stmt.args) else None
                                   for i in (0, 1, 3))
             if module != 224 or addr is None or not 1 <= addr <= 120 or reps is None or reps < 1:
@@ -885,6 +886,7 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
             indices = [_int_value(a, env) for a in target.args]
             if any(i is None for i in indices):
                 continue
+            indices = cast(list[int], indices)
             if len(indices) == 1:
                 offset = indices[0] - 1
             elif len(indices) == len(shape) and all(1 <= i <= n for i, n in zip(indices, shape)):
@@ -1028,7 +1030,7 @@ def _check_bridge_span(program: S.Program, profile: Profile, diags: Diagnostics,
         if len(stmt.args) <= mp:
             continue
         reps, chan, ex, meas = (_int_value(stmt.args[i], env) for i in (1, cp, xp, mp))
-        if None in (reps, chan, ex, meas) or reps < 1 or not (201 <= chan <= 212 and 201 <= ex <= 212) \
+        if (reps is None or chan is None or ex is None or meas is None) or reps < 1 or not (201 <= chan <= 212 and 201 <= ex <= 212) \
                 or (stride == 2 and chan % 2 == 0):
             continue
         s, e, meas = chan - 201, ex - 201, max(meas, 1)

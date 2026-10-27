@@ -1,4 +1,5 @@
 
+from .assertions import required
 import json
 from pathlib import Path
 
@@ -40,37 +41,43 @@ def test_for_profile_is_cached_and_validates():
 
 def test_case_insensitive_lookup_keeps_profile_spelling():
     cat = InstructionCatalog.for_profile("cr6")
+    assert cat is not None
     for text in ("beginprog", "BeginProg", "BEGINPROG"):
         entry = cat.get(text)
         assert entry is not None and entry.name == "BEGINPROG" and entry.kind == "instruction"
-    assert cat.get("voltse").name == "VoltSe"
-    assert cat.get("voltse").params == tuple(profiles.get("cr6").instructions["VOLTSE"]["params"])
+    assert required(cat.get("voltse")).name == "VoltSe"
+    assert required(cat.get("voltse")).params == tuple(profiles.get("cr6").instructions["VOLTSE"]["params"])
     assert cat.get("nosuchname") is None
     assert "voltse" in cat and "nosuchname" not in cat and 5 not in cat
 
 
 def test_dollar_suffix_names():
     cat = InstructionCatalog.for_profile("cr6")
+    assert cat is not None
     entry = cat.get("chr$")
+    assert entry is not None
     assert entry.name == "CHR$" and entry.kind == "function" and entry.code is not None
-    assert cat.get("CHR").name == "CHR"
+    assert required(cat.get("CHR")).name == "CHR"
     assert cat.get("CHR") is not cat.get("CHR$")
 
 
 def test_entry_fields():
     cat = InstructionCatalog.for_profile("cr6")
-    assert cat.get("U1").kind == "symbol" and cat.get("U1").value == profiles.get("cr6").symbols["U1"]["value"]
+    assert cat is not None
+    assert required(cat.get("U1")).kind == "symbol" and required(cat.get("U1")).value == profiles.get("cr6").symbols["U1"]["value"]
     fn = cat.get("JSONVALUE")
+    assert fn is not None
     row = profiles.get("cr6").functions["JSONVALUE"]
     assert (fn.code, fn.func_kind, fn.argspec, fn.nargs, fn.argtypes) == (
         row["code"], row["kind"], row["argspec"], row["nargs"], tuple(row["argtypes"]))
-    assert cat.get("NOT").nargs is None
+    assert required(cat.get("NOT")).nargs is None
     with pytest.raises(Exception):
-        fn.name = "x"  # frozen
+        setattr(fn, "name", "x")  # exercise the frozen field at runtime
 
 
 def test_kinds_and_documented_overlaps():
     cat = InstructionCatalog.for_profile("cr6")
+    assert cat is not None
     seen: dict[str, set[str]] = {}
     for e in cat:
         assert e.kind in KINDS and e.profile == "cr6"
@@ -86,10 +93,10 @@ def test_kinds_and_documented_overlaps():
                                                        frozenset({"function", "symbol"}),
                                                        frozenset({"instruction", "function"})}
     # get() priority: instruction, function, symbol, keyword
-    assert cat.get("If").kind == "instruction"
-    assert cat.get("If", "symbol").kind == "symbol"
-    assert cat.get("If", "keyword").source == "keyword:table"
-    assert cat.get("To").kind == "function"
+    assert required(cat.get("If")).kind == "instruction"
+    assert required(cat.get("If", "symbol")).kind == "symbol"
+    assert required(cat.get("If", "keyword")).source == "keyword:table"
+    assert required(cat.get("To")).kind == "function"
     assert [e.kind for e in cat.entries("if")] == ["instruction", "symbol", "keyword"]
 
 

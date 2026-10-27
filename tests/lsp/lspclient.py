@@ -39,11 +39,13 @@ class LspClient:
     # ---- transport ----
 
     def _read_stderr(self) -> None:
+        assert self.proc.stderr is not None
         for raw in self.proc.stderr:
             self.stderr_text += raw.decode("utf-8", "replace")
 
     def _read_loop(self) -> None:
         out = self.proc.stdout
+        assert out is not None
         while True:
             length = None
             while True:
@@ -70,6 +72,7 @@ class LspClient:
     def _send(self, msg: dict) -> None:
         body = json.dumps(msg).encode("utf-8")
         with self._write_lock:
+            assert self.proc.stdin is not None
             self.proc.stdin.write(b"Content-Length: %d\r\n\r\n" % len(body) + body)
             self.proc.stdin.flush()
 
@@ -154,7 +157,7 @@ class LspClient:
         self.notify("workspace/didChangeWatchedFiles", {"changes": [
             {"uri": path.as_uri(), "type": kind} for path, kind in changes]})
 
-    def change_folders(self, added: list[Path] = (), removed: list[Path] = ()) -> None:
+    def change_folders(self, added: list[Path] | tuple[Path, ...] = (), removed: list[Path] | tuple[Path, ...] = ()) -> None:
         def folder(p: Path) -> dict:
             return {"uri": p.as_uri(), "name": p.name}
         self.notify("workspace/didChangeWorkspaceFolders", {"event": {

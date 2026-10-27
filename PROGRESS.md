@@ -1,7 +1,9 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-27 after development round 46**
-(Timer number and nonfinite integral arguments). Previous round 45 is committed at `6f951e68`.
+Current compiler state and handoff, updated **2026-10-27 during development round 47**
+(repository-wide Pyrefly gate). Round 46 is committed at `c5877c5c`; round 47 is in progress.
+The live Codex usage tool reported the five-hour window **100% used** at this handoff;
+stop at the human-requested usage boundary, with round 47 incomplete and uncommitted.
 Inspect `git status` before editing; use Git to check publication state.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -79,6 +81,47 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 47** (repository-wide Python type checking, current human request; in progress).
+- Add Pyrefly to `scripts/verify.py` for every tracked or new, non-ignored Python file, including
+  tests, tools, field scripts and drawing helpers. The initial tracked inventory has 461 files.
+  Ignored environments, caches and scratch probes are outside the source inventory.
+- Initial default-preset run: 1,030 errors; after import roots and the development dependencies
+  were configured, 1,014 errors remained. The current check is recorded in `scratch/r47/checkpoint.json` and
+  `checkpoint.log`; the inventory now includes the two new shared helper modules. Baseline JSON,
+  exact inventory and commands are in `scratch/r47/`. No error baseline or blanket suppression is being introduced.
+- `pyrefly.toml` at the repository root owns the common configuration; the old LSP-only include
+  list is removed. `scripts/` pins Pyrefly 1.3.1 and installs the type-checking import dependencies
+  with uv. `verify.py` now propagates type-check failures into its BUILD summary and exit status;
+  inventory and failure-propagation tests are added (6/6 pass). Corrections and validation remain
+  before commit; this round is intentionally uncommitted while the type gate fails.
+- Corrected profile/AST/provenance contracts, a structural help-lookup interface, explicit numeric
+  optional guards, CLI option types and positive test assertions. The parser/constant/hover focused
+  suites pass 134 tests. An intermediate indentation regression in a pointer-type annotation edit
+  was caught by the focused tests and corrected; retain both logs in `scratch/r47/`.
+- No error baseline, broad ignores or Any replacement is being used to silence remaining issues.
+  In particular, scalar conversions not established by the existing code remain type errors.
+  Current default-preset result: **402 errors across 463 files** (`scratch/r47/imports-corrected.json`).
+  Full non-server validation first reported 55,001 passed, 311 skipped, 440 xfail and 11
+  collection errors caused by the new helper import path. The package-relative import correction
+  collects all 824 LSP tests successfully. The corrected full run passes **55,324 tests,
+  311 skipped, 440 strict xfail**, with no errors (`scratch/r47/pytest-final.log`).
+  `scratch/r47/validate-rest.py` then runs server tests, corpus comparisons, replay, fixture
+  audits and both verify backends sequentially. Final results: server **163 passed**; saved
+  replay regression gate passed; both fixtures have zero differences and zero missing verdicts;
+  four-profile corpus results are unchanged, including known reference faults, and GEUS is 66/66.
+  Both reference and opencrbasic verify backends exit 1 solely at the new type gate:
+
+  ```text
+  BUILD  Pyrefly 463 files FAIL | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+  ```
+
+  Warnings are the existing uncalled-table warnings. Read `validation-exits.json`,
+  `corpus-exits.json` and individual logs; the corpus wrapper exits zero even when a child
+  comparison exits one for the known missing reference verdicts. No hardware tests ran.
+  Resume details and exact commands: `scratch/r47/RESUME.md`.
+- The new round-46 CR1000X mode candidate is deferred until this requested round is complete.
+  Do not execute local maintenance. Continue the user's committed-round workflow after validation.
 
 **Round 46** (M1/M2, Timer TimNo and nonfinite integral arguments; one session, no subagents).
 - Fresh seed-438 `cr1000x/message_diff/71107f867ad9` minimized to `Timer(1.5,Sec,2)`,

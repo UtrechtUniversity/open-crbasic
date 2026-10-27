@@ -10,6 +10,7 @@ module docstring). Rules and oracle evidence: `docs/checker.md` (the required-pa
 
 import math
 import re
+from typing import cast
 import struct
 
 from .. import consteval
@@ -975,7 +976,7 @@ def _scan_raw(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None
     if isinstance(value, bool) or not isinstance(value, (int, float)) or unit not in _US_PER_UNIT \
             or not 0 <= int(value) <= 2147483647:
         return None
-    return int(value), unit
+    return int(value), cast(int, unit)
 
 
 def _units_key(units_arg: S.Expr, env: consteval.Env, truncate: bool):
@@ -1870,7 +1871,7 @@ def check_serialinrecord(program: S.Program, profile, diags: Diagnostics, env: c
     for st in program.statements:
         name = st.keyword if isinstance(st, S.Instruction) else getattr(st, "name", "") \
             if isinstance(st, S.Call) else ""
-        if name.upper() != "SERIALOPEN" or not st.args:
+        if not isinstance(st, (S.Call, S.Instruction)) or name.upper() != "SERIALOPEN" or not st.args:
             continue
         port = value(st.args[0])
         if port is None:
@@ -1885,7 +1886,7 @@ def check_serialinrecord(program: S.Program, profile, diags: Diagnostics, env: c
             continue
         port, start, count, end = (value(st.args[i]) for i in (0, 2, 3, 4))
         word = (lambda v: (v + 2**15) % 2**16 - 2**15)   # StartWord/EndWord are 16-bit (65535 is -1)
-        if None not in (start, count, end) and start and count and end and \
+        if (start is not None and count is not None and end is not None) and start and count and end and \
                 min(word(start), count, word(end)) < 0:
             diags.error(st.line, "StartWord, NumberBytes and EndWord cannot all be not used", st.file)
         if port is None or count is None or unknown_port:
@@ -2747,7 +2748,7 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
     first: dict[int, object] = {}
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
-        if kw not in _CDM_ADDRESS_INSTRUCTIONS or len(stmt.args) < 2:
+        if not isinstance(stmt, S.Instruction) or kw not in _CDM_ADDRESS_INSTRUCTIONS or len(stmt.args) < 2:
             continue
         try:
             address = consteval.value_of(stmt.args[1], env)

@@ -5,6 +5,7 @@ The semantic-preservation sweep renames program-declared names of `../crbasic` t
 tmp copies, compiles the affected entries and compares them with the unrenamed compile. By default
 a stride sample runs; `RENAME_SWEEP=full` runs every declaration and prints the counts."""
 
+from .assertions import required
 import dataclasses
 import hashlib
 import os
@@ -163,7 +164,8 @@ EndProg
     res = R.rename([r], m, 0, 16, "Point")
     assert res.ok and spots(res, m) == [(0, 14, 16), (4, 12, 14)]
     res = R.rename([r], m, 1, 3, "Lon")                # collides with a member of the same type
-    assert res.refusal.code == "collision"
+    assert res is not None
+    assert required(res.refusal).code == "collision"
     assert R.rename([r], m, 1, 3, "Lat2").ok
 
 
@@ -185,8 +187,9 @@ def test_stale_file_is_refused(sample):
     p, r = sample
     p.write_bytes(p.read_bytes() + b"\n")
     res = R.rename([r], p, 0, 7, "Alpha")
-    assert not res.ok and res.refusal.code == "stale"
-    assert R.prepare_rename([r], p, 0, 7).refusal.code == "stale"
+    assert res is not None
+    assert not res.ok and required(res.refusal).code == "stale"
+    assert required(R.prepare_rename([r], p, 0, 7).refusal).code == "stale"
 
 
 def test_unedited_dependency_that_changed_is_stale(tmp_path):      # review R2 finding 1
@@ -197,7 +200,8 @@ def test_unedited_dependency_that_changed_is_stale(tmp_path):      # review R2 f
     lib.write_bytes(b"Public newName\n")
     assert run(m).ok
     res = R.rename([r], m, 1, 8, "newName")
-    assert code(res) == "stale" and "Lib.crb" in res.refusal.message
+    assert res is not None
+    assert code(res) == "stale" and "Lib.crb" in required(res.refusal).message
     assert code(R.prepare_rename([r], m, 1, 8)) == "stale"
     lib.write_bytes(b"Public otherName\n")                 # restored: current again
     assert R.rename([r], m, 1, 8, "newName").ok
@@ -229,7 +233,8 @@ def test_public_member_use_of_new_name_is_a_capture(tmp_path):     # review R2 f
     p = write(tmp_path, "M.CR6", "Public oldName,out\nBeginProg\nout=Public.newName\nEndProg\n")
     r = run(p)
     res = R.rename([r], p, 0, 8, "newName")
-    assert code(res) == "collision" and "3" in res.refusal.message
+    assert res is not None
+    assert code(res) == "collision" and "3" in required(res.refusal).message
     assert R.rename([r], p, 0, 8, "fresh").ok
 
 
@@ -342,7 +347,7 @@ EndProg
 """)
     r2 = run(m2)
     assert code(R.rename([r2], m2, 0, 7, "X")) == "unindexed_code"        # inactive branch uses a
-    assert R.rename([r2], m2, 1, 7, "X").refusal.code == "unindexed_code"   # b too
+    assert required(R.rename([r2], m2, 1, 7, "X").refusal).code == "unindexed_code"   # b too
     m3 = write(tmp_path, "o.CR6", "Public a\nBeginProg\n  a = 1\nEndProg\na = 2\n")
     assert code(R.rename([run(m3)], m3, 0, 7, "X")) == "unindexed_code"     # after EndProg
 
@@ -561,6 +566,7 @@ def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path
     """Rename every `stride`-th program-declared name of `../crbasic/*.CR6` (and the libraries
     they include) and compile the affected entries. Returns (accepted, refused Counter, problems)."""
     work = workdir
+    assert work is not None
     shutil.copytree(CRBASIC, work, dirs_exist_ok=True)
     entries = sorted(work.glob("*.CR6"))
     results = [run(e) for e in entries]
@@ -569,8 +575,9 @@ def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path
     targets = {}
     for r in results:
         nav = R._state(r).nav
+        assert nav is not None
         nav._build()
-        for d in nav.index.declarations:
+        for d in required(nav.index).declarations:
             site = nav._site_of.get(id(d))
             if site is None or site.path is None:
                 continue
@@ -582,12 +589,13 @@ def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path
     for n, (path, line, col) in enumerate(ordered):
         affected = [r for r in results if any(Path(q) == path for q in r.dependencies.reads)]
         fresh = f"Rn{n}x"
-        old_name = targets[(path, line, col)].name
+        old_name = required(targets[(path, line, col)]).name
         res = R.rename(affected, path, line, col, fresh)
+        assert res is not None
         if not res.ok:
-            refused[res.refusal.code] += 1
+            refused[required(res.refusal).code] += 1
             if verbose:
-                print("refused", path.name, line + 1, old_name, res.refusal.code, res.refusal.message)
+                print("refused", path.name, line + 1, old_name, required(res.refusal).code, required(res.refusal).message)
             continue
         accepted += 1
         try:
@@ -693,13 +701,15 @@ def test_r3b_f3_structure_member_named_by_a_table_field_is_refused(tmp_path):
     p = write(tmp_path, "M.CR6", STRUCT_TEXT)
     r = run(p)
     res = R.rename([r], p, *pos(p, "Lat As Float"), "Y")
-    assert not res.ok and res.refusal.code == "table_field"
+    assert res is not None
+    assert not res.ok and required(res.refusal).code == "table_field"
     res = R.rename([r], p, *pos(p, "Lon As Float"), "Lat2")
     assert res.ok, res.refusal                       # no `T.Lon` use
     p2 = write(tmp_path, "N.CR6", STRUCT_TEXT.replace("out = T.Lat", "out = T.Q_Avg"))
     r2 = run(p2)
     res = R.rename([r2], p2, *pos(p2, "Lon As Float"), "Q")     # new name derives T.Q_Avg
-    assert not res.ok and res.refusal.code == "table_field"
+    assert res is not None
+    assert not res.ok and required(res.refusal).code == "table_field"
 
 
 def test_r3b_f14a_case_only_rename_from_a_differently_spelled_reference(tmp_path):
@@ -714,7 +724,8 @@ def test_r3b_f14a_case_only_rename_from_a_differently_spelled_reference(tmp_path
     p.write_bytes(p.read_bytes().replace(b"TOTAL", b"total"))
     r = run(p)
     res = R.rename([r], p, *pos(p, "total", nth=1), "total")
-    assert not res.ok and res.refusal.code == "unchanged"
+    assert res is not None
+    assert not res.ok and required(res.refusal).code == "unchanged"
 
 
 def test_r3b_f14b_case_only_rename_is_not_a_collision_with_a_local(tmp_path):
@@ -725,7 +736,8 @@ def test_r3b_f14b_case_only_rename_is_not_a_collision_with_a_local(tmp_path):
     assert res.ok, res.refusal
     assert spots(res, p) == [(0, 7, 8), (7, 4, 5)]
     res = R.rename([r], p, *pos(p, "Public a", offset=7), "S")
-    assert not res.ok and res.refusal.code == "collision"
+    assert res is not None
+    assert not res.ok and required(res.refusal).code == "collision"
 
 
 def test_r3b_f16_new_name_in_an_unparsed_statement_is_refused(tmp_path):
@@ -733,7 +745,8 @@ def test_r3b_f16_new_name_in_an_unparsed_statement_is_refused(tmp_path):
               "  NextScan\nEndProg\n")
     r = run(p)
     res = R.rename([r], p, *pos(p, "Public x", offset=7), "y")
-    assert not res.ok and res.refusal.code == "unparsed"
+    assert res is not None
+    assert not res.ok and required(res.refusal).code == "unparsed"
     res = R.rename([r], p, *pos(p, "Public x", offset=7), "z")
     assert res.ok, res.refusal
 
@@ -752,8 +765,10 @@ EndProg
     r = run(m)
     for line, col in ((0, 4), (3, 8)):
         res = R.prepare_rename([r], m, line, col)
+        assert res is not None
         assert code(res) == "not_a_name"
-        assert "not in code any entry parses" in res.refusal.message
+        assert "not in code any entry parses" in required(res.refusal).message
     other = write(tmp_path, "o.CR6", "Public q\nBeginProg\nEndProg\n")
     res = R.prepare_rename([run(other)], m, 0, 4)                   # an entry not reading m
-    assert code(res) == "no_results" and "depends on the file" in res.refusal.message
+    assert res is not None
+    assert code(res) == "no_results" and "depends on the file" in required(res.refusal).message

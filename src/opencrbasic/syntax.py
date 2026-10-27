@@ -8,6 +8,13 @@ original compiler does, and is checked by `opencrbasic.structure`. Every node ca
 
 import dataclasses
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Literal
+
+from .provenance import LoadProvenance
+
+if TYPE_CHECKING:
+    from .lexer import Token
+    from .source import LogicalLine
 
 
 @dataclass
@@ -78,8 +85,20 @@ class Binary(Expr):
 # ---------------------------------------------------------------- statements
 
 
+class _StatementMetadata:
+    """Parser-attached details; annotations preserve the absence of unset attributes."""
+    origin: tuple[LogicalLine, int]
+    dropped_tail: list[Token]
+    grouped: bool
+    hoisted_last: bool
+    arg_spans: list[tuple[int, int] | None]
+    alias_junk: bool
+    alias_item_junk: list[bool]
+    extra_targets: list[Expr]
+
+
 @dataclass
-class Stmt(Node):
+class Stmt(Node, _StatementMetadata):
     text: str = ""              # the logical line as written (for diagnostics that echo it)
     at_eol: bool = True         # `text` (this statement's own `:`-separated segment) reaches the
     # true end of its physical source line -- no `'` comment and no further `:`-segment cut it
@@ -88,13 +107,17 @@ class Stmt(Node):
     # output line (`docs/loggers.md` "Generic fallback echo on CR300/CR350").
 
 
+class _DeclarationMetadata:
+    size_missing: int | None
+
+
 @dataclass
-class VarDecl:
+class VarDecl(_DeclarationMetadata):
     name: str
     dims: list[Expr] = field(default_factory=list)          # up to 3
     type: str | None = None     # upper-case: FLOAT LONG BOOLEAN STRING DOUBLE UINT1 UINT2 UINT4 BOOL8 NSEC or a StructureType name
     string_size: Expr | None = None                         # `As String * n`
-    init: list[Expr] | None = None                          # `= value` or `= {a, b, c}`
+    init: list[Expr | None] | None = None                   # `= value` or `= {a, b, c}`
     units: str | None = None
     dim0_span: tuple[int, int] | None = None                # (start, end) columns of the first
     # dimension expression's own source text within the enclosing `Declaration.text` -- lets
@@ -174,10 +197,14 @@ class DoLoop(Stmt):
     cond: Expr | None = None
 
 
+type CaseItem = (tuple[Literal["value"], Expr] | tuple[Literal["range"], Expr, Expr]
+                 | tuple[Literal["is"], str, Expr])
+
+
 @dataclass
 class Case(Stmt):
     """`Case a, b To c, Is > d, Else`; each item is ("value", e) / ("range", lo, hi) / ("is", op, e)."""
-    items: list[tuple] = field(default_factory=list)
+    items: list[CaseItem] = field(default_factory=list)
     is_else: bool = False
 
 
@@ -224,7 +251,7 @@ class Label(Stmt):
 class Unparsed(Stmt):
     """A line the parser could not handle; carries the reason for diagnostics."""
     reason: str = ""
-    expr: object = None  # the expression of a statement the parser took apart but cannot compile
+    expr: Expr | None = None  # the expression of a statement the parser took apart but cannot compile
 
 
 def ends_routine(stmt: Stmt) -> bool:
@@ -266,7 +293,7 @@ def cut_after_hash(st: Stmt) -> Stmt:
 
 
 @dataclass
-class Program:
+class Program(LoadProvenance):
     name: str
     statements: list[Stmt] = field(default_factory=list)
     last_line: int = 0      # `EndProg`'s line, else the main file's last physical line

@@ -4,6 +4,26 @@ from opencrbasic import parser
 from opencrbasic import syntax as S
 
 
+def required[T](value: T | None) -> T:
+    assert value is not None
+    return value
+
+
+def as_node[T: S.Node](value: S.Node | None, kind: type[T]) -> T:
+    assert isinstance(value, kind)
+    return value
+
+
+def as_named(value: S.Node | None) -> S.Name | S.Index:
+    assert isinstance(value, (S.Name, S.Index))
+    return value
+
+
+def as_valued(value: S.Node | None) -> S.Number | S.String:
+    assert isinstance(value, (S.Number, S.String))
+    return value
+
+
 def parse(text: str):
     prog, diags = parser.parse_text(text, "t.cr6")
     return prog, diags
@@ -17,71 +37,73 @@ def stmts(text: str):
     return prog.statements
 
 
-def one(text: str):
+def one[T: S.Stmt](text: str, kind: type[T]) -> T:
     ss = stmts(text)
     assert len(ss) == 1, ss
-    return ss[0]
+    stmt = ss[0]
+    assert isinstance(stmt, kind)
+    return stmt
 
 
 # ------------------------------------------------------------------ declarations
 
 
 def test_public_simple():
-    d = one("Public X\n")
+    d = one("Public X\n", S.Declaration)
     assert isinstance(d, S.Declaration)
     assert d.kind == "PUBLIC"
     assert d.vars[0].name == "X"
 
 
 def test_public_multi_with_types_and_array():
-    d = one("Public a, b(10), c(2,3) As Long, s As String * 32, x = 5\n")
+    d = one("Public a, b(10), c(2,3) As Long, s As String * 32, x = 5\n", S.Declaration)
     assert [v.name for v in d.vars] == ["a", "b", "c", "s", "x"]
     assert len(d.vars[1].dims) == 1
     assert len(d.vars[2].dims) == 2 and d.vars[2].type == "LONG"
     assert d.vars[3].type == "STRING"
     assert isinstance(d.vars[3].string_size, S.Number) and d.vars[3].string_size.value == 32
-    assert isinstance(d.vars[4].init[0], S.Number) and d.vars[4].init[0].value == 5
+    assert isinstance(required(d.vars)[4].init[0], S.Number) and d.vars[4].init[0].value == 5
 
 
 def test_public_array_literal_init():
-    d = one("Public arr(3) = {1,2,3}\n")
+    d = one("Public arr(3) = {1,2,3}\n", S.Declaration)
     v = d.vars[0]
-    assert [e.value for e in v.init] == [1, 2, 3]
+    assert [as_valued(e).value for e in required(v.init)] == [1, 2, 3]
 
 
 def test_dim_public_is_public():
-    d = one("Dim Public X\n")
+    d = one("Dim Public X\n", S.Declaration)
     assert d.kind == "PUBLIC"
 
 
 def test_const_typed_and_array():
-    c = one('Const A As Long = 9999\n')
+    c = one('Const A As Long = 9999\n', S.ConstDecl)
     assert isinstance(c, S.ConstDecl) and c.type == "LONG"
     prog, _ = parse("Const A = {1,2,3}\n")
     c2 = prog.statements[0]
-    assert isinstance(c2.value, S.ArrayLiteral)
-    assert [e.value for e in c2.value.items] == [1, 2, 3]
+    assert isinstance(as_node(c2, S.ConstDecl).value, S.ArrayLiteral)
+    assert [as_valued(e).value for e in c2.value.items] == [1, 2, 3]
 
 
 def test_alias_multi_target():
-    i = one("Alias Array = FrontRoom, BedRoom, GreatRoom(4), Laundry\n")
+    i = one("Alias Array = FrontRoom, BedRoom, GreatRoom(4), Laundry\n", S.Instruction)
     assert isinstance(i, S.Instruction) and i.keyword == "ALIAS"
     assert isinstance(i.args[0], S.Name) and i.args[0].name == "Array"
-    assert [a.name if isinstance(a, S.Name) else a.name for a in i.args[1:]] == [
+    assert [a.name if isinstance(a, S.Name) else as_named(a).name for a in i.args[1:]] == [
         "FrontRoom", "BedRoom", "GreatRoom", "Laundry",
     ]
 
 
 def test_units_label_is_raw_text():
-    i = one("Units Acclima_BulkEC()=uS/cm\n")
+    i = one("Units Acclima_BulkEC()=uS/cm\n", S.Instruction)
     assert i.keyword == "UNITS"
     assert isinstance(i.args[0], S.Index) and i.args[0].name == "Acclima_BulkEC"
     assert isinstance(i.args[1], S.String) and i.args[1].value == "uS/cm"
 
 
 def test_units_percent_label_not_lexed():
-    i = one("Units Acclima_VWC()=%\n")
-    assert i.args[1].value == "%"
+    i = one("Units Acclima_VWC()=%\n", S.Instruction)
+    assert as_valued(i.args[1]).value == "%"
 
 
 def test_units_combined_via_colon():
@@ -89,7 +111,7 @@ def test_units_combined_via_colon():
     assert len(ss) == 2
     assert isinstance(ss[0], S.Declaration)
     assert isinstance(ss[1], S.Instruction) and ss[1].keyword == "UNITS"
-    assert ss[1].args[1].value == "C"
+    assert as_valued(ss[1].args[1]).value == "C"
 
 
 # ------------------------------------------------------------------ expressions
@@ -98,59 +120,59 @@ def test_units_combined_via_colon():
 def test_assignment_vs_relational_ambiguity():
     # `=` is both assignment and equality; the parser must not swallow the assignment's `=` as a
     # relational operator when parsing the lvalue (found by corpus testing; see docs/frontend.md).
-    a = one("X = Y\n")
+    a = one("X = Y\n", S.Assignment)
     assert isinstance(a, S.Assignment)
     assert isinstance(a.target, S.Name) and a.target.name == "X"
     assert isinstance(a.value, S.Name) and a.value.name == "Y"
 
 
 def test_compound_assignment_desugars_to_binary():
-    a = one("X += 2\n")
+    a = one("X += 2\n", S.Assignment)
     assert isinstance(a, S.Assignment)
     assert isinstance(a.value, S.Binary) and a.value.op == "+"
     assert isinstance(a.value.left, S.Name) and a.value.left.name == "X"
 
 
 def test_array_element_and_member_access():
-    a = one("X = Status.SkippedScan\n")
+    a = one("X = Status.SkippedScan\n", S.Assignment)
     assert isinstance(a.value, S.Member)
     assert a.value.member == "SkippedScan"
     assert a.value.args is None
 
-    a2 = one("X = Status.Battery(1)\n")
+    a2 = one("X = Status.Battery(1)\n", S.Assignment)
     assert isinstance(a2.value, S.Member) and a2.value.member == "Battery"
-    assert [e.value for e in a2.value.args] == [1]
+    assert [as_valued(e).value for e in required(a2.value.args)] == [1]
 
-    a3 = one("X = Acclima_VWC(2)\n")
+    a3 = one("X = Acclima_VWC(2)\n", S.Assignment)
     assert isinstance(a3.value, S.Index) and a3.value.name == "Acclima_VWC"
 
 
 def test_empty_array_all_elements():
     # `Foo()` with nothing inside the parens means "the whole array" (Sample(1,Acclima_VWC(),FP2)
     # in the real corpus); check the empty-args Index shape directly.
-    a = one("X = Acclima_VWC()\n")
+    a = one("X = Acclima_VWC()\n", S.Assignment)
     assert isinstance(a.value, S.Index) and a.value.name == "Acclima_VWC" and a.value.args == []
 
 
 def test_pointer_dereference_and_address_of():
-    a = one("temp = !val1\n")
+    a = one("temp = !val1\n", S.Assignment)
     assert isinstance(a.value, S.Unary) and a.value.op == "!"
-    a2 = one("!val1 = !val2\n")
+    a2 = one("!val1 = !val2\n", S.Assignment)
     assert isinstance(a2.target, S.Unary) and a2.target.op == "!"
-    a3 = one("ptr3 = @s1\n")
+    a3 = one("ptr3 = @s1\n", S.Assignment)
     assert isinstance(a3.value, S.Unary) and a3.value.op == "@"
 
 
 def test_pointer_type_suffix():
-    d = one("Dim pointer_float As Float!\n")
+    d = one("Dim pointer_float As Float!\n", S.Declaration)
     assert d.vars[0].type == "FLOAT!"
 
 
 def test_array_dim_after_type():
-    d = one("Public floatArr As Float(5) = {100, 2, 55, 371, 244}\n")
+    d = one("Public floatArr As Float(5) = {100, 2, 55, 371, 244}\n", S.Declaration)
     v = d.vars[0]
     assert v.type == "FLOAT" and len(v.dims) == 1
-    assert [e.value for e in v.init] == [100, 2, 55, 371, 244]
+    assert [as_valued(e).value for e in required(v.init)] == [100, 2, 55, 371, 244]
 
 
 def test_structure_member_declaration():
@@ -181,25 +203,25 @@ def test_if_then_optional_for_block_form():
 
 
 def test_if_inline_no_else():
-    node = one("If NOT DebugTrace Then ExitFunction\n")
+    node = one("If NOT DebugTrace Then ExitFunction\n", S.If)
     assert isinstance(node, S.If)
-    assert len(node.inline) == 1
-    assert isinstance(node.inline[0], S.Instruction) and node.inline[0].keyword == "EXITFUNCTION"
+    assert len(required(node.inline)) == 1
+    assert isinstance(required(node.inline)[0], S.Instruction) and node.inline[0].keyword == "EXITFUNCTION"
     assert node.inline_else is None
 
 
 def test_if_inline_with_else():
-    node = one("If X > 10 Then Y = 1 Else Y = 2\n")
-    assert isinstance(node.inline[0], S.Assignment)
-    assert isinstance(node.inline_else[0], S.Assignment)
+    node = one("If X > 10 Then Y = 1 Else Y = 2\n", S.If)
+    assert isinstance(required(node.inline)[0], S.Assignment)
+    assert isinstance(required(node.inline_else)[0], S.Assignment)
 
 
 def test_elseif():
     ss = stmts("If X < 10 Then\n  Y = 1\nElseIf X < 100 Then\n  Y = 2\nElse\n  Y = 3\nEndIf\n")
     kinds = [type(s).__name__ for s in ss]
     assert kinds == ["If", "Assignment", "ElseIf", "Assignment", "Instruction", "Assignment", "Instruction"]
-    assert ss[4].keyword == "ELSE"
-    assert ss[6].keyword == "ENDIF"
+    assert as_node(ss[4], S.Instruction).keyword == "ELSE"
+    assert as_node(ss[6], S.Instruction).keyword == "ENDIF"
 
 
 def test_end_if_two_word_form():
@@ -237,27 +259,27 @@ def test_end_select_two_word_is_pipeline_relevant():
     ss = stmts("Select Case X\nCase 1\n  Y=1\nEnd Select\n")
     end = ss[-1]
     assert isinstance(end, S.Instruction) and end.keyword == "END"
-    assert end.args[0].name == "Select"
+    assert as_named(end.args[0]).name == "Select"
 
 
 def test_for_next():
     ss = stmts("For I = 1 To 10 Step 2\n  X = I\nNext I\n")
     f = ss[0]
     assert isinstance(f, S.For)
-    assert f.var.name == "I"
-    assert f.start.value == 1 and f.end.value == 10
-    assert f.step.value == 2
+    assert as_named(f.var).name == "I"
+    assert as_valued(f.start).value == 1 and as_valued(f.end).value == 10
+    assert as_valued(f.step).value == 2
     nxt = ss[-1]
     assert isinstance(nxt, S.Instruction) and nxt.keyword == "NEXT"
-    assert nxt.args[0].name == "I"
+    assert as_named(nxt.args[0]).name == "I"
 
 
 def test_next_scan_two_word():
     ss = stmts("Scan (1,Sec,3,0)\n  X = 1\nNext Scan\n")
     nxt = ss[-1]
-    assert nxt.keyword == "NEXT" and nxt.args[0].name == "Scan"
+    assert as_node(nxt, S.Instruction).keyword == "NEXT" and as_node(nxt, S.Instruction).args[0].name == "Scan"
     ss2 = stmts("Scan (1,Sec,3,0)\n  X = 1\nNextScan\n")
-    assert ss2[-1].keyword == "NEXTSCAN" and ss2[-1].args == []
+    assert as_node(ss2[-1], S.Instruction).keyword == "NEXTSCAN" and as_node(ss2[-1], S.Instruction).args == []
 
 
 def test_do_loop_forms():
@@ -269,7 +291,7 @@ def test_do_loop_forms():
 
     ss2 = stmts("Do\n  X += 1\nLoop Until X = 10\n")
     loop2 = ss2[-1]
-    assert loop2.cond_kind == "UNTIL"
+    assert as_node(loop2, S.DoLoop).cond_kind == "UNTIL"
 
 
 def test_while_wend():
@@ -282,14 +304,14 @@ def test_exit_two_word_and_one_word():
     ss = stmts("Sub Foo()\n  Exit Sub\nEndSub\n")
     exit_stmt = ss[1]
     assert isinstance(exit_stmt, S.Instruction) and exit_stmt.keyword == "EXIT"
-    assert exit_stmt.args[0].name == "Sub"
+    assert as_named(exit_stmt.args[0]).name == "Sub"
 
     ss2 = stmts("Sub Foo()\n  ExitSub\nEndSub\n")
-    assert ss2[1].keyword == "EXITSUB" and ss2[1].args == []
+    assert as_node(ss2[1], S.Instruction).keyword == "EXITSUB" and as_node(ss2[1], S.Instruction).args == []
 
     ss3 = stmts("BeginProg\n  If X Then Exit\nEndProg\n")
     if_stmt = [s for s in ss3 if isinstance(s, S.If)][0]
-    inline_exit = if_stmt.inline[0]
+    inline_exit = required(if_stmt.inline)[0]
     assert isinstance(inline_exit, S.Instruction) and inline_exit.keyword == "EXIT" and inline_exit.args == []
 
 
@@ -297,25 +319,25 @@ def test_exit_two_word_and_one_word():
 
 
 def test_sub_params():
-    s = one("Sub ConvertCtoF (Tmp, TmpF)\n")
+    s = one("Sub ConvertCtoF (Tmp, TmpF)\n", S.SubDef)
     assert isinstance(s, S.SubDef) and s.keyword == "SUB" and s.name == "ConvertCtoF"
     assert [p.name for p in s.params] == ["Tmp", "TmpF"]
 
 
 def test_function_return_type_and_optional_param():
-    s = one("Function xPlusy (x, y, Optional z=0) As Long\n")
+    s = one("Function xPlusy (x, y, Optional z=0) As Long\n", S.SubDef)
     assert s.return_type == "LONG"
     assert [p.name for p in s.params] == ["x", "y", "z"]
     assert isinstance(s.params[2].default, S.Number) and s.params[2].default.value == 0
 
 
 def test_function_no_parens_with_return_type():
-    s = one("Function DayName As String\n")
+    s = one("Function DayName As String\n", S.SubDef)
     assert s.params == [] and s.return_type == "STRING"
 
 
 def test_sub_string_param_with_array():
-    s = one("Sub Splitdata (InString as string * 2000, strdata(25) as string, realdata(25))\n")
+    s = one("Sub Splitdata (InString as string * 2000, strdata(25) as string, realdata(25))\n", S.SubDef)
     assert s.params[0].type == "STRING"
     assert s.params[1].dims == 1
 
@@ -324,24 +346,24 @@ def test_sub_string_param_with_array():
 
 
 def test_call_explicit_no_parens():
-    c = one("Call InitPowerProfile\n")
+    c = one("Call InitPowerProfile\n", S.Call)
     assert isinstance(c, S.Call) and c.explicit and c.name == "InitPowerProfile" and c.args == []
 
 
 def test_call_bare_with_parens():
-    c = one("LogDebug(\"\")\n")
+    c = one("LogDebug(\"\")\n", S.Call)
     assert isinstance(c, S.Call) and not c.explicit and c.name == "LogDebug"
 
 
 def test_bare_call_no_parens_no_args():
-    c = one("Zork\n")
+    c = one("Zork\n", S.Call)
     assert isinstance(c, S.Call) and not c.explicit and c.name == "Zork" and c.args == []
 
 
 def test_calltable_bare_arg():
-    i = one("CallTable StationStatus\n")
+    i = one("CallTable StationStatus\n", S.Instruction)
     assert isinstance(i, S.Instruction) and i.keyword == "CALLTABLE"
-    assert i.args[0].name == "StationStatus"
+    assert as_named(i.args[0]).name == "StationStatus"
 
 
 # ------------------------------------------------------------------ colon / two-statement lines
@@ -357,8 +379,8 @@ def test_colon_multi_statement():
 
 
 def test_unclosed_paren_implicitly_closes_at_eol():
-    c = one("Call Foo(1,2,3\n")
-    assert isinstance(c, S.Call) and [a.value for a in c.args] == [1, 2, 3]
+    c = one("Call Foo(1,2,3\n", S.Call)
+    assert isinstance(c, S.Call) and [as_valued(a).value for a in c.args] == [1, 2, 3]
 
 
 def test_endprog_stops_parsing():
@@ -375,12 +397,12 @@ def test_endprog_stops_parsing():
 
 
 def test_public_with_nothing_following_is_an_empty_declaration():
-    d = one("Public\n")
+    d = one("Public\n", S.Declaration)
     assert isinstance(d, S.Declaration) and d.kind == "PUBLIC" and d.vars == []
 
 
 def test_dim_with_nothing_following_is_an_empty_declaration():
-    d = one("Dim\n")
+    d = one("Dim\n", S.Declaration)
     assert isinstance(d, S.Declaration) and d.kind == "DIM" and d.vars == []
 
 

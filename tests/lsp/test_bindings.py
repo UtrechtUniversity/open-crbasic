@@ -1,6 +1,7 @@
 """LSP-05a: the read-only binding index (`opencrbasic.bindings`). Scope policies and their evidence:
 docs/lsp-api.md "Binding index (LSP-05a)"."""
 
+from .assertions import required
 from collections import Counter
 from pathlib import Path
 
@@ -119,10 +120,11 @@ def test_alias_read_and_write():
 def test_units_target_references_variable_and_alias():
     ix = index("Public X, Arr(2)\nAlias Arr(1) = Ta\nUnits X = degC\nUnits Ta = V\n"
                "BeginProg\nEndProg\n")
+    assert ix is not None
     ux, ut = refs(ix, "X", "units_target")[0], refs(ix, "Ta", "units_target")[0]
     assert targets(ux) == [("public", "global", 1)]
     assert targets(ut) == [("alias", "global", 2)]
-    assert ix.token_of(ux).col == len("Units ")
+    assert required(ix.token_of(ux)).col == len("Units ")
 
 
 def test_datatable_name_and_member_reference():
@@ -144,10 +146,11 @@ def test_datatable_name_and_member_reference():
 def test_quoted_table_name_is_declared_but_strings_are_not_references():
     ix = index('Public X\nDataTable ("Hist",True,1)\n  Sample(1,X,FP2)\nEndTable\n'
                'BeginProg\n  Scan(1,Sec,0,0)\n    CallTable("Hist")\n  NextScan\nEndProg\n')
+    assert ix is not None
     (tab,) = decls(ix, "Hist")
     assert tab.quoted and tab.kind == "datatable"
     assert not refs(ix, "Hist")
-    assert ix.token_of(tab).kind == "STRING"
+    assert required(ix.token_of(tab)).kind == "STRING"
 
 
 def test_system_tables_and_public_members():
@@ -200,7 +203,7 @@ def test_table_fields_are_named_as_the_tdf_derivation_names_them():
 
 def test_table_field_references_resolve_by_table_and_case_insensitively():
     ix = index(FIELD_SRC)
-    fields = {(f.container.name, f.name): f for d in ix.declarations if d.kind == "datatable"
+    fields = {(f.container.name, required(f).name): f for d in ix.declarations if d.kind == "datatable"
               for f in ix.fields_of(d)}
     want = {"X_Avg": [("Tab", "X_Avg"), ("Tab", "X_Avg"), ("Other", "X_Avg")], "One": [("Tab", "One")],
             "Two": [("Tab", "Two")], "TC_Tot": [("Tab", "TC_Tot")], "x_max": [("Tab", "X_Max")],
@@ -229,6 +232,7 @@ def test_table_field_sites_fieldnames_string_token_is_quoted_and_instruction_has
         f = by[name]
         assert (f.site, f.quoted, f.line) == ("fieldnames", True, 7)
         tok = ix.token_of(f)
+        assert tok is not None
         assert tok.kind == "STRING" and tok.value == "One:desc,Two"
         assert isinstance(f.node, S.Instruction) and f.node.keyword.upper() == "SAMPLE"
     f = by["X_Avg"]
@@ -372,11 +376,12 @@ def test_public_declared_in_routine_is_not_guessed_global():
 def test_string_literal_is_never_a_reference_or_token():
     src = 'Public X, S As String * 10\nBeginProg\n  S = "X Foo"\n  X = 1 : S = "X"\nEndProg\n'
     ix = index(src)
+    assert ix is not None
     assert not refs(ix, "Foo")
     xs = refs(ix, "X")
     assert [r.line for r in xs] == [4]
     toks = bindings.name_tokens(xs[0].unit, "X")
-    assert [t.kind for t in toks] == ["IDENT"] and ix.token_of(xs[0]).col == xs[0].unit.text.index("X")
+    assert [t.kind for t in toks] == ["IDENT"] and required(ix.token_of(xs[0])).col == xs[0].unit.text.index("X")
     assert bindings.name_tokens(xs[0].unit, "X", string=True) == []
     str_stmt = next(s for s in parser.parse_text(src)[0].statements if getattr(s, "text", "").strip() == 'S = "X Foo"')
     assert bindings.name_tokens(str_stmt, "X") == []
@@ -431,9 +436,10 @@ def test_same_file_included_twice_is_not_merged(tmp_path):
 
 def test_compound_assignment_and_inline_if_tokens():
     ix = index("Public X, Y\nBeginProg\n  X += 1 : If X > 0 Then Y = X Else Y = 2\nEndProg\n")
+    assert ix is not None
     xs = [r for r in refs(ix, "X") if r.line == 3]
     assert [r.role for r in xs] == ["write", "read", "read"]      # no synthetic copy of the target
-    assert [ix.token_of(r).col for r in xs] == [2, 4, 19]    # per unit text: `X += 1`, `If X > 0 ...`
+    assert [required(ix.token_of(r)).col for r in xs] == [2, 4, 19]    # per unit text: `X += 1`, `If X > 0 ...`
     assert xs[1].unit is xs[2].unit is not xs[0].unit
     assert all(r.unit.text[ix.token_of(r).col] == "X" for r in xs)
     ys = [r for r in refs(ix, "Y") if r.line == 3]
@@ -591,10 +597,11 @@ def test_instruction_keyword_resolves_to_catalog_before_a_routine_local():
 def test_parameter_dimension_expressions_are_read_references_and_keep_ordinals():
     ix = index("Const N = 3\nSub Fill(p(sz) As Float, sz As Long, q(N) As Float)\nEndSub\n"
                "BeginProg\nEndProg\n")
+    assert ix is not None
     sz = decls(ix, "sz", "param")[0]
-    assert sz.occurrence == 1 and ix.token_of(sz).col == sz.unit.text.index("sz As")
+    assert sz.occurrence == 1 and required(ix.token_of(sz)).col == sz.unit.text.index("sz As")
     dim = refs(ix, "sz")[0]
-    assert (dim.role, dim.occurrence, ix.token_of(dim).col) == ("read", 0, sz.unit.text.index("sz)"))
+    assert (dim.role, dim.occurrence, required(ix.token_of(dim)).col) == ("read", 0, sz.unit.text.index("sz)"))
     assert dim.resolved == (sz,)                     # resolved in the routine's scope
     n = refs(ix, "N")[0]
     assert n.role == "read" and targets(n) == [("const", "global", 1)]

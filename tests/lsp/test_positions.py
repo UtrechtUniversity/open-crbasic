@@ -1,5 +1,6 @@
 """Source positions (LSP-02a): provenance pieces, reported-line map, LSP position conversion."""
 
+from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -88,7 +89,7 @@ def test_colon_segments_map_to_the_same_physical_line():
         assert r is not None and r.line == line and _slices(plines, [r]) == [name]
     toks = [t for t in lexer.tokenize(ll.text) if t.text == ":"]
     assert len(toks) == 2
-    assert [positions.exact_range(ll, t.col, t.col + 1).line for t in toks] == [1, 2]
+    assert [required(positions.exact_range(ll, t.col, t.col + 1)).line for t in toks] == [1, 2]
 
 
 # ------------------------------------------------------------------ pulled initializers

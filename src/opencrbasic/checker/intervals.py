@@ -84,12 +84,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if gate:
             _check_timeout(stmt, diags, env, profile, wide)
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
-        if kw == "DATATABLE":
+        if isinstance(stmt, S.Instruction) and (kw == "DATATABLE"):
             in_table = True
             blocked_table = any(expressions._undefined_names(a, known) for a in stmt.args[1:])
         elif kw == "ENDTABLE":
             in_table = blocked_table = False
-        if kw == "SCAN":
+        if isinstance(stmt, S.Instruction) and (kw == "SCAN"):
             scan = _scan_step(stmt, env)
             continue
         if kw in ("NEXTSCAN", "SUBSCAN", "NEXTSUBSCAN") or isinstance(stmt, S.SubDef):

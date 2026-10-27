@@ -344,7 +344,7 @@ class DimCounts(dict):
     strings: frozenset = frozenset()
 
 
-def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
+def scoped_view(program: S.Program | SimpleNamespace, stmt: S.Stmt) -> S.Program:
     """`program` restricted to the declarations visible at `stmt`: everything outside `Sub`/`Function`
     bodies plus `stmt`'s own routine's body. Other routines' local `Dim`s are dropped, and the
     routine's own sit later in the list so a local shadows a global (last declaration wins)."""

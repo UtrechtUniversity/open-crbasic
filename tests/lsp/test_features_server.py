@@ -6,6 +6,7 @@ modules applied to the same program, so these tests check the adapter (positions
 scheduling), not CRBasic rules.
 """
 
+from .assertions import required
 import shutil
 import time
 from pathlib import Path
@@ -245,7 +246,8 @@ def test_hover_outside_code_is_null(shared):
 def first_cross_file_name(result, main: Path):
     """A name declared in an included library and referenced in Main.CR6."""
     nav = navigation.Navigation(result)
-    for ref in nav.index.references:
+    assert nav is not None
+    for ref in required(nav.index).references:
         for decl in ref.resolved:
             if decl.scope == "global" and decl.file != main.name and decl.file.endswith(".crb") \
                     and ref.file.lower() == "main.cr6" and ref.status == "resolved":
@@ -277,6 +279,7 @@ def test_definition_across_files(shared):
 def test_references_and_highlights_agree_with_the_core(shared):
     client, root, main, text, result = shared
     name = first_cross_file_name(result, main)
+    assert name is not None
     ln, col = next((ln, row.split("'")[0].find(name)) for ln, row in enumerate(text.split("\n"))
                    if row.split("'")[0].find(name) >= 0
                    and navigation.definition(result, main, ln, row.split("'")[0].find(name) + 1))

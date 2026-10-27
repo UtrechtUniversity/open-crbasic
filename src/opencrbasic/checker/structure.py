@@ -6,6 +6,7 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 
 import dataclasses
 import re
+from collections.abc import Container
 
 from .. import consteval
 from .. import lexer
@@ -1832,7 +1833,7 @@ class CallLinks:
 
 
 def check_pass2(program: S.Program, profile, diags: Diagnostics,
-                 env: consteval.Env | None = None, links: CallLinks | None = None) -> int | None:
+                 env: consteval.Env | None = None, links: CallLinks | None = None) -> int | tuple[str, int] | None:
     """The generic "Expr"/implicit-`Call` record family: a statement our parser turns into `Call`
     (a bare `Name`/`Name(args)`, with or without the `Call` keyword) or `Unparsed` (it could not
     parse at all) that never got a specific pass-1 diagnosis (`check_pass1`'s
@@ -3159,7 +3160,7 @@ def _later_arg_unknown(args, operands: set[str], functions: dict) -> bool:
 _SELF_CLOSING_FUNCTIONS = frozenset({"ABS", "ABSLONG", "ARRAYLENGTH", "TYPEOF", "LINENUM", "SIGNATURE"})
 
 
-def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
+def _scan_expr(toks, i: int, operands: Container[str], functions: dict, assign: bool,
                start_operand: bool, unclosed: str | None = None,
                cond: bool = False, to_ok: bool = True, open_fallback: bool = False,
                symbol_unknown: bool = False) -> tuple[str, str] | None:
@@ -4614,7 +4615,7 @@ def _alias_string_slots(program: S.Program, env: consteval.Env) -> dict[str, tup
 def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env, declared: dict[str, str],
                                  known: set[str], forward: set[str], profile,
                                  diags: Diagnostics | None,
-                                 structs_seen: set[str] = frozenset()) -> tuple[S.Declaration, bool]:
+                                 structs_seen: set[str] | frozenset[str] = frozenset()) -> tuple[S.Declaration, bool]:
     """Header dimension checks and the alias-only view of numeric parameter storage (rounds 28
     and 29, `docs/checker.md`). Dimensions resolve in declaration order; a reported dimension
     recovers to 1 and the parameter stays registered. CR300/CR350 stop the header at the first

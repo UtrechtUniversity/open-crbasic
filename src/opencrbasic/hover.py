@@ -21,7 +21,7 @@ from .catalog import CatalogEntry, InstructionCatalog
 from .checker.expressions import (_ARITY_ALLOWED, _ARITY_MAX_SAFE, _ARITY_MIN_SAFE,
                                   _ARITY_RANGE)
 from .editing import _declared_name_arg
-from .helpdocs import HelpProvider, InstructionHelp, pair_signature
+from .helpdocs import HelpLookup, InstructionHelp, pair_signature
 from .helpdocs import _md
 from .source import _is_continuation, _strip_comment
 
@@ -337,7 +337,7 @@ def _mismatch(help: InstructionHelp, note: str) -> str:
     return f"{syntax}{note[:1].upper()}{note[1:]}; help parameter names are not applied to the catalog positions."
 
 
-def signature_help(name: str, active: int, profile, help_provider: HelpProvider | None = None
+def signature_help(name: str, active: int, profile, help_provider: HelpLookup | None = None
                    ) -> SignatureInfo | None:
     """Signature of an instruction or builtin function for the profile (name or `Profile`), with
     parameter names and text from help when its parameter count equals the catalog's, otherwise
@@ -563,7 +563,7 @@ def _simple_markdown(entry: CatalogEntry) -> str:
 
 
 def hover(result, text: str, line: int, column: int, profile,
-          help_provider: HelpProvider | None = None,
+          help_provider: HelpLookup | None = None,
           declared: Mapping[str, list[Declaration]] | None = None) -> Hover | None:
     """Markdown for the word at the position, or None.
 

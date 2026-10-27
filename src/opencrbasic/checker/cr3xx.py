@@ -68,7 +68,7 @@ _COMMS_MODES = {"COMC1": frozenset(range(8)), "COMC5": frozenset(range(8)),
                 "COMC3": frozenset({0, 1, 2, 3, 4, 6}), "COMC7": frozenset({0, 1, 2, 3, 4, 6})}
 
 
-def _commsmode_problem(stmt: S.Call, profile, consts: dict | None) -> str | None:
+def _commsmode_problem(stmt: S.Call, profile, consts: dict | None) -> tuple[bool, str] | None:
     if len(stmt.args) < 6 or stmt.args[5] is None:
         return None
     env = consteval.Env(profile, dict(consts or {}))
@@ -720,12 +720,14 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             (types, scoped), known = _destination_types(program), \
                 expressions._known_names(program, profile)
             ds = expressions.program_dims(program, profile, known)
+        assert known is not None and ds is not None
         arg = stmt.args[0]
         if isinstance(arg, S.Name) and arg.name.upper() in profile.functions:
             continue  # a bare function name is `Expression expects (` instead (expressions.py)
         key = (stmt.line, stmt.file)
         undefined = [n for n in _expr_names(arg) if n.upper() not in known]
         expression = False
+        dims = False
         if undefined:
             if isinstance(arg, (S.Binary, S.Unary)):
                 # an arithmetic expression is no destination: after its names, `Dimensions not
@@ -889,7 +891,7 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
         return name.upper() not in known or name.upper() in tables
 
     for stmt in program.statements:
-        if id(stmt) not in rewritten or not getattr(stmt, "args", None) or stmt.args[0] is None:
+        if not isinstance(stmt, S.Instruction) or id(stmt) not in rewritten or not stmt.args or stmt.args[0] is None:
             continue
         info = profile.instructions.get(stmt.keyword.upper())
         if not info or not info["params"] or info["params"][0] not in _RESOLVED_FIRST_PARAM:

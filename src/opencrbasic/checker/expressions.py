@@ -3,6 +3,7 @@ evidence: `docs/checker.md`.
 """
 
 import re
+from typing import cast
 
 import json
 from functools import lru_cache
@@ -794,15 +795,19 @@ def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, 
                 if walk(a):
                     return True
             return False
-        children = {S.Unary: lambda: [e.operand], S.Binary: lambda: [e.left, e.right],
-                    S.Member: lambda: [*([] if isinstance(e.base, S.Name)
-                                         and e.base.name.upper() in known else [e.base]),
-                                       *(e.args or [])],
-                    S.ArrayLiteral: lambda: e.items}.get(type(e))
-        if children:
-            for c in children():
-                if walk(c):
-                    return True
+        children: list[S.Expr | None] = []
+        if isinstance(e, S.Unary):
+            children = [e.operand]
+        elif isinstance(e, S.Binary):
+            children = [e.left, e.right]
+        elif isinstance(e, S.Member):
+            children = ([] if isinstance(e.base, S.Name) and e.base.name.upper() in known
+                        else [e.base]) + (e.args or [])
+        elif isinstance(e, S.ArrayLiteral):
+            children = e.items
+        for child in children:
+            if walk(child):
+                return True
         return False
 
     for e in exprs:
@@ -1037,7 +1042,7 @@ def _not_yet_declared(program: S.Program, profile) -> dict[int, frozenset[str]]:
     pending: set[str] = set()
     for i in range(len(stmts) - 1, -1, -1):
         if isinstance(stmts[i], S.ConstDecl):
-            pending = pending | {stmts[i].name.upper()}
+            pending = pending | {cast(S.ConstDecl, stmts[i]).name.upper()}
         consts_after[i] = pending
     in_routine = False
     for i, st in enumerate(stmts):
@@ -2690,7 +2695,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
     open_ifs = 0
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
-        if kw == "SELECT":
+        if isinstance(stmt, S.Instruction) and (kw == "SELECT"):
             # (an over-indexed selector opens no block either, on all four loggers)
             orphans.append(bool(stmt.args) and (
                 (not whole_echo and bool(_undefined_names(stmt.args[0], known)))
@@ -2848,7 +2853,7 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
         for code, arg in candidates:
             if code not in _BOUNDS_CHECKED_CODES or not isinstance(arg, S.Index) or not arg.args:
                 continue
-            if code in _BOUNDS_PROBED and stmt.keyword.upper() not in _BOUNDS_PROBED[code]:
+            if code in _BOUNDS_PROBED and isinstance(stmt, S.Instruction) and stmt.keyword.upper() not in _BOUNDS_PROBED[code]:
                 continue
             name = arg.name.upper()
             shape = dims.get(name)
@@ -2858,7 +2863,7 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                              not (code in (24, 29) and types.get(name) == "LONG")) or \
                     not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args):
                 continue
-            index = [a.value for a in arg.args]
+            index = [cast(S.Number, a).value for a in arg.args]
             if len(index) == 1 and len(shape) > 1:
                 # against the first dimension, not the element count (oracle, all four loggers,
                 # round 38: `Battery(M(4))` of `M(3,4)` is out of bounds)

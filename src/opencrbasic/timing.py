@@ -6,6 +6,7 @@ prints no entry.
 
 import re
 
+from typing import TypeGuard, cast
 from . import consteval, mode
 from . import syntax as S
 from .profiles import Profile
@@ -184,7 +185,7 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     model = _model(env.profile)
     if model != "cr6":
         reps, rng, flag, settle, integ = (_num(_const(stmt.args[k], env)) for k in (ri, gi, fi, si, ii))
-        if None in (reps, rng, flag, settle, integ) or reps < 1 or settle < 0 or integ < 0:
+        if (reps is None or rng is None or flag is None or settle is None or integ is None) or reps < 1 or settle < 0 or integ < 0:
             return
         chan_n = _num(_const(stmt.args[ci], env))
         if chan_n is None:
@@ -202,7 +203,7 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
             if valid is None:
                 return
             auto = (n if doubling else reps) if rng in _AUTO_RANGES else 0
-            cost = _x1000_cost(n, settle, integ, c, reps, auto, c and valid)
+            cost = _x1000_cost(n, settle, integ, c, reps, auto, c and bool(valid))
         lines.append(f"line {stmt.line}: {_LABEL[stmt.keyword]} = {cost}")
         return
     reps, rng, flag, settle, integ = (_num(_const(stmt.args[k], env)) for k in (ri, gi, fi, si, ii))
@@ -210,10 +211,10 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     um = re.fullmatch(r"U(\d+)", chan.name.upper()) if isinstance(chan, S.Name) else None
     u_chan = um is not None and (not doubling or int(um.group(1)) % 2 == 1)  # even U is no differential pair
     if um is not None and not u_chan:
-        chan = S.Number(chan.line, value=0)
+        chan = S.Number(cast(S.Name, chan).line, value=0)
     if not u_chan and _num(_const(chan, env)) is None:
         return
-    if None in (reps, rng, flag, settle, integ) or reps < 1 or settle < 0 or integ < 0:
+    if (reps is None or rng is None or flag is None or settle is None or integ is None) or reps < 1 or settle < 0 or integ < 0:
         return
     auto = rng in _AUTO_RANGES
     if rng not in _PLAIN_RANGES and rng not in _C_RANGES and not auto:
@@ -273,7 +274,7 @@ def _c3_cost(m: int, reps: int, settle: float, offset_pass: int = 0) -> int:
     return _trunc100(_c3_fixed(m) + reps * m * (_C3_PASS + s) + offset_pass * (_C3_OFFSET_PASS + s))
 
 
-def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: int = 0, auto_reps: int = 0) -> int:
+def _meas_cost(n: float, settle: float, integ: float, extra: float = 0, thirds_u: int = 0, auto_reps: float = 0) -> int:
     ks = int((24 * (settle or 500) + 127) // 256)
     kx = 24 if integ == 0 else max(1, int((24e6 / integ + 128) // 256))
     settle_part = -(-(32 * ks + thirds_u) // 3)
@@ -327,6 +328,7 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     vals = [_num(_const(stmt.args[k], env)) for k in idx]
     if None in vals:
         return
+    vals = cast(list[float], vals)
     reps, rng, mp, rev_ex, settle, integ = vals[:6]
     rest = vals[6:]
     rng2 = rest.pop(0) if g2 else rng
@@ -357,7 +359,7 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
                         return
                 c = any(r in _C_RANGES or r == 830 for r in (rng, rng2))
                 auto = per * g if (g2 is None and rng in _AUTO_RANGES) else 0
-                cost = _x1000_cost(g * per, settle, integ, c, g * base, auto, c and valid)
+                cost = _x1000_cost(g * per, settle, integ, c, g * base, auto, c and bool(valid))
             lines.append(f"line {stmt.line}: {label} = {cost}")
         return
     c_range = False
@@ -370,7 +372,7 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         if mp < 1:
             return
     u = 0
-    if c_range and _chan_is_u(chan) and (single or int(re.fullmatch(r"U(\d+)", chan.name.upper()).group(1)) % 2 == 1):
+    if c_range and _chan_is_u(chan) and (single or int(cast(re.Match[str], re.fullmatch(r"U(\d+)", chan.name.upper())).group(1)) % 2 == 1):
         u = 160
     per = base * (2 if rev_diff else 1) * (2 if rev_ex else 1)
     group = max(int(mp), 1)
@@ -437,10 +439,10 @@ def _args(stmt: S.Instruction, env: consteval.Env, *idx: int) -> list[float] | N
     if len(stmt.args) <= max(idx):
         return None
     vals = [_num(_const(stmt.args[i], env)) for i in idx]
-    return None if None in vals else vals
+    return None if None in vals else cast(list[float], vals)
 
 
-def _chan_is_u(expr: S.Expr | None) -> bool:
+def _chan_is_u(expr: S.Expr | None) -> TypeGuard[S.Name]:
     return isinstance(expr, S.Name) and re.fullmatch(r"U\d+", expr.name.upper()) is not None
 
 

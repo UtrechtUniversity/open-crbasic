@@ -19,13 +19,31 @@ check reports an error.
 import re
 import sys
 from pathlib import Path
+from typing import Literal, TypedDict, cast
 
 from . import __version__, profiles
 from . import syntax as S
 
 
-def _parse(argv: list[str]):
-    opts = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
+class _Options(TypedDict):
+    s: bool
+    v: bool
+    d: bool
+    z: str | None
+    l: str | None
+    c: str | None
+    p: str | None
+    i: bool
+    t: bool
+    b: str | None
+    u: bool
+    logger: str | None
+    message_file: bool
+    strict: bool
+
+
+def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
+    opts: _Options = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
             "i": False, "t": False, "b": None, "u": False, "logger": None, "message_file": True,
             "strict": False}
     positional: list[str] = []
@@ -62,12 +80,13 @@ def _parse(argv: list[str]):
                     else:
                         i += 1
                         value = argv[i] if i < len(argv) else ""
-                    opts["p" if ch == "i" else ch] = value
+                    key = cast(Literal["z", "l", "c", "p", "b"], "p" if ch == "i" else ch)
+                    opts[key] = value
                     if ch == "i":
                         opts["i"] = True
                     break
                 if ch in "svd":
-                    opts[ch] = True
+                    opts[cast(Literal["s", "v", "d"], ch)] = True
                 elif ch == "t":
                     opts["t"] = True
                 elif ch == "u":

@@ -1043,7 +1043,7 @@ def check_eventcount_tables(program: S.Program, profile: Profile, diags: Diagnos
     current: str | None = None
     for st in program.statements:
         kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
-        if kw == "DATATABLE" and st.args and isinstance(st.args[0], S.Name):
+        if isinstance(st, S.Instruction) and (kw == "DATATABLE" and st.args and isinstance(st.args[0], S.Name)):
             current = st.args[0].name.upper()
             tables.setdefault(current, False)
         elif kw == "ENDTABLE":

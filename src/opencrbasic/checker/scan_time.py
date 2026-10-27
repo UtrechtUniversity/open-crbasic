@@ -12,6 +12,7 @@ total of a scan holding one is a lower bound (`partial`).
 import math
 import re
 import struct
+from typing import cast
 from dataclasses import dataclass, field
 
 from .. import consteval
@@ -254,7 +255,12 @@ def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple
     revdiff = _long(args[dp - 1], env) if dp else 0
     rngs = [_long(args[i - 1], env) for i in ranges]
     settling, fn = _settling(args[sp - 1], env), _num(args[ip - 1], env)
-    if None in (reps, chan, meas, revex, revdiff, settling, fn, *rngs) or chan <= 0 or \
+    if reps is None or chan is None or meas is None or revex is None or revdiff is None or settling is None or fn is None:
+        return None
+    if None in rngs:
+        return None
+    rngs = cast(list[int], rngs)
+    if chan <= 0 or \
             not 1 <= reps <= 100_000 or any(r not in _RANGES for r in rngs) or \
             (groups > 1 and any(_RANGES[r] not in _PLAIN for r in rngs)):
         return None
@@ -302,7 +308,7 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
     if kw == "PANELTEMP" and len(args) == 2:
         fn = _num(args[1], env)
         units = panel_units(m, fn) if fn is not None else None
-        return (2 * units, True, m.integ_time(m.integ_code(fn)) // 100) if units else None
+        return (2 * units, True, m.integ_time(m.integ_code(fn)) // 100) if units and fn is not None else None
     if kw in _ANALOG:
         rp, gp, fp, sp, ip, single = _ANALOG[kw]
         if len(args) < ip:
@@ -310,7 +316,7 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
         reps, rng, flag = (_long(args[i - 1], env) for i in (rp, gp, fp))
         settling = _settling(args[sp - 1], env)
         fn = _num(args[ip - 1], env)
-        if None in (reps, rng, flag, settling, fn) or rng not in _RANGES:
+        if (reps is None or rng is None or flag is None or settling is None or fn is None) or rng not in _RANGES:
             return None
         gain, open_detect = _RANGES[rng]
         cr6_current = kw == "CURRENTSE" and profile.name == "cr6"   # MeasOff and "C" ignored
@@ -324,7 +330,7 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
     if kw in ("THERM107", "THERM108", "THERM109") and len(args) >= 6:
         reps, settling = _long(args[1], env), _long(args[4], env)
         fn = _num(args[5], env)
-        if None in (reps, settling, fn) or not 1 <= reps <= 255 or not 0 <= settling < 6_000_000:
+        if (reps is None or settling is None or fn is None) or not 1 <= reps <= 255 or not 0 <= settling < 6_000_000:
             return None
         units = analog_units(m, reps, 0, fn, settling, True, excite=True)
         return (units, True, m.integ_time(m.integ_code(fn)) // 100) if units else None
@@ -340,7 +346,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
     model = MODELS.get(profile.name) or MODELS["cr6"]
     slow = False
     cur: Budget | None = None
-    frames: list[tuple[int, int, int, int, int] | None] = []   # open SubScans: (start, count, interval, unit, saved unit)
+    frames: list[tuple[int, int, int, int | None, int] | None] = []   # open SubScans: (start, count, interval, unit, saved unit)
     total = 0
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
@@ -351,7 +357,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
             kw = "NEXTSUBSCAN"
         if kw == "SLOWSEQUENCE":
             slow = True
-        elif kw == "SCAN" and not slow:
+        elif isinstance(stmt, S.Instruction) and (kw == "SCAN" and not slow):
             raw = _scan_raw(stmt, env)
             if include_zero and len(stmt.args) > 1:
                 v, u = _value(stmt.args[0], env), _value(stmt.args[1], env)
@@ -366,7 +372,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
             frames, total = [], 0
         elif cur is None:
             continue
-        elif kw == "NEXTSCAN":
+        elif isinstance(stmt, S.Instruction) and (kw == "NEXTSCAN"):
             if frames:
                 cur.partial = True
             cur.end = stmt
@@ -377,7 +383,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
                     cur.total = i32(cur.total - model.refund)
             yield cur
             cur = None
-        elif kw == "SUBSCAN":
+        elif isinstance(stmt, S.Instruction) and (kw == "SUBSCAN"):
             args = [_value(a, env) for a in stmt.args]
             count = args[2] if len(args) == 3 else None
             ok = isinstance(count, int) and not isinstance(count, bool) and count > 0
@@ -394,7 +400,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
                 and args[1] in UNIT_NAMES else None
             if ok and sub_unit is None:
                 cur.partial = True
-            frames.append((total, count, step, sub_unit, cur.msg_unit) if ok else None)
+            frames.append((total, cast(int, count), step, sub_unit, cur.msg_unit) if ok else None)
             if sub_unit is not None:
                 cur.msg_unit = sub_unit
         elif kw == "NEXTSUBSCAN":

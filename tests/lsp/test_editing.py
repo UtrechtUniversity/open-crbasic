@@ -1,5 +1,6 @@
 """Editing-feature logic (LSP-03b-core): outline, folding, include links, completion."""
 
+from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -539,7 +540,7 @@ def test_completion_prefix_is_case_insensitive_with_profile_spelling():
     assert c.replace == Span(0, 2, 0, 6) and c.prefix == "volt"
     item = next(i for i in c.items if i.label == "VoltSe")
     assert (item.kind, item.source) == ("instruction", "catalog")
-    assert item.param_count == len(InstructionCatalog.for_profile("cr6").get("VoltSe").params) > 0
+    assert item.param_count == len(required(InstructionCatalog.for_profile("cr6").get("VoltSe")).params) > 0
 
 
 def test_completion_keyword_beats_instruction_row():

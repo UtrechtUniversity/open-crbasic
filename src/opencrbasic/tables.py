@@ -335,7 +335,7 @@ def _scan_program(program: S.Program):
     while i < n:
         s = stmts[i]
         kw = _kw(s)
-        if kw == "STRUCTURETYPE":
+        if isinstance(s, S.Instruction) and (kw == "STRUCTURETYPE"):
             st = {"members": [], "units": {}, "ro": set()}
             if s.args and isinstance(s.args[0], S.Name):
                 struct_types[s.args[0].name.upper()] = st
@@ -344,9 +344,9 @@ def _scan_program(program: S.Program):
                 m = stmts[i]
                 if isinstance(m, S.Declaration):
                     st["members"].extend(m.vars)
-                elif _kw(m) == "UNITS" and len(m.args) > 1 and isinstance(m.args[1], S.String):
+                elif isinstance(m, S.Instruction) and (_kw(m) == "UNITS" and len(m.args) > 1 and isinstance(m.args[1], S.String)):
                     st["units"][getattr(m.args[0], "name", "").upper()] = m.args[1].value
-                elif _kw(m) == "READONLY":
+                elif isinstance(m, S.Instruction) and (_kw(m) == "READONLY"):
                     st["ro"].update(a.name.upper() for a in m.args if isinstance(a, S.Name))
                 i += 1
             i += 1
@@ -357,20 +357,21 @@ def _scan_program(program: S.Program):
                 publics.extend(s.vars)
             i += 1
             continue
-        if kw == "CONSTTABLE":
+        if isinstance(s, S.Instruction) and (kw == "CONSTTABLE"):
             args = s.args
             name = args[0].name if args and isinstance(args[0], S.Name) else None
             hidden = _as_int(args[1].value, 0) if len(args) > 1 and isinstance(args[1], S.Number) else 0
             j = i + 1
-            body: list[S.ConstDecl] = []
+            const_body: list[S.ConstDecl] = []
             while j < n and _kw(stmts[j]) != "ENDCONSTTABLE":
-                if isinstance(stmts[j], S.ConstDecl):
-                    body.append(stmts[j])
+                candidate = stmts[j]
+                if isinstance(candidate, S.ConstDecl):
+                    const_body.append(candidate)
                 j += 1
-            const_tables.append(ConstTableDecl(name, hidden, body, s.line))
+            const_tables.append(ConstTableDecl(name, hidden, const_body, s.line))
             i = j + 1
             continue
-        if kw == "DATATABLE":
+        if isinstance(s, S.Instruction) and (kw == "DATATABLE"):
             args = s.args
             name = args[0].name if args and isinstance(args[0], S.Name) else ""
             trig = args[1] if len(args) > 1 else None
@@ -387,15 +388,15 @@ def _scan_program(program: S.Program):
             slow_seq_count += 1
             i += 1
             continue
-        if kw == "ALIAS":
+        if isinstance(s, S.Instruction) and (kw == "ALIAS"):
             alias_stmts.append(s)
             i += 1
             continue
-        if kw == "UNITS":
+        if isinstance(s, S.Instruction) and (kw == "UNITS"):
             units_stmts.append(s)
             i += 1
             continue
-        if kw == "READONLY":
+        if isinstance(s, S.Instruction) and (kw == "READONLY"):
             for arg in s.args:
                 if isinstance(arg, S.Name):
                     readonly_names.add(arg.name.upper())
@@ -445,7 +446,7 @@ def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
     weights: dict[str, float] = {}
     for s in stmts:
         kw = _kw(s)
-        if kw == "SCAN":
+        if isinstance(s, S.Instruction) and (kw == "SCAN"):
             secs = None
             if s.args:
                 val = _fold(s.args[0], env, None)
@@ -463,7 +464,7 @@ def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
         elif kw == "NEXTSCAN":
             if stack:
                 stack.pop()
-        elif kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack:
+        elif isinstance(s, S.Instruction) and (kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack):
             weights[s.args[0].name.upper()] = stack[-1]
     return weights
 
@@ -1424,7 +1425,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
 
     for s in dt.body:
         kw = _kw(s)
-        if kw == "DATAINTERVAL":
+        if isinstance(s, S.Instruction) and (kw == "DATAINTERVAL"):
             into, interval, ival, unit = _interval_from_args(s.args, env, 0, 1, 2)
             interval_seconds = ival * (_UNIT_SECONDS.get(unit, 1))
             display_interval = (ival, unit)
@@ -1449,7 +1450,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             pass  # interval/into stay (0,0) (§5, oracle-confirmed)
         elif kw in ("CARDOUT", "TABLEFILE"):
             has_card = True
-        elif kw == "FIELDNAMES":
+        elif isinstance(s, S.Instruction) and (kw == "FIELDNAMES"):
             if s.args and isinstance(s.args[0], S.String) and pending:
                 pending = _apply_fieldnames(pending, s.args[0].value, env.profile.name)
                 out_fields.extend(split_pending())
@@ -1460,7 +1461,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             s = _alias_source(s, var_info, by_display, by_base)
             pending = _emit_output_fields(s, var_info, by_display, env, by_base, anon)
             pending_src = s.args[1] if len(s.args) > 1 and not any(f.struct_members for f in pending) else None
-        elif kw == "FFT":
+        elif isinstance(s, S.Instruction) and (kw == "FFT"):
             if pending:
                 out_fields.extend(split_pending())
             pending, pending_src = [_fft_field(s, var_info, by_display, env, anon)], None
@@ -1697,7 +1698,7 @@ def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
     for s in stmts:
         if _kw(s) == "SLOWSEQUENCE":
             slow = True
-        elif _kw(s) == "SCAN":
+        elif isinstance(s, S.Instruction) and (_kw(s) == "SCAN"):
             if slow:
                 ticks = 600000 if ticks is None else ticks
             elif s.args:
@@ -1796,7 +1797,7 @@ def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: i
 
 
 def render_table_list(tables: list[TdfTable]) -> str:
-    lines = []
+    lines: list[str] = []
     for t in tables:
         if t.name == "Status":
             continue

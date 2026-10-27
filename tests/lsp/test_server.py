@@ -1,5 +1,6 @@
 """The stdio language server, driven as a real subprocess (LSP-01b)."""
 
+from .assertions import required
 import json
 import os
 import shutil
@@ -249,6 +250,7 @@ def test_unsaved_include_edit_save_and_close(make_client, tmp_path):
     root = small_project(tmp_path)
     small, lib = root / "Small.CR6", root / "Lib.crb"
     client = started(make_client, root)
+    assert client is not None
     client.open(small, SMALL)
     client.wait_diagnostics(small)
     client.open(lib, LIB)
@@ -261,7 +263,7 @@ def test_unsaved_include_edit_save_and_close(make_client, tmp_path):
     assert diag["message"] == "lib_v already declared as a variable."
     assert diag["range"]["start"]["line"] == 1 and diag["range"]["end"]["character"] == len(
         "Public lib_v As Long")
-    assert client.latest(small)["diagnostics"] == []     # the entry itself is clean
+    assert required(client.latest(small))["diagnostics"] == []     # the entry itself is clean
 
     # closing without saving restores the disk state (valid)
     client.close(lib)
@@ -278,7 +280,7 @@ def test_unsaved_include_edit_save_and_close(make_client, tmp_path):
     n = len(client.publishes(lib))
     client.close(lib)
     final = client.wait_for(lambda: (client.latest(lib) if len(client.publishes(lib)) >= n
-                                     and client.latest(lib).get("version") is None else None))
+                                     and required(client.latest(lib)).get("version") is None else None))
     assert [x["message"] for x in final["diagnostics"]] == ["lib_v already declared as a variable."]
     assert client.shutdown() == 0
 
@@ -297,7 +299,7 @@ def test_rapid_versions_publish_only_latest(make_client, tmp_path):
     versions = [p["version"] for p in client.publishes(small)]
     assert versions == sorted(versions) and versions[-1] == 6
     last = client.latest(small)
-    assert last["version"] == 6 and "final_var" in last["diagnostics"][0]["message"]
+    assert required(last)["version"] == 6 and "final_var" in required(last)["diagnostics"][0]["message"]
 
 
 def test_uninclude_information_diagnostic(make_client, tmp_path):

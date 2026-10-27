@@ -1,6 +1,7 @@
 """LSP-05b-core: protocol-independent navigation (`opencrbasic.navigation`). Policies:
 docs/lsp-api.md "Navigation (LSP-05b-core)"."""
 
+from .assertions import required
 import shutil
 from pathlib import Path
 
@@ -329,7 +330,7 @@ def test_references_across_entries_of_a_shared_library(tmp_path):
     assert where(N.references_across(navs[:1], b, 2, 3)) == []             # A does not read B
     assert where(N.references(navs[0].result, a, 2, 3)) == [want[0], want[2]]  # one entry: unchanged
     sites = N.declaration_sites(navs, a, 2, 3)
-    assert [(s.path.name, s.line, s.start, s.end) for s in sites] == [("Lib.crb", 0, 7, 18)]
+    assert [(required(s.path).name, s.line, s.start, s.end) for s in sites] == [("Lib.crb", 0, 7, 18)]
 
 
 def test_references_across_entries_with_their_own_declarations(tmp_path):

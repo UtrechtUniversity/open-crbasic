@@ -18,6 +18,8 @@ errors) rather than guessed at.
 import re
 from dataclasses import dataclass, field
 
+from .provenance import LoadProvenance
+
 
 _DRIVE_RE = re.compile(r"^(CPU|USR|CRD|USB):", re.IGNORECASE)
 
@@ -111,7 +113,7 @@ class Diagnostic:
 
 
 @dataclass
-class Diagnostics:
+class Diagnostics(LoadProvenance):
     items: list[Diagnostic] = field(default_factory=list)
 
     def error(self, line: int, message: str, file: str = "", show_file: bool | str = True,

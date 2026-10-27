@@ -32,6 +32,7 @@ import dataclasses
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import cast
 
 from . import consteval, lexer, profiles, source
 from . import syntax as S
@@ -913,7 +914,7 @@ class _Parser:
             m = re.match(r"\s*([A-Za-z_]\w*)", seg_text_raw)
             rec = self.profile.instructions.get(m.group(1).upper()) if m else None
             real = [c for c in rec["params"] if c not in (14, 32, 36, 46)] if rec else []
-            slow = bool(real) and m.group(1).upper() == "SLOWSEQUENCE"
+            slow = bool(real) and m is not None and m.group(1).upper() == "SLOWSEQUENCE"
             # `SlowSequence` takes only the simple `SlowSequence(")` / `SlowSequence(A,")` shapes here.
             slow_shape = re.fullmatch(r"\s*SlowSequence\s*\(\s*", seg_text_raw[:e.col], re.I) or \
                 re.fullmatch(r"\s*SlowSequence\s*\(\s*[^(),]+,\s*", seg_text_raw[:e.col], re.I)
@@ -943,7 +944,9 @@ class _Parser:
                                    type=m[3], value_span=(0, 0), text=seg_text_raw)
             if e.message == "unterminated string" and re.match(r"\s*Const\s+\"", seg_text_raw, re.I):
                 # `Const "abc`: the string is read as a name, to the next space (oracle, 2026-10-18)
-                word = re.match(r"[^\s,]+", seg_text_raw[e.col:]).group()
+                word_match = re.match(r"[^\s,]+", seg_text_raw[e.col:])
+                assert word_match is not None
+                word = word_match.group()
                 return S.Unparsed(line, file, text="", reason="Const lead: " + (
                     f"Invalid variable or constant name: {word}." if "=" in seg_text_raw else
                     f"Const with no assignment.\nToo many parameters:  {word}."))
@@ -1129,7 +1132,7 @@ class _Parser:
                 name, end = m.group(0), m.end()
             else:
                 name = end = None
-            if name:
+            if name and end is not None:
                 rest = [t for t in seg[3:] if t.col >= end]
                 seg = seg[:2] + [lexer.Token("IDENT", name, name.upper(), seg[2].col, seg[2].line)] + rest
         p = _TokStream(seg, seg_text)
@@ -1357,7 +1360,7 @@ class _Parser:
                 got = [self._tail_chunk(g, p.seg_text, line, file, True) for g in groups]
                 if not got or None in got:
                     return
-                found.extend(g for g in got if g is not True)
+                found.extend(g for g in got if isinstance(g, tuple))
                 continue
             if got is None and piece:
                 # an expression slot reads the whole piece as one expression (`Delay(1,1) 1 +2`)
@@ -1577,6 +1580,7 @@ class _Parser:
             vtype = type_tok.upper
             if p.is_op("!"):
                 p.next()  # pointer type (see docs/frontend.md)
+                assert vtype is not None
                 vtype += "!"
             strsize = None
             if vtype == "STRING" and p.is_op("*"):
@@ -1675,9 +1679,12 @@ class _Parser:
         then_bounds = (then_tok.col + len(then_tok.text) + 1 if then_tok else None,
                        else_tok.col - 1 if else_tok else text_end)
         then_stmts = self._parse_stmt_list(then_toks, line, file, p.seg_text, then_bounds)
-        inline_else = self._parse_stmt_list(
-            else_toks, line, file, p.seg_text,
-            (else_tok.col + len(else_tok.text) + 1, text_end)) if else_toks is not None else None
+        inline_else = None
+        if else_toks is not None:
+            assert else_tok is not None
+            inline_else = self._parse_stmt_list(
+                else_toks, line, file, p.seg_text,
+                (else_tok.col + len(else_tok.text) + 1, text_end))
         return S.If(line, file, cond=cond, inline=then_stmts, inline_else=inline_else)
 
     def _parse_stmt_list(self, toks: list[Token], line: int, file: str, outer: str = "",
@@ -1778,7 +1785,7 @@ class _Parser:
         if p.is_ident("ELSE") and p.peek(1).kind == "EOF":
             p.next()
             return S.Case(line, file, items=[], is_else=True)
-        items = []
+        items: list[S.CaseItem] = []
         while True:
             if p.is_ident("IS"):
                 p.next()
@@ -1862,6 +1869,7 @@ class _Parser:
             vtype = type_tok.upper if type_tok else None
             if p.is_op("!"):
                 p.next()  # pointer type (see docs/frontend.md)
+                assert vtype is not None
                 vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
                 p.next()
@@ -1949,7 +1957,9 @@ class _Parser:
                 p.next()
                 type_tok = p.expect_ident()
                 vtype = type_tok.upper
-                word = re.match(r"[^\s,]+", p.seg_text[type_tok.col:]).group()
+                word_match = re.match(r"[^\s,]+", p.seg_text[type_tok.col:])
+                assert word_match is not None
+                word = word_match.group()
                 if word.upper() not in _CONST_TYPE_WORDS and any(
                         t.kind == "OP" and t.text == "=" for t in p.toks):
                     # the type is the whitespace-delimited word (`As Long(5)`, `As Long=7`,
@@ -1962,6 +1972,7 @@ class _Parser:
                                        value_span=(0, 0))
                 if p.is_op("!"):
                     p.next()  # pointer type (see docs/frontend.md)
+                    assert vtype is not None
                     vtype += "!"
                 if p.is_op("*") and any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
                     # `Const J As String * 10 = "a"`: the `*` is out of place; the echo runs to the
@@ -2202,7 +2213,7 @@ class _Parser:
             self._close_dims_or_raise(p, name_tok)
         vtype = None
         strsize = None
-        init = None
+        init: list[S.Expr | None] | None = None
         size_missing = None
         if p.is_ident("AS"):
             p.next()
@@ -2210,6 +2221,7 @@ class _Parser:
             vtype = type_tok.upper
             if p.is_op("!"):
                 p.next()  # pointer type (see docs/frontend.md)
+                assert vtype is not None
                 vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
                 star = p.next()
@@ -2220,7 +2232,7 @@ class _Parser:
                     # `Public A As String * 16(5) = {...}`: the dimension follows the size
                     # (oracle, all four loggers, round 16; docs/frontend.md)
                     num = p.next()
-                    strsize = S.Number(num.line, file, num.value, num.text)
+                    strsize = S.Number(num.line, file, cast(int | float, num.value), num.text)
                     p.next()
                     start_col = p.peek().col
                     dims.append(self._parse_expr(p, line, file))
@@ -2583,10 +2595,10 @@ class _Parser:
             return S.Unary(tok.line, file, tok.text, operand)
         if tok.kind == "NUMBER":
             p.next()
-            return S.Number(tok.line, file, tok.value, tok.text)
+            return S.Number(tok.line, file, cast(int | float, tok.value), tok.text)
         if tok.kind == "STRING":
             p.next()
-            return S.String(tok.line, file, tok.value)
+            return S.String(tok.line, file, cast(str, tok.value))
         if tok.kind == "OP" and tok.text == "(":
             p.next()
             e = self._parse_expr(p, line, file)

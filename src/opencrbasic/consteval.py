@@ -17,6 +17,7 @@ unary minus binds looser than `^`: `-2^2 = -4`).
 from dataclasses import dataclass, field
 
 from . import syntax as S
+from .profiles import Profile
 
 
 class NotConstant(Exception):
@@ -42,7 +43,7 @@ class Env:
     oracle: `Invalid symbol in expression: Section = "Foo" .`).
     """
 
-    profile: object
+    profile: Profile
     consts: dict[str, object] = field(default_factory=dict)
     section: str | None = None
 
@@ -109,7 +110,7 @@ def _bool(v: object) -> bool:
     return _num(v) != 0
 
 
-def to_long(value: object) -> int:
+def to_long(value: int | float | str) -> int:
     """The C `(long)` conversion applied to a constant parameter (oracle, 2026-10-02): truncated
     toward zero (`0.5` -> 0, `-1.9` -> -1); a string, NaN or a value outside Long range gives
     `-2147483648`."""
@@ -166,7 +167,7 @@ def value_of(expr: S.Expr | None, env: Env) -> object:
     raise NotConstant(f"{type(expr).__name__} has no constant value")
 
 
-def is_float(expr: S.Expr, env: Env) -> bool | None:
+def is_float(expr: S.Expr | None, env: Env) -> bool | None:
     """Whether a constant expression is float-typed (a decimal literal, `Const` of one, or any
     `+ - * \\ MOD` with a float operand; `/`, `^` and `Int()` are always float, `Abs` keeps its
     operand's type -- oracle, CR6, 2026-10-10, SDM address probes). `None`: not established."""
@@ -266,10 +267,11 @@ def _binary(op: str, left: object, right: object) -> object:
         return _truth((not _bool(left)) or _bool(right))
     if op in ("=", "<>", "<", ">", "<=", ">="):
         if isinstance(left, str) or isinstance(right, str):
-            l, r = _as_str(left), _as_str(right)
-        else:
-            l, r = _num(left), _num(right)
-        result = {"=": l == r, "<>": l != r, "<": l < r, ">": l > r,
-                  "<=": l <= r, ">=": l >= r}[op]
-        return _truth(result)
+            return _truth(_compare(op, _as_str(left), _as_str(right)))
+        return _truth(_compare(op, _num(left), _num(right)))
     raise NotConstant(f"unsupported operator {op!r}")
+
+
+def _compare[T: (str, float)](op: str, left: T, right: T) -> bool:
+    return {"=": left == right, "<>": left != right, "<": left < right, ">": left > right,
+            "<=": left <= right, ">=": left >= right}[op]

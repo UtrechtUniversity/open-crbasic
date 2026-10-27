@@ -11,6 +11,7 @@ from dataclasses import dataclass, field, replace
 from html.parser import HTMLParser
 from pathlib import Path
 from collections.abc import Iterable, Mapping, Sequence
+from typing import Protocol
 
 __all__ = [
     "ParamHelp", "InstructionHelp", "HelpProvider", "PairedParam", "PairedSignature",
@@ -38,6 +39,11 @@ class InstructionHelp:
     params: tuple[ParamHelp, ...]
     summary: str
     source_path: Path
+
+
+class HelpLookup(Protocol):
+    """The help lookup interface used by hover and signature rendering."""
+    def lookup(self, name: str) -> InstructionHelp | None: ...
 
 
 # --- HTML reduction -------------------------------------------------------------------------------

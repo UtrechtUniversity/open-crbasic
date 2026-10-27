@@ -1,5 +1,6 @@
 """Help provider tests: synthetic fixtures only; the optional corpus test asserts no help text."""
 
+from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -51,6 +52,7 @@ def test_parameter_description_includes_option_table(tmp_path, linked):
         (tmp_path / "parameters").mkdir()
         (tmp_path / "parameters" / "fn.htm").write_text('<h1>fN1</h1>' + description)
     h = HelpProvider(tmp_path).lookup("FooList")
+    assert h is not None
     expected = ("Filters noise; common options are:\nOption | Description\n"
                 "60 | Filter 60 Hz.\n50 | Filter 50 Hz.")
     assert h.params[0].description == expected
@@ -140,6 +142,7 @@ def test_leading_optional_marker_creates_nothing(tmp_path):
     (tmp_path / "Instructions" / "x.htm").write_text(
         '<h1>FooLead</h1><h2>Syntax</h2><p>FooLead ( [optional], <a href="../parameters/foodest.htm">Dest</a> )</p>')
     h = HelpProvider(tmp_path).lookup("FooLead")
+    assert h is not None
     assert [(p.name, p.optional) for p in h.params] == [("Dest", False)]
 
 
@@ -218,7 +221,7 @@ def test_link_escape_is_ignored(tmp_path):
     (tmp_path / "secret.htm").write_text("<p>Dest</p><p>leaked</p>")
     (tmp_path / "Instructions" / "x.htm").write_text(
         '<h1>FooX</h1><h2>Syntax</h2><p>FooX(<a href="../parameters/../../secret.htm">Dest</a>)</p>')
-    assert HelpProvider(tmp_path).lookup("FooX").params[0].description == ""
+    assert required(required(HelpProvider(tmp_path)).lookup("FooX")).params[0].description == ""
 
 
 def test_pairing_matches_by_count(prov):
@@ -321,6 +324,7 @@ def test_local_corpus_function_arg_count_classes():
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
 def test_local_corpus_voltse_parameters():
     h = HelpProvider(CORPUS).lookup("VoltSE")
+    assert h is not None
     assert [p.name for p in h.params] == [
         "Dest", "Reps", "Range", "SEChan", "MeasOff", "SettlingTime", "fN1", "Mult", "Offset"]
 
@@ -328,13 +332,16 @@ def test_local_corpus_voltse_parameters():
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
 def test_local_corpus_documented_syntax_rules():
     p = HelpProvider(CORPUS)
+    assert p is not None
     menu = p.lookup("MenuPick")
+    assert menu is not None
     assert [(x.name, x.repeatable) for x in menu.params] == [("Item", True)]
     assert pair_signature("MenuPick", [1], menu).matched
     for name, optional in (("ModbusSlave", "ModbusOption"), ("ModbusServer", "ModbusOption"),
                            ("FFTSpa", "FFTSpaInit"), ("SortSpa", "Dimension")):
-        assert [x.name for x in p.lookup(name).params if x.optional] == [optional]
+        assert [x.name for x in required(p.lookup(name)).params if x.optional] == [optional]
     display = p.lookup("DisplayMenu")
+    assert display is not None
     assert [x.name for x in display.params] == ['"MenuName"', "AddToSystem", "Cursor"]    # quotes kept
     assert [x.name for x in display.params if x.optional] == ["Cursor"]
 
@@ -388,7 +395,7 @@ def test_local_corpus_function_coverage_and_instructions_unchanged():
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
 def test_local_corpus_function_signature_labels():
     p = HelpProvider(CORPUS)
-    labels = {n: hover.signature_help(n, 0, "cr6", p).label for n in ("SIN", "PWR", "INSTR", "FILEOPEN", "SERIALOUT")}
+    labels = {n: required(hover.signature_help(n, 0, "cr6", p)).label for n in ("SIN", "PWR", "INSTR", "FILEOPEN", "SERIALOUT")}
     assert labels == {
         "SIN": "SIN(angle)",
         "PWR": "PWR(X, Y)",
@@ -397,5 +404,6 @@ def test_local_corpus_function_signature_labels():
         "SERIALOUT": "SERIALOUT(ComPort, OutString, WaitString, NumberTries, TimeOut)",
     }
     tcp = hover.signature_help("TCPOPEN", 0, "cr6", p)
+    assert tcp is not None
     assert tcp.paired and tcp.label == ("TCPOPEN(IPAddr, TCPPort, IPBuffer, IPTimeOut (optional), "
                                         "ConnectHandle (optional), MaxConnect (optional))")

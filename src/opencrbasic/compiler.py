@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import profiles
+from . import syntax as S
 from .diagnostics import Diagnostics
 from .profiles import Profile
 from .sources import SourceProvider
@@ -57,7 +58,7 @@ class CompileResult:
     # (first-seen position among `program.statements`), for `result_lines`' sort -- see there.
     stmt_lines: dict = field(default_factory=dict)  # file name -> sorted [(line, expansion index)]
     implementation_exceptions: list[str] = field(default_factory=list)
-    program_ast: object = None      # the parsed program (None when parsing failed)
+    program_ast: S.Program | None = None  # the parsed program (None when parsing failed)
     pass1_errors: bool | None = None  # whether the checker found pass-1 errors (the gate `-t` follows)
 
     def record_implementation_failure(self, where: str, exc: Exception) -> None:

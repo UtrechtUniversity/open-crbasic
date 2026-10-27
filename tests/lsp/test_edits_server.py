@@ -4,6 +4,7 @@ expected values are computed from the document text or from the core modules, so
 the adapter (refusal mapping, versions, positions, scheduling), not CRBasic rules.
 """
 
+from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -145,9 +146,9 @@ def test_rename_across_a_library_and_two_entries(make_client, tmp_path):
     client.change(a, new_a, 4)
     b.write_text(new_b, encoding="utf-8")
     client.watched((b, 2))
-    client.wait_for(lambda: client.latest(a)["version"] == 4 and client.latest(a)["diagnostics"] == [],
+    client.wait_for(lambda: required(client.latest(a))["version"] == 4 and required(client.latest(a))["diagnostics"] == [],
                     what="A clean")
-    client.wait_for(lambda: client.latest(b)["diagnostics"] == [], what="B clean")
+    client.wait_for(lambda: required(client.latest(b))["diagnostics"] == [], what="B clean")
     again = client.at("textDocument/prepareRename", lib, 0, 9)
     assert again["placeholder"] == "lib_w"
     assert client.shutdown() == 0
@@ -364,7 +365,7 @@ def test_quick_fix_for_a_misspelled_name_is_applied_and_clean(make_client, tmp_p
     before = len(client.publishes(a))
     client.change(a, fixed, 6)
     client.wait_diagnostics(a, lambda d: d == [], after=before)
-    assert client.latest(a)["version"] == 6
+    assert required(client.latest(a))["version"] == 6
     assert client.shutdown() == 0
 
 
@@ -432,5 +433,5 @@ def test_feature_rename_reads_freshness_through_the_given_source(tmp_path):
     assert features.rename_edit(ctx, [result], entry, at, "y", {}, source=fresh)[1] is None
     edited = OverlaySource(DiskSource(), {root / "Lib.crb": b"Public lib_w As Long\n"})
     _, refusal, _ = features.rename_edit(ctx, [result], entry, at, "y", {}, source=edited)
-    assert refusal.code == "stale"
-    assert features.prepare_rename(ctx, [result], entry, at, source=edited)[1].code == "stale"
+    assert required(refusal).code == "stale"
+    assert required(features.prepare_rename(ctx, [result], entry, at, source=edited)[1]).code == "stale"
