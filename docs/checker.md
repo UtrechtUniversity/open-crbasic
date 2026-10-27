@@ -3367,7 +3367,8 @@ in automatic mode a conditional one there gives SequentialMode, `SerialOutBlock`
 CR1000X. `CS7500`, `CSAT3`, `LI7200`, `LI7700`, `SDMInt8`, `SDMSw8a` and `SDMX50` print `SDM
 instruction must be in Scan..NextScan, unless SequentialMode is used.` outside a `Scan` and
 `<NAME> illegally used inside conditional statement.` in a conditional, with the name in upper
-case as the reference prints it (`SDMINT8`); none prints `never reached` after `NextScan`.
+case as the reference prints it (`SDMINT8`); none prints `never reached` after `NextScan`. All of them, like `SerialInRecord`, are accepted in a conditional after a `SlowSequence`
+(`main_sequence_only`, 24 observations, Codex-review follow-up).
 `EC100` is left out: its control did not compile cleanly with a plain `Public` array, so its
 rule is unprobed. Not implemented because not probed: the `CDM_*` instructions, `EC100`,
 `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire` and the other `mode.json` task instructions.

@@ -5926,6 +5926,174 @@
    "source": "Public Volt1, x, R, Rcv, Temp(10), CO2(10), Ux(10), LI(10), Int8(10), SW8ACount(10), Calib1(10)\nPublic Str As String * 100\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Calib1 out of bounds."
+  },
+  {
+   "id": "cr6-calibrate-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-calibrate-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-calibrate-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Calibrate not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "cr1000x-calibrate-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      Calibrate(Calib1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Calibrate not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "cr6-csat3-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-csat3-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-csat3-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-csat3-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CSAT3(Ux(),1,3,91,20)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdmx50-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-sdmx50-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmx50-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMX50(1,4)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-li7700-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-li7700-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-li7700-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-li7700-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      LI7700(LI(),1,3,1)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cs7500-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-cs7500-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-cs7500-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cs7500-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      CS7500(CO2(),1,7,6)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdmsw8a-slowsequence-cond-auto",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-slowsequence-cond-auto",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-sdmsw8a-slowsequence-cond-explicit",
+   "logger": "cr6",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdmsw8a-slowsequence-cond-explicit",
+   "logger": "cr1000x",
+   "source": "Public n, CO2(10), Ux(10), LI(10), SW8ACount(10), Calib1(10)\nPipeLineMode\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    If n Then\n      SDMSw8a(SW8ACount(),8,0,2,1,1.0,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   }
  ]
 }
