@@ -6963,7 +6963,7 @@
 {
 "logger": "cr1000x",
 "file": "tests/corpus/fuzz/cr1000x/mode_diff/5468073cfd58.CR6",
-"impact": "both accept, execution mode differs"
+"impact": "exact"
 },
 {
 "logger": "cr1000x",

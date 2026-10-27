@@ -124,7 +124,8 @@ class Profile:
 
     @cached_property
     def pipeline_tasks(self) -> dict:
-        """Explicit-PipeLineMode placement rules with only fixture-backed instructions.
+        """PipeLine Mode placement rules (`structure.pipeline_task_errors`) with only fixture-backed
+        instructions.
 
         CR6/CR1000X have separate observed subsets and same-line ordering exceptions; CR300/CR350
         have no file and therefore no placement rule.

@@ -14,7 +14,8 @@
   "PERIODAVG": {},
   "CS616": {},
   "EXCITEV": {},
-  "DELAY": {"constant_values": {"1": [0]}}
+  "DELAY": {"constant_values": {"1": [0]}},
+  "SW12": {"exempt_values": {"3": [1]}, "conditional_only": true}
  },
  "argument_error_first": ["EXCITEV"]
 }

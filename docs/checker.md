@@ -3324,7 +3324,8 @@ cascade (`cr3xx._DECLARATION_TRIGGER_PREFIXES`).
 ### Task instructions in PipeLine Mode
 
 `structure.pipeline_task_errors` (CR6/CR1000X only; CR300/CR350 accept everything below). After an
-explicit `PipeLineMode` statement earlier in the file, and no `SequentialMode` before it, a
+explicit `PipeLineMode` statement earlier in the file, and no `SequentialMode` before it, or in a
+program without `PipeLineMode` whose automatic decision (`mode.py`) is Pipeline, a
 measurement/task instruction prints at its own line:
 
 - `X not allowed outside of Scan..NextScan in PipeLine Mode.` when it is outside every `Scan`:
@@ -3339,12 +3340,20 @@ measurement/task instruction prints at its own line:
 `data[/cr1000x]/pipeline_tasks.json` contain the measured list: `Delay` (constant-folded option 0 only: `Const Zero = 0`, `One-1`, `-0` all measured, 2026-10-03;
 option 1 is accepted, option 2 prints `SDM instruction must be in Scan..NextScan, unless
 SequentialMode is used.`, not implemented), `PanelTemp`, `Battery`, `VoltSE`, `VoltDiff`,
-`PortGet`, `PortSet`, `Therm107`, `BrHalf`, `BrFull`, `TCSe`, `TCDiff`, `PeriodAvg`, `CS616`, and
-`ExciteV`. `PortSet` is a measured exception on CR6: outside a Scan is accepted, but conditional
+`PortGet`, `PortSet`, `Therm107`, `BrHalf`, `BrFull`, `TCSe`, `TCDiff`, `PeriodAvg`, `CS616`,
+`ExciteV`, and (round 48) `SW12`. A string `Delay` option (`"1"`, a string `Const`, `"0"+0`)
+also prints it, in both modes; the automatic decision reads such an option as neither 0 nor 2,
+so the program stays Pipeline and the conditional `Delay` is rejected. `SW12` prints `Sw12 not
+allowed inside of a conditional statement in PipeLine Mode.` unless its option is 1; with
+automatic mode an omitted option is already sequential. Like `PortSet`, CR6 accepts it outside
+a Scan (a `Sub` body) and CR1000X rejects it there. Before `BeginProg`, CR1000X prints only the
+PipeLine Mode error; opencrbasic adds `Sw12 illegally occurs before BeginProg.` after it, as it
+already did for CR1000X `PortSet` (same verdict and first error; strict xfail in
+`tests/fixtures/r48_mode_string_arguments.json`). `PortSet` is a measured exception on CR6: outside a Scan is accepted, but conditional
 placement remains rejected; CR1000X rejects both. `tests/fixtures/pipeline_tasks.json` records an
 accepted in-Scan call and both boundary placements for each member on each logger. Not implemented
 because not probed or different: the other
-`mode.json` task instructions (`CDM_*`, `CS7500`, `EC100`, ...), `SW12`, and
+`mode.json` task instructions (`CDM_*`, `CS7500`, `EC100`, ...) and
 `SerialOutBlock`/`SerialInRecord` (accepted outside a `Scan`).
 
 The error is pass 2 and accumulating: it does not end the pass, prints together with `x=q`

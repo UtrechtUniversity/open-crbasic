@@ -25,6 +25,21 @@ def _const_value(expr, value_of: Callable) -> float | None:
         return None
 
 
+def _numeric_constant(expr, is_constant: Callable, value_of: Callable) -> bool:
+    """A `nonconstant_arg` argument that keeps PipelineMode: numbers and numeric `Const` names
+    joined by operators. A string value or a function call counts as variable (docs/modes.md)."""
+    if isinstance(expr, S.Number):
+        return True
+    if isinstance(expr, S.Name):
+        return is_constant(expr) and not isinstance(_const_value(expr, value_of), str)
+    if isinstance(expr, S.Unary):
+        return _numeric_constant(expr.operand, is_constant, value_of)
+    if isinstance(expr, S.Binary):
+        return (_numeric_constant(expr.left, is_constant, value_of)
+                and _numeric_constant(expr.right, is_constant, value_of))
+    return False
+
+
 def decide(statements: list[S.Stmt], profile: Profile, is_constant: Callable, value_of: Callable) -> str:
     """Return "Sequential" or "Pipeline".
 
@@ -65,7 +80,8 @@ def decide(statements: list[S.Stmt], profile: Profile, is_constant: Callable, va
                 else:
                     sequential = True
             elif kw in nonconstant_arg:
-                sequential = any(_arg(args, i) is not None and not is_constant(_arg(args, i))
+                sequential = any(_arg(args, i) is not None
+                                 and not _numeric_constant(_arg(args, i), is_constant, value_of)
                                  for i in nonconstant_arg[kw])
             elif kw in ("FOR", "IF", "SELECT", "WHILE", "DO"):
                 depth += 1

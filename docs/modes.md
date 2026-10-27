@@ -20,7 +20,11 @@ State: `sequential` (starts false), `pipeline_forced` (set by a `PipeLineMode` s
   `SerialOutBlock`/`SerialInRecord` only outside slow sequences.
 - A non-constant argument forces sequential: `ExciteV`/`ExciteI`/`PortSet` 2nd argument,
   `MuxSelect` 4th, `VibratingWire` 4th and 5th, `CDM_ExciteV`/`CDM_ExciteI`/`CDM_SW12`/`CDM_SW5`
-  4th, `CDM_MuxSelect` 6th, `CDM_SWPower` 3rd.
+  4th, `CDM_MuxSelect` 6th, `CDM_SWPower` 3rd. Only numbers and numeric `Const` names joined by
+  operators count as constant here: a string literal, string `Const` or string expression, and
+  any function call (`ABS(1)`, `LEN("ab")-1`) force sequential, while a `Const` whose value came
+  from a function (`Const L = LEN("ab")`) does not. Oracle, round 48, identical on CR6 and
+  CR1000X; fixture `tests/fixtures/r48_mode_string_arguments.json`.
 - A variable (not constant) **or omitted** `SW12` 3rd, `CDM_SW12`/`CDM_SW5` 5th or
   `CDM_SWPower` 4th argument forces sequential anywhere: omitted optional arguments are stored as
   -0.0 and the exe tests the sign bit. Oracle: `SW12(SW12_1, 0)` inside a Scan -> Sequential;

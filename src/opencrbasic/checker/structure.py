@@ -523,7 +523,9 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
     `Sub` body, before the first `Scan`, a `SlowSequence` header, after `NextScan`) is `X not
     allowed outside of Scan..NextScan in PipeLine Mode.`; inside a `Scan` but nested in an
     `If`/`Select`/`For`/`Do`/`While` (or a one-line `If`) it is `X not allowed inside of a
-    conditional statement in PipeLine Mode.`. `Delay` only with a constant-folded option 0 (`Const Zero = 0`, `One-1`; oracle, 2026-10-03). The message
+    conditional statement in PipeLine Mode.`. Without a `PipeLineMode` statement the same applies
+    when `mode.decide` gives Pipeline. `Delay` only with a constant-folded option 0 (`Const Zero =
+    0`, `One-1`; oracle, 2026-10-03) or a string option; `SW12` unless its option is 1. The message
     comes before the instruction's own argument errors (`Invalid channel ...`), except `ExciteV`
     on CR6 and `PortSet` on CR1000X; those are not reordered.
 
@@ -532,8 +534,18 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
     if profile.single_pass:
         return found
     task_rules = profile.pipeline_tasks["tasks"]
+    if not task_rules:
+        return found
     env = consteval.Env(profile, dict(program.consts))
-    pipeline = sequential = False
+    from .. import mode
+    explicit = any(_keyword(st) == "PIPELINEMODE" for st in program.statements)
+    try:
+        implicit = not explicit and mode.decide(
+            program.statements, profile, lambda e: consteval.is_constant(e, env),
+            lambda e: consteval.value_of(e, env)) == "Pipeline"
+    except Exception:
+        implicit = False
+    pipeline, sequential = implicit, False
     scans = depth = 0
 
     def visit(stmt: S.Stmt, inline: bool) -> None:
@@ -565,7 +577,15 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
                     value = consteval.value_of(args[index], env)
                 except consteval.NotConstant:
                     return
-                if value not in allowed:
+                if value not in allowed and not isinstance(value, str):
+                    return
+            for position, exempt in task_rules[kw].get("exempt_values", {}).items():
+                index = int(position) - 1
+                try:
+                    value = consteval.value_of(args[index], env) if index < len(args) else None
+                except consteval.NotConstant:
+                    return
+                if value in exempt:
                     return
             record = profile.instructions.get(kw)
             name = record["name"] if record else stmt.keyword
