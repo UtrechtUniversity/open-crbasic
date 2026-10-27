@@ -854,7 +854,7 @@ class _Parser:
         if not isinstance(stmt, S.Instruction) or stmt.keyword not in ("INCLUDE", "INCLUDESECTION"):
             return False
         index = int(stmt.keyword == "INCLUDESECTION")
-        if len(stmt.args) != index + 1:
+        if len(stmt.args) <= index or stmt.args[index] is None:
             return False
         arg = stmt.args[index]
         try:
@@ -863,7 +863,9 @@ class _Parser:
             if isinstance(arg, S.Name) and arg.name.upper() in ("NAN", "INF"):
                 value = "-nan" if arg.name.upper() == "NAN" else "inf"
             else:
-                return False
+                return self._runtime_include_name(stmt, index)
+        if len(stmt.args) != index + 1:
+            return False
         if isinstance(value, str):
             spec = value
         elif isinstance(value, (int, float)):
@@ -886,6 +888,43 @@ class _Parser:
             self.diags.warning(stmt.line, f"Cannot open include file  {spec}.", stmt.file)
         else:
             return False  # loading files named by expressions is outside this bounded rule
+        return True
+
+    def _runtime_include_name(self, stmt: S.Instruction, index: int) -> bool:
+        """A file name that is not a constant: undeclared names (declared later counts) and
+        variables or calls are rejected, then the name is NULL. Oracle, all four loggers, 2026-10-27:
+        docs/checker.md#include-names-that-are-not-constants-round-53."""
+        from .checker import expressions, symbols
+        declared = {n.upper() for n in symbols.declared_names(self.program)}
+        names: list[tuple[str, bool]] = []   # (name, is a call)
+
+        def walk(e) -> None:
+            if isinstance(e, (S.Name, S.Index)):
+                names.append((e.name, isinstance(e, S.Index)))
+            for v in vars(e).values() if isinstance(e, S.Expr) else ():
+                for x in v if isinstance(v, list) else [v]:
+                    if isinstance(x, S.Expr):
+                        walk(x)
+        walk(stmt.args[index])
+        known = {n.upper() for n in (*self.env.consts, *self.profile.symbols, *self.profile.functions)} | declared
+        undeclared = [n for n, call in names if n.upper() not in known]
+        runtime = any(n.upper() in declared or call for n, call in names if n.upper() in known
+                      and n.upper() not in self.env.consts)
+        text = expressions._arg_text(stmt, index).strip()
+        if not undeclared and not runtime:
+            return False
+        if self.profile.single_pass:
+            for n in undeclared:
+                self.diags.error(stmt.line, f"{n} is not defined.", stmt.file)
+            self.diags.error(stmt.line, f"Variable illegal in Parameter: {text}.", stmt.file)
+            self.diags.warning(stmt.line, "Cannot open include file  .", stmt.file)
+            return True
+        if undeclared:
+            self.diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+        if runtime:
+            self.diags.error(stmt.line, f"Variable illegal in Parameter: {text}.", stmt.file)
+        self.diags.error(stmt.line, "Include file NULL must have valid program file extension.", stmt.file)
+        self.program.include_error_at.append(len(self.program.statements))
         return True
 
     def _inline_body_after_bad_condition(self, stmt: S.Unparsed, seg_text_raw: str) -> list[S.Stmt]:

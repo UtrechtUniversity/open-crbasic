@@ -1,7 +1,7 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-27 after development round 52** (round-51
-fuzz triage, M3 report and configuration). Rounds 49-52 are on `main`; use Git to check publication
+Current compiler state and handoff, updated **2026-10-27 after development round 53** (round-51
+fuzz triage and M3 report/configuration, round 52; fresh fuzz and include names, round 53). Rounds 49-53 are on `main`; use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -20,12 +20,12 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 56,708 passed, 311 skipped, 444 strict xfail (round 52, `-n 8`) |
-| `pytest -q -m server` | 163 passed (round 52) |
+| `pytest -q -n 4 -m 'not server'` | 56,746 passed, 311 skipped, 466 strict xfail (round 53, `-n 8`) |
+| `pytest -q -m server` | 163 passed (round 53) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded` (round 52) | 3,338 inputs: 2,574 exact (round 51: 2,571); CR6/CR1000X: 23 first-error misses, 5 earlier first locations, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| Saved fuzz replay, `fuzz_replay.py --recorded` (round 53, unchanged from 52) | 3,338 inputs: 2,574 exact (round 51: 2,571); CR6/CR1000X: 23 first-error misses, 5 earlier first locations, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 46) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
-| Fresh fuzz, seeds 441 (CR6) / 442 (CR1000X) (round 51, `--relevant`, 500 mutants each, no shrinking) | CR6 492 exact, 6 message differences; CR1000X 490 exact, 8 message differences, 1 false accept (`a66ad5f9beb3`, fixed); no false reject, crash, hang, implementation exception or mode difference. The 14 message differences are not triaged; raw output in `scratch/r51/` (git-ignored) |
+| Fresh fuzz, seeds 443 (CR6) / 444 (CR1000X) (round 53, `--relevant`, 500 mutants each, no shrinking) | CR6 487 exact, 9 message differences; CR1000X 485 exact, 13 message differences; no false accept, false reject, crash, hang, implementation exception or mode difference by the fuzz classifier. Impact: 6 first-error misses (2 fixed, an include-name false accept), 8 same-location messages, 8 later-diagnostic differences; raw output in `scratch/r53/` (git-ignored) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
@@ -71,6 +71,19 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 53** (M1/M2, fresh relevant fuzz seeds 443/444; one session, coordinator only, Codex
+research). The fuzz found no verdict difference by its classifier, but two of its six first-error
+misses were a false accept on our side: a non-constant `Include`/`IncludeSection` file name
+(`IncludeSection("Functions",Undeclared)`) was accepted; the reference rejects undeclared names and
+variables, then reports a NULL file name
+([checker notes](docs/checker.md#include-names-that-are-not-constants-round-53)). Fixture
+`r53_include_runtime_names.json` (60 observations, 34 matched; CR300/CR350 and string-`Const` names
+`not_modelled`); four round-43 `not_modelled` cases of the same rule now match. The other four
+misses are open: `7d9dbda67c22` (CR6, `DataTable(True,FinApp_Starts,-1)`: the reference's main-file
+error comes before our include-file error), `5d03371b1388` (CR1000X, `Dim GPSstring(1  8)` gives
+`Incomplete expression: 1  8.`), `83c0a809c514` (CR1000X, a malformed `FieldNames` is reported on
+the line of the instruction it names), `ba8d6f459994` (CR6, a continuation line).
 
 **Round 52** (M2/M3, triage of the round-51 fuzz differences; one session, Sonnet workers A-C,
 Codex `gpt-6.1-sol` research and review). Four of the 14 round-51 message differences are now exact.

@@ -409,8 +409,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Include file NULL must have valid program file extension.",
-      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Include file NULL must have valid program file extension."
     },
     {
       "id": "cr1000x-section-10",
@@ -420,8 +419,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Include file NULL must have valid program file extension.",
-      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Include file NULL must have valid program file extension."
     },
     {
       "id": "cr6-section-11",
@@ -431,8 +429,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: P.\nline 5: Include file NULL must have valid program file extension.",
-      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: P.\nline 5: Include file NULL must have valid program file extension."
     },
     {
       "id": "cr1000x-section-11",
@@ -442,8 +439,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: P.\nline 5: Include file NULL must have valid program file extension.",
-      "not_modelled": "Nonconstant include filename: variable/undefined-name diagnostic and NULL filename cascade."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: P.\nline 5: Include file NULL must have valid program file extension."
     },
     {
       "id": "cr6-section-12",

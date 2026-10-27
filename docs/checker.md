@@ -8670,3 +8670,26 @@ printed `DataInterval TintoInt and Interval parameters must be non-negative` bef
   `Invalid, or out of place expression: EndTable2.`, `LongX unknown Const type`, `Miss match of types`,
   `SDM instruction must be in Scan..NextScan...`, `SetSetting illegally occurs before BeginProg.`,
   `Structure inside Structure`, `Variable RTD_C out of bounds.`.
+
+## Include names that are not constants (round 53)
+
+Round-53 fuzz (`6143340e8db3` CR6, `9521ec4fb272` CR1000X: `IncludeSection("Functions",
+UndeclaredFuzzName123)`) showed that the reference evaluates the file argument of `Include` and
+`IncludeSection` when it is not a literal, where we accepted the program (false accept). Oracle,
+all four loggers, 2026-10-27 (fixture `tests/fixtures/r53_include_runtime_names.json`):
+
+- CR6/CR1000X: a name that is not declared *before* the statement (a later `Public` does not count)
+  gives `Invalid symbol in expression: <argument>.`; a declared variable or any call (`Len(S)`)
+  gives `Variable illegal in Parameter: <argument>.`; both lines when both occur (`S+Undecl`). Then
+  `Include file NULL must have valid program file extension.`. Extra arguments after the file name
+  change nothing.
+- CR300/CR350: `<name> is not defined.` per undeclared name, then always `Variable illegal in
+  Parameter: <argument>.` and the warning `Cannot open include file  .`. The later `Scan` line the
+  reference prints in the probe template is missing in ours (best effort, `not_modelled`).
+- A string `Const` (`"CPU:lib.crb"`) is opened as a file name with the device stripped (`Warning:
+  Cannot open include file  lib.crb.`); loading files named by expressions stays outside the
+  round-43 bound (`not_modelled`). An undeclared *section* name (`IncludeSection(Undecl, ...)`)
+  page-faults CR6Comp (no verdict).
+
+Code: `parser._runtime_include_name`, reached from the round-43 `_folded_include_error` when the
+argument does not fold.

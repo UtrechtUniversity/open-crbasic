@@ -1,0 +1,469 @@
+{
+ "observation_date": "2026-10-27",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-IncludeSection(\"F\",Undecl)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",Undecl)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",Undecl)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",Undecl)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",S)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",S)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",S)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",S)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",SC)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",SC)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Cannot open include file  lib.crb.",
+   "not_modelled": "a string Const file name is not opened (round 43 bound)"
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",SC)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",SC)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Cannot open include file  lib.crb.",
+   "not_modelled": "a string Const file name is not opened (round 43 bound)"
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",SC)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",SC)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  CPU:lib.crb.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",SC)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",SC)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  CPU:lib.crb.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",5)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",5)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Include file 5 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",5)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",5)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Include file 5 must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",5)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",5)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  5."
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",5)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",5)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  5."
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",\"CPU:\"+Undecl)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: \"CPU:\"+Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",\"CPU:\"+Undecl)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: \"CPU:\"+Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",\"CPU:\"+Undecl)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: \"CPU:\"+Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",\"CPU:\"+Undecl)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: \"CPU:\"+Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",x)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",x)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",x)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",x)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",x)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",x)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",x)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",x)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: x.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",\"CPU:\"+S)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: \"CPU:\"+S.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",\"CPU:\"+S)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: \"CPU:\"+S.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",\"CPU:\"+S)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: \"CPU:\"+S.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",\"CPU:\"+S)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:\"+S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: \"CPU:\"+S.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",S+Undecl)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S+Undecl.\nline 4: Variable illegal in Parameter: S+Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",S+Undecl)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S+Undecl.\nline 4: Variable illegal in Parameter: S+Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",S+Undecl)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: S+Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",S+Undecl)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",S+Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: S+Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-Include(Undecl)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-Include(Undecl)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-Include(Undecl)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0002.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-Include(Undecl)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(Undecl)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0002.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-Include(S)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-Include(S)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-Include(S)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Warning: Cannot open include file  \u0002.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-Include(S)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(S)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: S.\nline 4: Warning: Cannot open include file  \u0002.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",Undecl)\nPublic Undecl As String",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nPublic Undecl As String\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",Undecl)\nPublic Undecl As String",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nPublic Undecl As String\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",Undecl)\nPublic Undecl As String",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nPublic Undecl As String\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",Undecl)\nPublic Undecl As String",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl)\nPublic Undecl As String\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",Len(S))",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Len(S))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Len(S).\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",Len(S))",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Len(S))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Len(S).\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",Len(S))",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Len(S))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Len(S).\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",Len(S))",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Len(S))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Len(S).\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",Undecl,1)",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl,1)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",Undecl,1)",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl,1)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl.\nline 4: Include file NULL must have valid program file extension."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",Undecl,1)",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl,1)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",Undecl,1)",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",Undecl,1)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl.\nline 4: Warning: Cannot open include file  \u0003.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: the later Scan line is missing"
+  },
+  {
+   "id": "cr6-IncludeSection(\"F\",\"CPU:lib.crb\")",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Cannot open include file  lib.crb."
+  },
+  {
+   "id": "cr1000x-IncludeSection(\"F\",\"CPU:lib.crb\")",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Cannot open include file  lib.crb."
+  },
+  {
+   "id": "cr300-IncludeSection(\"F\",\"CPU:lib.crb\")",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  CPU:lib.crb."
+  },
+  {
+   "id": "cr350-IncludeSection(\"F\",\"CPU:lib.crb\")",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nIncludeSection(\"F\",\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  CPU:lib.crb."
+  },
+  {
+   "id": "cr6-Include(\"CPU:lib.crb\")",
+   "logger": "cr6",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Cannot open include file  lib.crb."
+  },
+  {
+   "id": "cr1000x-Include(\"CPU:lib.crb\")",
+   "logger": "cr1000x",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: Cannot open include file  lib.crb."
+  },
+  {
+   "id": "cr300-Include(\"CPU:lib.crb\")",
+   "logger": "cr300",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  CPU:lib.crb."
+  },
+  {
+   "id": "cr350-Include(\"CPU:lib.crb\")",
+   "logger": "cr350",
+   "source": "Public x\nDim S As String\nConst SC = \"CPU:lib.crb\"\nInclude(\"CPU:lib.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Cannot open include file  CPU:lib.crb."
+  }
+ ]
+}
