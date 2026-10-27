@@ -1,0 +1,2779 @@
+{
+  "observation_date": "2026-10-27",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "cr6-value-0",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-0",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-0",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-0",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-1",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(0,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-1",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(0,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-1",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(0,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-1",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(0,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-2",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-2",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-2",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-2",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-3",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-3",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-3",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-3",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-value-4",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-4",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-4",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-4",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1.0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-value-5",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1E0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-5",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1E0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-5",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1E0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-5",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1E0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-value-6",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-6",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-6",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-6",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(-1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-value-7",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483647,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-7",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483647,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-7",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483647,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-7",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483647,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-8",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483648,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-8",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483648,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-8",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483648,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-8",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(2147483648,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-9",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(&H80000000,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-9",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(&H80000000,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-9",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(&H80000000,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-9",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(&H80000000,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-10",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1/1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-10",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1/1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-10",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1/1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-10",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(1/1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-value-11",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(3-2,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-11",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(3-2,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-11",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(3-2,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-11",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(3-2,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-12",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(K,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-12",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(K,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-12",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(K,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-12",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(K,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-value-13",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(V,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-13",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(V,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-13",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(V,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-13",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(V,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-14",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(Abs(1.5),Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-14",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(Abs(1.5),Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-14",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(Abs(1.5),Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-14",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(Abs(1.5),Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-15",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(\"1\",Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-value-15",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(\"1\",Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-value-15",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(\"1\",Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-value-15",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(\"1\",Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-value-16",
+      "logger": "cr6",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-value-16",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-value-16",
+      "logger": "cr300",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-value-16",
+      "logger": "cr350",
+      "source": "Public X,V\nConst K = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-assignment",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-assignment",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-assignment",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-assignment",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-if",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nIf Timer(1.5,Sec,2) Then X = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-if",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nIf Timer(1.5,Sec,2) Then X = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-if",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nIf Timer(1.5,Sec,2) Then X = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-if",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nIf Timer(1.5,Sec,2) Then X = 1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-inline",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nIf X Then Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-inline",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nIf X Then Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-inline",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nIf X Then Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-inline",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nIf X Then Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-nested",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nX = Abs(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-nested",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nX = Abs(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-nested",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nX = Abs(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-nested",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nX = Abs(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-later-block",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nIf X Then\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-later-block",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nIf X Then\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-later-block",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nIf X Then\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-later-block",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nIf X Then\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-earlier-unknown",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nX = Missing\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-earlier-unknown",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nX = Missing\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-earlier-unknown",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nX = Missing\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-earlier-unknown",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nX = Missing\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-later-unknown",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nX = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-later-unknown",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nX = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-later-unknown",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nX = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 4: Missing is not defined."
+    },
+    {
+      "id": "cr350-later-unknown",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nX = Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 4: Missing is not defined."
+    },
+    {
+      "id": "cr6-earlier-pass1",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nSin(1,2)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2).\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-earlier-pass1",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nSin(1,2)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2).\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-earlier-pass1",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nSin(1,2)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2)\n.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-earlier-pass1",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nSin(1,2)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2)\n.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-earlier-iftime",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nX = IfTime(0,1,Sec)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-earlier-iftime",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nX = IfTime(0,1,Sec)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-earlier-iftime",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nX = IfTime(0,1,Sec)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-earlier-iftime",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nX = IfTime(0,1,Sec)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-earlier-serialopen",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nSerialOpen(ComRS232,9600,0,0,100)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-earlier-serialopen",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nSerialOpen(ComRS232,9600,0,0,100)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-earlier-serialopen",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nSerialOpen(ComRS232,9600,0,0,100)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-earlier-serialopen",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nSerialOpen(ComRS232,9600,0,0,100)\nTimer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-units",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,1.5,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,1.5,2)."
+    },
+    {
+      "id": "cr1000x-units",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,1.5,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,1.5,2)."
+    },
+    {
+      "id": "cr300-units",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,1.5,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,1.5,2)\n."
+    },
+    {
+      "id": "cr350-units",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,1.5,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,1.5,2)\n."
+    },
+    {
+      "id": "cr6-option",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,1.5)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,Sec,1.5)."
+    },
+    {
+      "id": "cr1000x-option",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,1.5)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,Sec,1.5)."
+    },
+    {
+      "id": "cr300-option",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,1.5)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,Sec,1.5)\n."
+    },
+    {
+      "id": "cr350-option",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,1.5)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,Sec,1.5)\n."
+    },
+    {
+      "id": "cr6-option-invalid",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,7)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Legal options are 0..4"
+    },
+    {
+      "id": "cr1000x-option-invalid",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,7)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Legal options are 0..4"
+    },
+    {
+      "id": "cr300-option-invalid",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,7)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Legal options are 0..4"
+    },
+    {
+      "id": "cr350-option-invalid",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,7)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Legal options are 0..4"
+    },
+    {
+      "id": "cr6-twice",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nTimer(2.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-twice",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nTimer(2.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-twice",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nTimer(2.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-twice",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec,2)\nTimer(2.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-explicit",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nCall Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sub Timer not defined."
+    },
+    {
+      "id": "cr1000x-explicit",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nCall Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sub Timer not defined."
+    },
+    {
+      "id": "cr300-explicit",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nCall Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sub Timer not defined."
+    },
+    {
+      "id": "cr350-explicit",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nCall Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sub Timer not defined."
+    },
+    {
+      "id": "cr6-missing",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Expression expects , : Timer(1.5,Sec)."
+    },
+    {
+      "id": "cr1000x-missing",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Expression expects , : Timer(1.5,Sec)."
+    },
+    {
+      "id": "cr300-missing",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Expression expects , : Timer(1.5,Sec)\n."
+    },
+    {
+      "id": "cr350-missing",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Expression expects , : Timer(1.5,Sec)\n."
+    },
+    {
+      "id": "cr6-string-units",
+      "logger": "cr6",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,\"Sec\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,\"Sec\",2)."
+    },
+    {
+      "id": "cr1000x-string-units",
+      "logger": "cr1000x",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,\"Sec\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,\"Sec\",2)."
+    },
+    {
+      "id": "cr300-string-units",
+      "logger": "cr300",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,\"Sec\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,\"Sec\",2)\n."
+    },
+    {
+      "id": "cr350-string-units",
+      "logger": "cr350",
+      "source": "Public X,V\nBeginProg\nTimer(1.5,\"Sec\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Parameter must be a constant integer: Timer(1.5,\"Sec\",2)\n."
+    },
+    {
+      "id": "cr6-extra-0",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-0",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-0",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-0",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-1",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-1",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-1",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-1",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-2",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-2",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-2",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-2",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-3",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-3",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-3",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-3",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-4",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-4",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-4",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-4",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-5",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-5",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-5",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-5",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(+NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-6",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(True,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-extra-6",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(True,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-extra-6",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(True,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-extra-6",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(True,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-extra-7",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(False,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-extra-7",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(False,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-extra-7",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(False,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-extra-7",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(False,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-extra-8",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.0+1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-8",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.0+1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-8",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.0+1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-8",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.0+1,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-9",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KWhole,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-extra-9",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KWhole,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-extra-9",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KWhole,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-extra-9",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KWhole,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-extra-10",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KFraction,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-10",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KFraction,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-10",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KFraction,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-10",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(KFraction,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-11",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-11",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-11",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-11",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-12",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e-300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-12",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e-300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-12",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e-300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-12",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1e-300,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-13",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483776,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-13",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483776,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-13",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483776,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-extra-13",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483776,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-extra-14",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483777,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-14",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483777,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-14",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483777,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-14",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483777,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-15",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-2147483649,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-15",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-2147483649,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-15",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-2147483649,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-extra-15",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(-2147483649,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-extra-16",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483647+1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-extra-16",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483647+1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-extra-16",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483647+1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-extra-16",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2147483647+1,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-extra-17",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2^0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-extra-17",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2^0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-extra-17",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2^0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-extra-17",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(2^0,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-extra-18",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(Missing+1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Timer(Missing+1.5,Sec,2)."
+    },
+    {
+      "id": "cr1000x-extra-18",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(Missing+1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Timer(Missing+1.5,Sec,2)."
+    },
+    {
+      "id": "cr300-extra-18",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(Missing+1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined."
+    },
+    {
+      "id": "cr350-extra-18",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(Missing+1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined."
+    },
+    {
+      "id": "cr6-extra-19",
+      "logger": "cr6",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.5+Missing,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Timer(1.5+Missing,Sec,2)."
+    },
+    {
+      "id": "cr1000x-extra-19",
+      "logger": "cr1000x",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.5+Missing,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Timer(1.5+Missing,Sec,2)."
+    },
+    {
+      "id": "cr300-extra-19",
+      "logger": "cr300",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.5+Missing,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined."
+    },
+    {
+      "id": "cr350-extra-19",
+      "logger": "cr350",
+      "source": "Public X,V\nConst KWhole = 2.0\nConst KFraction = 1.5\nBeginProg\nTimer(1.5+Missing,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined."
+    },
+    {
+      "id": "cr6-iftime-NAN",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime-NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime-NAN",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime-NAN",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime-INF",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime-INF",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime-INF",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime-INF",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime--INF",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = IfTime(-INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime--INF",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = IfTime(-INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime--INF",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = IfTime(-INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime--INF",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = IfTime(-INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime--NAN",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = IfTime(-NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime--NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = IfTime(-NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime--NAN",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = IfTime(-NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime--NAN",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = IfTime(-NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen-NAN",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen-NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen-NAN",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen-NAN",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen-INF",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen-INF",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen-INF",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen-INF",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen--INF",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen--INF",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen--INF",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen--INF",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen--NAN",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen--NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen--NAN",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen--NAN",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = SerialOpen(ComRS232,-NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-timer-alias-NAN",
+      "logger": "cr6",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-timer-alias-NAN",
+      "logger": "cr1000x",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-timer-alias-NAN",
+      "logger": "cr300",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-timer-alias-NAN",
+      "logger": "cr350",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-timer-param-NAN",
+      "logger": "cr6",
+      "source": "Public X\nSub S(NAN)\nTimer(NAN,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-timer-param-NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(NAN)\nTimer(NAN,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-timer-param-NAN",
+      "logger": "cr300",
+      "source": "Public X\nSub S(NAN)\nTimer(NAN,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-timer-param-NAN",
+      "logger": "cr350",
+      "source": "Public X\nSub S(NAN)\nTimer(NAN,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime-alias-NAN",
+      "logger": "cr6",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime-alias-NAN",
+      "logger": "cr1000x",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime-alias-NAN",
+      "logger": "cr300",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime-alias-NAN",
+      "logger": "cr350",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = IfTime(NAN,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime-param-NAN",
+      "logger": "cr6",
+      "source": "Public X\nSub S(NAN)\nX = IfTime(NAN,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime-param-NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(NAN)\nX = IfTime(NAN,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime-param-NAN",
+      "logger": "cr300",
+      "source": "Public X\nSub S(NAN)\nX = IfTime(NAN,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime-param-NAN",
+      "logger": "cr350",
+      "source": "Public X\nSub S(NAN)\nX = IfTime(NAN,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen-alias-NAN",
+      "logger": "cr6",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen-alias-NAN",
+      "logger": "cr1000x",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen-alias-NAN",
+      "logger": "cr300",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen-alias-NAN",
+      "logger": "cr350",
+      "source": "Public A,X\nAlias A = NAN\nBeginProg\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen-param-NAN",
+      "logger": "cr6",
+      "source": "Public X\nSub S(NAN)\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen-param-NAN",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(NAN)\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen-param-NAN",
+      "logger": "cr300",
+      "source": "Public X\nSub S(NAN)\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen-param-NAN",
+      "logger": "cr350",
+      "source": "Public X\nSub S(NAN)\nX = SerialOpen(ComRS232,NAN,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-timer-alias-INF",
+      "logger": "cr6",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-timer-alias-INF",
+      "logger": "cr1000x",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-timer-alias-INF",
+      "logger": "cr300",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-timer-alias-INF",
+      "logger": "cr350",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-timer-param-INF",
+      "logger": "cr6",
+      "source": "Public X\nSub S(INF)\nTimer(INF,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-timer-param-INF",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(INF)\nTimer(INF,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-timer-param-INF",
+      "logger": "cr300",
+      "source": "Public X\nSub S(INF)\nTimer(INF,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-timer-param-INF",
+      "logger": "cr350",
+      "source": "Public X\nSub S(INF)\nTimer(INF,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime-alias-INF",
+      "logger": "cr6",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime-alias-INF",
+      "logger": "cr1000x",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime-alias-INF",
+      "logger": "cr300",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime-alias-INF",
+      "logger": "cr350",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = IfTime(INF,1,Sec)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-iftime-param-INF",
+      "logger": "cr6",
+      "source": "Public X\nSub S(INF)\nX = IfTime(INF,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-iftime-param-INF",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(INF)\nX = IfTime(INF,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-iftime-param-INF",
+      "logger": "cr300",
+      "source": "Public X\nSub S(INF)\nX = IfTime(INF,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-iftime-param-INF",
+      "logger": "cr350",
+      "source": "Public X\nSub S(INF)\nX = IfTime(INF,1,Sec)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen-alias-INF",
+      "logger": "cr6",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen-alias-INF",
+      "logger": "cr1000x",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen-alias-INF",
+      "logger": "cr300",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen-alias-INF",
+      "logger": "cr350",
+      "source": "Public A,X\nAlias A = INF\nBeginProg\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-serialopen-param-INF",
+      "logger": "cr6",
+      "source": "Public X\nSub S(INF)\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-serialopen-param-INF",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(INF)\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-serialopen-param-INF",
+      "logger": "cr300",
+      "source": "Public X\nSub S(INF)\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-serialopen-param-INF",
+      "logger": "cr350",
+      "source": "Public X\nSub S(INF)\nX = SerialOpen(ComRS232,INF,0,0,100)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-output-outside",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr1000x-output-outside",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr300-output-outside",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr350-output-outside",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr6-output-inside",
+      "logger": "cr6",
+      "source": "Public X\nDataTable(T,1,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-output-inside",
+      "logger": "cr1000x",
+      "source": "Public X\nDataTable(T,1,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-output-inside",
+      "logger": "cr300",
+      "source": "Public X\nDataTable(T,1,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-output-inside",
+      "logger": "cr350",
+      "source": "Public X\nDataTable(T,1,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-measurement",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nBattery(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-measurement",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nBattery(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-measurement",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nBattery(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Illegal destination variable type, expecting Float.",
+      "not_modelled": "CR300/CR350 omit the later destination-type diagnostic after Timer integral error."
+    },
+    {
+      "id": "cr350-measurement",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nBattery(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Illegal destination variable type, expecting Float.",
+      "not_modelled": "CR300/CR350 omit the later destination-type diagnostic after Timer integral error."
+    },
+    {
+      "id": "cr6-unknown-before",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Missing + Timer(1.5,Sec,2)."
+    },
+    {
+      "id": "cr1000x-unknown-before",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Missing + Timer(1.5,Sec,2)."
+    },
+    {
+      "id": "cr300-unknown-before",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 omit the integral diagnostic after an earlier unresolved name."
+    },
+    {
+      "id": "cr350-unknown-before",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 omit the integral diagnostic after an earlier unresolved name."
+    },
+    {
+      "id": "cr6-unknown-after",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = Timer(1.5,Sec,2) + Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-unknown-after",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = Timer(1.5,Sec,2) + Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-unknown-after",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = Timer(1.5,Sec,2) + Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr350-unknown-after",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = Timer(1.5,Sec,2) + Missing\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral.\nline 3: Missing is not defined."
+    },
+    {
+      "id": "cr6-sub-arg",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Q)\nEndSub\nBeginProg\nCall S(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-sub-arg",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Q)\nEndSub\nBeginProg\nCall S(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-sub-arg",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Q)\nEndSub\nBeginProg\nCall S(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-sub-arg",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Q)\nEndSub\nBeginProg\nCall S(Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-before-begin",
+      "logger": "cr6",
+      "source": "Public X\nTimer(1.5,Sec,2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-before-begin",
+      "logger": "cr1000x",
+      "source": "Public X\nTimer(1.5,Sec,2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be integral."
+    },
+    {
+      "id": "cr300-before-begin",
+      "logger": "cr300",
+      "source": "Public X\nTimer(1.5,Sec,2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be integral."
+    },
+    {
+      "id": "cr350-before-begin",
+      "logger": "cr350",
+      "source": "Public X\nTimer(1.5,Sec,2)\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be integral."
+    },
+    {
+      "id": "cr6-after-end",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nEndProg\nTimer(1.5,Sec,2)\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-after-end",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nEndProg\nTimer(1.5,Sec,2)\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-after-end",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nEndProg\nTimer(1.5,Sec,2)\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-after-end",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nEndProg\nTimer(1.5,Sec,2)\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-table-unknown",
+      "logger": "cr6",
+      "source": "Public X\nDataTable(T,Missing,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Missing.\nline 3: Parameter must be integral.",
+      "not_modelled": "The table trigger error is preserved; the later integral diagnostic is omitted."
+    },
+    {
+      "id": "cr1000x-table-unknown",
+      "logger": "cr1000x",
+      "source": "Public X\nDataTable(T,Missing,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Missing.\nline 3: Parameter must be integral.",
+      "not_modelled": "The table trigger error is preserved; the later integral diagnostic is omitted."
+    },
+    {
+      "id": "cr300-table-unknown",
+      "logger": "cr300",
+      "source": "Public X\nDataTable(T,Missing,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing is not defined.\nline 2: Too many parameters:  -1.\nline 3: Too many parameters:  Timer."
+    },
+    {
+      "id": "cr350-table-unknown",
+      "logger": "cr350",
+      "source": "Public X\nDataTable(T,Missing,-1)\nSample(1,Timer(1.5,Sec,2),IEEE4)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Missing is not defined.\nline 2: Too many parameters:  -1.\nline 3: Too many parameters:  Timer."
+    },
+    {
+      "id": "cr6-array-name",
+      "logger": "cr6",
+      "source": "Public X\nAlias X=Timer\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-array-name",
+      "logger": "cr1000x",
+      "source": "Public X\nAlias X=Timer\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-array-name",
+      "logger": "cr300",
+      "source": "Public X\nAlias X=Timer\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-array-name",
+      "logger": "cr350",
+      "source": "Public X\nAlias X=Timer\nBeginProg\nX = Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-late-global",
+      "logger": "cr6",
+      "source": "Public X\nSub S\nX = Timer(1.5,Sec,2)\nEndSub\nAlias X=Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-late-global",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S\nX = Timer(1.5,Sec,2)\nEndSub\nAlias X=Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-late-global",
+      "logger": "cr300",
+      "source": "Public X\nSub S\nX = Timer(1.5,Sec,2)\nEndSub\nAlias X=Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-late-global",
+      "logger": "cr350",
+      "source": "Public X\nSub S\nX = Timer(1.5,Sec,2)\nEndSub\nAlias X=Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-other-local",
+      "logger": "cr6",
+      "source": "Public X\nSub A\nAlias X=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 6: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-other-local",
+      "logger": "cr1000x",
+      "source": "Public X\nSub A\nAlias X=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 6: Parameter must be integral."
+    },
+    {
+      "id": "cr300-other-local",
+      "logger": "cr300",
+      "source": "Public X\nSub A\nAlias X=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 6: Parameter must be integral."
+    },
+    {
+      "id": "cr350-other-local",
+      "logger": "cr350",
+      "source": "Public X\nSub A\nAlias X=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 6: Parameter must be integral."
+    },
+    {
+      "id": "cr6-own-local",
+      "logger": "cr6",
+      "source": "Public X\nSub S\nAlias X=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-own-local",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S\nAlias X=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-own-local",
+      "logger": "cr300",
+      "source": "Public X\nSub S\nAlias X=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-own-local",
+      "logger": "cr350",
+      "source": "Public X\nSub S\nAlias X=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X not yet declared so cannot be aliased.\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-param",
+      "logger": "cr6",
+      "source": "Public X\nSub S(Timer)\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-param",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(Timer)\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-param",
+      "logger": "cr300",
+      "source": "Public X\nSub S(Timer)\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-param",
+      "logger": "cr350",
+      "source": "Public X\nSub S(Timer)\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-dim",
+      "logger": "cr6",
+      "source": "Public X\nSub S\nDim Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-dim",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S\nDim Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-dim",
+      "logger": "cr300",
+      "source": "Public X\nSub S\nDim Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 add a later Dimensions not declared diagnostic for a Dim named Timer."
+    },
+    {
+      "id": "cr350-dim",
+      "logger": "cr350",
+      "source": "Public X\nSub S\nDim Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 add a later Dimensions not declared diagnostic for a Dim named Timer."
+    },
+    {
+      "id": "cr6-before-inline",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nIf X Then X = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Missing + Timer(1.5,Sec,2)."
+    },
+    {
+      "id": "cr1000x-before-inline",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nIf X Then X = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X = Missing + Timer(1.5,Sec,2)."
+    },
+    {
+      "id": "cr300-before-inline",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nIf X Then X = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 omit the integral diagnostic after an earlier unresolved inline-body name."
+    },
+    {
+      "id": "cr350-before-inline",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nIf X Then X = Missing + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 omit the integral diagnostic after an earlier unresolved inline-body name."
+    },
+    {
+      "id": "cr6-local-alias-valid",
+      "logger": "cr6",
+      "source": "Public X\nSub S\nDim Q\nAlias Q=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-local-alias-valid",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S\nDim Q\nAlias Q=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-local-alias-valid",
+      "logger": "cr300",
+      "source": "Public X\nSub S\nDim Q\nAlias Q=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr350-local-alias-valid",
+      "logger": "cr350",
+      "source": "Public X\nSub S\nDim Q\nAlias Q=Timer\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr6-late-local-alias",
+      "logger": "cr6",
+      "source": "Public X\nSub S\nDim Q\nX = Timer(1.5,Sec,2)\nAlias Q=Timer\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-late-local-alias",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S\nDim Q\nX = Timer(1.5,Sec,2)\nAlias Q=Timer\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr300-late-local-alias",
+      "logger": "cr300",
+      "source": "Public X\nSub S\nDim Q\nX = Timer(1.5,Sec,2)\nAlias Q=Timer\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr350-late-local-alias",
+      "logger": "cr350",
+      "source": "Public X\nSub S\nDim Q\nX = Timer(1.5,Sec,2)\nAlias Q=Timer\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be integral."
+    },
+    {
+      "id": "cr6-other-local-valid",
+      "logger": "cr6",
+      "source": "Public X\nSub A\nDim Q\nAlias Q=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-other-local-valid",
+      "logger": "cr1000x",
+      "source": "Public X\nSub A\nDim Q\nAlias Q=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be integral."
+    },
+    {
+      "id": "cr300-other-local-valid",
+      "logger": "cr300",
+      "source": "Public X\nSub A\nDim Q\nAlias Q=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be integral."
+    },
+    {
+      "id": "cr350-other-local-valid",
+      "logger": "cr350",
+      "source": "Public X\nSub A\nDim Q\nAlias Q=Timer\nEndSub\nSub B\nX = Timer(1.5,Sec,2)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be integral."
+    },
+    {
+      "id": "cr6-inline-output",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nIf X Then Sample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr1000x-inline-output",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nIf X Then Sample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr300-inline-output",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nIf X Then Sample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr350-inline-output",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nIf X Then Sample(1,Timer(1.5,Sec,2),IEEE4)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sample must be used inside a table declaration."
+    },
+    {
+      "id": "cr6-known-before",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\nX = X + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-known-before",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\nX = X + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr300-known-before",
+      "logger": "cr300",
+      "source": "Public X\nBeginProg\nX = X + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr350-known-before",
+      "logger": "cr350",
+      "source": "Public X\nBeginProg\nX = X + Timer(1.5,Sec,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be integral."
+    },
+    {
+      "id": "cr6-separate-arg",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A,B)\nEndSub\nBeginProg\nCall S(Missing,Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-separate-arg",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A,B)\nEndSub\nBeginProg\nCall S(Missing,Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Parameter must be integral."
+    },
+    {
+      "id": "cr300-separate-arg",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A,B)\nEndSub\nBeginProg\nCall S(Missing,Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined.\nline 5: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 omit the integral diagnostic after an earlier unresolved Sub argument."
+    },
+    {
+      "id": "cr350-separate-arg",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A,B)\nEndSub\nBeginProg\nCall S(Missing,Timer(1.5,Sec,2))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined.\nline 5: Parameter must be integral.",
+      "not_modelled": "CR300/CR350 omit the integral diagnostic after an earlier unresolved Sub argument."
+    },
+    {
+      "id": "cr6-const-NAN",
+      "logger": "cr6",
+      "source": "Const NAN = 1\nPublic X\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const-NAN",
+      "logger": "cr1000x",
+      "source": "Const NAN = 1\nPublic X\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-const-NAN",
+      "logger": "cr300",
+      "source": "Const NAN = 1\nPublic X\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-const-NAN",
+      "logger": "cr350",
+      "source": "Const NAN = 1\nPublic X\nBeginProg\nTimer(NAN,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-const-INF",
+      "logger": "cr6",
+      "source": "Const INF = 1\nPublic X\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const-INF",
+      "logger": "cr1000x",
+      "source": "Const INF = 1\nPublic X\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-const-INF",
+      "logger": "cr300",
+      "source": "Const INF = 1\nPublic X\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-const-INF",
+      "logger": "cr350",
+      "source": "Const INF = 1\nPublic X\nBeginProg\nTimer(INF,Sec,2)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

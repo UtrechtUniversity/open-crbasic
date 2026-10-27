@@ -426,7 +426,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # An orphan `EndTable`/empty table ends pass 2 too (reported in tier C, `check_table_
         # structure`), cutting a later placement error.
         if not profile.single_pass:
-            early_table_stop = _run_pass_capture(instr_data.check_table_structure, program,
+            early_table_stop = _run_pass_capture(instr_data.check_table_structure, _with_inline(program),
                                                  profile, Diagnostics())
             if early_table_stop is not None:
                 stops.append(early_table_stop)
@@ -673,7 +673,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
-        table_stop = _run_pass_capture(instr_data.check_table_structure, program, profile, diags)
+        table_stop = _run_pass_capture(instr_data.check_table_structure, _with_inline(program), profile, diags)
         _run_pass(instr_data.check_fieldnames, program, profile, diags, env)
         apply_diags = Diagnostics()
         _run_pass(structure.check_apply_restart_sequence, program, profile, apply_diags)

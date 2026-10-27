@@ -2572,10 +2572,11 @@ hashes and date inside), `tests/test_integral_params.py`, implemented in `checke
 bad argument, in source order with the other pass-1 errors; it hides pass 2 as any pass-1 error
 does).
 
-- Integer-typed constant arguments of three functions: `IfTime` and `TimeIntoInterval`, all three
+- Originally modelled integer-typed constant arguments: `IfTime` and `TimeIntoInterval`, all three
   arguments (`TintoInt`, `Interval`, `Units`), and `SerialOpen`'s `BaudRate` (second argument).
-  A scan of every `functions.json` entry with an integer or float argument type found no other
-  function (CR6 and CR300), and a scan of every instruction in `instructions.json` found no
+  The original scan of `functions.json` entries with an integer or float argument type missed
+  `Timer`'s custom resolver; [round 46](#timer-number-and-nonfinite-integral-arguments-round-46)
+  adds its first argument. A scan of every instruction in `instructions.json` found no
   `Parameter must be integral.` on CR6 (2 values x ~4000 calls). The other `SerialOpen`
   arguments are different (`Parameter must be a constant integer:`, `docs/loggers.md`).
 - A constant argument draws `Parameter must be integral.` when it is typed as a float: a literal
@@ -7953,8 +7954,9 @@ loggers. A variable, a function call (`Abs(2)`), `/`, `^`, a float literal, `INF
 a float value (`Const K = 2.0`) is accepted. Above INT_MAX the value is the constant-integer error
 on CR6/CR1000X; CR300/CR350 accept magnitudes below 2^32 as out-of-range options. `&H` literals
 wrap (`&HFFFFFFFF` is -1). An integer Option outside 0..4 (`7`, `-1`, `True`, `K+5`, `1>0`) is
-`Legal options are 0..4`. TimNo is not checked. Inside an output instruction outside a table the
-table-only error wins. Not modelled: CR300/CR350 also print the constant-integer line after
+`Legal options are 0..4`. TimNo's integral typing is modelled in
+[round 46](#timer-number-and-nonfinite-integral-arguments-round-46). Inside an output instruction
+outside a table the table-only error wins. Not modelled: CR300/CR350 also print the constant-integer line after
 `Nope is not defined.`
 
 ### IIF arm types (round 36)
@@ -8438,3 +8440,58 @@ accepting that header. Other strict gaps preserved in the matrix are numeric/sig
 names, empty parameter slots, whitespace-split declarations, and unterminated quoted parameters.
 The 40 expected failures are these ten four-profile boundaries; none is silently treated as
 matching. No logger runtime behavior was tested.
+
+
+## Timer number and nonfinite integral arguments (round 46)
+
+Oracle, 2026-10-27; fixture `tests/fixtures/r46_timer_integral.json`, 392 observations,
+380 exact and 12 strict expected failures, with hashes of all four reference compiler binaries. Fresh seed-438 reproducer
+`cr1000x/message_diff/71107f867ad9` exposed an earlier `Parameter must be integral.` at
+`Timer(1.5,Sec,2)`, hidden by our later unmatched-block diagnostic. The minimized form was a
+false accept on all four profiles.
+
+`Timer`'s first argument joins the existing shared integral-argument classifier. Float-typed
+constants (`1.5`, `1.0`, `1E0`, `1/1`, `2^0`, arithmetic containing a float literal, fractional
+named constants) report `Parameter must be integral.` in pass 1, even when another statement
+has an undefined name or an unmatched block. Multiple calls accumulate. The message precedes
+the same call's Units/Option or arity error, unless an earlier unresolved name in the same
+expression stops parsing before the call. This holds in a statement, assignment, condition,
+inline body or nested expression. An explicit `Call Timer(...)` remains a subroutine call.
+
+Integer literals, integer arithmetic, whole-valued named constants, runtime variables,
+`Abs(1.5)`, a string TimNo, and signed/hexadecimal integer controls retain their observed
+acceptance. The shared classifier preserves the profile boundaries: `2147483648` is rejected
+on CR6/CR1000X but accepted on CR300/CR350; `2147483776` still rounds into the latter range,
+`2147483777` does not. `&H80000000` wraps and is accepted. These are compile observations,
+not evidence that every accepted timer number is useful at runtime.
+
+At the same integral-argument positions, bare or signed `NAN`/`INF` are rejected on every
+profile. The fixture also probes `IfTime`'s first argument and `SerialOpen`'s baud argument,
+plus aliases and routine parameters named `NAN`/`INF`; those spellings still resolve as the
+nonfinite literal at these argument sites. A `Const` with that spelling does supply its value;
+`Const NAN = 1` and `Const INF = 1` compile in the probed TimNo position. This literal check is bounded to the shared
+integral-argument walk; the existing HTTP/FTP timeout classifier is unchanged. Arithmetic
+containing nonfinite names is outside this literal rule.
+
+CR6 trace: expression function `FUN_004945c0` (`Timer`, expression code 0) sets integer
+conversion mode for TimNo and calls `FUN_0049efb0` -> `FUN_0049edf0`. The latter reports
+`Parameter must be integral.` for float constant expression types `0x23`/`0x223`.
+`FUN_004945c0` then resets the mode before reading Units and Option, explaining their distinct
+constant-integer messages. No decompiled code was copied into the implementation.
+
+
+The TimNo check respects expression context: an earlier unknown name wins, and a table-only
+output outside a table keeps its placement diagnostic. One-line `If` bodies now reach the
+existing table-structure check through the shared flattened statement view; this also closes
+the pre-existing false accept in the inline-output control. CR6/CR1000X storage named `Timer`
+(an earlier visible alias, a local `Dim`, or a parameter) is an array reference, so this function
+argument rule does not apply there. A later alias or one in another routine does not shadow
+the call. CR300/CR350 retain their built-in resolution in these probes. Invalid alias declarations
+do not introduce the shadow.
+
+The 12 strict gaps all retain the reference's first error and verdict: CR300/CR350 later
+destination-type output (2), later integral messages after an unknown name in an assignment,
+inline body or earlier Sub argument (6), later integral messages after a bad DataTable trigger
+on CR6/CR1000X (2), and an extra CR300/CR350 dimensions message for a local `Dim Timer` (2).
+The table-trigger case defers TimNo so it cannot hide the earlier header error. These later
+cascades remain bounded gaps, not matched observations.

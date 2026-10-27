@@ -24,7 +24,8 @@ from . import instr_rules
 _FUNCTIONS = frozenset({"TIMEINTOINTERVAL", "IFTIME"})
 # Functions whose integer-typed constant arguments draw `Parameter must be integral.`, with the
 # argument positions checked (`docs/checker.md` "Integral parameters").
-_INTEGRAL_ARGS = {"TIMEINTOINTERVAL": (0, 1, 2), "IFTIME": (0, 1, 2), "SERIALOPEN": (1,)}
+_INTEGRAL_ARGS = {"TIMEINTOINTERVAL": (0, 1, 2), "IFTIME": (0, 1, 2), "SERIALOPEN": (1,),
+                  "TIMER": (0,)}
 _MONTH = 6
 # The trailing `TimeOut` of `HTTPPut` (9th argument) and `FTPClient` (11th): see `timeout_gate`.
 _TIMEOUT_ARG = {"HTTPPUT": 8, "FTPCLIENT": 10}
@@ -70,7 +71,11 @@ def timeout_gate(seen: bool, text: str | None) -> tuple[bool | None, bool]:
 
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    from . import expressions, instr_data
     wide = wide_constants(program, profile)
+    known = expressions._known_names(program, profile)
+    positions = {id(st): i for i, st in enumerate(program.statements)}
+    in_table = blocked_table = False
     scan: tuple[int, int] | None = None
     seen = False
     for stmt in program.statements:
@@ -79,6 +84,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if gate:
             _check_timeout(stmt, diags, env, profile, wide)
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
+        if kw == "DATATABLE":
+            in_table = True
+            blocked_table = any(expressions._undefined_names(a, known) for a in stmt.args[1:])
+        elif kw == "ENDTABLE":
+            in_table = blocked_table = False
         if kw == "SCAN":
             scan = _scan_step(stmt, env)
             continue
@@ -87,13 +97,67 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         for call in _calls(stmt, _INTEGRAL_ARGS):
             if isinstance(call, S.Call) and call.explicit:
                 continue
+            if call.name.upper() == "TIMER":
+                owner, before = _timer_context(stmt, call, known, profile.single_pass)
+                table_only = isinstance(owner, S.Instruction) and \
+                    owner.keyword.upper() in instr_data.TABLE_ONLY_INSTRUCTIONS
+                if before or blocked_table or (table_only and not in_table) or (
+                        not profile.single_pass and _timer_shadowed(program, stmt, positions, diags)):
+                    continue
             bad = [i for i in _INTEGRAL_ARGS[call.name.upper()][:len(call.args)]
-                   if not_integral(call.args[i], env, profile, wide)]
+                   if not_integral(call.args[i], env, profile, wide)
+                   or _nonfinite_literal(call.args[i], env)]
             for _ in bad:
                 diags.error(stmt.line, NOT_INTEGRAL, stmt.file)
             if not bad and call.name.upper() in _FUNCTIONS:
                 _check_call(call, scan, stmt, diags, env,
                             any(d.line < stmt.line for d in diags.errors))
+
+
+def _timer_context(stmt, call, known, single_pass):
+    """Owner and an earlier unresolved name in the expression that contains this call."""
+    from . import expressions, symbols
+    if stmt is call:
+        return stmt, False
+    before = False
+    for expr in expressions._stmt_exprs(stmt):
+        if not (single_pass and isinstance(stmt, S.Call)):
+            before = False
+        for node in symbols._name_nodes(expr):
+            if node is call:
+                return stmt, before
+            before |= node.name.upper() not in known or id(node) in getattr(known, "out_of_scope", ())
+    for inner in (getattr(stmt, "inline", None) or []) + (getattr(stmt, "inline_else", None) or []):
+        if any(c is call for c in _calls(inner, {"TIMER"})):
+            return _timer_context(inner, call, known, single_pass)
+    return stmt, False
+
+
+def _timer_shadowed(program, stmt, positions, diags):
+    """CR6/CR1000X resolve earlier visible storage named Timer before the built-in."""
+    from . import symbols
+    for decl in symbols.scoped_view(program, stmt).statements:
+        if positions[id(decl)] > positions[id(stmt)]:
+            continue
+        if isinstance(decl, S.SubDef) and any(p.name.upper() == "TIMER" for p in decl.params):
+            return True
+        if isinstance(decl, S.Declaration) and decl.kind == "DIM" and any(
+                v.name.upper() == "TIMER" for v in decl.vars):
+            return True
+        if isinstance(decl, S.Instruction) and decl.keyword.upper() == "ALIAS" and not any(
+                d.line == decl.line and d.file == decl.file for d in diags.errors) and any(
+                isinstance(a, (S.Name, S.Index)) and a.name.upper() == "TIMER" for a in decl.args[1:]):
+            return True
+    return False
+
+
+def _nonfinite_literal(expr: S.Expr | None, env) -> bool:
+    # NAN/INF are expression literals outside consteval's symbol table. The integral-argument
+    # resolver reads them as such even beside aliases or parameters of that name (round 46).
+    while isinstance(expr, S.Unary) and expr.op in ("+", "-"):
+        expr = expr.operand
+    return isinstance(expr, S.Name) and expr.name.upper() in ("NAN", "INF") and \
+        expr.name.upper() not in env.consts
 
 
 def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide, program) -> None:
