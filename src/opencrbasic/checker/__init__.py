@@ -245,7 +245,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(expressions.check_consts, program, profile, diags)
     # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
     n_family = len(diags.items)
-    _run_pass(expressions.check_const_family_args, program, profile, diags)
+    _run_pass(expressions.check_const_family_args, _with_inline(program), profile, diags)
     const_family = diags.items[n_family:]
     # CR6/CR1000X: `Range` code and `fN1` value checks, same pass (`docs/instructions.md`).
     _run_pass(instr_measure.check_pass1_values, program, profile, diags, env)

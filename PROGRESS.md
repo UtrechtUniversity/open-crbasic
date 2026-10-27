@@ -81,6 +81,16 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 51** (M1, fresh relevant fuzz, seeds 441 CR6 / 442 CR1000X, 500 mutants each, no
+shrinking; one session).
+- CR6: 492 exact, 6 message differences. CR1000X: 490 exact, 8 message differences, 1 false accept
+  (`a66ad5f9beb3`), no false reject, crash, hang, implementation exception or mode difference.
+  The false accept minimizes to an undeclared name as 7th `SDI12Recorder` argument inside a
+  one-line `If`; `check_const_family_args` ran on top-level statements only. Fixed
+  (`_with_inline`); rule in [docs/checker.md](docs/checker.md#pass-1-instruction-arguments-2026-09-27).
+  Fixture `tests/fixtures/r51_inline_const_family_args.json` (14 observations). The 14 message
+  differences are not triaged. Raw output: `scratch/r51/`.
+
 **Round 49** (M1, PipeLine Mode placement of the remaining `mode.json` task instructions; one
 session, no subagents).
 - 484 reference observations (`tests/fixtures/r49_pipeline_task_instructions.json`, generator

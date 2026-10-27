@@ -2222,6 +2222,12 @@ main file's line 45 (`TDR_tester.CR6` on CR1000X; a `Lib.crb` probe matches byte
 Together these make all 16 `crbasic/` programs exact on CR1000X (was 9) and CR6 chm exact
 408 -> 422.
 
+Round 51: the pass-1 constant-family check also covers the statements of a one-line `If`
+(`If x Then SDI12Recorder(fan,C1,1,"XLs!",1.0,0,Undecl)`, also after `Else`); before, an undeclared
+seventh `SDI12Recorder` argument there was a false accept on CR6/CR1000X (fuzz seed 442, GEUS seed
+`GIOS_WAT_R_V4_0`). Fixture: `tests/fixtures/r51_inline_const_family_args.json`, 14 observations.
+
+
 ## Declaration expressions (2026-09-27)
 
 Pass 1, `structure.py` `_check_decl_exprs`/`_check_alias_index_names`. Oracle, identical on
