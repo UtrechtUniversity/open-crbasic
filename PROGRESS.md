@@ -82,7 +82,10 @@ variables, then reports a NULL file name
 `not_modelled`); four round-43 `not_modelled` cases of the same rule now match. The other four
 misses are open: `7d9dbda67c22` (CR6, `DataTable(True,FinApp_Starts,-1)`: the reference's main-file
 error comes before our include-file error), `5d03371b1388` (CR1000X, `Dim GPSstring(1  8)` gives
-`Incomplete expression: 1  8.`), `83c0a809c514` (CR1000X, a malformed `FieldNames` is reported on
+`Incomplete expression: 1  8.`; probed on CR6/CR1000X: `Public G(8 1)` and `Dim G(2,1  8)` echo only
+the bad dimension, `Dim G(x  8)` adds `Variable illegal in Parameter: x  8.`, and nothing else is
+reported, where we print `Invalid symbol in expression: G(...)`; the fix belongs in
+`parser._parse_vardecl`), `83c0a809c514` (CR1000X, a malformed `FieldNames` is reported on
 the line of the instruction it names), `ba8d6f459994` (CR6, a continuation line).
 
 **Round 52** (M2/M3, triage of the round-51 fuzz differences; one session, Sonnet workers A-C,
@@ -160,7 +163,10 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 5. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is unprobed for `CDM_*`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`,
      `VibratingWire`; plain `Calibrate` in a slow scan lacks a `may skip scans` warning;
-   - 10 round-51 message differences remain (`scratch/r51/`; all later-diagnostic or same-location text except `8f0c2a005513`, warnings before the error); PipeLine probing of the instructions above was not started in round 52 (Codex cannot reach the Wine server from its sandbox, so it does research and review only); `VoltSE(...,Undecl)` in a
+   - 10 round-51 message differences remain (`scratch/r51/`; all later-diagnostic or same-location text except `8f0c2a005513`:
+     the reference prints 9 `Parameter will truncate` warnings before the error for an undeclared first
+     `TimeIntoInterval` argument in an `If`, the round-38 cascade in `scratch/r38/tii.json`, 9/6/3 by argument;
+     Codex research in `scratch/r53/codex-8f0c.log`); PipeLine probing of the instructions above was not started in round 52 (Codex cannot reach the Wine server from its sandbox, so it does research and review only); `VoltSE(...,Undecl)` in a
      one-line `If` prints the `Invalid symbol` line without the earlier `Invalid channel` line;
    - older fuzz findings: `0a9af24e1266` (malformed `Sub` parameter first error), `71107f867ad9`,
 `f67f1e2a1258` (unterminated string in a call), `522ddaa3d29c`
