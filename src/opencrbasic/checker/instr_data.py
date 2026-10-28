@@ -304,9 +304,11 @@ _FIRST_WORD = re.compile(r"\s*([A-Za-z_]\w*)")
 def fieldnames_owners(program: S.Program) -> dict[int, S.Stmt | None]:
     """`id(statement)` of every `FieldNames` (parsed or not) -> the output instruction whose
     builder reads it: the last owner before it with only `FieldNames`/`FieldClassify`/`FieldOrigin`
-    in between, else None (a `FieldNames` anywhere else is never resolved)."""
+    in between, inside a `DataTable`, else None (a `FieldNames` anywhere else is never resolved;
+    a `Sample` outside a table owns nothing, replay `921b96a020e3`)."""
     owners: dict[int, S.Stmt | None] = {}
     owner = None
+    in_table = False
     for st in program.statements:
         if isinstance(st, S.Instruction):
             kw = st.keyword.upper()
@@ -314,10 +316,12 @@ def fieldnames_owners(program: S.Program) -> dict[int, S.Stmt | None]:
             kw = m.group(1).upper()
         else:
             continue
+        if kw in ("DATATABLE", "ENDTABLE"):
+            in_table = kw == "DATATABLE"
         if kw == "FIELDNAMES":
             owners[id(st)] = owner
         elif kw not in _FIELD_METADATA:
-            owner = st if kw in _FIELDNAMES_OWNERS else None
+            owner = st if kw in _FIELDNAMES_OWNERS and in_table else None
     return owners
 
 
