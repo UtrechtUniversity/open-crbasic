@@ -8938,3 +8938,30 @@ Codex review of worker B's round-54 PipeLine data, confirmed on CR6/CR1000X (ora
   array elements and string literals compile. An undefined name prints `Invalid symbol in expression`
   and then the diagnostic line, which we lack (`not_modelled`). `instr_rules.check_vibrating_wire_diagnostics`.
   Fixture `r55_vibrating_wire_diagnostics.json`.
+
+## Round-56 fuzz rules
+
+Seeds 449/450 found five CR1000X false accepts; four are fixed (oracle 2026-10-28, CR6 and CR1000X):
+
+- **Minimum excitation.** `BrHalf`, `BrHalf3W`, `BrFull` (ExmV argument 7) and `BrHalf4W`, `BrFull6W`
+  (argument 8) reject an excitation of 0 to 19 mV with `Minimum Excitation is 20mV.`; 20 and negative
+  values compile (`926c96e8b6f8`). `const_ranges` rows with `lower_gate` 0. Fixture
+  `r56_spatial_bridge_rules.json`.
+- **`Minimum` data type 0** (`Minimum(1,X,False,...)`, `c48e3c64f3d6`) gives `Illegal data type parameter
+  0 in Minimum instruction.` like `Maximum`/`Average`/`Sample` (`_DATA_TYPE_ARG`). Fixture
+  `r56_output_datatype_zero.json`; `Minimum(1,X,False,False,FP2)` prints no `declared with no output
+  fields` line in the reference (`not_modelled`).
+- **Spatial instructions** (`8006c5939583`). Destination bounds also apply to Long destinations
+  (`SortSpaIndexed(I,6,IO)` with `I(6) As Long` is `Variable I out of bounds.`); `MaxSpa`/`MinSpa` need
+  a Float destination (`Dest type must be Float.`, after the bounds line); `SortSpa` needs equal source
+  and destination types (`Source and Dest types must be the same.`; `SortSpaIndexed` already had it).
+- **`Sample(...,UINT1)`** of a variable (or `Alias`) that is not UINT1 gives `Sample type UINT1 can only
+  sample a variable of type UINT1.` after the odd-reps line (`142a355f568b`). Fixture
+  `r56_sample_uint1_source.json`.
+- **UINT1 padding warning.** A UINT1 variable whose element count is not a multiple of 4 gets `Warning:
+  Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4` on its declaration line,
+  one per variable, also in a failed compile; CR300/CR350 print nothing. An `Alias` of a UINT1 scalar also
+  warns (`not_modelled`). Fixture `r56_uint1_dimension_warning.json`.
+
+Open: `WindVector(&HFF,WS,WD,...)` with `WS(2)`, `WD(2)` (`bf74cfafbba5`) is `Variable WD out of bounds.`,
+`Variable WS out of bounds.`, `Variable WS, index 1, reps 255, out of bounds.` in the reference; we accept.

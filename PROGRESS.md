@@ -1,9 +1,9 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-28 after development round 55** (round-51
+Current compiler state and handoff, updated **2026-10-28 after development round 56** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
-round 55). Rounds 49-55 are on `main`; use Git to check publication
+round 55; four fuzz false accepts and a UINT1 warning, round 56). Rounds 49-56 are on `main`; use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -22,12 +22,12 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 58,741 passed, 311 skipped, 543 strict xfail (round 55, `-n 6`) |
-| `pytest -q -m server` | 163 passed (round 55) |
+| `pytest -q -n 4 -m 'not server'` | 58,854 passed, 311 skipped, 543 strict xfail (round 56, `-n 6`) |
+| `pytest -q -m server` | 163 passed (round 56) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 55) | 3,338 inputs: 2,585 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 56, unchanged from 55) | 3,338 inputs: 2,585 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 46) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
-| Fresh fuzz, seeds 447 (CR6) / 448 (CR1000X) (round 55, `--relevant`, 500 mutants each) | CR6 491 exact, 3 message differences, 1 false accept; CR1000X 492 exact, 6 message differences, 1 false accept; both fixed. Seeds 445/446 (round 54): 2 false accepts, fixed. Raw output in `scratch/r54/`, `scratch/r55/` (git-ignored) |
+| Fresh fuzz, seeds 449 (CR6) / 450 (CR1000X) (round 56, `--relevant`, 500 mutants each) | CR6 487 exact, 10 message differences, 1 warning-only difference; CR1000X 482 exact, 8 message differences, 5 false accepts (4 fixed; `bf74cfafbba5`, WindVector reps bounds, open), 1 warning-only difference. Seeds 447/448 (round 55): 2 false accepts, fixed. Raw output in `scratch/r55/`, `scratch/r56/` (git-ignored) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
@@ -73,6 +73,12 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 56** (M1, fresh fuzz seeds 449/450; coordinator only). Four CR1000X false accepts fixed:
+bridge excitation below 20 mV, `Minimum` data type 0, spatial destination types and Long bounds, and
+`Sample(...,UINT1)` of a non-UINT1 variable; plus the CR6/CR1000X UINT1 padding warning. Ten round-36/38
+`not_modelled` observations of the UINT1 rule now match. Open: `WindVector` reps bounds
+(`bf74cfafbba5`). Details: [docs/checker.md](docs/checker.md#round-56-fuzz-rules). Gates as in round 55.
 
 **Round 55** (M1/M2; worker B's round-54 PipeLine work integrated, Codex review, coordinator fixes).
 - **CI:** round 54 broke the CI replay gate (`921b96a020e3`: a `Sample` outside a table owned a

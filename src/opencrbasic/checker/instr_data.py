@@ -1287,7 +1287,7 @@ _ILLEGAL_DATA_TYPES = {
     "cr300": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
     "cr350": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
 }
-_DATA_TYPE_ARG = {"SAMPLE": 2, "AVERAGE": 2, "MAXIMUM": 2, "WINDVECTOR": 3}   # WindVector: round 36
+_DATA_TYPE_ARG = {"SAMPLE": 2, "AVERAGE": 2, "MAXIMUM": 2, "MINIMUM": 2, "WINDVECTOR": 3}   # WindVector: round 36, Minimum: 56
 
 
 def _constant_data_type(stmt: S.Instruction, pos: int, env: consteval.Env) -> int | None:
@@ -1357,9 +1357,20 @@ def check_odd_pair_reps(program: S.Program, profile: Profile, diags: Diagnostics
     if profile.name not in ("cr6", "cr1000x"):
         return
     in_table = False
+    types = {v.name.upper(): v.type or "FLOAT" for st in program.statements
+             if isinstance(st, S.Declaration) for v in st.vars}
+    for st in program.statements:   # an `Alias` has its target's type
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and len(st.args) > 1 \
+                and isinstance(st.args[0], (S.Name, S.Index)) and isinstance(st.args[1], S.Name):
+            types.setdefault(st.args[1].name.upper(), types.get(st.args[0].name.upper(), "UINT1"))
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
             if in_table and (message := _odd_pair_reps(stmt, env)):
                 diags.error(stmt.line, message, stmt.file)
+            # (oracle, round 56: `Sample(1,X,UINT1)` with a Float or Long X)
+            if in_table and kw == "SAMPLE" and len(stmt.args) > 2 and stmt.args[2] is not None \
+                    and _constant_data_type(stmt, 2, env) == 1 and isinstance(stmt.args[1], (S.Name, S.Index)) \
+                    and types.get(stmt.args[1].name.upper(), "UINT1") != "UINT1":
+                diags.error(stmt.line, "Sample type UINT1 can only sample a variable of type UINT1.", stmt.file)

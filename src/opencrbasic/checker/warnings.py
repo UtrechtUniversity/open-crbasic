@@ -74,7 +74,34 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
 # otherwise-failed compile) -------------------------------------------------------------------
 
 
+def _check_uint1_dims(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """CR6/CR1000X: a UINT1 variable whose element count is not a multiple of 4 is padded, one
+    warning per variable on its declaration line, also in a failed compile (oracle, round 56)."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Declaration):
+            continue
+        for v in stmt.vars:
+            if v.type != "UINT1":
+                continue
+            count = 1
+            for d in v.dims:
+                try:
+                    size = consteval.value_of(d, env)
+                except consteval.NotConstant:
+                    break
+                if not isinstance(size, int) or isinstance(size, bool) or size < 1:
+                    break
+                count *= size
+            else:
+                if count % 4:
+                    diags.warning(stmt.line, "Adjusting dimensionality of UINT1 so number of bytes "
+                                             "evenly divisible by 4", stmt.file)
+
+
 def check_early(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    _check_uint1_dims(program, profile, diags, env)
     _check_reachability(program, profile, diags, env)
     _check_fnotch(program, profile, diags, env)
     # Numeric `Scan`/`DataInterval` value checks: also ungated (oracle-confirmed,

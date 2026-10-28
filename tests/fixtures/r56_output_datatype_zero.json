@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-Minimum(1,x,False,False,FP2)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Minimum(1,x,False,False,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Minimum instruction.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr1000x-Minimum(1,x,False,False,FP2)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Minimum(1,x,False,False,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Minimum instruction.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr6-Minimum(1,x,0,False,False)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Minimum(1,x,0,False,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Minimum instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-Minimum(1,x,0,False,False)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Minimum(1,x,0,False,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Minimum instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-Maximum(1,x,0,False,False)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Maximum(1,x,0,False,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Maximum instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-Maximum(1,x,0,False,False)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Maximum(1,x,0,False,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Maximum instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-Average(1,x,0,False)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Average(1,x,0,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Average instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-Average(1,x,0,False)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Average(1,x,0,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Average instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-Sample(1,x,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,x,0)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-Sample(1,x,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,x,0)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Illegal data type parameter 0 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-Sample(1,x,1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,x,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 3: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-Sample(1,x,1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,x,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 3: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-Sample(1,U,1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,U,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-Sample(1,U,1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,U,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-Sample(1,L,1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,L,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 3: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-Sample(1,L,1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,L,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 3: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-Sample(1,x,UINT1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,x,UINT1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 3: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-Sample(1,x,UINT1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  Sample(1,x,UINT1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 3: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-WindVector(&HFF,WS,WD,FP2,False,0,0,1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(&HFF,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 255, out of bounds.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr1000x-WindVector(&HFF,WS,WD,FP2,False,0,0,1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(&HFF,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 255, out of bounds.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr6-WindVector(2,WS,WD,FP2,False,0,0,1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(2,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr1000x-WindVector(2,WS,WD,FP2,False,0,0,1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(2,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr6-WindVector(3,WS,WD,FP2,False,0,0,1)",
+   "logger": "cr6",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(3,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 3, out of bounds.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr1000x-WindVector(3,WS,WD,FP2,False,0,0,1)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(3,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 3, out of bounds.",
+   "not_modelled": "not modelled"
+  }
+ ]
+}

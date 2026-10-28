@@ -1,0 +1,177 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-Public U As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nPublic U As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr1000x-Public U As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic U As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr6-Public U(4) As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nPublic U(4) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public U(4) As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic U(4) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Public U(8) As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nPublic U(8) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public U(8) As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic U(8) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Public U(2,2) As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nPublic U(2,2) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public U(2,2) As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic U(2,2) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Public U(3) As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nPublic U(3) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr1000x-Public U(3) As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic U(3) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr6-Dim U(2) As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nDim U(2) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr1000x-Dim U(2) As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nDim U(2) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr6-Public V(2) As UINT2",
+   "logger": "cr6",
+   "source": "Public x\nPublic V(2) As UINT2\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UINT2 not supported"
+  },
+  {
+   "id": "cr1000x-Public V(2) As UINT2",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic V(2) As UINT2\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UINT2 not supported"
+  },
+  {
+   "id": "cr6-Public V As UINT2",
+   "logger": "cr6",
+   "source": "Public x\nPublic V As UINT2\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UINT2 not supported"
+  },
+  {
+   "id": "cr1000x-Public V As UINT2",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic V As UINT2\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UINT2 not supported"
+  },
+  {
+   "id": "cr6-Public V(2) As Boolean",
+   "logger": "cr6",
+   "source": "Public x\nPublic V(2) As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public V(2) As Boolean",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic V(2) As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Public V As BOOL8",
+   "logger": "cr6",
+   "source": "Public x\nPublic V As BOOL8\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type BOOL8 not supported"
+  },
+  {
+   "id": "cr1000x-Public V As BOOL8",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic V As BOOL8\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type BOOL8 not supported"
+  },
+  {
+   "id": "cr6-Public U(2) As UINT1, W(5) As UINT1",
+   "logger": "cr6",
+   "source": "Public x\nPublic U(2) As UINT1, W(5) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  },
+  {
+   "id": "cr1000x-Public U(2) As UINT1, W(5) As UINT1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic U(2) As UINT1, W(5) As UINT1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 2: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4"
+  }
+ ]
+}

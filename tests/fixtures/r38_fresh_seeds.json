@@ -3180,8 +3180,7 @@
    "logger": "cr6",
    "source": "Public B, A(12)\r\nPublic S As String * 20\r\nDataTable (T,1,-1)\r\nSample(9,A(),UINT1)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 9 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1.",
-   "not_modelled": "round 38: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 9 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1."
   },
   {
    "id": "cr6-oddreps-008",
@@ -3272,8 +3271,7 @@
    "logger": "cr1000x",
    "source": "Public B, A(12)\r\nPublic S As String * 20\r\nDataTable (T,1,-1)\r\nSample(9,A(),UINT1)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 9 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1.",
-   "not_modelled": "round 38: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 9 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1."
   },
   {
    "id": "cr1000x-oddreps-021",

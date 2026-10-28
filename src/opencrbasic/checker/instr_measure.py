@@ -1189,6 +1189,9 @@ def _builder_counts(kw: str, args: list, env: consteval.Env) -> list[tuple[int, 
 # (Max/Min: value + location), Swath (SortSpa) or 2 * Swath (SortSpaIndexed); Avg/StdDev/RMS
 # impose nothing beyond the index rule. Entries are (fixed, per Swath).
 _SPA_DEST = {"MAXSPA": (2, 0), "MINSPA": (2, 0), "SORTSPA": (0, 1), "SORTSPAINDEXED": (0, 2)}
+# (oracle, round 56: `MaxSpa(L,...)` -> `Dest type must be Float.`, `SortSpa(LongDest,6,Float)` ->
+# `Source and Dest types must be the same.`)
+_SPA_TYPED = frozenset({"MAXSPA", "MINSPA", "SORTSPA"})   # (SortSpaIndexed: expressions.py)
 _SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "SORTSPA",
                          "SORTSPAINDEXED"})
 
@@ -1248,7 +1251,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             if swath is not None:
                 fixed, per = _SPA_DEST.get(kw, (0, 0))
                 if (fixed or per) and overruns(dest, fixed + per * swath, per > 0 and swath < 0,
-                                               ("FLOAT",)):
+                                               ("FLOAT", "LONG")):   # (Long too, round 56)
                     bad.append(dest)
                 if overruns(source := stmt.args[2], swath, swath < 0, ("FLOAT", "LONG")):
                     bad.append(source)
@@ -1292,6 +1295,14 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                 diags.items.insert(at, diag)
             else:
                 diags.items.append(diag)
+        if kw in _SPA_TYPED and len(stmt.args) > 2 and profile.name in ("cr6", "cr1000x"):
+            source = stmt.args[2]
+            dest_type = types.get(name)
+            source_type = types.get(source.name.upper()) if isinstance(source, (S.Name, S.Index)) else None
+            if kw in ("MAXSPA", "MINSPA") and dest_type not in (None, "FLOAT"):
+                diags.error(stmt.line, "Dest type must be Float.", stmt.file)
+            elif kw not in ("MAXSPA", "MINSPA") and dest_type and source_type and dest_type != source_type:
+                diags.error(stmt.line, "Source and Dest types must be the same.", stmt.file)
 
 
 def _index_value(arg: S.Expr | None, env: consteval.Env | None) -> int | None:

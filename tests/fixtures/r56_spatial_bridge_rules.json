@@ -1,0 +1,310 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,0,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,0,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,19,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,19,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,20,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,20,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,-20,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,-20,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrFull(R(),1,mV5000,1,Vx1,1,0,True,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrFull(R(),1,mV5000,1,Vx1,1,0,True,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,0,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,0,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,19,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,19,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-BrFull(R(),1,mV5000,U1,U3,1,0,True,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrFull(R(),1,mV5000,U1,U3,1,0,True,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(I,6,IO)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(I,6,IO)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable I out of bounds."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(I,6,IO)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(I,6,IO)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable I out of bounds."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(F,6,O)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(F,6,O)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(F,6,O)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(F,6,O)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable F out of bounds."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(IO,6,I)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(IO,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(IO,6,I)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(IO,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(O,3,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(O,3,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(O,3,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(O,3,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(O,6,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(O,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(O,6,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(O,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrHalf3W(R(),1,mV5000,1,Vx1,1,0,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf3W(R(),1,mV5000,1,Vx1,1,0,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrHalf4W(R(),1,mV5000,mV5000,1,Vx1,1,0,True,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf4W(R(),1,mV5000,mV5000,1,Vx1,1,0,True,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrFull6W(R(),1,mV5000,mV5000,1,Vx1,1,0,True,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrFull6W(R(),1,mV5000,mV5000,1,Vx1,1,0,True,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-SortSpa(I,6,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpa(I,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr1000x-SortSpa(I,6,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpa(I,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr6-MaxSpa(L2,6,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(L2,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L2 out of bounds.\nline 4: Dest type must be Float."
+  },
+  {
+   "id": "cr1000x-MaxSpa(L2,6,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(L2,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable L2 out of bounds.\nline 4: Dest type must be Float."
+  },
+  {
+   "id": "cr6-MaxSpa(LL,6,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(LL,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dest type must be Float."
+  },
+  {
+   "id": "cr1000x-MaxSpa(LL,6,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(LL,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dest type must be Float."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(LL,1,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(LL,1,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(LL,1,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(LL,1,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(IO,6,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(IO,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(IO,6,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(IO,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr6-SortSpaIndexed(O,6,I)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(O,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr1000x-SortSpaIndexed(O,6,I)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpaIndexed(O,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr6-MinSpa(LL,6,F)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MinSpa(LL,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dest type must be Float."
+  },
+  {
+   "id": "cr1000x-MinSpa(LL,6,F)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MinSpa(LL,6,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dest type must be Float."
+  },
+  {
+   "id": "cr6-SortSpa(F,6,I)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpa(F,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr1000x-SortSpa(F,6,I)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpa(F,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr6-SortSpa(I,6,I)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpa(I,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-SortSpa(I,6,I)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SortSpa(I,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-MaxSpa(R,6,I)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(R,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-MaxSpa(R,6,I)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(R,6,I)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}
