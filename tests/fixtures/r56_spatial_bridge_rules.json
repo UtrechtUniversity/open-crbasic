@@ -305,6 +305,104 @@
    "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxSpa(R,6,I)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,-1,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,-1,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,-1,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,-1,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,-19,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,-19,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,-19,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,-19,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,-20,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,-20,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,-20,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,-20,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,-21,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,-21,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,-21,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,-21,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,-2500,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,-2500,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,-2500,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,-2500,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,19,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,19,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,19,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,19,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Minimum Excitation is 20mV."
+  },
+  {
+   "id": "cr1000x-BrHalf(R(),1,mV5000,1,Vx1,1,20,True,0,50,1,0)",
+   "logger": "cr1000x",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,1,Vx1,1,20,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-BrHalf(R(),1,mV5000,U1,U3,1,20,True,0,50,1,0)",
+   "logger": "cr6",
+   "source": "Public R(4), x, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, L2 As Long, LL(2) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(R(),1,mV5000,U1,U3,1,20,True,0,50,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   }
  ]
 }

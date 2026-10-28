@@ -22,7 +22,7 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 58,870 passed, 311 skipped, 539 strict xfail (round 56, `-n 6`) |
+| `pytest -q -n 4 -m 'not server'` | 58,884 passed, 311 skipped, 539 strict xfail (round 56, `-n 6`) |
 | `pytest -q -m server` | 163 passed (round 56) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 56, unchanged from 55) | 3,338 inputs: 2,585 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
@@ -78,6 +78,11 @@ in [legal and provenance notes](docs/legal.md).
 bridge excitation below 20 mV, `Minimum` data type 0, spatial destination types and Long bounds, and
 `Sample(...,UINT1)` of a non-UINT1 variable, `WindVector` reps bounds; plus the CR6/CR1000X UINT1 padding warning. Ten round-36/38
 `not_modelled` observations of the UINT1 rule now match. Details: [docs/checker.md](docs/checker.md#round-56-fuzz-rules). Gates as in round 55.
+Fresh fuzz seeds 451/452 (end of round 56): CR6 490 exact, 9 message differences; CR1000X 488 exact,
+7 message differences, 4 false accepts, 1 warning-only difference. `70e8fae3a5b3` (excitation -1 mV) is
+fixed; **open:** `9be1e8aba3d8` (`SerialOpen(ComC7,19200,0,0,150,"fuzz")`, an extra argument: `Parameter
+must be a constant integer:` with the whole statement), `e6b6604b4da3` (`PRTCalc(RTD_C,2,...)` destination
+bounds), `f76ae7c58e75` (`Sample(&HFF,GeoUnit,String)` String source bounds). Raw output in `scratch/r57/`.
 
 **Round 55** (M1/M2; worker B's round-54 PipeLine work integrated, Codex review, coordinator fixes).
 - **CI:** round 54 broke the CI replay gate (`921b96a020e3`: a `Sample` outside a table owned a

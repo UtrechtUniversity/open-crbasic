@@ -8944,8 +8944,9 @@ Codex review of worker B's round-54 PipeLine data, confirmed on CR6/CR1000X (ora
 Seeds 449/450 found five CR1000X false accepts, all fixed (oracle 2026-10-28, CR6 and CR1000X):
 
 - **Minimum excitation.** `BrHalf`, `BrHalf3W`, `BrFull` (ExmV argument 7) and `BrHalf4W`, `BrFull6W`
-  (argument 8) reject an excitation of 0 to 19 mV with `Minimum Excitation is 20mV.`; 20 and negative
-  values compile (`926c96e8b6f8`). `const_ranges` rows with `lower_gate` 0. Fixture
+  (argument 8) reject an excitation between -19 and 19 mV with `Minimum Excitation is 20mV.`; 20, -20
+  and beyond compile (`926c96e8b6f8`; `-1` from round-57 fuzz `70e8fae3a5b3`). `const_ranges` rows with
+  `lower_gate` -19. Fixture
   `r56_spatial_bridge_rules.json`.
 - **`Minimum` data type 0** (`Minimum(1,X,False,...)`, `c48e3c64f3d6`) gives `Illegal data type parameter
   0 in Minimum instruction.` like `Maximum`/`Average`/`Sample` (`_DATA_TYPE_ARG`). Fixture
