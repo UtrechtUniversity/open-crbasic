@@ -17,7 +17,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import longconv, symbols
+from . import longconv, scan_time, symbols
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -25,6 +25,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     if not measure:
         return
     file_reported = False  # only the first bad `FileManage`/`RunProgram` file name is reported
+    sequential: bool | None = None
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -32,7 +33,14 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "SW12" and "sw12_ports" in measure:
             _check_sw12(stmt, measure, env, diags)
         if kw == "DELAY" and "delay" in measure:
-            _check_delay(stmt, measure["delay"], env, diags)
+            if sequential is None:
+                sequential = is_sequential(program, profile, env)
+            _check_delay(stmt, measure["delay"], env, diags, sequential)
+        if kw == "EXCITEV" and measure.get("delay", {}).get("task_memory") and len(stmt.args) == 3:
+            delay = _int_value(stmt.args[2], env)
+            if delay is not None and scan_time.task_memory_overflow(
+                    max(scan_time.excite_delay_us(delay) - 10, 0)):
+                _task_memory_full(stmt, diags)
         if kw == "CS616" and "cs616_min_reps_pos" in measure:
             _check_cs616_reps(stmt, measure, env, diags)
         if kw in ("EXCITEV", "EXCITEI") and "excite_max_mv" in measure:
@@ -553,7 +561,18 @@ def _delay_option_byte(value: int) -> int:
     return value % 256
 
 
-def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics) -> None:
+# `Program too big for task memory` repeats for every further task word until the 4096-byte
+# message buffer is full (`compiler.py`); 100 copies always fill it
+_TASK_MEMORY_COPIES = 100
+
+
+def _task_memory_full(stmt: S.Instruction, diags: Diagnostics) -> None:
+    for _ in range(_TASK_MEMORY_COPIES):
+        diags.error(stmt.line, "Program too big for task memory", stmt.file)
+
+
+def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics,
+                 sequential: bool = False) -> None:
     args = stmt.args
     option_arg = args[0] if len(args) > 0 else None
     interval_arg = args[1] if len(args) > 1 else None
@@ -571,16 +590,24 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
         return  # oracle: the string-type rejection is the only diagnostic for a string interval.
 
     if option == 0 and cfg.get("option0_limit"):
+        if sequential:
+            # SequentialMode checks neither the interval nor its expansion (oracle, CR6, round 57)
+            return
         if interval_arg is not None and not consteval.is_constant(interval_arg, env):
             diags.error(stmt.line, "Measurement delay must have constant interval.", stmt.file)
             return
-        us = _delay_interval_us(interval_arg, units_arg, env)
-        negative = isinstance(interval_value, (int, float)) and not isinstance(interval_value, bool) \
-            and math.isfinite(interval_value) and int(interval_value) < 0
-        if negative or (us is not None and us > cfg["option0_limit"]):
-            # a negative interval is too long as well (oracle, CR6/CR1000X, 2026-10-25, round 35;
-            # the `Program too big for task memory` lines after it are not modelled)
+        unit = _const_value(units_arg, env)
+        if not isinstance(interval_value, (int, float)) or isinstance(interval_value, bool) \
+                or not math.isfinite(interval_value) or not isinstance(unit, int) or isinstance(unit, bool) \
+                or unit not in _DELAY_US_PER_UNIT:
+            return
+        # the unsigned 32-bit microsecond count, so a negative interval is too long as well
+        # (oracle, CR6/CR1000X, rounds 35 and 57; docs/checker.md#task-memory-overflow-of-long-delays-round-57)
+        us = scan_time.delay_us(interval_value, unit)
+        if us > cfg["option0_limit"]:
             diags.error(stmt.line, "Measurement Delay Exceeds 60 min.", stmt.file)
+        if cfg.get("task_memory") and scan_time.task_memory_overflow(us):
+            _task_memory_full(stmt, diags)
     elif option == 1 and cfg.get("option1_limit"):
         us = _delay_interval_us(interval_arg, units_arg, env)
         if us is not None and us >= cfg["option1_limit"]:
@@ -1127,8 +1154,9 @@ def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics
 # Only CalFile also rejects negative Reps.
 _DEST_FIXED = {"REALTIME": 9}
 _DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1, "MINRUN": 1, "MAXRUN": 1, "TOTALRUN": 1,
-                 "STDDEVRUN": 1}   # (the other running statistics: oracle, CR6/CR1000X, round 35)
-_DEST_NEGATIVE_OOB = frozenset({"CALFILE"})
+                 "STDDEVRUN": 1,   # (the other running statistics: oracle, CR6/CR1000X, round 35)
+                 "PRTCALC": 1}     # (oracle, CR6/CR1000X, round 57)
+_DEST_NEGATIVE_OOB = frozenset({"CALFILE", "PRTCALC"})
 _RUNNING_STATS = frozenset({"MINRUN", "MAXRUN", "TOTALRUN", "STDDEVRUN"})   # (AvgRun not probed)
 
 
@@ -1225,6 +1253,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
         return negative or need > total - offset
 
     names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
+    alias_storage = _measurement_aliases(program, tables, env)
     for stmt in program.statements:
         scope = tables(stmt)
         dims, types, arrays = scope.dims, scope.types, scope.arrays
@@ -1284,7 +1313,13 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                     continue
                 negative = reps < 0
                 need = reps * _DEST_PER_REP[kw]
-            if overruns(dest, need, negative, ("FLOAT",)):
+            alias = alias_storage(stmt, dest) if kw in _DEST_PER_REP else None
+            if alias is not None:
+                # an alias destination counts from the alias (oracle, CR6/CR1000X, round 57: PRTCalc,
+                # CalFile, Move and the running statistics)
+                if _alias_overrun(stmt, dest, alias, -1 if negative else need, profile, env):
+                    diags.error(stmt.line, f"Variable {alias[2]} out of bounds.", stmt.file)
+            elif overruns(dest, need, negative, ("FLOAT",)):
                 bad.append(dest)
         # single-pass loggers: before this line's warnings and channel errors (oracle)
         for arg in (reversed(bad) if profile.single_pass else bad):

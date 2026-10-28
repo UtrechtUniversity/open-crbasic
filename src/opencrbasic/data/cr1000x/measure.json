@@ -12,7 +12,8 @@
  "sw12_port_messages": {"0": "Invalid port 6642484, must be NULL.", "-1": "Invalid port 6642484, must be ."},
  "delay": {
   "option0_limit": 3600000000,
-  "option1_limit": 86400000000
+  "option1_limit": 86400000000,
+  "task_memory": true
  },
  "gps": {
   "ports": [1, 9, 10, 11, 12],

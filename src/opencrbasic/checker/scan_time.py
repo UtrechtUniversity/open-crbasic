@@ -25,6 +25,29 @@ UNIT_NAMES = {0: "uSec", 1: "mSec", 2: "Sec", 3: "Min", 4: "Hr", 5: "Day"}
 SCAN_UNITS = (1, 2, 3)
 
 
+def delay_us(value: float, unit: int) -> int:
+    """The unsigned 32-bit microsecond count of a constant `Delay(0,...)` interval: `value * unit`
+    modulo 2^32; outside the Long range the interval is a Double whose low word is read as a
+    float32, and a non-finite one counts as 2^31 (oracle, CR6/CR1000X, round 57,
+    docs/checker.md#task-memory-overflow-of-long-delays-round-57)."""
+    if not -2**31 <= value < 2**31:
+        value = struct.unpack("<f", struct.pack("<d", float(value))[:4])[0]
+        if not math.isfinite(value):
+            return 2**31
+    return int(value * _US_PER_UNIT[unit]) % 2**32
+
+
+def excite_delay_us(value: float) -> int:
+    """`ExciteV`'s `Delay`: the Long conversion as unsigned 32 bits (same section)."""
+    return consteval.to_long(value) % 2**32
+
+
+def task_memory_overflow(us: int) -> bool:
+    """`FUN_00522b50` splits a delay into 43000 us loops with a signed 16-bit count; a negative
+    count unrolls it past the 5119 task words (same section)."""
+    return bool((us // 43000) & 0x8000)
+
+
 def amount(excess: int, unit: int) -> int:
     """`FUN_0046c5c0`: an excess in 100 us units as a count of `unit`, rounded up (uSec: x100)."""
     return excess * 100 if unit == 0 else -(-excess // UNIT_FACTOR[unit])
@@ -290,13 +313,25 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
         if len(args) != 3:
             return None
         option, value, unit = (_num(a, env) for a in args)
-        if option is None or int(option) != 0 or value is None or value <= 0 or unit is None \
+        if option is None or int(option) != 0 or value is None or unit is None \
                 or int(unit) not in _US_PER_UNIT:
             return None
-        if int(value) < 1 or value >= 2**31:   # outside the Long range: not counted (round 16)
+        if 0 <= value < 1:
             return None
-        micro = int(value) * _US_PER_UNIT[int(unit)]
+        micro = delay_us(value, int(unit))
+        if micro == 0 or task_memory_overflow(micro):
+            return None
+        if micro >= 2**31:   # rounded up instead (an empirical fit, round 57; mechanism not derived)
+            return -(-micro // 100), False, 0
         return (2 * (micro // 2) + 100) // 100, False, 0
+    if kw == "EXCITEV":
+        delay = _long(args[2], env) if len(args) == 3 else None
+        if delay is None:
+            return None
+        delay = excite_delay_us(delay)
+        if task_memory_overflow(max(delay - 10, 0)):
+            return None
+        return ((delay + 100) % 2**32) // 100, False, 0
     if kw == "PORTSET":
         return 1, False, 0
     if kw in ("SW12", "PULSECOUNT"):

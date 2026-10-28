@@ -1,0 +1,1163 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-prt-PRTCalc(Volt1,2,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Volt1 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(Volt1,2,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Volt1 out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(Volt1,2,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Volt1 out of bounds."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(Volt1,2,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Volt1 out of bounds."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(Volt1,1,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(Volt1,1,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(Volt1,1,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(Volt1,1,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(Volt1,1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),5,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),5,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),5,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),5,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(2),5,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(2),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(2),5,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(2),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(2),5,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(2),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(2),5,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(2),5,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),2,RR,1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,RR,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),2,RR,1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,RR,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),2,RR,1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,RR,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),2,RR,1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,RR,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),0,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),0,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),0,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),0,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),0,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),0,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),0,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),0,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),-1,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),-1,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),-1,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),-1,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A4,3,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,3,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A4,3,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,3,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A4,3,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,3,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A4,3,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,3,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A4,2,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A4,2,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A4,2,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A4,2,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(L,2,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(L,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(L,2,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(L,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(L,2,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(L,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(L,2,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(L,2,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),256,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),256,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),256,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),256,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),256,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),256,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),256,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),256,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),257,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),257,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),257,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),257,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),257,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),257,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),257,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),257,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(1),2,R(5),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,R(5),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(1),2,R(5),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,R(5),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(1),2,R(5),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,R(5),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(1),2,R(5),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(1),2,R(5),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A(5),1,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(5),1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A(5),1,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(5),1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A(5),1,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(5),1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A(5),1,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A(5),1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-PRTCalc(A4,-1,R(1),1,1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-PRTCalc(A4,-1,R(1),1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-PRTCalc(A4,-1,R(1),1,1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr350-prt-PRTCalc(A4,-1,R(1),1,1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    PRTCalc(A4,-1,R(1),1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr6-prt-MinRun(A4,3,Volt1,5,False)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-MinRun(A4,3,Volt1,5,False)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-MinRun(A4,3,Volt1,5,False)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-MinRun(A4,3,Volt1,5,False)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-MaxRun(A4,3,Volt1,5,False)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MaxRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-MaxRun(A4,3,Volt1,5,False)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MaxRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-MaxRun(A4,3,Volt1,5,False)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MaxRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-MaxRun(A4,3,Volt1,5,False)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MaxRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-AvgRun(A4,3,Volt1,5)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    AvgRun(A4,3,Volt1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-AvgRun(A4,3,Volt1,5)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    AvgRun(A4,3,Volt1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-AvgRun(A4,3,Volt1,5)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    AvgRun(A4,3,Volt1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-AvgRun(A4,3,Volt1,5)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    AvgRun(A4,3,Volt1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-TotalRun(A4,3,Volt1,5,False)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    TotalRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-TotalRun(A4,3,Volt1,5,False)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    TotalRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-TotalRun(A4,3,Volt1,5,False)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    TotalRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-TotalRun(A4,3,Volt1,5,False)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    TotalRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-StdDevRun(A4,3,Volt1,5,False)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    StdDevRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-StdDevRun(A4,3,Volt1,5,False)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    StdDevRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-StdDevRun(A4,3,Volt1,5,False)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    StdDevRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: StdDevRun is not defined.\nline 5: Invalid, or out of place expression:     StdDevRun(A4,3,Volt1,5,False)\n."
+  },
+  {
+   "id": "cr350-prt-StdDevRun(A4,3,Volt1,5,False)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    StdDevRun(A4,3,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: StdDevRun is not defined.\nline 5: Invalid, or out of place expression:     StdDevRun(A4,3,Volt1,5,False)\n."
+  },
+  {
+   "id": "cr6-prt-Move(A4,3,R(1),3)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,3,R(1),3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-Move(A4,3,R(1),3)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,3,R(1),3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-Move(A4,3,R(1),3)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,3,R(1),3)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-Move(A4,3,R(1),3)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,3,R(1),3)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-Move(A4,2,R(1),2)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,2,R(1),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-Move(A4,2,R(1),2)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,2,R(1),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-Move(A4,2,R(1),2)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,2,R(1),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-Move(A4,2,R(1),2)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(A4,2,R(1),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-CalFile(A4,3,\"CPU:c.cal\",Volt1)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,3,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr1000x-prt-CalFile(A4,3,\"CPU:c.cal\",Volt1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,3,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A4 out of bounds."
+  },
+  {
+   "id": "cr300-prt-CalFile(A4,3,\"CPU:c.cal\",Volt1)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,3,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-CalFile(A4,3,\"CPU:c.cal\",Volt1)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,3,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-CalFile(A4,2,\"CPU:c.cal\",Volt1)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,2,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-CalFile(A4,2,\"CPU:c.cal\",Volt1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,2,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-CalFile(A4,2,\"CPU:c.cal\",Volt1)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,2,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-CalFile(A4,2,\"CPU:c.cal\",Volt1)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    CalFile(A4,2,\"CPU:c.cal\",Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-prt-MinRun(A4,2,Volt1,5,False)",
+   "logger": "cr6",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,2,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-prt-MinRun(A4,2,Volt1,5,False)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,2,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-prt-MinRun(A4,2,Volt1,5,False)",
+   "logger": "cr300",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,2,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-prt-MinRun(A4,2,Volt1,5,False)",
+   "logger": "cr350",
+   "source": "Public Volt1, A(5), R(5), RR, L As Long, LA(5) As Long\nAlias A(4) = A4\nBeginProg\n  Scan (1,Sec,3,0)\n    MinRun(A4,2,Volt1,5,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tbl-Sample(6,G,String)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(6,G,String)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tbl-Sample(6,G,String)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tbl-Sample(6,G,String)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tbl-Sample(7,G,String)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(7,G,String)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(7,G,String)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(7,G,String)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(&HFF,G,String)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(&HFF,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(&HFF,G,String)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(&HFF,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(&HFF,G,String)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(&HFF,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(&HFF,G,String)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(&HFF,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(2,A4,FP2)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(2,A4,FP2)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tbl-Sample(2,A4,FP2)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tbl-Sample(2,A4,FP2)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tbl-Sample(3,A4,FP2)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(3,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A4 out of bounds.\nline 7: Variable A4, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(3,A4,FP2)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(3,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A4 out of bounds.\nline 7: Variable A4, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(3,A4,FP2)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(3,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(3,A4,FP2)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(3,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(4,L2,Long)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(4,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(4,L2,Long)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(4,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tbl-Sample(4,L2,Long)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(4,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tbl-Sample(4,L2,Long)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(4,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tbl-Sample(5,L2,Long)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L2 out of bounds.\nline 7: Variable L2, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(5,L2,Long)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L2 out of bounds.\nline 7: Variable L2, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(5,L2,Long)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L, index 2, reps 5, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(5,L2,Long)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L, index 2, reps 5, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Average(3,A4,FP2,False)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Average(3,A4,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A4 out of bounds.\nline 7: Variable A4, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Average(3,A4,FP2,False)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Average(3,A4,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A4 out of bounds.\nline 7: Variable A4, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Average(3,A4,FP2,False)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Average(3,A4,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Average(3,A4,FP2,False)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Average(3,A4,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Maximum(3,A4,FP2,False,False)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Maximum(3,A4,FP2,False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A4 out of bounds.\nline 7: Variable A4, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Maximum(3,A4,FP2,False,False)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Maximum(3,A4,FP2,False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A4 out of bounds.\nline 7: Variable A4, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Maximum(3,A4,FP2,False,False)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Maximum(3,A4,FP2,False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Maximum(3,A4,FP2,False,False)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Maximum(3,A4,FP2,False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(5,AW,FP2)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(5,AW,FP2)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tbl-Sample(5,AW,FP2)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tbl-Sample(5,AW,FP2)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tbl-Sample(6,AW,FP2)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(6,AW,FP2)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(6,AW,FP2)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(6,AW,FP2)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(2,G(1),String)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,G(1),String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(2,G(1),String)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,G(1),String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tbl-Sample(2,G(1),String)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,G(1),String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: G(1).",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(2,G(1),String)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(2,G(1),String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: G(1).",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(0,G,String)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(0,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-tbl-Sample(0,G,String)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(0,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Reps 0"
+  },
+  {
+   "id": "cr300-tbl-Sample(0,G,String)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(0,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Reps 0"
+  },
+  {
+   "id": "cr350-tbl-Sample(0,G,String)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(0,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-tbl-Sample(7,g,String)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,g,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(7,g,String)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,g,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(7,g,String)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,g,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(7,g,String)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,g,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tbl-Sample(6,aw,FP2)",
+   "logger": "cr6",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,aw,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-tbl-Sample(6,aw,FP2)",
+   "logger": "cr1000x",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,aw,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-tbl-Sample(6,aw,FP2)",
+   "logger": "cr300",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,aw,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tbl-Sample(6,aw,FP2)",
+   "logger": "cr350",
+   "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,aw,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
+   "not_modelled": "CR300/CR350 best effort"
+  }
+ ]
+}

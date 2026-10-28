@@ -70,12 +70,16 @@ _COMMS_MODES = {"COMC1": frozenset(range(8)), "COMC5": frozenset(range(8)),
                 "COMC3": frozenset({0, 1, 2, 3, 4, 6}), "COMC7": frozenset({0, 1, 2, 3, 4, 6})}
 
 
-def _commsmode_problem(stmt: S.Call, profile, consts: dict | None) -> tuple[bool, str] | None:
-    if len(stmt.args) < 6 or stmt.args[5] is None:
+def _commsmode_problem(stmt: S.Call, profile, consts: dict | None, index: int = 5,
+                       mode: object = None) -> tuple[bool, str] | None:
+    """`index` is the CommsMode argument, `mode` a value to use instead of it."""
+    if len(stmt.args) <= index or stmt.args[index] is None:
         return None
     env = consteval.Env(profile, dict(consts or {}))
     try:
-        port, mode = consteval.value_of(stmt.args[0], env), consteval.value_of(stmt.args[5], env)
+        port = consteval.value_of(stmt.args[0], env)
+        if mode is None:
+            mode = consteval.value_of(stmt.args[index], env)
     except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
         return None
     if isinstance(mode, bool) or not isinstance(mode, (int, float)) or mode != int(mode):
@@ -94,6 +98,15 @@ def _commsmode_problem(stmt: S.Call, profile, consts: dict | None) -> tuple[bool
             shown = {"COMRS232": "COM232", "COMME": "COMME"}.get(key, record["name"])
             return False, f"CommsMode Option {int(mode)} not supported on {shown}."
     return None
+
+
+def _non_numeric(expr, profile, consts: dict | None, variable_names) -> bool:
+    if expressions._variable_refs(expr, variable_names):
+        return True
+    try:
+        return isinstance(consteval.value_of(expr, consteval.Env(profile, dict(consts or {}))), str)
+    except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+        return False
 
 
 def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None) -> None:
@@ -201,7 +214,13 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                                 stmt.file)
                     continue
         _check_baud(stmt, profile, diags, program.consts)
-        if not (names or is_variable or isinstance(arg, S.String)) and len(stmt.args) > 3 \
+        constant_port = not (names or is_variable or isinstance(arg, S.String))
+        # CR6/CR1000X: a String or variable `SerialOpenFormat` makes the 5th argument the CommsMode, with
+        # no TXDelay range and at most 5 arguments (oracle, 2026-10-28, round 57,
+        # docs/checker.md#serialopen-format-and-commsmode-round-57)
+        shifted = not cr3 and constant_port and len(stmt.args) > 2 and stmt.args[2] is not None \
+            and _non_numeric(stmt.args[2], profile, program.consts, variable_names)
+        if constant_port and not shifted and len(stmt.args) > 3 \
                 and stmt.args[3] is not None:
             # `TXDelay` (oracle, all four loggers, 2026-10-12): a constant outside 0..14000000 is
             # `%d usec delay before transmit is illegal, must be 0..14000000`; a variable is
@@ -221,12 +240,22 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 # (beyond 32 bits: `Parameter must be a constant integer` only, `intervals.py`)
                 diags.error(stmt.line, f"{int(value)} usec delay before transmit is illegal, must be "
                             "0..14000000", stmt.file)
-        if not (cr3 or names or is_variable or isinstance(arg, S.String)) and \
-                (problem := _commsmode_problem(stmt, profile, program.consts)):
+        # a 6th argument that is no constant integer counts as mode 0, then is rejected (same probes)
+        bad_mode = not cr3 and constant_port and not shifted and len(stmt.args) > 5 \
+            and stmt.args[5] is not None and (expressions._not_constant_integer(stmt.args[5])
+                                              or bool(expressions._variable_refs(stmt.args[5], variable_names)))
+        if not cr3 and constant_port and (problem := _commsmode_problem(
+                stmt, profile, program.consts, 4 if shifted else 5, mode=0 if bad_mode else None)):
             if problem[0]:
                 diags.error(stmt.line, problem[1], stmt.file)
             else:
                 diags.warning(stmt.line, problem[1], stmt.file)
+        if bad_mode:
+            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
+            continue
+        if shifted and len(stmt.args) > 5:
+            diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.", stmt.file)
+            continue
         if not (cr3 or names or is_variable or isinstance(arg, S.String)) and len(stmt.args) > 4 \
                 and expressions._variable_refs(stmt.args[4], variable_names):
             # a variable `BufferSize` (oracle, CR6/CR1000X, 2026-10-24, round 34)

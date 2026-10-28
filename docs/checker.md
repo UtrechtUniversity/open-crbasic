@@ -6940,7 +6940,9 @@ time.` here; the real compiler prints no such warning for it (reachability layer
 CR6/CR1000X: a constant `Delay` interval of 2^31 or more (`Delay(0,999999999999,Sec)`, `Delay(0,2147483648,min)`,
 `Delay(0,3600000000,uSec)`) draws no `Measurement Delay Exceeds 60 min.` and no `Scan interval too short`; the delay is not
 counted at all (a false reject, `cr6/false_reject/7ee5e9c9ebee`). Up to `2147483647` the old rules hold (and a few values just
-below, e.g. `2147483647 uSec`, give `Program too big for task memory` instead, not modelled). CR300/CR350 differ again (a huge
+below, e.g. `2147483647 uSec`, give `Program too big for task memory` instead; refined in
+[task-memory overflow of long delays](#task-memory-overflow-of-long-delays-round-57), which also replaces
+"not counted at all" by the Double's low word). CR300/CR350 differ again (a huge
 `mSec`/`uSec` interval is `Max Delay is 24 Hours` there, not modelled). `instr_measure._delay_interval_us`,
 `scan_time.instruction_units`.
 
@@ -8037,9 +8039,9 @@ CR1000X seeds found three false rejects and these false-accept families.
 - **Running statistics.** `MinRun`, `MaxRun`, `TotalRun` and `StdDevRun` bound their destination by
   Reps like `AvgRun`, including a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`).
 
-Not modelled: a negative `Delay` option-0 interval (`Program too big for task memory`, repeated; an
-allocation model), and `Scan interval too short ... by N` is one second high on our side for long
-delays (`Delay(0,3600,Sec)` in a 10 s scan: 3590 on the reference, 3591 here).
+A negative `Delay` option-0 interval's repeated `Program too big for task memory` and the one-second
+difference for long delays (`Delay(0,3600,Sec)` in a 10 s scan: 3590) are modelled since round 57
+([task-memory overflow of long delays](#task-memory-overflow-of-long-delays-round-57)).
 
 ## Relevant-instruction seeds (round 36)
 
@@ -8968,3 +8970,78 @@ Seeds 449/450 found five CR1000X false accepts, all fixed (oracle 2026-10-28, CR
   direction array is checked first with `Variable WD out of bounds.` alone, then the speed array like a
   `Sample` source (`Variable WS out of bounds.`, `Variable WS, index 1, reps 255, out of bounds.`); a
   scalar counts as one element. `instr_data._check_stage2a`. Fixture `r56_windvector_bounds.json`.
+
+## Task-memory overflow of long delays (round 57)
+
+Oracle, CR6 and CR1000X identical, 2026-10-28 (`ExciteV(U1,...)` on CR6, `Vx1` on CR1000X); decompiled
+mechanism from Codex `gpt-6.1-sol` research (`scratch/r57/codex-alloc.log`, read-only), every
+prediction below confirmed on the reference. Fixture `r57_task_memory_delays.json`.
+
+- **Mechanism.** The delay generator (`FUN_00522b50`, CR1000X `FUN_0051d270`) splits a delay of `U`
+  microseconds into loops of 43000 us with a signed 16-bit count. When `(U // 43000) & 0x8000` is
+  set, the count is negative and the generator unrolls `2 * count` task words, past the 5119-word
+  task program (`FUN_005255b0`, limit `0x13ff`). Every further word reports `Program too big for
+  task memory` without advancing, so the line repeats until the 4096-byte message buffer is full
+  (99 copies on a one-digit line, 97 on a two-digit line) and nothing after it is reported. The
+  failure is per instruction and does not depend on the rest of the program. It is not monotonic:
+  `ExciteV(...,-1476919287)` overflows, `-1476919286` wraps to about 2818 s and compiles in a long
+  enough scan.
+- **`ExciteV` Delay.** `U` is the Long conversion of the constant as unsigned 32 bits, minus 10 when
+  above 10: the first overflow is `1409024010`, and `-1`, `2147483647`, `3600000000` overflow. The
+  delay also costs scan time, `(D + 100) // 100` units of 100 us (`0` costs one unit, `99` one,
+  `100` two). In SequentialMode the overflow still applies.
+- **`Delay(0,...)` interval.** `U` is `value * unit` modulo 2^32: the first overflow is
+  `1409024000` uSec (`1410` Sec, `24` Min, `-1` uSec), while `59` Min (3.54e9 us), `2` Hr and `72` Min
+  wrap clear of it. `Measurement Delay Exceeds 60 min.` tests the same unsigned `U` against 3.6e9, which
+  is why `-1` uSec and `-0.5` Sec exceed 60 minutes but `-100` Min (2589934592 us) only overflows and
+  `-1000` Sec costs 3294 s of scan time. An interval outside the Long range is a Double whose low word
+  is read as a float32 (`2147485184` -> -2.0: 60 minutes and the overflow; `2147484236` -> 1048576 us;
+  `3600000000` -> -0.0: nothing); a non-finite float counts as 2^31 (one observation,
+  `2147485695`). Scan time costs `floor(U / 100) + 1` units below 2^31 and `ceil(U / 100)` from 2^31
+  (`3000` Sec in a 1 s scan is `by 2999 Sec`, `3600` Sec in a 10 s scan `by 3590 Sec`); the second
+  form is an empirical fit.
+- **SequentialMode.** `Delay` option 0 is a plain delay there (`delay3.htm`): no constant-interval
+  check, no 60-minute limit and no expansion (`Delay(0,-1,uSec)`, `Delay(0,4000,Sec)`,
+  `Delay(0,Volt1,uSec)` compile).
+
+Implemented in `scan_time.delay_us`, `excite_delay_us`, `task_memory_overflow`, `instr_measure._check_delay`
+and the `EXCITEV` branch of `instr_measure.check`; profile data `measure.json` `delay.task_memory`.
+Not probed: CR300/CR350, other callers of the task-word writer (a program whose other instructions
+fill the 5119 words), `Delay` options 1 and 2 in SequentialMode.
+
+## `SerialOpen` format and CommsMode (round 57)
+
+Oracle, CR6 and CR1000X identical, 2026-10-28; fixture `r57_serialopen_format_commsmode.json`.
+
+- **Non-numeric `SerialOpenFormat`.** A String literal, a String expression or any variable as the
+  third argument makes the fifth argument the CommsMode, checked against the ComC port table only
+  (`SerialOpen(ComC1,9600,"fuzz",0,10000)` -> `CommsMode Option 10000 not supported on ComC1.`;
+  `ComRS232` and `ComU1` warn as usual). The TXDelay range is not checked
+  (`"x",-1,100` reports only the CommsMode line), and a sixth argument adds `No Matching, or out of
+  place ) in expression: <statement>.`.
+- **Sixth argument.** With a numeric format, a CommsMode that is no constant integer (a string, a
+  float, a variable, an integer beyond 32 bits) counts as mode 0 for the port warning and is then
+  `Parameter must be a constant integer: <statement>.`: `ComRS232` adds `Warning: CommsMode Option 0
+  not supported on COM232.` first, a ComC port nothing. `2+1` is accepted; an undeclared name stays
+  `Invalid symbol in expression`.
+
+Implemented in `cr3xx.check` (`_non_numeric`, `_commsmode_problem`). Not modelled: fewer than five
+arguments with a non-numeric format give `Parameter must be a constant integer: <statement>.` instead
+of the arity line (same verdict).
+
+## Alias sources of table output (round 57)
+
+Oracle, CR6 and CR1000X identical, 2026-10-28; fixture `r57_alias_bounds.json`.
+
+- **Table output.** A bare `Alias` name as the source of `Sample`, `Average`, `Maximum` and the other
+  output instructions is bounds-checked against the backing storage from the aliased element on:
+  `Alias S(13) = G` over `S(18) As String * 15` takes `Sample(6,G,String)` but `Sample(7,G,String)` is
+  `Variable G out of bounds.` and `Variable G, index 1, reps 7, out of bounds.` (Float and Long
+  likewise). An alias of a whole variable (`Alias A = AW`) names the backing variable in the first
+  line and the alias in the second; both use the declared spelling. A subscripted alias source
+  (`G(1)`) is not modelled. `instr_data._alias_sources`.
+- **`PRTCalc`** bounds its Float destination by Reps like `CalFile`: negative Reps is out of bounds,
+  and Reps is not reduced to a byte (`256`, `257`); a Long destination is not checked.
+- **Alias destinations** of `PRTCalc`, `CalFile`, `Move` and the running statistics count from the alias
+  (`Alias A(4) = A4` over `A(5)`: `PRTCalc(A4,3,...)` and `MinRun(A4,3,...)` are `Variable A4 out of
+  bounds.`). `instr_measure.check_dest_bounds`. CR300/CR350 not probed.

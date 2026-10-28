@@ -11,7 +11,8 @@
  "sw12_ports": [1, 2, 501, 502],
  "delay": {
   "option0_limit": 3600000000,
-  "option1_limit": 86400000000
+  "option1_limit": 86400000000,
+  "task_memory": true
  },
  "cs616_min_reps_pos": 2,
  "excite_magnitude_pos": 2,

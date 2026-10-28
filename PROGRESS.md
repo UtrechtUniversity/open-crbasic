@@ -1,9 +1,10 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-28 after development round 56** (round-51
+Current compiler state and handoff, updated **2026-10-28 after development round 57** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
-round 55; four fuzz false accepts and a UINT1 warning, round 56). Rounds 49-56 are on `main`; use Git to check publication
+round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
+relevant false accepts, round 57). Rounds 49-56 are on `main`; use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -22,11 +23,11 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 58,884 passed, 311 skipped, 539 strict xfail (round 56, `-n 6`) |
-| `pytest -q -m server` | 163 passed (round 56) |
+| `pytest -q -n 4 -m 'not server'` | 59,451 passed, 311 skipped, 564 strict xfail (round 57, `-n 6`) |
+| `pytest -q -m server` | 163 passed (round 57) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 56, unchanged from 55) | 3,338 inputs: 2,585 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
-| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 46) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 57) | 3,338 inputs: 2,591 exact (round 56: 2,585); CR6/CR1000X: 21 first-error misses, 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 57) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Fresh fuzz, seeds 449 (CR6) / 450 (CR1000X) (round 56, `--relevant`, 500 mutants each) | CR6 487 exact, 10 message differences, 1 warning-only difference; CR1000X 482 exact, 8 message differences, 5 false accepts (all fixed), 1 warning-only difference. Seeds 447/448 (round 55): 2 false accepts, fixed. Raw output in `scratch/r55/`, `scratch/r56/` (git-ignored) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
@@ -42,7 +43,7 @@ CR6/CR1000X since round 34.
 GEUS corpus: the reference CR1000X compiler accepts all 66 GEUS `.CR1X` programs; since round 33
 opencrbasic matches all 66 exactly ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
-Four-profile diagnostic comparison, rerun in round 46 and unchanged from round 28
+Four-profile diagnostic comparison, rerun in round 57 and unchanged from round 28
 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
@@ -58,11 +59,11 @@ help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strco
 CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 46 both with the reference compiler and with
+Repository verification passed in round 57 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
-BUILD  host tests 146 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+BUILD  Pyrefly 491 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
 ```
 
 Expected warnings are owned by [repository build status](../STATUS.md#build). Compilation and host tests do
@@ -73,6 +74,28 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 57** (M1 under the new gate scope; coordinator, Codex `gpt-6.1-sol` decompilation research in
+`scratch/r57/codex-alloc.log`). All five relevant false accepts fixed, plus the families they belong to:
+- **Task-memory overflow of long delays** (`55821bbfb248`, `ExciteV(Vx1,0,-1)`): the delay generator's
+  signed 16-bit loop count; `ExciteV` delays from `1409024010` us and `Delay(0,...)` from `1409024000` us
+  (and their 32-bit wraps) repeat `Program too big for task memory` until the message buffer is full.
+  The `Delay` interval is unsigned 32-bit (also for the 60-minute limit and scan time; the Double low
+  word outside the Long range), `ExciteV`'s delay now costs scan time, and SequentialMode skips the
+  option-0 checks (a false reject: `Delay(0,-1,uSec)` there). 14 round-35 `not_modelled` observations
+  now match.
+- **`SerialOpen`** (`c3d3adda9412`, `9be1e8aba3d8`): a non-numeric format makes the fifth argument the
+  CommsMode; a sixth argument must be a constant integer.
+- **Bounds** (`e6b6604b4da3`, `f76ae7c58e75`): `PRTCalc` destinations; alias sources of table output
+  (`Sample`, `Average`, ...) and alias destinations of `PRTCalc`, `CalFile`, `Move` and the running
+  statistics.
+- Fixtures `r57_task_memory_delays.json`, `r57_serialopen_format_commsmode.json`,
+  `r57_alias_bounds.json` (592 observations, all four profiles; CR6/CR1000X all match except four
+  same-verdict `SerialOpen` messages). Details: [docs/checker.md](docs/checker.md#task-memory-overflow-of-long-delays-round-57)
+  and the two sections after it. Human proposal recorded as a PLAN check candidate: negative or
+  wrapped delays.
+- Gates: fixture audit 0 differing; four-profile difftest and GEUS unchanged; CI replay gate passes;
+  `verify.py` passes with both compilers. No hardware tests.
 
 **Round 56** (M1, fresh fuzz seeds 449/450; coordinator only). Five CR1000X false accepts fixed:
 bridge excitation below 20 mV, `Minimum` data type 0, spatial destination types and Long bounds, and
@@ -192,26 +215,20 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    its settings, put the configuration in the cache key); a missing entry file writes no report;
    then the next checks from the PLAN table.
 4. **M1, remaining false accepts.** Under the [M1 gate scope](PLAN.md#v10-milestones) (human
-   decision 2026-10-28) only relevant-set cases block M1. Open and gated: `c3d3adda9412` (CR6
-   `SerialOpen(COMC1,9600,"fuzz",0,10000)`, `CommsMode Option 10000 not supported`), `55821bbfb248`
-   (CR1000X `ExciteV(Vx1,0,-1)`, `Program too big for task memory` cascade) and the three round-57
-   seeds above (`SerialOpen`, `PRTCalc`, `Sample`). The other 25 of
-   the 27 left on CR6/CR1000X are not gated: instructions neither FirnMelt nor GEUS uses. Round 34's
-   18: `072c74da6af5` (`&H0  10a0101`), `51f39a5f2393` and `7b4b2177d56b` (`CDM_FFTFilt`),
-   `55821bbfb248` (`Program too big for task memory` cascade), `870ca9a9562e`/`e8c854e3493d` (I2C/SPI
-   port clamp), `a0b2b0b059b3` (CDM excitation clamp), `ec6b11bc3176`/`022d98dd3efc` (`MenuPick`),
-   `4156d89a014d` (`EC100`), `6ac24bd775f1` (`CDM_MuxSelect`), `72f95eac103f` (`DNPVariable`),
-   `77636b10567c` (`SDMSW8A`), `7f9efa8af42c` (`SDMCD16AC`), `c060e9f1402f` (`TimedControl`),
-   `c3d3adda9412` (`SerialOpen` string format), `d12785e05faf` (`TriggerSequence`), `f2f6e5d8b8e6`
-   (`SNMPVariable`). Round 35's 9: `0e23c61229f4` (`CS7500`), `39a03364be83` (`FieldCalStrain`),
+   decision 2026-10-28) only relevant-set cases block M1, and none is open after round 57. The 25 left
+   on CR6/CR1000X in the replay are not gated (instructions neither FirnMelt nor GEUS uses). Round
+   34's: `072c74da6af5` (`FieldClassify("&H0  10a0101")`), `51f39a5f2393` and `7b4b2177d56b`
+   (`CDM_FFTFilt`), `870ca9a9562e`/`e8c854e3493d` (I2C/SPI port clamp), `a0b2b0b059b3` (CDM excitation
+   clamp), `ec6b11bc3176`/`022d98dd3efc` (`MenuPick`), `4156d89a014d` (`EC100`), `6ac24bd775f1`
+   (`CDM_MuxSelect`), `72f95eac103f` (`DNPVariable`), `77636b10567c` (`SDMSW8A`), `7f9efa8af42c`
+   (`SDMCD16AC`), `c060e9f1402f` (`TimedControl`), `d12785e05faf` (`TriggerSequence`), `f2f6e5d8b8e6`
+   (`SNMPVariable`). Round 35's: `0e23c61229f4` (`CS7500`), `39a03364be83` (`FieldCalStrain`),
    `52138d7bd179` (`CDM_PulsePort`), `577a59ecb08c` (`AVW200` destination), `778ea45e64b7`
    (`CDM_BrFull6W` settling clamp), `9c6367a2c598` (`MenuRecompile`), `ecc509dd06de`/`f61f825392f2`
-   (`TableFile`), `fa923ecef6f4` (`MenuPick`). Round 36's `7b14df1ed0f8` was fixed in round 37
-   (terminal ownership). Coverage notices for them wait for M4. The 16
-   CR300/CR350 false accepts are best effort. Next: more `--relevant` seeds (round 38's 429-432 found only two false accepts; also rules found in passing: data types past 255, `Sample` with UINT1,
-   CR300/CR350 terminal ownership and `SerialOpen` ports), and the message-level first-error differences (M2): after round 41, 24 CR6/CR1000X
-   first-error misses, 6 earlier first locations and 112 same-location messages remain in the
-   replay; after any `crbasic/` change run `fuzz_replay.py --rerecord-stale` first (`docs/checker.md`
+   (`TableFile`), `fa923ecef6f4` (`MenuPick`). Coverage notices for them wait for M4. The CR300/CR350
+   false accepts are best effort. **Next:** fresh `--relevant` seeds until they stop finding relevant
+   false accepts (seeds 449-452 found 9, all fixed), then the message-level first-error differences
+   (M2). After any `crbasic/` change run `fuzz_replay.py --rerecord-stale` first (`docs/checker.md`
    "First-error families (round 39)" lists the modelled ones).
 5. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is still unprobed for `CDM_BridgeFilt`, `CDM_CalRead`, `CDM_CANOutCfg`,

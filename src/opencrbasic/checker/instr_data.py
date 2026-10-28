@@ -1016,11 +1016,48 @@ def _short_array(arg, reps: int, dims: dict, env) -> bool:
     return offset + reps > math.prod(shape)
 
 
+def _alias_sources(program: S.Program, tables, env) -> dict[str, tuple[str, str, int]]:
+    """Top-level `Alias` names of a declared variable or of one element of a 1-D array:
+    `(name of the first bounds message, declared alias name, elements from the alias on)`; the
+    first message names the
+    backing variable when the alias starts at its first element (oracle, CR6/CR1000X, round 57,
+    docs/checker.md#alias-sources-of-table-output-round-57)."""
+    out: dict[str, tuple[str, str, int]] = {}
+    declared = {v.name.upper(): v.name for d in program.statements if isinstance(d, S.Declaration)
+                for v in d.vars}
+    depth = 0
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            depth += 1
+        elif S.ends_routine(st):
+            depth -= 1
+        if depth or not isinstance(st, S.Instruction) or st.keyword.upper() != "ALIAS" or \
+                len(st.args) < 2 or not isinstance(target := st.args[0], (S.Name, S.Index)):
+            continue
+        shape = tables(st).dims.get(target.name.upper())
+        if shape is None:
+            continue
+        offset = 0
+        if isinstance(target, S.Index):
+            if len(target.args) != 1 or len(shape) != 1 or (k := _reps_value(target.args[0], env)) is None:
+                continue
+            offset = k - 1
+        total = math.prod(shape)
+        for alias in st.args[1:]:
+            if not isinstance(alias, S.Name) or not 0 <= offset < total:
+                break
+            out[alias.name.upper()] = (declared.get(target.name.upper(), target.name) if offset == 0
+                                       else alias.name, alias.name, total - offset)
+            offset += 1
+    return out
+
+
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
                    destinations: bool) -> bool:
     from . import expressions
     reported = False
     tables = symbols.scope_tables(program, env)
+    aliases = _alias_sources(program, tables, env) if destinations and not profile.single_pass else {}
     known = expressions._known_names(program, profile)
     source_vars = None
     if destinations:
@@ -1104,6 +1141,14 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if reps is None or not isinstance(source, (S.Name, S.Index)):
                 continue
             shape = dims.get(source.name.upper())
+            if shape is None and isinstance(source, S.Name) and source.name.upper() in aliases:
+                first, alias_name, left = aliases[source.name.upper()]
+                if reps > left:
+                    diags.error(st.line, f"Variable {first} out of bounds.", st.file)
+                    diags.error(st.line, f"Variable {alias_name}, index 1, reps {reps}, out of bounds.",
+                                st.file)
+                    return True
+                continue
             if shape is None:
                 continue
             if not destinations and _is_struct_typed(program, source.name):

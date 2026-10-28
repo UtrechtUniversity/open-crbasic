@@ -1780,8 +1780,8 @@ unit conversion `FUN_005082c0`) and verified 2026-10-10 on all four compilers (3
 - Not modelled: a 4th argument that is an in-range-of-32-bits but out-of-range integer. The real
   compilers print `<n> usec delay before transmit is illegal, must be 0..14000000` (`-1`, `2147483647`),
   and CR300/CR350 print a wrapped value for `2147483648`/`-2147483648`. Ours accepts these.
-- Not modelled: a 6th argument. CR6/CR1000X also print `CommsMode Option ... not supported` warnings
-  there, so the constant-integer line is not the only diagnostic.
+- A 6th argument that is no constant integer: CR6/CR1000X since round 57
+  ([checker notes](checker.md#serialopen-format-and-commsmode-round-57)).
 
 ## `FTPClient` argument count (2026-10-11, fixture `tests/fixtures/ftpclient_arity.json`)
 
