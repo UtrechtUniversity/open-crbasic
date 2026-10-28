@@ -191,8 +191,12 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 3. **M3, remaining:** the language server does not run checks yet (M6: call `checks.analyze` with
    its settings, put the configuration in the cache key); a missing entry file writes no report;
    then the next checks from the PLAN table.
-4. **M1, remaining false accepts.** The 27 left on CR6/CR1000X fall under the PLAN's flag rule:
-   instructions neither FirnMelt nor GEUS uses, or allocation and 32-bit clamping models. Round 34's
+4. **M1, remaining false accepts.** Under the [M1 gate scope](PLAN.md#v10-milestones) (human
+   decision 2026-10-28) only relevant-set cases block M1. Open and gated: `c3d3adda9412` (CR6
+   `SerialOpen(COMC1,9600,"fuzz",0,10000)`, `CommsMode Option 10000 not supported`), `55821bbfb248`
+   (CR1000X `ExciteV(Vx1,0,-1)`, `Program too big for task memory` cascade) and the three round-57
+   seeds above (`SerialOpen`, `PRTCalc`, `Sample`). The other 25 of
+   the 27 left on CR6/CR1000X are not gated: instructions neither FirnMelt nor GEUS uses. Round 34's
    18: `072c74da6af5` (`&H0  10a0101`), `51f39a5f2393` and `7b4b2177d56b` (`CDM_FFTFilt`),
    `55821bbfb248` (`Program too big for task memory` cascade), `870ca9a9562e`/`e8c854e3493d` (I2C/SPI
    port clamp), `a0b2b0b059b3` (CDM excitation clamp), `ec6b11bc3176`/`022d98dd3efc` (`MenuPick`),
