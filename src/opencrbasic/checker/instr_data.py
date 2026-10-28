@@ -1004,6 +1004,18 @@ def _is_struct_typed(program: S.Program, name: str) -> bool:
                if isinstance(d, S.Declaration) for v in d.vars if v.name.upper() == name.upper())
 
 
+def _short_array(arg, reps: int, dims: dict, env) -> bool:
+    """`arg` is a declared variable (or a constant 1-D element) with fewer than `reps` elements left."""
+    if not isinstance(arg, (S.Name, S.Index)) or (shape := dims.get(arg.name.upper())) is None:
+        return False
+    offset = 0
+    if isinstance(arg, S.Index) and arg.args:
+        if len(arg.args) != 1 or len(shape) != 1 or (sub := _reps_value(arg.args[0], env)) is None:
+            return False
+        offset = sub - 1
+    return offset + reps > math.prod(shape)
+
+
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
                    destinations: bool) -> bool:
     from . import expressions
@@ -1059,7 +1071,12 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if destinations and in_table and kw in _TABLE_OUTPUT and sources_ok:
             from .structure import _undefined_table_source
             sources_ok = _undefined_table_source(st, profile, known) is None
-        if kw in _TABLE_OUTPUT and len(st.args) >= 2 and sources_ok and (in_table or not destinations):
+        wind = kw == "WINDVECTOR" and destinations and in_table and len(st.args) >= 3 and \
+            isinstance(st.args[1], (S.Name, S.Index)) and (_reps_value(st.args[0], env) or 0) >= 1
+        if wind and _short_array(st.args[2], _reps_value(st.args[0], env) or 0, dims, env):
+            # the direction first, one line (oracle, round 56, docs/checker.md#round-56-fuzz-rules)
+            diags.error(st.line, f"Variable {getattr(st.args[2], 'name', '')} out of bounds.", st.file)
+        if (kw in _TABLE_OUTPUT or wind) and len(st.args) >= 2 and sources_ok and (in_table or not destinations):
             # (CR6/CR1000X: outside a table only `must be used inside a table declaration`, round 39)
             reps = _reps_value(st.args[0], env)
             if reps is not None and reps < 1:

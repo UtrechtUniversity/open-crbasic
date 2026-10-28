@@ -8941,7 +8941,7 @@ Codex review of worker B's round-54 PipeLine data, confirmed on CR6/CR1000X (ora
 
 ## Round-56 fuzz rules
 
-Seeds 449/450 found five CR1000X false accepts; four are fixed (oracle 2026-10-28, CR6 and CR1000X):
+Seeds 449/450 found five CR1000X false accepts, all fixed (oracle 2026-10-28, CR6 and CR1000X):
 
 - **Minimum excitation.** `BrHalf`, `BrHalf3W`, `BrFull` (ExmV argument 7) and `BrHalf4W`, `BrFull6W`
   (argument 8) reject an excitation of 0 to 19 mV with `Minimum Excitation is 20mV.`; 20 and negative
@@ -8963,5 +8963,7 @@ Seeds 449/450 found five CR1000X false accepts; four are fixed (oracle 2026-10-2
   one per variable, also in a failed compile; CR300/CR350 print nothing. An `Alias` of a UINT1 scalar also
   warns (`not_modelled`). Fixture `r56_uint1_dimension_warning.json`.
 
-Open: `WindVector(&HFF,WS,WD,...)` with `WS(2)`, `WD(2)` (`bf74cfafbba5`) is `Variable WD out of bounds.`,
-`Variable WS out of bounds.`, `Variable WS, index 1, reps 255, out of bounds.` in the reference; we accept.
+- **`WindVector` reps bounds** (`bf74cfafbba5`, `WindVector(&HFF,WS,WD,...)` with `WS(2)`, `WD(2)`). The
+  direction array is checked first with `Variable WD out of bounds.` alone, then the speed array like a
+  `Sample` source (`Variable WS out of bounds.`, `Variable WS, index 1, reps 255, out of bounds.`); a
+  scalar counts as one element. `instr_data._check_stage2a`. Fixture `r56_windvector_bounds.json`.

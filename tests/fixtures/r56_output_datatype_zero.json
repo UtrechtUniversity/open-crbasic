@@ -152,16 +152,14 @@
    "logger": "cr6",
    "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(&HFF,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 255, out of bounds.",
-   "not_modelled": "not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 255, out of bounds."
   },
   {
    "id": "cr1000x-WindVector(&HFF,WS,WD,FP2,False,0,0,1)",
    "logger": "cr1000x",
    "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(&HFF,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 255, out of bounds.",
-   "not_modelled": "not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 255, out of bounds."
   },
   {
    "id": "cr6-WindVector(2,WS,WD,FP2,False,0,0,1)",
@@ -182,16 +180,14 @@
    "logger": "cr6",
    "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(3,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 3, out of bounds.",
-   "not_modelled": "not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 3, out of bounds."
   },
   {
    "id": "cr1000x-WindVector(3,WS,WD,FP2,False,0,0,1)",
    "logger": "cr1000x",
    "source": "Public R(4), x, L As Long, U As UINT1, F(6), I(6) As Long, O(6,2), IO(6,2) As Long, WS(2), WD(2)\nDataTable(T,1,-1)\n  WindVector(3,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 3, out of bounds.",
-   "not_modelled": "not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4\nline 3: Variable WD out of bounds.\nline 3: Variable WS out of bounds.\nline 3: Variable WS, index 1, reps 3, out of bounds."
   }
  ]
 }
