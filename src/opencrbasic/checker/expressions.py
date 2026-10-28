@@ -1014,6 +1014,8 @@ def _value_less_tables(program: S.Program, profile=None) -> frozenset:
     tables = {st.args[0].name.upper() for st in program.statements
               if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
               and st.args and isinstance(st.args[0], S.Name)}
+    if profile is not None:   # `DataTable(True,...)` leaves `True` a value (oracle, round 54)
+        tables -= {n.upper() for n in profile.symbols}
     # `Status` and `Public` as a bare value are undefined on all four loggers, `Settings` on CR300/
     # CR350 (oracle, 2026-10-08: `X = Status`, `Battery(Public)`; CR6/CR1000X accept `X = Settings`)
     tables |= {"STATUS", "PUBLIC"} | ({"SETTINGS"} if profile is not None and profile.single_pass

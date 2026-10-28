@@ -1,0 +1,1909 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-sample-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-sample-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-sample-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sample-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sample-malformed",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-sample-malformed",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-sample-malformed",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-sample-malformed",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-sample-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-sample-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-sample-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-sample-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-sample-var",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-sample-var",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-sample-var",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-sample-var",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-sample-str",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-sample-str",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-sample-str",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr350-sample-str",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr6-sample-empty",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-sample-empty",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-sample-empty",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr350-sample-empty",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr6-sample-const",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(KS)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sample-const",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(KS)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sample-const",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(KS)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sample-const",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(KS)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-sample-concat",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sample-concat",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sample-concat",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sample-concat",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-avg-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-avg-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-avg-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avg-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avg-malformed",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-avg-malformed",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-avg-malformed",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-avg-malformed",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-avg-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-avg-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-avg-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-avg-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-avg-empty",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-avg-empty",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-avg-empty",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr350-avg-empty",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr6-max-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-max-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-max-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-max-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-max-malformed",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-max-malformed",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-max-malformed",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-max-malformed",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-max-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-max-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-max-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-max-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-max-empty",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-max-empty",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-max-empty",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr350-max-empty",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Maximum(1,X,FP2,False,False)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr6-wv-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-wv-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-wv-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-wv-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-wv-malformed",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-wv-malformed",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-wv-malformed",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-wv-malformed",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: WindDirection is not defined.\nline 6: Incomplete expression: WindDirection\",\"WindSpeed.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-wv-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-wv-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-wv-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-wv-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-wv-empty",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-wv-empty",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-wv-empty",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr350-wv-empty",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,FP2,False,0,0,1)\n  FieldNames(\"\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr6-fc-between",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-fc-between",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-fc-between",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldClassify is not defined.\nline 6: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fc-between",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldClassify is not defined.\nline 6: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-fc-only",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fc-only",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fc-only",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldClassify is not defined.\nline 6: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fc-only",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldClassify is not defined.\nline 6: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-fo-between",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldOrigin(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-fo-between",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldOrigin(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-fo-between",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldOrigin(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldOrigin is not defined.\nline 6: Invalid, or out of place expression:   FieldOrigin(\"x\")\n.\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fo-between",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldOrigin(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldOrigin is not defined.\nline 6: Invalid, or out of place expression:   FieldOrigin(\"x\")\n.\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-di-between",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-di-between",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-di-between",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-di-between",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-di-between-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-di-between-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-di-between-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-di-between-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-cardout-between",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  CardOut(0,-1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cardout-between",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  CardOut(0,-1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-cardout-between",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  CardOut(0,-1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CardOut is not defined.\nline 6: Invalid, or out of place expression:   CardOut(0,-1)\n.\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-cardout-between",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  CardOut(0,-1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CardOut is not defined.\nline 6: Invalid, or out of place expression:   CardOut(0,-1)\n.\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-first-in-table",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(NoSuchName)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-first-in-table",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(NoSuchName)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-first-in-table",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(NoSuchName)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NoSuchName is not defined.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-first-in-table",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(NoSuchName)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NoSuchName is not defined.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-first-in-table-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-first-in-table-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-first-in-table-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-first-in-table-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-two-fn-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-two-fn-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-two-fn-num-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL",
+   "not_modelled": "a numeric FieldNames before an undefined one: its semantic error (tier C) is printed after the later FieldNames group instead of before it"
+  },
+  {
+   "id": "cr1000x-two-fn-num-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL",
+   "not_modelled": "a numeric FieldNames before an undefined one: its semantic error (tier C) is printed after the later FieldNames group instead of before it"
+  },
+  {
+   "id": "cr300-two-fn-num-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-two-fn-num-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-two-fn-undef-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  FieldNames(Other)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Other.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-two-fn-undef-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  FieldNames(Other)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Other.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-two-fn-undef-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  FieldNames(Other)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 7: Other is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-two-fn-undef-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  FieldNames(Other)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 7: Other is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-arity2",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\",\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  \"B\"."
+  },
+  {
+   "id": "cr1000x-arity2",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\",\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  \"B\"."
+  },
+  {
+   "id": "cr300-arity2",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\",\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  \"B\".\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-arity2",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\",\"B\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  \"B\".\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-arity0",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames()\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-arity0",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames()\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-arity0",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames()\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-arity0",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames()\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-arity0b",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-arity0b",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-arity0b",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-arity0b",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-comment-blank",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n\n  ' c\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-comment-blank",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n\n  ' c\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-comment-blank",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n\n  ' c\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-comment-blank",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n\n  ' c\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-min-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Minimum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-min-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Minimum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-min-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Minimum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-min-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Minimum(1,X,FP2,False,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tot-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Totalize(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-tot-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Totalize(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-tot-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Totalize(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tot-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Totalize(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-median-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Median(1,X,100,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-median-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Median(1,X,100,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-median-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Median(1,X,100,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-median-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Median(1,X,100,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sdev-undef",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  StdDev(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-sdev-undef",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  StdDev(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-sdev-undef",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  StdDev(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sdev-undef",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  StdDev(1,X,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-undef-then-err",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    X = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 11: Invalid symbol in expression:     X = Q."
+  },
+  {
+   "id": "cr1000x-undef-then-err",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    X = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 11: Invalid symbol in expression:     X = Q."
+  },
+  {
+   "id": "cr300-undef-then-err",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    X = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec.\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr350-undef-then-err",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    X = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec.\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr6-undef-expr",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName+\"a\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName+\"a\".\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-undef-expr",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName+\"a\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName+\"a\".\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-undef-expr",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName+\"a\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undef-expr",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName+\"a\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-undef-two-sample",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-undef-two-sample",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-undef-two-sample",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undef-two-sample",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-undef-and-owner-err",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,Zed,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr1000x-undef-and-owner-err",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,Zed,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr300-undef-and-owner-err",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,Zed,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undef-and-owner-err",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,Zed,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-between-err-before",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Z\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    Z = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL\nline 12: Invalid symbol in expression:     Z = Nope."
+  },
+  {
+   "id": "cr1000x-between-err-before",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Z\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    Z = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL\nline 12: Invalid symbol in expression:     Z = Nope."
+  },
+  {
+   "id": "cr300-between-err-before",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Z\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    Z = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec.\nline 12: Nope is not defined."
+  },
+  {
+   "id": "cr350-between-err-before",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Z\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    Z = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec.\nline 12: Nope is not defined."
+  },
+  {
+   "id": "cr6-undef-after-line",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  Sample(1,WS,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-undef-after-line",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  Sample(1,WS,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-undef-after-line",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  Sample(1,WS,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 7: Too many parameters:  WS.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undef-after-line",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(NoSuchName)\n  Sample(1,WS,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 7: Too many parameters:  WS.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-undef-str-concat",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: \"A\"+NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-undef-str-concat",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: \"A\"+NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-undef-str-concat",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undef-str-concat",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"A\"+NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-dollar-name",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
+   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+  },
+  {
+   "id": "cr1000x-dollar-name",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
+   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+  },
+  {
+   "id": "cr300-dollar-name",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
+   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+  },
+  {
+   "id": "cr350-dollar-name",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
+   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+  },
+  {
+   "id": "cr6-covariance",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Covariance(2,A(1),FP2,False,3)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-covariance",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Covariance(2,A(1),FP2,False,3)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-covariance",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Covariance(2,A(1),FP2,False,3)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-covariance",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Covariance(2,A(1),FP2,False,3)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avg-owner-err",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,Zed,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr1000x-avg-owner-err",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,Zed,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr300-avg-owner-err",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,Zed,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avg-owner-err",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,Zed,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-wv-owner-err",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,Zed,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr1000x-wv-owner-err",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,Zed,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr300-wv-owner-err",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,Zed,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-wv-owner-err",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  WindVector(1,Zed,WD,FP2,False,0,0,1)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avg-owner-err2",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,Zed)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr1000x-avg-owner-err2",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,Zed)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL\nline 5: Invalid symbol in expression: Zed."
+  },
+  {
+   "id": "cr300-avg-owner-err2",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,Zed)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zed is not defined.\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avg-owner-err2",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Average(1,X,FP2,Zed)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zed is not defined.\nline 6: NoSuchName is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-di-between-malformed",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-di-between-malformed",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-di-between-malformed",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: WindDirection is not defined.\nline 7: Incomplete expression: WindDirection\",\"WindSpeed.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-di-between-malformed",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: WindDirection is not defined.\nline 7: Incomplete expression: WindDirection\",\"WindSpeed.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-first-malformed",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(WindDirection\",\"WindSpeed)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-first-malformed",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(WindDirection\",\"WindSpeed)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-first-malformed",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(WindDirection\",\"WindSpeed)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: WindDirection is not defined.\nline 5: Incomplete expression: WindDirection\",\"WindSpeed.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-first-malformed",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  FieldNames(WindDirection\",\"WindSpeed)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: WindDirection is not defined.\nline 5: Incomplete expression: WindDirection\",\"WindSpeed.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-owner-malformed-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL",
+   "not_modelled": "a numeric FieldNames before an undefined one: its semantic error (tier C) is printed after the later FieldNames group instead of before it"
+  },
+  {
+   "id": "cr1000x-owner-malformed-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: Invalid symbol in expression: WindDirection\",\"WindSpeed.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL",
+   "not_modelled": "a numeric FieldNames before an undefined one: its semantic error (tier C) is printed after the later FieldNames group instead of before it"
+  },
+  {
+   "id": "cr300-owner-malformed-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: WindDirection is not defined.\nline 7: Incomplete expression: WindDirection\",\"WindSpeed.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr350-owner-malformed-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldNames(WindDirection\",\"WindSpeed)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: WindDirection is not defined.\nline 7: Incomplete expression: WindDirection\",\"WindSpeed.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 read the unbalanced-quote FieldNames argument as \"X is not defined.\" plus \"Incomplete expression\"; we print the generic out-of-place-expression fallback"
+  },
+  {
+   "id": "cr6-owner-after-di",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: NoSuchName.\nline 7: FieldNames cannot be a variable.\nline 7: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-owner-after-di",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: NoSuchName.\nline 7: FieldNames cannot be a variable.\nline 7: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-owner-after-di",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-owner-after-di",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  Sample(1,WS,FP2)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-fn-after-fn-then-di",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"a\")\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fn-after-fn-then-di",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"a\")\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fn-after-fn-then-di",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"a\")\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fn-after-fn-then-di",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(\"a\")\n  DataInterval(0,1,Sec,10)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-fn-str-undef-vs-var-after-di",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fn-str-undef-vs-var-after-di",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-fn-str-undef-vs-var-after-di",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fn-str-undef-vs-var-after-di",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  DataInterval(0,1,Sec,10)\n  FieldNames(S)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-fc-then-fn-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-fc-then-fn-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-fc-then-fn-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldClassify is not defined.\nline 6: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fc-then-fn-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldClassify(\"x\")\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldClassify is not defined.\nline 6: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-fn-fc-fn",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL",
+   "not_modelled": "a numeric FieldNames before an undefined one: its semantic error (tier C) is printed after the later FieldNames group instead of before it"
+  },
+  {
+   "id": "cr1000x-fn-fc-fn",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.\nline 5: Invalid symbol in expression: NoSuchName.\nline 5: FieldNames cannot be a variable.\nline 5: FieldNames canot be NULL",
+   "not_modelled": "a numeric FieldNames before an undefined one: its semantic error (tier C) is printed after the later FieldNames group instead of before it"
+  },
+  {
+   "id": "cr300-fn-fc-fn",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: FieldClassify is not defined.\nline 7: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fn-fc-fn",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(1)\n  FieldClassify(\"x\")\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: FieldClassify is not defined.\nline 7: Invalid, or out of place expression:   FieldClassify(\"x\")\n.\nline 8: NoSuchName is not defined.\nline 11: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-histogram",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-histogram",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-histogram",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-histogram",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-fft",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-fft",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-fft",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-fft",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-rainflow",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-rainflow",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-rainflow",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-rainflow",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-moment",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr1000x-moment",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: NoSuchName.\nline 6: FieldNames cannot be a variable.\nline 6: FieldNames canot be NULL"
+  },
+  {
+   "id": "cr300-moment",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-moment",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(NoSuchName)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NoSuchName is not defined.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-histogram-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-histogram-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-histogram-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-histogram-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Histogram(A(),FP2,0,2,001,100,10,30)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-fft-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-fft-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-fft-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-fft-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  FFT(Big(),IEEE4,128,20,uSec,4)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-rainflow-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-rainflow-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-rainflow-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-rainflow-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  RainFlow(A(1),IEEE4,False,10,10,500,4500,50,0)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr6-moment-num",
+   "logger": "cr6",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr1000x-moment-num",
+   "logger": "cr1000x",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr300-moment-num",
+   "logger": "cr300",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  },
+  {
+   "id": "cr350-moment-num",
+   "logger": "cr350",
+   "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nPublic Big(128)\nDataTable(T,1,-1)\n  Moment(1,X,2,FP2,False)\n  FieldNames(1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: FieldNames cannot be a variable."
+  }
+ ]
+}

@@ -78,6 +78,12 @@ class ArrayLiteral(Expr):
 
 
 @dataclass
+class Juxtaposed(ArrayLiteral):
+    """Operands side by side in a declaration dimension (`Dim G(1  8)`), which the compiler reports
+    as `Incomplete expression`; `items` are the operands, so name walkers see all of them."""
+
+
+@dataclass
 class Binary(Expr):
     op: str = ""                # upper-case operator text: + - * / \ ^ & MOD AND OR XOR IMP EQV = <> < > <= >= << >>
     left: Expr | None = None
@@ -127,6 +133,8 @@ class VarDecl(_DeclarationMetadata):
     # (oracle-confirmed to always name the *first* dimension, `docs/checker.md`), without the
     # parser needing to reconstruct an expression's source spelling from its AST.
     paren_dim: bool = False  # a `(` inside the dimension list makes the variable Float whatever its `As` type
+    junk_dims: list[Expr] = field(default_factory=list)
+    empty_type_init: bool = False  # `As Float() = ...`: `Invalid, or out of place expression:  =.` (round 54)  # the dimensions as written when one is a `Juxtaposed`; `dims` then holds 1 in its place
 
 
 @dataclass

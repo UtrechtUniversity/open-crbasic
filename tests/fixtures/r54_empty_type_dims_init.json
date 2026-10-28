@@ -1,0 +1,359 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-Public A As Float() = {1, 2}",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-Public A As Float() = {1, 2}",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-Public A As Float() = {1, 2}",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As Float() = {1, 2}",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Public A As Float()",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public A As Float()",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-Public A As Float()",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Public A As Float()",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-Public A As Long() = {1, 2}",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Long() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-Public A As Long() = {1, 2}",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Long() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-Public A As Long() = {1, 2}",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Long() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As Long() = {1, 2}",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Long() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Public A As Float() = 1",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float() = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr1000x-Public A As Float() = 1",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float() = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr300-Public A As Float() = 1",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float() = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As Float() = 1",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float() = 1\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Dim A As Float() = {1, 2}",
+   "logger": "cr6",
+   "source": "Public x\nDim A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-Dim A As Float() = {1, 2}",
+   "logger": "cr1000x",
+   "source": "Public x\nDim A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-Dim A As Float() = {1, 2}",
+   "logger": "cr300",
+   "source": "Public x\nDim A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Dim A As Float() = {1, 2}",
+   "logger": "cr350",
+   "source": "Public x\nDim A As Float() = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Public A As Float(3) = {1, 2}",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float(3) = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public A As Float(3) = {1, 2}",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float(3) = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-Public A As Float(3) = {1, 2}",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float(3) = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Public A As Float(3) = {1, 2}",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float(3) = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-Public A(2) As Float = {1, 2}",
+   "logger": "cr6",
+   "source": "Public x\nPublic A(2) As Float = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public A(2) As Float = {1, 2}",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A(2) As Float = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-Public A(2) As Float = {1, 2}",
+   "logger": "cr300",
+   "source": "Public x\nPublic A(2) As Float = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Public A(2) As Float = {1, 2}",
+   "logger": "cr350",
+   "source": "Public x\nPublic A(2) As Float = {1, 2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-Public A As Float ()",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float ()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Public A As Float ()",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float ()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-Public A As Float ()",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float ()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Public A As Float ()",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float ()\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-Public A As Boolean() = {1}",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Boolean() = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr1000x-Public A As Boolean() = {1}",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Boolean() = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr300-Public A As Boolean() = {1}",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Boolean() = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As Boolean() = {1}",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Boolean() = {1}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Public A As Float() = {1, 2}, B",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float() = {1, 2}, B\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-Public A As Float() = {1, 2}, B",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float() = {1, 2}, B\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-Public A As Float() = {1, 2}, B",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float() = {1, 2}, B\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As Float() = {1, 2}, B",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float() = {1, 2}, B\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Public A As Float() = {1, 2}\\nPublic C As Float() = 3",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nPublic C As Float() = 3\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 3: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr1000x-Public A As Float() = {1, 2}\\nPublic C As Float() = 3",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nPublic C As Float() = 3\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 3: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr300-Public A As Float() = {1, 2}\\nPublic C As Float() = 3",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nPublic C As Float() = 3\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As Float() = {1, 2}\\nPublic C As Float() = 3",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As Float() = {1, 2}\nPublic C As Float() = 3\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-Public A As String() = \"ab\"",
+   "logger": "cr6",
+   "source": "Public x\nPublic A As String() = \"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr1000x-Public A As String() = \"ab\"",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic A As String() = \"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =."
+  },
+  {
+   "id": "cr300-Public A As String() = \"ab\"",
+   "logger": "cr300",
+   "source": "Public x\nPublic A As String() = \"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-Public A As String() = \"ab\"",
+   "logger": "cr350",
+   "source": "Public x\nPublic A As String() = \"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  =.\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}

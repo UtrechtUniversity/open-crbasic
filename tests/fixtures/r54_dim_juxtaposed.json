@@ -1,0 +1,1433 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-brief-string",
+   "logger": "cr6",
+   "source": "Public x\nDim GPSstring(1  8) As String * 15\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-brief-string",
+   "logger": "cr1000x",
+   "source": "Public x\nDim GPSstring(1  8) As String * 15\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-brief-string",
+   "logger": "cr300",
+   "source": "Public x\nDim GPSstring(1  8) As String * 15\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-brief-string",
+   "logger": "cr350",
+   "source": "Public x\nDim GPSstring(1  8) As String * 15\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-dim-plain",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-dim-plain",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-dim-plain",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-dim-plain",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-public-1-8",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-public-1-8",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-public-1-8",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-public-1-8",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-public-8-1-long",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(8 1) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 8 1."
+  },
+  {
+   "id": "cr1000x-public-8-1-long",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(8 1) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 8 1."
+  },
+  {
+   "id": "cr300-public-8-1-long",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(8 1) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 8 1.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-public-8-1-long",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(8 1) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 8 1.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-second-dim-bad",
+   "logger": "cr6",
+   "source": "Public x\nDim G(2,1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-second-dim-bad",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(2,1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-second-dim-bad",
+   "logger": "cr300",
+   "source": "Public x\nDim G(2,1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-second-dim-bad",
+   "logger": "cr350",
+   "source": "Public x\nDim G(2,1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-first-dim-bad",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-first-dim-bad",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-first-dim-bad",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-first-dim-bad",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-three-operands",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1 2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2 3."
+  },
+  {
+   "id": "cr1000x-three-operands",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1 2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2 3."
+  },
+  {
+   "id": "cr300-three-operands",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1 2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2 3.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-three-operands",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1 2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2 3.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-string-operand",
+   "logger": "cr6",
+   "source": "Public x\nDim G(\"a\" 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: \"a\" 8."
+  },
+  {
+   "id": "cr1000x-string-operand",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(\"a\" 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: \"a\" 8."
+  },
+  {
+   "id": "cr300-string-operand",
+   "logger": "cr300",
+   "source": "Public x\nDim G(\"a\" 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: \"a\" 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-string-operand",
+   "logger": "cr350",
+   "source": "Public x\nDim G(\"a\" 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: \"a\" 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-const-operand",
+   "logger": "cr6",
+   "source": "Public x\nConst K = 3\nDim G(K 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: K 8."
+  },
+  {
+   "id": "cr1000x-const-operand",
+   "logger": "cr1000x",
+   "source": "Public x\nConst K = 3\nDim G(K 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: K 8."
+  },
+  {
+   "id": "cr300-const-operand",
+   "logger": "cr300",
+   "source": "Public x\nConst K = 3\nDim G(K 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: K 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-const-operand",
+   "logger": "cr350",
+   "source": "Public x\nConst K = 3\nDim G(K 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: K 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-variable-operand",
+   "logger": "cr6",
+   "source": "Public x\nDim G(x  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x  8.\nline 2: Variable illegal in Parameter: x  8."
+  },
+  {
+   "id": "cr1000x-variable-operand",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(x  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x  8.\nline 2: Variable illegal in Parameter: x  8."
+  },
+  {
+   "id": "cr300-variable-operand",
+   "logger": "cr300",
+   "source": "Public x\nDim G(x  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x  8.\nline 2: Variable illegal in Parameter: x  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-variable-operand",
+   "logger": "cr350",
+   "source": "Public x\nDim G(x  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x  8.\nline 2: Variable illegal in Parameter: x  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-undefined-first",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(Zork 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Zork 8."
+  },
+  {
+   "id": "cr1000x-undefined-first",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(Zork 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Zork 8."
+  },
+  {
+   "id": "cr300-undefined-first",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(Zork 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Zork is not defined.\nline 2: Incomplete expression: Zork 8.\nline 2: Variable illegal in Parameter: Zork 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undefined-first",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(Zork 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Zork is not defined.\nline 2: Incomplete expression: Zork 8.\nline 2: Variable illegal in Parameter: Zork 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-undefined-second",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: 1 Zork."
+  },
+  {
+   "id": "cr1000x-undefined-second",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: 1 Zork."
+  },
+  {
+   "id": "cr300-undefined-second",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Zork is not defined.\nline 2: Incomplete expression: 1 Zork.\nline 2: Variable illegal in Parameter: 1 Zork.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-undefined-second",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Zork is not defined.\nline 2: Incomplete expression: 1 Zork.\nline 2: Variable illegal in Parameter: 1 Zork.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-keyword-second",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 As)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: 1 As."
+  },
+  {
+   "id": "cr1000x-keyword-second",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 As)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: 1 As."
+  },
+  {
+   "id": "cr300-keyword-second",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 As)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: As is not defined.\nline 2: Incomplete expression: 1 As.\nline 2: Variable illegal in Parameter: 1 As.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-keyword-second",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 As)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: As is not defined.\nline 2: Incomplete expression: 1 As.\nline 2: Variable illegal in Parameter: 1 As.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-padded-echo",
+   "logger": "cr6",
+   "source": "Public x\nPublic G( 1  8 )\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8 ."
+  },
+  {
+   "id": "cr1000x-padded-echo",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G( 1  8 )\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8 ."
+  },
+  {
+   "id": "cr300-padded-echo",
+   "logger": "cr300",
+   "source": "Public x\nPublic G( 1  8 )\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8 .\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-padded-echo",
+   "logger": "cr350",
+   "source": "Public x\nPublic G( 1  8 )\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8 .\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-paren-second",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 (8))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 (8)."
+  },
+  {
+   "id": "cr1000x-paren-second",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 (8))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 (8)."
+  },
+  {
+   "id": "cr300-paren-second",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 (8))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 (8).\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-paren-second",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 (8))\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 (8).\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-paren-first",
+   "logger": "cr6",
+   "source": "Public x\nPublic G((1) 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: (1) 8."
+  },
+  {
+   "id": "cr1000x-paren-first",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G((1) 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: (1) 8."
+  },
+  {
+   "id": "cr300-paren-first",
+   "logger": "cr300",
+   "source": "Public x\nPublic G((1) 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: (1) 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-paren-first",
+   "logger": "cr350",
+   "source": "Public x\nPublic G((1) 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: (1) 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-expr-first",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1+2 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1+2 8."
+  },
+  {
+   "id": "cr1000x-expr-first",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1+2 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1+2 8."
+  },
+  {
+   "id": "cr300-expr-first",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1+2 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1+2 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-expr-first",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1+2 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1+2 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-float-first",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1.5 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1.5 8."
+  },
+  {
+   "id": "cr1000x-float-first",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1.5 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1.5 8."
+  },
+  {
+   "id": "cr300-float-first",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1.5 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1.5 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-float-first",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1.5 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1.5 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-two-variables",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8), H(2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Incomplete expression: 2 3."
+  },
+  {
+   "id": "cr1000x-two-variables",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8), H(2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Incomplete expression: 2 3."
+  },
+  {
+   "id": "cr300-two-variables",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8), H(2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-two-variables",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8), H(2 3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-two-dims-both-bad",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 2, 3 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 2: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr1000x-two-dims-both-bad",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 2, 3 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 2: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr300-two-dims-both-bad",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 2, 3 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 2: Incomplete expression: 3 4.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-two-dims-both-bad",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 2, 3 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 2.\nline 2: Incomplete expression: 3 4.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-with-init",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8) As Long = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-with-init",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8) As Long = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-with-init",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8) As Long = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-with-init",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8) As Long = 5\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-type-then-dims",
+   "logger": "cr6",
+   "source": "Public x\nPublic G As Long(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-type-then-dims",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G As Long(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-type-then-dims",
+   "logger": "cr300",
+   "source": "Public x\nPublic G As Long(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-type-then-dims",
+   "logger": "cr350",
+   "source": "Public x\nPublic G As Long(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-mod-accepted",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 Mod 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mod-accepted",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 Mod 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-mod-accepted",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 Mod 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-mod-accepted",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 Mod 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-plus-accepted",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1 + 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plus-accepted",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1 + 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-plus-accepted",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1 + 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-plus-accepted",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1 + 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-after-is-not-fatal-decl",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nDim J(2  3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Incomplete expression: 2  3."
+  },
+  {
+   "id": "cr1000x-after-is-not-fatal-decl",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nDim J(2  3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Incomplete expression: 2  3."
+  },
+  {
+   "id": "cr300-after-is-not-fatal-decl",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nDim J(2  3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-after-is-not-fatal-decl",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nDim J(2  3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-later-decl-error",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nConst C = Zork\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr1000x-later-decl-error",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nConst C = Zork\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr300-later-decl-error",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nConst C = Zork\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Zork is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-later-decl-error",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nConst C = Zork\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Zork is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-later-body-errors-silent",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    y = 1\n    Foo(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-later-body-errors-silent",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    y = 1\n    Foo(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-later-body-errors-silent",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    y = 1\n    Foo(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec.\nline 6: y is not defined.\nline 7: Foo is not defined.\nline 7: Invalid, or out of place expression:     Foo(\n."
+  },
+  {
+   "id": "cr350-later-body-errors-silent",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    y = 1\n    Foo(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec.\nline 6: y is not defined.\nline 7: Foo is not defined.\nline 7: Invalid, or out of place expression:     Foo(\n."
+  },
+  {
+   "id": "cr6-later-body-use-silent",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    G(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-later-body-use-silent",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    G(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-later-body-use-silent",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    G(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-later-body-use-silent",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n    G(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-later-variable-error",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nPublic Z As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr1000x-later-variable-error",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nPublic Z As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr300-later-variable-error",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nPublic Z As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-later-variable-error",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nPublic Z As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-duplicate-name",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nPublic G\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: G already declared as a variable."
+  },
+  {
+   "id": "cr1000x-duplicate-name",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nPublic G\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: G already declared as a variable."
+  },
+  {
+   "id": "cr300-duplicate-name",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nPublic G\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-duplicate-name",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nPublic G\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-duplicate-name-later-var",
+   "logger": "cr6",
+   "source": "Public x\nDim G(2), H(1  8), K(2)\nPublic K\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: K already declared as a variable."
+  },
+  {
+   "id": "cr1000x-duplicate-name-later-var",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(2), H(1  8), K(2)\nPublic K\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: K already declared as a variable."
+  },
+  {
+   "id": "cr300-duplicate-name-later-var",
+   "logger": "cr300",
+   "source": "Public x\nDim G(2), H(1  8), K(2)\nPublic K\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-duplicate-name-later-var",
+   "logger": "cr350",
+   "source": "Public x\nDim G(2), H(1  8), K(2)\nPublic K\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-name-used-in-dim",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8)\nDim J(G)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Variable illegal in Parameter: G."
+  },
+  {
+   "id": "cr1000x-name-used-in-dim",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8)\nDim J(G)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 3: Variable illegal in Parameter: G."
+  },
+  {
+   "id": "cr300-name-used-in-dim",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8)\nDim J(G)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-name-used-in-dim",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8)\nDim J(G)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-variable-error-type-foo",
+   "logger": "cr6",
+   "source": "Public x\nDim G(1  8) As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr1000x-variable-error-type-foo",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(1  8) As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported\nline 2: Incomplete expression: 1  8."
+  },
+  {
+   "id": "cr300-variable-error-type-foo",
+   "logger": "cr300",
+   "source": "Public x\nDim G(1  8) As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-variable-error-type-foo",
+   "logger": "cr350",
+   "source": "Public x\nDim G(1  8) As Foo\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported\nline 2: Incomplete expression: 1  8.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-alias-out-of-range",
+   "logger": "cr6",
+   "source": "Public x\nDim G(2  8)\nAlias G(3) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias-out-of-range",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(2  8)\nAlias G(3) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-alias-out-of-range",
+   "logger": "cr300",
+   "source": "Public x\nDim G(2  8)\nAlias G(3) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias-out-of-range",
+   "logger": "cr350",
+   "source": "Public x\nDim G(2  8)\nAlias G(3) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-alias-in-range",
+   "logger": "cr6",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8."
+  },
+  {
+   "id": "cr1000x-alias-in-range",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8."
+  },
+  {
+   "id": "cr300-alias-in-range",
+   "logger": "cr300",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias-in-range",
+   "logger": "cr350",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-alias-second-index",
+   "logger": "cr6",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nAlias G(2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 4: Illegally dimensioned aliased name\nline 4: Duplicate Alias Name: Z."
+  },
+  {
+   "id": "cr1000x-alias-second-index",
+   "logger": "cr1000x",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nAlias G(2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 4: Illegally dimensioned aliased name\nline 4: Duplicate Alias Name: Z."
+  },
+  {
+   "id": "cr300-alias-second-index",
+   "logger": "cr300",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nAlias G(2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 4: Illegally dimensioned aliased name\nline 4: Duplicate Alias Name: Z.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias-second-index",
+   "logger": "cr350",
+   "source": "Public x\nDim G(2  8)\nAlias G(1) = Z\nAlias G(2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2  8.\nline 4: Illegally dimensioned aliased name\nline 4: Duplicate Alias Name: Z.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-alias-mixed-dims",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias-mixed-dims",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-alias-mixed-dims",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias-mixed-dims",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,2) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-alias-mixed-dims-ok",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-alias-mixed-dims-ok",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-alias-mixed-dims-ok",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias-mixed-dims-ok",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(3, 1 8)\nAlias G(3,1) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-alias-first-bad",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8, 3)\nAlias G(1,4) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias-first-bad",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8, 3)\nAlias G(1,4) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-alias-first-bad",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8, 3)\nAlias G(1,4) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias-first-bad",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8, 3)\nAlias G(1,4) = Z\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sub-parameter",
+   "logger": "cr6",
+   "source": "Public x\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-sub-parameter",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-sub-parameter",
+   "logger": "cr300",
+   "source": "Public x\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub-parameter",
+   "logger": "cr350",
+   "source": "Public x\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sub-parameters",
+   "logger": "cr6",
+   "source": "Public x\nSub S(a(1 8), b(2 3))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Incomplete expression: 2 3."
+  },
+  {
+   "id": "cr1000x-sub-parameters",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S(a(1 8), b(2 3))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Incomplete expression: 2 3."
+  },
+  {
+   "id": "cr300-sub-parameters",
+   "logger": "cr300",
+   "source": "Public x\nSub S(a(1 8), b(2 3))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub-parameters",
+   "logger": "cr350",
+   "source": "Public x\nSub S(a(1 8), b(2 3))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-function-parameter",
+   "logger": "cr6",
+   "source": "Public x\nFunction F(a(1 8))\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-function-parameter",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F(a(1 8))\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-function-parameter",
+   "logger": "cr300",
+   "source": "Public x\nFunction F(a(1 8))\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-function-parameter",
+   "logger": "cr350",
+   "source": "Public x\nFunction F(a(1 8))\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-decl-then-sub-parameter",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8)\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-decl-then-sub-parameter",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8)\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 3: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-decl-then-sub-parameter",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8)\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 stop reporting dimension errors after the first failed one in the file (pre-existing gap, also for Illegally dimension and undefined names)"
+  },
+  {
+   "id": "cr350-decl-then-sub-parameter",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8)\nSub S(a(1 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 stop reporting dimension errors after the first failed one in the file (pre-existing gap, also for Illegally dimension and undefined names)"
+  },
+  {
+   "id": "cr6-sub-local-dim",
+   "logger": "cr6",
+   "source": "Public x\nSub S()\n  Dim L(1 8)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr1000x-sub-local-dim",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S()\n  Dim L(1 8)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 8."
+  },
+  {
+   "id": "cr300-sub-local-dim",
+   "logger": "cr300",
+   "source": "Public x\nSub S()\n  Dim L(1 8)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 8.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub-local-dim",
+   "logger": "cr350",
+   "source": "Public x\nSub S()\n  Dim L(1 8)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 8.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sub-parameter-variable",
+   "logger": "cr6",
+   "source": "Public x\nSub S(a(x 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x 8.\nline 2: Variable illegal in Parameter: x 8."
+  },
+  {
+   "id": "cr1000x-sub-parameter-variable",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S(a(x 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x 8.\nline 2: Variable illegal in Parameter: x 8."
+  },
+  {
+   "id": "cr300-sub-parameter-variable",
+   "logger": "cr300",
+   "source": "Public x\nSub S(a(x 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x 8.\nline 2: Variable illegal in Parameter: x 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub-parameter-variable",
+   "logger": "cr350",
+   "source": "Public x\nSub S(a(x 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: x 8.\nline 2: Variable illegal in Parameter: x 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sub-parameter-undefined",
+   "logger": "cr6",
+   "source": "Public x\nSub S(a(Zork 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Zork 8."
+  },
+  {
+   "id": "cr1000x-sub-parameter-undefined",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S(a(Zork 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Zork 8."
+  },
+  {
+   "id": "cr300-sub-parameter-undefined",
+   "logger": "cr300",
+   "source": "Public x\nSub S(a(Zork 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Zork is not defined.\nline 2: Incomplete expression: Zork 8.\nline 2: Variable illegal in Parameter: Zork 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub-parameter-undefined",
+   "logger": "cr350",
+   "source": "Public x\nSub S(a(Zork 8))\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Zork is not defined.\nline 2: Incomplete expression: Zork 8.\nline 2: Variable illegal in Parameter: Zork 8.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-init-warning",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8) As Float = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init-warning",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8) As Float = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init-warning",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8) As Float = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-init-warning",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8) As Float = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-init-warning-small",
+   "logger": "cr6",
+   "source": "Public x\nPublic Foo(2 3) As Long = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2 3.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init-warning-small",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic Foo(2 3) As Long = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2 3.\nline 2: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init-warning-small",
+   "logger": "cr300",
+   "source": "Public x\nPublic Foo(2 3) As Long = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2 3.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-init-warning-small",
+   "logger": "cr350",
+   "source": "Public x\nPublic Foo(2 3) As Long = {1,2}\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 2 3.\nline 2: Warning: Attempt to initialize variable out of bounds.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-size-after-dims",
+   "logger": "cr6",
+   "source": "Public x\nPublic G(1 8) As String * 15(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 15(2).\nline 2: Incomplete expression: 1 8.",
+   "not_modelled": "a String size followed by a parenthesis (`* 15(2)`) is itself Incomplete expression, reported first; not modelled"
+  },
+  {
+   "id": "cr1000x-size-after-dims",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G(1 8) As String * 15(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 15(2).\nline 2: Incomplete expression: 1 8.",
+   "not_modelled": "a String size followed by a parenthesis (`* 15(2)`) is itself Incomplete expression, reported first; not modelled"
+  },
+  {
+   "id": "cr300-size-after-dims",
+   "logger": "cr300",
+   "source": "Public x\nPublic G(1 8) As String * 15(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 15(2).\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec.",
+   "not_modelled": "a String size followed by a parenthesis (`* 15(2)`) is itself Incomplete expression, reported first; not modelled"
+  },
+  {
+   "id": "cr350-size-after-dims",
+   "logger": "cr350",
+   "source": "Public x\nPublic G(1 8) As String * 15(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 15(2).\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec.",
+   "not_modelled": "a String size followed by a parenthesis (`* 15(2)`) is itself Incomplete expression, reported first; not modelled"
+  },
+  {
+   "id": "cr6-size-before-dims",
+   "logger": "cr6",
+   "source": "Public x\nPublic G As String * 15(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.",
+   "not_modelled": "dimensions after a String size (`As String * 15(1 8)`) are echoed by the String-size rule as `15(1 8)`; not modelled"
+  },
+  {
+   "id": "cr1000x-size-before-dims",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic G As String * 15(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.",
+   "not_modelled": "dimensions after a String size (`As String * 15(1 8)`) are echoed by the String-size rule as `15(1 8)`; not modelled"
+  },
+  {
+   "id": "cr300-size-before-dims",
+   "logger": "cr300",
+   "source": "Public x\nPublic G As String * 15(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec.",
+   "not_modelled": "dimensions after a String size (`As String * 15(1 8)`) are echoed by the String-size rule as `15(1 8)`; not modelled"
+  },
+  {
+   "id": "cr350-size-before-dims",
+   "logger": "cr350",
+   "source": "Public x\nPublic G As String * 15(1 8)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: 1 8.\nline 4: Too many parameters:  Sec.",
+   "not_modelled": "dimensions after a String size (`As String * 15(1 8)`) are echoed by the String-size rule as `15(1 8)`; not modelled"
+  }
+ ]
+}

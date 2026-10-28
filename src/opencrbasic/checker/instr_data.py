@@ -17,6 +17,7 @@ Full rules and oracle evidence: `docs/instructions.md` (new "Data tables and out
 section).
 """
 
+import dataclasses
 import math
 import re
 
@@ -291,20 +292,81 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
         diags.error(stopper[0].line, stopper[1], stopper[0].file)
 
 
+# `FieldNames`, `FieldClassify` and `FieldOrigin` records directly after a field-producing
+# instruction are read by that instruction's builder (docs/checker.md "FieldNames owner line");
+# `SampleFieldCal` was probed not to read them, the other three exclusions are unprobed.
+_FIELD_METADATA = frozenset({"FIELDNAMES", "FIELDCLASSIFY", "FIELDORIGIN"})
+_FIELDNAMES_OWNERS = _FIELD_PRODUCING_INSTRUCTIONS - {
+    "SAMPLEFIELDCAL", "ETSZ", "ETCLEARSKY", "MQTTPUBLISHTABLE"}
+_FIRST_WORD = re.compile(r"\s*([A-Za-z_]\w*)")
+
+
+def fieldnames_owners(program: S.Program) -> dict[int, S.Stmt | None]:
+    """`id(statement)` of every `FieldNames` (parsed or not) -> the output instruction whose
+    builder reads it: the last owner before it with only `FieldNames`/`FieldClassify`/`FieldOrigin`
+    in between, else None (a `FieldNames` anywhere else is never resolved)."""
+    owners: dict[int, S.Stmt | None] = {}
+    owner = None
+    for st in program.statements:
+        if isinstance(st, S.Instruction):
+            kw = st.keyword.upper()
+        elif isinstance(st, S.Unparsed) and (m := _FIRST_WORD.match(st.text)):
+            kw = m.group(1).upper()
+        else:
+            continue
+        if kw == "FIELDNAMES":
+            owners[id(st)] = owner
+        elif kw not in _FIELD_METADATA:
+            owner = st if kw in _FIELDNAMES_OWNERS else None
+    return owners
+
+
+def move_fieldnames_symbol_errors(program: S.Program, items: list[Diagnostic]):
+    """CR6/CR1000X: the pass-2 `Invalid symbol in expression` findings of a `FieldNames` argument
+    belong to its owner (line, and before the owner's own argument errors), followed by the two
+    semantic errors; an unowned `FieldNames` is never resolved, so they vanish. Edits `items` in
+    place; returns ({id(old): replacement or None}, added) for the caller's bookkeeping."""
+    owners = fieldnames_owners(program)
+    replaced: dict[int, Diagnostic | None] = {}
+    added: list[Diagnostic] = []
+    next_at: dict[int, int] = {}
+    for st in program.statements:
+        if id(st) not in owners:
+            continue
+        mine = [d for d in items if (d.file, d.line) == (st.file, st.line)
+                and d.message.startswith("Invalid symbol in expression")]
+        if not mine:
+            continue
+        items[:] = [d for d in items if not any(d is m for m in mine)]
+        owner = owners[id(st)]
+        if owner is None:
+            replaced.update((id(d), None) for d in mine)
+            continue
+        moved = [dataclasses.replace(d, line=owner.line, file=owner.file) for d in mine]
+        replaced.update((id(d), n) for d, n in zip(mine, moved))
+        pair = [Diagnostic("error", owner.line, message, owner.file, show_file=False)
+                for message in ("FieldNames cannot be a variable.", "FieldNames canot be NULL")]
+        added += pair
+        at = next_at.get(id(owner), next((
+            i for i, d in enumerate(items) if (d.file, d.line) == (owner.file, owner.line)
+            and d.message.startswith("Invalid symbol in expression")), len(items)))
+        items[at:at] = moved + pair
+        next_at[id(owner)] = at + len(moved) + len(pair)
+    return replaced, added
+
+
 def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, env) -> None:
     """`FieldNames` takes a non-empty constant string (docs/checker.md "FieldNames argument"): a
     numeric constant or a variable is `FieldNames cannot be a variable.`, an empty string `FieldNames
     canot be NULL`, and a String variable both (its compile-time value is empty). Undefined names are
-    left to the symbol checks. The output instruction it follows reads it, so the line is that
-    instruction's."""
+    left to the symbol checks. The output instruction whose builder reads it (`fieldnames_owners`)
+    reports it, so the line is that instruction's; an unowned `FieldNames` is not checked."""
     tables = symbols.scope_tables(program, env, scalars=True)
-    owner = None
+    owners = fieldnames_owners(program)
     for st in program.statements:
-        if not isinstance(st, S.Instruction):
+        if not isinstance(st, S.Instruction) or st.keyword.upper() != "FIELDNAMES":
             continue
-        if st.keyword.upper() != "FIELDNAMES":
-            owner = st
-            continue
+        owner = owners.get(id(st))
         if len(st.args) != 1 or st.args[0] is None or owner is None:
             continue
         line, file = owner.line, owner.file

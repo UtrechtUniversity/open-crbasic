@@ -465,6 +465,12 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             diags.items[pass2_start:] = [renamed.get(id(d), d) for d in diags.items[pass2_start:]]
             # (tier C gates on the identity of these: keep `generic_errors` pointing at them)
             generic_errors[:] = [renamed.get(id(d), d) for d in generic_errors]
+            # a `FieldNames` argument is resolved by its owning output instruction (docs/checker.md
+            # "FieldNames owner line", round 54)
+            window = diags.items[pass2_start:]
+            moved, added = instr_data.move_fieldnames_symbol_errors(flat, window)
+            diags.items[pass2_start:] = window
+            generic_errors[:] = [m for g in generic_errors if (m := moved.get(id(g), g)) is not None] + added
             # `PulseCount must be used within a Scan...NextScan.` follows its own statement's symbol
             # error (oracle, CR6/CR1000X, round 40)
             window = diags.items[pass2_start:]

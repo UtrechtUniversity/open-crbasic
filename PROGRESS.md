@@ -1,7 +1,8 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-27 after development round 53** (round-51
-fuzz triage and M3 report/configuration, round 52; fresh fuzz and include names, round 53). Rounds 49-53 are on `main`; use Git to check publication
+Current compiler state and handoff, updated **2026-10-28 after development round 54** (round-51
+fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
+accepts and three first-error families, round 54). Rounds 49-54 are on `main`; use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -20,12 +21,12 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 56,746 passed, 311 skipped, 466 strict xfail (round 53, `-n 8`) |
-| `pytest -q -m server` | 163 passed (round 53) |
+| `pytest -q -n 4 -m 'not server'` | 57,312 passed, 311 skipped, 510 strict xfail (round 54, `-n 6`) |
+| `pytest -q -m server` | 163 passed (round 54) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded` (round 53, unchanged from 52) | 3,338 inputs: 2,574 exact (round 51: 2,571); CR6/CR1000X: 23 first-error misses, 5 earlier first locations, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| Saved fuzz replay, `fuzz_replay.py --recorded` (round 54) | 3,338 inputs: 2,584 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 46) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
-| Fresh fuzz, seeds 443 (CR6) / 444 (CR1000X) (round 53, `--relevant`, 500 mutants each, no shrinking) | CR6 487 exact, 9 message differences; CR1000X 485 exact, 13 message differences; no false accept, false reject, crash, hang, implementation exception or mode difference by the fuzz classifier. Impact: 6 first-error misses (2 fixed, an include-name false accept), 8 same-location messages, 8 later-diagnostic differences; raw output in `scratch/r53/` (git-ignored) |
+| Fresh fuzz, seeds 445 (CR6) / 446 (CR1000X) (round 54, `--relevant`, 500 mutants each, no shrinking) | CR6 487 exact, 11 message differences, 1 false accept; CR1000X 483 exact, 12 message differences, 1 false accept, 1 warning-only difference; both false accepts fixed; no false reject, crash, hang or implementation exception. Seeds 443/444 (round 53): no verdict difference. Raw output in `scratch/r54/` (git-ignored) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
@@ -72,6 +73,26 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 54** (M1/M2; Sonnet workers A and C, Codex research and review, coordinator fixes).
+- **False rejects fixed:** a `DataTable` named after a predefined constant (`DataTable(True,...)`)
+  made that constant undefined everywhere (found by Codex research on `7d9dbda67c22`); a `FieldNames`
+  with no owning output instruction was resolved against any preceding instruction.
+- **False accepts fixed:** bridge MeasPEx below 1 (`BrHalf`/`BrHalf3W`/`BrFull`/`BrHalf4W`/`BrFull6W`,
+  `Invalid measurements per excitation N`, GEUS fuzz `953f1271f9a9`); an initializer after empty type
+  dimensions (`Public A As Float() = {...}`, `628c8b23311c`).
+- **First error:** juxtaposed dimension operands (`Dim G(1  8)` -> `Incomplete expression: 1  8.`, also
+  in Sub parameters and pointer types, `5d03371b1388`); `FieldNames` errors on the consuming output
+  instruction's line with the two follow-up messages (`83c0a809c514`).
+- Codex review of the staged diff found two new false accepts (`As Float!(1 8)`, an unclosed
+  `Sub S(a(1 8)`), an `OverflowError` on a non-finite dimension and a same-line order flip; all four fixed
+  and recorded (`r54_dim_review_controls.json`).
+- Fixtures `r54_*.json`: 634 observations, 584 matched; details and gaps in
+  [docs/checker.md](docs/checker.md#juxtaposed-dimension-operands-round-54) and the following round-54
+  sections. Gates: fixture audits 0 differing, four-profile difftest and GEUS unchanged, replay gate
+  passes, `verify.py` passes with both compilers.
+- Worker B (PipeLine Mode placement of `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`,
+  `CDM_*`, `Calibrate` warning) was still running at this commit.
+
 **Round 53** (M1/M2, fresh relevant fuzz seeds 443/444; one session, coordinator only, Codex
 research). The fuzz found no verdict difference by its classifier, but two of its six first-error
 misses were a false accept on our side: a non-constant `Include`/`IncludeSection` file name
@@ -80,7 +101,7 @@ variables, then reports a NULL file name
 ([checker notes](docs/checker.md#include-names-that-are-not-constants-round-53)). Fixture
 `r53_include_runtime_names.json` (60 observations, 34 matched; CR300/CR350 and string-`Const` names
 `not_modelled`); four round-43 `not_modelled` cases of the same rule now match. The other four
-misses are open: `7d9dbda67c22` (CR6, `DataTable(True,FinApp_Starts,-1)`: the reference's main-file
+misses were open at the end of round 53 (all four fixed in round 54): `7d9dbda67c22` (CR6, `DataTable(True,FinApp_Starts,-1)`: the reference's main-file
 error comes before our include-file error), `5d03371b1388` (CR1000X, `Dim GPSstring(1  8)` gives
 `Incomplete expression: 1  8.`; probed on CR6/CR1000X: `Public G(8 1)` and `Dim G(2,1  8)` echo only
 the bad dimension, `Dim G(x  8)` adds `Variable illegal in Parameter: x  8.`, and nothing else is
@@ -163,6 +184,7 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 5. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is unprobed for `CDM_*`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`,
      `VibratingWire`; plain `Calibrate` in a slow scan lacks a `may skip scans` warning;
+   - round-54 fuzz: 3 first-error misses and 1 earlier first location remain (`scratch/r54/triage.json`; `SetSetting("",...)` and an overflowing `Scan` count match in isolation, so they are ordering effects);
    - 10 round-51 message differences remain (`scratch/r51/`; all later-diagnostic or same-location text except `8f0c2a005513`:
      the reference prints 9 `Parameter will truncate` warnings before the error for an undeclared first
      `TimeIntoInterval` argument in an `If`, the round-38 cascade in `scratch/r38/tii.json`, 9/6/3 by argument;

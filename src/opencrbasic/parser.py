@@ -1894,10 +1894,10 @@ class _Parser:
         if p.is_op("("):
             p.next()
             if not p.is_op(")"):
-                dim_exprs.append(self._parse_expr(p, line, file))
+                dim_exprs.append(self._parse_dim(p, line, file))
                 while p.is_op(","):
                     p.next()
-                    dim_exprs.append(self._parse_expr(p, line, file))
+                    dim_exprs.append(self._parse_dim(p, line, file))
             p.expect_close(")")
             dims = 1
         vtype = None
@@ -2223,6 +2223,17 @@ class _Parser:
             raise _ParseError(f"{UNCLOSED_DIM_PREFIX}{text}")
         p.expect_close(")")
 
+    def _parse_dim(self, p: _TokStream, line: int, file: str) -> S.Expr:
+        """One dimension; operands side by side (`1  8`) become a `Juxtaposed`, which pass 1
+        reports as `Incomplete expression` (docs/checker.md#juxtaposed-dimension-operands-round-54)."""
+        expr = self._parse_expr(p, line, file)
+        if not (p.peek().kind in ("NUMBER", "STRING", "IDENT") or p.is_op("(")):
+            return expr
+        items: list[S.Expr | None] = [expr]
+        while p.peek().kind in ("NUMBER", "STRING", "IDENT") or p.is_op("("):
+            items.append(self._parse_expr(p, line, file))
+        return S.Juxtaposed(line, file, items=items)
+
     def _parse_vardecl(self, p: _TokStream, line: int, file: str) -> S.VarDecl:
         name_tok = p.expect_ident()
         dims: list[S.Expr] = []
@@ -2243,15 +2254,16 @@ class _Parser:
             first = p.i
             if not p.is_op(")"):
                 start_col = p.peek().col
-                dims.append(self._parse_expr(p, line, file))
+                dims.append(self._parse_dim(p, line, file))
                 dim0_span = (start_col, p.peek().col)
                 while p.is_op(","):
                     p.next()
-                    dims.append(self._parse_expr(p, line, file))
+                    dims.append(self._parse_dim(p, line, file))
             paren_dim = any(t.kind == "OP" and t.text == "(" for t in p.toks[first:p.i])
             self._close_dims_or_raise(p, name_tok)
         vtype = None
         strsize = None
+        empty_type_dims = empty_type_init = False
         init: list[S.Expr | None] | None = None
         size_missing = None
         if p.is_ident("AS"):
@@ -2274,11 +2286,11 @@ class _Parser:
                     strsize = S.Number(num.line, file, cast(int | float, num.value), num.text)
                     p.next()
                     start_col = p.peek().col
-                    dims.append(self._parse_expr(p, line, file))
+                    dims.append(self._parse_dim(p, line, file))
                     dim0_span = (start_col, p.peek().col)
                     while p.is_op(","):
                         p.next()
-                        dims.append(self._parse_expr(p, line, file))
+                        dims.append(self._parse_dim(p, line, file))
                     self._close_dims_or_raise(p, name_tok)
                 else:
                     strsize = self._parse_expr(p, line, file)
@@ -2287,15 +2299,17 @@ class _Parser:
                 # instead of the variable name. Confirmed valid CRBasic by corpus testing
                 # (pointervariable_1.CR6); see docs/frontend.md.
                 p.next()
+                empty_type_dims = p.is_op(")")
                 if not p.is_op(")"):
                     start_col = p.peek().col
-                    dims.append(self._parse_expr(p, line, file))
+                    dims.append(self._parse_dim(p, line, file))
                     dim0_span = (start_col, p.peek().col)
                     while p.is_op(","):
                         p.next()
-                        dims.append(self._parse_expr(p, line, file))
+                        dims.append(self._parse_dim(p, line, file))
                 self._close_dims_or_raise(p, name_tok)
             if p.is_op("="):
+                empty_type_init = empty_type_dims
                 p.next()
                 val = self._parse_expr(p, line, file)
                 init = list(val.items) if isinstance(val, S.ArrayLiteral) else [val]
@@ -2335,9 +2349,15 @@ class _Parser:
             # reported, confirmed with a valid first variable followed by a malformed second one.
             bad = p.peek()
             raise _ParseError(f"Invalid As clause: {bad.text}")
+        junk_dims: list[S.Expr] = []
+        if any(isinstance(d, S.Juxtaposed) for d in dims):
+            # the compiler keeps the dimension as size 1 (round 54, alias bounds)
+            junk_dims, dims = dims, [S.Number(d.line, file, 1, "1") if isinstance(d, S.Juxtaposed) else d
+                                     for d in dims]
         decl = S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
-                         dim0_span=dim0_span, paren_dim=paren_dim)
+                         dim0_span=dim0_span, paren_dim=paren_dim, junk_dims=junk_dims)
         decl.size_missing = size_missing  # column just after the `*`, or None
+        decl.empty_type_init = empty_type_init  # `As Float() = ...`, reported by structure.py
         return decl
 
     # ---- Alias / Units --------------------------------------------------

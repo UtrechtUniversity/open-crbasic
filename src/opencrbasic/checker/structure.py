@@ -4340,6 +4340,25 @@ def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], pro
     return False
 
 
+def _report_juxtaposed_dim(expr: S.Juxtaposed, echo: str, known: set[str], variables: set[str], profile,
+                           stmt: S.Stmt, diags: Diagnostics) -> bool:
+    """`Dim G(1  8)`: `Incomplete expression: <dimension>.`, then `Variable illegal in Parameter`
+    when an operand is a variable; an undefined operand instead gives the undefined-name message
+    alone (CR6/CR1000X) or, CR300/CR350, `X is not defined.` before the `Incomplete` line
+    (docs/checker.md#juxtaposed-dimension-operands-round-54). Always reports."""
+    if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+        if not expressions._undefined_names(expr, known):
+            diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file)
+        _report_decl_expr(expr, echo, known, variables, profile, stmt, diags)
+        return True
+    for name in expressions._undefined_names(expr, known):
+        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+    diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file)
+    if expressions._undefined_names(expr, known) or expressions._variable_refs(expr, variables):
+        diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
+    return True
+
+
 # `As` types a `Public`/`Dim` variable may have besides a declared `StructureType` (oracle, all four
 # loggers, 2026-09-27): `UInt2`, `UInt4`, `Bool8`, `NSec`, `IEEE4`, `IEEE8`, `FP2`, `Int4`,
 # `Integer` and `ULong` all give `Variable Type %s not supported` (no period) although the
@@ -4349,7 +4368,7 @@ _EMPTY_DIMS_AS_RE = re.compile(r"(?i)\s*\(\s*\)(\s*As)\b")
 _AS_TYPE_RE = re.compile(r"(?i)\bAs\s+([A-Za-z_][A-Za-z0-9_]*)")
 _STRING_SIZE_RE = re.compile(r"(?i)\bAs\s+String\s*\* ?([^=]*)", re.S)
 _EMPTY_DIMS_INIT_RE = re.compile(r"\s*\(\s*\)(\s*)=")
-_TYPED_DIMS_RE = re.compile(r"(?i)\s*As\s+[A-Za-z_][A-Za-z0-9_]*\s*(?=\()")
+_TYPED_DIMS_RE = re.compile(r"(?i)\s*As\s+[A-Za-z_][A-Za-z0-9_]*!?\s*(?=\()")
 
 
 def _check_member_types(stmt: S.Declaration, structs_seen: set[str], profile, diags: Diagnostics) -> None:
@@ -4476,6 +4495,8 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                 unsupported = True  # CR300/CR350 stop at the first one in a statement
                 if profile.single_pass:
                     unsupported_at = index
+        if v.empty_type_init:   # (oracle, all four loggers, docs/checker.md#bridge-measpex-and-empty-type-dimensions-round-54)
+            diags.error(stmt.line, "Invalid, or out of place expression:  =.", stmt.file)
         if v.type == "STRING" and v.string_size is not None and (
                 m := _STRING_SIZE_RE.search(seg)) and _adjacent_literals(m.group(1)):
             # `Public S As String * 1  0` -> `Incomplete expression: 1  0.` (echo: everything after
@@ -4504,15 +4525,19 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
             diags.error(stmt.line, f"Invalid, or out of place expression: {m.group(1)}=.", stmt.file)
             empty_eq = True  # CR300/CR350 report only the first
         typed_dims = _TYPED_DIMS_RE.match(rest)
-        if v.dims and (rest.lstrip().startswith("(") or typed_dims):
+        dims = v.junk_dims or v.dims
+        if dims and (rest.lstrip().startswith("(") or typed_dims):
             # `Public A(Nope)` and `Public A As Float(Nope)` alike (oracle, 2026-09-28)
             open_at = rest_at + (typed_dims.end() if typed_dims else len(rest) - len(rest.lstrip()))
             items = _group_items(seg, open_at)
-            if items is not None and len(items) == len(v.dims) and (
+            if items is not None and len(items) == len(dims) and (
                     stop_at is None or index < stop_at):
                 bad_dim = False
-                for d, text in zip(v.dims, items):
-                    bad_dim |= _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)
+                for d, text in zip(dims, items):
+                    if isinstance(d, S.Juxtaposed):
+                        bad_dim |= _report_juxtaposed_dim(d, text.lstrip(), known, variables, profile, stmt, diags)
+                    else:
+                        bad_dim |= _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)
                 if bad_dim and profile.single_pass:
                     # CR300/CR350 stop at the first bad variable; the one two on is named
                     # (oracle, 2026-10-04: `Public a(nv), b(nv), c` -> `Too many parameters:  c.`)
@@ -4682,6 +4707,14 @@ def _alias_parameter_declaration(routine: S.SubDef, env: consteval.Env, declared
             diags.error(routine.line, f"Variable {param.name}({texts[0].lstrip()} dimension exceeds "
                         f"max of {_MAX_ARRAY_DIMS}.", routine.file)
         for pos, d in enumerate(param.dim_exprs if len(param.dim_exprs) <= _MAX_ARRAY_DIMS else []):
+            if isinstance(d, S.Juxtaposed) and diags is not None:
+                # an unclosed header has no raw texts: echo the operands one space apart
+                echo = texts[pos].lstrip() if texts is not None else " ".join(
+                    getattr(i, "text", "") or getattr(i, "name", "") for i in d.items)
+                _report_juxtaposed_dim(d, echo, header_known, variables, profile, routine, diags)
+                dims.append(one)
+                bad = True
+                continue
             try:
                 val = consteval.value_of(d, visible)
                 size = int(val) if isinstance(val, (int, float)) and not isinstance(val, bool) else None

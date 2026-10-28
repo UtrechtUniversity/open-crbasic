@@ -3269,9 +3269,9 @@ instruction's builder reads a following `FieldNames` record (decompiled `FUN_004
 its argument as a string: a numeric constant (`1`, `(1+2)`, a numeric `Const`) or a variable is
 `FieldNames cannot be a variable.`; an empty string is `FieldNames canot be NULL` (sic); a String
 variable gives both. A string literal, string `Const` or constant string expression compiles. The
-line is that of the output instruction before it. CR6/CR1000X report it alongside pass-2
-expression errors; CR300/CR350 only in an otherwise clean file. Not modelled: an undefined name as
-the argument (CR6 then also reports both lines, and its `Invalid symbol` line moves to the owner line).
+line is that of the output instruction that owns the `FieldNames` (see "FieldNames owner line (round
+54)" below). CR6/CR1000X report it alongside pass-2 expression errors; CR300/CR350 only in an
+otherwise clean file. An undefined name as the argument is modelled in round 54.
 
 ## Block structure (2026-10-02)
 
@@ -8693,3 +8693,144 @@ all four loggers, 2026-10-27 (fixture `tests/fixtures/r53_include_runtime_names.
 
 Code: `parser._runtime_include_name`, reached from the round-43 `_folded_include_error` when the
 argument does not fold.
+
+## Bridge MeasPEx and empty type dimensions (round 54)
+
+Two false accepts from the round-54 fuzz (seeds 445/446).
+
+**MeasPEx below 1** (`953f1271f9a9`, CR1000X, GEUS `BrHalf(...,0,...)`). `BrHalf`, `BrHalf3W`,
+`BrFull` (MeasPEx is argument 6) and `BrHalf4W`, `BrFull6W` (argument 7) reject a constant MeasPEx
+below 1 with `Invalid measurements per excitation <value>` (no final period), on CR6 and CR1000X
+(oracle 2026-10-28; 0 and -1 rejected, 1 and 2 accepted). Rows in `const_ranges` of
+`data/measure.json` and `data/cr1000x/measure.json`. When the same line also has the CR6 channel
+overlap error the reference prints MeasPEx first and we print it second (`not_modelled`). CR300/CR350
+were not probed with valid ranges and are unchanged. Fixture
+`tests/fixtures/r54_bridge_meas_per_excitation.json`.
+
+**`As Float() = ...`** (`628c8b23311c`, CR6, mutated `pointervariable_1.CR6`). Empty parentheses
+after the type are accepted on their own (`Public A As Float()`), but an initializer after them gives
+`Invalid, or out of place expression:  =.` on all four loggers, for any type and for `Public` and
+`Dim`; the scalar's `Attempt to initialize variable out of bounds.` warning follows when the list has
+more than one value, and later variables and declarations are checked normally. `As Float(3) = {...}`
+stays valid. Code: `parser._parse_vardecl`. Fixture `tests/fixtures/r54_empty_type_dims_init.json`
+(48 observations, all matched).
+
+## Juxtaposed dimension operands (round 54)
+
+Round-53 fuzz (`5d03371b1388`, CR1000X: `Dim GPSstring(1  8) As String * 15`) showed that two operands
+side by side in a declaration dimension are a pass-1 `Incomplete expression: 1  8.`, where we printed
+`Invalid symbol in expression: GPSstring(1  8) As String * 15.` (the dimension list failed to parse and
+the whole statement became `Unparsed`). Oracle, all four loggers, 2026-10-28 (fixture
+`tests/fixtures/r54_dim_juxtaposed.json`, 200 cases, 190 matched):
+
+- **Echo.** The text of that one dimension: leading blanks dropped, trailing blanks kept, inner spacing
+  verbatim (`Public G( 1  8 )` -> `1  8 .`, `Dim G(2,1  8)` -> only `1  8`). Three operands, a string
+  (`"a" 8`), a `Const` name, a float, a parenthesised operand (`1 (8)`, `(1) 8`) and an expression
+  operand (`1+2 8`) all give the same message. Every bad dimension is reported, in source order, also
+  across variables (`Public G(1 8), H(2 3)`). `Public G(1 Mod 8)` and `Dim G(1 + 8)` compile.
+- **Names win.** An undefined operand anywhere in the dimension (`Zork 8`, `1 Zork`, `1 As`) gives only
+  the existing undefined-name message of `_report_decl_expr` (`Invalid symbol in expression:
+  <dimension>.`); CR300/CR350 `<name> is not defined.`, then `Incomplete expression:`, then `Variable
+  illegal in Parameter:`. A variable operand (`x  8`) adds `Variable illegal in Parameter:
+  <dimension>.` after the `Incomplete` line, on all four loggers.
+- **Not fatal for the declarations.** The statement is still declared: a later `Public G` is `G already
+  declared as a variable.`, later declaration, `Alias`, `Const` and `Sub` header errors are reported as
+  usual, and a later variable in the same list is declared (`Dim G(2), H(1  8), K(2)` then `Public K`).
+  Being a pass-1 error it hides every pass-2 (body) error, as any pass-1 error does; later body errors
+  and uses of `G` are silent.
+- **Recovered size.** A juxtaposed dimension is kept as size 1, probed through the alias bounds:
+  `Dim G(2  8)` / `Alias G(1) = Z` passes and `Alias G(2) = Z` is `Illegally dimensioned aliased name`;
+  `Public G(3, 1 8)` accepts `Alias G(3,1)` and rejects `G(3,2)` and `G(4)`; `Public G(1 8, 3)` rejects `G(3)`.
+- **Everywhere a dimension list is read.** `Public`, `Dim` in a routine, and the dimensions of a `Sub`
+  or `Function` parameter (`Sub S(a(1 8), b(2 3))` reports both, recovered to 1) give the same text.
+  `Static` was not probed (a `Static` inside a routine is `Invalid, or out of place` in the probe template).
+- CR300/CR350: the same messages. After a failed dimension they do not report the later dimension
+  errors of the file (`Public G(1 8)` then `Sub S(a(1 8))`), a pre-existing gap that also shows for
+  `Illegally dimension` and undefined names (`not_modelled`).
+
+Not modelled (`not_modelled` in the fixture): dimensions after a String size (`As String * 15(1 8)`,
+echoed `1 8` by the reference, `15(1 8)` by the String-size rule), and a String size followed by a
+parenthesis after the dimensions (`Public G(1 8) As String * 15(2)`: the reference first reports
+`Incomplete expression: 15(2).`). `Public G(1 8) As Float = {1,2}` matched including the
+out-of-bounds warning. `Dim H(x +)` (an unrelated parse error in a dimension) still differs from the
+reference and was left alone.
+
+Code: `parser._parse_dim` (a `Juxtaposed` node, a subclass of `ArrayLiteral` so the name walkers see every
+operand; `VarDecl.junk_dims` keeps the dimensions as written while `dims` holds 1 in their place),
+`structure._report_juxtaposed_dim`, called from `_check_decl_exprs` and `_alias_parameter_declaration`.
+No decompilation was needed; all rules come from probes.
+
+## Tables named after predefined constants (round 54)
+
+A `DataTable` whose name is a predefined symbol (`True`, `False`, `mV5000`) leaves that symbol a
+value: the reference compiles `DataTable(True,1,-1)` together with `Public B As Boolean = True`,
+before or after the table, on all four loggers (oracle 2026-10-28). We treated every user table name
+as a value-less name and so rejected each later `True` (a false reject, found through Codex research
+on round-53 fuzz `7d9dbda67c22`, where a swapped `DataTable(True,FinApp_Starts,-1)` hid the real
+`Invalid symbol in expression: FinApp_Starts.`). `expressions._value_less_tables` now drops the
+profile's predefined symbols from the user table names; `Status` and `Public` keep their rule, and an
+ordinary table name used as a value (`Public D = T`) is still rejected. A table named `Sec` lacks the
+reference's `Table Sec, is declared but never called.` warning (`not_modelled`). Fixture
+`tests/fixtures/r54_table_named_constant.json`.
+
+## FieldNames owner line (round 54)
+
+Fixture `tests/fixtures/r54_fieldnames_owner.json` (`tests/test_r54_fieldnames_owner.py`): 266
+reference observations on CR6, CR1000X, CR300 and CR350 (recorded 2026-10-28; 242 matched, 24
+`not_modelled`). Saved fuzz reproducer `message_diff/83c0a809c514` (CR1000X, `WindVector` followed by
+`FieldNames(WindDirection","WindSpeed)`) now matches.
+
+Rule (probed on all four compilers). The builder of a field-producing instruction reads the run of
+`FieldNames`/`FieldClassify`/`FieldOrigin` records directly after it and resolves each `FieldNames`
+argument then, so everything that comes from resolving the argument carries the **owner's line**,
+not the `FieldNames` line:
+
+- CR6/CR1000X, undefined name or an unbalanced-quote argument (`WindDirection","WindSpeed`, which we
+  parse as `Unparsed`): `line <owner>: Invalid symbol in expression: <arg>.` followed by the two
+  semantic lines `FieldNames cannot be a variable.` and `FieldNames canot be NULL` (the argument has
+  no constant string value). The group is printed *before* the owner's own argument errors on that
+  line (`Average(1,Zed,FP2,False)` + `FieldNames(NoSuchName)`: the `NoSuchName` group, then
+  `Invalid symbol in expression: Zed.`). Two consecutive `FieldNames` records give two groups in
+  record order, all on the owner line. `FieldClassify("x")`/`FieldOrigin("x")` between owner and
+  `FieldNames` do not change the owner (CR6/CR1000X; CR300/CR350 do not know them and fail at their own
+  line, which hides the semantic lines).
+- All loggers: the semantic lines of a numeric, variable, empty-string or String-variable argument
+  are on the owner line.
+- CR300/CR350 resolve the argument while reading (`NoSuchName is not defined.` at the `FieldNames`
+  line, unchanged).
+- Parsing/arity errors stay on the `FieldNames` line (`FieldNames("A","B")` gives `Too many
+  parameters:  "B".`, `FieldNames()` gives `Invalid or missing parameter.`).
+- **A `FieldNames` with no owner is never resolved**: after `DataInterval` or `CardOut` (also when an
+  owner and an earlier `FieldNames` precede that record), or first in the table, `FieldNames(NoSuchName)`,
+  `FieldNames(1)`, `FieldNames(S)` and the unbalanced-quote form all compile cleanly on CR6/CR1000X;
+  `FieldNames(1)` and `FieldNames(S)` also compile on CR300/CR350 (their `is not defined.` is a
+  reading-time error and stays).
+
+Owners confirmed with the compilers: `Sample`, `Average`, `Totalize`, `StdDev`, `Moment`, `Maximum`,
+`Minimum`, `Median`, `WindVector`, `Covariance`, `Histogram`, `FFT`, `RainFlow` (CR6/CR1000X: the
+undefined-name group; all four: the numeric argument). `SampleMaxMin` and `LevelCrossing` were
+probed with arguments that failed first (not counted). `SampleFieldCal` is **not** an owner: its
+`FieldNames(1)` was never resolved (the compiler printed `SampleFieldCal with no FieldCal in
+program.` and `Table T declared with no output fields.`; the second line is a separate gap, we do
+not print it). `ETsz`, `ETClearSky` and `MQTTPublishTable` are unprobed and are excluded from the owner
+set.
+
+RE trail (a hypothesis that the probes confirmed, not a source of rules): `FUN_004ec300` is the shared
+builder helper; it skips a consecutive run of the three metadata record ids and resolves the
+`FieldNames` argument through `FUN_00507e70` while the compiler's current source line is still the
+owner's (Codex read-only research, round 54).
+
+Code: `instr_data.fieldnames_owners` (the owner map, also used by `check_fieldnames`) and
+`instr_data.move_fieldnames_symbol_errors` (called in `checker/__init__.py` next to the `Invalid
+symbol` renaming; moves or drops the pass-2 findings and appends the semantic pair). Before this round
+`check_fieldnames` took the last *instruction* of any kind as the owner, so a `FieldNames` after
+`DataInterval` or first in the table was reported (a false reject) and one after `FieldClassify` got
+the wrong line.
+
+Remaining gaps (all `not_modelled` in the fixture): a numeric `FieldNames` followed by another one
+with an undefined name (the first one's semantic line is printed by tier C after the later group; the
+reference order is record order); `FieldNames(X+1)` (a variable inside a numeric expression: the
+reference says `FieldNames cannot be a variable.`, we compile it); the unbalanced-quote argument on
+CR300/CR350 (reference `<name> is not defined.` then `Incomplete expression: <arg>.`, we print the
+generic fallback). CR6/CR1000X page-faulted (exit 5, no verdict) on `FieldNames(NoSuchName)` followed
+by `FieldNames(1)`. The overrides in `tables.py`/`bindings.py` still apply an unowned `FieldNames`.

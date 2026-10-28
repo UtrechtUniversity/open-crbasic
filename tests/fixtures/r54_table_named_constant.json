@@ -1,0 +1,251 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr1000x-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr300-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr350-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr6-DataTable(True,FinApp_Starts,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,FinApp_Starts,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: FinApp_Starts."
+  },
+  {
+   "id": "cr1000x-DataTable(True,FinApp_Starts,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,FinApp_Starts,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: FinApp_Starts."
+  },
+  {
+   "id": "cr300-DataTable(True,FinApp_Starts,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,FinApp_Starts,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: FinApp_Starts is not defined.\nline 3: Too many parameters:  -1.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-DataTable(True,FinApp_Starts,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,FinApp_Starts,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: FinApp_Starts is not defined.\nline 3: Too many parameters:  -1.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-DataTable(False,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic C As Boolean = False",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(False,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic C As Boolean = False\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table False, is declared but never called."
+  },
+  {
+   "id": "cr1000x-DataTable(False,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic C As Boolean = False",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(False,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic C As Boolean = False\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table False, is declared but never called."
+  },
+  {
+   "id": "cr300-DataTable(False,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic C As Boolean = False",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(False,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic C As Boolean = False\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table False, is declared but never called."
+  },
+  {
+   "id": "cr350-DataTable(False,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic C As Boolean = False",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(False,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic C As Boolean = False\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table False, is declared but never called."
+  },
+  {
+   "id": "cr6-DataTable(T,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic D = T",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic D = T\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: T.\nline 6: Variable initialization of D has bad syntax."
+  },
+  {
+   "id": "cr1000x-DataTable(T,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic D = T",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic D = T\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: T.\nline 6: Variable initialization of D has bad syntax."
+  },
+  {
+   "id": "cr300-DataTable(T,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic D = T",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic D = T\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: T is not defined.\nline 6: Variable illegal in Parameter: T.\nline 6: Variable initialization of D has bad syntax.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-DataTable(T,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic D = T",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic D = T\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: T is not defined.\nline 6: Variable illegal in Parameter: T.\nline 6: Variable initialization of D has bad syntax.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-DataTable(mV5000,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic E = mV5000",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(mV5000,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic E = mV5000\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table mV5000, is declared but never called."
+  },
+  {
+   "id": "cr1000x-DataTable(mV5000,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic E = mV5000",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(mV5000,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic E = mV5000\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table mV5000, is declared but never called."
+  },
+  {
+   "id": "cr300-DataTable(mV5000,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic E = mV5000",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(mV5000,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic E = mV5000\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: mV5000 is not defined.\nline 6: Variable illegal in Parameter: mV5000.\nline 6: Variable initialization of E has bad syntax.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-DataTable(mV5000,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic E = mV5000",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(mV5000,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic E = mV5000\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: mV5000 is not defined.\nline 6: Variable illegal in Parameter: mV5000.\nline 6: Variable initialization of E has bad syntax.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic F As Boolean = True",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic F As Boolean = True\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr1000x-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic F As Boolean = True",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic F As Boolean = True\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr300-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic F As Boolean = True",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic F As Boolean = True\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr350-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic F As Boolean = True",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic F As Boolean = True\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr6-DataTable(Sec,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(Sec,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table Sec, is declared but never called.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr1000x-DataTable(Sec,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(Sec,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table Sec, is declared but never called.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr300-DataTable(Sec,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(Sec,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table Sec, is declared but never called.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr350-DataTable(Sec,1,-1)\\n  Sample(1,X,FP2)\\nEndTable",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(Sec,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table Sec, is declared but never called.",
+   "not_modelled": "not modelled"
+  },
+  {
+   "id": "cr6-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic G = True + 1",
+   "logger": "cr6",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic G = True + 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr1000x-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic G = True + 1",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic G = True + 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr300-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic G = True + 1",
+   "logger": "cr300",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic G = True + 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table True, is declared but never called."
+  },
+  {
+   "id": "cr350-DataTable(True,1,-1)\\n  Sample(1,X,FP2)\\nEndTable\\nPublic G = True + 1",
+   "logger": "cr350",
+   "source": "Public X\nPublic B As Boolean = True\nDataTable(True,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic G = True + 1\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table True, is declared but never called."
+  }
+ ]
+}

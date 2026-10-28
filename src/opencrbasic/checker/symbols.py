@@ -452,7 +452,8 @@ def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple
                     val = consteval.value_of(d, env)
                 except consteval.NotConstant:
                     break
-                if not isinstance(val, (int, float)) or isinstance(val, bool):
+                if not isinstance(val, (int, float)) or isinstance(val, bool) or val != val \
+                        or val in (float("inf"), float("-inf")):
                     break
                 sizes.append(int(val))
             else:
