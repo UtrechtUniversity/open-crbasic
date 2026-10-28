@@ -1,8 +1,9 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-28 after development round 54** (round-51
+Current compiler state and handoff, updated **2026-10-28 after development round 55** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
-accepts and three first-error families, round 54). Rounds 49-54 are on `main`; use Git to check publication
+accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
+round 55). Rounds 49-55 are on `main`; use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -21,12 +22,12 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 57,312 passed, 311 skipped, 510 strict xfail (round 54, `-n 6`) |
-| `pytest -q -m server` | 163 passed (round 54) |
+| `pytest -q -n 4 -m 'not server'` | 58,741 passed, 311 skipped, 543 strict xfail (round 55, `-n 6`) |
+| `pytest -q -m server` | 163 passed (round 55) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded` (round 54) | 3,338 inputs: 2,584 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 55) | 3,338 inputs: 2,585 exact (round 53: 2,574); CR6/CR1000X: 22 first-error misses, 27 false accepts; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 46) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
-| Fresh fuzz, seeds 445 (CR6) / 446 (CR1000X) (round 54, `--relevant`, 500 mutants each, no shrinking) | CR6 487 exact, 11 message differences, 1 false accept; CR1000X 483 exact, 12 message differences, 1 false accept, 1 warning-only difference; both false accepts fixed; no false reject, crash, hang or implementation exception. Seeds 443/444 (round 53): no verdict difference. Raw output in `scratch/r54/` (git-ignored) |
+| Fresh fuzz, seeds 447 (CR6) / 448 (CR1000X) (round 55, `--relevant`, 500 mutants each) | CR6 491 exact, 3 message differences, 1 false accept; CR1000X 492 exact, 6 message differences, 1 false accept; both fixed. Seeds 445/446 (round 54): 2 false accepts, fixed. Raw output in `scratch/r54/`, `scratch/r55/` (git-ignored) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
@@ -73,6 +74,24 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 55** (M1/M2; worker B's round-54 PipeLine work integrated, Codex review, coordinator fixes).
+- **CI:** round 54 broke the CI replay gate (`921b96a020e3`: a `Sample` outside a table owned a
+  `FieldNames`); fixed in `ce35fbd3`. Local rounds now run the replay exactly as CI does, with
+  `--baseline tests/replay_baseline.json` (the gate without it missed this).
+- **PipeLine placement data** (worker B, fixture `r54_pipeline_task_instructions.json`, 1,274
+  observations, 1,242 matched): `SetDAC`, `ExciteI`, `Resistance`, `VibratingWire`, `EC100`, 24 `CDM_*`
+  instructions, a setup group (`CDM_ExciteV`, `CDM_ExciteI`, `CDM_MuxSelect`) and the slow-scan
+  `may skip scans` warning ([checker notes](docs/checker.md#task-instructions-in-pipeline-mode)).
+- **False reject fixed:** a `Scan` inside `For`/`If`/`Do` in PipeLine Mode no longer makes its task
+  instructions conditional (pre-existing since round 49, found by the Codex review).
+- **False accepts fixed:** an unknown time unit in `TimeIntoInterval`/`IfTime` (GEUS `64dd660d49e3`);
+  `SetSetting("Baudrate(C  OMC1)")` (only the first word of the index counts, `b74fe6cc73d0`); CR6
+  `VibratingWire` with a numeric diagnostics argument.
+- **Warnings:** no `may skip scans` for `Delay(0,0,...)` or `PortSet(...,1)`.
+- Details: [docs/checker.md](docs/checker.md#unknown-time-units-and-settings-port-words-round-55) and the
+  following section. Gates: fixture audits 0 differing, difftest and GEUS unchanged, CI replay gate passes,
+  `verify.py` passes with both compilers.
+
 **Round 54** (M1/M2; Sonnet workers A and C, Codex research and review, coordinator fixes).
 - **False rejects fixed:** a `DataTable` named after a predefined constant (`DataTable(True,...)`)
   made that constant undefined everywhere (found by Codex research on `7d9dbda67c22`); a `FieldNames`
@@ -90,8 +109,7 @@ in [legal and provenance notes](docs/legal.md).
   [docs/checker.md](docs/checker.md#juxtaposed-dimension-operands-round-54) and the following round-54
   sections. Gates: fixture audits 0 differing, four-profile difftest and GEUS unchanged, replay gate
   passes, `verify.py` passes with both compilers.
-- Worker B (PipeLine Mode placement of `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire`,
-  `CDM_*`, `Calibrate` warning) was still running at this commit.
+- Worker B's PipeLine Mode work was still running at this commit (integrated in round 55).
 
 **Round 53** (M1/M2, fresh relevant fuzz seeds 443/444; one session, coordinator only, Codex
 research). The fuzz found no verdict difference by its classifier, but two of its six first-error
@@ -182,8 +200,9 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    replay; after any `crbasic/` change run `fuzz_replay.py --rerecord-stale` first (`docs/checker.md`
    "First-error families (round 39)" lists the modelled ones).
 5. **Open candidates from rounds 44-51:**
-   - PipeLine Mode placement is unprobed for `CDM_*`, `EC100`, `ExciteI`, `Resistance`, `SetDAC`,
-     `VibratingWire`; plain `Calibrate` in a slow scan lacks a `may skip scans` warning;
+   - PipeLine Mode placement is still unprobed for `CDM_BridgeFilt`, `CDM_CalRead`, `CDM_CANOutCfg`,
+     `CDM_FactCal`, `CDM_FFTFilt`, `CDM_OffsetRd`, `CDM_VoltFilt`, `CDM_VW300*`, `SDMTrigger`, `TGA`;
+     same-line order with the before-`BeginProg` message is not modelled (round 55);
    - round-54 fuzz: 3 first-error misses and 1 earlier first location remain (`scratch/r54/triage.json`; `SetSetting("",...)` and an overflowing `Scan` count match in isolation, so they are ordering effects);
    - 10 round-51 message differences remain (`scratch/r51/`; all later-diagnostic or same-location text except `8f0c2a005513`:
      the reference prints 9 `Parameter will truncate` warnings before the error for an undeclared first

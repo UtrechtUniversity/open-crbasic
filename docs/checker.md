@@ -3375,9 +3375,81 @@ instruction must be in Scan..NextScan, unless SequentialMode is used.` outside a
 `<NAME> illegally used inside conditional statement.` in a conditional, with the name in upper
 case as the reference prints it (`SDMINT8`); none prints `never reached` after `NextScan`. All of them, like `SerialInRecord`, are accepted in a conditional after a `SlowSequence`
 (`main_sequence_only`, 24 observations, Codex-review follow-up).
-`EC100` is left out: its control did not compile cleanly with a plain `Public` array, so its
-rule is unprobed. Not implemented because not probed: the `CDM_*` instructions, `EC100`,
-`ExciteI`, `Resistance`, `SetDAC`, `VibratingWire` and the other `mode.json` task instructions.
+Round 54 (below) added `EC100`, `ExciteI`, `Resistance`, `SetDAC`, `VibratingWire` and a probed
+`CDM_*` subset. Not implemented because not probed: the other `CDM_*` instructions (`CDM_BridgeFilt`
+needs a scan of 1 s or faster, `CDM_CalRead`, `CDM_CANOutCfg`, `CDM_FactCal`, `CDM_FFTFilt`,
+`CDM_OffsetRd`, `CDM_VoltFilt`, `CDM_VW300*`), `SDMTrigger`, `TGA` and the other `mode.json` task
+instructions.
+
+**Round 54 (fixture `tests/fixtures/r54_pipeline_task_instructions.json`, 1274 observations, 32
+`not_modelled`; probes `scratch/r54/`, 2026-10-28).** Same matrix as rounds 49-50 (explicit
+`PipeLineMode` and automatic mode: in a Scan, in an `If`, before the first `Scan`, after `NextScan`,
+in a `Sub`, plus a conditional and a plain call in a slow sequence, and `SequentialMode`) on CR6 and
+CR1000X. CR300/CR350: `Calibrate` (needs an array of at least ~100 elements there) and
+`VibratingWire` (`VibratingWire(Tm(),1,1,1,1,1000,3000,10,1,1,1,1,1,0)`, a different instruction
+from the CR6 one) accept every placement (`Compiled OK.`, only the `never reached`
+warning after `NextScan`); `EC100`, `SetDAC`, `ExciteI` and `Resistance` are undefined there (one
+row each). Only data files changed, except the `setup` flag and the slow-scan warning below.
+
+- `SetDAC` (display name `SetDac`, CR6 and CR1000X): the standard rule; like `PanelTemp` it keeps
+  `SetDac never reached at run time.` after `NextScan` (no `hides_unreached`). In automatic mode it is
+  a sequential trigger (it is in `mode.json`).
+- `ExciteI`, `Resistance`, `VibratingWire` (CR6 only; the CR1000X compiler rejects them as
+  undefined): the standard rule with `hides_unreached`. `VibratingWire` needs a string variable as
+  its 8th argument (`Public Str As String * 100`; any numeric or array argument prints
+  `Invalid diagnostic parameter.`, found with Codex research on `FUN_00510f40`, confirmed on the
+  compiler); the call used is `VibratingWire(Tm(),1,U1,1000,3000,1,1,Str,60)`.
+- `EC100` (CR6 and CR1000X): the SDM messages of round 50 (`SDM instruction must be in
+  Scan..NextScan, unless SequentialMode is used.`, `EC100 illegally used inside conditional
+  statement.`), `hides_unreached`, accepted in a conditional after a `SlowSequence`
+  (`main_sequence_only`). The round-50 control failed only because `Ux(10)` is too short: the
+  destination needs 13 elements.
+- `CDM_*` (CR6 and CR1000X, identical): the standard rule with `hides_unreached` for `CDM_ACPower`,
+  `CDM_Battery`, `CDM_BrFull`, `CDM_BrFull6W`, `CDM_BrHalf`, `CDM_BrHalf3W`, `CDM_BrHalf4W`,
+  `CDM_CurrentDiff`, `CDM_PanelTemp`, `CDM_PeriodAvg`, `CDM_PulsePort`, `CDM_Resistance`,
+  `CDM_Resistance3W`, `CDM_TCComp`, `CDM_TCDiff`, `CDM_TCSe`, `CDM_Therm107/108/109`,
+  `CDM_VoltDiff`, `CDM_VoltSe`, `CDM_SW12`, `CDM_SW5`, `CDM_SWPower`, `CDM_Delay`. The rule applies in
+  automatic mode too wherever the program stays Pipeline: `CDM_ACPower`, `CDM_Delay`,
+  `CDM_Resistance`, `CDM_Resistance3W` and `CDM_TCComp` are not in `mode.json`, so a conditional or
+  `Sub` call is an error even without `PipeLineMode`. `CDM_SW12`/`CDM_SW5` (5th argument) and
+  `CDM_SWPower` (4th) are exempt with option 1 and rejected for 0, 2 or an omitted option (like
+  `SW12`); `CDM_Delay` is exempt with option 1 (3rd argument) and rejected with option 0; option 2
+  prints `Illegal option 2` (not modelled, outside the rule).
+- **New rule shape, the `setup` flag.** `CDM_ExciteV`, `CDM_ExciteI` and `CDM_MuxSelect` are
+  accepted everywhere before the first `Scan` of a sequence (between `BeginProg` and `Scan`,
+  in an `If` there, in a `Sub` or `Function` body, in a program without a `Scan`, inside a
+  `SubScan`) and rejected in only two places: after a closed `Scan` (`not allowed outside of
+  Scan..NextScan`, also between two scans and after a slow scan; a `SlowSequence` header resets it,
+  so before the slow `Scan` they are accepted) and in a conditional inside a `Scan` (`For`, `If`,
+  `Select`, ...). `closed` in `pipeline_task_errors` tracks this. `CDM_ExciteI` with a constant
+  excitation stays Pipeline in automatic mode (it is not in the `mode.json` task list), so the
+  placement errors also show without `PipeLineMode`; the CHM form with a variable excitation makes
+  the program sequential (`nonconstant_arg`), which `mode.py` already did.
+- **`Slow Seq %d, Scan %d, may skip scans if running with Scan %d.`**, the open "Calibrate in a slow
+  scan" candidate, is a general scheduling warning, not a `Calibrate` rule
+  (`warnings.check_slow_scan_skips`, `FUN_004684a0`): at the last statement's line, for each slow
+  sequence, each of its scans that holds a time-consuming instruction, and each main-sequence scan
+  whose interval is not shorter than the slow scan's (`1 Min` against `60 Sec` warns; `2 Sec`
+  against `1500 mSec` does not; two equal main scans give two lines, numbered by scan). Order: slow
+  sequence, slow scan, main scan, after any `never reached` warnings. It is gated like the
+  background-calibration warning (nothing with errors elsewhere, nothing in SequentialMode) and
+  needs a constant interval on both. The instruction list is `slow_scan_tasks` in
+  `pipeline_tasks.json`, confirmed per logger with a 3 s/3 s probe: CR6 `PanelTemp`, `VoltSE`,
+  `VoltDiff`, `PortSet` (also with a variable state), `Therm107`, `BrHalf`, `BrFull`, `TCSe`,
+  `TCDiff`, `PeriodAvg`, `Delay` (option 0; option 1 does not), `PulsePort`, `MuxSelect`,
+  `Calibrate`, `Resistance`, `VibratingWire`; CR1000X the same without the CR6-only ones, plus
+  `Battery`, `Therm108/109`, `BrHalf3W/4W`, `BrFull6W`, `CS616`. These do not warn (so they
+  are not in the list): `Battery` on CR6, `ExciteV`, `SW12`, `SetDAC`, `EC100`, `ExciteI`,
+  `SerialOutBlock`, all `CDM_*`. Unprobed (not listed, no warning): `AM25T`, `SDI12Recorder`,
+  `CS616` on CR6, the SDM group. A main scan placed after a `SlowSequence` is a slow scan.
+- Same-line and remaining gaps, all `not_modelled` strict xfails in the fixture: before `BeginProg` in
+  explicit `PipeLineMode` the reference prints only the PipeLine Mode error (no `illegally occurs
+  before BeginProg.` line) for the `hides_unreached` instructions (15 cases; `SetDac` and
+  `PanelTemp` print both) and accepts `CDM_ExciteV`/`CDM_MuxSelect` outright (4 cases); the
+  `before_beginprog.json` lists gained `SETDAC`, `EXCITEI`, `RESISTANCE`, `VIBRATINGWIRE` and
+  `CDM_THERM107` for the automatic-mode `illegally occurs before BeginProg.`; reachability after an
+  endless scan inside a slow sequence is not analysed (12 cases, existing limitation); CR1000X
+  `PulseCount` in a slow sequence prints `Pulsecount not allowed in Slow Sequence` (1 case).
 
 The error is pass 2 and accumulating: it does not end the pass, prints together with `x=q`
 errors in line order, and is cut off by an earlier placement error. Unlike other tier-B errors it
@@ -8834,3 +8906,35 @@ reference says `FieldNames cannot be a variable.`, we compile it); the unbalance
 CR300/CR350 (reference `<name> is not defined.` then `Incomplete expression: <arg>.`, we print the
 generic fallback). CR6/CR1000X page-faulted (exit 5, no verdict) on `FieldNames(NoSuchName)` followed
 by `FieldNames(1)`. The overrides in `tables.py`/`bindings.py` still apply an unowned `FieldNames`.
+
+## Unknown time units and Settings port words (round 55)
+
+Two false accepts from the round-55 fuzz (seeds 447/448), oracle 2026-10-28:
+
+- **`TimeIntoInterval`/`IfTime` with a unit outside 0-6** (`64dd660d49e3`, CR1000X, GEUS
+  `TimeIntoInterval(9,Min,10)` with swapped arguments). The unit scales both values to 0, so the
+  `Interval (%d) must be > 0 and TimeInto Interval (%d) must be < Interval.` check always fails, also
+  for `(2,3,99)`, `(0,3,99)` and `(-1,3,99)`; `Month` (6) keeps its own handling. All four loggers.
+  `intervals._check_call`. Fixture `tests/fixtures/r55_timeinto_unknown_units.json` (68 observations).
+- **`SetSetting("Baudrate(...)")` indexes** (`b74fe6cc73d0`, CR6, `"Baudrate(C  OMC1)"`). Only the first
+  whitespace-separated word of the index counts: `COMC1 x` and ` COMC1` are `COMC1`; `C  OMC1` (the
+  word `C`) and `COMC1+1` are unknown and give `Illegal dimension 0`; `1 2` is `1`.
+  `instr_rules._check_port_index`. Fixture `tests/fixtures/r55_settings_index_word.json`.
+
+## Slow-scan warnings, Scans inside blocks and VibratingWire diagnostics (round 55)
+
+Codex review of worker B's round-54 PipeLine data, confirmed on CR6/CR1000X (oracle 2026-10-28):
+
+- `Delay(0,0,...)` (zero duration) and `PortSet(...,...,1)` (processing task) in a slow scan start no
+  measurement task, so the `Slow Seq N, Scan M, may skip scans` warning is absent; `Delay(0,10,mSec)`
+  and `PortSet(C1,1)` keep it. Data: `slow_scan_no_task` in `pipeline_tasks.json`. Fixture
+  `r55_slow_scan_no_task.json`.
+- **False reject fixed:** a `Scan` inside `For`, `If` or `Do` starts unconditional; we carried the outer
+  block depth into the scan and rejected `PanelTemp` (and on CR1000X `ExciteV`) as `not allowed inside
+  of a conditional statement in PipeLine Mode.` The depth is now saved at `Scan` and restored at
+  `NextScan` (`structure.pipeline_task_errors`). Fixture `r55_scan_in_block_pipeline.json`.
+- CR6 `VibratingWire`: a numeric variable as the 8th (diagnostics) argument gives `Invalid diagnostic
+  parameter.`, a number `Variable name 1 illegal, starts with a number.`; String variables, String
+  array elements and string literals compile. An undefined name prints `Invalid symbol in expression`
+  and then the diagnostic line, which we lack (`not_modelled`). `instr_rules.check_vibrating_wire_diagnostics`.
+  Fixture `r55_vibrating_wire_diagnostics.json`.

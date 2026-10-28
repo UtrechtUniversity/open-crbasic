@@ -1,0 +1,499 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-If TimeIntoInterval(9,Min,10) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,Min,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(9,Min,10) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,Min,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(9,Min,10) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,Min,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(9,Min,10) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,Min,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(9,3,10) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,3,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(9,3,10) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,3,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(9,3,10) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,3,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(9,3,10) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,3,10) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (9) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(9,10,Min) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(9,10,Min) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(9,10,Min) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(9,10,Min) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(9,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(10,10,Min) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(10,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (10) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(10,10,Min) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(10,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (10) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(10,10,Min) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(10,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (10) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(10,10,Min) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(10,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (10) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(11,10,Min) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(11,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (11) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(11,10,Min) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(11,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (11) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(11,10,Min) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(11,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (11) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(11,10,Min) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(11,10,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (10) must be > 0 and TimeInto Interval (11) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(0,0,Min) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(0,0,Min) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(0,0,Min) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(0,0,Min) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,Min) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(2,3,99) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(2,3,99) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(2,3,99) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(2,3,99) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(5,3,Sec) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(5,3,Sec) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(5,3,Sec) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(5,3,Sec) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr6-W = TimeIntoInterval(5,3,Sec)",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    W = TimeIntoInterval(5,3,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr1000x-W = TimeIntoInterval(5,3,Sec)",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    W = TimeIntoInterval(5,3,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr300-W = TimeIntoInterval(5,3,Sec)",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    W = TimeIntoInterval(5,3,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr350-W = TimeIntoInterval(5,3,Sec)",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    W = TimeIntoInterval(5,3,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr6-If IfTime(5,3,Sec) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If IfTime(5,3,Sec) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr300-If IfTime(5,3,Sec) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr350-If IfTime(5,3,Sec) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If IfTime(5,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (5) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(-1,3,Sec) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(-1,3,Sec) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(-1,3,Sec) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(-1,3,Sec) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,Sec) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(0,3,99) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(0,3,99) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(0,3,99) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(0,3,99) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(-1,3,99) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (-1) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(-1,3,99) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (-1) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(-1,3,99) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (-1) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(-1,3,99) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(-1,3,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (-1) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(2,3,7) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,7) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(2,3,7) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,7) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(2,3,7) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,7) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(2,3,7) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,7) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(2,3,-1) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,-1) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(2,3,-1) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,-1) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(2,3,-1) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,-1) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(2,3,-1) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,-1) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (3) must be > 0 and TimeInto Interval (2) must be < Interval."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(2,3,6) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,6) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(2,3,6) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,6) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(2,3,6) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,6) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(2,3,6) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(2,3,6) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-If TimeIntoInterval(0,0,99) Then W = true",
+   "logger": "cr6",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr1000x-If TimeIntoInterval(0,0,99) Then W = true",
+   "logger": "cr1000x",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr300-If TimeIntoInterval(0,0,99) Then W = true",
+   "logger": "cr300",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  },
+  {
+   "id": "cr350-If TimeIntoInterval(0,0,99) Then W = true",
+   "logger": "cr350",
+   "source": "Public W As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    If TimeIntoInterval(0,0,99) Then W = true\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (0) must be > 0 and TimeInto Interval (0) must be < Interval."
+  }
+ ]
+}

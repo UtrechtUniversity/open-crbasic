@@ -503,14 +503,15 @@ def _decimal(magnitude: int, sign: int, profile, literal: bool):
 def _check_call(call: S.Index | S.Call, scan, stmt: S.Stmt, diags: Diagnostics, env,
                 after_error: bool = False) -> None:
     values = [v for a in call.args[:3] if (v := _int(a, env)) is not None]
-    if len(call.args) != 3 or len(values) != 3 or values[2] == _MONTH or \
-            values[2] not in instr_rules._US_PER_UNIT or _INT_MIN in values[:2]:
+    if len(call.args) != 3 or len(values) != 3 or values[2] == _MONTH or _INT_MIN in values[:2]:
         return
     if after_error and min(values[:2]) < 0:
         return  # a negative argument is only reported while the file is still clean
     tinto_raw, interval_raw, unit = values
-    t_sec, t_us = _split(tinto_raw * instr_rules._US_PER_UNIT[unit])
-    i_sec, i_us = _split(interval_raw * instr_rules._US_PER_UNIT[unit])
+    # an unknown unit scales both to 0, so the check always fails (oracle, round 55)
+    per_unit = instr_rules._US_PER_UNIT.get(unit, 0)
+    t_sec, t_us = _split(tinto_raw * per_unit)
+    i_sec, i_us = _split(interval_raw * per_unit)
     if t_us < 0:
         t_sec, t_us = i_sec - 1 + t_sec, t_us + 1_000_000
     elif t_sec < 0:

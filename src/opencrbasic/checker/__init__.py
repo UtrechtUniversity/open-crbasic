@@ -283,6 +283,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,
     # unconditional -- oracle-confirmed the same way as the two calls just above.
     _run_pass(instr_rules.check_precision_variable, program, profile, diags)
+    _run_pass(instr_rules.check_vibrating_wire_diagnostics, program, profile, diags)
     _run_pass(instr_rules.check_iif_types, _with_inline(program), profile, diags)
     # Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     # in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, own module docstring
@@ -863,6 +864,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `check_background_calibration` docstring has the oracle evidence). Independent of
         # `tables_hook`'s own availability, so called ahead of that guard rather than inside it.
         _run_pass(warnings.check_background_calibration, program, profile, diags, env)
+        _run_pass(warnings.check_slow_scan_skips, program, profile, diags, env)
         _run_pass(instr_measure.check_cpi_time, program, profile, diags, env)
         try:
             from .. import tables_hook

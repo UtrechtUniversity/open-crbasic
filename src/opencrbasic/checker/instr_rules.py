@@ -1324,6 +1324,25 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
             diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i)}.", stmt.file)
 
 
+def check_vibrating_wire_diagnostics(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6 `VibratingWire`: the 8th argument (diagnostics) names a String variable; a numeric
+    variable gives `Invalid diagnostic parameter.`, a number the variable-name message (oracle, round 55,
+    docs/checker.md#task-instructions-in-pipeline-mode)."""
+    if profile.name != "cr6":
+        return
+    from . import instr_data
+    strings = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
+               for v in st.vars if v.type == "STRING"}
+    variables = symbols.declared_variable_names(program)   # (an undefined name: pass 2 reports it)
+    for st in instr_data._with_inline(program.statements):
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "VIBRATINGWIRE" and len(st.args) > 7:
+            arg = st.args[7]
+            if isinstance(arg, (S.Name, S.Index)) and arg.name.upper() in variables - strings:
+                diags.error(st.line, "Invalid diagnostic parameter.", st.file)
+            elif isinstance(arg, S.Number):
+                diags.error(st.line, f"Variable name {arg.text} illegal, starts with a number.", st.file)
+
+
 # SDM address argument position, measured by setting each numeric argument of a chm example to 99
 # (oracle, CR6, 2026-09-28; `docs/instructions.md` "SDM addresses").
 _SDM_ADDRESS_ARG = {
@@ -3005,11 +3024,13 @@ def _check_port_index(stmt: S.Instruction, key: str, index: str | None, cfg: dic
     """`Illegal dimension N` for `Baudrate(index)`/`Security(index)`; docs/instructions.md#field-index-dimension."""
     if not cfg or index is None or key not in cfg or not index.endswith(")"):
         return
-    index = index[:-1]
+    # only the first word counts: `COMC1 x` is COMC1, `C  OMC1` and `COMC1+1` are unknown, so 0
+    # (oracle, round 55)
+    index = (index[:-1].split() or [""])[0]
     if re.fullmatch(r"0|-?[1-9]\d*", index):
         value = int(index)
-    elif re.fullmatch(r"[A-Za-z]\w*", index) and index.upper() not in env.consts:
-        symbol = profile.symbols.get(index.upper())
+    elif re.match(r"[A-Za-z]", index) and index.upper() not in env.consts:
+        symbol = profile.symbols.get(index.upper()) if re.fullmatch(r"[A-Za-z]\w*", index) else None
         value = symbol["value"] if symbol else 0
     else:
         return

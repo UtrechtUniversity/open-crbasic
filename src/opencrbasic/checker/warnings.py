@@ -396,6 +396,66 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
             )
 
 
+def _value_in(args: list, position: int, values: list, env) -> bool:
+    """Whether 1-based argument `position` is a constant among `values`."""
+    try:
+        return position <= len(args) and consteval.value_of(args[position - 1], env) in values
+    except consteval.NotConstant:
+        return False
+
+
+def check_slow_scan_skips(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Slow Seq %d, Scan %d, may skip scans if running with Scan %d.` (round 54, oracle CR6 and
+    CR1000X, `docs/checker.md` "Task instructions in PipeLine Mode"): at the last statement's line,
+    for every slow-sequence `Scan` that holds a measurement instruction of
+    `pipeline_tasks["slow_scan_tasks"]` and every main-sequence `Scan` whose constant interval is not
+    shorter than the slow one's; nothing in SequentialMode or with errors elsewhere. Order: slow
+    sequence, slow scan, main scan."""
+    tasks = profile.pipeline_tasks.get("slow_scan_tasks")
+    if not tasks:
+        return
+    from .instr_measure import is_sequential
+    if is_sequential(program, profile, env):
+        return
+    rules = profile.pipeline_tasks["tasks"]
+    mains: list[float | None] = []
+    slows: list[list] = []   # [sequence, scan, interval ms or None, has a task]
+    seq = scan_no = 0
+    cur: list | None = None
+    for stmt in _with_inline_branches(program.statements):
+        kw = _kw(stmt)
+        if kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", stmt.text or ""):
+            kw = "NEXTSCAN"
+        if kw == "SLOWSEQUENCE":
+            seq, scan_no = seq + 1, 0
+        elif kw == "SCAN" and isinstance(stmt, S.Instruction):
+            interval = _scan_interval_ms(stmt, env)
+            if seq == 0:
+                mains.append(interval)
+            else:
+                scan_no += 1
+                cur = [seq, scan_no, interval, False]
+                slows.append(cur)
+        elif kw == "NEXTSCAN":
+            cur = None
+        elif cur is not None and kw in tasks and isinstance(stmt, S.Instruction):
+            constants = rules.get(kw, {}).get("constant_values", {})   # (`Delay` option 0 only)
+            # (`Delay(0,0,...)` and `PortSet(...,1)` start no task, oracle round 55)
+            no_task = profile.pipeline_tasks.get("slow_scan_no_task", {}).get(kw, {})
+            try:
+                cur[3] = cur[3] or all(consteval.value_of(stmt.args[int(p) - 1], env) in allowed
+                                       for p, allowed in constants.items()) and not any(
+                    _value_in(stmt.args, int(p), vals, env) for p, vals in no_task.items())
+            except (consteval.NotConstant, IndexError):
+                pass
+    last_line = program.statements[-1].line if program.statements else 1
+    for seq_no, scan_no, interval, has_task in slows:
+        for main_no, main_interval in enumerate(mains, 1):
+            if has_task and interval is not None and main_interval is not None and interval <= main_interval:
+                diags.warning(last_line, f"Slow Seq {seq_no}, Scan {scan_no}, may skip scans if "
+                                         f"running with Scan {main_no}.")
+
+
 def _scan_interval_ms(stmt: S.Instruction, env: consteval.Env) -> float | None:
     """The `Scan` interval in milliseconds as the compiler holds it (100 us units from the 32-bit
     seconds/microseconds of `instr_rules.scan_split`, so a wrapped `Scan(2147483647,Min,..)` is

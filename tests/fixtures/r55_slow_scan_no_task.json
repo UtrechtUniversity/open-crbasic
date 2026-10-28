@@ -1,0 +1,205 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-Delay(0,0,mSec)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,0,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Delay(0,0,mSec)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,0,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Delay(0,10,mSec)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,10,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr1000x-Delay(0,10,mSec)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,10,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-Delay(1,10,mSec)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(1,10,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Delay(1,10,mSec)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(1,10,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-PortSet(C1,1,1)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PortSet(C1,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-PortSet(C1,1,1)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PortSet(C1,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-PortSet(C1,1)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr1000x-PortSet(C1,1)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-Calibrate",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Calibrate\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr1000x-Calibrate",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Calibrate\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-Calibrate(R(),0)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Calibrate(R(),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-Calibrate(R(),0)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Calibrate(R(),0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-Battery(x)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Battery(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Battery(x)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Battery(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-PanelTemp(x,15000)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PanelTemp(x,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr1000x-PanelTemp(x,15000)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PanelTemp(x,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-VoltSe(x,1,mV5000,1,1,0,15000,1,0)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    VoltSe(x,1,mV5000,1,1,0,15000,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-VoltSe(x,1,mV5000,1,1,0,15000,1,0)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    VoltSe(x,1,mV5000,1,1,0,15000,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-Delay(0,x,mSec)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,x,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Measurement delay must have constant interval."
+  },
+  {
+   "id": "cr1000x-Delay(0,x,mSec)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,x,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Measurement delay must have constant interval."
+  },
+  {
+   "id": "cr6-PortSet(C1,1,0)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PortSet(C1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr1000x-PortSet(C1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    PortSet(C1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr6-Delay(0,0,mSec)\\n    PanelTemp(x,15000)",
+   "logger": "cr6",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,0,mSec)\n    PanelTemp(x,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  },
+  {
+   "id": "cr1000x-Delay(0,0,mSec)\\n    PanelTemp(x,15000)",
+   "logger": "cr1000x",
+   "source": "Public x, R(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Delay(0,0,mSec)\n    PanelTemp(x,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: Slow Seq 1, Scan 1, may skip scans if running with Scan 1."
+  }
+ ]
+}

@@ -527,7 +527,9 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
     when `mode.decide` gives Pipeline. `Delay` only with a constant-folded option 0 (`Const Zero =
     0`, `One-1`; oracle, 2026-10-03) or a string option; `SW12` unless its option is 1. The message
     comes before the instruction's own argument errors (`Invalid channel ...`), except `ExciteV`
-    on CR6 and `PortSet` on CR1000X; those are not reordered.
+    on CR6 and `PortSet` on CR1000X; those are not reordered. A `setup` entry (`CDM_ExciteV`,
+    `CDM_ExciteI`, `CDM_MuxSelect`, round 54) is outside-checked only after a `Scan` has closed (a
+    `SlowSequence` resets that) and conditional-checked only inside a `Scan`.
 
     Returns `(statement, message)` pairs in order."""
     found: list[tuple[S.Stmt, str]] = []
@@ -547,10 +549,11 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
         implicit = False
     pipeline, sequential = implicit, False
     scans = depth = 0
-    slow = False
+    slow = closed = False
+    outer: list[int] = []   # a `Scan` starts unconditional inside a `For`/`If` (oracle, round 55)
 
     def visit(stmt: S.Stmt, inline: bool) -> None:
-        nonlocal pipeline, sequential, scans, depth, slow
+        nonlocal pipeline, sequential, scans, depth, slow, closed
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT") else None
@@ -559,11 +562,15 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
         elif kw == "PIPELINEMODE":
             pipeline = True
         elif kw == "SLOWSEQUENCE":
-            slow = True
+            slow, closed = True, False
         elif kw == "SCAN":
             scans += 1
+            outer.append(depth)
+            depth = 0
         elif kw == "NEXTSCAN" or (kw == "NEXT" and word == "SCAN"):
             scans = max(0, scans - 1)
+            closed = closed or not scans
+            depth = outer.pop() if outer else depth
         elif kw in ("SELECT", "FOR", "DO", "WHILE") or (kw == "IF" and not (
                 isinstance(stmt, S.If) and stmt.inline is not None)):
             depth += 1
@@ -595,10 +602,11 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
             record = profile.instructions.get(kw)
             name = record["name"] if record else stmt.keyword
             custom = task_rules[kw].get("messages", {})
-            if not scans and not task_rules[kw].get("conditional_only"):
+            setup = task_rules[kw].get("setup")  # outside only after a closed Scan, conditional only inside one
+            if not scans and (closed if setup else not task_rules[kw].get("conditional_only")):
                 found.append((stmt, custom.get("outside") or
                               f"{name} not allowed outside of Scan..NextScan in PipeLine Mode."))
-            elif depth or inline:
+            elif (depth or inline) and not (setup and not scans):
                 found.append((stmt, custom.get("conditional") or
                               f"{name} not allowed inside of a conditional statement in "
                               "PipeLine Mode."))
