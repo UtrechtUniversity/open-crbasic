@@ -1,0 +1,245 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-inline-Delay(&HFF,1,Sec)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then Delay(&HFF,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 255"
+  },
+  {
+   "id": "cr6-inline-Delay(3,1,Sec)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then Delay(3,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 3"
+  },
+  {
+   "id": "cr6-inline-SW12(99,1)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then SW12(99,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SW12 port 99."
+  },
+  {
+   "id": "cr6-inline-CS616(A(1),0,1,1,1,1,0)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then CS616(A(1),0,1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid port 1, use C1..C4 or U1..U12.",
+   "not_modelled": "UNEXPECTED"
+  },
+  {
+   "id": "cr6-inline-SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
+  },
+  {
+   "id": "cr6-inline-SDI12Recorder(A(1),C2,\"0\",\"M!\",1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then SDI12Recorder(A(1),C2,\"0\",\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
+  },
+  {
+   "id": "cr6-inline-ExciteV(U1,3000,0)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then ExciteV(U1,3000,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation exceeds 2500.000000."
+  },
+  {
+   "id": "cr6-inline-VoltSE(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then VoltSE(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr6-inline-Delay(0,-1,uSec)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then Delay(0,-1,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-inline-PortSet(C1,1)",
+   "logger": "cr6",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-inline-Delay(&HFF,1,Sec)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then Delay(&HFF,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 255"
+  },
+  {
+   "id": "cr1000x-inline-Delay(3,1,Sec)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then Delay(3,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 3"
+  },
+  {
+   "id": "cr1000x-inline-CS616(A(1),0,1,1,1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then CS616(A(1),0,1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: Invalid port 1, use C1..C8.",
+   "not_modelled": "UNEXPECTED"
+  },
+  {
+   "id": "cr1000x-inline-SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-inline-SDI12Recorder(A(1),2,\"0\",\"M!\",1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then SDI12Recorder(A(1),2,\"0\",\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-inline-ExciteV(Vx1,3000,0)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then ExciteV(Vx1,3000,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-inline-VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-inline-Delay(0,-1,uSec)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then Delay(0,-1,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-inline-PortSet(C1,1)",
+   "logger": "cr1000x",
+   "source": "Public A(5), F, S As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    If F Then PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-plain-SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
+  },
+  {
+   "id": "cr1000x-plain-SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),\"fuzz\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr6-plain-SDI12Recorder(A(1),\"\",1,\"M!\",1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),\"\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
+  },
+  {
+   "id": "cr1000x-plain-SDI12Recorder(A(1),\"\",1,\"M!\",1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),\"\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr6-plain-SDI12Recorder(A(1),\"1\",1,\"M!\",1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),\"1\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
+  },
+  {
+   "id": "cr1000x-plain-SDI12Recorder(A(1),\"1\",1,\"M!\",1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),\"1\",1,\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDI-12 port, must be C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr6-plain-CS616(A(1),0,1,1,1,1,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(A(1),0,1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid port 1, use C1..C4 or U1..U12.",
+   "not_modelled": "UNEXPECTED"
+  },
+  {
+   "id": "cr1000x-plain-CS616(A(1),0,1,1,1,1,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(A(1),0,1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0\nline 4: Invalid port 1, use C1..C8.",
+   "not_modelled": "UNEXPECTED"
+  },
+  {
+   "id": "cr6-plain-VoltSE(A(1),1,mV1000,\"fuzz\",True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,mV1000,\"fuzz\",True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port, must be C1..C4 or U1..U12.",
+   "not_modelled": "UNEXPECTED"
+  },
+  {
+   "id": "cr6-plain-PortSet(\"x\",1)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(\"x\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-plain-SDI12Recorder(A(1),C1,\"0\",\"M!\",1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDI12Recorder(A(1),C1,\"0\",\"M!\",1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-PulseCount(A(1),1,\"P1\",0,0,1,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A(1),1,\"P1\",0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  }
+ ]
+}

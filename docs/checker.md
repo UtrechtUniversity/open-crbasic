@@ -9045,3 +9045,93 @@ Oracle, CR6 and CR1000X identical, 2026-10-28; fixture `r57_alias_bounds.json`.
 - **Alias destinations** of `PRTCalc`, `CalFile`, `Move` and the running statistics count from the alias
   (`Alias A(4) = A4` over `A(5)`: `PRTCalc(A4,3,...)` and `MinRun(A4,3,...)` are `Variable A4 out of
   bounds.`). `instr_measure.check_dest_bounds`. CR300/CR350 not probed.
+
+## Orphan EndTable in the table walk (round 58)
+
+Oracle, CR6 and CR1000X identical, 2026-10-28; fixture `r58_table_walk.json`. An `EndTable` without a
+`DataTable` ends the stage-2a table walk (`instr_data._check_stage2a`) where it stands: a later table
+`Reps`/bounds error is not reported and the `EndTable without DataTable.` line comes from tier C as
+before (`Public A(2)` / `EndTable` / a table with `Sample(1,A(3),...)` reports only the `EndTable`). An
+earlier bounds error is still reported; the reference then prints only its first line and the
+`EndTable` line (not modelled, a later-diagnostic difference).
+
+Table references follow `CallTable`: `ResetTable`, `GetRecord` and `FileMark` find only a `DataTable`
+closed before the statement, so a reference inside the table's own body, from a `Sub` above the table
+or to an unclosed table is `Could not find DataTable T.` (`Could not find FileMark table T.`), and such
+a reference replaces `DataTable ... EndTable not matched.` like a `CallTable` does
+(`instr_data.unknown_table_references`, `calltable_targets`).
+
+## WindVector SubInterval and output option (round 58)
+
+Oracle, CR6 and CR1000X identical, 2026-10-28; fixture `r58_windvector_options.json`. Arguments are
+Long-converted (a string is INT_MIN, `0.5` is 0) and the output option is its low byte (`256` is 0,
+`-1` and `255` are invalid; a float option is not checked).
+- A non-zero SubInterval with output option 1 or 3: `WindVector: non-zero SubInterval only valid for
+  output modes 0, 2, and 4.` This line gates nothing: later table errors, pass 2 and tier C are still
+  reported, and it is printed in statement order (`checker/__init__.py`, `soft`).
+- An output option above 4: `Invalid Output Option in WindVector.`, then `Out of memory.` (or `Illegal
+  Reps 0` for Reps 0), which ends the walk like the other stage-2a errors.
+- Reps 0: `Illegal Reps 0`, after the option lines.
+
+## Parenthesised dimensions and spaces (round 58)
+
+Oracle, CR6 and CR1000X identical, 2026-10-28; mechanism from Codex `gpt-6.1-sol` decompilation
+(`scratch/r58/codex-dim.log`); fixture `r58_declaration_dims.json`. The declaration parser
+(`FUN_004baf00`) looks for `As` with a space/tab `strtok` that starts after the *first* `)` of the
+dimension list and writes a terminator over the whitespace ending its first token; the dimensions are
+read afterwards up to that terminator. So when the first `)` closes a parenthesised expression in a
+later dimension, the first whitespace after its next token cuts the list: `Dim A(2,(3), 4)` is
+`A(2,3)` (6 elements), `Dim A(2,(3), 4, 5)` compiles (the extra dimensions are never counted) and
+`Dim A(2,(3), Zork)` never resolves `Zork`; `Dim A(2,(3),4)`, `Dim A(2,(3) ,4)`, `Dim A((3), 4)` and
+`Dim A(2,3,(4), 5)` keep their dimensions up to the cut. The same scan is why such a declaration loses
+its `As` clause (already modelled through `paren_dim`). Not modelled: a cut inside a dimension's own
+expression (`Dim A(2,(3) + 1)`), and an initializer past the reduced size draws no warning.
+`parser._dims_after_type_scan`.
+
+## SerialOpen format options (round 58)
+
+Oracle, CR6 and CR1000X, 2026-10-28; fixture `r58_serialopen_and_names.json`. An integer format of 16
+or more (up to 2^31 - 1) on a port numbered 1 to 8 (`ComRS232`, `ComME`, `Com310`, `ComSDC7`,
+`ComSDC8`, `Com320`, `ComSDC10`, `ComSDC11`) is `Format option only available on COM1..COM4`, right
+after the baud-rate line; ComC, ComU and ComUSB ports, floats, `True`, negative values and values
+beyond the Long range pass. Not modelled: after it, an out-of-range TXDelay is `Parameter must be a
+constant integer:` instead of the delay message. `cr3xx._format_needs_com1_4`.
+
+## SerialOpen recovery (round 58)
+
+Decompiled (`FUN_00494aa0`, Codex, `scratch/r58/codex-names.log`) and confirmed on CR6/CR1000X: after
+BufferSize, a comma where `)` was expected clears any earlier argument error and reads the next
+argument as the CommsMode. This is the mechanism behind the round-57 non-numeric format rule, and it
+also accepts a bare undeclared TXDelay when a fifth argument follows (`SerialOpen(ComC1,115200,0,Undecl,0)`
+compiles; `Undecl+0` or a declared variable does not). A float or past-Long format literal (`16.7`,
+`999999999999`) takes the same path as a String format (its port warning, no format option check;
+`-1` and `-16` are integers). `cr3xx.bare_unknown_delay`, `_non_numeric`. Not modelled, all
+same-verdict: an undeclared format (`Invalid symbol` survives), an undeclared baud rate (the fourth
+argument becomes the CommsMode, then `No Matching, or out of place )`), and four arguments.
+
+## Arguments that are never resolved (round 58)
+
+Decompiled (Codex) and confirmed on CR6/CR1000X: `IPNetPower`, `MonitorComms` and `LogIP` have empty
+compile functions, so their expression arguments are stored as deferred text and never resolved: an
+undeclared name anywhere in `IPNetPower` arguments 2-3, `MonitorComms` 1-3 or `LogIP` 1-2 compiles
+(`IPNetPower(Undecl,1)` is still `Invalid symbol`: argument 1 is a constant). `WriteIO(1,Undecl+1)`, a
+normal builder with the same parameter code, still rejects it. `expressions._EXEMPT_WHOLE_ECHO`.
+
+## String Range codes (round 58)
+
+Oracle, 2026-10-28: on CR6/CR1000X any string as a measurement `Range` (`"fuzz"`, `""`, even `"800"`)
+is `Invalid range code, valid options are: ...`; CR300/CR350 accept it. Before round 58 a non-numeric
+string crashed `instr_measure._check_range_code` (fuzz `c0559229ec33`).
+
+## One-line If statements in tier C (round 58)
+
+Oracle, CR6/CR1000X, 2026-10-28 (fresh seeds 459/460); fixture `r58_inline_tier_c.json`. The
+statement of a one-line `If ... Then` gets the same tier-C value checks as a statement on its own line:
+`Delay` option (`If F Then Delay(&HFF,1,Sec)` is `Illegal option 255`), `SW12` port, `CS616` Reps,
+`ExciteV` magnitude and the terminal ranges (`instr_measure.check`, `terminals.check`). The execution
+mode is still decided on the program as written. Not modelled: CS616's `Invalid reps` is printed before
+its terminal lines (same verdict).
+
+A string as an `SDI12Recorder` port (`"fuzz"`, `""`, even `"1"`) is INT_MIN, so `Invalid SDI-12 port,
+...` on CR6/CR1000X (`terminals.json` `string_int_min`). Not modelled: on CR6 a string single-ended
+channel (`VoltSE(X,1,mV1000,"fuzz",...)`) is `Invalid port, must be C1..C4 or U1..U12.`.

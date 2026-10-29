@@ -144,6 +144,8 @@ def calltable_targets(program: S.Program) -> set[str]:
             name = _table_name(stmt)
             if name:
                 names.add(name.upper())
+    # a `ResetTable`/`GetRecord`/`FileMark` naming it does the same (oracle, CR6/CR1000X, round 58)
+    names.update(name.upper() for _stmt, name, spec in _unknown_table_references(program) if spec[2])
     return names
 
 
@@ -243,17 +245,32 @@ _SPECIAL_TABLES = frozenset({"STATUS", "PUBLIC", "SETTINGS", "DATATABLEINFO", "E
 
 
 def unknown_table_references(program: S.Program):
-    """`(statement, message, ends pass 2)` for each `TABLE_REFERENCES` statement whose table is
-    declared nowhere in the program (a table declared *later* is also not found by the real
-    compiler; not modelled, the report would only be missed)."""
-    declared = {st.args[0].name.upper() for st in _with_inline(program.statements)
-                if isinstance(st, S.Instruction) and st.keyword.upper() in ("DATATABLE", "CONSTTABLE")
-                and st.args and isinstance(st.args[0], S.Name)}
+    """`(statement, message, ends pass 2)` for each `TABLE_REFERENCES` statement whose table is not
+    a `DataTable` closed before it (declared later, unclosed, or the table's own body, like
+    `CallTable`; oracle, CR6/CR1000X, round 58) nor a `ConstTable`."""
+    return [(stmt, spec[1].format(name), spec[2]) for stmt, name, spec in _unknown_table_references(program)]
+
+
+def _unknown_table_references(program: S.Program):
+    const_tables = {st.args[0].name.upper() for st in _with_inline(program.statements)
+                    if isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE"
+                    and st.args and isinstance(st.args[0], S.Name)}
+    closed: set[str] = set()
+    pending: str | None = None
     out = []
     for stmt in _with_inline(program.statements):
         if not isinstance(stmt, S.Instruction):
             continue
-        spec = TABLE_REFERENCES.get(stmt.keyword.upper())
+        kw = stmt.keyword.upper()
+        if kw == "DATATABLE":
+            pending = (_table_name(stmt) or "").upper() or None
+            continue
+        if kw == "ENDTABLE":
+            if pending is not None:
+                closed.add(pending)
+            pending = None
+            continue
+        spec = TABLE_REFERENCES.get(kw)
         if spec is None or len(stmt.args) <= spec[0] or stmt.args[spec[0]] is None:
             continue
         arg = stmt.args[spec[0]]
@@ -266,9 +283,10 @@ def unknown_table_references(program: S.Program):
             name = arg.value
         else:
             continue
-        if not name or name.upper() in declared or name.upper() in _SPECIAL_TABLES:
+        if not name or name.upper() in closed or name.upper() in const_tables or \
+                name.upper() in _SPECIAL_TABLES:
             continue
-        out.append((stmt, spec[1].format(name), spec[2]))
+        out.append((stmt, name, spec))
     return out
 
 
@@ -1052,6 +1070,34 @@ def _alias_sources(program: S.Program, tables, env) -> dict[str, tuple[str, str,
     return out
 
 
+# `WindVector` SubInterval/OutputOpt (oracle, CR6/CR1000X, round 58,
+# docs/checker.md#windvector-subinterval-and-output-option-round-58); the SubInterval line gates
+# nothing (`checker/__init__.py` moves it out of the way)
+WIND_SUBINTERVAL = "WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
+
+
+def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics) -> bool:
+    """Report the SubInterval and output-option errors; whether the walk ends here."""
+    def long_arg(i: int) -> int | None:
+        try:
+            return consteval.to_long(consteval.value_of(st.args[i], env))
+        except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+            return None
+    sub, option = long_arg(5), long_arg(7)
+    mode = option & 0xFF if option is not None else None
+    if mode in (1, 3) and sub not in (None, 0):
+        diags.error(st.line, WIND_SUBINTERVAL, st.file)
+    if mode is not None and mode > 4:
+        diags.error(st.line, "Invalid Output Option in WindVector.", st.file)
+        if reps is not None and reps >= 1:
+            diags.error(st.line, "Out of memory.", st.file)
+            return True
+    if reps == 0:
+        diags.error(st.line, "Illegal Reps 0", st.file)
+        return True
+    return False
+
+
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
                    destinations: bool) -> bool:
     from . import expressions
@@ -1086,6 +1132,10 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         dims = tables(st).dims
         kw = st.keyword.upper()
         inline = id(st) not in top_level   # a one-line If's statement: only the destination check (round 52)
+        if destinations and not inline and kw == "ENDTABLE" and not in_table:
+            # an orphan `EndTable` ends this walk; tier C reports it (oracle, CR6/CR1000X, round 58,
+            # docs/checker.md#orphan-endtable-in-the-table-walk-round-58)
+            return reported
         if not inline:
             in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
         record = profile.instructions.get(kw)
@@ -1097,6 +1147,9 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             reps = _reps_value(st.args[0], env)
             if reps is not None and _INT32_MIN < reps < 0:
                 diags.error(st.line, "Out of memory.", st.file)
+                return True
+            if destinations and in_table and len(st.args) >= 8 and \
+                    _wind_options(st, reps, env, diags):
                 return True
         if kw == "DEBUG" and not inline:
             from .instr_rules import debug_history_oom

@@ -42,6 +42,7 @@
    "skip_nonpositive": false,
    "odd_only": true,
    "message": "Invalid SDI-12 port, must be C1,C3 or U1,U3...U11",
+   "string_int_min": true,
    "odd_message": "Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
   },
   "i2c_port": {

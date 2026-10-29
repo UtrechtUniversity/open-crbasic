@@ -364,10 +364,13 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             errors = sorted([*dest, *[d for d in diags.items if d.severity == "error"]], key=lambda d: (
                 order.get((d.file, d.line), 0), not any(d is x for x in dest)))
             diags.items[:] = [d for d in diags.items if d.severity != "error"] + errors
+    soft: list = []   # stage-2a findings that gate nothing (`instr_data.WIND_SUBINTERVAL`)
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
         _run_pass(instr_data.check_stage2a, program, profile, diags, env)
+        soft = [d for d in diags.items if d.message == instr_data.WIND_SUBINTERVAL]
+        diags.items[:] = [d for d in diags.items if d.message != instr_data.WIND_SUBINTERVAL]
         if diags.errors:
             diags.items[:] = [d for d in diags.items if not _is_unreached(d)]  # (oracle, 2026-10-12)
             # hidden by a stage-2a error too (oracle, CR6/CR1000X, 2026-10-04: `PanelTemp(1,15000)`
@@ -787,6 +790,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     if bounds.items:
         _place_index_bounds(bounds, diags, flat, profile.single_pass)
     diags.items += bounds.items + fields.items + ranges.items + early.items
+    for d in reversed(soft):   # before the errors of its own and later lines (oracle, round 58)
+        here = (links.positions.get((d.file, d.line), d.line), d.line)
+        at = next((i for i, o in enumerate(diags.items) if o.severity == "error" and
+                   (links.positions.get((o.file, o.line), o.line), o.line) >= here), len(diags.items))
+        diags.items.insert(at, d)
     # Terminal conflicts hide nothing and print first on their line. An SDI-12 one is reported only
     # when no error, another conflict included, precedes it (oracle, CR6/CR1000X, round 37).
     def pos(d):

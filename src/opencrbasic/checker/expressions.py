@@ -235,8 +235,12 @@ _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
 # `StdDevRun` StdDevType (position 8) is never resolved either (`StdDevRun(...,D(Nope))` compiles;
 # 2026-10-24, round 34). `SDMSIO4` position 0 is resolved unless its value count is 0
 # (`check`, `_sdmsio4_count`).
+# `IPNetPower`, `MonitorComms` and `LogIP` have empty compile functions, so their deferred argument
+# text is never resolved (decompiled `FUN_004352e0`/`FUN_00434e80`/`FUN_00434e90`, oracle round 58,
+# docs/checker.md#arguments-that-are-never-resolved-round-58).
 _EXEMPT_WHOLE_ECHO: dict[str, frozenset[int]] = {
-    "MONITORCOMMS": frozenset({0}), "MODEMCALLBACK": frozenset({0}),
+    "MONITORCOMMS": frozenset({0, 1, 2}), "MODEMCALLBACK": frozenset({0}),
+    "IPNETPOWER": frozenset({1, 2}), "LOGIP": frozenset({0, 1}),
     "NEWFILE": frozenset({2}), "STDDEVRUN": frozenset({8}),
     "TIMEDCONTROL": frozenset({0, 1}),   # `check_timedcontrol_constants`
 }
@@ -1611,6 +1615,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
                 and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
                 and _undefined_names(stmt.args[0], known)):
             continue  # `ComPort 0 illegal.` replaces every `Invalid symbol` (`cr3xx.check`)
+
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             reported = len(diags.items)
@@ -2786,7 +2791,12 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
     for stmt in program.statements:
         if not isinstance(stmt, S.Call) or stmt.explicit or stmt.name.upper() not in profile.functions:
             continue
-        names = [n for a in stmt.args for n in _undefined_names(a, known)]
+        args = stmt.args
+        if stmt.name.upper() == "SERIALOPEN" and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            from .cr3xx import bare_unknown_delay
+            if bare_unknown_delay(stmt, known):
+                args = args[:3] + args[4:]   # recovered by the parser (`cr3xx.check`)
+        names = [n for a in args if a is not None for n in _undefined_names(a, known)]
         # (its own `Expr illegally occurs before BeginProg.` does not hide it, unless an earlier
         # statement of the line owns that placement error: `X = 1 : Timer(Nope,1,0)`)
         if not names or any((d.line, d.file) == (stmt.line, stmt.file)

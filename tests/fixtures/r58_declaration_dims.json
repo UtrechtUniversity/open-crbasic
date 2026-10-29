@@ -1,0 +1,2781 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|1",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|1",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|1",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|1",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|2",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|2",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|2",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|2",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|3",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|3",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|3",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|3",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|4",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|4",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|4",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|4",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|8",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|8",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|8",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|8",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(1+2), 4)|12",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(1+2), 4)|12",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(1+2), 4)|12",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(1+2), 4)|12",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|1",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|1",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|1",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|1",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|2",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|2",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|2",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|2",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|3",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|3",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|3",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|3",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|4",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|4",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|4",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|4",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|8",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|8",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|8",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|8",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 8, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4)|12",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4)|12",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4)|12",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4)|12",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 12, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|1",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|1",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|1",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|1",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|2",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|2",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|2",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|2",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|3",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|3",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|3",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|3",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|4",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|4",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|4",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|4",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|6",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|6",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|6",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|8",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|8",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|8",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|8",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4)|12",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4)|12",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4)|12",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4)|12",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|1",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|1",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|1",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|1",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|2",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|2",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|2",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|2",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|3",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|3",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|3",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|3",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|4",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|4",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|4",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|4",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|8",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|8",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|8",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|8",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2, (3),4)|12",
+   "logger": "cr6",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2, (3),4)|12",
+   "logger": "cr1000x",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2, (3),4)|12",
+   "logger": "cr300",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2, (3),4)|12",
+   "logger": "cr350",
+   "source": "Dim A(2, (3),4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|1",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|1",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|1",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|1",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|2",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|2",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|2",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|2",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|3",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|3",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|3",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|3",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|4",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|4",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|4",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|4",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|8",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|8",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|8",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|8",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3, 4)|12",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3, 4)|12",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3, 4)|12",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3, 4)|12",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|1",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|1",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|1",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|1",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|2",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|2",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|2",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|2",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|3",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|3",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|3",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|3",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(3,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|4",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|4",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|4",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|4",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(4,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|6",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|6",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|6",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|6",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|8",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|8",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|8",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|8",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(8,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|12",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|12",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|12",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|12",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(12,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3) , 4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3) , 4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3) , 4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3) , 4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3) , 4)|7",
+   "logger": "cr6",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3) , 4)|7",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3) , 4)|7",
+   "logger": "cr300",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3) , 4)|7",
+   "logger": "cr350",
+   "source": "Dim A(2,(3) , 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3,(4), 5)|24",
+   "logger": "cr6",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3,(4), 5)|24",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3,(4), 5)|24",
+   "logger": "cr300",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3,(4), 5)|24",
+   "logger": "cr350",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,3,(4), 5)|25",
+   "logger": "cr6",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,3,(4), 5)|25",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,3,(4), 5)|25",
+   "logger": "cr300",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,3,(4), 5)|25",
+   "logger": "cr350",
+   "source": "Dim A(2,3,(4), 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3),4, 5)|24",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3),4, 5)|24",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3),4, 5)|24",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3),4, 5)|24",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3),4, 5)|25",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3),4, 5)|25",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3),4, 5)|25",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3),4, 5)|25",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),4, 5)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|24",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|24",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|24",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|24",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(24,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A((3), 4, 2)|25",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A((3), 4, 2)|25",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A((3), 4, 2)|25",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A((3), 4, 2)|25",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nDataTable (T,True,-1)\n  Sample(25,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 25, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3),  4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3),  4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3),  4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3),  4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3),  4)|7",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3),  4)|7",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3),  4)|7",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3),  4)|7",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),  4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3),\t4)|6",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3),\t4)|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3),\t4)|6",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3),\t4)|6",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3),\t4)|7",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3),\t4)|7",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3),\t4)|7",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3),\t4)|7",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),\t4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|6",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|6",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|6",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|6",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(6,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|7",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|7",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|7",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-dim-Dim A(2,(3), 4) = {1,2,3,4,5,6}|7",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6}\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,3) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,3) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,3) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,3) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,3) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,3) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,3) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,3) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A((3), 4, 2)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,4,2) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A((3), 4, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,4,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A((3), 4, 2)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,4,2) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,4,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A((3), 4, 2)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,4,2) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A((3), 4, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,4,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A((3), 4, 2)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,4,2) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A((3), 4, 2)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,4,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3),  4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),  4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3),  4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),  4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3),  4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),  4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3),  4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),  4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3) ,4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3) ,4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3) ,4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3) ,4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3) ,4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3) ,4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3) ,4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3) ,4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(1+2), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(1+2), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(1+2), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(1+2), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(1+2), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(1+2), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(1+2), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(1+2), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,3, 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,3, 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,3, 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3, 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,3, 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,3, 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,3, 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,3, 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Public A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Public A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Public A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Public A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4), B\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    B = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4), B\nBeginProg\n  Scan(1,Sec,0,0)\n    B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4), B\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    B = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4), B\nBeginProg\n  Scan(1,Sec,0,0)\n    B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4), B\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    B = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4), B\nBeginProg\n  Scan(1,Sec,0,0)\n    B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4), B\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    B = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4), B\nBeginProg\n  Scan(1,Sec,0,0)\n    B = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(2,4) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(2,4) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,3)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,5) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,5) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,5) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,5) = 1\n."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1,5) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1,5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1,1,5) = 1\n."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4, 5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(3,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4, 5)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(3,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), Zork)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), Zork)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), Zork)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), Zork)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    A(1,1) = 1\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), Zork)\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(6,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(6,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(6,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(6,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(6,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(7,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(7,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(7,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(7,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(7,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(7,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4)\\nDataTable (T,True,-1)\\n  Sample(7,A(1,1),FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4)\nDataTable (T,True,-1)\n  Sample(7,A(1,1),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-raw-Dim A((3), 4)\\nDataTable (T,True,-1)\\n  Sample(13,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(13,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-raw-Dim A((3), 4)\\nDataTable (T,True,-1)\\n  Sample(13,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(13,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-raw-Dim A((3), 4)\\nDataTable (T,True,-1)\\n  Sample(13,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(13,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-raw-Dim A((3), 4)\\nDataTable (T,True,-1)\\n  Sample(13,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A((3), 4)\nDataTable (T,True,-1)\n  Sample(13,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), (4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), (4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), (4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), (4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), (4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), (4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), (4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), (4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3),(4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3),(4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3),(4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3),(4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3),(4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3),(4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3),(4))\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3),(4))\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,3+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,3+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,3+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,3+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,3+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,3+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,3+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3)+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3)+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3)+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3)+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3)+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3)+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3)+0, 4)\\nDataTable (T,True,-1)\\n  Sample(7,A,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3)+0, 4)\nDataTable (T,True,-1)\n  Sample(7,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable A out of bounds.\nline 3: Variable A, index 1, reps 7, out of bounds."
+  },
+  {
+   "id": "cr6-raw-Dim A(2,3,(4),5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,3,(4),5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable A(2 dimension exceeds max of 3."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,3,(4),5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,3,(4),5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable A(2 dimension exceeds max of 3."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,3,(4),5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,3,(4),5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable A(2 dimension exceeds max of 3.\nline 3: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Dim A(2,3,(4),5)\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,3,(4),5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable A(2 dimension exceeds max of 3.\nline 3: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-raw-Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-raw-Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-raw-Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\\nBeginProg\\n  Scan(1,Sec,0,0)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim A(2,(3), 4) = {1,2,3,4,5,6,7}\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr6-raw-Dim L(2,(3),4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim L(2,(3),4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim L(2,(3),4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim L(2,(3),4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim L(2,(3),4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim L(2,(3),4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim L(2,(3),4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim L(2,(3),4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim L(2,3,4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim L(2,3,4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim L(2,3,4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim L(2,3,4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim L(2,3,4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim L(2,3,4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim L(2,3,4) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1,1,1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim L(2,3,4) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1,1,1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Dim L((3)) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Dim L((3)) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Dim L((3)) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Dim L((3)) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Dim L((3)) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Dim L((3)) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Dim L((3)) As Long\\nDataTable(T,1,-1)\\n  Sample(1,L(1),Long)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Dim L((3)) As Long\nDataTable(T,1,-1)\n  Sample(1,L(1),Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Public S((3)) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S((3)) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Public S((3)) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S((3)) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Public S((3)) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S((3)) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Public S((3)) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S((3)) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Public S(3) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S(3) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Public S(3) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S(3) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Public S(3) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S(3) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Public S(3) As String * 10\\nDataTable(T,1,-1)\\n  Sample(1,S(1),String)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S(3) As String * 10\nDataTable(T,1,-1)\n  Sample(1,S(1),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Public X(2,(3),4)\\nDataTable(T,1,-1)\\n  Sample(24,X,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public X(2,(3),4)\nDataTable(T,1,-1)\n  Sample(24,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Public X(2,(3),4)\\nDataTable(T,1,-1)\\n  Sample(24,X,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public X(2,(3),4)\nDataTable(T,1,-1)\n  Sample(24,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Public X(2,(3),4)\\nDataTable(T,1,-1)\\n  Sample(24,X,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public X(2,(3),4)\nDataTable(T,1,-1)\n  Sample(24,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Public X(2,(3),4)\\nDataTable(T,1,-1)\\n  Sample(24,X,FP2)\\nEndTable\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    CallTable T\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public X(2,(3),4)\nDataTable(T,1,-1)\n  Sample(24,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-raw-Public S((3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S((3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-raw-Public S((3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S((3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr300-raw-Public S((3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S((3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Public S((3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S((3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Public S(2,(3),4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S(2,(3),4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-raw-Public S(2,(3),4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S(2,(3),4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr300-raw-Public S(2,(3),4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S(2,(3),4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Public S(2,(3),4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S(2,(3),4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Public S(2,(3), 4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S(2,(3), 4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-raw-Public S(2,(3), 4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S(2,(3), 4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr300-raw-Public S(2,(3), 4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S(2,(3), 4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Public S(2,(3), 4) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1,1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S(2,(3), 4) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1,1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Const N = 3\\nPublic S((N)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Const N = 3\nPublic S((N)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-raw-Const N = 3\\nPublic S((N)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Const N = 3\nPublic S((N)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+  },
+  {
+   "id": "cr300-raw-Const N = 3\\nPublic S((N)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Const N = 3\nPublic S((N)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Const N = 3\\nPublic S((N)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Const N = 3\nPublic S((N)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Public S(ABS(3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S(ABS(3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-raw-Public S(ABS(3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S(ABS(3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr300-raw-Public S(ABS(3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S(ABS(3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Public S(ABS(3)) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S(ABS(3)) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Public S(3) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S(3) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Public S(3) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S(3) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Public S(3) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S(3) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: Too many parameters:  100."
+  },
+  {
+   "id": "cr350-raw-Public S(3) As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S(3) As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: Too many parameters:  100."
+  },
+  {
+   "id": "cr6-raw-Public S((3))As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public S((3))As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-raw-Public S((3))As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public S((3))As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr300-raw-Public S((3))As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public S((3))As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-raw-Public S((3))As String * 10\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    SerialIn(S(1),ComC1,100,0,10)\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public S((3))As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialIn(S(1),ComC1,100,0,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComC1.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-raw-Public L((3)) As Long\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    L(1) = 1.7\\n  NextScan\\nEndProg",
+   "logger": "cr6",
+   "source": "Public L((3)) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    L(1) = 1.7\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-raw-Public L((3)) As Long\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    L(1) = 1.7\\n  NextScan\\nEndProg",
+   "logger": "cr1000x",
+   "source": "Public L((3)) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    L(1) = 1.7\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-raw-Public L((3)) As Long\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    L(1) = 1.7\\n  NextScan\\nEndProg",
+   "logger": "cr300",
+   "source": "Public L((3)) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    L(1) = 1.7\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-raw-Public L((3)) As Long\\nBeginProg\\n  Scan(1,Sec,0,0)\\n    L(1) = 1.7\\n  NextScan\\nEndProg",
+   "logger": "cr350",
+   "source": "Public L((3)) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    L(1) = 1.7\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

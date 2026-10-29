@@ -597,6 +597,36 @@ _DEFERRED_SOURCE_INSTRUCTIONS = frozenset({
     "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "MEDIAN", "STDDEV", "MOMENT", "COVARIANCE"})
 
 
+def _dims_after_type_scan(text: str, open_col: int, close_col: int) -> int | None:
+    """How many dimensions survive the reference's search for `As`: it tokenizes on space/tab
+    from just after the *first* `)` of the dimension list, writing a terminator over the space that
+    ends its first token, and the dimensions are then read up to that terminator (`FUN_004baf00`,
+    oracle, CR6/CR1000X, round 58, docs/checker.md#parenthesised-dimensions-and-spaces-round-58).
+    `Dim A(2,(3), 4)` keeps 2 dimensions. None when nothing is cut, or the cut falls inside a
+    dimension (not modelled)."""
+    first_close = text.find(")", open_col + 1, close_col + 1)
+    delims, depth = [], 0
+    for i in range(open_col + 1, close_col):
+        c = text[i]
+        depth += c in "({"
+        depth -= c in ")}"
+        if c == "," and depth == 0:
+            delims.append(i)
+    delims.append(close_col)
+    if not delims[0] < first_close < close_col:
+        return None
+    i = first_close + 1
+    while i < len(text) and text[i] in " \t":
+        i += 1
+    while i < len(text) and text[i] not in " \t":
+        i += 1
+    if i >= close_col:
+        return None
+    kept = sum(d < i for d in delims)
+    start = delims[kept - 1] + 1 if kept else open_col + 1
+    return kept if not text[start:i].strip() else None
+
+
 class _Parser:
     def __init__(self, profile: profiles.Profile, diags: Diagnostics, provenance: bool = True):
         self.provenance = provenance  # False: no `Stmt.origin`, no `line_map` (language-server-only data)
@@ -2261,6 +2291,10 @@ class _Parser:
                     dims.append(self._parse_dim(p, line, file))
             paren_dim = any(t.kind == "OP" and t.text == "(" for t in p.toks[first:p.i])
             self._close_dims_or_raise(p, name_tok)
+            if paren_dim and len(dims) > 1:
+                keep = _dims_after_type_scan(p.seg_text, p.toks[first - 1].col, p.toks[p.i - 1].col)
+                if keep is not None:
+                    dims = dims[:keep]
         vtype = None
         strsize = None
         empty_type_dims = empty_type_init = False

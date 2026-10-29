@@ -40,6 +40,7 @@
    "skip_nonpositive": false,
    "odd_only": true,
    "message": "Invalid SDI-12 port, must be C1, C3, C5, or C7",
+   "string_int_min": true,
    "odd_message": "Invalid SDI-12 port, must be C1, C3, C5, or C7"
   },
   "port_c1c8_bare": {

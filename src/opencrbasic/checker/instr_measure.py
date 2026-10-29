@@ -26,7 +26,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         return
     file_reported = False  # only the first bad `FileManage`/`RunProgram` file name is reported
     sequential: bool | None = None
-    for stmt in program.statements:
+    from .instr_data import _with_inline
+    # a one-line If's statement too (oracle, CR6/CR1000X, round 58, docs/checker.md#one-line-if-statements-in-tier-c-round-58)
+    for stmt in _with_inline(program.statements):
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
@@ -512,7 +514,8 @@ def _check_range_code(stmt: S.Instruction, measure: dict, pos: int, env: constev
     if value is None:
         return
     valid = measure["range_codes"]
-    if int(value) not in valid:
+    # any string is invalid, `"800"` too (oracle, CR6/CR1000X, round 58)
+    if isinstance(value, str) or int(value) not in valid:
         diags.error(stmt.line, measure["range_code_message"], stmt.file)
 
 

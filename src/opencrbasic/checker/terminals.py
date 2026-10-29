@@ -94,7 +94,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     channels: dict = terminals.get("channels", {})
     if not checked_instructions:
         return
-    for stmt in program.statements:
+    from .instr_data import _with_inline
+    for stmt in _with_inline(program.statements):   # a one-line If's statement too (round 58)
         if not isinstance(stmt, S.Instruction):
             continue
         positions = checked_instructions.get(stmt.keyword.upper())

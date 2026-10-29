@@ -1,0 +1,2283 @@
+{
+ "observation_date": "2026-10-28",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9601,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9601,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9601,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9601,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9601,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9601,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9601,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9601,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,16,-1,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,-1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,-1,100).",
+   "not_modelled": "after a Format option error an out-of-range TXDelay is `Parameter must be a constant integer` (not modelled)"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,16,-1,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,-1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,-1,100).",
+   "not_modelled": "after a Format option error an out-of-range TXDelay is `Parameter must be a constant integer` (not modelled)"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,16,-1,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,-1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,-1,100)\n.",
+   "not_modelled": "after a Format option error an out-of-range TXDelay is `Parameter must be a constant integer` (not modelled)"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,16,-1,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,-1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,-1,100)\n.",
+   "not_modelled": "after a Format option error an out-of-range TXDelay is `Parameter must be a constant integer` (not modelled)"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,16,0,100,5)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4\nline 4: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,16,0,100,5)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4\nline 4: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,16,0,100,5)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,16,0,100,5)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: 5 is an invalid CommsMode parameter.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,16,0,Volt1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,16,0,Volt1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,16,0,Volt1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,16,0,Volt1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,Volt1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,16.7,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16.7,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,16.7,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16.7,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,16.7,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16.7,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,16.7,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16.7,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,15.9,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15.9,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,15.9,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15.9,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,15.9,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15.9,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,15.9,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15.9,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComSDC11,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC11,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComSDC11,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC11,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComSDC11,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC11,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC11 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC11,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComSDC11,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC11,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC11 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC11,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(Com310,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(Com310,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(Com310,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(Com310,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,999999999999,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,999999999999,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,999999999999,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,999999999999,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,999999999999,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,999999999999,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,999999999999,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,999999999999,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,True,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,True,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,True,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,True,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,True,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,True,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,True,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,True,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,-16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,-16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,-16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,-16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(8,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(8,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(8,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(8,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-IPNetPower(5,1,Undecl+1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-IPNetPower(5,1,Undecl+1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-IPNetPower(5,1,Undecl+1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr350-ser-IPNetPower(5,1,Undecl+1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr6-ser-IPNetPower(5,1+Undecl,OtherUndecl+1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1+Undecl,OtherUndecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-IPNetPower(5,1+Undecl,OtherUndecl+1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1+Undecl,OtherUndecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-IPNetPower(5,1+Undecl,OtherUndecl+1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1+Undecl,OtherUndecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Too many parameters:  OtherUndecl+1."
+  },
+  {
+   "id": "cr350-ser-IPNetPower(5,1+Undecl,OtherUndecl+1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,1+Undecl,OtherUndecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Too many parameters:  OtherUndecl+1."
+  },
+  {
+   "id": "cr6-ser-MonitorComms(0,Undecl+1,OtherUndecl)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(0,Undecl+1,OtherUndecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-MonitorComms(0,Undecl+1,OtherUndecl)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(0,Undecl+1,OtherUndecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-MonitorComms(0,Undecl+1,OtherUndecl)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(0,Undecl+1,OtherUndecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MonitorComms is not defined.\nline 4: Undecl is not defined.\nline 4: OtherUndecl is not defined.\nline 4: Invalid, or out of place expression:     MonitorComms(0,Undecl+1,OtherUndecl)\n."
+  },
+  {
+   "id": "cr350-ser-MonitorComms(0,Undecl+1,OtherUndecl)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(0,Undecl+1,OtherUndecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MonitorComms is not defined.\nline 4: Undecl is not defined.\nline 4: OtherUndecl is not defined.\nline 4: Invalid, or out of place expression:     MonitorComms(0,Undecl+1,OtherUndecl)\n."
+  },
+  {
+   "id": "cr6-ser-MonitorComms(Undecl,1,1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(Undecl,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-MonitorComms(Undecl,1,1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(Undecl,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-MonitorComms(Undecl,1,1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(Undecl,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MonitorComms is not defined.\nline 4: Undecl is not defined.\nline 4: Invalid, or out of place expression:     MonitorComms(Undecl,1,1)\n."
+  },
+  {
+   "id": "cr350-ser-MonitorComms(Undecl,1,1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    MonitorComms(Undecl,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MonitorComms is not defined.\nline 4: Undecl is not defined.\nline 4: Invalid, or out of place expression:     MonitorComms(Undecl,1,1)\n."
+  },
+  {
+   "id": "cr6-ser-LogIP(0,Undecl+1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(0,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-LogIP(0,Undecl+1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(0,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-LogIP(0,Undecl+1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(0,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LogIP is not defined.\nline 4: Undecl is not defined.\nline 4: Invalid, or out of place expression:     LogIP(0,Undecl+1)\n."
+  },
+  {
+   "id": "cr350-ser-LogIP(0,Undecl+1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(0,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LogIP is not defined.\nline 4: Undecl is not defined.\nline 4: Invalid, or out of place expression:     LogIP(0,Undecl+1)\n."
+  },
+  {
+   "id": "cr6-ser-LogIP(Undecl,1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-LogIP(Undecl,1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-LogIP(Undecl,1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LogIP is not defined.\nline 4: Undecl is not defined.\nline 4: Invalid, or out of place expression:     LogIP(Undecl,1)\n."
+  },
+  {
+   "id": "cr350-ser-LogIP(Undecl,1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    LogIP(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LogIP is not defined.\nline 4: Undecl is not defined.\nline 4: Invalid, or out of place expression:     LogIP(Undecl,1)\n."
+  },
+  {
+   "id": "cr6-ser-WriteIO(1,Undecl+1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    WriteIO(1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl+1."
+  },
+  {
+   "id": "cr1000x-ser-WriteIO(1,Undecl+1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    WriteIO(1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl+1."
+  },
+  {
+   "id": "cr300-ser-WriteIO(1,Undecl+1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    WriteIO(1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr350-ser-WriteIO(1,Undecl+1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    WriteIO(1,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,0)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,0)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl+0,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,Undecl+0,0)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl+0,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,Undecl+0,0)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl+0,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl+0,0)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl+0,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl+0,0)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,Volt1,-1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Volt1,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,Volt1,-1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Volt1,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,Volt1,-1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Volt1,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,Volt1,-1,0)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,Volt1,-1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Volt1,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,Volt1,-1,0)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,Undecl,-1,0)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,Undecl,-1,0).",
+   "not_modelled": "SerialOpen parser recovery: an undeclared format keeps its name error (same verdict)"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,Undecl,-1,0)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,Undecl,-1,0).",
+   "not_modelled": "SerialOpen parser recovery: an undeclared format keeps its name error (same verdict)"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,Undecl,-1,0)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,Undecl,-1,0)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,Undecl,-1,0)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,-1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,Undecl,-1,0)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     SerialOpen(ComC1,115200,0,Undecl,0,100)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     SerialOpen(ComC1,115200,0,Undecl,0,100)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,Undecl,0,100,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CommsMode Option 100 not supported on ComC1.\nline 4: No Matching, or out of place ) in expression:     SerialOpen(ComC1,Undecl,0,100,100).",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,Undecl,0,100,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CommsMode Option 100 not supported on ComC1.\nline 4: No Matching, or out of place ) in expression:     SerialOpen(ComC1,Undecl,0,100,100).",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,Undecl,0,100,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: Undecl is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,Undecl,0,100,100)\n.",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,Undecl,0,100,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: Undecl is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,Undecl,0,100,100)\n.",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,Undecl).",
+   "not_modelled": "SerialOpen parser recovery with four arguments (same verdict)"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,Undecl).",
+   "not_modelled": "SerialOpen parser recovery with four arguments (same verdict)"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl)\n.",
+   "not_modelled": "SerialOpen parser recovery with four arguments (same verdict)"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl)\n.",
+   "not_modelled": "SerialOpen parser recovery with four arguments (same verdict)"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,0,Undecl,1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,0,Undecl,1)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,0,Undecl,1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,0,Undecl,1)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,0,Undecl,1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,0,Undecl,1)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,0,Undecl,1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,0,Undecl,1)\n."
+  },
+  {
+   "id": "cr6-ser-IPNetPower(5,Undecl)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-IPNetPower(5,Undecl)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-IPNetPower(5,Undecl)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr350-ser-IPNetPower(5,Undecl)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr6-ser-IPNetPower(Undecl,1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl."
+  },
+  {
+   "id": "cr1000x-ser-IPNetPower(Undecl,1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Undecl."
+  },
+  {
+   "id": "cr300-ser-IPNetPower(Undecl,1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl."
+  },
+  {
+   "id": "cr350-ser-IPNetPower(Undecl,1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(Undecl,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Variable illegal in Parameter: Undecl."
+  },
+  {
+   "id": "cr6-ser-IPNetPower(5,Undecl+1)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-IPNetPower(5,Undecl+1)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-IPNetPower(5,Undecl+1)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr350-ser-IPNetPower(5,Undecl+1)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    IPNetPower(5,Undecl+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,115200,0,Undecl,10000)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 10000 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,115200,0,Undecl,10000)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 10000 not supported on COM232."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,115200,0,Undecl,10000)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,115200,0,Undecl,10000)\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,115200,0,Undecl,10000)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,115200,0,Undecl,10000)\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,115200,0,Undecl,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,115200,0,Undecl,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 100 not supported on COM232."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,115200,0,Undecl,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,115200,0,Undecl,100)\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,115200,0,Undecl,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Undecl is not defined.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,115200,0,Undecl,100)\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CommsMode Option 100 not supported on ComC1."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CommsMode Option 100 not supported on ComC1."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl,10000)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CommsMode Option 10000 not supported on ComC1."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl,10000)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CommsMode Option 10000 not supported on ComC1."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl,10000)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,10000)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl,10000)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl,10000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl,10000)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,Undecl,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,Undecl,0,100)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,Undecl,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,Undecl,0,100)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,Undecl,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,Undecl,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,Undecl,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,Undecl,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,Undecl,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,0,Undecl)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,0,Undecl)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,0,Undecl)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,0,Undecl)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,0,Undecl)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,0,Undecl)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,0,Undecl)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,0,Undecl)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,0,Undecl)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,Undecl,0,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     SerialOpen(ComC1,Undecl,0,0,100).",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,Undecl,0,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     SerialOpen(ComC1,Undecl,0,0,100).",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,Undecl,0,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: Undecl is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,Undecl,0,0,100)\n.",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,Undecl,0,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,Undecl,0,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: Undecl is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,Undecl,0,0,100)\n.",
+   "not_modelled": "SerialOpen parser recovery after an undeclared baud rate (same verdict)"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Undecl+1,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,Undecl+1,100)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Undecl+1,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOpen(ComC1,115200,0,Undecl+1,100)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Undecl+1,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl+1,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Undecl+1,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Undecl+1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Undecl+1,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,115200,0,Volt1,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Volt1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Volt1,100)."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,115200,0,Volt1,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Volt1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Volt1,100)."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,115200,0,Volt1,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Volt1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Volt1,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,115200,0,Volt1,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,115200,0,Volt1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,115200,0,Volt1,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComRS232,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComRS232,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComRS232,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComRS232,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComC1,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComC1,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComC1,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComC1,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComC1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComC1,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComME,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComME,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComME,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComME,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComME,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComME,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComME,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComME,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComME,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComME,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComME,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComME,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComME,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComME,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComME,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComME,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComME,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComME,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComSDC7,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComSDC7,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComSDC7,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComSDC7,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComSDC7,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComSDC7,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComSDC7,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComSDC7,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComSDC7,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComSDC7,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComSDC7,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComSDC7,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComSDC7,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComSDC7,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComSDC7,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComSDC7,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComSDC7,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComSDC7 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComSDC7,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(Com310,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(Com310,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(Com310,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(Com310,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(Com310,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(Com310,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(Com310,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(Com310,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(Com310,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(Com310,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(Com310,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(Com310,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(Com310,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Com310 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(Com310,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComU1,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComU1,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComU1,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComU1,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,15,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComU1,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComU1,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComU1,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComU1,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,16,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComU1,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComU1,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComU1,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComU1,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,256,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComU1,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComU1,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComU1,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComU1,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComU1,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComU1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(ComU1,9600,-1,0,100)\n."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComUSB,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComUSB,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComUSB,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComUSB,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComUSB,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComUSB,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComUSB,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComUSB,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComUSB,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComUSB,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComUSB,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComUSB,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(ComUSB,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(ComUSB,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(ComUSB,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(ComUSB,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(32,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(32,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(32,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(32,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(32,9600,16,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(32,9600,16,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(32,9600,16,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(32,9600,16,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,16,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(32,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(32,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(32,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(32,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(32,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(32,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(32,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(32,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(8,9600,15,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(8,9600,15,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(8,9600,15,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(8,9600,15,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,15,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ser-SerialOpen(8,9600,256,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(8,9600,256,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Format option only available on COM1..COM4"
+  },
+  {
+   "id": "cr300-ser-SerialOpen(8,9600,256,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-ser-SerialOpen(8,9600,256,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,256,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-ser-SerialOpen(8,9600,-1,0,100)",
+   "logger": "cr6",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ser-SerialOpen(8,9600,-1,0,100)",
+   "logger": "cr1000x",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ser-SerialOpen(8,9600,-1,0,100)",
+   "logger": "cr300",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ser-SerialOpen(8,9600,-1,0,100)",
+   "logger": "cr350",
+   "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,-1,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-range-VoltSE(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr6-range-VoltSE(A(1),1,\"800\",U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"800\",U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr6-range-VoltSE(A(1),1,\"\",U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"\",U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr6-range-VoltSE(A(1),1,800.5,U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,800.5,U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-range-CurrentSE(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    CurrentSE(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr6-range-VoltDiff(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)",
+   "logger": "cr6",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(A(1),1,\"fuzz\",U1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-range-VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-range-VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr300",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-range-VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr350",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr1000x-range-VoltSE(A(1),1,\"800\",1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"800\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-range-VoltSE(A(1),1,\"800\",1,True,0,50,1.0,0)",
+   "logger": "cr300",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"800\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-range-VoltSE(A(1),1,\"800\",1,True,0,50,1.0,0)",
+   "logger": "cr350",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"800\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr1000x-range-VoltSE(A(1),1,\"\",1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-range-VoltSE(A(1),1,\"\",1,True,0,50,1.0,0)",
+   "logger": "cr300",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-range-VoltSE(A(1),1,\"\",1,True,0,50,1.0,0)",
+   "logger": "cr350",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,\"\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr1000x-range-VoltSE(A(1),1,800.5,1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,800.5,1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-range-VoltSE(A(1),1,800.5,1,True,0,50,1.0,0)",
+   "logger": "cr300",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,800.5,1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-range-VoltSE(A(1),1,800.5,1,True,0,50,1.0,0)",
+   "logger": "cr350",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSE(A(1),1,800.5,1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr1000x-range-CurrentSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    CurrentSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 4: Invalid channel 1, must be RG1 or RG2.",
+   "not_modelled": "the second line (channel) after a string Range (same verdict)"
+  },
+  {
+   "id": "cr300-range-CurrentSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr300",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    CurrentSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-range-CurrentSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr350",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    CurrentSE(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr1000x-range-VoltDiff(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr1000x",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-range-VoltDiff(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr300",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-range-VoltDiff(A(1),1,\"fuzz\",1,True,0,50,1.0,0)",
+   "logger": "cr350",
+   "source": "Public A(2)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(A(1),1,\"fuzz\",1,True,0,50,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

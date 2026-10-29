@@ -100,13 +100,34 @@ def _commsmode_problem(stmt: S.Call, profile, consts: dict | None, index: int = 
     return None
 
 
+def bare_unknown_delay(stmt: S.Call, known: set[str]) -> bool:
+    """CR6/CR1000X `SerialOpen` whose 4th argument is a bare undeclared name and that has a 5th."""
+    return len(stmt.args) >= 5 and isinstance(stmt.args[3], S.Name) and \
+        stmt.args[3].name.upper() not in known
+
+
+def _format_needs_com1_4(stmt: S.Call, profile, consts: dict | None) -> bool:
+    """CR6/CR1000X: an integer `SerialOpenFormat` of 16 or more on a port numbered 1..8 (ComRS232,
+    ComME, the SDC ports; oracle, round 58, docs/checker.md#serialopen-format-options-round-58)."""
+    env = consteval.Env(profile, dict(consts or {}))
+    try:
+        port, fmt = consteval.value_of(stmt.args[0], env), consteval.value_of(stmt.args[2], env)
+    except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+        return False
+    if not isinstance(port, int) or not isinstance(fmt, int) or isinstance(port, bool) or isinstance(fmt, bool):
+        return False
+    return 1 <= port <= 8 and 16 <= fmt < 2**31
+
+
 def _non_numeric(expr, profile, consts: dict | None, variable_names) -> bool:
     if expressions._variable_refs(expr, variable_names):
         return True
     try:
-        return isinstance(consteval.value_of(expr, consteval.Env(profile, dict(consts or {}))), str)
+        value = consteval.value_of(expr, consteval.Env(profile, dict(consts or {})))
     except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
         return False
+    # no constant integer: a string, a float literal, or beyond 32 bits (round 58)
+    return isinstance(value, str) or expressions._not_constant_integer(expr)
 
 
 def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None) -> None:
@@ -220,6 +241,12 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         # docs/checker.md#serialopen-format-and-commsmode-round-57)
         shifted = not cr3 and constant_port and len(stmt.args) > 2 and stmt.args[2] is not None \
             and _non_numeric(stmt.args[2], profile, program.consts, variable_names)
+        # a bare undeclared TXDelay is lost in the same comma recovery (decompiled `FUN_00494aa0`,
+        # oracle round 58, docs/checker.md#serialopen-recovery-round-58)
+        shifted = shifted or (not cr3 and constant_port and bare_unknown_delay(stmt, known))
+        if not cr3 and constant_port and not shifted and stmt.args[2:3] and stmt.args[2] is not None \
+                and _format_needs_com1_4(stmt, profile, program.consts):
+            diags.error(stmt.line, "Format option only available on COM1..COM4", stmt.file)
         if constant_port and not shifted and len(stmt.args) > 3 \
                 and stmt.args[3] is not None:
             # `TXDelay` (oracle, all four loggers, 2026-10-12): a constant outside 0..14000000 is
