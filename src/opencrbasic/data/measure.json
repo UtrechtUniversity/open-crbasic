@@ -6,7 +6,12 @@
   "VOLTDIFF": 3,
   "TCSE": 3,
   "TCDIFF": 3,
-  "CURRENTSE": 3
+  "CURRENTSE": 3,
+  "BRHALF": [3, 3],
+  "BRHALF3W": [3, 3],
+  "BRFULL": [3, 3],
+  "BRHALF4W": [3, 4],
+  "BRFULL6W": [3, 4]
  },
  "sw12_ports": [1, 2, 501, 502],
  "delay": {
@@ -80,6 +85,7 @@
   {"instr": "CDM_PERIODAVG", "pos": 2, "min": 1, "max": 120, "message": "CPI Address must be 1..120."},
   {"instr": "SDMSW8A", "pos": 5, "string_zero": true, "min": 1, "max": 8, "message": "Invalid Start Channel: {value}, must be 1-8."},
   {"instr": "TDR200", "pos": 7, "min": 100, "max": 10112, "message": "Points {value} is illegal: range is 100..10112."},
+  {"instr": "TDR100", "pos": 7, "min": 20, "max": 2048, "message": "Points {value} is illegal: range is 20..2048."},
   {"instr": "DNP", "pos": 1, "invalid_raw": {"strings": true, "nan": true, "outside_long": true, "values": [-2147483648]}, "message": "ComPort {value} illegal."},
   {"inf_max": true, "instr": "VOLTSE", "pos": 6, "allow": [0], "min": 20, "max": 2147483647, "message": "Settling time {value} too short, min time is 20."},
   {"inf_max": true, "instr": "VOLTSE", "pos": 6, "min": -2147483648, "max": 6000000, "message": "Settling time {value} too long, max time is 6000000."},

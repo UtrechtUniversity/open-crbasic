@@ -1,0 +1,1919 @@
+{
+ "observation_date": "2026-10-29",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-declarations-000",
+   "logger": "cr6",
+   "source": "Public X(3) Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-001",
+   "logger": "cr1000x",
+   "source": "Public X(3) Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-002",
+   "logger": "cr300",
+   "source": "Public X(3) Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-003",
+   "logger": "cr350",
+   "source": "Public X(3) Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-004",
+   "logger": "cr6",
+   "source": "Public X(3) Ass Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-005",
+   "logger": "cr1000x",
+   "source": "Public X(3) Ass Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-006",
+   "logger": "cr300",
+   "source": "Public X(3) Ass Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-007",
+   "logger": "cr350",
+   "source": "Public X(3) Ass Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-008",
+   "logger": "cr6",
+   "source": "Public X Ass Long = 5\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Ass."
+  },
+  {
+   "id": "cr1000x-declarations-009",
+   "logger": "cr1000x",
+   "source": "Public X Ass Long = 5\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Ass."
+  },
+  {
+   "id": "cr300-declarations-010",
+   "logger": "cr300",
+   "source": "Public X Ass Long = 5\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Ass.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-011",
+   "logger": "cr350",
+   "source": "Public X Ass Long = 5\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Ass.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-012",
+   "logger": "cr6",
+   "source": "Dim X(3) as2 Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-013",
+   "logger": "cr1000x",
+   "source": "Dim X(3) as2 Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-014",
+   "logger": "cr300",
+   "source": "Dim X(3) as2 Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-015",
+   "logger": "cr350",
+   "source": "Dim X(3) as2 Long = {3,1,4}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-016",
+   "logger": "cr6",
+   "source": "Public X(3) Ass Long = {3,1,4}, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-017",
+   "logger": "cr1000x",
+   "source": "Public X(3) Ass Long = {3,1,4}, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-018",
+   "logger": "cr300",
+   "source": "Public X(3) Ass Long = {3,1,4}, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-019",
+   "logger": "cr350",
+   "source": "Public X(3) Ass Long = {3,1,4}, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-020",
+   "logger": "cr6",
+   "source": "Public X(3) Ass Long, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-021",
+   "logger": "cr1000x",
+   "source": "Public X(3) Ass Long, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-022",
+   "logger": "cr300",
+   "source": "Public X(3) Ass Long, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-023",
+   "logger": "cr350",
+   "source": "Public X(3) Ass Long, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = X(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-024",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) As Strng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported"
+  },
+  {
+   "id": "cr1000x-declarations-025",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) As Strng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported"
+  },
+  {
+   "id": "cr300-declarations-026",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) As Strng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-027",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) As Strng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-028",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) As Lng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lng not supported"
+  },
+  {
+   "id": "cr1000x-declarations-029",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) As Lng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lng not supported"
+  },
+  {
+   "id": "cr300-declarations-030",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) As Lng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lng not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-031",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) As Lng\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lng not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-032",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) As Strng * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported\nline 2: Too many parameters:  *."
+  },
+  {
+   "id": "cr1000x-declarations-033",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) As Strng * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported\nline 2: Too many parameters:  *."
+  },
+  {
+   "id": "cr300-declarations-034",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) As Strng * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported\nline 2: Too many parameters:  *.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-035",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) As Strng * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Strng not supported\nline 2: Too many parameters:  *.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-036",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x As Long) As Flaot\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Flaot not supported"
+  },
+  {
+   "id": "cr1000x-declarations-037",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x As Long) As Flaot\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Flaot not supported"
+  },
+  {
+   "id": "cr300-declarations-038",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x As Long) As Flaot\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Flaot not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-039",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x As Long) As Flaot\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Flaot not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-040",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr1000x-declarations-041",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr300-declarations-042",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr350-declarations-043",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr6-declarations-044",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr1000x-declarations-045",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr300-declarations-046",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr350-declarations-047",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) Long\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr6-declarations-048",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) Ass String * 10\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration String.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr1000x-declarations-049",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) Ass String * 10\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration String.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr300-declarations-050",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) Ass String * 10\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration String.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr350-declarations-051",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) Ass String * 10\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration String.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr6-declarations-052",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-053",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-054",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-055",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-056",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x, Optionl z)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr1000x-declarations-057",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x, Optionl z)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)."
+  },
+  {
+   "id": "cr300-declarations-058",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x, Optionl z)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr350-declarations-059",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x, Optionl z)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 6: Too many parameters:  Sec.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     X = F(1)\n."
+  },
+  {
+   "id": "cr6-declarations-060",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x, Optionl z As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 2: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-061",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x, Optionl z As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 2: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-062",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x, Optionl z As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-063",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x, Optionl z As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z.\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-064",
+   "logger": "cr6",
+   "source": "Public X\r\nSub S(x, Optionl z=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-065",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub S(x, Optionl z=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-066",
+   "logger": "cr300",
+   "source": "Public X\r\nSub S(x, Optionl z=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-067",
+   "logger": "cr350",
+   "source": "Public X\r\nSub S(x, Optionl z=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration z=0.\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-068",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) As Long * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  *."
+  },
+  {
+   "id": "cr1000x-declarations-069",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) As Long * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  *."
+  },
+  {
+   "id": "cr300-declarations-070",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) As Long * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  *.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-071",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) As Long * 30\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  *.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-072",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter x cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-073",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter x cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-074",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-075",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-076",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter x cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-077",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter x cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-078",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-079",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x As Long = 0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-080",
+   "logger": "cr6",
+   "source": "Public X\r\nSub S(x=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter x cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-081",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub S(x=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter x cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-082",
+   "logger": "cr300",
+   "source": "Public X\r\nSub S(x=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-083",
+   "logger": "cr350",
+   "source": "Public X\r\nSub S(x=0)\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-084",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(Optional x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-085",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(Optional x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-086",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(Optional x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-087",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(Optional x=0)\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-088",
+   "logger": "cr6",
+   "source": "Public X\r\nSub S(x) Ass Long\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long."
+  },
+  {
+   "id": "cr1000x-declarations-089",
+   "logger": "cr1000x",
+   "source": "Public X\r\nSub S(x) Ass Long\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long."
+  },
+  {
+   "id": "cr300-declarations-090",
+   "logger": "cr300",
+   "source": "Public X\r\nSub S(x) Ass Long\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-091",
+   "logger": "cr350",
+   "source": "Public X\r\nSub S(x) Ass Long\r\n  X = x\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration Long.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-092",
+   "logger": "cr6",
+   "source": "Public X\r\nFunction F(x) As Long Junk\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  Junk."
+  },
+  {
+   "id": "cr1000x-declarations-093",
+   "logger": "cr1000x",
+   "source": "Public X\r\nFunction F(x) As Long Junk\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  Junk."
+  },
+  {
+   "id": "cr300-declarations-094",
+   "logger": "cr300",
+   "source": "Public X\r\nFunction F(x) As Long Junk\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  Junk.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-095",
+   "logger": "cr350",
+   "source": "Public X\r\nFunction F(x) As Long Junk\r\n  F = 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  Junk.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-declarations-096",
+   "logger": "cr300",
+   "source": "Function F() As Boolean\r\n  Const K As Lng = 5\r\n  F = True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Lng unknown Const type\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-declarations-097",
+   "logger": "cr350",
+   "source": "Function F() As Boolean\r\n  Const K As Lng = 5\r\n  F = True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Lng unknown Const type\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr6-declarations-098",
+   "logger": "cr6",
+   "source": "Sub S()\r\n  Const K As Lng = 5\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Lng unknown Const type"
+  },
+  {
+   "id": "cr1000x-declarations-099",
+   "logger": "cr1000x",
+   "source": "Sub S()\r\n  Const K As Lng = 5\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Lng unknown Const type"
+  },
+  {
+   "id": "cr300-declarations-100",
+   "logger": "cr300",
+   "source": "Sub S()\r\n  Const K As Lng = 5\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Lng unknown Const type\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-101",
+   "logger": "cr350",
+   "source": "Sub S()\r\n  Const K As Lng = 5\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Lng unknown Const type\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-102",
+   "logger": "cr6",
+   "source": "Function F(x) As Boolean\r\n  If x > 1 Then Return Flase\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Flase."
+  },
+  {
+   "id": "cr1000x-declarations-103",
+   "logger": "cr1000x",
+   "source": "Function F(x) As Boolean\r\n  If x > 1 Then Return Flase\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Flase."
+  },
+  {
+   "id": "cr300-declarations-104",
+   "logger": "cr300",
+   "source": "Function F(x) As Boolean\r\n  If x > 1 Then Return Flase\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Flase is not defined.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-105",
+   "logger": "cr350",
+   "source": "Function F(x) As Boolean\r\n  If x > 1 Then Return Flase\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Flase is not defined.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-106",
+   "logger": "cr6",
+   "source": "Public A = 10, B = 8, R(0) As Boolean\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10"
+  },
+  {
+   "id": "cr1000x-declarations-107",
+   "logger": "cr1000x",
+   "source": "Public A = 10, B = 8, R(0) As Boolean\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10"
+  },
+  {
+   "id": "cr300-declarations-108",
+   "logger": "cr300",
+   "source": "Public A = 10, B = 8, R(0) As Boolean\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-109",
+   "logger": "cr350",
+   "source": "Public A = 10, B = 8, R(0) As Boolean\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-110",
+   "logger": "cr6",
+   "source": "Public A, B, R(-1)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B, R(-1)"
+  },
+  {
+   "id": "cr1000x-declarations-111",
+   "logger": "cr1000x",
+   "source": "Public A, B, R(-1)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B, R(-1)"
+  },
+  {
+   "id": "cr300-declarations-112",
+   "logger": "cr300",
+   "source": "Public A, B, R(-1)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B, R(-1)\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-113",
+   "logger": "cr350",
+   "source": "Public A, B, R(-1)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B, R(-1)\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-114",
+   "logger": "cr6",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  S2."
+  },
+  {
+   "id": "cr1000x-declarations-115",
+   "logger": "cr1000x",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  S2."
+  },
+  {
+   "id": "cr300-declarations-116",
+   "logger": "cr300",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: S1 is not defined.\nline 4: Too many parameters:  S2.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-117",
+   "logger": "cr350",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: S1 is not defined.\nline 4: Too many parameters:  S2.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-118",
+   "logger": "cr6",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(\"S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-declarations-119",
+   "logger": "cr1000x",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(\"S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-declarations-120",
+   "logger": "cr300",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(\"S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-121",
+   "logger": "cr350",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(\"S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-122",
+   "logger": "cr6",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  S2."
+  },
+  {
+   "id": "cr1000x-declarations-123",
+   "logger": "cr1000x",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  S2."
+  },
+  {
+   "id": "cr300-declarations-124",
+   "logger": "cr300",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: S1 is not defined.\nline 4: Too many parameters:  S2.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-125",
+   "logger": "cr350",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S1,S2,S3)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: S1 is not defined.\nline 4: Too many parameters:  S2.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-126",
+   "logger": "cr6",
+   "source": "Function F() As Boolean\r\n  Const K As LongX = &HF32D0000\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LongX unknown Const type"
+  },
+  {
+   "id": "cr1000x-declarations-127",
+   "logger": "cr1000x",
+   "source": "Function F() As Boolean\r\n  Const K As LongX = &HF32D0000\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LongX unknown Const type"
+  },
+  {
+   "id": "cr300-declarations-128",
+   "logger": "cr300",
+   "source": "Function F() As Boolean\r\n  Const K As LongX = &HF32D0000\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LongX unknown Const type\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-declarations-129",
+   "logger": "cr350",
+   "source": "Function F() As Boolean\r\n  Const K As LongX = &HF32D0000\r\n  Return True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LongX unknown Const type\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-declarations-130",
+   "logger": "cr300",
+   "source": "Function F() As Boolean\r\n  Const K As Long = 5\r\n  F = True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-131",
+   "logger": "cr350",
+   "source": "Function F() As Boolean\r\n  Const K As Long = 5\r\n  F = True\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-132",
+   "logger": "cr6",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  S3\"."
+  },
+  {
+   "id": "cr1000x-declarations-133",
+   "logger": "cr1000x",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  S3\"."
+  },
+  {
+   "id": "cr300-declarations-134",
+   "logger": "cr300",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: S2 is not defined.\nline 4: Too many parameters:  S3\".\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-135",
+   "logger": "cr350",
+   "source": "Public X(3)\r\nDataTable(T,True,-1)\r\n  Sample(3,X(),FP2)\r\n  FieldNames(S2,S3\")\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: S2 is not defined.\nline 4: Too many parameters:  S3\".\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-136",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,\"abc)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr1000x-declarations-137",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,\"abc)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  \"abc."
+  },
+  {
+   "id": "cr300-declarations-138",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,\"abc)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  \"abc.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-139",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,\"abc)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  \"abc.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-140",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldNames(\"S1\")\r\n  FieldUnits(V,\"deg)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:   FieldUnits(V,\"deg)."
+  },
+  {
+   "id": "cr1000x-declarations-141",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldNames(\"S1\")\r\n  FieldUnits(V,\"deg)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:   FieldUnits(V,\"deg)."
+  },
+  {
+   "id": "cr300-declarations-142",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldNames(\"S1\")\r\n  FieldUnits(V,\"deg)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldUnits is not defined.\nline 5: V is not defined.\nline 5: String without end quote\nline 5: Invalid, or out of place expression:   FieldUnits(V,\"deg)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-143",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldNames(\"S1\")\r\n  FieldUnits(V,\"deg)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldUnits is not defined.\nline 5: V is not defined.\nline 5: String without end quote\nline 5: Invalid, or out of place expression:   FieldUnits(V,\"deg)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-144",
+   "logger": "cr6",
+   "source": "Public A, B = 8, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B = 8"
+  },
+  {
+   "id": "cr1000x-declarations-145",
+   "logger": "cr1000x",
+   "source": "Public A, B = 8, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B = 8"
+  },
+  {
+   "id": "cr300-declarations-146",
+   "logger": "cr300",
+   "source": "Public A, B = 8, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B = 8\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-147",
+   "logger": "cr350",
+   "source": "Public A, B = 8, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, B = 8\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-148",
+   "logger": "cr6",
+   "source": "Public A = 10, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10"
+  },
+  {
+   "id": "cr1000x-declarations-149",
+   "logger": "cr1000x",
+   "source": "Public A = 10, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10"
+  },
+  {
+   "id": "cr300-declarations-150",
+   "logger": "cr300",
+   "source": "Public A = 10, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-151",
+   "logger": "cr350",
+   "source": "Public A = 10, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-152",
+   "logger": "cr6",
+   "source": "Public A = 10 , B, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10"
+  },
+  {
+   "id": "cr1000x-declarations-153",
+   "logger": "cr1000x",
+   "source": "Public A = 10 , B, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10"
+  },
+  {
+   "id": "cr300-declarations-154",
+   "logger": "cr300",
+   "source": "Public A = 10 , B, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-155",
+   "logger": "cr350",
+   "source": "Public A = 10 , B, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-156",
+   "logger": "cr6",
+   "source": "Public R(0), A = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public R(0), A = 1"
+  },
+  {
+   "id": "cr1000x-declarations-157",
+   "logger": "cr1000x",
+   "source": "Public R(0), A = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public R(0), A = 1"
+  },
+  {
+   "id": "cr300-declarations-158",
+   "logger": "cr300",
+   "source": "Public R(0), A = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public R(0), A = 1\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-159",
+   "logger": "cr350",
+   "source": "Public R(0), A = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public R(0), A = 1\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-160",
+   "logger": "cr6",
+   "source": "Public A(2) = {1,2}, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A(2) = {1"
+  },
+  {
+   "id": "cr1000x-declarations-161",
+   "logger": "cr1000x",
+   "source": "Public A(2) = {1,2}, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A(2) = {1"
+  },
+  {
+   "id": "cr300-declarations-162",
+   "logger": "cr300",
+   "source": "Public A(2) = {1,2}, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A(2) = {1\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-163",
+   "logger": "cr350",
+   "source": "Public A(2) = {1,2}, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A(2) = {1\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-164",
+   "logger": "cr6",
+   "source": "Public A = 1+2, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 1+2"
+  },
+  {
+   "id": "cr1000x-declarations-165",
+   "logger": "cr1000x",
+   "source": "Public A = 1+2, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 1+2"
+  },
+  {
+   "id": "cr300-declarations-166",
+   "logger": "cr300",
+   "source": "Public A = 1+2, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 1+2\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-167",
+   "logger": "cr350",
+   "source": "Public A = 1+2, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A = 1+2\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-168",
+   "logger": "cr6",
+   "source": "Public A As Long = 5, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A As Long = 5"
+  },
+  {
+   "id": "cr1000x-declarations-169",
+   "logger": "cr1000x",
+   "source": "Public A As Long = 5, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A As Long = 5"
+  },
+  {
+   "id": "cr300-declarations-170",
+   "logger": "cr300",
+   "source": "Public A As Long = 5, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A As Long = 5\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-171",
+   "logger": "cr350",
+   "source": "Public A As Long = 5, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A As Long = 5\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-172",
+   "logger": "cr6",
+   "source": "Dim A = 3, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim A = 3"
+  },
+  {
+   "id": "cr1000x-declarations-173",
+   "logger": "cr1000x",
+   "source": "Dim A = 3, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim A = 3"
+  },
+  {
+   "id": "cr300-declarations-174",
+   "logger": "cr300",
+   "source": "Dim A = 3, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim A = 3\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-175",
+   "logger": "cr350",
+   "source": "Dim A = 3, R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim A = 3\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-176",
+   "logger": "cr6",
+   "source": "Public A=10,B=8,R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A=10"
+  },
+  {
+   "id": "cr1000x-declarations-177",
+   "logger": "cr1000x",
+   "source": "Public A=10,B=8,R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A=10"
+  },
+  {
+   "id": "cr300-declarations-178",
+   "logger": "cr300",
+   "source": "Public A=10,B=8,R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A=10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-179",
+   "logger": "cr350",
+   "source": "Public A=10,B=8,R(0)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A=10\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-180",
+   "logger": "cr6",
+   "source": "Public A, R(0), B = 2\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, R(0), B = 2"
+  },
+  {
+   "id": "cr1000x-declarations-181",
+   "logger": "cr1000x",
+   "source": "Public A, R(0), B = 2\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, R(0), B = 2"
+  },
+  {
+   "id": "cr300-declarations-182",
+   "logger": "cr300",
+   "source": "Public A, R(0), B = 2\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, R(0), B = 2\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-183",
+   "logger": "cr350",
+   "source": "Public A, R(0), B = 2\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public A, R(0), B = 2\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-184",
+   "logger": "cr6",
+   "source": "Public X(6) As Lnog = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lnog not supported"
+  },
+  {
+   "id": "cr1000x-declarations-185",
+   "logger": "cr1000x",
+   "source": "Public X(6) As Lnog = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lnog not supported"
+  },
+  {
+   "id": "cr300-declarations-186",
+   "logger": "cr300",
+   "source": "Public X(6) As Lnog = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lnog not supported\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-187",
+   "logger": "cr350",
+   "source": "Public X(6) As Lnog = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lnog not supported\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-188",
+   "logger": "cr6",
+   "source": "Public X(6) Ass Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declarations-189",
+   "logger": "cr1000x",
+   "source": "Public X(6) Ass Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-declarations-190",
+   "logger": "cr300",
+   "source": "Public X(6) Ass Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-191",
+   "logger": "cr350",
+   "source": "Public X(6) Ass Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-192",
+   "logger": "cr6",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nPublic Y(6) As Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SortSpaIndexed(Y(),6,X())\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr1000x-declarations-193",
+   "logger": "cr1000x",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nPublic Y(6) As Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SortSpaIndexed(Y(),6,X())\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Y out of bounds.\nline 5: Source and Dest types must be the same."
+  },
+  {
+   "id": "cr300-declarations-194",
+   "logger": "cr300",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nPublic Y(6) As Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SortSpaIndexed(Y(),6,X())\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SortSpaIndexed is not defined.\nline 5: Invalid, or out of place expression:     SortSpaIndexed(Y(),6,X())\n."
+  },
+  {
+   "id": "cr350-declarations-195",
+   "logger": "cr350",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nPublic Y(6) As Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SortSpaIndexed(Y(),6,X())\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SortSpaIndexed is not defined.\nline 5: Invalid, or out of place expression:     SortSpaIndexed(Y(),6,X())\n."
+  },
+  {
+   "id": "cr6-declarations-196",
+   "logger": "cr6",
+   "source": "Public Z\r\nBeginProg\r\n  Dim Q As Flaot\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Flaot not supported"
+  },
+  {
+   "id": "cr1000x-declarations-197",
+   "logger": "cr1000x",
+   "source": "Public Z\r\nBeginProg\r\n  Dim Q As Flaot\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Flaot not supported"
+  },
+  {
+   "id": "cr300-declarations-198",
+   "logger": "cr300",
+   "source": "Public Z\r\nBeginProg\r\n  Dim Q As Flaot\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Flaot not supported\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-199",
+   "logger": "cr350",
+   "source": "Public Z\r\nBeginProg\r\n  Dim Q As Flaot\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Flaot not supported\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-200",
+   "logger": "cr6",
+   "source": "Const K As Lng = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Lng unknown Const type"
+  },
+  {
+   "id": "cr1000x-declarations-201",
+   "logger": "cr1000x",
+   "source": "Const K As Lng = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Lng unknown Const type"
+  },
+  {
+   "id": "cr300-declarations-202",
+   "logger": "cr300",
+   "source": "Const K As Lng = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Lng unknown Const type\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-203",
+   "logger": "cr350",
+   "source": "Const K As Lng = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Lng unknown Const type\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-204",
+   "logger": "cr6",
+   "source": "Const K As Flaot = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Flaot unknown Const type"
+  },
+  {
+   "id": "cr1000x-declarations-205",
+   "logger": "cr1000x",
+   "source": "Const K As Flaot = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Flaot unknown Const type"
+  },
+  {
+   "id": "cr300-declarations-206",
+   "logger": "cr300",
+   "source": "Const K As Flaot = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Flaot unknown Const type\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-207",
+   "logger": "cr350",
+   "source": "Const K As Flaot = 5\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Flaot unknown Const type\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-declarations-208",
+   "logger": "cr6",
+   "source": "StructureType VW\r\nStructureType VW\r\n  F As Float\r\nEndStructureType\r\nPublic X As VW\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure"
+  },
+  {
+   "id": "cr1000x-declarations-209",
+   "logger": "cr1000x",
+   "source": "StructureType VW\r\nStructureType VW\r\n  F As Float\r\nEndStructureType\r\nPublic X As VW\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure"
+  },
+  {
+   "id": "cr300-declarations-210",
+   "logger": "cr300",
+   "source": "StructureType VW\r\nStructureType VW\r\n  F As Float\r\nEndStructureType\r\nPublic X As VW\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-211",
+   "logger": "cr350",
+   "source": "StructureType VW\r\nStructureType VW\r\n  F As Float\r\nEndStructureType\r\nPublic X As VW\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-212",
+   "logger": "cr6",
+   "source": "StructureType VW\r\n  F As Float\r\nStructureType Q\r\n  G As Float\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure"
+  },
+  {
+   "id": "cr1000x-declarations-213",
+   "logger": "cr1000x",
+   "source": "StructureType VW\r\n  F As Float\r\nStructureType Q\r\n  G As Float\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure"
+  },
+  {
+   "id": "cr300-declarations-214",
+   "logger": "cr300",
+   "source": "StructureType VW\r\n  F As Float\r\nStructureType Q\r\n  G As Float\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-declarations-215",
+   "logger": "cr350",
+   "source": "StructureType VW\r\n  F As Float\r\nStructureType Q\r\n  G As Float\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-declarations-216",
+   "logger": "cr6",
+   "source": "Function F(x As Long) As Strng * 30\r\n  F = \"a\"\r\nEndFunction\r\nPublic S As String * 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Strng not supported\nline 1: Too many parameters:  *."
+  },
+  {
+   "id": "cr1000x-declarations-217",
+   "logger": "cr1000x",
+   "source": "Function F(x As Long) As Strng * 30\r\n  F = \"a\"\r\nEndFunction\r\nPublic S As String * 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Strng not supported\nline 1: Too many parameters:  *."
+  },
+  {
+   "id": "cr300-declarations-218",
+   "logger": "cr300",
+   "source": "Function F(x As Long) As Strng * 30\r\n  F = \"a\"\r\nEndFunction\r\nPublic S As String * 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Strng not supported\nline 1: Too many parameters:  *.\nline 6: Too many parameters:  Sec.\nline 7: S is not defined."
+  },
+  {
+   "id": "cr350-declarations-219",
+   "logger": "cr350",
+   "source": "Function F(x As Long) As Strng * 30\r\n  F = \"a\"\r\nEndFunction\r\nPublic S As String * 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Strng not supported\nline 1: Too many parameters:  *.\nline 6: Too many parameters:  Sec.\nline 7: S is not defined."
+  },
+  {
+   "id": "cr6-declarations-220",
+   "logger": "cr6",
+   "source": "Function F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Long.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     S = F(1)."
+  },
+  {
+   "id": "cr1000x-declarations-221",
+   "logger": "cr1000x",
+   "source": "Function F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Long.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     S = F(1)."
+  },
+  {
+   "id": "cr300-declarations-222",
+   "logger": "cr300",
+   "source": "Function F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Long.\nline 6: Too many parameters:  Sec.\nline 7: S is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     S = F(1)\n."
+  },
+  {
+   "id": "cr350-declarations-223",
+   "logger": "cr350",
+   "source": "Function F(x) Ass Long\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration Long.\nline 6: Too many parameters:  Sec.\nline 7: S is not defined.\nline 7: Call argument required.\nline 7: Invalid, or out of place expression:     S = F(1)\n."
+  },
+  {
+   "id": "cr6-declarations-224",
+   "logger": "cr6",
+   "source": "Function F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration z=0.\nline 1: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr1000x-declarations-225",
+   "logger": "cr1000x",
+   "source": "Function F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration z=0.\nline 1: Required parameter Optionl cannot be initialized."
+  },
+  {
+   "id": "cr300-declarations-226",
+   "logger": "cr300",
+   "source": "Function F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration z=0.\nline 1: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.\nline 7: S is not defined."
+  },
+  {
+   "id": "cr350-declarations-227",
+   "logger": "cr350",
+   "source": "Function F(x, Optionl z=0)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration z=0.\nline 1: Required parameter p cannot be initialized.\nline 6: Too many parameters:  Sec.\nline 7: S is not defined."
+  },
+  {
+   "id": "cr6-declarations-228",
+   "logger": "cr6",
+   "source": "Function F(x As Lng)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lng not supported"
+  },
+  {
+   "id": "cr1000x-declarations-229",
+   "logger": "cr1000x",
+   "source": "Function F(x As Lng)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lng not supported"
+  },
+  {
+   "id": "cr300-declarations-230",
+   "logger": "cr300",
+   "source": "Function F(x As Lng)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lng not supported\nline 6: Too many parameters:  Sec.\nline 7: S is not defined."
+  },
+  {
+   "id": "cr350-declarations-231",
+   "logger": "cr350",
+   "source": "Function F(x As Lng)\r\n  F = 1\r\nEndFunction\r\nPublic S\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Lng not supported\nline 6: Too many parameters:  Sec.\nline 7: S is not defined."
+  },
+  {
+   "id": "cr6-declarations-232",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(-1,60,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-declarations-233",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(-1,60,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr300-declarations-234",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(-1,60,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-235",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(-1,60,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-236",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(0,999999999999,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-declarations-237",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(0,999999999999,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr300-declarations-238",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(0,999999999999,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-239",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  DataInterval(0,999999999999,Min,0)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-240",
+   "logger": "cr6",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr1000x-declarations-241",
+   "logger": "cr1000x",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr300-declarations-242",
+   "logger": "cr300",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr350-declarations-243",
+   "logger": "cr350",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr6-declarations-244",
+   "logger": "cr6",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,120,Sec,1) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: TimeIntoInterval(60,120,Sec,1) ."
+  },
+  {
+   "id": "cr1000x-declarations-245",
+   "logger": "cr1000x",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,120,Sec,1) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: TimeIntoInterval(60,120,Sec,1) ."
+  },
+  {
+   "id": "cr300-declarations-246",
+   "logger": "cr300",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,120,Sec,1) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: TimeIntoInterval(60,120,Sec,1) ."
+  },
+  {
+   "id": "cr350-declarations-247",
+   "logger": "cr350",
+   "source": "Public P\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,120,Sec,1) Then P=0\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: TimeIntoInterval(60,120,Sec,1) ."
+  },
+  {
+   "id": "cr6-declarations-248",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr1000x-declarations-249",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr300-declarations-250",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr350-declarations-251",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr6-declarations-252",
+   "logger": "cr6",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,-1,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points -1 is illegal: range is 20..2048."
+  },
+  {
+   "id": "cr1000x-declarations-253",
+   "logger": "cr1000x",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,-1,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points -1 is illegal: range is 20..2048."
+  },
+  {
+   "id": "cr300-declarations-254",
+   "logger": "cr300",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,-1,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H,0,0,0001,4,1.0,-1,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr350-declarations-255",
+   "logger": "cr350",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,-1,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H,0,0,0001,4,1.0,-1,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr6-declarations-256",
+   "logger": "cr6",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = !A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     B = !A."
+  },
+  {
+   "id": "cr1000x-declarations-257",
+   "logger": "cr1000x",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = !A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     B = !A."
+  },
+  {
+   "id": "cr300-declarations-258",
+   "logger": "cr300",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = !A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declarations-259",
+   "logger": "cr350",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = !A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-declarations-260",
+   "logger": "cr6",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr1000x-declarations-261",
+   "logger": "cr1000x",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr300-declarations-262",
+   "logger": "cr300",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-declarations-263",
+   "logger": "cr350",
+   "source": "Public A, B\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-declarations-264",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Smaple(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-declarations-265",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Smaple(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-declarations-266",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Smaple(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Smaple is not defined.\nline 4: Invalid, or out of place expression:   Smaple(1,X,FP2)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-declarations-267",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Smaple(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Smaple is not defined.\nline 4: Invalid, or out of place expression:   Smaple(1,X,FP2)\n.\nline 8: Too many parameters:  Sec."
+  }
+ ]
+}

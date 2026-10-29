@@ -1044,11 +1044,20 @@ def _table_names(program: S.Program) -> set[str]:
             for a in st.args[:1] if isinstance(a, S.Name)}
 
 
+_CONTROL_COND = re.compile(r"\s*(?:IF|ELSEIF|DO\s+(?:WHILE|UNTIL)|LOOP\s+(?:WHILE|UNTIL))\b", re.I)
+
+
 def _leftover_message(profile, stmt: S.Stmt) -> str:
     """The fallback for a missing-parameter leftover line. CR300/CR350 re-read a parenthesised one
     as an expression and echo what is inside: `(X,1,mV1000)` -> `X,1,mV1000.`, an unclosed
     `(X,1` -> `X,1` with the end-of-line newline (oracle, 2026-10-01)."""
     text = stmt.text.strip()
+    if not profile.single_pass and _CONTROL_COND.match(stmt.text) and \
+            (cond := condition_part(stmt.text) if condition_part(stmt.text) is not None
+             else inline_if_condition(stmt.text)) is not None:
+        # an unreadable condition echoes alone (`If () Then`, `If X = = 1 Then`, `Loop Until ()`;
+        # oracle, CR6/CR1000X, round 59)
+        return f"{_FALLBACK_PREFIX} {cond}."
     if not (profile.fallback_echo_newline and text.startswith("(")):
         return _out_of_place(profile, stmt.text, stmt.at_eol)
     depth = 0
@@ -1170,8 +1179,6 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     in_table = False
     table_name: str | None = None
     nested_table_line: int | None = None
-    open_table: list[S.Instruction] = []
-    table_unresolved = nested_closed = False   # see `DataTable without EndTable.` below
     last_line = program.statements[-1].line if program.statements else 1
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
@@ -1264,6 +1271,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     (set(program.consts) | decl_variables) - set(declared_kinds), profile,
                     None if in_sub else diags, structs_seen)
                 header_dims_failed |= failed
+            for message in stmt.header_errors:
+                diags.error(stmt.line, message, stmt.file)
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
@@ -1273,6 +1282,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         if isinstance(stmt, S.Declaration):
             alias_declarations.append(stmt)
         if kw in ("STRUCTURETYPE", "OBJECTTYPE"):
+            if in_struct:   # (oracle, CR6/CR1000X, round 59: a forgotten `EndStructureType`)
+                diags.error(stmt.line, "Structure inside Structure", stmt.file)
             in_struct = True
             struct_members = set()
             if args and isinstance(args[0], S.Name):
@@ -1292,6 +1303,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             dup_at = _check_duplicate_declaration(stmt, declared_kinds, dup_diags, profile)
         elif in_sub and not in_struct:
             symbols.check_local_name_collision(stmt, profile, diags)
+            if isinstance(stmt, S.ConstDecl) and (bad := _bad_const_type(stmt)) is not None:
+                # a routine's own Const too (oracle, CR6/CR1000X, round 59)
+                diags.error(stmt.line, f"{bad} unknown Const type", stmt.file)
             if not seen_endprog:
                 # a Sub/Function parameter, Dim or Const named like a global Const declared earlier
                 # (oracle, all four loggers, 2026-10-11): `N is already declared as a CONST.`; CR300/
@@ -1657,24 +1671,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif kw == "DATATABLE" and not in_table:
             in_table = True
             table_name = args[0].name if args and isinstance(args[0], S.Name) else None
-            open_table = []
         elif kw == "DATATABLE" and in_table and nested_table_line is None:
             nested_table_line = stmt.line
-            # the open table's sources resolve here, a pass-1 error that wins (round 39)
-            if all_known is None:
-                all_known = expressions._known_names(program, profile)
-            table_unresolved |= any(_names_unresolved(all_known, st) for st in open_table)
         elif kw == "ENDTABLE":
             in_table = False
-            nested_closed = nested_closed or nested_table_line is not None
-        elif in_table and isinstance(stmt, S.Instruction):
-            if nested_table_line is None:
-                open_table.append(stmt)
-            elif not nested_closed:
-                # the nested table's own sources resolve only after its `EndTable`
-                if all_known is None:
-                    all_known = expressions._known_names(program, profile)
-                table_unresolved |= _names_unresolved(all_known, stmt, sources=False)
 
     # Round 6 finding, oracle-confirmed: these three block-balance summary checks are themselves
     # suppressed entirely once *any* other pass-1 error already fired in this same loop --
@@ -1700,9 +1700,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # Reported at the *second* `DataTable`'s own line (`nested_table_line`, captured above), and,
     # like the other four checks in this section, stops here rather than falling through to them.
     if nested_table_line is not None:
-        # raised when the nested table closes, after any unresolved table name met first, which
-        # pass 2 then reports (oracle, CR6/CR1000X, round 39)
-        if not (table_unresolved and not profile.single_pass):
+        if profile.single_pass:   # CR6/CR1000X: pass 2 (`nested_table`)
             diags.error(nested_table_line, "DataTable without EndTable.")
         return
     # `No BeginProg in Program.` is also reported after pass 2: `check_end_blocks`.
@@ -1870,6 +1868,39 @@ class CallLinks:
     cutoff: tuple[str, int] | None = None
 
 
+def nested_table(program: S.Program, profile) -> S.Stmt | None:
+    """CR6/CR1000X: the `DataTable` header opened inside an open table, where pass 2 reports
+    `DataTable without EndTable.` and stops (oracle, round 59: earlier pass-2 errors print first, a
+    pass-1 error hides it, docs/checker.md#nested-datatable-in-pass-2-round-59). None when an
+    unresolved name wins first: any name in the open table, or a non-source argument of the
+    nested one, whose own sources resolve only after its `EndTable` (round 39)."""
+    in_table = closed = False
+    nested = None
+    open_table: list[S.Instruction] = []
+    known = None
+    unresolved = False
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        if kw == "BEGINPROG":   # no table body reaches past it
+            break
+        if kw == "DATATABLE" and not in_table:
+            in_table = True
+            open_table = []
+        elif kw == "DATATABLE" and nested is None:
+            nested = stmt
+            known = expressions._known_names(program, profile)
+            unresolved |= any(_names_unresolved(known, st) for st in open_table)
+        elif kw == "ENDTABLE":
+            in_table = False
+            closed = closed or nested is not None
+        elif in_table and isinstance(stmt, S.Instruction):
+            if nested is None:
+                open_table.append(stmt)
+            elif not closed and known is not None:
+                unresolved |= _names_unresolved(known, stmt, sources=False)
+    return None if unresolved else nested
+
+
 def check_pass2(program: S.Program, profile, diags: Diagnostics,
                  env: consteval.Env | None = None, links: CallLinks | None = None) -> int | tuple[str, int] | None:
     """The generic "Expr"/implicit-`Call` record family: a statement our parser turns into `Call`
@@ -1959,6 +1990,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     pass2_scans: list[bool] = []
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
+    nested = nested_table(program, profile) if not profile.single_pass else None
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
     for position, source_stmt in enumerate(program.statements):
         link_ctx.links.positions.setdefault((source_stmt.file, source_stmt.line), position)
@@ -1974,6 +2006,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         if stmt is misplaced_table:
             diags.error(stmt.line, "DataTable is declared in the middle of an executing sequence",
                         stmt.file)
+            return stmt.line
+        if stmt is nested:
+            diags.error(stmt.line, "DataTable without EndTable.")
             return stmt.line
         if isinstance(stmt, S.SubDef):
             in_body_block = True
@@ -3549,6 +3584,10 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None =
             (inline := inline_if_condition(stmt.text)) and \
             (refined := _unclosed_call_message(profile, inline, False, operands)) is not None:
         return refined   # `If Round(X Then Y = 1` (oracle, CR6/CR1000X, 2026-10-12, review R13C-5)
+    if text is None and kind == "fallback" and not profile.single_pass and \
+            getattr(stmt, "reason", "").startswith("expected an expression") and \
+            (inline := inline_if_condition(stmt.text)) is not None:
+        return f"{_FALLBACK_PREFIX} {inline}."   # `If () Then X = 1` (oracle, CR6/CR1000X, round 59)
     if text is None:
         text = stmt.text
     return {
@@ -4208,9 +4247,17 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
             if row["count"]:
                 declared.setdefault(row["name"].upper(), "VAR")
 
-def _illegal_dim_message(stmt: S.Declaration | S.SubDef) -> str:
+def _illegal_dim_message(stmt: S.Declaration | S.SubDef, v=None) -> str:
     # the echo ends with the statement's newline unless a comment follows (oracle, all four loggers)
-    return f"Illegally dimension: {stmt.text}{chr(10) if stmt.at_eol else ''}"
+    text = stmt.text
+    if isinstance(stmt, S.Declaration) and v is not None and any(
+            u.init is not None for u in stmt.vars[:stmt.vars.index(v)]) and "=" in text:
+        # an earlier initializer cuts the echo at the first comma after it, braces or not
+        # (`Public A = 10, R(0)` -> `Public A = 10`; oracle, CR6/CR1000X, round 59)
+        comma = text.find(",", text.index("="))
+        if comma >= 0:
+            return f"Illegally dimension: {text[:comma].rstrip()}"
+    return f"Illegally dimension: {text}{chr(10) if stmt.at_eol else ''}"
 
 
 def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env,
@@ -4256,10 +4303,18 @@ def _check_var_dims(stmt: S.Declaration, v, diags: Diagnostics, env: consteval.E
             stmt.file,
         )
         return
+    if len(v.dims) == 3 and (v.type or "").upper() == "STRING" and not v.paren_dim \
+            and v.dim0_span is not None:
+        # a String array has at most two dimensions (oracle, CR6/CR1000X, round 59)
+        start = v.dim0_span[0]
+        close = stmt.text.find(")", start)
+        diags.error(stmt.line, f"Variable {v.name}({stmt.text[start:close]}) of type String "
+                    "illegally dimensioned.", stmt.file)
+        return
     for d in v.dims:
         if isinstance(d, S.String):
             # `Public Q("fuzz")`, pass 1, all four loggers (oracle, 2026-09-27)
-            diags.error(stmt.line, _illegal_dim_message(stmt), stmt.file)
+            diags.error(stmt.line, _illegal_dim_message(stmt, v), stmt.file)
             continue
         try:
             val = consteval.value_of(d, env)
@@ -4268,7 +4323,7 @@ def _check_var_dims(stmt: S.Declaration, v, diags: Diagnostics, env: consteval.E
         if isinstance(val, bool) or not isinstance(val, (int, float)):
             continue
         if not (1 <= val <= _MAX_DIM_VALUE):
-            diags.error(stmt.line, _illegal_dim_message(stmt), stmt.file)
+            diags.error(stmt.line, _illegal_dim_message(stmt, v), stmt.file)
 
 
 def _split_top(text: str, sep: str = ",") -> list[str]:

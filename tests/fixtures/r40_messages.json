@@ -148,8 +148,7 @@
    "logger": "cr6",
    "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSortSpaIndexed(6,A)\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Variable illegal in Parameter: A.",
-   "not_modelled": "round 40: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Variable illegal in Parameter: A."
   },
   {
    "id": "cr6-constdest-005",
@@ -226,8 +225,7 @@
    "logger": "cr1000x",
    "source": "Public X, A(5)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSortSpaIndexed(6,A)\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Variable illegal in Parameter: A.",
-   "not_modelled": "round 40: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 6.\nline 4: Variable illegal in Parameter: A."
   },
   {
    "id": "cr1000x-constdest-016",

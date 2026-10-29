@@ -89,3 +89,71 @@ Still differing in round 58, relevant area: 48 misleading, 19 location, 21 wordi
 | no | wording | Gzip: malformed quote/argument boundary gets a different syntax label | `3cf5c9209ff1` (same first location, different message), `a94a7b1583b7` (same first location, different message) |
 | no | wording | AcceptDataRecords: unresolved destination table named generically versus specifically | `7b4d465ac222` (same first location, different message) |
 | no | wording | PortsConfig: invalid binary literal diagnostic label | `72bbbb1c7e9b` (same first location, different message), `c6fc3897c0ad` (same first location, different message) |
+
+## Round-59 realism triage
+
+Human decision 2026-10-29 ([PLAN](../PLAN.md#v10-milestones)): M2 fixes only mistakes a programmer
+could realistically make. Each row above was re-applied to its whole seed program (the fuzz edit
+kept, the shrinker's deletions undone; `scratch/r59/unshrink.py`) and compiled with both compilers in
+round 59. 75 of the 128 rows match there (two emptied conditions, `b4d42d0eac01` and
+`9da6844f83f4`, after the condition-echo fix): their difference came from the truncated program the shrinker
+left. Realistic single-edit variants of the rest were probed and fixed
+([checker notes](checker.md#round-59-realistic-first-errors)). These 53 rows still differ on the whole
+program; none is a realistic single edit in the relevant area. Reasons are from the edit text
+(`scratch/r59/classify.py`), checked by hand.
+
+| reason | family | reproducer |
+|---|---|---|
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | Array reference: four subscripts inside ASCII condition | `494a797d22ea` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | DataInterval: signed argument validation before missing BeginProg | `74e259c13199` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | DataInterval: signed argument validation before missing BeginProg | `ec07e9b06cd8` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | FieldClassify: diagnostic attributed to preceding output owner | `d406b0207cdc` (cr1000x) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | Long continued call: diagnostic echo truncation | `2c0b869a0a14` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | Long continued call: diagnostic echo truncation | `5ff16ab82ca0` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | Routine parameter: parenthesized numeric-leading name | `a5ce30c8f8f6` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | String destination parameter: validation before missing/excess arguments | `8830a5aedd4a` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | TimeIntoInterval: interval validation before excess fourth argument | `3a948311392e` (cr6) |
+| a fuzz argument (`(1+2)`, `"fuzz"`, `UndeclaredFuzzName123`, `999999999999`) | Variable/return type: unsupported type precedes shape or dimension findings | `dc8ef8bccf71` (cr1000x) |
+| a statement inserted into a continued line | Continued routine-call arguments: diagnose the interrupted logical line | `15c0ffa7f461` (cr6) |
+| a statement inserted into a continued line | Continued routine-call arguments: diagnose the interrupted logical line | `af36b61a5e8d` (cr6) |
+| a statement inserted into a continued line | Control condition: condition-only versus whole-statement echo | `a069d5c59801` (cr6) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `171af87a935f` (cr1000x) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `36ca5746ad3f` (cr1000x) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `fa08d71c788b` (cr1000x) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `fbcc75c138fb` (cr1000x) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `1112ca94caa1` (cr6) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `77c6b4106904` (cr6) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `9b464f8050ed` (cr6) |
+| a blank inside a token | Alias: split source identifier resolved before alias-shape rejection | `ab571ca664c5` (cr6) |
+| a blank inside a token | DataTable: malformed trigger expression retains expression diagnostic | `4ce782a860c6` (cr6) |
+| a blank inside a token | DataTable: split name tokenization | `876ca9e34605` (cr1000x) |
+| a blank inside a token | DataTable: split name tokenization | `e2e261651e4b` (cr1000x) |
+| a blank inside a token | DataTable: split name tokenization | `840dfab819a2` (cr6) |
+| a blank inside a token | Declaration: numeric-leading invalid-name echo | `1d9d25657d36` (cr6) |
+| a blank inside a token | Dotted table reference: missing base named specifically | `ae52bdd5ebf7` (cr1000x) |
+| a blank inside a token | EndSub: orphan closer before malformed later header | `04754b91e0a1` (cr6) |
+| a blank inside a token | Next: split Scan token follows ordinary For/Next handling | `ed1cc693d9fa` (cr1000x) |
+| a blank inside a token | Next: split Scan token follows ordinary For/Next handling | `faa80a7207d1` (cr6) |
+| a blank inside a token | Sample: malformed output type before unresolved member source | `e84fe90a6711` (cr6) |
+| a blank inside a token | SerialOpen: baud callback before malformed numeric tail | `33f655758088` (cr1000x) |
+| a blank inside a token | SerialOpen: baud callback before malformed numeric tail | `6484ab6457b8` (cr1000x) |
+| a blank inside a token | SerialOpen: baud callback before malformed numeric tail | `3c772bc81211` (cr6) |
+| a blank inside a token | SerialOpen: malformed ComPort prefix reaches port validation | `8db9658226d1` (cr1000x) |
+| a blank inside a token | StationName: split raw name leaves excess parameter text | `395582d8224e` (cr1000x) |
+| outside the relevant set | CType: malformed token consumption reaches Illegal type | `eb6fad797531` (cr1000x) |
+| outside the relevant set | CType: malformed token consumption reaches Illegal type | `1aa55f1705d5` (cr6) |
+| outside the relevant set | CType: malformed token consumption reaches Illegal type | `3b16c0d475d6` (cr6) |
+| outside the relevant set | CType: malformed token consumption reaches Illegal type | `7214e5b36e9d` (cr6) |
+| outside the relevant set | CheckPort: empty call reaches port-range validation | `4a74895f32cf` (cr1000x) |
+| outside the relevant set | CheckPort: empty call reaches port-range validation | `6f002bbe6754` (cr1000x) |
+| outside the relevant set | CheckPort: empty call reaches port-range validation | `6f002bbe6754` (cr6) |
+| outside the relevant set | CheckPort: empty call reaches port-range validation | `9c21b8dfe265` (cr6) |
+| outside the relevant set | CheckPort: port validation before earlier orphan EndIf | `835ef408b21e` (cr1000x) |
+| outside the relevant set | Gzip: malformed quote/argument boundary gets a different syntax label | `3cf5c9209ff1` (cr1000x) |
+| outside the relevant set | Gzip: malformed quote/argument boundary gets a different syntax label | `a94a7b1583b7` (cr1000x) |
+| outside the relevant set | Menu instructions: enclosing DisplayMenu before arguments | `e77eaa3ef4cc` (cr6) |
+| outside the relevant set | MenuPick: ConstTable item's name required as first parameter | `533da3db60a5` (cr6) |
+| outside the relevant set | PortsConfig: invalid binary literal diagnostic label | `72bbbb1c7e9b` (cr6) |
+| outside the relevant set | PortsConfig: invalid binary literal diagnostic label | `c6fc3897c0ad` (cr6) |
+| outside the relevant set | SendData: parameter shortage before unresolved argument | `65de263ef89c` (cr6) |
+| outside the relevant set | TCDiff: converted Reps positivity before destination capacity | `3da710901444` (cr1000x) |

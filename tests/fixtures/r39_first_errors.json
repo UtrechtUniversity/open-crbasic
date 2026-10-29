@@ -1423,8 +1423,7 @@
    "logger": "cr6",
    "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable_Mut\r\nDataTable(U,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable_Mut.\nline 5: DataTable without EndTable.",
-   "not_modelled": "round 39: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable_Mut.\nline 5: DataTable without EndTable."
   },
   {
    "id": "cr6-nested-006",
@@ -1487,8 +1486,7 @@
    "logger": "cr1000x",
    "source": "Public B\r\nDataTable(T,1,-1)\r\nSample(1,B,FP2)\r\nEndTable_Mut\r\nDataTable(U,1,-1)\r\nSample(1,Nope,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable_Mut.\nline 5: DataTable without EndTable.",
-   "not_modelled": "round 39: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable_Mut.\nline 5: DataTable without EndTable."
   },
   {
    "id": "cr1000x-nested-015",

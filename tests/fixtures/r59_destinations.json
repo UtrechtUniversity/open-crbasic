@@ -1,0 +1,2195 @@
+{
+ "observation_date": "2026-10-29",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-destinations-000",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr1000x-destinations-001",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr300-destinations-002",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr350-destinations-003",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Expression expects , : TimeIsBetween(0,15,Min) ."
+  },
+  {
+   "id": "cr6-destinations-004",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TimeIsBetween(0,15,Min) .\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-005",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TimeIsBetween(0,15,Min) .\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-006",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TimeIsBetween(0,15,Min) .\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-007",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIsBetween(0,15,Min) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TimeIsBetween(0,15,Min) .\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-008",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = Abs(1,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Incomplete expression:     X = Abs(1,2)."
+  },
+  {
+   "id": "cr1000x-destinations-009",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = Abs(1,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Incomplete expression:     X = Abs(1,2)."
+  },
+  {
+   "id": "cr300-destinations-010",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = Abs(1,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Incomplete expression:     X = Abs(1,2)\n."
+  },
+  {
+   "id": "cr350-destinations-011",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = Abs(1,2)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Incomplete expression:     X = Abs(1,2)\n."
+  },
+  {
+   "id": "cr6-destinations-012",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(1,2)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Abs(1,2).\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-013",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(1,2)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Abs(1,2).\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-014",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(1,2)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Abs(1,2)\n.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-015",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(1,2)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Abs(1,2)\n.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-016",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-017",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-018",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-019",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery()\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-020",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-021",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-022",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-023",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-024",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery(X,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-destinations-025",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery(X,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-destinations-026",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery(X,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-destinations-027",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Battery(X,1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-destinations-028",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,1)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-029",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,1)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-030",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,1)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-031",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X,1)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-032",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-destinations-033",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-destinations-034",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-destinations-035",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-destinations-036",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-037",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-038",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-039",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,True,0,15000,1,0)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-040",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = \"a\" * 2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Illegal String operand"
+  },
+  {
+   "id": "cr1000x-destinations-041",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = \"a\" * 2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Illegal String operand"
+  },
+  {
+   "id": "cr300-destinations-042",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = \"a\" * 2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Illegal String operand"
+  },
+  {
+   "id": "cr350-destinations-043",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    X = \"a\" * 2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Illegal String operand"
+  },
+  {
+   "id": "cr6-destinations-044",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"a\" * 2\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-045",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"a\" * 2\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-046",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"a\" * 2\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-047",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"a\" * 2\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-048",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    PanelTemp(X,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-destinations-049",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    PanelTemp(X,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr300-destinations-050",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    PanelTemp(X,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-destinations-051",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    PanelTemp(X,X)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr6-destinations-052",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-053",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-054",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-055",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-056",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr1000x-destinations-057",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr300-destinations-058",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr350-destinations-059",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 5: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval."
+  },
+  {
+   "id": "cr6-destinations-060",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-061",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-062",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-063",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If TimeIntoInterval(60,Sec,120) Then X = 1\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Interval (2) must be > 0 and TimeInto Interval (60) must be < Interval.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-064",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-destinations-065",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 5.\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-destinations-066",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-067",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-068",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-069",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-070",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-071",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-072",
+   "logger": "cr6",
+   "source": "Public X\r\nPublic Q(\"fuzz\")\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Q(\"fuzz\")\n\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-073",
+   "logger": "cr1000x",
+   "source": "Public X\r\nPublic Q(\"fuzz\")\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Q(\"fuzz\")\n\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-074",
+   "logger": "cr300",
+   "source": "Public X\r\nPublic Q(\"fuzz\")\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Q(\"fuzz\")\n\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-075",
+   "logger": "cr350",
+   "source": "Public X\r\nPublic Q(\"fuzz\")\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Q(\"fuzz\")\n\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-076",
+   "logger": "cr6",
+   "source": "Public X\r\nPublic\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-077",
+   "logger": "cr1000x",
+   "source": "Public X\r\nPublic\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-078",
+   "logger": "cr300",
+   "source": "Public X\r\nPublic\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-079",
+   "logger": "cr350",
+   "source": "Public X\r\nPublic\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable not named.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-080",
+   "logger": "cr6",
+   "source": "Public X\r\nConst K = 1\r\nConst K = 2\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is already declared as a CONST.\nline 9: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-081",
+   "logger": "cr1000x",
+   "source": "Public X\r\nConst K = 1\r\nConst K = 2\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is already declared as a CONST.\nline 9: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-082",
+   "logger": "cr300",
+   "source": "Public X\r\nConst K = 1\r\nConst K = 2\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is already declared as a CONST.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.\nline 8: Too many parameters:  Sec.\nline 9: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-083",
+   "logger": "cr350",
+   "source": "Public X\r\nConst K = 1\r\nConst K = 2\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is already declared as a CONST.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.\nline 8: Too many parameters:  Sec.\nline 9: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-084",
+   "logger": "cr6",
+   "source": "Public X\r\nReadOnly Nope\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-085",
+   "logger": "cr1000x",
+   "source": "Public X\r\nReadOnly Nope\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-086",
+   "logger": "cr300",
+   "source": "Public X\r\nReadOnly Nope\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-087",
+   "logger": "cr350",
+   "source": "Public X\r\nReadOnly Nope\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-088",
+   "logger": "cr6",
+   "source": "Public X\r\nPublic A() As Long\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  As.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-089",
+   "logger": "cr1000x",
+   "source": "Public X\r\nPublic A() As Long\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  As.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-090",
+   "logger": "cr300",
+   "source": "Public X\r\nPublic A() As Long\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: As is not defined.\nline 2: Variable illegal in Parameter:  As.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-091",
+   "logger": "cr350",
+   "source": "Public X\r\nPublic A() As Long\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: As is not defined.\nline 2: Variable illegal in Parameter:  As.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-092",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits X\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in units definition: X\n.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-093",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits X\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in units definition: X\n.\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-094",
+   "logger": "cr300",
+   "source": "Public X\r\nUnits X\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in units definition: X\n.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-095",
+   "logger": "cr350",
+   "source": "Public X\r\nUnits X\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in units definition: X\n.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-096",
+   "logger": "cr6",
+   "source": "Public X\r\nPublic W As Lnog\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lnog not supported\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr1000x-destinations-097",
+   "logger": "cr1000x",
+   "source": "Public X\r\nPublic W As Lnog\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lnog not supported\nline 8: Invalid Variable or Array: 5."
+  },
+  {
+   "id": "cr300-destinations-098",
+   "logger": "cr300",
+   "source": "Public X\r\nPublic W As Lnog\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lnog not supported\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-099",
+   "logger": "cr350",
+   "source": "Public X\r\nPublic W As Lnog\r\nDataTable(T,True,-1)\r\n  Sample(0,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(5)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Lnog not supported\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-100",
+   "logger": "cr6",
+   "source": "Public PTemp\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: PTemp."
+  },
+  {
+   "id": "cr1000x-destinations-101",
+   "logger": "cr1000x",
+   "source": "Public PTemp\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: PTemp."
+  },
+  {
+   "id": "cr300-destinations-102",
+   "logger": "cr300",
+   "source": "Public PTemp\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_PanelTemp is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)\n."
+  },
+  {
+   "id": "cr350-destinations-103",
+   "logger": "cr350",
+   "source": "Public PTemp\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_PanelTemp is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)\n."
+  },
+  {
+   "id": "cr6-destinations-104",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-destinations-105",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-destinations-106",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr350-destinations-107",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000,Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr6-destinations-108",
+   "logger": "cr6",
+   "source": "Public A(3,3), R(3,3)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Matrix(A, 0, R)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: A."
+  },
+  {
+   "id": "cr1000x-destinations-109",
+   "logger": "cr1000x",
+   "source": "Public A(3,3), R(3,3)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Matrix(A, 0, R)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: A."
+  },
+  {
+   "id": "cr300-destinations-110",
+   "logger": "cr300",
+   "source": "Public A(3,3), R(3,3)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Matrix(A, 0, R)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: A."
+  },
+  {
+   "id": "cr350-destinations-111",
+   "logger": "cr350",
+   "source": "Public A(3,3), R(3,3)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Matrix(A, 0, R)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: A."
+  },
+  {
+   "id": "cr6-destinations-112",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-destinations-113",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Minimum Excitation is 20mV.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid or missing parameter.",
+   "not_modelled": "CR1000X prints `Minimum Excitation is 20mV.` between the two Range lines (later diagnostics)"
+  },
+  {
+   "id": "cr300-destinations-114",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-115",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-116",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-destinations-117",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-118",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-destinations-119",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-destinations-120",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-destinations-121",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Minimum Excitation is 20mV.\nline 7: Invalid or missing parameter.",
+   "not_modelled": "CR1000X prints the shifted `Minimum Excitation is 20mV.` before the shortfall (later diagnostics)"
+  },
+  {
+   "id": "cr300-destinations-122",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-destinations-123",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-destinations-124",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid fnotch, minimum allowed is 2 Hz.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-125",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-126",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-127",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,1,1,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-128",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,mV5000,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid fnotch, minimum allowed is 2 Hz.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-129",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,mV5000,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-130",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,mV5000,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-destinations-131",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,mV5000,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-destinations-132",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-133",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-134",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  500."
+  },
+  {
+   "id": "cr350-destinations-135",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  500."
+  },
+  {
+   "id": "cr6-destinations-136",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(S,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-137",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(S,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-138",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(S,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-139",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(S,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-140",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(L,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-destinations-141",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(L,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr300-destinations-142",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(L,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr350-destinations-143",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(L,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr6-destinations-144",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-145",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-146",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  0.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-147",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  0.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-148",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(R,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-149",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(R,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-150",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(R,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-151",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(R,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-152",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-destinations-153",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr300-destinations-154",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table1 is not defined."
+  },
+  {
+   "id": "cr350-destinations-155",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table1 is not defined."
+  },
+  {
+   "id": "cr6-destinations-156",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-destinations-157",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr300-destinations-158",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr350-destinations-159",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(0,4094,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr6-destinations-160",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(ComRS232,0,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-destinations-161",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(ComRS232,0,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr300-destinations-162",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(ComRS232,0,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table1 is not defined."
+  },
+  {
+   "id": "cr350-destinations-163",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(ComRS232,0,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table1 is not defined."
+  },
+  {
+   "id": "cr6-destinations-164",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-destinations-165",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr300-destinations-166",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: ArgosError is not defined.\nline 7: Invalid, or out of place expression:     ArgosError(L)\n."
+  },
+  {
+   "id": "cr350-destinations-167",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: ArgosError is not defined.\nline 7: Invalid, or out of place expression:     ArgosError(L)\n."
+  },
+  {
+   "id": "cr6-destinations-168",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(S,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-destinations-169",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(S,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-destinations-170",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(S,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: ArgosError is not defined.\nline 7: Invalid, or out of place expression:     ArgosError(S,1)\n."
+  },
+  {
+   "id": "cr350-destinations-171",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(S,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: ArgosError is not defined.\nline 7: Invalid, or out of place expression:     ArgosError(S,1)\n."
+  },
+  {
+   "id": "cr6-destinations-172",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  1.",
+   "not_modelled": "the String destination before `Too many parameters` (two edits in one statement)"
+  },
+  {
+   "id": "cr1000x-destinations-173",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  1.",
+   "not_modelled": "the String destination before `Too many parameters` (two edits in one statement)"
+  },
+  {
+   "id": "cr300-destinations-174",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: ArgosError is not defined.\nline 7: Invalid, or out of place expression:     ArgosError(L,1)\n."
+  },
+  {
+   "id": "cr350-destinations-175",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    ArgosError(L,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: ArgosError is not defined.\nline 7: Invalid, or out of place expression:     ArgosError(L,1)\n."
+  },
+  {
+   "id": "cr6-destinations-176",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 15000.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-177",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 15000.\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-178",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-179",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-180",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-destinations-181",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr300-destinations-182",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-183",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-184",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-185",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-186",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-187",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery()\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-188",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,1,TypeT,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-destinations-189",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,1,TypeT,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr300-destinations-190",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,1,TypeT,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr350-destinations-191",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,1,TypeT,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-destinations-192",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,mV200C,1,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-destinations-193",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,mV200C,1,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr300-destinations-194",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,mV200C,1,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV200C is not defined.\nline 7: Variable illegal in Parameter: mV200C."
+  },
+  {
+   "id": "cr350-destinations-195",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TCDiff(X,1,mV200C,1,X,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV200C is not defined.\nline 7: Variable illegal in Parameter: mV200C."
+  },
+  {
+   "id": "cr6-destinations-196",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope.\nline 7: Cannot find DataTable .",
+   "not_modelled": "SendTableDef: `Cannot find DataTable .` after the name (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-destinations-197",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope.\nline 7: Cannot find DataTable .",
+   "not_modelled": "SendTableDef: `Cannot find DataTable .` after the name (outside the relevant set)"
+  },
+  {
+   "id": "cr300-destinations-198",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-destinations-199",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-destinations-200",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Table1.\nline 7: Cannot find DataTable .",
+   "not_modelled": "SendTableDef: `Cannot find DataTable .` after the name (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-destinations-201",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Table1.\nline 7: Cannot find DataTable .",
+   "not_modelled": "SendTableDef: `Cannot find DataTable .` after the name (outside the relevant set)"
+  },
+  {
+   "id": "cr300-destinations-202",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table1 is not defined."
+  },
+  {
+   "id": "cr350-destinations-203",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendTableDef(0,4094,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Table1 is not defined."
+  },
+  {
+   "id": "cr6-destinations-204",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-destinations-205",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction.",
+   "not_modelled": "SendData shortfall before an unresolved name (outside the relevant set)"
+  },
+  {
+   "id": "cr300-destinations-206",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-destinations-207",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendData(Nope,0,4094)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-destinations-208",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(X,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-destinations-209",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(X,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-destinations-210",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(X,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-destinations-211",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(X,Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-destinations-212",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction."
+  },
+  {
+   "id": "cr1000x-destinations-213",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too few parameters in instruction."
+  },
+  {
+   "id": "cr300-destinations-214",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr350-destinations-215",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    GetRecord(Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr6-destinations-216",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,Nope,\"0\",\"M!\")\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-destinations-217",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,Nope,\"0\",\"M!\")\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-destinations-218",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,Nope,\"0\",\"M!\")\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Variable illegal in Parameter: Nope."
+  },
+  {
+   "id": "cr350-destinations-219",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,Nope,\"0\",\"M!\")\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Variable illegal in Parameter: Nope."
+  },
+  {
+   "id": "cr6-destinations-220",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,C1,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter.",
+   "not_modelled": "an unresolved SDI-12 address before the shortfall (two edits in one statement)"
+  },
+  {
+   "id": "cr1000x-destinations-221",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,C1,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter.",
+   "not_modelled": "an unresolved SDI-12 address before the shortfall (two edits in one statement)"
+  },
+  {
+   "id": "cr300-destinations-222",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,C1,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr350-destinations-223",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SDI12Recorder(X,C1,Nope)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr6-destinations-224",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-destinations-225",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr300-destinations-226",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-227",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-228",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(ComRS232,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-destinations-229",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(ComRS232,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr300-destinations-230",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(ComRS232,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-231",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(ComRS232,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-232",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(TypeT,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: TypeT."
+  },
+  {
+   "id": "cr1000x-destinations-233",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(TypeT,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: TypeT."
+  },
+  {
+   "id": "cr300-destinations-234",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(TypeT,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-235",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(TypeT,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-236",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(True,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: True."
+  },
+  {
+   "id": "cr1000x-destinations-237",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(True,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: True."
+  },
+  {
+   "id": "cr300-destinations-238",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(True,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-239",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(True,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-240",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(mV5000,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: mV5000."
+  },
+  {
+   "id": "cr1000x-destinations-241",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(mV5000,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: mV5000."
+  },
+  {
+   "id": "cr300-destinations-242",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(mV5000,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-destinations-243",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(mV5000,15000)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-destinations-244",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-destinations-245",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr300-destinations-246",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr350-destinations-247",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(ComRS232,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr6-destinations-248",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(True,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-destinations-249",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(True,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required"
+  },
+  {
+   "id": "cr300-destinations-250",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(True,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr350-destinations-251",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(True,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: A string variable destination is required\nline 7: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr6-destinations-252",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-destinations-253",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr300-destinations-254",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  ComRS232.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-255",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  ComRS232.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-256",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-destinations-257",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-destinations-258",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  1.",
+   "not_modelled": "the destination before `Too many parameters` (two edits in one statement)"
+  },
+  {
+   "id": "cr350-destinations-259",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  1.",
+   "not_modelled": "the destination before `Too many parameters` (two edits in one statement)"
+  },
+  {
+   "id": "cr6-destinations-260",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-destinations-261",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-destinations-262",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-263",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-264",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-destinations-265",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr300-destinations-266",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-267",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(K+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-268",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-destinations-269",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-destinations-270",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-271",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-272",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(-X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-destinations-273",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(-X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-destinations-274",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(-X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-275",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(-X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-276",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(T(1)+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-destinations-277",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(T(1)+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-destinations-278",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(T(1)+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-279",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(T(1)+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-280",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: ComRS232+1."
+  },
+  {
+   "id": "cr1000x-destinations-281",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: ComRS232+1."
+  },
+  {
+   "id": "cr300-destinations-282",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-destinations-283",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(ComRS232+1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-destinations-284",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(KS,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-destinations-285",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(KS,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required"
+  },
+  {
+   "id": "cr300-destinations-286",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(KS,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required\nline 10: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr350-destinations-287",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(KS,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required\nline 10: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr6-destinations-288",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(K,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-destinations-289",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(K,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required"
+  },
+  {
+   "id": "cr300-destinations-290",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(K,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required\nline 10: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr350-destinations-291",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SerialIn(K,ComRS232,500,-1,100)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: A string variable destination is required\nline 10: Too many parameters:  ComRS232."
+  },
+  {
+   "id": "cr6-destinations-292",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression: Table1."
+  },
+  {
+   "id": "cr1000x-destinations-293",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression: Table1."
+  },
+  {
+   "id": "cr300-destinations-294",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Table1 is not defined."
+  },
+  {
+   "id": "cr350-destinations-295",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Table1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Table1 is not defined."
+  },
+  {
+   "id": "cr6-destinations-296",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Abs(X))\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-destinations-297",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Abs(X))\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-destinations-298",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Abs(X))\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-299",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Abs(X))\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-destinations-300",
+   "logger": "cr6",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Sec)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: Sec."
+  },
+  {
+   "id": "cr1000x-destinations-301",
+   "logger": "cr1000x",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Sec)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: Sec."
+  },
+  {
+   "id": "cr300-destinations-302",
+   "logger": "cr300",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Sec)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-destinations-303",
+   "logger": "cr350",
+   "source": "Public X, Y, L As Long, S As String * 20\r\nConst K = 5\r\nConst KS = \"abc\"\r\nDim T(3)\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(Sec)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal destination variable type, expecting Float.",
+   "not_modelled": "CR300/CR350 best effort"
+  }
+ ]
+}

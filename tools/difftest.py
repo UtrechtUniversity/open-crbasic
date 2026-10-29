@@ -71,7 +71,7 @@ def ours(path: Path, profile) -> tuple[int, str]:
         result = compile_file(path, profile, provenance=False)
         if result.implementation_exceptions:
             return 4, "IMPLEMENTATION EXCEPTION: " + " | ".join(result.implementation_exceptions)
-        return (0 if result.ok else 1), "\n".join(result.result_lines())
+        return (0 if result.ok else 1), oracle.as_read_back("\n".join(result.result_lines()))
     except Exception as exc:  # a crash is a result, not a harness failure
         return 2, f"CRASH {type(exc).__name__}: {exc}"
 

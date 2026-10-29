@@ -393,7 +393,10 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
                for a in stmt.args if a is not None):
             continue
         if kw in ranges:
-            _check_range_code(stmt, measure, ranges[kw], env, diags)
+            # a bridge checks its one Range twice, `BrHalf4W`/`BrFull6W` each of their two
+            # (oracle, CR6/CR1000X, round 59)
+            for pos in ranges[kw] if isinstance(ranges[kw], list) else [ranges[kw]]:
+                _check_range_code(stmt, measure, pos, env, diags)
         if kw in fn_pos:
             _check_fnotch_min(stmt, fnotch, fn_pos[kw], env, diags,
                               scan_time.MODELS[profile.name].integ_num)

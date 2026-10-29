@@ -238,6 +238,8 @@ class SubDef(Stmt):
     name: str = ""
     params: list[Param] = field(default_factory=list)
     return_type: str | None = None
+    # pass-1 messages of a malformed header (`parser._parse_subdef`), in source order
+    header_errors: list[str] = field(default_factory=list, compare=False, repr=False)
 
 
 @dataclass

@@ -482,32 +482,28 @@
       "logger": "cr6",
       "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
-      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R."
     },
     {
       "id": "cr1000x-split",
       "logger": "cr1000x",
       "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
-      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R."
     },
     {
       "id": "cr300-split",
       "logger": "cr300",
       "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
-      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R."
     },
     {
       "id": "cr350-split",
       "logger": "cr350",
       "source": "Public X\nSub S(Q R)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R.",
-      "not_modelled": "Whitespace-split parameter declarations need their own header diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid Variable declaration R."
     },
     {
       "id": "cr6-optional",

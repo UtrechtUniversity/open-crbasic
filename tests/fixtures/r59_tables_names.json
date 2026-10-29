@@ -1,0 +1,1403 @@
+{
+ "observation_date": "2026-10-29",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-tables_names-000",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(\"&H90000101\",X)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tables_names-001",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(\"&H90000101\",X)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tables_names-002",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(\"&H90000101\",X)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:   FieldClassify(\"&H90000101\",X)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tables_names-003",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(\"&H90000101\",X)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:   FieldClassify(\"&H90000101\",X)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tables_names-004",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(Nope)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 5: Invalid, or out of place expression: .",
+   "not_modelled": "FieldClassify reports at its output instruction's line (outside the relevant set)"
+  },
+  {
+   "id": "cr1000x-tables_names-005",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(Nope)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.\nline 5: Invalid, or out of place expression: .",
+   "not_modelled": "FieldClassify reports at its output instruction's line (outside the relevant set)"
+  },
+  {
+   "id": "cr300-tables_names-006",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(Nope)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:   FieldClassify(Nope)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tables_names-007",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  FieldClassify(Nope)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:   FieldClassify(Nope)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tables_names-008",
+   "logger": "cr6",
+   "source": "Public X(3,3,3), I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X(1,1,I,1) > 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X(1,1,I,1) > 0 ."
+  },
+  {
+   "id": "cr1000x-tables_names-009",
+   "logger": "cr1000x",
+   "source": "Public X(3,3,3), I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X(1,1,I,1) > 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X(1,1,I,1) > 0 ."
+  },
+  {
+   "id": "cr300-tables_names-010",
+   "logger": "cr300",
+   "source": "Public X(3,3,3), I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X(1,1,I,1) > 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X(1,1,I,1) > 0 ."
+  },
+  {
+   "id": "cr350-tables_names-011",
+   "logger": "cr350",
+   "source": "Public X(3,3,3), I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X(1,1,I,1) > 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: X(1,1,I,1) > 0 ."
+  },
+  {
+   "id": "cr6-tables_names-012",
+   "logger": "cr6",
+   "source": "Public B(3,3,3) As String * 4, I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If ASCII(B(1,1,I,1)) <> 0 AND I = 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable B(3,3,3) of type String illegally dimensioned.\nline 4: Dimensions not declared: ASCII(B(1,1,I,1)) <> 0 AND I = 0 .",
+   "not_modelled": "after a 3-dimensional String array the `Dimensions not declared` line of its use (later diagnostics)"
+  },
+  {
+   "id": "cr1000x-tables_names-013",
+   "logger": "cr1000x",
+   "source": "Public B(3,3,3) As String * 4, I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If ASCII(B(1,1,I,1)) <> 0 AND I = 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable B(3,3,3) of type String illegally dimensioned.\nline 4: Dimensions not declared: ASCII(B(1,1,I,1)) <> 0 AND I = 0 .",
+   "not_modelled": "after a 3-dimensional String array the `Dimensions not declared` line of its use (later diagnostics)"
+  },
+  {
+   "id": "cr300-tables_names-014",
+   "logger": "cr300",
+   "source": "Public B(3,3,3) As String * 4, I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If ASCII(B(1,1,I,1)) <> 0 AND I = 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable B(3,3,3) of type String illegally dimensioned.\nline 3: Too many parameters:  Sec.\nline 4: I is not defined.\nline 4: Dimensions not declared: ASCII(B(1,1,I,1)) <> 0 AND I = 0 .\nline 4: I is not defined.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-015",
+   "logger": "cr350",
+   "source": "Public B(3,3,3) As String * 4, I\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If ASCII(B(1,1,I,1)) <> 0 AND I = 0 Then I = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable B(3,3,3) of type String illegally dimensioned.\nline 3: Too many parameters:  Sec.\nline 4: I is not defined.\nline 4: Dimensions not declared: ASCII(B(1,1,I,1)) <> 0 AND I = 0 .\nline 4: I is not defined.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-016",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTabel.\nline 7: Could not find DataTable T."
+  },
+  {
+   "id": "cr1000x-tables_names-017",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTabel.\nline 7: Could not find DataTable T."
+  },
+  {
+   "id": "cr300-tables_names-018",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTabel is not defined.\nline 4: Invalid, or out of place expression: EndTabel\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tables_names-019",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTabel is not defined.\nline 4: Invalid, or out of place expression: EndTabel\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tables_names-020",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEnd Table\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tables_names-021",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEnd Table\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tables_names-022",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEnd Table\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tables_names-023",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEnd Table\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tables_names-024",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable2.\nline 5: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-025",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTable2.\nline 5: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-026",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable2 is not defined.\nline 4: Invalid, or out of place expression: EndTable2\n.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-027",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable2 is not defined.\nline 4: Invalid, or out of place expression: EndTable2\n.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-028",
+   "logger": "cr6",
+   "source": "Public A, B\r\nFunction Swap(v1 As Float!)\r\n  Dim t\r\n  t = !v1\r\n  !v1 = !v2\r\n  !v2 = t\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Swap(@A)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal ! operation\nline 6: Illegal ! operation"
+  },
+  {
+   "id": "cr1000x-tables_names-029",
+   "logger": "cr1000x",
+   "source": "Public A, B\r\nFunction Swap(v1 As Float!)\r\n  Dim t\r\n  t = !v1\r\n  !v1 = !v2\r\n  !v2 = t\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Swap(@A)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal ! operation\nline 6: Illegal ! operation"
+  },
+  {
+   "id": "cr300-tables_names-030",
+   "logger": "cr300",
+   "source": "Public A, B\r\nFunction Swap(v1 As Float!)\r\n  Dim t\r\n  t = !v1\r\n  !v1 = !v2\r\n  !v2 = t\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Swap(@A)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: v2 is not defined.\nline 6: v2 is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tables_names-031",
+   "logger": "cr350",
+   "source": "Public A, B\r\nFunction Swap(v1 As Float!)\r\n  Dim t\r\n  t = !v1\r\n  !v1 = !v2\r\n  !v2 = t\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Swap(@A)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: v2 is not defined.\nline 6: v2 is not defined.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tables_names-032",
+   "logger": "cr6",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\"\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:         + \"c\"."
+  },
+  {
+   "id": "cr1000x-tables_names-033",
+   "logger": "cr1000x",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\"\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:         + \"c\"."
+  },
+  {
+   "id": "cr300-tables_names-034",
+   "logger": "cr300",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\"\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:         + \"c\"\n."
+  },
+  {
+   "id": "cr350-tables_names-035",
+   "logger": "cr350",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\"\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:         + \"c\"\n."
+  },
+  {
+   "id": "cr6-tables_names-036",
+   "logger": "cr6",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression:     S = \"a\" +         \"b\"     X = X + 1.\nline 7: Invalid, or out of place expression:         + \"c\"."
+  },
+  {
+   "id": "cr1000x-tables_names-037",
+   "logger": "cr1000x",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression:     S = \"a\" +         \"b\"     X = X + 1.\nline 7: Invalid, or out of place expression:         + \"c\"."
+  },
+  {
+   "id": "cr300-tables_names-038",
+   "logger": "cr300",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression:     S = \"a\" +         \"b\"     X = X + 1\n.\nline 7: Invalid, or out of place expression:         + \"c\"\n."
+  },
+  {
+   "id": "cr350-tables_names-039",
+   "logger": "cr350",
+   "source": "Public S As String * 64, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression:     S = \"a\" +         \"b\"     X = X + 1\n.\nline 7: Invalid, or out of place expression:         + \"c\"\n."
+  },
+  {
+   "id": "cr6-tables_names-040",
+   "logger": "cr6",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (5,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2."
+  },
+  {
+   "id": "cr1000x-tables_names-041",
+   "logger": "cr1000x",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (5,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2."
+  },
+  {
+   "id": "cr300-tables_names-042",
+   "logger": "cr300",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (5,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tables_names-043",
+   "logger": "cr350",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (5,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tables_names-044",
+   "logger": "cr6",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (2,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2."
+  },
+  {
+   "id": "cr1000x-tables_names-045",
+   "logger": "cr1000x",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (2,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Temp in DataTable Sensor2.\nDuplicate field name RH in DataTable Sensor2."
+  },
+  {
+   "id": "cr300-tables_names-046",
+   "logger": "cr300",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (2,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tables_names-047",
+   "logger": "cr350",
+   "source": "StructureType TempRH\r\n  Temp As Float\r\n  RH As Float\r\nEndStructureType\r\nPublic CS215(3) As TempRH\r\nDataTable(Sensor2,True,-1)\r\n  Sample (2,CS215(2),TempRH)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable Sensor2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tables_names-048",
+   "logger": "cr6",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tables_names-049",
+   "logger": "cr1000x",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tables_names-050",
+   "logger": "cr300",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tables_names-051",
+   "logger": "cr350",
+   "source": "Public X(6) as2 Long = {3,1,4,20,15,8}\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tables_names-052",
+   "logger": "cr6",
+   "source": "Public X(6) Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tables_names-053",
+   "logger": "cr1000x",
+   "source": "Public X(6) Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tables_names-054",
+   "logger": "cr300",
+   "source": "Public X(6) Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tables_names-055",
+   "logger": "cr350",
+   "source": "Public X(6) Long\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tables_names-056",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-tables_names-057",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-tables_names-058",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable declaration banana.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tables_names-059",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable declaration banana.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tables_names-060",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    CallTable U\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTabel.\nline 5: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-061",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    CallTable U\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTabel.\nline 5: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-062",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    CallTable U\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTabel is not defined.\nline 4: Invalid, or out of place expression: EndTabel\n.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-063",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    CallTable U\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTabel is not defined.\nline 4: Invalid, or out of place expression: EndTabel\n.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-064",
+   "logger": "cr6",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\"\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:         + \"c\")."
+  },
+  {
+   "id": "cr1000x-tables_names-065",
+   "logger": "cr1000x",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\"\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:         + \"c\")."
+  },
+  {
+   "id": "cr300-tables_names-066",
+   "logger": "cr300",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\"\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:         + \"c\")\n."
+  },
+  {
+   "id": "cr350-tables_names-067",
+   "logger": "cr350",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\"\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:         + \"c\")\n."
+  },
+  {
+   "id": "cr6-tables_names-068",
+   "logger": "cr6",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression: \"a\" +         \"b\"     X = X + 1\n.\nline 10: Invalid, or out of place expression:         + \"c\").",
+   "not_modelled": "a statement inside a continued call: `Incomplete expression` echo (not realistic)"
+  },
+  {
+   "id": "cr1000x-tables_names-069",
+   "logger": "cr1000x",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression: \"a\" +         \"b\"     X = X + 1\n.\nline 10: Invalid, or out of place expression:         + \"c\").",
+   "not_modelled": "a statement inside a continued call: `Incomplete expression` echo (not realistic)"
+  },
+  {
+   "id": "cr300-tables_names-070",
+   "logger": "cr300",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression: \"a\" +         \"b\"     X = X + 1\n.\nline 10: Invalid, or out of place expression:         + \"c\")\n.",
+   "not_modelled": "a statement inside a continued call: `Incomplete expression` echo (not realistic)"
+  },
+  {
+   "id": "cr350-tables_names-071",
+   "logger": "cr350",
+   "source": "Public S As String * 64, X\r\nSub Log(msg As String * 64)\r\n  S = msg\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"a\" + _\r\n        \"b\" _\r\n    X = X + 1\r\n        + \"c\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression: \"a\" +         \"b\"     X = X + 1\n.\nline 10: Invalid, or out of place expression:         + \"c\")\n.",
+   "not_modelled": "a statement inside a continued call: `Incomplete expression` echo (not realistic)"
+  },
+  {
+   "id": "cr6-tables_names-072",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope."
+  },
+  {
+   "id": "cr1000x-tables_names-073",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope."
+  },
+  {
+   "id": "cr300-tables_names-074",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-075",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-076",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope + 1."
+  },
+  {
+   "id": "cr1000x-tables_names-077",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope + 1."
+  },
+  {
+   "id": "cr300-tables_names-078",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-079",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-080",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = X\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr1000x-tables_names-081",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = X\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr300-tables_names-082",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = X\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-083",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    !Nope = X\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-084",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If !Nope > 0 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr1000x-tables_names-085",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If !Nope > 0 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr300-tables_names-086",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If !Nope > 0 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-087",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If !Nope > 0 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-088",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(!Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr1000x-tables_names-089",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(!Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr300-tables_names-090",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(!Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-tables_names-091",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(!Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-tables_names-092",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope.\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-tables_names-093",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope.\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-tables_names-094",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-095",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope\r\n    Dim Z banana\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-096",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Illegal ! operation\nline 5: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 5: Invalid, or out of place expression:     X = !Nope."
+  },
+  {
+   "id": "cr1000x-tables_names-097",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Illegal ! operation\nline 5: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 5: Invalid, or out of place expression:     X = !Nope."
+  },
+  {
+   "id": "cr300-tables_names-098",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-099",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Dim Z banana\r\n    X = !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-100",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !(Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid symbol in expression:     X = !(Nope).",
+   "not_modelled": "`!(Nope)`: the parser drops the parentheses"
+  },
+  {
+   "id": "cr1000x-tables_names-101",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !(Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid symbol in expression:     X = !(Nope).",
+   "not_modelled": "`!(Nope)`: the parser drops the parentheses"
+  },
+  {
+   "id": "cr300-tables_names-102",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !(Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-103",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !(Nope)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-104",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + !Nope2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope + !Nope2."
+  },
+  {
+   "id": "cr1000x-tables_names-105",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + !Nope2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation\nline 4: X must be declared as a pointer type, e.e., AS Float!, Long!, Double!, String!,...\nline 4: Invalid, or out of place expression:     X = !Nope + !Nope2."
+  },
+  {
+   "id": "cr300-tables_names-106",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + !Nope2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr350-tables_names-107",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Nope + !Nope2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr6-tables_names-108",
+   "logger": "cr6",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Y + !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr1000x-tables_names-109",
+   "logger": "cr1000x",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Y + !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal ! operation"
+  },
+  {
+   "id": "cr300-tables_names-110",
+   "logger": "cr300",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Y + !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-111",
+   "logger": "cr350",
+   "source": "Public X, P As Float!, Y As Long!\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = !Y + !Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-112",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Junk\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-tables_names-113",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Junk\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-tables_names-114",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Junk\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Junk is not defined.\nline 4: Invalid, or out of place expression:   Junk\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tables_names-115",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\n  Junk\r\nEndTable\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Junk is not defined.\nline 4: Invalid, or out of place expression:   Junk\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tables_names-116",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Smaple(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Smaple(1,X,FP2).\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-117",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Smaple(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Smaple(1,X,FP2).\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-118",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Smaple(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Smaple is not defined.\nline 3: Invalid, or out of place expression:   Smaple(1,X,FP2)\n.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-119",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Smaple(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Smaple is not defined.\nline 3: Invalid, or out of place expression:   Smaple(1,X,FP2)\n.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-120",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTabel.\nline 5: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-121",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: EndTabel.\nline 5: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-122",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTabel is not defined.\nline 4: Invalid, or out of place expression: EndTabel\n.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-123",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTabel\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTabel is not defined.\nline 4: Invalid, or out of place expression: EndTabel\n.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-124",
+   "logger": "cr6",
+   "source": "Public X\r\nJunk\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Junk.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-tables_names-125",
+   "logger": "cr1000x",
+   "source": "Public X\r\nJunk\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Junk.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-tables_names-126",
+   "logger": "cr300",
+   "source": "Public X\r\nJunk\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Junk is not defined.\nline 2: Invalid, or out of place expression: Junk\n.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-127",
+   "logger": "cr350",
+   "source": "Public X\r\nJunk\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Junk is not defined.\nline 2: Invalid, or out of place expression: Junk\n.\nline 3: Too many parameters:  True.\nline 4: Too many parameters:  X.\nline 5: Too many parameters:  True.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-128",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\n  Junk2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Junk.\nline 5: Invalid, or out of place expression:   Junk2.\nline 6: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-129",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\n  Junk2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Junk.\nline 5: Invalid, or out of place expression:   Junk2.\nline 6: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-130",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\n  Junk2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Junk is not defined.\nline 3: Invalid, or out of place expression:   Junk\n.\nline 4: Too many parameters:  X.\nline 5: Junk2 is not defined.\nline 5: Invalid, or out of place expression:   Junk2\n.\nline 6: Too many parameters:  True.\nline 7: Too many parameters:  X.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-131",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\n  Junk2\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Junk is not defined.\nline 3: Invalid, or out of place expression:   Junk\n.\nline 4: Too many parameters:  X.\nline 5: Junk2 is not defined.\nline 5: Invalid, or out of place expression:   Junk2\n.\nline 6: Too many parameters:  True.\nline 7: Too many parameters:  X.\nline 10: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-132",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-133",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-134",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Junk is not defined.\nline 5: Invalid, or out of place expression:   Junk\n.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-135",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Junk\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Junk is not defined.\nline 5: Invalid, or out of place expression:   Junk\n.\nline 6: Too many parameters:  X.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-136",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nJunk\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-137",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nJunk\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-138",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nJunk\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Junk is not defined.\nline 7: Invalid, or out of place expression: Junk\n.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-139",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Sample(1,X,FP2)\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nJunk\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Junk is not defined.\nline 7: Invalid, or out of place expression: Junk\n.\nline 9: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-140",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Junk.\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-141",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Junk.\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-142",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Junk is not defined.\nline 3: Invalid, or out of place expression:   Junk\n.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-143",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Junk is not defined.\nline 3: Invalid, or out of place expression:   Junk\n.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-144",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Junk.\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr1000x-tables_names-145",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   Junk.\nline 4: DataTable without EndTable."
+  },
+  {
+   "id": "cr300-tables_names-146",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Junk is not defined.\nline 3: Invalid, or out of place expression:   Junk\n.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-147",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(T,True,-1)\r\n  Junk\r\nDataTable(U,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Junk is not defined.\nline 3: Invalid, or out of place expression:   Junk\n.\nline 4: Too many parameters:  True.\nline 5: Too many parameters:  X.\nline 8: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-148",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Tset1.X\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Tset1."
+  },
+  {
+   "id": "cr1000x-tables_names-149",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Tset1.X\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Tset1."
+  },
+  {
+   "id": "cr300-tables_names-150",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Tset1.X\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Tset1."
+  },
+  {
+   "id": "cr350-tables_names-151",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Tset1.X\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Tset1."
+  },
+  {
+   "id": "cr6-tables_names-152",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Setings."
+  },
+  {
+   "id": "cr1000x-tables_names-153",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Setings."
+  },
+  {
+   "id": "cr300-tables_names-154",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Setings."
+  },
+  {
+   "id": "cr350-tables_names-155",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Setings."
+  },
+  {
+   "id": "cr6-tables_names-156",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Tset1.X(1,1) > 0 Then X = 1\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Tset1."
+  },
+  {
+   "id": "cr1000x-tables_names-157",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Tset1.X(1,1) > 0 Then X = 1\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Tset1."
+  },
+  {
+   "id": "cr300-tables_names-158",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Tset1.X(1,1) > 0 Then X = 1\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Tset1."
+  },
+  {
+   "id": "cr350-tables_names-159",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Tset1.X(1,1) > 0 Then X = 1\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Tset1."
+  },
+  {
+   "id": "cr6-tables_names-160",
+   "logger": "cr6",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X)\r\n    X = Abs(Tset1.X)\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Tset1."
+  },
+  {
+   "id": "cr1000x-tables_names-161",
+   "logger": "cr1000x",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X)\r\n    X = Abs(Tset1.X)\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Tset1."
+  },
+  {
+   "id": "cr300-tables_names-162",
+   "logger": "cr300",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X)\r\n    X = Abs(Tset1.X)\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Tset1."
+  },
+  {
+   "id": "cr350-tables_names-163",
+   "logger": "cr350",
+   "source": "Public X\r\nDataTable(Test1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Battery(X)\r\n    X = Abs(Tset1.X)\r\n    CallTable Test1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Tset1."
+  },
+  {
+   "id": "cr6-tables_names-164",
+   "logger": "cr6",
+   "source": "StructureType S\r\n  A As Float\r\nEndStructureType\r\nPublic V As S, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = W.A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find W."
+  },
+  {
+   "id": "cr1000x-tables_names-165",
+   "logger": "cr1000x",
+   "source": "StructureType S\r\n  A As Float\r\nEndStructureType\r\nPublic V As S, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = W.A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find W."
+  },
+  {
+   "id": "cr300-tables_names-166",
+   "logger": "cr300",
+   "source": "StructureType S\r\n  A As Float\r\nEndStructureType\r\nPublic V As S, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = W.A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable W."
+  },
+  {
+   "id": "cr350-tables_names-167",
+   "logger": "cr350",
+   "source": "StructureType S\r\n  A As Float\r\nEndStructureType\r\nPublic V As S, X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = W.A\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable W."
+  },
+  {
+   "id": "cr6-tables_names-168",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Setings.PakBusAddress = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Setings.\nline 4: Invalid assignment in expression:     Setings.PakBusAddress = 1."
+  },
+  {
+   "id": "cr1000x-tables_names-169",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Setings.PakBusAddress = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Setings.\nline 4: Invalid assignment in expression:     Setings.PakBusAddress = 1."
+  },
+  {
+   "id": "cr300-tables_names-170",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Setings.PakBusAddress = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Setings.\nline 4: Invalid assignment in expression:     Setings.PakBusAddress = 1\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-171",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Setings.PakBusAddress = 1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Setings.\nline 4: Invalid assignment in expression:     Setings.PakBusAddress = 1\n.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-172",
+   "logger": "cr6",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress + Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Setings.\nline 4: Invalid symbol in expression:     X = Setings.PakBusAddress + Nope."
+  },
+  {
+   "id": "cr1000x-tables_names-173",
+   "logger": "cr1000x",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress + Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Setings.\nline 4: Invalid symbol in expression:     X = Setings.PakBusAddress + Nope."
+  },
+  {
+   "id": "cr300-tables_names-174",
+   "logger": "cr300",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress + Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Setings.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-175",
+   "logger": "cr350",
+   "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Setings.PakBusAddress + Nope\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Setings.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-tables_names-176",
+   "logger": "cr6",
+   "source": "Function F(x) As Boolean\r\n  Return Flase\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Flase."
+  },
+  {
+   "id": "cr1000x-tables_names-177",
+   "logger": "cr1000x",
+   "source": "Function F(x) As Boolean\r\n  Return Flase\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Flase."
+  },
+  {
+   "id": "cr300-tables_names-178",
+   "logger": "cr300",
+   "source": "Function F(x) As Boolean\r\n  Return Flase\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Flase is not defined.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-tables_names-179",
+   "logger": "cr350",
+   "source": "Function F(x) As Boolean\r\n  Return Flase\r\nEndFunction\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = F(1)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Flase is not defined.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-tables_names-180",
+   "logger": "cr6",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr1000x-tables_names-181",
+   "logger": "cr1000x",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr300-tables_names-182",
+   "logger": "cr300",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr350-tables_names-183",
+   "logger": "cr350",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr6-tables_names-184",
+   "logger": "cr6",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr1000x-tables_names-185",
+   "logger": "cr1000x",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr300-tables_names-186",
+   "logger": "cr300",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr350-tables_names-187",
+   "logger": "cr350",
+   "source": "Public S As String * 32, R As Long\r\nSub Log(m As String * 32)\r\n  S = m\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Log(\"bytes=\" + FormatLong(\"%d\") + \" r\")\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : \"bytes=\" + FormatLong(\"%d\") + \" r\"."
+  },
+  {
+   "id": "cr6-tables_names-188",
+   "logger": "cr6",
+   "source": "Public X\r\nUnits X = \u00b0C\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Nope + \"\u00b0C\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Nope + \"\u00b0C\"."
+  },
+  {
+   "id": "cr1000x-tables_names-189",
+   "logger": "cr1000x",
+   "source": "Public X\r\nUnits X = \u00b0C\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Nope + \"\u00b0C\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Nope + \"\u00b0C\"."
+  },
+  {
+   "id": "cr300-tables_names-190",
+   "logger": "cr300",
+   "source": "Public X\r\nUnits X = \u00b0C\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Nope + \"\u00b0C\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-tables_names-191",
+   "logger": "cr350",
+   "source": "Public X\r\nUnits X = \u00b0C\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Nope + \"\u00b0C\"\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  }
+ ]
+}

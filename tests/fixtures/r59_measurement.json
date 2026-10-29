@@ -1,0 +1,1095 @@
+{
+ "observation_date": "2026-10-29",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-measurement-000",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-001",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-002",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr350-measurement-003",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr6-measurement-004",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-005",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-006",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr350-measurement-007",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr6-measurement-008",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-009",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-010",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr350-measurement-011",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr6-measurement-012",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,U1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-013",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,U1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-014",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,U1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr350-measurement-015",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,U1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr6-measurement-016",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-017",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-018",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-019",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-020",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-021",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-022",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-023",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-024",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-025",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-026",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-027",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-028",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-029",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-030",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-031",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,U1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-032",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-measurement-033",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-034",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-035",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-036",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr1000x-measurement-037",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr300-measurement-038",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr350-measurement-039",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr6-measurement-040",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-measurement-041",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-042",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr350-measurement-043",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: U1 is not defined.\nline 7: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr6-measurement-044",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-measurement-045",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-046",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV200C is not defined.\nline 7: Variable illegal in Parameter: mV200C."
+  },
+  {
+   "id": "cr350-measurement-047",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV200C is not defined.\nline 7: Variable illegal in Parameter: mV200C."
+  },
+  {
+   "id": "cr6-measurement-048",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-measurement-049",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr300-measurement-050",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: AutoRange is not defined.\nline 7: Variable illegal in Parameter: AutoRange."
+  },
+  {
+   "id": "cr350-measurement-051",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,U1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: AutoRange is not defined.\nline 7: Variable illegal in Parameter: AutoRange."
+  },
+  {
+   "id": "cr6-measurement-052",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-053",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-054",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-055",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-056",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-057",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-058",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable WD out of bounds.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-059",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,2,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable WD out of bounds.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-060",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-061",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-062",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-063",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull(WD,1,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-064",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,Vx1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-065",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,Vx1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-066",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,Vx1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-067",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf3W(WD,1,1,1,Vx1,1,2500,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-068",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-069",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-070",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-071",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-072",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-073",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-074",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-075",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-076",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-077",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-078",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-079",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,1,mV5000,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-080",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-081",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-082",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-083",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrFull6W(WD,1,mV5000,1,1,Vx1,1,2500,True,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-084",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-085",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-measurement-086",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-measurement-087",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV5000,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-measurement-088",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr1000x-measurement-089",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr300-measurement-090",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr350-measurement-091",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,R,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr6-measurement-092",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-093",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-094",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-095",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,\"x\",1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-096",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-097",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-measurement-098",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV200C is not defined.\nline 7: Variable illegal in Parameter: mV200C."
+  },
+  {
+   "id": "cr350-measurement-099",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,mV200C,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV200C is not defined.\nline 7: Variable illegal in Parameter: mV200C."
+  },
+  {
+   "id": "cr6-measurement-100",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-101",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-measurement-102",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: AutoRange is not defined.\nline 7: Variable illegal in Parameter: AutoRange."
+  },
+  {
+   "id": "cr350-measurement-103",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,AutoRange,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: AutoRange is not defined.\nline 7: Variable illegal in Parameter: AutoRange."
+  },
+  {
+   "id": "cr6-measurement-104",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-105",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Minimum Excitation is 20mV.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid or missing parameter.",
+   "not_modelled": "CR1000X prints `Minimum Excitation is 20mV.` between the two Range lines (later diagnostics)"
+  },
+  {
+   "id": "cr300-measurement-106",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-measurement-107",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,Vx1,1,1000,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-measurement-108",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0.1,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-109",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0.1,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-110",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0.1,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-111",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0.1,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-112",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-113",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Minimum Excitation is 20mV.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.",
+   "not_modelled": "CR1000X prints `Minimum Excitation is 20mV.` between the two Range lines (later diagnostics)"
+  },
+  {
+   "id": "cr300-measurement-114",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Minimum Excitation is 150mV.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-measurement-115",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1,True,0,15000,1,0)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Minimum Excitation is 150mV.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-measurement-116",
+   "logger": "cr6",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0) : Public Q\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "cr1000x-measurement-117",
+   "logger": "cr1000x",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0) : Public Q\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 7: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr300-measurement-118",
+   "logger": "cr300",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0) : Public Q\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-measurement-119",
+   "logger": "cr350",
+   "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf(WD,1,1,1,Vx1,1,1000,True,0,15000,1,0) : Public Q\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-measurement-120",
+   "logger": "cr6",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,19,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points 19 is illegal: range is 20..2048."
+  },
+  {
+   "id": "cr1000x-measurement-121",
+   "logger": "cr1000x",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,19,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points 19 is illegal: range is 20..2048."
+  },
+  {
+   "id": "cr300-measurement-122",
+   "logger": "cr300",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,19,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H,0,0,0001,4,1.0,19,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr350-measurement-123",
+   "logger": "cr350",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,19,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H,0,0,0001,4,1.0,19,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr6-measurement-124",
+   "logger": "cr6",
+   "source": "Public H(20)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,20,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-measurement-125",
+   "logger": "cr1000x",
+   "source": "Public H(20)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,20,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-measurement-126",
+   "logger": "cr300",
+   "source": "Public H(20)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,20,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H(),0,0,0001,4,1.0,20,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr350-measurement-127",
+   "logger": "cr350",
+   "source": "Public H(20)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,20,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H(),0,0,0001,4,1.0,20,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr6-measurement-128",
+   "logger": "cr6",
+   "source": "Public H(2048)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,2048,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-measurement-129",
+   "logger": "cr1000x",
+   "source": "Public H(2048)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,2048,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-measurement-130",
+   "logger": "cr300",
+   "source": "Public H(2048)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,2048,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H(),0,0,0001,4,1.0,2048,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr350-measurement-131",
+   "logger": "cr350",
+   "source": "Public H(2048)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,0,0001,4,1.0,2048,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H(),0,0,0001,4,1.0,2048,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr6-measurement-132",
+   "logger": "cr6",
+   "source": "Public H(2049)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,1,0001,4,1.0,2049,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points 2049 is illegal: range is 20..2048.\nline 4: Variable H out of bounds.",
+   "not_modelled": "TDR100 destination bounds line after the Points line (later diagnostics)"
+  },
+  {
+   "id": "cr1000x-measurement-133",
+   "logger": "cr1000x",
+   "source": "Public H(2049)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,1,0001,4,1.0,2049,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points 2049 is illegal: range is 20..2048.\nline 4: Variable H out of bounds.",
+   "not_modelled": "TDR100 destination bounds line after the Points line (later diagnostics)"
+  },
+  {
+   "id": "cr300-measurement-134",
+   "logger": "cr300",
+   "source": "Public H(2049)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,1,0001,4,1.0,2049,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H(),0,1,0001,4,1.0,2049,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr350-measurement-135",
+   "logger": "cr350",
+   "source": "Public H(2049)\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H(),0,1,0001,4,1.0,2049,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H(),0,1,0001,4,1.0,2049,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr6-measurement-136",
+   "logger": "cr6",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,251,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-measurement-137",
+   "logger": "cr1000x",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,251,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-measurement-138",
+   "logger": "cr300",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,251,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H,0,0,0001,4,1.0,251,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr350-measurement-139",
+   "logger": "cr350",
+   "source": "Public H\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    TDR100 (H,0,0,0001,4,1.0,251,5.75,5,.3,0.085,0.1138,-0.1758)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TDR100 is not defined.\nline 4: Invalid, or out of place expression:     TDR100 (H,0,0,0001,4,1.0,251,5.75,5,.3,0.085,0.1138,-0.1758)\n."
+  },
+  {
+   "id": "cr6-measurement-140",
+   "logger": "cr6",
+   "source": "StructureType A\r\n  F As Float\r\n  StructureType B\r\n    G As Float\r\n  EndStructureType\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure\nline 6: EndStructure without Structure"
+  },
+  {
+   "id": "cr1000x-measurement-141",
+   "logger": "cr1000x",
+   "source": "StructureType A\r\n  F As Float\r\n  StructureType B\r\n    G As Float\r\n  EndStructureType\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure\nline 6: EndStructure without Structure"
+  },
+  {
+   "id": "cr300-measurement-142",
+   "logger": "cr300",
+   "source": "StructureType A\r\n  F As Float\r\n  StructureType B\r\n    G As Float\r\n  EndStructureType\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure\nline 6: EndStructure without Structure\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-measurement-143",
+   "logger": "cr350",
+   "source": "StructureType A\r\n  F As Float\r\n  StructureType B\r\n    G As Float\r\n  EndStructureType\r\nEndStructureType\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Structure inside Structure\nline 6: EndStructure without Structure\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-measurement-144",
+   "logger": "cr6",
+   "source": "StructureType A\r\nStructureType B\r\n  G As Float\r\nEndStructureType\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-measurement-145",
+   "logger": "cr1000x",
+   "source": "StructureType A\r\nStructureType B\r\n  G As Float\r\nEndStructureType\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr300-measurement-146",
+   "logger": "cr300",
+   "source": "StructureType A\r\nStructureType B\r\n  G As Float\r\nEndStructureType\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-measurement-147",
+   "logger": "cr350",
+   "source": "StructureType A\r\nStructureType B\r\n  G As Float\r\nEndStructureType\r\nDim Z banana\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Structure inside Structure\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-measurement-148",
+   "logger": "cr6",
+   "source": "StructureType A\r\n  F As Float\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-measurement-149",
+   "logger": "cr1000x",
+   "source": "StructureType A\r\n  F As Float\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-measurement-150",
+   "logger": "cr300",
+   "source": "StructureType A\r\n  F As Float\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-measurement-151",
+   "logger": "cr350",
+   "source": "StructureType A\r\n  F As Float\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

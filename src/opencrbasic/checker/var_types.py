@@ -422,8 +422,23 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
                     return entry[0]
         return None
 
+    known = expressions._known_names(program, profile)
     for stmt in program.statements:
         scope = scopes[id(stmt)]
+        derefs = [n if n and re.search(rf"!\s*{re.escape(n)}\b", stmt.text or "", re.I) else None
+                  for top in expressions._stmt_exprs(stmt) for n in _dereference_names(top)]
+        if any(n and n.upper() not in scope and n.upper() not in known for n in derefs):
+            # `!` on an undeclared name, once per statement; an assignment to a non-pointer whose
+            # first `!` operand is that name also gets the pointer message (oracle, CR6/CR1000X,
+            # round 59, docs/checker.md#dereferencing-an-undeclared-name-round-59)
+            diags.error(stmt.line, "Illegal ! operation", stmt.file)
+            entry = scope.get(stmt.target.name.upper()) if isinstance(stmt, S.Assignment) and \
+                isinstance(stmt.target, (S.Name, S.Index)) else None
+            if entry and entry[1] and not entry[1].endswith("!") and derefs[0] and \
+                    derefs[0].upper() not in scope and derefs[0].upper() not in known:
+                diags.error(stmt.line, POINTER_MESSAGE.format(name=entry[0]), stmt.file)
+                diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
+            continue
         name = echo = None
         if isinstance(stmt, S.Assignment):
             target = stmt.target

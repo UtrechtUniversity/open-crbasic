@@ -123,7 +123,11 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
     if record:
         params = _real_params(record["params"])
         kind = _type_code_kinds().get(params[0] % 100) if params else None
-        return "instruction" if params and kind != "bool_expr" else None
+        if not params or kind == "bool_expr":
+            return None
+        if not profile.single_pass and (extra := _past_last_param(stmt.text, len(params))):
+            return "too_many:" + extra
+        return "instruction"
     if re.match(r"\s*[A-Za-z_][A-Za-z0-9_]*\s*(?:\([^\"]*\))?\s*=\s*\"", stmt.text):
         return "assignment"
     if operands is not None:
@@ -132,6 +136,24 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
         if reached:
             return "assignment" if reached == "reached" else "many"
     return None
+
+
+def _past_last_param(text: str, count: int) -> str | None:
+    """CR6/CR1000X: when the unterminated string opens after the last declared parameter, the
+    excess argument is reported first (`FieldNames(S1,S2,S3")` -> `Too many parameters:  S2.`;
+    oracle, round 59). Its first simple token, else None."""
+    open_at, quote = text.find("("), text.find('"')
+    if open_at < 0 or quote < open_at:
+        return None
+    depth, commas = 0, []
+    for i in range(open_at + 1, quote):
+        depth += text[i] in "({"
+        depth -= text[i] in ")}"
+        if text[i] == "," and depth == 0:
+            commas.append(i)
+    if len(commas) < count:
+        return None
+    return _next_simple_token(text[commas[count - 1] + 1:]) or None
 
 
 def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -146,6 +168,8 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
         shape = unterminated_string_shape(stmt, profile, subs, operands)
         if shape == "instruction":
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
+        elif shape and shape.startswith("too_many:"):
+            diags.error(stmt.line, f"Too many parameters:  {shape[len('too_many:'):]}.", stmt.file)
         elif shape == "call":
             diags.error(stmt.line, "Invalid or malformed function argument.", stmt.file)
         elif shape == "many":
@@ -337,25 +361,16 @@ def shortfall_message(record: dict, given: int) -> str | None:
 def _report_constant_destinations(stmt: S.Instruction, record: dict, params: list, program,
                                   profile, diags: Diagnostics) -> None:
     """CR6/CR1000X, a statement short of required parameters: the arguments given are still
-    examined first, so a constant at a destination-variable position (`PanelTemp(15000)`,
-    `CDM_PanelTemp(CDM_A108,1,1,1,15000)`) gives `Invalid Variable or Array: <arg>.` ahead of
-    `Invalid or missing parameter.` (oracle, 2026-10-03, `tests/fixtures/short_constant_dest.json`).
-    The checks are those `instr_data._check_stage2a` and `check_precision_variable` make for a
-    complete statement, which pass 1 now suppresses for this one."""
-    from . import instr_data
+    examined first, so a constant `PrecisionVariable` gives `Invalid Variable or Array: <arg>.`
+    ahead of `Invalid or missing parameter.` (oracle, 2026-10-03,
+    `tests/fixtures/short_constant_dest.json`), as `check_precision_variable` reports it for a
+    complete statement. Other destinations: `instr_data.check_constant_destinations`."""
     if stmt.keyword.upper() in _PRECISION_VARIABLE_POSITIONS:
         known = _known_names(program, profile)
         variables = symbols.declared_variable_names(program)
         if stmt.args and stmt.args[0] is not None and not (
                 _undefined_names(stmt.args[0], known) or _variable_refs(stmt.args[0], variables)):
             diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, 0)}.", stmt.file)
-        return
-    for i, code in enumerate(params[:len(stmt.args)]):
-        arg = stmt.args[i]
-        if code in (8, 27, 29) and arg is not None and not isinstance(arg, S.String) \
-                and not instr_data._has_names(arg):
-            diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i).strip()}.",
-                        stmt.file)
 
 
 # --- Too many parameters: `Too many parameters:  %s.` (round 5, new this round) -----------------
@@ -1802,7 +1817,9 @@ def check_serialin_comport(program: S.Program, profile, diags: Diagnostics, env:
     names = longconv.float_names(program.statements)
     literals = longconv.literal_names(program.statements)
     for stmt in program.statements:
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SERIALIN" and len(stmt.args) > 1:
+        # a short statement stops at its missing parameter first (oracle, CR6/CR1000X, round 59)
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SERIALIN" and len(stmt.args) > 1 \
+                and shortfall_message(profile.instructions["SERIALIN"], given_count(stmt, profile)) is None:
             v = longconv.long_value(stmt.args[1], env, profile, names, literals)
             if v is not None and (abs(v) if v != -2**31 else v) not in ports:
                 diags.error(stmt.line, f"ComPort {abs(v) if v != -2**31 else v} illegal.", stmt.file)
@@ -1825,6 +1842,8 @@ def _serialin_types(program: S.Program, profile) -> dict[str, str]:
                         types[alias.name.upper()] = kind
     for name in profile.functions:
         types.setdefault(name, "FUNCTION")
+    for name in profile.symbols:   # `SerialIn(ComRS232,...)` (oracle, CR6/CR1000X, round 59)
+        types.setdefault(name, "CONST")
     return types
 
 

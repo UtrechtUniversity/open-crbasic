@@ -7149,8 +7149,7 @@
       "logger": "cr1000x",
       "source": "Public A(5), B(5) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    BrHalf(A(6),1,mV2500,1,Vx1,1,2500,1,0,60,1,0)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.",
-      "not_modelled": "CR1000X BrHalf range code mV2500 (reported twice by the real compiler) is not modelled; the destination bounds line shows instead."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 4: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
     }
   ]
 }

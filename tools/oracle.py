@@ -104,6 +104,12 @@ def _decode_and_normalise(data: bytes) -> str:
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
+def as_read_back(text: str) -> str:
+    """opencrbasic's diagnostic text as the CLI writes it (Latin-1) and this module reads the
+    reference's bytes back (UTF-8), so a non-ASCII echo such as `°` compares byte for byte."""
+    return text.encode("latin-1", "replace").decode("utf-8", errors="replace")
+
+
 def _strip_trailing_blank_lines(text: str) -> str:
     lines = text.split("\n")
     while lines and lines[-1] == "":

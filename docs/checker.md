@@ -2362,7 +2362,9 @@ on line 7 then `Battery((1+2))` on line 8 prints only the `Battery` error).
 
 - A constant with no names where a destination variable is required (type code 8): `Battery(5)`
   -> `Invalid Variable or Array: 5.`, `Battery((1+2))` -> `... (1+2).`; `Battery(X+1)` is
-  accepted. These accumulate. `AddPrecise`/`MovePrecise` keep their own pass-1 check.
+  accepted. These accumulate. `AddPrecise`/`MovePrecise` keep their own pass-1 check. Superseded in
+  round 59: the destination check is pass 1 and never suppressed
+  ([below](#constant-destinations-are-pass-1-round-59)).
 - Table-output `Reps` below 1: `Sample (0,X,FP2)` -> `Illegal Reps 0` (no period); a string or
   out-of-range value reads as -2147483648. A source past its 1-D array: `Sample (3,A(4),FP2)`
   with `A(5)` -> `Variable A out of bounds.` and `Variable A, index 4, reps 3, out of bounds.`
@@ -9135,3 +9137,106 @@ its terminal lines (same verdict).
 A string as an `SDI12Recorder` port (`"fuzz"`, `""`, even `"1"`) is INT_MIN, so `Invalid SDI-12 port,
 ...` on CR6/CR1000X (`terminals.json` `string_int_min`). Not modelled: on CR6 a string single-ended
 channel (`VoltSE(X,1,mV1000,"fuzz",...)`) is `Invalid port, must be C1..C4 or U1..U12.`.
+
+## Round-59 realistic first errors
+
+Round 59 works the M2 fix scope (human decision 2026-10-29, [PLAN](../PLAN.md#v10-milestones)): each
+relevant row of the [first-error review](first-error-review.md) was re-applied to its whole seed program
+(`scratch/r59/unshrink.py`), and realistic single-edit variants were probed on CR6 and CR1000X
+(2026-10-29; fixtures `r59_*.json`, all four profiles). The sections below are the rules that came out of it.
+
+## Constant destinations are pass 1 (round 59)
+
+A constant where a destination variable is required (type codes 8, 27, 29) is `Invalid Variable or
+Array: %s.` in pass 1: it is printed beside every other pass-1 error in line order, before or after it
+(`Battery(5)` next to `Dim Z banana`, a declaration error before `BeginProg`, a function arity error, a
+shortfall, `Too many parameters`, a `Range` code, `Illegal String operand`, a `TimeIntoInterval`
+interval), and so hides the stage-2a `Reps`/bounds checks and pass 2. It is never suppressed. A
+constant now includes a `Const`, a predefined name and an expression of them: `Battery(K)`,
+`Battery(K+1)`, `PanelTemp(ComRS232,15000)`, `PanelTemp(TypeT,15000)`, `PanelTemp(True,15000)`,
+`Battery(Sec)`, `SendVariables(ComRS232,...)` (all were false accepts). `ConstTable` constants are
+settable and count as variables (`MenuRecompile("x",C)` keeps `String type variable not allowed.`).
+Within one statement a `Variable illegal in Parameter` on an earlier argument ends the statement, so a
+later constant destination is not printed (`CDM_PanelTemp(CDM_A108,PTemp,1,1,15000)`, `Matrix(A_matrix,
+0, R)`); one before it still is (`PanelTemp(15000,Nope)`). `instr_data.check_constant_destinations`,
+`drop_unreached_destinations`. `SerialIn` reads a predefined constant as a bad String destination too
+(`SerialIn(ComRS232,500,-1,100)`, then the shortfall, without the ComPort line).
+
+## Bridge Range codes (round 59)
+
+`BrHalf`, `BrHalf3W` and `BrFull` check their one `Range` twice, `BrHalf4W` and `BrFull6W` each of
+their two, in pass 1 like `VoltSe` (`measure.json` `range_code_instructions`); an invalid one was a
+false accept on CR1000X. With a dropped argument the shifted `Range` is reported before the shortfall.
+Not modelled (later diagnostics): on CR1000X `Minimum Excitation is 20mV.` is printed between the two
+`Range` lines. `TDR100` Points must be 20..2048 (`Points %d is illegal: range is 20..2048.`, a false
+accept).
+
+## Declarations and structures (round 59)
+
+- An array declaration with a junk word before an initializer compiles, the comma inside braces
+  included: `Public X(3) Long = {3,1,4}`, `Public X(3) Ass Long = {3,1,4}, Y`, `Dim X(3) as2 Long =
+  {...}` (false rejects; `parser._parse_vardecl`).
+- A `StructureType` opened inside an open one is `Structure inside Structure` (a forgotten
+  `EndStructureType`; a false accept); the inner `EndStructureType` closes the structure, the outer one
+  is then `EndStructure without Structure`.
+- A routine's own `Const` with an unknown type is `%s unknown Const type` like a global one (a false
+  accept). The reference crashes on a `Function` with a local `Const` that assigns its own name
+  (`F = True`); those probes have no verdict.
+- `Illegally dimension: %s` after an initialized variable echoes the line only up to the first comma
+  after that initializer's `=`, braces or not: `Public A = 10, R(0)` -> `Public A = 10`, `Public A(2) =
+  {1,2}, R(0)` -> `Public A(2) = {1`.
+- A `StructureType` table source is never bounds-checked on any logger; reps past the array show as
+  duplicate field names (`Sample (5,CS215(2),TempRH)`).
+
+## Malformed routine headers (round 59)
+
+`parser._parse_subdef` keeps the routine and records its header errors (`SubDef.header_errors`):
+- a non-`Optional` parameter with a default: `Required parameter x cannot be initialized.` (a false
+  accept; CR300/CR350 print the name as `p`);
+- a second word after a parameter name: `Invalid Variable declaration %s.`, the raw text up to a blank,
+  comma or `)` (`Optionl z=0` -> `z=0`, then the `=0` initializes `Optionl`; `Sub S(Q R)`);
+- words after `)` that are not `As` are read as more parameters (`Function F(x) Ass Long` -> `Invalid
+  Variable declaration Long.`, and `F(1)` then lacks an argument);
+- anything after the return type: `Too many parameters:  %s.` (`As Long * 30`, `As Strng * 30` after
+  its `Variable Type Strng not supported`).
+
+## Dereferencing an undeclared name (round 59)
+
+`!Name` on an undeclared name is `Illegal ! operation`, once per statement, in pass 1 (a dropped
+pointer parameter still used in the body). An assignment to a non-pointer whose first `!` operand is
+that name adds the pointer message and the generic fallback. `var_types.check_pointer_deref`. Not
+modelled: `X = !(Nope)` (the parser drops the parentheses).
+
+## Nested DataTable in pass 2 (round 59)
+
+On CR6/CR1000X `DataTable without EndTable.` belongs to pass 2: it is printed at the nested header in
+statement order, after earlier fallbacks (a misspelt `EndTabel`, `Junk`, `Smaple(...)` in the open
+table), ends pass 2 (nothing in the nested body or later is printed) and is hidden by any pass-1 error
+or an earlier placement stop. The round-39 rule that an unresolved name wins first is kept.
+`structure.nested_table`.
+
+## Undeclared dotted bases (round 59)
+
+A dotted reference whose base is not declared, such as a misspelt table, `Settings` or structure
+variable (`Tset1.X`, `Setings.PakBusAddress`, `W.A`), is `Could not find Tset1.` in assignments, `If`
+conditions and function arguments, before the statement's other lines. `Invalid symbol in expression`
+stays only for another undefined name, and an assignment target adds `Invalid assignment in
+expression: <line>.`. An `Alias` source is not checked (`Alias Foo = Zed.W` compiles).
+`expressions.check_undefined_dotted_bases`.
+
+## Smaller round-59 rules
+
+- A one-line `If`'s bare-argument statement keeps its argument echo (`If x > 1 Then Return Flase` ->
+  `Invalid symbol in expression: Flase.`; the span ended at the segment's synthetic end).
+- An unterminated string that opens after an instruction's last parameter reports the excess argument
+  first: `FieldNames(S1,S2,S3")` -> `Too many parameters:  S2.` (`instr_rules._past_last_param`).
+- An unreadable `If`, `ElseIf`, `Do`/`Loop While|Until` condition echoes the condition alone, the
+  one-line `If` too: `If () Then X = 1` -> `Invalid, or out of place expression: () .`, `If X = = 1
+  Then`, `Loop Until ()` -> `... ().` (`structure._leftover_message`, `_inline_condition_stmt`). Not
+  modelled: `While ()` (the instruction shortfall is printed instead).
+- A String array has at most two dimensions: `Public B(3,3,3) As String * 4` is `Variable B(3,3,3) of
+  type String illegally dimensioned.` (a false accept). Not modelled: the reference then also reports a
+  use of the array (`Dimensions not declared`).
+- A degree sign in an echo was a harness artefact: the CLI writes Latin-1, so `Â°` is the reference's
+  bytes. `tools/difftest.py` and `tools/fuzz.py` now compare our text as those bytes read back
+  (`oracle.as_read_back`).

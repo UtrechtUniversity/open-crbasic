@@ -948,6 +948,17 @@ def _has_names(expr) -> bool:
     return False
 
 
+def constant_destination(expr, env, variables) -> bool:
+    """Whether a destination argument is a compile-time constant, which CR6/CR1000X reject with
+    `Invalid Variable or Array`: a literal, a `Const` or predefined name, or an expression of
+    them (`Battery(K+1)`, `PanelTemp(ComRS232,15000)`; oracle, round 59)."""
+    from .expressions import _variable_refs
+    if expr is None or isinstance(expr, S.String):
+        return False
+    return not _has_names(expr) or (consteval.is_constant(expr, env)
+                                    and not _variable_refs(expr, variables))
+
+
 def _reps_value(expr, env) -> int | None:
     """A `Reps` argument's value as the real compiler reads it: a string or a value outside the
     32-bit range becomes -2147483648 (oracle: `Sample("fuzz",...)`, `Maximum (999999999999,...)`)."""
@@ -1098,6 +1109,60 @@ def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics) 
     return False
 
 
+def check_constant_destinations(program: S.Program, profile: Profile, diags: Diagnostics,
+                                env) -> None:
+    """CR6/CR1000X pass 1: a constant where a destination variable is required (type codes 8, 27,
+    29) -> `Invalid Variable or Array: %s.`, a one-line If's statement too. Reported beside every
+    other pass-1 error in line order, and so hiding the stage-2a `Reps`/bounds checks and pass 2
+    (oracle, round 59, docs/checker.md#constant-destinations-are-pass-1-round-59)."""
+    from . import expressions
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    variables = symbols.declared_variable_names(program)
+    in_const_table = False   # its constants are settable at run time (`MenuRecompile("x",C)`)
+    for st in program.statements:
+        if isinstance(st, S.Instruction) and st.keyword.upper() in ("CONSTTABLE", "ENDCONSTTABLE"):
+            in_const_table = st.keyword.upper() == "CONSTTABLE"
+        elif in_const_table and isinstance(st, S.ConstDecl):
+            variables.add(st.name.upper())
+    for st in _with_inline(program.statements):
+        record = profile.instructions.get(st.keyword.upper()) if isinstance(st, S.Instruction) else None
+        if not record or st.keyword.upper() in _OWN_VARIABLE_CHECK:
+            continue
+        for i, code in enumerate(record["params"][:len(st.args)]):
+            if code in (8, 27, 29) and constant_destination(st.args[i], env, variables):
+                # (27/29: `Erase(5)`, `RealTime(5)`, 2026-10-01)
+                diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
+                            st.file)
+
+
+def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Diagnostics,
+                                env) -> None:
+    """A `Variable illegal in Parameter` on an earlier argument ends the statement, so a constant
+    destination after it is not reported (oracle, CR6/CR1000X, round 59: `CDM_PanelTemp(CDM_A108,
+    PTemp,1,1,15000)`, `Matrix(A, 0, R)`); one before it still is (`PanelTemp(15000,Nope)`)."""
+    from . import expressions
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    variables = symbols.declared_variable_names(program)
+    drop = []
+    for st in _with_inline(program.statements):
+        record = profile.instructions.get(st.keyword.upper()) if isinstance(st, S.Instruction) else None
+        if not record:
+            continue
+        here = [d for d in diags.items if (d.line, d.file) == (st.line, st.file)]
+        texts = [expressions._arg_text(st, i).strip() if a is not None else None
+                 for i, a in enumerate(st.args)]
+        first_bad = next((j for j, text in enumerate(texts) if text is not None and any(
+            d.message == f"Variable illegal in Parameter: {text}." for d in here)), None)
+        if first_bad is None:
+            continue
+        for i, code in enumerate(record["params"][:len(st.args)]):
+            if i > first_bad and code in (8, 27, 29) and constant_destination(st.args[i], env, variables):
+                drop += [d for d in here if d.message == f"Invalid Variable or Array: {texts[i]}."]
+    diags.items[:] = [d for d in diags.items if not any(d is x for x in drop)]
+
+
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
                    destinations: bool) -> bool:
     from . import expressions
@@ -1106,23 +1171,6 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
     aliases = _alias_sources(program, tables, env) if destinations and not profile.single_pass else {}
     known = expressions._known_names(program, profile)
     source_vars = None
-    if destinations:
-        # whole program first: any constant destination hides every `Reps`/bounds check, wherever it
-        # sits (oracle, round 52, docs/checker.md#datainterval-before-a-table-reps-error-round-52),
-        # a one-line If's statement too (docs/checker.md#constant-destinations-inside-a-one-line-if-round-52)
-        for st in _with_inline(program.statements):
-            record = profile.instructions.get(st.keyword.upper()) if isinstance(st, S.Instruction) else None
-            if not record or st.keyword.upper() in _OWN_VARIABLE_CHECK:
-                continue
-            for i, code in enumerate(record["params"][:len(st.args)]):
-                arg = st.args[i]
-                if code in (8, 27, 29) and arg is not None and not isinstance(arg, S.String) \
-                        and not _has_names(arg):  # (27/29: `Erase(5)`, `RealTime(5)`, 2026-10-01)
-                    diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
-                                st.file)
-                    reported = True
-        if reported:
-            return True
     in_table = False
     sources_ok = True   # CR6/CR1000X: an undefined table source ends the table checks (round 38)
     top_level = {id(st) for st in program.statements}
@@ -1204,8 +1252,10 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                 continue
             if shape is None:
                 continue
-            if not destinations and _is_struct_typed(program, source.name):
-                continue  # CR300/CR350 never bounds-check a StructureType source (oracle, 2026-10-12)
+            if _is_struct_typed(program, source.name):
+                # never bounds-checked: the overrun shows as duplicate field names (oracle, CR300/
+                # CR350 2026-10-12, CR6/CR1000X round 59)
+                continue
             start, offset = 1, 0
             empty = isinstance(source, S.Index) and not source.args
             if isinstance(source, S.Index) and not empty:

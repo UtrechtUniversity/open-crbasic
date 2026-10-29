@@ -627,6 +627,15 @@ def _dims_after_type_scan(text: str, open_col: int, close_col: int) -> int | Non
     return kept if not text[start:i].strip() else None
 
 
+def _raw_word(p: _TokStream, delims: str) -> str:
+    """The source text from the next token up to the first of `delims` (or a tab)."""
+    col = p.peek().col
+    end = col + 1
+    while end < len(p.seg_text) and p.seg_text[end] not in delims + "\t":
+        end += 1
+    return p.seg_text[col:end].rstrip()
+
+
 class _Parser:
     def __init__(self, profile: profiles.Profile, diags: Diagnostics, provenance: bool = True):
         self.provenance = provenance  # False: no `Stmt.origin`, no `line_map` (language-server-only data)
@@ -1783,8 +1792,9 @@ class _Parser:
                     stmt.text = verbatim
                 spans = getattr(stmt, "arg_spans", None)
                 if spans:
-                    stmt.arg_spans = [None if sp is None else (sp[0] - start, sp[1] - start)
-                                      for sp in spans]
+                    # a span ending at the segment's synthetic EOF (col 0) ends at the segment
+                    stmt.arg_spans = [None if sp is None else (
+                        sp[0] - start, (sp[1] if sp[1] >= sp[0] else end) - start) for sp in spans]
             stmt.at_eol = False
             out.append(stmt)
         return out
@@ -1883,15 +1893,16 @@ class _Parser:
         p.next()
         name_tok = p.expect_ident()
         params: list[S.Param] = []
+        errors: list[str] = []
         if p.is_op("("):
             p.next()
             if not p.is_op(")") and not p.at_end():
-                params.append(self._parse_param(p, line, file))
+                params.append(self._parse_param(p, line, file, errors))
                 while p.is_op(","):
                     p.next()
                     if p.at_end():
                         break  # a header cut off at a comma is accepted (oracle, 2026-10-12)
-                    params.append(self._parse_param(p, line, file))
+                    params.append(self._parse_param(p, line, file, errors))
             p.expect_close(")")
         return_type = None
         if which == "FUNCTION" and p.is_ident("AS"):
@@ -1904,10 +1915,21 @@ class _Parser:
             if return_type == "STRING" and p.is_op("*"):
                 p.next()
                 self._parse_expr(p, line, file)  # size; SubDef has no slot for it (see docs/frontend.md)
+            if not p.at_end():
+                # (`As Long * 30`, `As Long Junk`; oracle, CR6/CR1000X, round 59)
+                errors.append(f"Too many parameters:  {_raw_word(p, ' ,:()=>')}.")
+                p.i = len(p.toks) - 1
+        elif params and not p.at_end() and p.peek().kind == "IDENT":
+            # Words after `)` other than `As` are read as more parameters: `Function F(x) Ass Long`
+            # -> `Invalid Variable declaration Long.` (oracle, CR6/CR1000X, round 59,
+            # docs/checker.md#malformed-routine-headers-round-59)
+            params.append(self._parse_param(p, line, file, errors))
+            p.i = len(p.toks) - 1
         return S.SubDef(line, file, keyword=which, name=name_tok.text, params=params,
-                         return_type=return_type)
+                         return_type=return_type, header_errors=errors)
 
-    def _parse_param(self, p: _TokStream, line: int, file: str) -> S.Param:
+    def _parse_param(self, p: _TokStream, line: int, file: str,
+                     errors: list[str] | None = None) -> S.Param:
         optional = p.is_ident("OPTIONAL")
         if optional:
             p.next()
@@ -1930,6 +1952,11 @@ class _Parser:
                     dim_exprs.append(self._parse_dim(p, line, file))
             p.expect_close(")")
             dims = 1
+        if errors is not None and p.peek().kind == "IDENT" and not p.is_ident("AS"):
+            # a second word: `Optionl z=0` reports `z=0`, then the rest still parses (oracle,
+            # CR6/CR1000X, round 59)
+            errors.append(f"Invalid Variable declaration {_raw_word(p, ' ,)')}.")
+            p.next()
         vtype = None
         strsize = None
         if p.is_ident("AS"):
@@ -1951,6 +1978,10 @@ class _Parser:
                 raise _ParseError("required quoted parameter cannot be initialized")
             p.next()
             default = self._parse_expr(p, line, file)
+            if errors is not None and not optional and name_tok.kind == "IDENT":
+                # CR300/CR350 print the name as `p` (oracle, round 59)
+                name = "p" if self.profile.single_pass else name_tok.text
+                errors.append(f"Required parameter {name} cannot be initialized.")
         return S.Param(name=name_tok.text, by_ref=None, type=vtype, string_size=strsize,
                         dims=dims, default=default, dim_exprs=dim_exprs)
 
@@ -2369,9 +2400,16 @@ class _Parser:
             # variable in the same comma list still parses normally (`Public Result(4) as_Fz
             # Boolean, Y As Long` declares `Y` fine), matching the ordinary "discard anything before
             # the next comma" quirk just above -- so this is modelled the same way, silently
-            # skipping to the next comma/end of line rather than raising.
-            while not p.at_end() and not p.is_op(","):
-                p.next()
+            # skipping to the next comma/end of line rather than raising. A comma inside braces
+            # or parentheses does not end it: `Public X(3) Long = {3,1,4}, Y` compiles and declares
+            # `Y` (oracle, CR6/CR1000X, round 59).
+            depth = 0
+            while not p.at_end() and not (depth == 0 and p.is_op(",")):
+                tok = p.next()
+                if tok.kind == "OP" and tok.text in ("(", "{"):
+                    depth += 1
+                elif tok.kind == "OP" and tok.text in (")", "}"):
+                    depth = max(0, depth - 1)
         elif not (p.at_end() or p.is_op(",")):
             # Oracle-confirmed (`docs/fuzz-findings.md` "5. Message diff", well evidenced by 6
             # independent fuzz mutants): a token here -- right after the variable's own name/dims,

@@ -5,7 +5,7 @@ fuzz triage and M3 report/configuration, round 52; include names, round 53; two 
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
 relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-error review, round
-58). Use Git to check publication
+58; M2 fix scope decision and realistic first errors, round 59). Use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -24,13 +24,14 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 60,379 passed, 311 skipped, 677 strict xfail (round 58, `-n 6`) |
-| `pytest -q -m server` | 163 passed (round 58) |
+| `pytest -q -n 4 -m 'not server'` | 61,232 passed, 311 skipped, 792 strict xfail (round 59, `-n 6`) |
+| `pytest -q -m server` | 163 passed (round 59) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
-| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 58) | 3,338 inputs: 2,596 exact (round 57: 2,591); CR6/CR1000X: 19 first-error misses, 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
-| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 58) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
+| Round-59 fixture audit (`r59_*` and the four edited fixtures) | 0 differing, 0 without verdict |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 59) | 3,338 inputs: 2,627 exact (round 58: 2,596); CR6/CR1000X: 14 first-error misses (19), 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 59) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Fresh fuzz, seeds 453-460 (round 58, `--relevant`, 1,000 mutants each, CR6 odd / CR1000X even) | 453-456: 7 false accepts, 2 false rejects, 1 implementation exception; 457/458: none; 459/460: 1 false accept each. All fixed; the 8,000 mutants now replay with no verdict difference (`fuzz_replay.py --recorded scratch/r58/fuzz-4*/*/*/*.CR6`). Raw output in `scratch/r58/` (git-ignored) |
-| First-error rate on reference-rejected replay cases (M2, `tools/first_error_rate.py`, round 58) | on the 3,158 reproducers shared with round 30: CR6 93.4% (round 30: 88.1%), CR1000X 89.2% (78.1%), CR300 92.2% (91.7%), CR350 92.0% (91.3%). The round-30 report is `scratch/r30_replay_candidate.json` (local only) |
+| First-error rate on reference-rejected replay cases (M2, `tools/first_error_rate.py`, round 59) | on the 3,158 reproducers shared with round 30: CR6 94.1% (round 58: 93.4%; round 30: 88.1%), CR1000X 91.8% (89.2%; 78.1%), CR300 92.7% (92.2%; 91.7%), CR350 92.0% (92.0%; 91.3%). The round-30 report is `scratch/r30_replay_candidate.json` (local only) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
@@ -45,7 +46,7 @@ CR6/CR1000X since round 34.
 GEUS corpus: the reference CR1000X compiler accepts all 66 GEUS `.CR1X` programs; since round 33
 opencrbasic matches all 66 exactly ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
-Four-profile diagnostic comparison, rerun in round 58 and unchanged from round 28
+Four-profile diagnostic comparison, rerun in round 59 and unchanged from round 28
 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
@@ -61,11 +62,11 @@ help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strco
 CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 58 both with the reference compiler and with
+Repository verification passed in round 59 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
-BUILD  Pyrefly 492 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+BUILD  Pyrefly 494 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
 ```
 
 Expected warnings are owned by [repository build status](../STATUS.md#build). Compilation and host tests do
@@ -76,6 +77,31 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 59** (M2 under the new fix scope; coordinator only, no Codex job was needed). Human decision
+2026-10-29 ([PLAN](PLAN.md#v10-milestones)): M2 fixes first-error differences only for mistakes a
+programmer could realistically make. Every row of the [first-error review](docs/first-error-review.md)
+was re-applied to its whole seed program (`scratch/r59/unshrink.py`): 75 of 128 match there (shrinker
+artefacts), and the 53 left are all token-splitting blanks, fuzz arguments, statements inserted into a
+continued line, two edits in one statement, or outside the relevant set
+([list](docs/first-error-review.md#round-59-realism-triage)). Realistic single-edit variants were probed
+on CR6/CR1000X and fixed ([checker notes](docs/checker.md#round-59-realistic-first-errors) and the
+sections after it):
+- false accepts: a `Const`/predefined name as a destination (`Battery(K)`, `SerialIn(ComRS232,...)`),
+  bridge `Range` codes (`BrHalf`/`BrFull`/... on CR1000X), a nested `StructureType`, a default on a
+  non-`Optional` parameter, a routine's `Const` with an unknown type, a 3-dimensional String array,
+  `TDR100` Points;
+- false reject: an array declaration with a junk word before an initializer (`Public X(3) Long = {...}`);
+- first errors: constant destinations are pass 1 (beside every other pass-1 error), the nested
+  `DataTable` error is pass 2, `!` on an undeclared name, malformed routine headers, dotted references
+  with an undeclared base, structure-array `Sample` reps, the `Illegally dimension` echo after an
+  initializer, an unterminated string after the last parameter, the one-line-`If` argument echo, an
+  unreadable control condition echoed alone;
+- harness: our text is compared as the CLI's Latin-1 bytes read back (`oracle.as_read_back`).
+- Fixtures `r59_*.json` (968 observations, all four profiles; CR6/CR1000X all match except listed
+  later-diagnostic and outside-the-set rows); 9 strict xfails in earlier fixtures now match. Gates:
+  fixture audit 0 differing; four-profile difftest and GEUS unchanged; CI replay gate passes (2,627
+  exact); `verify.py` passes with both compilers. No hardware tests.
 
 **Round 58** (M1 confirmation and M2 measurement; coordinator, three Codex `gpt-6.1-sol` read-only jobs:
 `scratch/r58/codex-{m2,dim,names}.log`). Fresh `--relevant` seeds 453-460 (8,000 mutants) found 9 false
@@ -251,13 +277,13 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    false accepts are best effort. Fresh seeds are converging (453-456: 12 verdict-level findings,
    457-460: 2, all fixed in round 58); **next:** another batch of `--relevant` seeds to close M1.
    After any `crbasic/` change run `fuzz_replay.py --rerecord-stale` first.
-5. **M2, status after round 58.** Its exit criterion as written holds: no mode difference in the
-   replay or the corpora; first errors equal on the repository and help corpora; the first-error rate
-   is reported (`tools/first_error_rate.py`) and above round 30 on every profile; every remaining
-   misleading-cause case is listed in the [first-error review](docs/first-error-review.md). The PLAN's
-   fix rule still asks to fix first-error differences on relevant rules: the review lists 48 relevant
-   misleading-cause and 19 relevant location rows, mostly on heavily malformed fuzz input. Deciding
-   how many of them M2 must fix is open (a scope decision like M1's).
+5. **M2, status after round 59.** The exit criterion holds and, under the 2026-10-29 fix scope, no
+   realistic relevant first-error difference from the review is open: the 53 rows still differing on
+   their whole seed program are listed with the reason they do not count
+   ([realism triage](docs/first-error-review.md#round-59-realism-triage)). Not modelled, later
+   diagnostics only: CR1000X `Minimum Excitation is 20mV.` between the bridge `Range` lines, the
+   `TDR100` bounds line after Points. **Next:** a `--relevant` seed batch also confirms M2 (any new
+   realistic first-error difference is fixed under the same scope).
 6. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is still unprobed for `CDM_BridgeFilt`, `CDM_CalRead`, `CDM_CANOutCfg`,
      `CDM_FactCal`, `CDM_FFTFilt`, `CDM_OffsetRd`, `CDM_VoltFilt`, `CDM_VW300*`, `SDMTrigger`, `TGA`;

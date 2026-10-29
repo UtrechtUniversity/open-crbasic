@@ -592,7 +592,7 @@ def _run_ours_child(path_str: str, logger: str, result_pipe) -> None:
             result_pipe.send((4, "IMPLEMENTATION EXCEPTION: " +
                               " | ".join(result.implementation_exceptions)))
             return
-        result_pipe.send(((0 if result.ok else 1), "\n".join(result.result_lines())))
+        result_pipe.send(((0 if result.ok else 1), oracle.as_read_back("\n".join(result.result_lines()))))
     except Exception as exc:  # a crash is a result, not a harness failure
         result_pipe.send((2, f"CRASH {type(exc).__name__}: {exc}"))
     finally:

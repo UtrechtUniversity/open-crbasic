@@ -243,10 +243,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # reported alongside pass-1's other declaration errors, not deferred to pass 2's gated
     # `expressions.check` below.
     _run_pass(expressions.check_consts, program, profile, diags)
+    _run_pass(instr_data.check_constant_destinations, program, profile, diags, env)
     # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
-    n_family = len(diags.items)
     _run_pass(expressions.check_const_family_args, _with_inline(program), profile, diags)
-    const_family = diags.items[n_family:]
     # CR6/CR1000X: `Range` code and `fN1` value checks, same pass (`docs/instructions.md`).
     _run_pass(instr_measure.check_pass1_values, program, profile, diags, env)
     # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
@@ -341,6 +340,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if diags.errors:
             held_items = []
     _run_pass(storage.check_pass1, program, profile, diags, env)   # CR6/CR1000X `Out of memory.`
+    _run_pass(instr_data.drop_unreached_destinations, program, profile, diags, env)
     pass1_errors = bool(diags.errors)
     result.pass1_errors = pass1_errors
     pass1_items = [d for d in diags.items if d.severity == "error"]
@@ -351,19 +351,6 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     unknown_table_diags: list = []   # `Could not find DataTable T.`: ends the walk, gates nothing above it
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
-    if diags.errors and not profile.single_pass and all(
-            any(d is f for f in const_family) for d in diags.errors):
-        # CR6/CR1000X: a constant destination (`Invalid Variable or Array`) is reported in the same
-        # stage as the constant-only arguments, in statement order, before them on one line
-        # (oracle, round 40: `PanelTemp(15000,Nope)`, docs/checker.md#constant-destinations-beside-constant-only-arguments-round-40)
-        found = Diagnostics()
-        _run_pass(instr_data.check_stage2a, program, profile, found, env)
-        dest = [d for d in found.items if d.message.startswith("Invalid Variable or Array")]
-        if dest:
-            order = {(st.file, st.line): i for i, st in reversed(list(enumerate(program.statements)))}
-            errors = sorted([*dest, *[d for d in diags.items if d.severity == "error"]], key=lambda d: (
-                order.get((d.file, d.line), 0), not any(d is x for x in dest)))
-            diags.items[:] = [d for d in diags.items if d.severity != "error"] + errors
     soft: list = []   # stage-2a findings that gate nothing (`instr_data.WIND_SUBINTERVAL`)
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
@@ -373,14 +360,12 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         diags.items[:] = [d for d in diags.items if d.message != instr_data.WIND_SUBINTERVAL]
         if diags.errors:
             diags.items[:] = [d for d in diags.items if not _is_unreached(d)]  # (oracle, 2026-10-12)
-            # hidden by a stage-2a error too (oracle, CR6/CR1000X, 2026-10-04: `PanelTemp(1,15000)`
-            # under `Scan(0,Sec,3,0)` reports only `Invalid Variable or Array`); only a negative
-            # `DataInterval` ahead of a table `Reps`/bounds error survives (round 52,
+            # hidden by a stage-2a error too; only a negative `DataInterval` ahead of a table
+            # `Reps`/bounds error survives (round 52,
             # docs/checker.md#datainterval-before-a-table-reps-error-round-52)
             order = {(st.file, st.line): i for i, st in enumerate(program.statements)}
             first = min(order.get((d.file, d.line), 0) for d in diags.errors)
-            keep = not any(d.message.startswith("Invalid Variable or Array") for d in diags.errors)
-            early.items = [d for d in early.items if keep and d.message.startswith("DataInterval TintoInt")
+            early.items = [d for d in early.items if d.message.startswith("DataInterval TintoInt")
                            and order.get((d.file, d.line), 0) < first]
     if not diags.errors or profile.single_pass:
         # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
@@ -459,6 +444,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(expressions.check_timedcontrol_constants, flat, profile, diags)
         _run_pass(expressions.check_table_members, flat, profile, diags)
         _run_pass(expressions.check_digit_members, flat, profile, diags)
+        _run_pass(expressions.check_undefined_dotted_bases, flat, profile, diags, pass2_start)
         _run_pass(instr_rules.check_debug_args, flat, profile, diags, env)
         _run_pass(instr_rules.check_serialbrk_comport, flat, profile, leading, env)
         if not profile.single_pass:

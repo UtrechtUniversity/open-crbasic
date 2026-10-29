@@ -1443,6 +1443,43 @@ def check_status_member_reads_late(program: S.Program, profile, diags: Diagnosti
                             stmt.file)
 
 
+def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics,
+                                 start: int) -> None:
+    """CR6/CR1000X: a dotted reference whose base is not declared (`Tset1.X`, `Setings.PakBusAddress`,
+    a misspelt structure variable `W.A`) is `Could not find Tset1.`, before the statement's other
+    pass-2 lines (`diags.items[start:]`). The statement's `Invalid symbol` stays only for another
+    undefined name; an assignment target adds `Invalid assignment in expression: <line>.` (oracle,
+    round 59, docs/checker.md#undeclared-dotted-bases-round-59)."""
+    if profile.single_pass:
+        return
+    known = _known_names(program, profile)
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
+            continue   # `Alias Foo = Zed.W` compiles (alias_name_lists.json)
+        exprs = _stmt_exprs(stmt)
+        bases = [b for e in exprs for b, m in _dotted_members(e)
+                 if m is not None and b.upper() not in known]
+        if not bases:
+            continue
+        others = [n for e in exprs for n in _undefined_names_walk(e, known)
+                  if n.upper() not in {b.upper() for b in bases}]
+        key = (stmt.line, stmt.file)
+        generic = ("Invalid symbol in expression", "Invalid, or out of place expression")
+        here = [d for d in diags.items[start:] if (d.line, d.file) == key]
+        if any(d.severity == "error" and not d.message.startswith(generic) for d in here):
+            continue   # a placement error ends the statement first (`DisplayValue must be used within ...`)
+        if not others:
+            diags.items[start:] = [d for d in diags.items[start:] if not (
+                (d.line, d.file) == key and d.message.startswith(generic))]
+        new = [Diagnostic("error", stmt.line, f"Could not find {bases[0]}.", stmt.file)]
+        if isinstance(stmt, S.Assignment) and _dotted_members(stmt.target):
+            new.append(Diagnostic("error", stmt.line, f"Invalid assignment in expression: {stmt.text}.",
+                                  stmt.file))
+        at = next((i for i, d in enumerate(diags.items) if i >= start and (d.line, d.file) == key
+                   and any(d is h for h in here)), len(diags.items))
+        diags.items[at:at] = new
+
+
 def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None:
     """A member of a declared name that no variable, data table or `Status` has (oracle, all four
     loggers, 2026-10-12, `docs/checker.md` "Digit-led members", "Letter-led members"):

@@ -368,6 +368,12 @@ instruction, for example `CDM_*`, `MenuPick` or `TableFile`, does not block M1; 
 identity in PROGRESS and gets a coverage notice with M4. M1 work therefore centres on fresh
 `--relevant` fuzz seeds.
 
+**M2 fix scope (human decision, 2026-10-29).** M2 fixes first-error differences on relevant rules
+only where they come from a mistake a programmer could realistically make, the kind
+`tools/fuzz.py --relevant` aims at. A difference that appears only in a shrunk, truncated reproducer
+or in token-splitting fuzz noise stays listed in the [first-error review](docs/first-error-review.md)
+and does not block M2.
+
 ### Round method (unchanged in substance)
 
 Work on one observed rule family at a time:
