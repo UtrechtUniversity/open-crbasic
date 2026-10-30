@@ -90,6 +90,37 @@ Still differing in round 58, relevant area: 48 misleading, 19 location, 21 wordi
 | no | wording | AcceptDataRecords: unresolved destination table named generically versus specifically | `7b4d465ac222` (same first location, different message) |
 | no | wording | PortsConfig: invalid binary literal diagnostic label | `72bbbb1c7e9b` (same first location, different message), `c6fc3897c0ad` (same first location, different message) |
 
+## Round-60 fresh relevant inputs
+
+On 2026-10-30, CR6 seed 461 and CR1000X seed 463 each generated 1,000 `--relevant` mutants.
+Shrinking was disabled. Full seed programs and both outputs are retained locally under
+`scratch/r60-m2-20261030/` (`fuzz-461-current`, `fuzz-463`). The CR6 output directory had old
+shrunk runs in it; `fuzz-461-current/selection.json` identifies the 19 observations written by
+this run and copied without altering their bytes. Operational failures are recorded in each
+summary and never treated as compiler rejections.
+
+Fixed in this round: `d96283c6048a`, `cfcd4f0c74bb`, `17ed22164f2d` (CR1000X): an odd packed-output
+Reps error was missing before an alias-source overrun. Decimal counts found in follow-up probes
+also skipped the odd-count check ([rule and fixture](checker.md#packed-table-output-reps-before-alias-bounds-round-60)).
+
+New first-error candidates still need work. This supersedes the round-59 claim that no realistic
+relevant first-error difference is open; M2 must not be declared complete from the old review.
+
+| Family | Reproducers / evidence | Next check |
+|---|---|---|
+| Malformed user-routine argument or interrupted continuation | CR6 `a31a74073f76` deletes the last line of a continued call; `15bc1b5cb20a` duplicates a continued call's first line; `e816abac4b12` changes `_` to `__Mut`; CR1000X `53f4ed873761` moves a continuation line | Probe single-edit call boundaries and the diagnostic echo; four-profile minimal probes in `probes.json` already confirm `S("a" "b")` should report `Incomplete expression` on its argument, rather than the whole-statement fallback |
+| Missing nested `IIF` argument | CR6 `d6479ed3f595`: reference `type mismatch`, ours `Expression expects ,` | Isolate `IIF("1","0")` in a declared String routine's argument; the other mutation only changes a string literal's spacing |
+| SDM Delay in a slow sequence before an unrelated symbol error | CR6 `9abdc4c03311` swaps `Delay` arguments and misspells a later name | Probe the swapped Delay alone, then place one symbol error on either side; retain the two-edit input without presuming it blocks M2 |
+| Long diagnostic echo truncation | CR6 `b74e610652da` | Already the same cause and location; compare the reference's truncated echo separately from semantic first-error agreement |
+
+Other differing inputs remain listed without a realism verdict: CR6 `36a0db0a73f4`,
+`1822097cb726`, `fd7e1a3c87c5`, `cde4bf39c14b`, `63ad67153e0f`, `5819ebfc0297`; CR1000X
+`042b1b41474a`, `04f6730e62aa`, `dce5f0264db1`, `977954b9e182`. They insert statements into
+continuations, split tokens, move quoted string fragments, or combine edits. Classify or isolate
+them before deciding whether they fall under the M2 fix scope. The accepted-program difference
+`9d5b78fd0b36` is a missing reachability warning after deleting `SlowSequence`; both compilers
+choose PipelineMode, so it is not a mode difference.
+
 ## Round-59 realism triage
 
 Human decision 2026-10-29 ([PLAN](../PLAN.md#v10-milestones)): M2 fixes only mistakes a programmer

@@ -1245,6 +1245,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if shape is None and isinstance(source, S.Name) and source.name.upper() in aliases:
                 first, alias_name, left = aliases[source.name.upper()]
                 if reps > left:
+                    if in_table and not wind and (message := _odd_pair_reps(st, env)):
+                        diags.error(st.line, message, st.file)
                     diags.error(st.line, f"Variable {first} out of bounds.", st.file)
                     diags.error(st.line, f"Variable {alias_name}, index 1, reps {reps}, out of bounds.",
                                 st.file)
@@ -1501,16 +1503,13 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
 
 def _odd_pair_reps(stmt: S.Instruction, env: consteval.Env) -> str | None:
     """CR6/CR1000X: UINT1 / BOOL8 pack bits or bytes in pairs, so odd constant Reps is illegal
-    (round 36); the message, or None."""
+    after integer conversion (rounds 36/60); the message, or None."""
     pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
     if pos is None or pos >= len(stmt.args) or stmt.args[pos] is None or stmt.args[0] is None \
             or _constant_data_type(stmt, pos, env) not in (1, 17):
         return None
-    try:
-        reps = consteval.value_of(stmt.args[0], env)
-    except consteval.NotConstant:
-        return None
-    if isinstance(reps, int) and not isinstance(reps, bool) and reps > 0 and reps % 2:
+    reps = _reps_value(stmt.args[0], env)
+    if reps is not None and reps > 0 and reps % 2:
         return f"Reps {reps} illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
     return None
 

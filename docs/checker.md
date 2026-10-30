@@ -9240,3 +9240,29 @@ expression: <line>.`. An `Alias` source is not checked (`Alias Foo = Zed.W` comp
 - A degree sign in an echo was a harness artefact: the CLI writes Latin-1, so `Â°` is the reference's
   bytes. `tools/difftest.py` and `tools/fuzz.py` now compare our text as those bytes read back
   (`oracle.as_read_back`).
+
+## Packed table-output Reps before alias bounds (round 60)
+
+Fresh relevant CR1000X seed 463 exposed three first-error differences in GEUS programs whose
+`Sample` arguments were swapped (`FP2` became Reps 7, and DataType became UINT1). An alias-source
+overrun printed its bounds errors without the preceding odd-Reps error. CR6 `FUN_004ec300`
+checks positive Reps, reports odd Reps for data types 1/17, then resolves the source through
+`FUN_004b5c50` and `FUN_00507630`. The alias branch of `_check_stage2a` now reports
+`_odd_pair_reps` before its bounds messages, like the existing direct-array branch, for `Sample`,
+`Average`, `Minimum` and `Maximum`. `WindVector` is excluded from that alias change: its direction
+bound is printed first, before the odd-Reps and source-bound lines; direction-alias handling is
+still incomplete. Its existing first error is preserved.
+
+Reps is converted to a signed integer before testing parity: `7.0`, `7.9`, a named constant 7.9,
+and `1E1+1` must produce the odd-Reps error too. `_odd_pair_reps` now uses `_reps_value` rather
+than requiring a Python `int`. The old rule falsely accepted decimal odd counts when the source
+was large enough. Even counts and values truncating below 1 retain their existing behavior.
+Four-profile observations of numeric conversion, Float-backed aliases and all five supported
+packed-output instruction families are preserved in `tests/fixtures/r60_packed_table_reps.json`;
+CR300/CR350 packed-output and alias-source gaps and the WindVector alias-bound gap remain strict
+expected failures. The implementation change is scoped to CR6/CR1000X.
+
+Additional probes are in `scratch/r60-m2-20261030/` (local only). UINT1-backed aliases also expose
+pre-existing alias-layout/warning differences, and direct UINT1-array overruns can have an extra
+generic bounds line. Those neighboring rules are not changed here. The fixture retains accepted
+even-count controls and the reference's complete diagnostic text.

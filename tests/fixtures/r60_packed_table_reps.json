@@ -1,0 +1,1314 @@
+{
+  "observation_date": "2026-10-30",
+  "evidence": "CR6 FUN_004ec300: odd UINT1/BOOL8 Reps is diagnosed before source resolution; round-60 four-profile probes.",
+  "cases": [
+    {
+      "id": "numeric-cr6-FP2-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-FP2-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-FP2-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-FP2-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-FP2-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-FP2-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-FP2-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-FP2-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(FP2,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-7-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-7-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-7-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-7-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-7-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-7-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-7-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-7-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-7.0-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-7.0-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-7.0-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-7.0-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-7.0-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-7.0-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-7.0-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-7.0-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.0,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-7.9-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-7.9-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-7.9-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-7.9-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-7.9-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-7.9-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-7.9-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-7.9-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(7.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-6.9-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr1000x-6.9-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr300-6.9-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr350-6.9-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr6-6.9-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr1000x-6.9-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr300-6.9-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr350-6.9-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(6.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+    },
+    {
+      "id": "numeric-cr6--1.1-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr1000x--1.1-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr300--1.1-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr350--1.1-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr6--1.1-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr1000x--1.1-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr300--1.1-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr350--1.1-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(-1.1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr6-0.9-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr1000x-0.9-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr300-0.9-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr350-0.9-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr6-0.9-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr1000x-0.9-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr300-0.9-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr350-0.9-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(0.9,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+    },
+    {
+      "id": "numeric-cr6-1E1+1-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-1E1+1-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-1E1+1-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-1E1+1-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-1E1+1-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-1E1+1-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-1E1+1-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-1E1+1-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(1E1+1,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 11 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-True-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr1000x-True-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr300-True-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr350-True-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr6-True-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr1000x-True-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr300-True-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr350-True-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(True,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -1"
+    },
+    {
+      "id": "numeric-cr6-K-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-K-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-K-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-K-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-K-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-K-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-K-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-K-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20) As UINT1\nConst K = 7.9\nDataTable(T,True,100)\nSample(K,X,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-7-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-7-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr300-float-alias-7-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-7-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-7-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-7-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr300-float-alias-7-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-7-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-7.9-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-7.9-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr300-float-alias-7.9-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-7.9-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-7.9-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-7.9-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "alias-cr300-float-alias-7.9-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-7.9-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(7.9,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-6-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-6-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds."
+    },
+    {
+      "id": "alias-cr300-float-alias-6-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-6-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-6-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-6-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds."
+    },
+    {
+      "id": "alias-cr300-float-alias-6-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-6-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(6,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 6, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-1-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "alias-cr1000x-float-alias-1-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "alias-cr300-float-alias-1-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-1-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,BOOL8)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr6-float-alias-1-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1."
+    },
+    {
+      "id": "alias-cr1000x-float-alias-1-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1."
+    },
+    {
+      "id": "alias-cr300-float-alias-1-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "alias-cr350-float-alias-1-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nSample(1,Y,UINT1)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Sample type UINT1 can only sample a variable of type UINT1.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-average-4-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr1000x-average-4-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr300-average-4-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-average-4-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-average-4-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr1000x-average-4-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr300-average-4-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-average-4-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-average-20-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-average-20-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-average-20-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-average-20-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,BOOL8,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-average-20-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-average-20-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-average-20-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-average-20-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nAverage(7.9,Y,UINT1,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-minimum-4-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr1000x-minimum-4-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr300-minimum-4-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-minimum-4-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-minimum-4-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr1000x-minimum-4-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr300-minimum-4-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-minimum-4-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-minimum-20-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-minimum-20-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-minimum-20-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-minimum-20-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-minimum-20-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-minimum-20-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-minimum-20-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-minimum-20-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMinimum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-maximum-4-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr1000x-maximum-4-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr300-maximum-4-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-maximum-4-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-maximum-4-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr1000x-maximum-4-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds."
+    },
+    {
+      "id": "numeric-cr300-maximum-4-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-maximum-4-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-maximum-20-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-maximum-20-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-maximum-20-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-maximum-20-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,BOOL8,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-maximum-20-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-maximum-20-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-maximum-20-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-maximum-20-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nMaximum(7.9,Y,UINT1,False,False)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-windvector-4-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "WindVector direction-alias bounds and later odd-Reps order remain unmodelled (round 60)."
+    },
+    {
+      "id": "numeric-cr1000x-windvector-4-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "WindVector direction-alias bounds and later odd-Reps order remain unmodelled (round 60)."
+    },
+    {
+      "id": "numeric-cr300-windvector-4-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-windvector-4-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-windvector-4-UINT1",
+      "logger": "cr6",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "WindVector direction-alias bounds and later odd-Reps order remain unmodelled (round 60)."
+    },
+    {
+      "id": "numeric-cr1000x-windvector-4-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "WindVector direction-alias bounds and later odd-Reps order remain unmodelled (round 60)."
+    },
+    {
+      "id": "numeric-cr300-windvector-4-UINT1",
+      "logger": "cr300",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-windvector-4-UINT1",
+      "logger": "cr350",
+      "source": "Public X(4)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds.\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 4: Variable X out of bounds.\nline 4: Variable Y, index 1, reps 7, out of bounds.",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-windvector-20-BOOL8",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-windvector-20-BOOL8",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-windvector-20-BOOL8",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-windvector-20-BOOL8",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,BOOL8,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr6-windvector-20-UINT1",
+      "logger": "cr6",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr1000x-windvector-20-UINT1",
+      "logger": "cr1000x",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+    },
+    {
+      "id": "numeric-cr300-windvector-20-UINT1",
+      "logger": "cr300",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    },
+    {
+      "id": "numeric-cr350-windvector-20-UINT1",
+      "logger": "cr350",
+      "source": "Public X(20)\nAlias X = Y\nDataTable(T,True,100)\nWindVector(7.9,Y,Y,UINT1,0,0,0,0)\nEndTable\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2",
+      "not_modelled": "CR300/CR350 packed-output Reps and alias-source checks remain best effort (round 60)."
+    }
+  ]
+}
