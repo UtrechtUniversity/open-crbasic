@@ -224,7 +224,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 port = consteval.value_of(arg, consteval.Env(profile, dict(program.consts or {})))
             except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
                 port = None
-            if isinstance(port, (int, float)) and not isinstance(port, bool):
+            if consteval.is_finite_number(port) and not isinstance(port, bool):
                 if port != int(port) or not -2**31 <= port < 2**31:
                     diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
                     diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
@@ -262,7 +262,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 value = consteval.value_of(delay, consteval.Env(profile, dict(program.consts or {})))
             except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
                 value = None
-            if isinstance(value, (int, float)) and not isinstance(value, bool) and value == int(value) \
+            if consteval.is_finite_number(value) and not isinstance(value, bool) and value == int(value) \
                     and -2**31 <= value < 2**31 and not 0 <= value <= 14000000:
                 # (beyond 32 bits: `Parameter must be a constant integer` only, `intervals.py`)
                 diags.error(stmt.line, f"{int(value)} usec delay before transmit is illegal, must be "

@@ -458,7 +458,9 @@ def _const_value(arg: S.Expr | None, env: consteval.Env):
 
 def _int_value(arg: S.Expr | None, env: consteval.Env) -> int | None:
     v = _const_value(arg, env)
-    return int(v) if isinstance(v, (int, float)) and math.isfinite(v) else None
+    if isinstance(v, int):   # (a huge integer literal: `math.isfinite` would overflow, round 69)
+        return v
+    return int(v) if isinstance(v, float) and math.isfinite(v) else None
 
 
 def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
@@ -636,7 +638,7 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
 def _delay_interval_us(interval_arg, units_arg, env: consteval.Env) -> float | None:
     value = _const_value(interval_arg, env)
     unit = _const_value(units_arg, env)
-    if not isinstance(value, (int, float)) or not isinstance(unit, (int, float)) or value < 0:
+    if not consteval.is_finite_number(value) or not consteval.is_finite_number(unit) or value < 0:
         return None
     if value >= 2**31:   # outside the Long range: no limit applies (oracle, CR6/CR1000X, round 16)
         return None
@@ -787,7 +789,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
                 return
             if args[0] != 0:
                 unit = _US_PER_UNIT.get(args[1]) if isinstance(args[1], int) else None
-                if unit is None or not isinstance(args[0], (int, float)) or args[0] <= 0:
+                if unit is None or not consteval.is_finite_number(args[0]) or args[0] <= 0:
                     return
                 step = int(args[0]) * unit // 100
                 if sequential and step <= 10:   # "SequentialMode SubScan interval must be > 1 mS."

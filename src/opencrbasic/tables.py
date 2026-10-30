@@ -1133,7 +1133,7 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
         if len(instr.args) > 1 and isinstance(instr.args[1], (S.Name, S.Index)):
             info = var_info.get(instr.args[1].name.upper())
             reps = _fold(instr.args[0], env, None)
-            if info is not None and isinstance(reps, (int, float)):
+            if info is not None and consteval.is_finite_number(reps):
                 for f in fields:
                     f.elem = _elem_size(f, info)
                     f.splittable = f.dim == int(reps) * f.elem
@@ -1404,8 +1404,8 @@ def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: 
     interval_val = _fold(args[val_idx], env, 0) if len(args) > val_idx else 0
     # A String `TintoInt`/`Interval` (`DataInterval("x",15,Sec,10)`) compiles on CR300/CR350
     # (oracle, 2026-10-12): it is taken as 0 here rather than crashing in `float()`.
-    into_val = into_val if isinstance(into_val, (int, float)) else 0
-    interval_val = interval_val if isinstance(interval_val, (int, float)) else 0
+    into_val = into_val if consteval.is_finite_number(into_val) else 0
+    interval_val = interval_val if consteval.is_finite_number(interval_val) else 0
     if unit_val == _UNIT_MON:
         return (0, 0), (0, 0), float(interval_val or 0), "MON"
     if unit_val is not None and unit_val not in _UNIT_NAME_BY_VALUE:

@@ -350,6 +350,13 @@ review. M1 and M2 are re-estimated after their family triage.
 | M6 | Editor | Carry channel, code and evidence link through the analysis result, worker serialization, per-entry composition and publication. Match quick fixes by code rather than text | LSP tests: unsaved includes, several entry contexts, configuration changes clearing findings, stale results, partial syntax suppressing unsound checks, strict errors not disabling formatting | 1–2 |
 | M7 | Internal release | Version policy for the package, `__version__`, VSIX and facade API; installed-package check (`tools/lsp_install_check.py`); README on channels, scope and the accepted-difference normalization. Internal use only (`docs/legal.md`) | Tagged v1.0 with revision, configuration, corpus hashes, commands, known failures and exclusions recorded | 1 |
 
+**Status (2026-10-30, round 69).** M0 done. **M1 and M2 done**: signed off by the Codex `gpt-6.1-sol`
+read-only review of round 68 (M2 complete; `scratch/r68/codex-signoff.log`, local only) after round
+69 removed the last M1 blocker, an implementation exception on numbers beyond the float range. The
+evidence and remaining listed cases are in `PROGRESS.md` ("Round 69") and the
+[first-error review](docs/first-error-review.md). M3: checks `OCB001`-`OCB006` shipped, work
+continues. M4-M7 not started.
+
 Total: about 12–22 rounds, against an open-ended 20–40+ for full parity.
 
 M0 comes first because it changes what every later round measures and gates. M3 and M4 can then

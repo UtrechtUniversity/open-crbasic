@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-30 after development round 67** (round-51
+Current compiler state and handoff, updated **2026-10-30 after development round 69; M1 and M2 done** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,27 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 69: M1 and M2 done.** The Codex `gpt-6.1-sol` sign-off review of round 68
+(`scratch/r68/codex-signoff.log`, local only) found every earlier finding resolved and signed off
+**M2 complete**; for M1 it confirmed two remaining implementation exceptions on numbers beyond the
+float range (`Delay(<309-digit integer>,1,mSec)`, `Sample(1e309,...)`), both older than round 68.
+A stress sweep (`scratch/r69/huge.py`: 309-digit integers and `±1e309` in every argument of 22
+instruction shapes, Dim, Const and Scan, 848 compiles on all four profiles) found 23 sites. Fixed at
+the root: `consteval.value_of` treats an integer beyond the float range as not a constant, and a
+shared finite-number guard makes the numeric rules skip an infinity (implemented with Codex;
+`scratch/r69/codex-inf.log`). Infinities stay constant values, because `String * 1e999` has
+recorded verdicts (rounds 29 and 54). The reference itself gives no usable verdict for these
+literals, so `tests/test_huge_literals.py` asserts only the absence of an implementation exception;
+the sweep now gives 0 of 848. With that the last M1 criterion is met, and M1 and M2 are closed
+([PLAN status](PLAN.md#v10-milestones)).
+- Two repository commits during this round (`df9f72fd`, `589ec5b9`, TDR acceptance) changed
+  `crbasic/`: 121 replay reproducers were re-recorded against the new siblings
+  (`fuzz_replay.py --rerecord-stale`), after which the CI replay is again 2,633 exact.
+- Gates (`scratch/r69/gates/`): fixture audit 0 differing; 63,407 passed, 311 skipped, 1,259 strict
+  xfail; server 163 passed; CI saved replay 2,633 exact with no regression; four-profile difftest
+  unchanged (repository now 20/20 exact on CR6/CR1000X), GEUS 66/66; both `verify.py` backends pass
+  (21/21 CRBasic programs). No hardware tests.
 
 **Round 68** (M1/M2, implemented by Codex `gpt-6.1-sol` with workspace write access, brief
 `scratch/r68/brief.md`, log `scratch/r68/codex-fix.log`; gates rerun by the coordinator). The Codex
@@ -480,27 +501,17 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    need a reference probe first, or (the constant index past the declared storage) alias,
    flattened and String-index handling. The language server does not run checks yet: that is M6
    (call `checks.analyze` with its settings, put the configuration in the cache key).
-4. **M1, remaining false accepts.** Under the [M1 gate scope](PLAN.md#v10-milestones) (human
-   decision 2026-10-28) only relevant-set cases block M1, and none is open after round 57. The 25 left
-   on CR6/CR1000X in the replay are not gated (instructions neither FirnMelt nor GEUS uses). Round
-   34's: `072c74da6af5` (`FieldClassify("&H0  10a0101")`), `51f39a5f2393` and `7b4b2177d56b`
-   (`CDM_FFTFilt`), `870ca9a9562e`/`e8c854e3493d` (I2C/SPI port clamp), `a0b2b0b059b3` (CDM excitation
-   clamp), `ec6b11bc3176`/`022d98dd3efc` (`MenuPick`), `4156d89a014d` (`EC100`), `6ac24bd775f1`
-   (`CDM_MuxSelect`), `72f95eac103f` (`DNPVariable`), `77636b10567c` (`SDMSW8A`), `7f9efa8af42c`
-   (`SDMCD16AC`), `c060e9f1402f` (`TimedControl`), `d12785e05faf` (`TriggerSequence`), `f2f6e5d8b8e6`
-   (`SNMPVariable`). Round 35's: `0e23c61229f4` (`CS7500`), `39a03364be83` (`FieldCalStrain`),
-   `52138d7bd179` (`CDM_PulsePort`), `577a59ecb08c` (`AVW200` destination), `778ea45e64b7`
-   (`CDM_BrFull6W` settling clamp), `9c6367a2c598` (`MenuRecompile`), `ecc509dd06de`/`f61f825392f2`
-   (`TableFile`), `fa923ecef6f4` (`MenuPick`). Coverage notices for them wait for M4. The CR300/CR350
-   false accepts are best effort. Fresh seeds: 453-456: 12 verdict-level findings, 457-460: 2,
-   465/466: 1, 467/468: 2 (all fixed by round 65); 469/470: none. With no relevant false accept or
-   reject open on CR6/CR1000X, M1 waits only for the Codex final review the human asked for.
-   After any `crbasic/` change run `fuzz_replay.py --rerecord-stale` first.
-5. **M2, status after round 64.** Every round-60 and round-64 fresh first-error difference now has a
-   scope decision ([review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification));
-   the realistic ones are fixed. The 53 round-59 rows keep their recorded decisions
-   ([realism triage](docs/first-error-review.md#round-59-realism-triage)). Remaining before closing M2:
-   the round-65 fresh batch's first errors, then the Codex final review the human asked for.
+4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X; the 25 replay
+   false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
+   `51f39a5f2393`, `7b4b2177d56b`, `870ca9a9562e`, `e8c854e3493d`, `a0b2b0b059b3`, `ec6b11bc3176`,
+   `022d98dd3efc`, `4156d89a014d`, `6ac24bd775f1`, `72f95eac103f`, `77636b10567c`, `7f9efa8af42c`,
+   `c060e9f1402f`, `d12785e05faf`, `f2f6e5d8b8e6`; round 35: `0e23c61229f4`, `39a03364be83`,
+   `52138d7bd179`, `577a59ecb08c`, `778ea45e64b7`, `9c6367a2c598`, `ecc509dd06de`, `f61f825392f2`,
+   `fa923ecef6f4`) and get coverage notices with M4. CR300/CR350 remain best effort. After any
+   `crbasic/` change run `fuzz_replay.py --rerecord-stale` first.
+5. **M2: done (round 69).** Every first-error difference of the fresh batches since round 60 has a
+   recorded decision in the [first-error review](docs/first-error-review.md); the realistic ones are
+   fixed. Later-diagnostic differences are accepted under the 2026-10-24 decision.
 6. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is still unprobed for `CDM_BridgeFilt`, `CDM_CalRead`, `CDM_CANOutCfg`,
      `CDM_FactCal`, `CDM_FFTFilt`, `CDM_OffsetRd`, `CDM_VoltFilt`, `CDM_VW300*`, `SDMTrigger`, `TGA`;

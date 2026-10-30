@@ -428,7 +428,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
             step = 0
             if ok and args[0] != 0:
                 u = _US_PER_UNIT.get(args[1]) if isinstance(args[1], int) else None
-                if u is None or not isinstance(args[0], (int, float)) or args[0] <= 0:
+                if u is None or not consteval.is_finite_number(args[0]) or args[0] <= 0:
                     ok = False
                 else:
                     step = int(args[0]) * u // 100

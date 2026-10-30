@@ -9494,6 +9494,12 @@ two defects and several open first errors; all were probed on all four profiles
   pass-1 `Incomplete expression: <size text to the next comma or )>.` on CR6/CR1000X
   (`string-size-junk-087-cr6` / `-cr1000x`). Other parameter junk and CR300/CR350 keep their
   existing behavior.
+- **Numbers beyond the float range** (round 69, Codex sign-off review): `consteval.value_of` treats a
+  value that is not a finite float (an integer literal of 309 digits, `1e309`, a fold to infinity)
+  as not a constant, so no numeric rule can raise on it. The reference gives no usable verdict for
+  such literals (a crash or a hang), so only the absence of an implementation exception is tested
+  (`tests/test_huge_literals.py`, 848 compiles over Delay, ExciteV, PortSet, VoltSe, SerialOpen,
+  FTPClient, SubScan, table Reps, DataInterval, Dim, Const and Scan on all four profiles).
 ## opencrbasic checks OCB002-OCB005 (M3)
 ## opencrbasic checks OCB002-OCB006 (M3)
 

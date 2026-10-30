@@ -845,7 +845,7 @@ def _is_negative_or_invalid(value: object) -> bool:
     """
     if isinstance(value, str):
         return True
-    if isinstance(value, (int, float)):
+    if consteval.is_finite_number(value):
         return int(value) < 0 or int(value) > 2147483647
     return False
 
@@ -980,7 +980,7 @@ def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | Non
             and not isinstance(value, bool) and _f32_is_2_31(value):
         n = 2147483647      # CR300/CR350 saturate a float32 of exactly +2^31 (CR6/CR1000X: -2^31)
     unit = unit if isinstance(unit, (int, float)) and not isinstance(unit, bool) else None
-    if unit is None or int(unit) not in _US_PER_UNIT:
+    if not consteval.is_finite_number(unit) or int(unit) not in _US_PER_UNIT:
         return 0, 0
     unit = int(unit)
     if unit == 0:
@@ -1042,7 +1042,7 @@ def _scan_raw(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None
         unit = consteval.value_of(args[1], env)
     except consteval.NotConstant:
         return None
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or unit not in _US_PER_UNIT \
+    if isinstance(value, bool) or not consteval.is_finite_number(value) or unit not in _US_PER_UNIT \
             or not 0 <= int(value) <= 2147483647:
         return None
     return int(value), cast(int, unit)
@@ -1068,7 +1068,7 @@ def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: con
     except consteval.NotConstant:
         return None
     us_per_unit = _US_PER_UNIT.get(unit)
-    if us_per_unit is None or not isinstance(value, (int, float)) or value < 0:
+    if us_per_unit is None or not consteval.is_finite_number(value) or value < 0:
         return None
     return value * us_per_unit
 
@@ -2318,7 +2318,7 @@ def check_terminal_conflicts(program: S.Program, profile, diags: Diagnostics, en
             v = consteval.value_of(arg, env)
         except consteval.NotConstant:
             return None
-        return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and v == int(v) else None
+        return int(v) if consteval.is_finite_number(v) and not isinstance(v, bool) and v == int(v) else None
 
     def name(t: int) -> str:
         return f"{'C' if t < 200 else 'U'}{t % 100}"

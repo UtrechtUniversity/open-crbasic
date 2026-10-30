@@ -191,7 +191,7 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         value = consteval.value_of(arg, env)
     except consteval.NotConstant:
         return
-    if not isinstance(value, (int, float)):
+    if not consteval.is_finite_number(value):
         return
     if kind.get("truncate") and math.isfinite(value):
         value = int(value)  # (CR1000X CurrentSE `402.5` is RG2, PulseCount `108.5` C8, round 31)

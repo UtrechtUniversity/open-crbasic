@@ -1019,6 +1019,8 @@ def _reps_value(expr, env) -> int | None:
         return None
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
+    if isinstance(value, float) and not math.isfinite(value):
+        return _INT32_MIN   # `Sample(1e309,...)`: outside the range like any huge count (round 69)
     value = int(value)
     return value if -2**31 <= value < 2**31 else _INT32_MIN
 

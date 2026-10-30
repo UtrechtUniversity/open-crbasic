@@ -14,7 +14,10 @@ unary minus binds looser than `^`: `-2^2 = -4`).
 ``TRUE`` = -1, ``FALSE`` = 0 (from the symbol table); comparisons yield -1/0.
 """
 
+import math
+import sys
 from dataclasses import dataclass, field
+from typing import TypeGuard
 
 from . import syntax as S
 from .profiles import Profile
@@ -131,12 +134,31 @@ def to_long(value: int | float | str) -> int:
     return n if -2147483648 <= n <= 2147483647 else -2147483648
 
 
+def is_finite_number(value: object) -> TypeGuard[int | float]:
+    """Usable by integer-converting rules; infinities stay constants in `value_of`
+    (no reference verdict: docs/checker.md#round-67-review-fixes)."""
+    return isinstance(value, (int, float)) and (not isinstance(value, float) or math.isfinite(value))
+
+
 def _truth(v: bool) -> int:
     return -1 if v else 0
 
 
 def value_of(expr: S.Expr | None, env: Env) -> S.ConstValue:
-    """The constant value of `expr` (int/float/str), or raise `NotConstant`."""
+    """The constant value of `expr` (int/float/str), or raise `NotConstant`. An integer beyond the
+    float range (a literal of 309 digits) is not a constant: the reference gives no usable verdict
+    for it, and the numeric rules convert to float. Infinities stay values: `String * 1e999` has
+    recorded verdicts (rounds 29 and 54; round 69, docs/checker.md#round-67-review-fixes)."""
+    value = _value_of(expr, env)
+    if isinstance(value, int) and not isinstance(value, bool) and abs(value) > _FLOAT_MAX_INT:
+        raise NotConstant("number outside the float range")
+    return value
+
+
+_FLOAT_MAX_INT = int(sys.float_info.max)
+
+
+def _value_of(expr: S.Expr | None, env: Env) -> S.ConstValue:
     if expr is None:
         raise NotConstant("empty expression")
     if isinstance(expr, S.Number):
