@@ -958,13 +958,17 @@ Same module (fixture cases `*-sdmcd16-*`, `*-snmpvariable-*`, `*-menurecompile-*
 ### String operands
 
 Same module (fixture cases `*-string-operand-*`, all four loggers). A String-typed operand (variable,
-element, string `Const`/literal, or a `+` of strings) in `AND OR XOR IMP EQV << >>` gives `String is
-illegal here`; in `* / MOD` the left String gives `Illegal String operand`, the right one `Illegal
-operand of type STRING` (both when both). `+ - & ^`, comparisons, `NOT` and unary minus accept
-strings (`S` alone in `If S Then` passes). Found in assignments, `If`/`ElseIf` conditions, instruction
-and call arguments, one message per statement. A statement holding two offending operators gets more
-messages than offenders (`(S AND F) OR (F AND S)` printed three), so that shape is left silent. The
-`\` operator is a different family (`Illegal String operand` plus more) and is not modelled.
+element, string `Const`/literal, a String-returning built-in such as `Mid`, `FormatFloat`, `Chr`,
+`Hex`, `Trim` or `UpperCase` (function `kind` 312, `docs/binary.md`), a `Function ... As String`, an
+`IIF` with a String second argument, or a `+`/`&` with a String on either side) in
+`AND OR XOR IMP EQV << >>` gives `String is illegal here`; in `* / \ MOD` the left String gives
+`Illegal String operand`, the right one `Illegal operand of type STRING` (both when both). `+ - & ^`,
+comparisons, `NOT` and unary minus accept strings (`S` alone in `If S Then` passes); `-` and `^` give a
+number, so `(Mid(S,1,1) - 1) * 2` compiles while `(2000 + Mid(S,5,2)) * 2` does not. Found in
+assignments, `If`/`ElseIf` conditions, instruction and call arguments. Every offending operator
+reports, in source order with an operator after its left operand
+(`(S * 2) + (S AND 1)`, `(S * 2) * S`; round 65, `r65_string_operands.json`). Before round 65 a
+String built-in, a mixed `+` and a statement with several offenders were false accepts.
 
 ### `CType` argument forms (`var_types.check_ctype`, `expressions._call_arity_problem`)
 
@@ -2334,3 +2338,22 @@ Fixture `r17_table_only_source.json` (parser `_table_only_outside_table`, comple
 inside a table declaration.` (`Max` for `Maximum`) even when the second (source) argument does not parse, because that
 argument is not read before the placement error. Other malformed shapes (`Sample (1,x y,FP2) z`, an unclosed parenthesis,
 a missing argument) keep their own parse messages, which are still not matched on every logger and are not covered.
+
+### FTPClient PutGetOption
+
+CR6/CR1000X: a constant `PutGetOption` (sixth argument) is truncated to a Long and must lie in
+-29..29; otherwise `Invalid PutGetOption: <value>` (`30`, `-30`, `&HFF` as 255, `2147483648` and
+`999999999999` as -2147483648). `29.9` and `-29.9` compile; a variable or a String is not checked.
+CR300/CR350 accept every value. Round 65, `r65_ftpclient_option.json` (316 observations); found by
+fuzz `3b789efdd145` (seed 467). The CHM lists fewer options than the compiler accepts.
+
+### GetRecord destination size
+
+`GetRecord(Dest, Table, N)` with a numeric `Dest` whose whole declared size (whatever its subscript:
+`E(2)` of `E(3)` holds 3) is smaller than the record's value count is `Destination array not large
+enough for the <n> fields in a record`, then `Could not find DataTable <Table>.`, and ends the walk
+like a `GetRecord` of an unknown table (all four loggers). The count is every element of every field
+(`Sample(6,F2,FP2)` counts 6) with each String element once; a String destination is never checked.
+A scalar, a Boolean, a Long and an `Alias` of a scalar are 1. CR300/CR350 drop it when a later line
+holds an undefined name (not modelled). Round 65, `r65_getrecord_size.json` (100 observations);
+found by fuzz `ca5b1677129c` (seed 468, a GEUS SnowFox program with its String destination changed).

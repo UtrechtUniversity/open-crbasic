@@ -164,6 +164,24 @@ The moved-continuation CR1000X `53f4ed873761` remains the next candidate from th
 isolate its expression and argument boundaries before extending the parser. M2 remains open,
 and no saved replay baseline or realism decisions were changed.
 
+## Round-65 fresh inputs
+
+CR6 seed 469 and CR1000X seed 470, 1,000 `--relevant` mutants each on the round-65 code (`scratch/r65/`,
+local only): no verdict or mode difference; one warning-only row (`3460d8b2af3f`, a background
+calibration warning). First-error differences and their scope decision:
+
+| Reproducer | Edit | Decision |
+|---|---|---|
+| CR6 `6b414530e683` | `IncludeSection` arguments swapped, plus a typo | realistic: the swap alone differs (an include error stops later includes); open for round 66 |
+| CR6 `15c21b705919` | statement inserted and arguments swapped | two edits |
+| CR6 `d6ad808bb722` | `!poi  nter_float` | token split |
+| CR6 `ecedd69cfed8` | `(1+2)` as a parameter name | fuzz argument |
+| CR6 `fd72d45e4006` | two string fragments replaced in `LogDebug` | two edits, fuzz arguments |
+| CR1000X `13b8482c22e4` | an undeclared fuzz name as the `TimeIntoInterval` interval: the known truncation-warning cascade (round 38) | fuzz name, listed |
+| CR1000X `65b2988d5dff` | statement inserted and arguments swapped | two edits |
+| CR1000X `dc8a3fe3d9cf` | `SWVX` arguments swapped twice | outside the set, two edits |
+| CR1000X `f34788dba408` | `BinaryTxArra  yPointer` | token split |
+
 ## Round-64 fresh inputs and round-60 classification
 
 On 2026-10-30, CR6 seed 465 and CR1000X seed 466 each generated 1,000 `--relevant` mutants

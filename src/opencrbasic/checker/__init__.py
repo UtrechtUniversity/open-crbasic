@@ -417,7 +417,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             for stmt, _name in instr_data.unknown_calltables(program):
                 stops.append((stmt.file, stmt.line))
                 unreached_off.add((stmt.file, stmt.line))
-            for stmt, _message, ends in instr_data.unknown_table_references(program):
+            for stmt, _message, ends in instr_data.unknown_table_references(program, profile):
                 if ends:    # (`GetRecord`/`ResetTable`/`FileMark` of a missing table, round 14)
                     stops.append((stmt.file, stmt.line))
         # An orphan `EndTable`/empty table ends pass 2 too (reported in tier C, `check_table_
@@ -515,7 +515,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # the other two calls just above (accumulates with an unrelated `expressions.check` finding
         # rather than being suppressed by it).
         n_calltable = len(diags.items)
-        _run_pass(instr_data.check_unclosed_calltable, program, diags)
+        _run_pass(instr_data.check_unclosed_calltable, program, diags, profile)
         # The unknown-table error ends the walk there but does not hide the tier-C findings above
         # it (oracle, all four loggers, 2026-10-13: `Sample` outside a table, then an unknown
         # `CallTable`, prints both)
@@ -614,7 +614,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         n_late = len(diags.items)
         stop = _run_pass_capture(structure.check_scan_placement_late, program, profile, diags)
         # a `GetRecord`/`ResetTable`/`FileMark` of a missing table ends the walk (oracle, round 14)
-        ref_lines = [st.line for st, _m, ends in instr_data.unknown_table_references(program) if ends]
+        ref_lines = [st.line for st, _m, ends in instr_data.unknown_table_references(program, profile) if ends]
         if profile.single_pass:
             ref_lines += [st.line for st, _name in instr_data.unknown_calltables(program)]
         if ref_lines:

@@ -1,0 +1,1649 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "string-operands-000-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-000-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-000-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-000-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-001-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (\"a\" + Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-001-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (\"a\" + Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-001-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (\"a\" + Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-001-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (\"a\" + Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-002-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-002-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-002-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-002-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-003-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + T(1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-003-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + T(1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-003-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + T(1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-003-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + T(1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-004-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + CS) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-004-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + CS) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-004-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + CS) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-004-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + CS) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-005-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-005-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-005-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-005-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-006-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-006-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-006-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-006-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-007-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 / FormatFloat(Y,\"%f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-007-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 / FormatFloat(Y,\"%f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-007-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 / FormatFloat(Y,\"%f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-007-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2 / FormatFloat(Y,\"%f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-008-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-008-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-008-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-008-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) * Mid(S,1,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-009-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatFloat(Y,\"%f\") / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-009-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatFloat(Y,\"%f\") / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-009-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatFloat(Y,\"%f\") / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-009-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatFloat(Y,\"%f\") / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-010-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + Mid(S,1,2)) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-010-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + Mid(S,1,2)) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-010-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + Mid(S,1,2)) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-010-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + Mid(S,1,2)) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-011-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = -Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-011-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = -Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-011-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = -Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-011-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = -Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-012-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-012-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-012-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-012-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-013-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 OR Left(S,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-013-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 OR Left(S,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-013-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 OR Left(S,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-013-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 OR Left(S,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-014-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = NOT Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-014-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = NOT Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-014-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = NOT Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-014-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = NOT Mid(S,1,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-015-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-015-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-015-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-015-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Y + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-016-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-016-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-016-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-016-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-017-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = InStr(1,S,\"a\",2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-017-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = InStr(1,S,\"a\",2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-017-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = InStr(1,S,\"a\",2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-017-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = InStr(1,S,\"a\",2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-018-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-018-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-018-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-018-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-019-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S, 5, 2)) MOD 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-019-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S, 5, 2)) MOD 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-019-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S, 5, 2)) MOD 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-019-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S, 5, 2)) MOD 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-020-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = UpperCase(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-020-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = UpperCase(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-020-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = UpperCase(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-020-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = UpperCase(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-021-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Chr(65) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-021-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Chr(65) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-021-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Chr(65) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-021-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Chr(65) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-022-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Hex(Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-022-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Hex(Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-022-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Hex(Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-022-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Hex(Y) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-023-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Trim(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-023-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Trim(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-023-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Trim(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-023-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Trim(S) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-024-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Right(S,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-024-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Right(S,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-024-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Right(S,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-024-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Right(S,2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-025-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Replace(S,\"a\",\"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-025-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Replace(S,\"a\",\"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-025-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Replace(S,\"a\",\"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-025-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Replace(S,\"a\",\"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-026-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatLong(L,\"%d\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-026-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatLong(L,\"%d\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-026-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatLong(L,\"%d\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-026-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FormatLong(L,\"%d\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-027-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) + 1) + 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-027-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) + 1) + 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-027-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) + 1) + 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-027-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) + 1) + 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-028-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) & 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-028-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) & 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-028-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) & 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-028-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) & 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-029-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) - 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-029-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) - 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-029-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) - 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-029-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) - 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-030-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 - Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-030-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 - Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-030-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 - Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-030-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 - Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-031-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) ^ 2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-031-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) ^ 2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-031-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) ^ 2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-031-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) ^ 2) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-032-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FS(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-032-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FS(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-032-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FS(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-032-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FS(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-033-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FN(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-033-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FN(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-033-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FN(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-033-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FN(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-034-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FU(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-034-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FU(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-034-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FU(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-034-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = FU(1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-035-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (FS(1) + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-035-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (FS(1) + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-035-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (FS(1) + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-035-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (FS(1) + 1) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-036-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) * 2 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-036-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) * 2 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-036-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) * 2 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-036-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) * 2 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-037-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) AND X Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-037-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) AND X Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-037-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) AND X Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-037-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) AND X Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-038-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) = \"a\" Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-038-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) = \"a\" Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-038-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) = \"a\" Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-038-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Mid(S,1,1) = \"a\" Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-039-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(Mid(S,1,1) * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-039-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(Mid(S,1,1) * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-039-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(Mid(S,1,1) * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-039-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(Mid(S,1,1) * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-040-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) * 2) + (Mid(S,1,1) * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-040-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) * 2) + (Mid(S,1,1) * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-040-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) * 2) + (Mid(S,1,1) * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-040-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1) * 2) + (Mid(S,1,1) * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-041-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) \\ 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-041-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) \\ 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-041-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) \\ 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-041-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) \\ 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-042-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) << 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-042-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) << 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-042-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) << 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-042-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,1) << 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-043-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = IIF(X, \"a\", \"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-043-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = IIF(X, \"a\", \"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-043-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = IIF(X, \"a\", \"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-043-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = IIF(X, \"a\", \"b\") * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-044-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-044-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-044-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-044-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (Mid(S,1,1)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-045-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = ((2000 + Mid(S,5,2))) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-045-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = ((2000 + Mid(S,5,2))) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-045-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = ((2000 + Mid(S,5,2))) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-045-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = ((2000 + Mid(S,5,2))) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-046-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = Mid(S,1,1) + Mid(S,2,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-046-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = Mid(S,1,1) + Mid(S,2,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-operands-046-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = Mid(S,1,1) + Mid(S,2,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-046-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = Mid(S,1,1) + Mid(S,2,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-operands-047-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,mV5000,1,1,0,15000,Mid(S,1,1) * 2,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-047-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,mV5000,1,1,0,15000,Mid(S,1,1) * 2,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-047-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,mV5000,1,1,0,15000,Mid(S,1,1) * 2,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: mV5000 is not defined.\nline 15: Variable illegal in Parameter: mV5000.",
+      "not_modelled": "CR300/CR350 best effort: the probe's mV5000 is not a CR300/CR350 range; its unresolved-name ordering is not modelled."
+    },
+    {
+      "id": "string-operands-047-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(X,1,mV5000,1,1,0,15000,Mid(S,1,1) * 2,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: mV5000 is not defined.\nline 15: Variable illegal in Parameter: mV5000.",
+      "not_modelled": "CR300/CR350 best effort: the probe's mV5000 is not a CR300/CR350 range; its unresolved-name ordering is not modelled."
+    },
+    {
+      "id": "string-operands-048-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-048-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-048-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-048-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-049-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (2 * S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-049-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (2 * S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-049-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (2 * S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-049-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (2 * S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-050-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3) + (S / 4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-050-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3) + (S / 4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-050-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3) + (S / 4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-050-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S * 3) + (S / 4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-051-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) + (S * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-051-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) + (S * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-051-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) + (S * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-051-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) + (S * 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-052-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S AND 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-052-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S AND 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-052-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S AND 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-052-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) + (S AND 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-053-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) OR (1 AND S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: String is illegal here\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-053-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) OR (1 AND S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: String is illegal here\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-053-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) OR (1 AND S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: String is illegal here\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-053-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S AND 1) OR (1 AND S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here\nline 15: String is illegal here\nline 15: String is illegal here"
+    },
+    {
+      "id": "string-operands-054-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = S * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-054-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = S * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-054-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = S * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-054-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = S * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-055-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-055-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-055-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-055-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (S * 2) * S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal operand of type STRING"
+    },
+    {
+      "id": "string-operands-056-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If (S * 2) > (S * 3) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-056-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If (S * 2) > (S * 3) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-056-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If (S * 2) > (S * 3) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-056-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If (S * 2) > (S * 3) Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-057-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(S * 2) + (S MOD 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-057-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(S * 2) + (S MOD 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-057-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(S * 2) + (S MOD 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    },
+    {
+      "id": "string-operands-057-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(S * 2) + (S MOD 3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand\nline 15: Illegal String operand"
+    }
+  ]
+}

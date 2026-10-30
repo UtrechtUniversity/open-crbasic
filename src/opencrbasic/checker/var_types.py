@@ -6,8 +6,10 @@ a small table of them. Unknown names, functions and operand mixes the oracle was
 have no type (`None`), and a check that needs a type it does not have stays silent.
 """
 
+import json
 import math
 import re
+from pathlib import Path
 
 from .. import consteval
 from .. import syntax as S
@@ -15,6 +17,10 @@ from ..diagnostics import Diagnostics
 from . import symbols
 
 _NUMERIC = ("FLOAT", "LONG")
+# built-in functions returning a String (`kind` 312, docs/binary.md), the same on all four loggers
+_STRING_FUNCTIONS = frozenset(
+    f["name"] for f in json.loads((Path(__file__).resolve().parents[1] / "data" / "functions.json")
+                                  .read_text()) if f.get("kind") == 312)
 
 
 def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
@@ -35,6 +41,9 @@ class _Typer:
         self.types, self.alias = _types(program)
         self.consts = {st.name.upper(): st for st in program.statements
                        if isinstance(st, S.ConstDecl)}
+        self.function_types = {st.name.upper(): st.return_type.split("*")[0].strip().upper()
+                               for st in program.statements if isinstance(st, S.SubDef)
+                               and st.keyword.upper() == "FUNCTION" and st.return_type}
 
     def base(self, name: str) -> str:
         return self.alias.get(name.upper(), name.upper())
@@ -58,6 +67,13 @@ class _Typer:
         var = self.variable(expr)
         if var is not None:
             return self.types[var]
+        if isinstance(expr, S.Index):
+            # a String-returning built-in or Function, or an `IIF` with a String arm (oracle, all
+            # four loggers, round 65, docs/instructions.md#string-operands)
+            name = expr.name.upper()
+            if name in _STRING_FUNCTIONS or self.function_types.get(name) == "STRING" or (
+                    name == "IIF" and len(expr.args) > 1 and self.of(expr.args[1], depth + 1) == "STRING"):
+                return "STRING"
         if isinstance(expr, S.Name):
             if expr.name.upper() in ("TRUE", "FALSE"):
                 return "LONG"
@@ -72,10 +88,10 @@ class _Typer:
         if isinstance(expr, S.Unary) and expr.op in ("-", "+"):
             return self.of(expr.operand, depth + 1) if \
                 self.of(expr.operand, depth + 1) in _NUMERIC else None
-        if isinstance(expr, S.Binary) and expr.op in ("+", "-", "*", "/"):
+        if isinstance(expr, S.Binary) and expr.op in ("+", "-", "*", "/", "&"):
             left, right = self.of(expr.left, depth + 1), self.of(expr.right, depth + 1)
-            if left == right == "STRING" and expr.op == "+":
-                return "STRING"
+            if "STRING" in (left, right) and expr.op in ("+", "&"):
+                return "STRING"   # `2000 + Mid(...)` concatenates (round 65)
             if left in _NUMERIC and right in _NUMERIC:
                 return "LONG" if left == right == "LONG" and expr.op != "/" else "FLOAT"
         return None
@@ -131,28 +147,42 @@ def _string_typed(typer: _Typer, node: S.Expr | None) -> bool:
     return typer.of(node) == "STRING"
 
 
+def _in_source_order(expr: S.Expr | None):
+    """The subexpressions of `expr` with each operator after its left operand and before its
+    right one (the order the reference reports String-operand errors in)."""
+    if isinstance(expr, S.Binary):
+        yield from _in_source_order(expr.left)
+        yield expr
+        yield from _in_source_order(expr.right)
+    elif isinstance(expr, S.Unary):
+        yield from _in_source_order(expr.operand)
+    elif isinstance(expr, (S.Index, S.Member)):
+        for a in expr.args or []:
+            yield from _in_source_order(a)
+    elif isinstance(expr, S.ArrayLiteral):
+        for a in expr.items:
+            yield from _in_source_order(a)
+
+
 def _string_operand_messages(typer: _Typer, stmt: S.Stmt) -> list[str]:
-    """The messages for the one String-operand error a statement holds; none when it holds
-    several (their number and order is not established), except several `String is illegal
-    here`: one each (oracle, 2026-10-10: `"a" and "b" and "c" .`)."""
-    found: list[list[str]] = []
+    """The String-operand errors of a statement, one entry per offending operator in source order
+    (oracle, all four loggers: `"a" and "b" and "c" .`, 2026-10-10; `(S * 2) + (S AND 1)` and
+    `(S * 2) * S`, round 65, docs/instructions.md#string-operands)."""
+    found: list[str] = []
     for top in _statement_expressions(stmt):
-        for node in _subexpressions(top):
+        for node in _in_source_order(top):
             if not isinstance(node, S.Binary):
                 continue
             left, right = _string_typed(typer, node.left), _string_typed(typer, node.right)
             if node.op == "TO":  # a String on the right only (`S To 3` compiles); round 9
                 if right:
-                    found.append(["String is illegal here"])
+                    found.append("String is illegal here")
             elif node.op in _STRING_ILLEGAL_OPS and (left or right):
-                found.append(["String is illegal here"])
+                found.append("String is illegal here")
             elif node.op in _STRING_ARITH_OPS and (left or right):
-                found.append((["Illegal String operand"] if left else []) +
-                             (["Illegal operand of type STRING"] if right else []))
-    if found and all(f == ["String is illegal here"] for f in found):
-        # one each, also in a condition (oracle, all four loggers, round 38: `If X AND S AND Y`)
-        return [f[0] for f in found]
-    return found[0] if len(found) == 1 else []
+                found += (["Illegal String operand"] if left else []) + \
+                    (["Illegal operand of type STRING"] if right else [])
+    return found
 
 
 def _snmp_mismatch(typer: _Typer, name: S.Expr | None, snmp_type: str) -> bool:

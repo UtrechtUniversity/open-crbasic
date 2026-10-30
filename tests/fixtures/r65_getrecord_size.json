@@ -1,0 +1,725 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "getrecord-size-137-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-137-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-137-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-137-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-138-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-138-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-138-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-138-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-139-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-139-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-139-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-139-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-140-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(2),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-140-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(2),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-140-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(2),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-140-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (E(2),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-141-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-141-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-141-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-141-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-142-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D(4),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-142-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D(4),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-142-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D(4),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-142-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (D(4),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-143-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (L,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-143-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (L,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-143-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (L,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-143-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (L,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-144-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (S,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-144-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (S,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-144-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (S,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-144-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (S,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-145-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-145-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-145-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-145-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-146-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-146-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-146-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-146-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (SA(1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-147-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-147-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-147-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-147-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-148-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2(2,1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-148-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2(2,1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-148-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2(2,1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-148-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (F2(2,1),T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-149-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-149-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-149-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-149-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-150-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    If X Then GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-150-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    If X Then GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-150-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    If X Then GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-150-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, D(5), E(3), L(4) As Long, S As String * 100, SA(3) As String * 20, F2(2,2)\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,0)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    If X Then GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-151-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (G,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-151-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (G,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-151-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (G,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-151-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (G,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-152-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-152-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-152-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-152-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-153-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-153-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-153-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-153-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-154-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (Bo,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-154-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (Bo,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-154-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (Bo,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-154-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (Bo,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-155-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (AX,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-155-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (AX,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-155-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (AX,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-155-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (AX,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-156-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-156-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "getrecord-size-156-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-156-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "getrecord-size-157-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (2,G,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Destination array not large enough for the 2 fields in a record\nline 9: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-157-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (2,G,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Destination array not large enough for the 2 fields in a record\nline 9: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-157-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (2,G,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Destination array not large enough for the 2 fields in a record\nline 9: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-157-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (2,G,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Destination array not large enough for the 2 fields in a record\nline 9: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-158-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H(1),T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-158-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H(1),T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-158-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H(1),T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-158-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (H(1),T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-159-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-159-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-159-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-159-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    GetRecord (K,T,1)\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-160-cr6",
+      "logger": "cr6",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-160-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Destination array not large enough for the 3 fields in a record\nline 11: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-160-cr300",
+      "logger": "cr300",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Y is not defined.",
+      "not_modelled": "CR300/CR350 best effort: a later undefined name hides the GetRecord destination error there; not modelled."
+    },
+    {
+      "id": "getrecord-size-160-cr350",
+      "logger": "cr350",
+      "source": "Public A, B, C, X, G(2), K As Long, Bo As Boolean, H(1)\r\nAlias X = AX\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (1,B,FP2)\r\n  Sample (1,C,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Y is not defined.",
+      "not_modelled": "CR300/CR350 best effort: a later undefined name hides the GetRecord destination error there; not modelled."
+    },
+    {
+      "id": "getrecord-size-161-cr6",
+      "logger": "cr6",
+      "source": "Public A, G(2), F2(2,3), S As String * 16, SA(3) As String * 8, X\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (2,G,FP2)\r\n  Sample (6,F2,FP2)\r\n  Sample (1,S,String)\r\n  Sample (3,SA,String)\r\n  Average (1,A,FP2,False)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Destination array not large enough for the 14 fields in a record\nline 13: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-161-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public A, G(2), F2(2,3), S As String * 16, SA(3) As String * 8, X\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (2,G,FP2)\r\n  Sample (6,F2,FP2)\r\n  Sample (1,S,String)\r\n  Sample (3,SA,String)\r\n  Average (1,A,FP2,False)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Destination array not large enough for the 14 fields in a record\nline 13: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-161-cr300",
+      "logger": "cr300",
+      "source": "Public A, G(2), F2(2,3), S As String * 16, SA(3) As String * 8, X\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (2,G,FP2)\r\n  Sample (6,F2,FP2)\r\n  Sample (1,S,String)\r\n  Sample (3,SA,String)\r\n  Average (1,A,FP2,False)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Destination array not large enough for the 14 fields in a record\nline 13: Could not find DataTable T."
+    },
+    {
+      "id": "getrecord-size-161-cr350",
+      "logger": "cr350",
+      "source": "Public A, G(2), F2(2,3), S As String * 16, SA(3) As String * 8, X\r\nDataTable (T,True,-1)\r\n  Sample (1,A,FP2)\r\n  Sample (2,G,FP2)\r\n  Sample (6,F2,FP2)\r\n  Sample (1,S,String)\r\n  Sample (3,SA,String)\r\n  Average (1,A,FP2,False)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n    GetRecord (X,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Destination array not large enough for the 14 fields in a record\nline 13: Could not find DataTable T."
+    }
+  ]
+}

@@ -1,0 +1,2235 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "ftpclient-option-058-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-058-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-058-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-058-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-059-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-059-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-059-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-059-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-060-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-060-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-060-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-060-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-061-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-061-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-061-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-061-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-062-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-062-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-062-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-062-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-063-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-063-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-063-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-063-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-064-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",6)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-064-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",6)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-064-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",6)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-064-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",6)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-065-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",7)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-065-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",7)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-065-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",7)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-065-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",7)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-066-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-066-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-066-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-066-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-067-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-067-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-067-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-067-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-068-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-068-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-068-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-068-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-069-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-069-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-069-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-069-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-070-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",12)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-070-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",12)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-070-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",12)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-070-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",12)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-071-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",13)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-071-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",13)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-071-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",13)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-071-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",13)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-072-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",14)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-072-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",14)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-072-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",14)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-072-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",14)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-073-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",15)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-073-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",15)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-073-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",15)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-073-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",15)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-074-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",16)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-074-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",16)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-074-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",16)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-074-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",16)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-075-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",17)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-075-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",17)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-075-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",17)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-075-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",17)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-076-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",18)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-076-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",18)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-076-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",18)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-076-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",18)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-077-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-077-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-077-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-077-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-078-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-078-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-078-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-078-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-079-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-079-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-079-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-079-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-080-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",22)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-080-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",22)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-080-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",22)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-080-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",22)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-081-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",23)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-081-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",23)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-081-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",23)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-081-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",23)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-082-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",24)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-082-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",24)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-082-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",24)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-082-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",24)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-083-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-083-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-083-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-083-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-084-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-084-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-084-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-084-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-085-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 99"
+    },
+    {
+      "id": "ftpclient-option-085-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 99"
+    },
+    {
+      "id": "ftpclient-option-085-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-085-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-086-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 100"
+    },
+    {
+      "id": "ftpclient-option-086-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 100"
+    },
+    {
+      "id": "ftpclient-option-086-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-086-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-087-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",101)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 101"
+    },
+    {
+      "id": "ftpclient-option-087-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",101)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 101"
+    },
+    {
+      "id": "ftpclient-option-087-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",101)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-087-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",101)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-088-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",102)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 102"
+    },
+    {
+      "id": "ftpclient-option-088-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",102)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 102"
+    },
+    {
+      "id": "ftpclient-option-088-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",102)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-088-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",102)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-089-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",103)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 103"
+    },
+    {
+      "id": "ftpclient-option-089-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",103)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 103"
+    },
+    {
+      "id": "ftpclient-option-089-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",103)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-089-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",103)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-090-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",104)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 104"
+    },
+    {
+      "id": "ftpclient-option-090-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",104)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 104"
+    },
+    {
+      "id": "ftpclient-option-090-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",104)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-090-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",104)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-091-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",105)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 105"
+    },
+    {
+      "id": "ftpclient-option-091-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",105)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 105"
+    },
+    {
+      "id": "ftpclient-option-091-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",105)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-091-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",105)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-092-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",106)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 106"
+    },
+    {
+      "id": "ftpclient-option-092-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",106)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 106"
+    },
+    {
+      "id": "ftpclient-option-092-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",106)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-092-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",106)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-093-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",107)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 107"
+    },
+    {
+      "id": "ftpclient-option-093-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",107)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 107"
+    },
+    {
+      "id": "ftpclient-option-093-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",107)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-093-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",107)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-094-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",110)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 110"
+    },
+    {
+      "id": "ftpclient-option-094-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",110)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 110"
+    },
+    {
+      "id": "ftpclient-option-094-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",110)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-094-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",110)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-095-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",200)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 200"
+    },
+    {
+      "id": "ftpclient-option-095-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",200)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 200"
+    },
+    {
+      "id": "ftpclient-option-095-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",200)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-095-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",200)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-096-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",255)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 255"
+    },
+    {
+      "id": "ftpclient-option-096-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",255)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 255"
+    },
+    {
+      "id": "ftpclient-option-096-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",255)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-096-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",255)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-097-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",256)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 256"
+    },
+    {
+      "id": "ftpclient-option-097-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",256)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 256"
+    },
+    {
+      "id": "ftpclient-option-097-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",256)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-097-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",256)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-098-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",257)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 257"
+    },
+    {
+      "id": "ftpclient-option-098-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",257)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 257"
+    },
+    {
+      "id": "ftpclient-option-098-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",257)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-098-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",257)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-099-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-099-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-099-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-099-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-100-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-100-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-100-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-100-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-101-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 2147483647"
+    },
+    {
+      "id": "ftpclient-option-101-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 2147483647"
+    },
+    {
+      "id": "ftpclient-option-101-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-101-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-102-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483648"
+    },
+    {
+      "id": "ftpclient-option-102-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483648"
+    },
+    {
+      "id": "ftpclient-option-102-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-102-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-103-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",999999999999)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483648"
+    },
+    {
+      "id": "ftpclient-option-103-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",999999999999)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483648"
+    },
+    {
+      "id": "ftpclient-option-103-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",999999999999)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-103-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",999999999999)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-104-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-104-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-104-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-104-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",1.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-105-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",C2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 102"
+    },
+    {
+      "id": "ftpclient-option-105-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",C2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 102"
+    },
+    {
+      "id": "ftpclient-option-105-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",C2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-105-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",C2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-106-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",O)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-106-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",O)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-106-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",O)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-106-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",O)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-107-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"2\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-107-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"2\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-107-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"2\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-107-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"2\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-108-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",&HFF)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 255"
+    },
+    {
+      "id": "ftpclient-option-108-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",&HFF)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 255"
+    },
+    {
+      "id": "ftpclient-option-108-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",&HFF)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-108-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",&HFF)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-109-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",26)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-109-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",26)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-109-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",26)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-109-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",26)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-110-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",27)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-110-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",27)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-110-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",27)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-110-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",27)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-111-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",28)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-111-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",28)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-111-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",28)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-111-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",28)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-112-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-112-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-112-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-112-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-113-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-113-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-113-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-113-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-3)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-114-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -100"
+    },
+    {
+      "id": "ftpclient-option-114-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -100"
+    },
+    {
+      "id": "ftpclient-option-114-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-114-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-100)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-115-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483647"
+    },
+    {
+      "id": "ftpclient-option-115-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483647"
+    },
+    {
+      "id": "ftpclient-option-115-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-115-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483647)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-116-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483648"
+    },
+    {
+      "id": "ftpclient-option-116-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -2147483648"
+    },
+    {
+      "id": "ftpclient-option-116-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-116-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-2147483648)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-117-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-117-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-117-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-117-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",25.5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-118-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-118-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-118-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-118-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-119-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",K30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-119-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",K30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-119-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",K30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-119-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",K30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-120-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"30\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-120-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"30\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-120-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"30\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-120-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",\"30\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-121-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If O Then R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-121-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If O Then R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-121-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If O Then R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-121-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If O Then R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-122-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30,0,5,Min,8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-122-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30,0,5,Min,8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: 30"
+    },
+    {
+      "id": "ftpclient-option-122-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30,0,5,Min,8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-122-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"a\",\"a\",30,0,5,Min,8)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-123-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-123-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-123-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-123-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-4)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-124-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-124-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-124-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-124-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-5)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-125-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-125-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-125-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-125-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-126-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-126-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-126-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-126-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-10)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-127-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-127-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-127-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-127-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-11)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-128-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-128-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-128-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-128-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-19)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-129-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-129-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-129-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-129-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-20)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-130-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-130-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-130-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-130-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-21)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-131-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-131-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-131-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-131-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-132-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-132-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ftpclient-option-132-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-132-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-29.9)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-133-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -30"
+    },
+    {
+      "id": "ftpclient-option-133-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -30"
+    },
+    {
+      "id": "ftpclient-option-133-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-133-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-30)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-134-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-31)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -31"
+    },
+    {
+      "id": "ftpclient-option-134-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-31)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -31"
+    },
+    {
+      "id": "ftpclient-option-134-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-31)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-134-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-31)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-135-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-50)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -50"
+    },
+    {
+      "id": "ftpclient-option-135-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-50)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -50"
+    },
+    {
+      "id": "ftpclient-option-135-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-50)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-135-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-50)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-136-cr6",
+      "logger": "cr6",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -99"
+    },
+    {
+      "id": "ftpclient-option-136-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid PutGetOption: -99"
+    },
+    {
+      "id": "ftpclient-option-136-cr300",
+      "logger": "cr300",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ftpclient-option-136-cr350",
+      "logger": "cr350",
+      "source": "Public R, O\r\nConst K30 = 30\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    R = FTPClient(\"h\",\"u\",\"p\",\"USR:a.txt\",\"a.txt\",-99)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

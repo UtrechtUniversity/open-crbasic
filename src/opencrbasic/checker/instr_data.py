@@ -244,14 +244,15 @@ TABLE_REFERENCES = {
 _SPECIAL_TABLES = frozenset({"STATUS", "PUBLIC", "SETTINGS", "DATATABLEINFO", "ENDTABLE"})
 
 
-def unknown_table_references(program: S.Program):
+def unknown_table_references(program: S.Program, profile: Profile | None = None):
     """`(statement, message, ends pass 2)` for each `TABLE_REFERENCES` statement whose table is not
     a `DataTable` closed before it (declared later, unclosed, or the table's own body, like
     `CallTable`; oracle, CR6/CR1000X, round 58) nor a `ConstTable`."""
-    return [(stmt, spec[1].format(name), spec[2]) for stmt, name, spec in _unknown_table_references(program)]
+    return [(stmt, spec[1].format(name), spec[2])
+            for stmt, name, spec in _unknown_table_references(program, profile)]
 
 
-def _unknown_table_references(program: S.Program):
+def _unknown_table_references(program: S.Program, profile: Profile | None = None):
     const_tables = {st.args[0].name.upper() for st in _with_inline(program.statements)
                     if isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE"
                     and st.args and isinstance(st.args[0], S.Name)}
@@ -283,6 +284,11 @@ def _unknown_table_references(program: S.Program):
             name = arg.value
         else:
             continue
+        if kw == "GETRECORD" and profile is not None and name.upper() in closed and (
+                fields := _getrecord_short(stmt, name, program, profile)) is not None:
+            out.append((stmt, name, (spec[0], f"Destination array not large enough for the {fields} "
+                                     "fields in a record\n" + spec[1], spec[2])))
+            continue
         if not name or name.upper() in closed or name.upper() in const_tables or \
                 name.upper() in _SPECIAL_TABLES:
             continue
@@ -290,8 +296,37 @@ def _unknown_table_references(program: S.Program):
     return out
 
 
-def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
-    refs = unknown_table_references(program)
+def _getrecord_short(stmt: S.Instruction, table: str, program: S.Program, profile: Profile) -> int | None:
+    """The record's value count when `GetRecord`'s numeric destination variable holds fewer values
+    (its whole declared size, whatever the subscript; each String element counts once), else None
+    (oracle, all four loggers, round 65, docs/instructions.md#getrecord-destination-size)."""
+    from .. import consteval, tables
+    from . import var_types
+    dest = stmt.args[0] if stmt.args else None
+    if not isinstance(dest, (S.Name, S.Index)):
+        return None
+    typer = var_types._Typer(program)
+    var = typer.variable(dest)
+    if var is None or typer.types[var] not in ("FLOAT", "LONG", "BOOLEAN", "DOUBLE"):
+        return None
+    try:
+        built, _, _ = tables.build_tables(program, profile, dict(program.consts))
+    except Exception:
+        return None   # the tables cannot be built: nothing is checked (like `_data_table_fields`)
+    record = next((t for t in built if t.name.upper() == table.upper()), None)
+    if record is None:
+        return None
+    count = sum((math.prod(f.subdims[:-1]) if f.subdims else 1) if f.type == 11 else f.dimension
+                for f in record.fields)
+    dims = symbols.declared_all_dims(program, consteval.Env(profile, dict(program.consts))).get(var)
+    if dims is None:
+        return None
+    return count if math.prod(dims) < count else None
+
+
+def check_unclosed_calltable(program: S.Program, diags: Diagnostics,
+                             profile: Profile | None = None) -> None:
+    refs = unknown_table_references(program, profile)
     first = next(iter(unknown_calltables(program)), None)
     ending = [(stmt, message) for stmt, message, ends in refs if ends]
     stopper = None     # the earliest statement that ends the walk and prints its message
@@ -306,8 +341,10 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
                    and d.message.endswith("illegally occurs before BeginProg.")), len(diags.items))
         diags.items.insert(at, Diagnostic("error", stmt.line, message, stmt.file))
     if stopper is not None:
-        # only the first one is printed (oracle, all four loggers, 2026-10-03)
-        diags.error(stopper[0].line, stopper[1], stopper[0].file)
+        # only the first one is printed (oracle, all four loggers, 2026-10-03); a short `GetRecord`
+        # destination adds its own line first (round 65)
+        for message in stopper[1].split("\n"):
+            diags.error(stopper[0].line, message, stopper[0].file)
 
 
 # `FieldNames`, `FieldClassify` and `FieldOrigin` records directly after a field-producing

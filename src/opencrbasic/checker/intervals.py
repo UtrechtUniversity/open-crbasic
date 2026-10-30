@@ -13,6 +13,7 @@ values become whole seconds plus microseconds. A negative `TintoInt` wraps into 
 Oracle probes, 2026-09-28 (`docs/checker.md` "TimeIntoInterval arguments").
 """
 
+import math
 import re
 import struct
 
@@ -94,6 +95,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue
         if kw in ("NEXTSCAN", "SUBSCAN", "NEXTSUBSCAN") or isinstance(stmt, S.SubDef):
             scan = None
+        if not profile.single_pass:
+            for call in _calls(stmt, {"FTPCLIENT"}):
+                if (option := _put_get_option(call, env)) is not None:
+                    diags.error(stmt.line, f"Invalid PutGetOption: {option}", stmt.file)
         for call in _calls(stmt, _INTEGRAL_ARGS):
             if isinstance(call, S.Call) and call.explicit:
                 continue
@@ -112,6 +117,22 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if not bad and call.name.upper() in _FUNCTIONS:
                 _check_call(call, scan, stmt, diags, env,
                             any(d.line < stmt.line for d in diags.errors))
+
+
+def _put_get_option(call, env: consteval.Env) -> int | None:
+    """CR6/CR1000X: an `FTPClient` constant PutGetOption outside -29..29 after truncation, as the
+    Long the message prints (a value outside the Long range is -2147483648); None when valid or
+    not a numeric constant (oracle, round 65, docs/instructions.md#ftpclient-putgetoption)."""
+    if len(call.args) < 6:
+        return None
+    try:
+        value = consteval.value_of(call.args[5], env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(value, (bool, str)) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        return None
+    option = int(value) if _INT_MIN <= value <= _INT_MAX else _INT_MIN
+    return option if abs(option) >= 30 else None
 
 
 def _timer_context(stmt, call, known, single_pass):
