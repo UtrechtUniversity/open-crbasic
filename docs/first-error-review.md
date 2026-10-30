@@ -144,13 +144,25 @@ including profile-specific newline and final unresolved-scalar behavior. Explici
 on its existing argument path. [Checker rule and evidence](checker.md#user-function-expression-syntax-round-62).
 
 Round-60 corpus replay now also matches CR6 `1822097cb726`, `e816abac4b12`, `36a0db0a73f4`,
-`15bc1b5cb20a` and CR1000X `dce5f0264db1` exactly. The missing nested `IIF` argument
-(`d6479ed3f595`) and CR1000X moved-continuation case (`53f4ed873761`) still differ and are next
-candidates; their reference messages must be isolated before extending the rule.
+`15bc1b5cb20a` and CR1000X `dce5f0264db1` exactly. At the end of round 62, the missing nested `IIF` argument (`d6479ed3f595`) and CR1000X
+moved-continuation case (`53f4ed873761`) still differed. Round 63 below supersedes the IIF
+entry; remaining candidates require isolated reference messages before extending the rule.
 
 The strict round-62 fixture preserves unfinished Sub and nested-built-in syntax gaps. No saved
 replay baseline or realism decisions were changed. The other round-60 families still require
 triage; this does not close M2.
+
+## Round-63 omitted-IIF-arm follow-up
+
+CR6 `d6479ed3f595` now matches exactly. Its two-argument IIF compares a String second arm with
+the numeric type of the omitted final arm, producing `type mismatch` before the arity error.
+The condition can be String-typed without causing this mismatch. The bounded four-profile
+rule uses the existing arm-type checker; explicit empty slots, excess arguments and unparsed
+unclosed calls remain gaps. [Checker evidence](checker.md#iif-omitted-final-arm-round-63).
+
+The moved-continuation CR1000X `53f4ed873761` remains the next candidate from the prior handoff;
+isolate its expression and argument boundaries before extending the parser. M2 remains open,
+and no saved replay baseline or realism decisions were changed.
 
 ## Round-59 realism triage
 

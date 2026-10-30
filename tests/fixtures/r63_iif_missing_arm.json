@@ -1,0 +1,1225 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "numeric-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1,2)."
+    },
+    {
+      "id": "numeric-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1,2)."
+    },
+    {
+      "id": "numeric-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1,2)\n."
+    },
+    {
+      "id": "numeric-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1,2)\n."
+    },
+    {
+      "id": "numeric-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : S=IIF(1,2)."
+    },
+    {
+      "id": "numeric-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : S=IIF(1,2)."
+    },
+    {
+      "id": "numeric-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : S=IIF(1,2)\n."
+    },
+    {
+      "id": "numeric-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : S=IIF(1,2)\n."
+    },
+    {
+      "id": "numeric-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,2)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : F(\"pre\"+IIF(1,2)+\"post\")."
+    },
+    {
+      "id": "numeric-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,2)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : F(\"pre\"+IIF(1,2)+\"post\")."
+    },
+    {
+      "id": "numeric-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,2)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : F(\"pre\"+IIF(1,2)+\"post\")\n."
+    },
+    {
+      "id": "numeric-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,2)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : F(\"pre\"+IIF(1,2)+\"post\")\n."
+    },
+    {
+      "id": "string-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"s\")."
+    },
+    {
+      "id": "string-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"s\")."
+    },
+    {
+      "id": "string-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"s\")\n."
+    },
+    {
+      "id": "string-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"s\")\n."
+    },
+    {
+      "id": "string-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,\"s\")."
+    },
+    {
+      "id": "string-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,\"s\")."
+    },
+    {
+      "id": "string-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,\"s\")\n."
+    },
+    {
+      "id": "string-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,\"s\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,\"s\")\n."
+    },
+    {
+      "id": "string-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,\"s\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,\"s\")+\"post\")."
+    },
+    {
+      "id": "string-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,\"s\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,\"s\")+\"post\")."
+    },
+    {
+      "id": "string-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,\"s\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,\"s\")+\"post\")\n."
+    },
+    {
+      "id": "string-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,\"s\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,\"s\")+\"post\")\n."
+    },
+    {
+      "id": "string_condition-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(\"1\",\"0\")."
+    },
+    {
+      "id": "string_condition-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(\"1\",\"0\")."
+    },
+    {
+      "id": "string_condition-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(\"1\",\"0\")\n."
+    },
+    {
+      "id": "string_condition-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(\"1\",\"0\")\n."
+    },
+    {
+      "id": "string_condition-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(\"1\",\"0\")."
+    },
+    {
+      "id": "string_condition-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(\"1\",\"0\")."
+    },
+    {
+      "id": "string_condition-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(\"1\",\"0\")\n."
+    },
+    {
+      "id": "string_condition-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(\"1\",\"0\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(\"1\",\"0\")\n."
+    },
+    {
+      "id": "string_condition-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(\"1\",\"0\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(\"1\",\"0\")+\"post\")."
+    },
+    {
+      "id": "string_condition-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(\"1\",\"0\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(\"1\",\"0\")+\"post\")."
+    },
+    {
+      "id": "string_condition-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(\"1\",\"0\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(\"1\",\"0\")+\"post\")\n."
+    },
+    {
+      "id": "string_condition-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(\"1\",\"0\")+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(\"1\",\"0\")+\"post\")\n."
+    },
+    {
+      "id": "variable-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S)."
+    },
+    {
+      "id": "variable-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S)."
+    },
+    {
+      "id": "variable-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S)\n."
+    },
+    {
+      "id": "variable-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S)\n."
+    },
+    {
+      "id": "variable-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S)."
+    },
+    {
+      "id": "variable-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S)."
+    },
+    {
+      "id": "variable-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S)\n."
+    },
+    {
+      "id": "variable-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S)\n."
+    },
+    {
+      "id": "variable-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S)+\"post\")."
+    },
+    {
+      "id": "variable-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S)+\"post\")."
+    },
+    {
+      "id": "variable-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S)+\"post\")\n."
+    },
+    {
+      "id": "variable-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S)+\"post\")\n."
+    },
+    {
+      "id": "constant-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,K)."
+    },
+    {
+      "id": "constant-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,K)."
+    },
+    {
+      "id": "constant-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,K)\n."
+    },
+    {
+      "id": "constant-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,K)\n."
+    },
+    {
+      "id": "constant-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,K)."
+    },
+    {
+      "id": "constant-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,K)."
+    },
+    {
+      "id": "constant-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,K)\n."
+    },
+    {
+      "id": "constant-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,K)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,K)\n."
+    },
+    {
+      "id": "constant-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,K)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,K)+\"post\")."
+    },
+    {
+      "id": "constant-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,K)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,K)+\"post\")."
+    },
+    {
+      "id": "constant-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,K)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,K)+\"post\")\n."
+    },
+    {
+      "id": "constant-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,K)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,K)+\"post\")\n."
+    },
+    {
+      "id": "chr-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,CHR(65))."
+    },
+    {
+      "id": "chr-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,CHR(65))."
+    },
+    {
+      "id": "chr-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,CHR(65))\n."
+    },
+    {
+      "id": "chr-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,CHR(65))\n."
+    },
+    {
+      "id": "chr-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,CHR(65))."
+    },
+    {
+      "id": "chr-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,CHR(65))."
+    },
+    {
+      "id": "chr-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,CHR(65))\n."
+    },
+    {
+      "id": "chr-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,CHR(65))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,CHR(65))\n."
+    },
+    {
+      "id": "chr-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,CHR(65))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,CHR(65))+\"post\")."
+    },
+    {
+      "id": "chr-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,CHR(65))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,CHR(65))+\"post\")."
+    },
+    {
+      "id": "chr-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,CHR(65))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,CHR(65))+\"post\")\n."
+    },
+    {
+      "id": "chr-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,CHR(65))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,CHR(65))+\"post\")\n."
+    },
+    {
+      "id": "concat-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S+1)."
+    },
+    {
+      "id": "concat-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S+1)."
+    },
+    {
+      "id": "concat-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S+1)\n."
+    },
+    {
+      "id": "concat-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,S+1)\n."
+    },
+    {
+      "id": "concat-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S+1)."
+    },
+    {
+      "id": "concat-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S+1)."
+    },
+    {
+      "id": "concat-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S+1)\n."
+    },
+    {
+      "id": "concat-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,S+1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,S+1)\n."
+    },
+    {
+      "id": "concat-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S+1)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S+1)+\"post\")."
+    },
+    {
+      "id": "concat-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S+1)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S+1)+\"post\")."
+    },
+    {
+      "id": "concat-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S+1)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S+1)+\"post\")\n."
+    },
+    {
+      "id": "concat-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,S+1)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,S+1)+\"post\")\n."
+    },
+    {
+      "id": "nested-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,IIF(1,\"a\",\"b\"))."
+    },
+    {
+      "id": "nested-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,IIF(1,\"a\",\"b\"))."
+    },
+    {
+      "id": "nested-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,IIF(1,\"a\",\"b\"))\n."
+    },
+    {
+      "id": "nested-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,IIF(1,\"a\",\"b\"))\n."
+    },
+    {
+      "id": "nested-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,IIF(1,\"a\",\"b\"))."
+    },
+    {
+      "id": "nested-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,IIF(1,\"a\",\"b\"))."
+    },
+    {
+      "id": "nested-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,IIF(1,\"a\",\"b\"))\n."
+    },
+    {
+      "id": "nested-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,IIF(1,\"a\",\"b\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : S=IIF(1,IIF(1,\"a\",\"b\"))\n."
+    },
+    {
+      "id": "nested-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")."
+    },
+    {
+      "id": "nested-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")."
+    },
+    {
+      "id": "nested-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")\n."
+    },
+    {
+      "id": "nested-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : F(\"pre\"+IIF(1,IIF(1,\"a\",\"b\"))+\"post\")\n."
+    },
+    {
+      "id": "unknown-number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: X=IIF(1,Nope)."
+    },
+    {
+      "id": "unknown-number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: X=IIF(1,Nope)."
+    },
+    {
+      "id": "unknown-number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Expression expects , : X=IIF(1,Nope)\n."
+    },
+    {
+      "id": "unknown-number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Expression expects , : X=IIF(1,Nope)\n."
+    },
+    {
+      "id": "unknown-string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: S=IIF(1,Nope)."
+    },
+    {
+      "id": "unknown-string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: S=IIF(1,Nope)."
+    },
+    {
+      "id": "unknown-string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Expression expects , : S=IIF(1,Nope)\n."
+    },
+    {
+      "id": "unknown-string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nS=IIF(1,Nope)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Expression expects , : S=IIF(1,Nope)\n."
+    },
+    {
+      "id": "unknown-function-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,Nope)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: F(\"pre\"+IIF(1,Nope)+\"post\")."
+    },
+    {
+      "id": "unknown-function-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,Nope)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: F(\"pre\"+IIF(1,Nope)+\"post\")."
+    },
+    {
+      "id": "unknown-function-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,Nope)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Expression expects , : F(\"pre\"+IIF(1,Nope)+\"post\")\n.",
+      "not_modelled": "Unresolved IIF arm name and arity diagnostic ordering remain outside this rule."
+    },
+    {
+      "id": "unknown-function-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nF(\"pre\"+IIF(1,Nope)+\"post\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Expression expects , : F(\"pre\"+IIF(1,Nope)+\"post\")\n.",
+      "not_modelled": "Unresolved IIF arm name and arity diagnostic ordering remain outside this rule."
+    },
+    {
+      "id": "valid_numeric-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,3)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "valid_numeric-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,3)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "valid_numeric-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,3)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "valid_numeric-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,3)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "valid_string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",\"b\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "valid_string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",\"b\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "valid_string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",\"b\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "valid_string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",\"b\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "mixed-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch"
+    },
+    {
+      "id": "mixed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch"
+    },
+    {
+      "id": "mixed-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch"
+    },
+    {
+      "id": "mixed-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch"
+    },
+    {
+      "id": "zero-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF()\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF()."
+    },
+    {
+      "id": "zero-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF()\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF()."
+    },
+    {
+      "id": "zero-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF()\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF()\n."
+    },
+    {
+      "id": "zero-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF()\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF()\n."
+    },
+    {
+      "id": "one-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1)."
+    },
+    {
+      "id": "one-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1)."
+    },
+    {
+      "id": "one-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1)\n."
+    },
+    {
+      "id": "one-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(1)\n."
+    },
+    {
+      "id": "empty_second-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3).",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_second-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3).",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_second-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)\n.",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_second-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)\n.",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_string-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",).",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_string-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",).",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_string-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)\n.",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_string-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)\n.",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_number-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,).",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,).",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_number-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)\n.",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "empty_third_number-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)\n.",
+      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+    },
+    {
+      "id": "four-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",2,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: No Matching, or out of place ) in expression: X=IIF(1,\"a\",2,3).",
+      "not_modelled": "Excess IIF arguments and early arm-type diagnostics remain outside this rule."
+    },
+    {
+      "id": "four-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",2,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: No Matching, or out of place ) in expression: X=IIF(1,\"a\",2,3).",
+      "not_modelled": "Excess IIF arguments and early arm-type diagnostics remain outside this rule."
+    },
+    {
+      "id": "four-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",2,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: No Matching, or out of place ) in expression: X=IIF(1,\"a\",2,3)\n.",
+      "not_modelled": "Excess IIF arguments and early arm-type diagnostics remain outside this rule."
+    },
+    {
+      "id": "four-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",2,3)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: No Matching, or out of place ) in expression: X=IIF(1,\"a\",2,3)\n.",
+      "not_modelled": "Excess IIF arguments and early arm-type diagnostics remain outside this rule."
+    },
+    {
+      "id": "unclosed-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\".",
+      "not_modelled": "Unparsed unclosed IIF type diagnostics remain outside this rule."
+    },
+    {
+      "id": "unclosed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\".",
+      "not_modelled": "Unparsed unclosed IIF type diagnostics remain outside this rule."
+    },
+    {
+      "id": "unclosed-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\"\n.",
+      "not_modelled": "Unparsed unclosed IIF type diagnostics remain outside this rule."
+    },
+    {
+      "id": "unclosed-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\"\n.",
+      "not_modelled": "Unparsed unclosed IIF type diagnostics remain outside this rule."
+    },
+    {
+      "id": "string_condition_numeric-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(\"1\",2)."
+    },
+    {
+      "id": "string_condition_numeric-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(\"1\",2)."
+    },
+    {
+      "id": "string_condition_numeric-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(\"1\",2)\n."
+    },
+    {
+      "id": "string_condition_numeric-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(\"1\",2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Expression expects , : X=IIF(\"1\",2)\n."
+    },
+    {
+      "id": "two_calls-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\")+IIF(1,\"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\")+IIF(1,\"b\")."
+    },
+    {
+      "id": "two_calls-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\")+IIF(1,\"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\")+IIF(1,\"b\")."
+    },
+    {
+      "id": "two_calls-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\")+IIF(1,\"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\")+IIF(1,\"b\")\n."
+    },
+    {
+      "id": "two_calls-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\")+IIF(1,\"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : X=IIF(1,\"a\")+IIF(1,\"b\")\n."
+    },
+    {
+      "id": "sub-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nQ(IIF(1,\"a\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\")."
+    },
+    {
+      "id": "sub-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nQ(IIF(1,\"a\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\")."
+    },
+    {
+      "id": "sub-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nQ(IIF(1,\"a\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\")."
+    },
+    {
+      "id": "sub-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nQ(IIF(1,\"a\"))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\")."
+    },
+    {
+      "id": "condition-cr6",
+      "logger": "cr6",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nIf IIF(1,\"a\") Then X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\") ."
+    },
+    {
+      "id": "condition-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nIf IIF(1,\"a\") Then X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\") ."
+    },
+    {
+      "id": "condition-cr300",
+      "logger": "cr300",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nIf IIF(1,\"a\") Then X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\") ."
+    },
+    {
+      "id": "condition-cr350",
+      "logger": "cr350",
+      "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nIf IIF(1,\"a\") Then X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Expression expects , : IIF(1,\"a\") ."
+    },
+    {
+      "id": "shadow-cr6",
+      "logger": "cr6",
+      "source": "Public X, IIF(3)\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IIF already defined as an internal function.",
+      "not_modelled": "Existing arity cascade after reserved IIF name declaration remains outside this rule."
+    },
+    {
+      "id": "shadow-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, IIF(3)\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IIF already defined as an internal function.",
+      "not_modelled": "Existing arity cascade after reserved IIF name declaration remains outside this rule."
+    },
+    {
+      "id": "shadow-cr300",
+      "logger": "cr300",
+      "source": "Public X, IIF(3)\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IIF already defined as an internal function.\nline 3: Expression expects , : X=IIF(1,2)\n.",
+      "not_modelled": "Existing arity cascade after reserved IIF name declaration remains outside this rule."
+    },
+    {
+      "id": "shadow-cr350",
+      "logger": "cr350",
+      "source": "Public X, IIF(3)\nBeginProg\nX=IIF(1,2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IIF already defined as an internal function.\nline 3: Expression expects , : X=IIF(1,2)\n.",
+      "not_modelled": "Existing arity cascade after reserved IIF name declaration remains outside this rule."
+    }
+  ]
+}

@@ -9322,3 +9322,28 @@ Function observations and unfinished Sub controls; eight now-exact Function case
 round-61 fixture no longer carry expected-failure marks. Scratch observations, the separate
 retry of one initial Wine startup timeout, and the original whole-program replay are under
 `scratch/r62/`. M2 is still open for the other realistic malformed-call families.
+
+## IIF omitted final arm (round 63)
+
+For an otherwise parsed two-argument `IIF(condition, value)`, a String-typed `value` reports
+`type mismatch` before the existing missing-argument diagnostic. A numeric second argument
+reports the missing-argument error alone. This is independent of whether the condition is
+String-typed and whether the result appears in a numeric assignment, String assignment,
+concatenation passed to a user Function, Sub argument or condition. Multiple malformed IIF
+calls on one line produce one type-mismatch report. All four profiles were probed.
+
+Decompilation trail: `functions.json` identifies IIF as function code 30 (`0x1e`), three
+arguments, with both result arms using argument kind 3. The expression builder `FUN_00499af0`
+reads argument types into its type-mask state, and its `local_44 == 0x1e` branch compares the
+arms' String bit (`0x80`) and calls `FUN_0049ce10` on disagreement. The shared expression
+entry is `FUN_00493b10`; builder callers are retained in `scratch/r63/builders.txt`. The probes
+confirm that an omitted final arm participates as numeric in this static comparison; this
+establishes diagnostic behavior, not an executable default value.
+
+The existing arm-type checker now accepts exactly two or three arguments and adds a numeric
+type marker for the omitted final arm. Its existing String-type classifier, unresolved-type
+handling, once-per-line limit and earlier-error gate are retained. Explicit empty slots,
+excess arguments, unparsed unclosed calls and the reserved-name declaration cascade remain
+outside this change. The 168-case `r63_iif_missing_arm.json` fixture preserves those gaps and
+accepted full-arity controls. Original CR6 `d6479ed3f595` now matches exactly; full observations
+and the targeted replay are under `scratch/r63/` (local only).

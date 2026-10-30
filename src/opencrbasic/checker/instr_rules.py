@@ -1279,8 +1279,9 @@ def _string_typed(expr: S.Expr | None, typer, str_consts: set[str], profile) -> 
 
 def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
     """`type mismatch` for an `IIF` whose second and third arguments are one String-typed and one
-    numeric (oracle, CR6/CR1000X, 2026-10-25, docs/checker.md#iif-arm-types-round-36). One report
-    per line, only on a line with no earlier error."""
+    numeric, including an omitted final arm (rounds 36/63). Evidence:
+    docs/checker.md#iif-arm-types-round-36 and #iif-omitted-final-arm-round-63.
+    One report per line, only on a line with no earlier error."""
     from .expressions import _index_nodes, _stmt_exprs
     from .var_types import _Typer
     if "IIF" not in profile.functions:
@@ -1292,9 +1293,11 @@ def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
         if (stmt.line, stmt.file) in busy:
             continue
         for ix in (ix for e in _stmt_exprs(stmt) for ix in _index_nodes(e)):
-            if ix.name.upper() != "IIF" or len(ix.args) != 3 or typer.variable(ix) is not None:
+            if ix.name.upper() != "IIF" or len(ix.args) not in (2, 3) or typer.variable(ix) is not None:
                 continue
             arms = [_string_typed(a, typer, str_consts, profile) for a in ix.args[1:]]
+            if len(ix.args) == 2:
+                arms.append(False)  # the omitted final arm retains its numeric type (round 63)
             if None not in arms and arms[0] != arms[1]:
                 diags.error(stmt.line, "type mismatch", stmt.file)
                 busy.add((stmt.line, stmt.file))
