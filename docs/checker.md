@@ -9486,3 +9486,27 @@ two defects and several open first errors; all were probed on all four profiles
   (both were false accepts; the trailing tokens were dropped like those after a complete `As`
   clause). `As String!` compiles. A sized String parameter followed by `!` keeps the generic
   fallback instead (verdict equal, not modelled).
+## opencrbasic checks OCB002-OCB005 (M3)
+## opencrbasic checks OCB002-OCB006 (M3)
+
+Five checks join `OCB001` in `checks.py`. Each fires only on a program the reference accepts,
+and each form below compiles on all four loggers (oracle, 2026-10-30,
+`tests/fixtures/m3_check_evidence.json`, 196 observations of positive forms and accepted
+controls). Default severity `warning`: `crbc --strict` prints them and keeps exit 0, so they never
+block a build unless a project raises them to `error` in `opencrbasic.toml`. None fires on the
+FirnMelt programs in `crbasic/`, the accepted CHM examples or the GEUS corpus (2026-10-30).
+
+| Code | Fires on | Evidence that it is wrong | Does not fire on |
+|---|---|---|---|
+| `OCB002` | an assignment to a numeric variable of a `+`/`&` chain that mixes numeric and String operands (`L = 2000 + Mid(S,5,2)`, `X = "1" + Y`, `B = S + 1`), also in a one-line `If` | `+` with a String operand concatenates; a GPS clock set from `2000 + Mid(...)` read 2057 (hardware, [lessons](../../knowledge/crbasic/lessons.md#-with-a-string-operand-concatenates)) | a String destination; a String alone (`X = Mid(...)`); Strings joined into a number's text (`X = HexStr(6) + "." + HexStr(7)`, used on purpose in GEUS programs); a `-` (numeric) |
+| `OCB003` | a constant negative interval of `Delay` (`Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`) or a negative `ExciteV` delay | the compiler keeps the delay as an unsigned 32-bit microsecond count ([round 57](#task-memory-overflow-of-long-delays-round-57)); human proposal 2026-10-28. The runtime effect is not observed | a zero or positive delay; most negative `Delay(0,...)`, which are reference errors |
+| `OCB004` | a division (`/`, `\`, `MOD`) by a constant zero, including a `Const` or a folded expression (`Y / (1 - 1)`) | the value at runtime is not established; constant folds differ by profile | a constant zero dividend (`0 / Y`) and non-zero divisors |
+| `OCB005` (`info`) | a `Sub`/`Function` `String` parameter without `* size`, also an `Optional` one | it holds 23 characters and a longer argument is cut (hardware, [lessons](../../knowledge/crbasic/lessons.md#default-string-parameter-size)) | a sized `String` parameter; numeric parameters; a `Function ... As String` return type |
+| `OCB006` (`info`) | a constant `DataInterval` that divides neither an hour nor a day (`7 Min`, `7000 Sec`, `25 Hr`), with any offset | records are phased from the start hour and may not align with midnight (hardware, [lessons](../../knowledge/crbasic/lessons.md#datainterval-phase)) | an interval of 0; one dividing an hour or a day (`45 Min`, `2 Hr`, `1 Day`) |
+
+Not shipped from the candidate list: the constant index past the declared storage (`A(7)` on
+`A(6)`) needs alias, flattened and String-index handling first; the others in
+[PLAN](../PLAN.md#opencrbasic-check-candidates) still lack a reference probe.
+
+`crbc --report` also writes the report when the entry file does not exist: the reference's `No
+Program File` failure with `line` null and no findings (M3, `test_report_of_a_missing_program`).

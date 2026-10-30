@@ -1,0 +1,1573 @@
+{
+  "observation_date": "2026-10-30",
+  "cases": [
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "X = \"1\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"1\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "X = \"1\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"1\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "X = \"1\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"1\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "X = \"1\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = \"1\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "X = Y + S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y + S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "X = Y + S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y + S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "X = Y + S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y + S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "X = Y + S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y + S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "B = S + 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = S + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "B = S + 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = S + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "B = S + 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = S + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "B = S + 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    B = S + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "D = 1 + FormatFloat(Y, \"%.1f\")",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    D = 1 + FormatFloat(Y, \"%.1f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "D = 1 + FormatFloat(Y, \"%.1f\")",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    D = 1 + FormatFloat(Y, \"%.1f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "D = 1 + FormatFloat(Y, \"%.1f\")",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    D = 1 + FormatFloat(Y, \"%.1f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "D = 1 + FormatFloat(Y, \"%.1f\")",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    D = 1 + FormatFloat(Y, \"%.1f\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "A(1) = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    A(1) = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "A(1) = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    A(1) = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "A(1) = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    A(1) = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "A(1) = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    A(1) = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "X = Y & S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y & S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "X = Y & S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y & S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "X = Y & S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y & S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "X = Y & S",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y & S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr6",
+      "body": "If X Then L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr1000x",
+      "body": "If X Then L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr300",
+      "body": "If X Then L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB002",
+      "logger": "cr350",
+      "body": "If X Then L = 2000 + Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then L = 2000 + Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = Mid(S,1,2) + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = Mid(S,1,2) + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = Mid(S,1,2) + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = Mid(S,1,2) + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = Mid(S,1,2) + \".\" + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + \".\" + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = Mid(S,1,2) + \".\" + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + \".\" + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = Mid(S,1,2) + \".\" + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + \".\" + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = Mid(S,1,2) + \".\" + Mid(S,3,2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S,1,2) + \".\" + Mid(S,3,2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "S = \"n=\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"n=\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "S = \"n=\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"n=\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "S = \"n=\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"n=\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "S = \"n=\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    S = \"n=\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "T(1) = \"a\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    T(1) = \"a\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "T(1) = \"a\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    T(1) = \"a\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "T(1) = \"a\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    T(1) = \"a\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "T(1) = \"a\" + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    T(1) = \"a\" + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = Len(\"a\" + S)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(\"a\" + S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = Len(\"a\" + S)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(\"a\" + S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = Len(\"a\" + S)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(\"a\" + S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = Len(\"a\" + S)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Len(\"a\" + S)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = Mid(S, 5, 2)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Mid(S, 5, 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = 2000 + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2000 + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = 2000 + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2000 + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = 2000 + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2000 + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = 2000 + Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2000 + Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = (2000 + Mid(S, 5, 2)) - 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = (2000 + Mid(S, 5, 2)) - 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = (2000 + Mid(S, 5, 2)) - 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = (2000 + Mid(S, 5, 2)) - 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (2000 + Mid(S, 5, 2)) - 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr6",
+      "body": "Delay(1,-5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr1000x",
+      "body": "Delay(1,-5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr300",
+      "body": "Delay(1,-5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr350",
+      "body": "Delay(1,-5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr6",
+      "body": "Delay(2,-1,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,-1,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr1000x",
+      "body": "Delay(2,-1,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,-1,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr300",
+      "body": "Delay(2,-1,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,-1,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr350",
+      "body": "Delay(2,-1,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,-1,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr6",
+      "body": "Delay(1,-1,mSec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-1,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr1000x",
+      "body": "Delay(1,-1,mSec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-1,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr300",
+      "body": "Delay(1,-1,mSec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-1,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB003",
+      "logger": "cr350",
+      "body": "Delay(1,-1,mSec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,-1,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "Delay(1,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "Delay(1,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "Delay(1,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "Delay(1,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "Delay(1,5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "Delay(1,5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "Delay(1,5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "Delay(1,5,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(1,5,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "Delay(0,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(0,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "Delay(0,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(0,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "Delay(0,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(0,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "Delay(0,0,Sec)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(0,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = Y / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = Y / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = Y / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = Y / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = Y / Z",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / Z\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = Y / Z",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / Z\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = Y / Z",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / Z\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = Y / Z",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / Z\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = Y \\ 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y \\ 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = Y \\ 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y \\ 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = Y \\ 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y \\ 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = Y \\ 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y \\ 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = Y MOD 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y MOD 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = Y MOD 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y MOD 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = Y MOD 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y MOD 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = Y MOD 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y MOD 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = Y / 0.0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0.0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = Y / 0.0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0.0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = Y / 0.0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0.0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = Y / 0.0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 0.0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = 1 / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = 1 / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = 1 / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = 1 / 0",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 / 0\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "If Y / 0 > 1 Then X = 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Y / 0 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "If Y / 0 > 1 Then X = 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Y / 0 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "If Y / 0 > 1 Then X = 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Y / 0 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "If Y / 0 > 1 Then X = 1",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Y / 0 > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = Y / 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = Y / 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = Y / 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = Y / 2",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "X = 0 / Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 0 / Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "X = 0 / Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 0 / Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "X = 0 / Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 0 / Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "X = 0 / Y",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 0 / Y\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr6",
+      "body": "X = Y / (1 - 1)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / (1 - 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr1000x",
+      "body": "X = Y / (1 - 1)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / (1 - 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr300",
+      "body": "X = Y / (1 - 1)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / (1 - 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB004",
+      "logger": "cr350",
+      "body": "X = Y / (1 - 1)",
+      "source": "Public X, L As Long, B As Boolean, D As Double, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst Z = 0\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Y / (1 - 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr6",
+      "body": "Sub P(A As String)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr1000x",
+      "body": "Sub P(A As String)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr300",
+      "body": "Sub P(A As String)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr350",
+      "body": "Sub P(A As String)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr6",
+      "body": "Function F(A As String, B As Long) As Long\\n  Return 1\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr1000x",
+      "body": "Function F(A As String, B As Long) As Long\\n  Return 1\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr300",
+      "body": "Function F(A As String, B As Long) As Long\\n  Return 1\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr350",
+      "body": "Function F(A As String, B As Long) As Long\\n  Return 1\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr6",
+      "body": "Sub P(A As String, B As String * 8)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String, B As String * 8)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr1000x",
+      "body": "Sub P(A As String, B As String * 8)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String, B As String * 8)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr300",
+      "body": "Sub P(A As String, B As String * 8)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String, B As String * 8)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr350",
+      "body": "Sub P(A As String, B As String * 8)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String, B As String * 8)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "Sub P(A As String * 23)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String * 23)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "Sub P(A As String * 23)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String * 23)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "Sub P(A As String * 23)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String * 23)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "Sub P(A As String * 23)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As String * 23)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "Sub P(A As Long, B)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As Long, B)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "Sub P(A As Long, B)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As Long, B)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "Sub P(A As Long, B)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As Long, B)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "Sub P(A As Long, B)\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(A As Long, B)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "Function F(A) As String\\n  Return \"x\"\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A) As String\r\n  Return \"x\"\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "Function F(A) As String\\n  Return \"x\"\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A) As String\r\n  Return \"x\"\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "Function F(A) As String\\n  Return \"x\"\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A) As String\r\n  Return \"x\"\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "Function F(A) As String\\n  Return \"x\"\\nEndFunction",
+      "source": "Public X, S As String * 64\r\nFunction F(A) As String\r\n  Return \"x\"\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr6",
+      "body": "Sub P(Optional A As String = \"x\")\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(Optional A As String = \"x\")\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr1000x",
+      "body": "Sub P(Optional A As String = \"x\")\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(Optional A As String = \"x\")\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr300",
+      "body": "Sub P(Optional A As String = \"x\")\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(Optional A As String = \"x\")\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB005",
+      "logger": "cr350",
+      "body": "Sub P(Optional A As String = \"x\")\\nEndSub",
+      "source": "Public X, S As String * 64\r\nSub P(Optional A As String = \"x\")\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr6",
+      "body": "DataInterval (0,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr1000x",
+      "body": "DataInterval (0,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr300",
+      "body": "DataInterval (0,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr350",
+      "body": "DataInterval (0,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr6",
+      "body": "DataInterval (0,7000,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7000,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr1000x",
+      "body": "DataInterval (0,7000,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7000,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr300",
+      "body": "DataInterval (0,7000,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7000,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr350",
+      "body": "DataInterval (0,7000,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,7000,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr6",
+      "body": "DataInterval (0,25,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,25,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr1000x",
+      "body": "DataInterval (0,25,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,25,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr300",
+      "body": "DataInterval (0,25,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,25,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr350",
+      "body": "DataInterval (0,25,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,25,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr6",
+      "body": "DataInterval (5,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (5,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr1000x",
+      "body": "DataInterval (5,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (5,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr300",
+      "body": "DataInterval (5,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (5,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": "OCB006",
+      "logger": "cr350",
+      "body": "DataInterval (5,7,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (5,7,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "DataInterval (0,10,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "DataInterval (0,10,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "DataInterval (0,10,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "DataInterval (0,10,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,10,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "DataInterval (0,1200,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1200,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "DataInterval (0,1200,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1200,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "DataInterval (0,1200,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1200,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "DataInterval (0,1200,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1200,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "DataInterval (0,2,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,2,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "DataInterval (0,2,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,2,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "DataInterval (0,2,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,2,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "DataInterval (0,2,Hr,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,2,Hr,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "DataInterval (0,1,Day,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1,Day,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "DataInterval (0,1,Day,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1,Day,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "DataInterval (0,1,Day,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1,Day,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "DataInterval (0,1,Day,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,1,Day,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "DataInterval (0,0,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,0,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "DataInterval (0,0,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,0,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "DataInterval (0,0,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,0,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "DataInterval (0,0,Sec,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,0,Sec,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr6",
+      "body": "DataInterval (0,45,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,45,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr1000x",
+      "body": "DataInterval (0,45,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,45,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "code": null,
+      "logger": "cr300",
+      "body": "DataInterval (0,45,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,45,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "code": null,
+      "logger": "cr350",
+      "body": "DataInterval (0,45,Min,10)",
+      "source": "Public X\r\nDataTable (T,True,-1)\r\n  DataInterval (0,45,Min,10)\r\n  Sample (1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    CallTable T\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

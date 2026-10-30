@@ -49,7 +49,7 @@ def _analyze(tmp_path, toml="", cli=None, lsp=None, src=SRC, logger="cr6"):
     ('[entry."a.CR6".checks]\nOCB404 = "off"\n', "unknown check code"),
     ('[[suppress]]\ncode = "OCB001"\nfile = "t.CR6"\n', "reason is required"),
     ('[[suppress]]\ncode = "OCB001"\nfile = "t.CR6"\nreason = " "\n', "reason is required"),
-    ('[[suppress]]\ncode = "OCB002"\nfile = "t.CR6"\nreason = "x"\n', "unknown check code"),
+    ('[[suppress]]\ncode = "OCB099"\nfile = "t.CR6"\nreason = "x"\n', "unknown check code"),
     ('[[suppress]]\ncode = "OCB001"\nreason = "x"\n', "file (a glob) is required"),
     ('[[suppress]]\ncode = "OCB001"\nfile = "t.CR6"\nline = 0\nreason = "x"\n', "line must be"),
     ('[[suppress]]\ncode = []\nfile = "t.CR6"\nreason = "x"\n', "unknown check code"),
@@ -233,3 +233,22 @@ def test_report_of_a_rejected_program(tmp_path):
     assert run.returncode == 1 and run.stderr == ""
     assert report["reference"]["ok"] is False and report["findings"] == []
     assert report["reference"]["diagnostics"][0]["severity"] == "error"
+
+
+def test_report_of_a_missing_program(tmp_path):
+    run = _crbc(tmp_path, "--strict", "--report", "r.json", "nope.CR6")
+    assert run.returncode == 1 and run.stderr == ""
+    report = json.loads((tmp_path / "r.json").read_text())
+    assert report["reference"] == {"ok": False, "mode": None, "diagnostics": [
+        {"severity": "error", "file": "nope.CR6", "line": None, "message": "No Program File"}]}
+    assert report["findings"] == [] and report["strict"] is True
+
+
+def test_warning_checks_keep_exit_zero(tmp_path):
+    (tmp_path / "t.CR6").write_text("Public L As Long, S As String * 8\nBeginProg\n  Scan(1,Sec,0,0)\n"
+                                    "    L = 2000 + Mid(S,5,2)\n  NextScan\nEndProg\n")
+    plain = _crbc(tmp_path, "t.CR6")
+    strict = _crbc(tmp_path, "--strict", "t.CR6")
+    assert (plain.returncode, strict.returncode, strict.stdout) == (0, 0, plain.stdout)
+    assert strict.stderr.startswith("t.CR6 line 4: warning OCB002: ")
+    assert _crbc(tmp_path, "--strict", "--check", "OCB002=error", "t.CR6").returncode == 3

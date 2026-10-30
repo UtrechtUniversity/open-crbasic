@@ -6,12 +6,13 @@ import re
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-from . import checkconfig
+from . import checkconfig, consteval
 from . import syntax as S
-from .checker import symbols
+from .checker import symbols, var_types
 
 # Built-in default severity per check code; also the code set the configuration validates against.
-DEFAULT_SEVERITY = {"OCB001": "error"}
+DEFAULT_SEVERITY = {"OCB001": "error", "OCB002": "warning", "OCB003": "warning", "OCB004": "warning",
+                    "OCB005": "info", "OCB006": "info"}
 SCHEMA_VERSION = 1
 
 
@@ -72,8 +73,150 @@ def _alias_keyword(program: S.Program, profile) -> list[Finding]:
     return out
 
 
+_NUMERIC_TYPES = {"FLOAT", "LONG", "BOOLEAN", "DOUBLE"}
+
+
+def _statements(program: S.Program):
+    """Every statement, a one-line If's own statements included."""
+    for st in program.statements:
+        yield st
+        if isinstance(st, S.If):
+            yield from (st.inline or []) + (st.inline_else or [])
+
+
+def _numeric_concatenation(program: S.Program, profile) -> list[Finding]:
+    """OCB002: a String `+` (or `&`) assigned to a numeric variable (`L = 2000 + Mid(S,5,2)`). The
+    reference accepts it, but `+` with a String operand concatenates, and the variable receives
+    the converted text: a GPS clock set this way read 2057 (`knowledge/crbasic/lessons.md` "`+` with
+    a string operand concatenates", hardware 2026-10-22). Only a chain mixing numeric and String
+    operands is reported: a String alone (`X = Mid(...)`) is a plain conversion, and Strings joined
+    into a number's text (`X = HexStr(6) + "." + HexStr(7)`, GEUS programs) are deliberate."""
+    typer, out = var_types._Typer(program), []
+    for st in _statements(program):
+        if not isinstance(st, S.Assignment) or not isinstance(st.value, S.Binary) \
+                or st.value.op not in ("+", "&"):
+            continue
+        var = typer.variable(st.target)
+        if var is None or typer.types[var] not in _NUMERIC_TYPES:
+            continue
+        operands, stack = [], [st.value]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, S.Binary) and node.op in ("+", "&"):
+                stack += [node.left, node.right]
+            else:
+                operands.append(typer.of(node))
+        if "STRING" not in operands or not any(t in _NUMERIC_TYPES for t in operands):
+            continue   # `HexStr(6) + "." + HexStr(7)` builds a number's text on purpose (GEUS)
+        name = st.target.name if isinstance(st.target, (S.Name, S.Index)) else var
+        out.append(Finding("OCB002", "warning", st.line, st.file,
+                           f"`{st.value.op}` with a String operand concatenates; {name} "
+                           "receives the converted text. Convert the String to a number first."))
+    return out
+
+
+def _negative_delays(program: S.Program, profile) -> list[Finding]:
+    """OCB003: a constant negative `Delay` interval or `ExciteV` delay that the reference accepts
+    (`Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`, `ExciteV(Vx1,0,-10)`; most negative `Delay(0,...)` are
+    reference errors). The compiler keeps the delay as an unsigned 32-bit count, so it is not the
+    written one; the runtime effect is not observed (`docs/checker.md` "Task-memory overflow of
+    long delays (round 57)", human proposal 2026-10-28). A zero delay is legitimate."""
+    env, out = consteval.Env(profile, dict(program.consts)), []
+    for st in _statements(program):
+        if not isinstance(st, S.Instruction):
+            continue
+        kw = st.keyword.upper()
+        pos = {"DELAY": 1, "EXCITEV": 2}.get(kw)
+        if pos is None or len(st.args) <= pos:
+            continue
+        try:
+            value = consteval.value_of(st.args[pos], env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(value, (int, float)) and not isinstance(value, bool) and value < 0:
+            out.append(Finding("OCB003", "warning", st.line, st.file,
+                               f"{st.keyword} delay {value:g} is negative; the logger does not "
+                               "wait the written time."))
+    return out
+
+
+def _zero_divisors(program: S.Program, profile) -> list[Finding]:
+    """OCB004: a division by a constant zero (`Y / 0`, `Y \\ 0`, `Y MOD 0`, `Y / Z` with
+    `Const Z = 0`), which the reference compiles on all four loggers (oracle, round 65). Its value
+    at runtime is not established (`docs/checker.md` records profile-dependent constant folds)."""
+    env, out = consteval.Env(profile, dict(program.consts)), []
+
+    def walk(expr):
+        if isinstance(expr, S.Binary):
+            yield expr
+            yield from walk(expr.left)
+            yield from walk(expr.right)
+        elif isinstance(expr, S.Unary):
+            yield from walk(expr.operand)
+        elif isinstance(expr, (S.Index, S.Member)):
+            for a in expr.args or []:
+                yield from walk(a)
+
+    for st in _statements(program):
+        for top in var_types._statement_expressions(st):
+            for node in walk(top):
+                if node.op not in ("/", "\\", "MOD", "INTDV"):
+                    continue
+                try:
+                    divisor = consteval.value_of(node.right, env)
+                except consteval.NotConstant:
+                    continue
+                if isinstance(divisor, (int, float)) and not isinstance(divisor, bool) and divisor == 0:
+                    out.append(Finding("OCB004", "warning", st.line, st.file,
+                                       "Division by a constant zero."))
+    return out
+
+
+def _unsized_string_parameters(program: S.Program, profile) -> list[Finding]:
+    """OCB005: a `Sub`/`Function` String parameter without `* size`. It holds 23 characters (24
+    bytes with the terminator) and a longer argument is cut (hardware, `knowledge/crbasic/
+    lessons.md` "Default string parameter size"). Information only: a short argument is fine."""
+    return [Finding("OCB005", "info", st.line, st.file,
+                    f"String parameter {p.name} of {st.name} has no size and holds 23 characters; "
+                    "give it a size (As String * n) if a longer value can be passed.")
+            for st in program.statements if isinstance(st, S.SubDef)
+            for p in st.params if (p.type or "").upper() == "STRING" and p.string_size is None]
+
+
+# microseconds per `DataInterval` unit code (uSec, mSec, Sec, Min, Hr, Day), as in `Delay`
+_US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
+
+
+def _unaligned_intervals(program: S.Program, profile) -> list[Finding]:
+    """OCB006: a constant `DataInterval` that divides neither an hour nor a day (`7 Min`, `25 Hr`).
+    Its records are phased from the start hour and may not align with midnight (hardware,
+    `knowledge/crbasic/lessons.md` "`DataInterval` phase"). Information only; an interval of 0
+    (every call) is not reported."""
+    env, out = consteval.Env(profile, dict(program.consts)), []
+    for st in _statements(program):
+        if not (isinstance(st, S.Instruction) and st.keyword.upper() == "DATAINTERVAL") or len(st.args) < 3:
+            continue
+        try:
+            value, unit = consteval.value_of(st.args[1], env), consteval.value_of(st.args[2], env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or unit not in _US_PER_UNIT:
+            continue
+        us = value * _US_PER_UNIT[unit]
+        if us <= 0 or us != int(us) or 3_600_000_000 % int(us) == 0 or 86_400_000_000 % int(us) == 0:
+            continue
+        out.append(Finding("OCB006", "info", st.line, st.file,
+                           "DataInterval divides neither an hour nor a day; its records are phased "
+                           "from the start hour and may not align with midnight."))
+    return out
+
+
 def run(program: S.Program | None, profile) -> list[Finding]:
-    return [] if program is None else _alias_keyword(program, profile)
+    if program is None:
+        return []
+    return [f for check in (_alias_keyword, _numeric_concatenation, _negative_delays, _zero_divisors,
+                                        _unsized_string_parameters, _unaligned_intervals)
+            for f in check(program, profile)]
 
 
 def analyze(result, entry: Path, config: checkconfig.Config | None = None,
@@ -127,4 +270,21 @@ def report(result, program: str, strict: bool, config_file: Path | None, config_
         "config": {"file": str(config_file) if config_file else None, "error": config_error},
         "findings": [item(f) for f in result.findings],
         "suppressed": [{**item(f), "reason": f.reason} for f in result.suppressed],
+    }
+
+
+def missing_program_report(program: str, logger: str, strict: bool) -> dict:
+    """The `crbc --report` document when the entry file does not exist: the reference's `No Program
+    File` failure, no checks run."""
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "program": program,
+        "logger": logger,
+        "reference": {"ok": False, "mode": None,
+                      "diagnostics": [{"severity": "error", "file": program, "line": None,
+                                       "message": "No Program File"}]},
+        "strict": strict,
+        "config": {"file": None, "error": None},
+        "findings": [],
+        "suppressed": [],
     }

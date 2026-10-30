@@ -9,7 +9,8 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67). Use Git to check publication
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006). Use Git to check
+publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -112,6 +113,23 @@ later cascade lines after an overflowing measurement Reps), rules in
   ([review](docs/first-error-review.md#round-67-ledger-completion)). Fresh seeds 471/472 (round-66
   code) and 473/474 (round-67 code before the String-size fix) had no verdict or mode difference
   apart from that false accept, which their first-error triage exposed.
+**M3 checks** (after round 66). Five opencrbasic checks join `OCB001`, each on a form the
+reference accepts on all four loggers (`tests/fixtures/m3_check_evidence.json`, 196 observations
+of positive forms and accepted controls), with positive tests, controls and a documented default
+([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb006-m3)):
+- `OCB002` (warning): a numeric variable assigned a `+`/`&` chain mixing numeric and String
+  operands (`L = 2000 + Mid(S,5,2)`; hardware lesson). Strings joined into a number's text
+  (`HexStr(6) + "." + HexStr(7)`, deliberate in GEUS programs) are not reported;
+- `OCB003` (warning): a constant negative `Delay` interval or `ExciteV` delay (human proposal
+  2026-10-28);
+- `OCB004` (warning): a division by a constant zero;
+- `OCB005` (info): an unsized `String` routine parameter (23 characters; hardware lesson);
+- `OCB006` (info): a constant `DataInterval` dividing neither an hour nor a day (hardware lesson).
+None fires on the FirnMelt programs in `crbasic/`, the accepted CHM examples or the 66 GEUS
+programs (`test_firnmelt_programs_have_no_findings`). `crbc --report` now also writes a report
+when the entry file is missing; `crbc --strict` with only warnings keeps exit 0
+(`test_warning_checks_keep_exit_zero`). The check `OCB002` in an existing configuration test was
+renamed `OCB099` (an unknown code).
 
 **Round 66** (M2, single agent). The realistic first-error candidate left by seeds 469/470: a swapped
 `IncludeSection("CPU:ShuntLib.crb","Definitions")` (`6b414530e683`). On CR6/CR1000X an
@@ -443,9 +461,11 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    - the `Status` lesson was corrected after the old observation could not be reproduced
      ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked));
    - an `--strict` error for aliases named after CRBasic names (`OCB001`, round 33).
-3. **M3, remaining:** the language server does not run checks yet (M6: call `checks.analyze` with
-   its settings, put the configuration in the cache key); a missing entry file writes no report;
-   then the next checks from the PLAN table.
+3. **M3, status:** checks `OCB001`-`OCB006` shipped with the framework (codes, severities,
+   `opencrbasic.toml`, `--strict`, `--report`, `CompileResult.findings`). Remaining PLAN candidates
+   need a reference probe first, or (the constant index past the declared storage) alias,
+   flattened and String-index handling. The language server does not run checks yet: that is M6
+   (call `checks.analyze` with its settings, put the configuration in the cache key).
 4. **M1, remaining false accepts.** Under the [M1 gate scope](PLAN.md#v10-milestones) (human
    decision 2026-10-28) only relevant-set cases block M1, and none is open after round 57. The 25 left
    on CR6/CR1000X in the replay are not gated (instructions neither FirnMelt nor GEUS uses). Round

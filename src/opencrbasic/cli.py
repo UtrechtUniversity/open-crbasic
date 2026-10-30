@@ -217,6 +217,10 @@ def main(argv: list[str] | None = None) -> int:
         print("\n".join(lines))
         if opts["message_file"]:
             _write_message_file(message_path, lines)
+        if opts["report"]:
+            from . import checks
+            _write_report(opts["report"], checks.missing_program_report(
+                program.name, profile.name, opts["strict"]))
         return 1
 
     if opts["p"]:
@@ -296,6 +300,13 @@ def main(argv: list[str] | None = None) -> int:
     return status
 
 
+def _write_report(path: str, report: dict) -> None:
+    try:
+        Path(path).write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    except OSError as e:
+        print(f"opencrbasic: cannot write report: {e}", file=sys.stderr)
+
+
 def _run_checks(opts: _Options, result, program: Path, status: int) -> int:
     """opencrbasic checks (`checks.py`), after the reference output is final: stderr and the
     report file only, and the exit status moves from 0 only (3: a check error, 4: invalid check
@@ -315,12 +326,7 @@ def _run_checks(opts: _Options, result, program: Path, status: int) -> int:
         for f in result.findings:
             print(f.text(program.name), file=sys.stderr)
     if opts["report"]:
-        try:
-            Path(opts["report"]).write_text(
-                json.dumps(checks.report(result, program.name, opts["strict"], config_file, error), indent=2) + "\n",
-                encoding="utf-8")
-        except OSError as e:
-            print(f"opencrbasic: cannot write report: {e}", file=sys.stderr)
+        _write_report(opts["report"], checks.report(result, program.name, opts["strict"], config_file, error))
     if status == 0 and opts["strict"]:
         if error:
             return 4
