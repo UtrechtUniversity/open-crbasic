@@ -242,7 +242,8 @@ is unchanged. With `crbc --strict`:
   stay byte-identical;
 - the exit status keeps 0/1 for the reference verdict and is 3 for "reference accepted, strict
   error";
-- a JSON report file (`--report FILE`) and coverage notices are not implemented yet.
+- `--report FILE` writes a JSON report (round 52, `docs/checker.md` "Check configuration and report
+  file"); coverage notices are not implemented yet (M4).
 
 `openloggernet/src/openloggernet/cr6comp.py` judges success from the output text, so strict findings must never appear in
 stdout. `--strict` does not imply `-u`; the language server enables `-u`-equivalent unused warnings
@@ -301,8 +302,8 @@ Decide per *rule* (an instruction option, argument range or construct), not per 
 
 ### opencrbasic check candidates
 
-The reference behavior below is from 2026-10-24 CR6 probes (`scratch/r32/lint/`); the other
-profiles are not probed yet. "Not probed" rows have no reference observation. Each check needs its
+The reference behavior below is from 2026-10-24 CR6 probes (`scratch/r32/lint/`) unless a row gives
+its profiles and a later date. "Not probed" rows have no reference observation. Each check needs its
 exact form probed before it is implemented.
 
 | Candidate | Reference CR6 | Evidence and boundary |
@@ -310,11 +311,11 @@ exact form probed before it is implemented.
 | `Alias` named after an instruction, function, system table, keyword or special value (`Alias D(3)=Status`) | compiles, all four (2026-10-24) | **shipped as `OCB001`, error, default on under `--strict`** (human request 2026-10-24); the name shadows the original ([checker notes](docs/checker.md#alias-names-that-are-crbasic-names-round-33)). Predefined CONSTs are reference errors and excluded |
 | Constant index past the declared storage (`A(7)` on `A(6)`) | compiles | outside the declaration; the runtime effect is not observed. Must resolve scope, aliases with backing storage (`docs/checker.md` round 30), flattened multidimensional indexing and String character indices |
 | Whole array to a `Function` parameter whose body uses more than one element | compiles | only the first element arrives (`functionendfunction.htm`, [lessons](../knowledge/crbasic/lessons.md#arrays-passed-to-helpers)); exclude pointer parameters and scalar intent |
-| A String-producing `+` feeding a numeric destination (`L = 2000 + Mid(...)`) | compiles, all four (2026-10-30) | **shipped as `OCB002`, warning** ([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb006-m3)); only chains mixing numeric and String operands, since GEUS programs join Strings into a number's text on purpose. Feeding arithmetic (`(2000 + Mid(...)) * 2`) is a reference error since round 65 |
-| Measurement-task `PortSet` (no processing-task option) under a runtime condition | compiles | stays sequencer-controlled ([lessons](../knowledge/crbasic/lessons.md#conditional-digital-output)); `PortSet(...,...,1)` runs in the processing task (`portset.htm`) and is excluded |
-| String literal longer than the proven destination capacity | compiles | silent truncation; capacity follows the round-29 slot rule and the `String * 1` case (`dim.htm`) |
+| A String-producing `+` feeding a numeric destination (`L = 2000 + Mid(...)`) | compiles, all four (2026-10-30) | **shipped as `OCB002`, warning** ([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3)); only chains mixing numeric and String operands, since GEUS programs join Strings into a number's text on purpose. Feeding arithmetic (`(2000 + Mid(...)) * 2`) is a reference error since round 65 |
+| Measurement-task `PortSet` (no processing-task option) under a runtime condition | not a defect the reference accepts (2026-10-30): SequentialMode on CR6/CR1000X, a reference error under `PipelineMode`; no Option on CR300/CR350 | **closed, no check** ([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3)); the conditional works in SequentialMode (`sequentialmodepipeli2.htm`) |
+| String literal longer than the proven destination capacity | compiles, all four (2026-10-30) | **shipped as `OCB007`, warning**; capacity follows the round-29 slot rule and the `String * 1` case (`dim.htm`); the runtime truncation is not observed |
 | Runtime division by a literal zero | compiles, all four (2026-10-30) | **shipped as `OCB004`, warning**; a constant zero divisor including a `Const` or a fold; compile-time rejections stay in the reference channel |
-| Negative or wrapped delay: `Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`, `ExciteV(Vx1,0,-10)` | compiles, all four (2026-10-30) | **shipped as `OCB003`, warning**, for a constant negative interval (human proposal 2026-10-28; [round 57](docs/checker.md#task-memory-overflow-of-long-delays-round-57)). Not shipped: a `Delay` interval of 2^31 or more. The runtime effect is not observed; delay 0 is legitimate |
+| Negative or wrapped delay: `Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`, `ExciteV(Vx1,0,-10)` | `Delay` forms compile, all four; negative `ExciteV` compiles on CR300/CR350 only, a reference error on CR6/CR1000X (2026-10-30) | **shipped as `OCB003`, warning**, for a constant negative interval (human proposal 2026-10-28; [round 57](docs/checker.md#task-memory-overflow-of-long-delays-round-57)). Not shipped: a `Delay` interval of 2^31 or more. The runtime effect is not observed; delay 0 is legitimate |
 | `DataInterval` that divides neither an hour nor a day | compiles, all four (2026-10-30) | **shipped as `OCB006`, info**; respects `Interval=0` and offsets ([lessons](../knowledge/crbasic/lessons.md#datainterval-phase), `datainterval.htm`) |
 | Unsized `String` parameter | compiles, all four (2026-10-30) | **shipped as `OCB005`, info**; 23-character limit ([lessons](../knowledge/crbasic/lessons.md#default-string-parameter-size)), escalate only with a proven longer argument |
 | Derived constant inside `ConstTable` that depends on another editable field | not probed | not recomputed ([lessons](../knowledge/crbasic/lessons.md#derived-constants-in-consttable)) |
@@ -350,12 +351,13 @@ review. M1 and M2 are re-estimated after their family triage.
 | M6 | Editor | Carry channel, code and evidence link through the analysis result, worker serialization, per-entry composition and publication. Match quick fixes by code rather than text | LSP tests: unsaved includes, several entry contexts, configuration changes clearing findings, stale results, partial syntax suppressing unsound checks, strict errors not disabling formatting | 1–2 |
 | M7 | Internal release | Version policy for the package, `__version__`, VSIX and facade API; installed-package check (`tools/lsp_install_check.py`); README on channels, scope and the accepted-difference normalization. Internal use only (`docs/legal.md`) | Tagged v1.0 with revision, configuration, corpus hashes, commands, known failures and exclusions recorded | 1 |
 
-**Status (2026-10-30, round 69).** M0 done. **M1 and M2 done**: signed off by the Codex `gpt-6.1-sol`
+**Status (2026-10-30, round 70).** M0 done. **M1 and M2 done**: signed off by the Codex `gpt-6.1-sol`
 read-only review of round 68 (M2 complete; `scratch/r68/codex-signoff.log`, local only) after round
 69 removed the last M1 blocker, an implementation exception on numbers beyond the float range. The
 evidence and remaining listed cases are in `PROGRESS.md` ("Round 69") and the
-[first-error review](docs/first-error-review.md). M3: checks `OCB001`-`OCB006` shipped, work
-continues. M4-M7 not started.
+[first-error review](docs/first-error-review.md). **M3 done (round 70)**: checks
+`OCB001`-`OCB007` meet the exit criterion, signed off by a Codex `gpt-6.1-sol` read-only review
+(`scratch/m3b/codex-review3.log`, local only); see `PROGRESS.md` "Round 70". M4-M7 not started.
 
 Total: about 12–22 rounds, against an open-ended 20–40+ for full parity.
 

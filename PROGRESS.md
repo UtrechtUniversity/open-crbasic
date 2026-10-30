@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-30 after development round 69; M1 and M2 done** (round-51
+Current compiler state and handoff, updated **2026-10-30 after development round 70; M1 and M2 done** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -92,6 +92,37 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 70: M3 done** (single agent; Codex `gpt-6.1-sol` sign-off after two fix rounds,
+`scratch/m3b/codex-review3.log`). Each shipped check was re-checked against the
+[M3 exit criterion](PLAN.md#v10-milestones):
+- **Evidence gap fixed:** `OCB003` also fires on a negative `ExciteV` delay, but the fixture had no
+  `ExciteV` observation and PLAN said it compiles on all four loggers. It does not: on CR6 (`U1`)
+  and CR1000X (`Vx1`) it is the reference error `Program too big for task memory`, which
+  opencrbasic already reproduces; it compiles on CR300/CR350, so the `ExciteV` part applies there
+  only. A fraction of a microsecond below zero (`ExciteV(U1,0,-0.9)` compiles on CR6 where `-1` does
+  not) is no longer reported. `OCB004` now cites `datatypes.htm` (undefined mathematical results
+  give NAN or INF).
+- **Scope false positives fixed** (Codex review): `OCB002` and `OCB007` skip a destination or
+  operand name declared more than once (a String parameter shadowing a global `Long`, a `Dim` in
+  two routines) or used in an `Alias`, also nested in an operand (`IIF(1,S,S)`); `OCB003`,
+  `OCB004`, `OCB006` and `OCB007` no longer fold a `Const` that a parameter or variable of the same
+  name shadows; oracle controls added.
+- **Reference-channel false accept found, not fixed (outside M3):** a routine parameter used as a
+  `Delay` unit while a later global `Const` has the same name (`Sub P(U As Long)` / `Delay(1,-0.9,U)`
+  / `Const U=Sec`) is `Variable illegal in Parameter: U.` on all four loggers; opencrbasic compiles it
+  (it folds the global `Const`). Without the `Const` it matches. Probe: `scratch/m3b/scope3.txt`.
+- **New check `OCB007` (warning):** a String literal longer than its destination holds
+  (`S = "<36>"` on `String * 32`, `C = "ab"` on `String * 1`); accepted on all four loggers, capacity
+  from the round-29 slot rule and `dim.htm`.
+- **Closed without a check:** a measurement-task `PortSet` in a conditional is handled by the
+  reference itself (SequentialMode, or an error under `PipelineMode`).
+- **Tests added:** 99 new fixture observations (`m3_check_evidence.json`, now 295), the CHM and
+  GEUS corpora (`test_corpus_findings_are_justified`: only the justified `OCB001` on
+  `QAS_B_LoggerProgramV2.CR1X`), and `openloggernet.cr6comp.compile_program` under
+  `CR6COMP=opencrbasic` with a firing check and an invalid `opencrbasic.toml`
+  (`test_cr6comp_native_command_runs_no_checks`).
+Probe inputs and recorder: `scratch/m3b/` (local only).
+
 **Round 69: M1 and M2 done.** The Codex `gpt-6.1-sol` sign-off review of round 68
 (`scratch/r68/codex-signoff.log`, local only) found every earlier finding resolved and signed off
 **M2 complete**; for M1 it confirmed two remaining implementation exceptions on numbers beyond the
@@ -151,7 +182,7 @@ later cascade lines after an overflowing measurement Reps), rules in
 **M3 checks** (after round 66). Five opencrbasic checks join `OCB001`, each on a form the
 reference accepts on all four loggers (`tests/fixtures/m3_check_evidence.json`, 196 observations
 of positive forms and accepted controls), with positive tests, controls and a documented default
-([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb006-m3)):
+([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3)):
 - `OCB002` (warning): a numeric variable assigned a `+`/`&` chain mixing numeric and String
   operands (`L = 2000 + Mid(S,5,2)`; hardware lesson). Strings joined into a number's text
   (`HexStr(6) + "." + HexStr(7)`, deliberate in GEUS programs) are not reported;
@@ -496,12 +527,14 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    - the `Status` lesson was corrected after the old observation could not be reproduced
      ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked));
    - an `--strict` error for aliases named after CRBasic names (`OCB001`, round 33).
-3. **M3, status:** checks `OCB001`-`OCB006` shipped with the framework (codes, severities,
+3. **M3: done (round 70).** Checks `OCB001`-`OCB007` ship with the framework (codes, severities,
    `opencrbasic.toml`, `--strict`, `--report`, `CompileResult.findings`). Remaining PLAN candidates
-   need a reference probe first, or (the constant index past the declared storage) alias,
-   flattened and String-index handling. The language server does not run checks yet: that is M6
+   need a reference probe first, value or flow analysis, or (the constant index past the declared
+   storage) alias, flattened and String-index handling. Open reference-channel false accept from
+   round 70: a parameter used as a `Delay` unit with a later same-name global `Const`. The language server does not run checks yet: that is M6
    (call `checks.analyze` with its settings, put the configuration in the cache key).
-4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X; the 25 replay
+4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X except the
+   round-70 `Delay` unit shadowed by a later `Const` (item 3, found after sign-off); the 25 replay
    false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
    `51f39a5f2393`, `7b4b2177d56b`, `870ca9a9562e`, `e8c854e3493d`, `a0b2b0b059b3`, `ec6b11bc3176`,
    `022d98dd3efc`, `4156d89a014d`, `6ac24bd775f1`, `72f95eac103f`, `77636b10567c`, `7f9efa8af42c`,

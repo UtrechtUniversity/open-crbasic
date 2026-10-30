@@ -9500,27 +9500,42 @@ two defects and several open first errors; all were probed on all four profiles
   such literals (a crash or a hang), so only the absence of an implementation exception is tested
   (`tests/test_huge_literals.py`, 848 compiles over Delay, ExciteV, PortSet, VoltSe, SerialOpen,
   FTPClient, SubScan, table Reps, DataInterval, Dim, Const and Scan on all four profiles).
-## opencrbasic checks OCB002-OCB005 (M3)
-## opencrbasic checks OCB002-OCB006 (M3)
 
-Five checks join `OCB001` in `checks.py`. Each fires only on a program the reference accepts,
-and each form below compiles on all four loggers (oracle, 2026-10-30,
-`tests/fixtures/m3_check_evidence.json`, 196 observations of positive forms and accepted
-controls). Default severity `warning`: `crbc --strict` prints them and keeps exit 0, so they never
+## opencrbasic checks OCB002-OCB007 (M3)
+
+Six checks join `OCB001` in `checks.py`. Each fires only on a program the reference accepts,
+and each form below compiles on every profile it is listed for (oracle, 2026-10-30,
+`tests/fixtures/m3_check_evidence.json`, 295 observations of positive forms and accepted
+controls; all four loggers unless a row says otherwise). Default severity `warning` unless the
+row says `info`: `crbc --strict` prints them and keeps exit 0, so they never
 block a build unless a project raises them to `error` in `opencrbasic.toml`. None fires on the
-FirnMelt programs in `crbasic/`, the accepted CHM examples or the GEUS corpus (2026-10-30).
+FirnMelt programs in `crbasic/` or the accepted CHM examples; in the GEUS corpus only `OCB001` fires,
+on the `Alias D2out(3)= Status` it was made for (`test_corpus_findings_are_justified`, 2026-10-30).
 
 | Code | Fires on | Evidence that it is wrong | Does not fire on |
 |---|---|---|---|
-| `OCB002` | an assignment to a numeric variable of a `+`/`&` chain that mixes numeric and String operands (`L = 2000 + Mid(S,5,2)`, `X = "1" + Y`, `B = S + 1`), also in a one-line `If` | `+` with a String operand concatenates; a GPS clock set from `2000 + Mid(...)` read 2057 (hardware, [lessons](../../knowledge/crbasic/lessons.md#-with-a-string-operand-concatenates)) | a String destination; a String alone (`X = Mid(...)`); Strings joined into a number's text (`X = HexStr(6) + "." + HexStr(7)`, used on purpose in GEUS programs); a `-` (numeric) |
-| `OCB003` | a constant negative interval of `Delay` (`Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`) or a negative `ExciteV` delay | the compiler keeps the delay as an unsigned 32-bit microsecond count ([round 57](#task-memory-overflow-of-long-delays-round-57)); human proposal 2026-10-28. The runtime effect is not observed | a zero or positive delay; most negative `Delay(0,...)`, which are reference errors |
-| `OCB004` | a division (`/`, `\`, `MOD`) by a constant zero, including a `Const` or a folded expression (`Y / (1 - 1)`) | the value at runtime is not established; constant folds differ by profile | a constant zero dividend (`0 / Y`) and non-zero divisors |
+| `OCB002` | an assignment to a numeric variable of a `+`/`&` chain that mixes numeric and String operands (`L = 2000 + Mid(S,5,2)`, `X = "1" + Y`, `B = S + 1`), also in a one-line `If` | `+` with a String operand concatenates; a GPS clock set from `2000 + Mid(...)` read 2057 (hardware, [lessons](../../knowledge/crbasic/lessons.md#-with-a-string-operand-concatenates)) | a String destination; a String alone (`X = Mid(...)`); Strings joined into a number's text (`X = HexStr(6) + "." + HexStr(7)`, used on purpose in GEUS programs); a `-` (numeric); a destination or operand name declared more than once or used in an `Alias` (a String parameter `X` shadowing a global `Long X`) |
+| `OCB003` | a constant negative interval of `Delay` (`Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`) or, on CR300/CR350, a negative `ExciteV` delay (`ExciteV(Vx1,0,-10)`), at least one microsecond below zero (`Delay(1,-0.1,Sec)` too) | the compiler keeps the delay as an unsigned 32-bit microsecond count ([round 57](#task-memory-overflow-of-long-delays-round-57)); human proposal 2026-10-28. The runtime effect is not observed | a zero or positive delay; a fraction of a microsecond below zero (`Delay(1,-0.9,uSec)`, `ExciteV(U1,0,-0.9)` on CR6, which compiles while `-1` does not, so it is not shown to wrap); most negative `Delay(0,...)`, and every `ExciteV` delay of `-1` or less on CR6 (`U1`) and CR1000X (`Vx1`): `Program too big for task memory`, reference errors that opencrbasic reproduces |
+| `OCB004` | a division (`/`, `\`, `MOD`) by a constant zero, including a `Const` or a folded expression (`Y / (1 - 1)`) | the result is undefined for every dividend: undefined mathematical results give NAN or INF (`datatypes.htm`); the runtime value is not observed | a constant zero dividend (`0 / Y`) and non-zero divisors |
 | `OCB005` (`info`) | a `Sub`/`Function` `String` parameter without `* size`, also an `Optional` one | it holds 23 characters and a longer argument is cut (hardware, [lessons](../../knowledge/crbasic/lessons.md#default-string-parameter-size)) | a sized `String` parameter; numeric parameters; a `Function ... As String` return type |
 | `OCB006` (`info`) | a constant `DataInterval` that divides neither an hour nor a day (`7 Min`, `7000 Sec`, `25 Hr`), with any offset | records are phased from the start hour and may not align with midnight (hardware, [lessons](../../knowledge/crbasic/lessons.md#datainterval-phase)) | an interval of 0; one dividing an hour or a day (`45 Min`, `2 Hr`, `1 Day`) |
+| `OCB007` | a String literal assigned to a String variable or element that cannot hold it (`S = "<36 characters>"` on `String * 32`, `C = "ab"` on `String * 1`, `T(2) = "<12>"` on `T(3) As String * 8`, the default 23), also in a one-line `If` | the size is the most characters the variable holds (`dim.htm`, `public.htm`). The capacity used is the larger reading, the round-29 storage slot `4*ceil(max(4,L+1)/4) - 1` ([String alias storage](#string-alias-storage-round-29)), not the CHM's `L - 1`; `String * 1` holds one character (`dim.htm`). The runtime truncation is not observed | a literal that fits the slot (35 on `* 32`, 11 on `* 8`); a numeric destination; a joined expression (`S = "a" + "..."`); names declared more than once (`Dim W` in two routines, a global and a parameter) or used in an `Alias`, and character indices |
+
+`OCB003`, `OCB004`, `OCB006` and `OCB007` fold only constants that no variable or routine parameter
+of the same name can shadow (`Sub P(Z As Long)` with a later `Const Z = 0` is not a zero divisor).
+
+Probed and not shipped (oracle, 2026-10-30, round 70):
+- a measurement-task `PortSet` under a runtime condition is not a reference accept: `PortSet(C1,1,0)`
+  or `PortSet(C1,1)` in an `If`, `ElseIf`, `Else` or `Select Case` makes the program compile in
+  SequentialMode on CR6/CR1000X, where the conditional works (`sequentialmodepipeli2.htm` example),
+  and under `PipelineMode` it is the reference error `PortSet not allowed inside of a conditional
+  statement in PipeLine Mode.`. CR300/CR350 have no Option parameter (`Too many parameters`) and no
+  modes. opencrbasic reproduces these verdicts; no check is needed.
 
 Not shipped from the candidate list: the constant index past the declared storage (`A(7)` on
 `A(6)`) needs alias, flattened and String-index handling first; the others in
-[PLAN](../PLAN.md#opencrbasic-check-candidates) still lack a reference probe.
+[PLAN](../PLAN.md#opencrbasic-check-candidates) still lack a reference probe or need value or flow
+analysis.
 
 `crbc --report` also writes the report when the entry file does not exist: the reference's `No
 Program File` failure with `line` null and no findings (M3, `test_report_of_a_missing_program`).

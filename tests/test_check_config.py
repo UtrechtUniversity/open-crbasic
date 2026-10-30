@@ -179,6 +179,23 @@ def test_no_message_file_and_exit_codes(tmp_path):
     assert bad.returncode == 1 and "configuration error" in bad.stderr           # reference verdict kept
 
 
+def test_cr6comp_native_command_runs_no_checks(tmp_path):
+    """`openloggernet.cr6comp.compile_program` with `CR6COMP=opencrbasic` judges success from the
+    output text: a firing check and an invalid `opencrbasic.toml` change nothing there."""
+    repo = Path(__file__).resolve().parents[2]
+    (tmp_path / "opencrbasic").mkdir()
+    (tmp_path / "opencrbasic" / "src").symlink_to(repo / "opencrbasic" / "src")
+    (tmp_path / "t.CR6").write_text(SRC)
+    (tmp_path / checkconfig.FILE_NAME).write_text('[checks]\nOCB001 = "fatal"\n')
+    run = subprocess.run(
+        [sys.executable, "-c", "import sys; from pathlib import Path; from openloggernet import cr6comp; "
+         "print(cr6comp.compile_program(Path(sys.argv[1])))", str(tmp_path / "t.CR6")],
+        capture_output=True, text=True,
+        env={"PYTHONPATH": str(repo / "openloggernet" / "src"), "CR6COMP": "opencrbasic"})
+    assert run.stdout == "(True, 't.CR6 -- Compiled in PipelineMode.')\n", run.stderr
+    assert not (tmp_path / "CR6cmple.xxx").exists()
+
+
 @pytest.mark.parametrize("toml", ['[checks]\nOCB001 = "fatal"\n', '[[suppress]]\ncode = "OCB001"\nfile = "t.CR6"\n'])
 def test_config_error_on_stderr_only(tmp_path, toml):
     (tmp_path / "t.CR6").write_text(SRC)

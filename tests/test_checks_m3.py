@@ -1,4 +1,4 @@
-"""OCB002-OCB006 (`checks.py`): each form the reference accepts on all four loggers fires, each
+"""OCB002-OCB007 (`checks.py`): each form the reference accepts fires on every profile where it compiles, each
 accepted control does not (`tests/fixtures/m3_check_evidence.json`, oracle 2026-10-30)."""
 
 import json
@@ -32,7 +32,24 @@ def test_firnmelt_programs_have_no_findings(logger):
             assert [f for f in checks.run(result.program_ast, result.profile)] == [], path.name
 
 
+@pytest.mark.slow
+def test_corpus_findings_are_justified():
+    """Accepted CHM examples and GEUS programs: the one firing is OCB001 on a GEUS `Alias
+    D2out(3)= Status`, the case the check was made for (`docs/checker.md` "Alias names that are
+    CRBasic names (round 33)")."""
+    repo = Path(__file__).resolve().parents[2]
+    corpora = [("cr6", sorted((Path(__file__).parent / "corpus" / "chm").glob("*.CR6"))),
+               ("cr1000x", sorted((repo / "examples" / "Logger Programs").rglob("*.CR1X")))]
+    found = []
+    for logger, paths in corpora:
+        for path in paths:
+            result = compile_file(path, profiles.get(logger), display_name=path.name, provenance=False)
+            if result.ok:
+                found += [(path.name, f.code) for f in checks.run(result.program_ast, result.profile)]
+    assert found == [("QAS_B_LoggerProgramV2.CR1X", "OCB001")]
+
+
 def test_default_severities_are_documented():
     assert checks.DEFAULT_SEVERITY == {"OCB001": "error", "OCB002": "warning", "OCB003": "warning",
                                        "OCB004": "warning", "OCB005": "info",
-                                       "OCB006": "info"}
+                                       "OCB006": "info", "OCB007": "warning"}
