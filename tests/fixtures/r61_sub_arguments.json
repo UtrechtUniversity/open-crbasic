@@ -740,64 +740,56 @@
       "logger": "cr6",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nX=F(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2).",
-      "not_modelled": "Function expression malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2)."
     },
     {
       "id": "function-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nX=F(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2).",
-      "not_modelled": "Function expression malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2)."
     },
     {
       "id": "function-cr300",
       "logger": "cr300",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nX=F(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2)\n.",
-      "not_modelled": "Function expression malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2)\n."
     },
     {
       "id": "function-cr350",
       "logger": "cr350",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nX=F(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2)\n.",
-      "not_modelled": "Function expression malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: X=F(1 2)\n."
     },
     {
       "id": "function_stmt-cr6",
       "logger": "cr6",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2).",
-      "not_modelled": "Function statement malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2)."
     },
     {
       "id": "function_stmt-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2).",
-      "not_modelled": "Function statement malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2)."
     },
     {
       "id": "function_stmt-cr300",
       "logger": "cr300",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2)\n.",
-      "not_modelled": "Function statement malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2)\n."
     },
     {
       "id": "function_stmt-cr350",
       "logger": "cr350",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2)\n.",
-      "not_modelled": "Function statement malformed argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression: F(1 2)\n."
     },
     {
       "id": "operator-cr6",

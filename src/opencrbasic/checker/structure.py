@@ -1487,6 +1487,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             pass
         elif isinstance(stmt, S.Unparsed) and _logical_assign_accepted(stmt, program, profile):
             pass  # compiles (`X AND Y = 1`); only its string operands are reported, in pass 2
+        elif isinstance(stmt, S.Unparsed) and (messages := _function_syntax_findings(stmt, program, profile)):
+            for message in messages:
+                diags.error(stmt.line, message, stmt.file)
         elif isinstance(stmt, S.Unparsed) and (messages := _routine_arg_findings(stmt, program, profile)):
             for message in messages:
                 diags.error(stmt.line, message, stmt.file)
@@ -2130,7 +2133,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
-            if _routine_arg_findings(stmt, program, profile):
+            if _routine_arg_findings(stmt, program, profile) or _function_syntax_findings(stmt, program, profile):
                 continue  # the argument's pass-1 error already owns this call
             if before_bp and not in_body_block and not in_table and not in_decl_block and \
                     _before_beginprog_name(stmt, "UNPARSED", profile, set()):
@@ -3104,6 +3107,42 @@ class _Everything:
     """A name set that contains every name: `_scan_expr` then reports syntax problems only."""
     def __contains__(self, item) -> bool:
         return True
+
+
+def _function_syntax_findings(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:
+    """A one-parameter user Function is read as an expression, even as a statement (round 62).
+
+    Unlike a Sub argument, an adjacent operand in its last slot names the whole expression
+    as unmatched. Keep other arities and explicit Call on their existing paths.
+    """
+    functions = {}
+    for st in program.statements:
+        if profile.single_pass and st is stmt:
+            break
+        if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION" and len(st.params) == 1:
+            functions[st.name.upper()] = {"nargs": 1}
+    if not functions:
+        return []
+    try:
+        toks = [t for t in lexer.tokenize(stmt.text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return []
+    start = 2 if len(toks) > 2 and toks[0].kind == "IDENT" and toks[1].text == "=" else 0
+    if (len(toks) <= start + 1 or toks[start].kind != "IDENT"
+            or toks[start].upper not in functions or toks[start + 1].text != "("):
+        return []
+    operands = pass1_operands(program, profile)
+    functions = {**profile.functions, **functions}
+    if _scan_expr(toks, 0, operands, functions, assign=True, start_operand=False) != ("pass1", "no_matching"):
+        return []
+    messages = []
+    if profile.single_pass:
+        unknown = [t for t in toks if t.kind == "IDENT" and t.upper not in operands
+                   and t.upper not in functions and t.upper not in _BINARY_WORDS and t.upper != "NOT"]
+        if unknown and (len(unknown) > 1 or any(t.text == "(" for t in toks[toks.index(unknown[0]) + 1:])):
+            return []
+        messages.extend(profile.unresolved_symbol_message.format(name=t.text) for t in unknown)
+    return messages + [_no_matching(profile, stmt.text, stmt.at_eol)]
 
 
 def _routine_arg_findings(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:

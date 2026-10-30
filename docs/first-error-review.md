@@ -129,10 +129,28 @@ arguments. The argument expression now owns the diagnostic on all four profiles.
 fixture `r61_sub_arguments.json` retains neighboring forms and valid-call/arity controls;
 [the checker notes](checker.md#malformed-sub-arguments-round-61) identify the bounded rule.
 
-This does not close the interrupted-continuation family: `a31a74073f76`, `15bc1b5cb20a`,
+At the end of round 61, the interrupted-continuation family remained open: `a31a74073f76`, `15bc1b5cb20a`,
 `e816abac4b12` and `53f4ed873761` remain candidates. Unknown-name ordering, nested function
 syntax, inline calls and trailing tokens remain separate paths. No realism decision or saved
 replay baseline was changed. M2 remains open.
+
+## Round-62 Function-expression follow-up
+
+CR6 `a31a74073f76` now matches exactly. `LogDebug` is declared as a Function in `BenchLib.crb`;
+the deleted continuation line therefore exposes a Function expression error, which echoes the
+whole statement. A new CR6 reference run with current siblings confirmed the saved output.
+The bounded rule covers unparsed calls and assignments to one-parameter user Functions,
+including profile-specific newline and final unresolved-scalar behavior. Explicit `Call` stays
+on its existing argument path. [Checker rule and evidence](checker.md#user-function-expression-syntax-round-62).
+
+Round-60 corpus replay now also matches CR6 `1822097cb726`, `e816abac4b12`, `36a0db0a73f4`,
+`15bc1b5cb20a` and CR1000X `dce5f0264db1` exactly. The missing nested `IIF` argument
+(`d6479ed3f595`) and CR1000X moved-continuation case (`53f4ed873761`) still differ and are next
+candidates; their reference messages must be isolated before extending the rule.
+
+The strict round-62 fixture preserves unfinished Sub and nested-built-in syntax gaps. No saved
+replay baseline or realism decisions were changed. The other round-60 families still require
+triage; this does not close M2.
 
 ## Round-59 realism triage
 

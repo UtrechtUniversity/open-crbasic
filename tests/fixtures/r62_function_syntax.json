@@ -1,0 +1,2347 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "sub-literal-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-literal-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-literal-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-literal-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\"\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-literal_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_plus-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: \"a\" +\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_plus-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: \"a\" +\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_plus-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: \"a\" +\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_plus-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: \"a\" +\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-arithmetic-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-arithmetic-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-arithmetic-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-arithmetic-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-arithmetic_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + X EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-arithmetic_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + X EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-arithmetic_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + X EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-arithmetic_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + X EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-literal_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-nested_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_known-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_known-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_known-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_known-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_unknown-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") Nope\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_unknown-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") Nope\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_unknown-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") Nope\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_unknown-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") Nope\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_known-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_known-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_known-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_known-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) X\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-abs_only-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-abs_only-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-abs_only-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-abs_only-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-group_only-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-group_only-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-group_only-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-group_only-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-group_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: (X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: (X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: (X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: (X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_bad-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: (1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_bad-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: (1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_bad-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: (1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-group_bad-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: (1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-explicit_nested_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall S(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-explicit_nested_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall S(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-explicit_nested_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall S(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-explicit_nested_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall S(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-closed_nested_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-closed_nested_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-closed_nested_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-closed_nested_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-closed_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"."
+    },
+    {
+      "id": "sub-closed_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"."
+    },
+    {
+      "id": "sub-closed_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"."
+    },
+    {
+      "id": "sub-closed_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\"."
+    },
+    {
+      "id": "sub-closed_valid-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-closed_valid-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sub-closed_valid-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-closed_valid-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sub-continued_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_literal-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_literal-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_literal-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_literal-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: \"a\" EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_number-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 1 EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 1 EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_number-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: 1 EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_number-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: 1 EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_abs-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_abs-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_abs-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-continued_abs-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\" .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-comment_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-colon_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub .",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-second_unclosed-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-second_unclosed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-second_unclosed-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-second_unclosed-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_unclosed-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_unclosed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_unclosed-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_unclosed-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_missing_comma-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : FormatFloat(X \"%f\")\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_missing_comma-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : FormatFloat(X \"%f\")\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_missing_comma-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : FormatFloat(X \"%f\")\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-nested_missing_comma-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nS(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : FormatFloat(X \"%f\")\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "sub-two_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction and expression echoes remain outside the Function rule."
+    },
+    {
+      "id": "function-literal-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\"."
+    },
+    {
+      "id": "function-literal-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\"."
+    },
+    {
+      "id": "function-literal-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\"\n."
+    },
+    {
+      "id": "function-literal-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\"\n."
+    },
+    {
+      "id": "function-literal_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\"."
+    },
+    {
+      "id": "function-literal_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\"."
+    },
+    {
+      "id": "function-literal_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\"\n."
+    },
+    {
+      "id": "function-literal_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\"\n."
+    },
+    {
+      "id": "function-literal_plus-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: F(\"a\" +."
+    },
+    {
+      "id": "function-literal_plus-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: F(\"a\" +."
+    },
+    {
+      "id": "function-literal_plus-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: F(\"a\" +\n."
+    },
+    {
+      "id": "function-literal_plus-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" +\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: F(\"a\" +\n."
+    },
+    {
+      "id": "function-arithmetic-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X."
+    },
+    {
+      "id": "function-arithmetic-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X."
+    },
+    {
+      "id": "function-arithmetic-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X\n."
+    },
+    {
+      "id": "function-arithmetic-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X\n."
+    },
+    {
+      "id": "function-arithmetic_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X EndSub."
+    },
+    {
+      "id": "function-arithmetic_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X EndSub."
+    },
+    {
+      "id": "function-arithmetic_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X EndSub\n."
+    },
+    {
+      "id": "function-arithmetic_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + X EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + X EndSub\n."
+    },
+    {
+      "id": "function-literal_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" EndSub."
+    },
+    {
+      "id": "function-literal_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" EndSub."
+    },
+    {
+      "id": "function-literal_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" EndSub\n."
+    },
+    {
+      "id": "function-literal_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" EndSub\n."
+    },
+    {
+      "id": "function-nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\")."
+    },
+    {
+      "id": "function-nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\")."
+    },
+    {
+      "id": "function-nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\")\n."
+    },
+    {
+      "id": "function-nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\")\n."
+    },
+    {
+      "id": "function-nested_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub."
+    },
+    {
+      "id": "function-nested_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub."
+    },
+    {
+      "id": "function-nested_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub\n."
+    },
+    {
+      "id": "function-nested_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub\n."
+    },
+    {
+      "id": "function-nested_known-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") X."
+    },
+    {
+      "id": "function-nested_known-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") X."
+    },
+    {
+      "id": "function-nested_known-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") X\n."
+    },
+    {
+      "id": "function-nested_known-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") X\n."
+    },
+    {
+      "id": "function-nested_unknown-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") Nope."
+    },
+    {
+      "id": "function-nested_unknown-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") Nope."
+    },
+    {
+      "id": "function-nested_unknown-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") Nope\n."
+    },
+    {
+      "id": "function-nested_unknown-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") Nope\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") Nope\n."
+    },
+    {
+      "id": "function-abs_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub."
+    },
+    {
+      "id": "function-abs_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub."
+    },
+    {
+      "id": "function-abs_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub\n."
+    },
+    {
+      "id": "function-abs_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub\n."
+    },
+    {
+      "id": "function-abs_known-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) X."
+    },
+    {
+      "id": "function-abs_known-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) X."
+    },
+    {
+      "id": "function-abs_known-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) X\n."
+    },
+    {
+      "id": "function-abs_known-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) X\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) X\n."
+    },
+    {
+      "id": "function-abs_only-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X)."
+    },
+    {
+      "id": "function-abs_only-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X)."
+    },
+    {
+      "id": "function-abs_only-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X)\n."
+    },
+    {
+      "id": "function-abs_only-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X)\n."
+    },
+    {
+      "id": "function-group_only-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((X)."
+    },
+    {
+      "id": "function-group_only-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((X)."
+    },
+    {
+      "id": "function-group_only-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((X)\n."
+    },
+    {
+      "id": "function-group_only-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((X)\n."
+    },
+    {
+      "id": "function-group_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((X) EndSub."
+    },
+    {
+      "id": "function-group_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((X) EndSub."
+    },
+    {
+      "id": "function-group_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F((X) EndSub\n."
+    },
+    {
+      "id": "function-group_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F((X) EndSub\n."
+    },
+    {
+      "id": "function-group_bad-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((1 2."
+    },
+    {
+      "id": "function-group_bad-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((1 2."
+    },
+    {
+      "id": "function-group_bad-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((1 2\n."
+    },
+    {
+      "id": "function-group_bad-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF((1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F((1 2\n."
+    },
+    {
+      "id": "function-explicit_nested_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall F(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Explicit Call uses the Sub argument path, outside the Function-expression rule."
+    },
+    {
+      "id": "function-explicit_nested_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall F(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Explicit Call uses the Sub argument path, outside the Function-expression rule."
+    },
+    {
+      "id": "function-explicit_nested_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall F(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Explicit Call uses the Sub argument path, outside the Function-expression rule."
+    },
+    {
+      "id": "function-explicit_nested_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nCall F(\"a\" + FormatFloat(X,\"%f\") EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: Incomplete expression: \"a\" + FormatFloat(X,\"%f\") EndSub\n.",
+      "not_modelled": "Explicit Call uses the Sub argument path, outside the Function-expression rule."
+    },
+    {
+      "id": "function-closed_nested_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub)."
+    },
+    {
+      "id": "function-closed_nested_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub)."
+    },
+    {
+      "id": "function-closed_nested_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub)\n."
+    },
+    {
+      "id": "function-closed_nested_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") EndSub)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub)\n."
+    },
+    {
+      "id": "function-closed_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\")."
+    },
+    {
+      "id": "function-closed_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\")."
+    },
+    {
+      "id": "function-closed_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\")\n."
+    },
+    {
+      "id": "function-closed_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\")\n."
+    },
+    {
+      "id": "function-closed_valid-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "function-closed_valid-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "function-closed_valid-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "function-closed_valid-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\"))\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "function-continued_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub."
+    },
+    {
+      "id": "function-continued_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub."
+    },
+    {
+      "id": "function-continued_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub\n."
+    },
+    {
+      "id": "function-continued_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(\"a\" + FormatFloat(X,\"%f\") EndSub\n."
+    },
+    {
+      "id": "function-continued_literal-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(\"a\" EndSub."
+    },
+    {
+      "id": "function-continued_literal-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(\"a\" EndSub."
+    },
+    {
+      "id": "function-continued_literal-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(\"a\" EndSub\n."
+    },
+    {
+      "id": "function-continued_literal-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(\"a\" EndSub\n."
+    },
+    {
+      "id": "function-continued_number-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(1 EndSub."
+    },
+    {
+      "id": "function-continued_number-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(1 EndSub."
+    },
+    {
+      "id": "function-continued_number-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(1 EndSub\n."
+    },
+    {
+      "id": "function-continued_number-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(1 _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(1 EndSub\n."
+    },
+    {
+      "id": "function-continued_abs-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(Abs(X) EndSub."
+    },
+    {
+      "id": "function-continued_abs-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: F(Abs(X) EndSub."
+    },
+    {
+      "id": "function-continued_abs-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(Abs(X) EndSub\n."
+    },
+    {
+      "id": "function-continued_abs-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) _\nEndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression: F(Abs(X) EndSub\n."
+    },
+    {
+      "id": "function-comment_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-comment_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-comment_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-comment_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-colon_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-colon_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-colon_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-colon_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\" \"b\" : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(\"a\" \"b\" ."
+    },
+    {
+      "id": "function-comment_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-comment_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-comment_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-comment_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub ' comment\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-colon_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-colon_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-colon_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-colon_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(Abs(X) EndSub : X=1\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: F(Abs(X) EndSub ."
+    },
+    {
+      "id": "function-second_unclosed-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-second_unclosed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-second_unclosed-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-second_unclosed-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_unclosed-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_unclosed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_unclosed-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_unclosed-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",1 2\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: 1 2\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-nested_missing_comma-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\").",
+      "not_modelled": "Nested built-in syntax expects-comma echo is not modelled by this rule."
+    },
+    {
+      "id": "function-nested_missing_comma-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\").",
+      "not_modelled": "Nested built-in syntax expects-comma echo is not modelled by this rule."
+    },
+    {
+      "id": "function-nested_missing_comma-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\")\n.",
+      "not_modelled": "Nested built-in syntax expects-comma echo is not modelled by this rule."
+    },
+    {
+      "id": "function-nested_missing_comma-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(FormatFloat(X \"%f\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\")\n.",
+      "not_modelled": "Nested built-in syntax expects-comma echo is not modelled by this rule."
+    },
+    {
+      "id": "function-two_nested-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_nested-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_nested-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-two_nested-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nT(\"a\" \"b\",Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: \"a\" \"b\".\nline 7: EndSub is not defined.\nline 7: Incomplete expression: Abs(X) EndSub\n.",
+      "not_modelled": "Unfinished Sub argument extraction remains outside the Function-expression rule."
+    },
+    {
+      "id": "function-assign_pair-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\" \"b\")."
+    },
+    {
+      "id": "function-assign_pair-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\" \"b\")."
+    },
+    {
+      "id": "function-assign_pair-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\" \"b\")\n."
+    },
+    {
+      "id": "function-assign_pair-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\" \"b\")\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\" \"b\")\n."
+    },
+    {
+      "id": "function-assign_open-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\"."
+    },
+    {
+      "id": "function-assign_open-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\"."
+    },
+    {
+      "id": "function-assign_open-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\"\n."
+    },
+    {
+      "id": "function-assign_open-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(\"a\"\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(\"a\"\n."
+    },
+    {
+      "id": "function-assign_end-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(Abs(X) EndSub."
+    },
+    {
+      "id": "function-assign_end-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: X=F(Abs(X) EndSub."
+    },
+    {
+      "id": "function-assign_end-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: X=F(Abs(X) EndSub\n."
+    },
+    {
+      "id": "function-assign_end-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nX=F(Abs(X) EndSub\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: EndSub is not defined.\nline 7: No Matching, or out of place ) in expression: X=F(Abs(X) EndSub\n."
+    },
+    {
+      "id": "function-direct_closed-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "function-direct_closed-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "function-direct_closed-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "function-direct_closed-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(\"a\")\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "function-bare_name-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "function-bare_name-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "function-bare_name-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "function-bare_name-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "function-sub_body-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nSub Q\n  F(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression:   F(\"a\" + FormatFloat(X,\"%f\") EndSub."
+    },
+    {
+      "id": "function-sub_body-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nSub Q\n  F(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression:   F(\"a\" + FormatFloat(X,\"%f\") EndSub."
+    },
+    {
+      "id": "function-sub_body-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nSub Q\n  F(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression:   F(\"a\" + FormatFloat(X,\"%f\") EndSub\n."
+    },
+    {
+      "id": "function-sub_body-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nSub Q\n  F(\"a\" + FormatFloat(X,\"%f\") _\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub is not defined.\nline 8: No Matching, or out of place ) in expression:   F(\"a\" + FormatFloat(X,\"%f\") EndSub\n."
+    },
+    {
+      "id": "control-forward-cr6",
+      "logger": "cr6",
+      "source": "Public X\nSub Q\nF(1 2)\nEndSub\nFunction F(A)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: F(1 2)."
+    },
+    {
+      "id": "control-forward-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nSub Q\nF(1 2)\nEndSub\nFunction F(A)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: F(1 2)."
+    },
+    {
+      "id": "control-forward-cr300",
+      "logger": "cr300",
+      "source": "Public X\nSub Q\nF(1 2)\nEndSub\nFunction F(A)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: F is not defined.\nline 3: Invalid, or out of place expression: F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-forward-cr350",
+      "logger": "cr350",
+      "source": "Public X\nSub Q\nF(1 2)\nEndSub\nFunction F(A)\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: F is not defined.\nline 3: Invalid, or out of place expression: F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_two-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A,B)\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_two-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A,B)\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_two-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A,B)\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_two-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A,B)\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_zero-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_zero-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_zero-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-arity_zero-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_first-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(Nope 1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: F(Nope 1).",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_first-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(Nope 1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: F(Nope 1).",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_first-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(Nope 1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: No Matching, or out of place ) in expression: F(Nope 1)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_first-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(Nope 1)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: No Matching, or out of place ) in expression: F(Nope 1)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_two-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope Other)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 Nope Other)."
+    },
+    {
+      "id": "control-unknown_two-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope Other)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 Nope Other)."
+    },
+    {
+      "id": "control-unknown_two-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope Other)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: No Matching, or out of place ) in expression: F(1 Nope Other)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_two-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope Other)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: No Matching, or out of place ) in expression: F(1 Nope Other)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_index-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope(1))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 Nope(1))."
+    },
+    {
+      "id": "control-unknown_index-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope(1))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 Nope(1))."
+    },
+    {
+      "id": "control-unknown_index-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope(1))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: No Matching, or out of place ) in expression: F(1 Nope(1))\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_index-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(1 Nope(1))\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: No Matching, or out of place ) in expression: F(1 Nope(1))\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_target-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nY=F(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y=F(1 2)."
+    },
+    {
+      "id": "control-unknown_target-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nY=F(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y=F(1 2)."
+    },
+    {
+      "id": "control-unknown_target-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nY=F(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined.\nline 5: No Matching, or out of place ) in expression: Y=F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-unknown_target-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nY=F(1 2)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined.\nline 5: No Matching, or out of place ) in expression: Y=F(1 2)\n.",
+      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+    },
+    {
+      "id": "control-next_sub-cr6",
+      "logger": "cr6",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub Q\nF(\"a\" _\nEndSub\nSub R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: F(\"a\" EndSub."
+    },
+    {
+      "id": "control-next_sub-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub Q\nF(\"a\" _\nEndSub\nSub R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: F(\"a\" EndSub."
+    },
+    {
+      "id": "control-next_sub-cr300",
+      "logger": "cr300",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub Q\nF(\"a\" _\nEndSub\nSub R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSub is not defined.\nline 6: No Matching, or out of place ) in expression: F(\"a\" EndSub\n."
+    },
+    {
+      "id": "control-next_sub-cr350",
+      "logger": "cr350",
+      "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub Q\nF(\"a\" _\nEndSub\nSub R\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSub is not defined.\nline 6: No Matching, or out of place ) in expression: F(\"a\" EndSub\n."
+    }
+  ]
+}

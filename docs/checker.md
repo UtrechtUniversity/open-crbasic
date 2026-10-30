@@ -9289,3 +9289,36 @@ ordering, nested function syntax, inline calls, and unfinished continuations are
 and remain excluded unless covered by existing behavior. Four-profile boundary observations
 and controls are retained in `tests/fixtures/r61_sub_arguments.json`; remaining differences
 are strict expected failures. Scratch evidence and exact commands are in `scratch/r61/` (local).
+
+## User Function expression syntax (round 62)
+
+A user `Function` used as a statement still follows the expression grammar. For a one-parameter
+Function, `F("a" "b")` and `F("a" + FormatFloat(X,"%f") EndSub` report
+`No Matching, or out of place ) in expression: <whole statement>.` rather than a generic fallback
+or an argument-only echo. Assignments such as `X=F("a" "b")` use the same expression rule.
+CR300/CR350 keep their end-of-line newline before the closing period; a comment or colon ends
+the echo earlier. A final unresolved scalar name is reported before the syntax error on those
+profiles, while CR6/CR1000X report the syntax error alone.
+
+This fixes the original round-60 CR6 `a31a74073f76`: the interrupted continued call is to
+`LogDebug`, which `BenchLib.crb` declares as a Function. Its complete first error and output now
+match, including the absence of later Sub-placement errors. The current CR6 compiler was run
+again with the current sibling files and confirmed the saved reference output.
+
+Decompilation trail: in `FUN_004b6840`, the statement dispatcher calls `FUN_004ba320` before
+rewriting a bare routine call with `Call`. The lookup returns 4 only when the routine's field at
+`+0x40` is zero; the other routine kind returns 0 and stays on the expression path. The shared
+expression reporter `FUN_004b5c50` calls `FUN_00493b10` and prints the supplied expression span.
+This explains why the round-61 Sub argument reader (`FUN_004baf00`, case `0xc`) alone did not
+cover the Function reproducer. The implementation reuses the existing expression scanner with
+the probed Function arity; no decompiled code is copied.
+
+The added rule handles unparsed direct calls and assignments to one-parameter user Functions
+when the scanner identifies the unmatched-expression diagnostic. CR300/CR350 require the Function declaration to be visible before the call; CR6/CR1000X
+resolve later declarations too. Other arities, explicit `Call`, nested built-in expects-comma
+errors, and more complicated unresolved-name ordering
+retain their existing paths. The 312-case `r62_function_syntax.json` fixture includes four-profile
+Function observations and unfinished Sub controls; eight now-exact Function cases in the
+round-61 fixture no longer carry expected-failure marks. Scratch observations, the separate
+retry of one initial Wine startup timeout, and the original whole-program replay are under
+`scratch/r62/`. M2 is still open for the other realistic malformed-call families.
