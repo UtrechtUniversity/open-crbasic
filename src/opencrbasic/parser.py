@@ -828,6 +828,7 @@ class _Parser:
             return False
         try:
             value = consteval.value_of(expr, self.env)
+            return consteval.truthy(value)
         except consteval.NotConstant:
             if self.profile.single_pass:   # each undefined name (`#If Nope < 1` -> `Nope is not defined.`)
                 for name in self._undefined_directive_names(expr):
@@ -835,7 +836,6 @@ class _Parser:
             else:
                 self.diags.error(line, f"Invalid symbol in expression: {echo}.", file)
             return False
-        return consteval.truthy(value)
 
     # ---------------------------------------------------------- one line
 
@@ -2001,7 +2001,16 @@ class _Parser:
                 vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
                 p.next()
+                size_col = p.peek().col
                 strsize = self._parse_expr(p, line, file)
+                if p.is_op("!") and not self.profile.single_pass and errors is not None:
+                    # Sized String parameters read through `!` to the next comma or `)`
+                    # (oracle, CR6/CR1000X, r67_string_size_junk, cases 087;
+                    # docs/checker.md#round-67-review-fixes). Other junk is unobserved.
+                    while not p.at_end() and not p.is_op(",") and not p.is_op(")"):
+                        p.next()
+                    echo = p.seg_text[size_col:p.peek().col].rstrip()
+                    errors.append(f"Incomplete expression: {echo}.")
         default = None
         if p.is_op("="):
             if name_tok.kind == "STRING" and not optional:

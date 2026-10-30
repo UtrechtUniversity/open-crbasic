@@ -318,16 +318,14 @@
       "logger": "cr6",
       "source": "Sub S(A As String * 16!)\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.",
-      "not_modelled": "A sized String parameter followed by `!` keeps the fallback instead of `Incomplete expression: 16!.` (the verdict matches); not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
     },
     {
       "id": "string-size-junk-087-cr1000x",
       "logger": "cr1000x",
       "source": "Sub S(A As String * 16!)\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.",
-      "not_modelled": "A sized String parameter followed by `!` keeps the fallback instead of `Incomplete expression: 16!.` (the verdict matches); not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
     },
     {
       "id": "string-size-junk-087-cr300",

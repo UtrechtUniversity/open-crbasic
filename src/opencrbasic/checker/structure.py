@@ -3222,7 +3222,8 @@ def _function_syntax_findings(stmt: S.Unparsed, program: S.Program, profile) -> 
         for prev, tok in zip(toks, toks[1:]):
             if prev.kind == "OP" and prev.text in ("(", ")"):
                 depth += 1 if prev.text == "(" else -1
-            if (prev.kind in ("IDENT", "NUMBER", "STRING") or prev.text == ")") and (
+            if prev.upper != "NOT" and (
+                    prev.kind in ("IDENT", "NUMBER", "STRING") or prev.text == ")") and (
                     tok.kind in ("NUMBER", "STRING")
                     or tok.kind == "IDENT" and tok.upper not in _BINARY_WORDS):
                 own = depth == 1
@@ -3242,7 +3243,8 @@ def _function_syntax_findings(stmt: S.Unparsed, program: S.Program, profile) -> 
             elif prev.kind == "OP" and prev.text == "," and depth == 1:
                 after += found
                 before += not found
-            if not found and (prev.kind in ("IDENT", "NUMBER", "STRING") or prev.text == ")") and (
+            if not found and prev.upper != "NOT" and (
+                    prev.kind in ("IDENT", "NUMBER", "STRING") or prev.text == ")") and (
                     tok.kind in ("NUMBER", "STRING")
                     or tok.kind == "IDENT" and tok.upper not in _BINARY_WORDS):
                 found = True

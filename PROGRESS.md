@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,20 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 68** (M1/M2, implemented by Codex `gpt-6.1-sol` with workspace write access, brief
+`scratch/r68/brief.md`, log `scratch/r68/codex-fix.log`; gates rerun by the coordinator). The Codex
+follow-up review (`scratch/r67/codex-followup.log`) left two blockers, both fixed:
+- **M1:** a huge negative integer literal (`FTPClient(...,-1` and 309 zeros`)`) raised `OverflowError`
+  in `consteval._num`; such a value is now not a constant (no reference verdict exists for it).
+- **M2:** `Sub S(A As String * 16!)` reports `Incomplete expression: 16!.` on CR6/CR1000X, like the
+  round-67 variable declarations; the two `r67_string_size_junk` gaps now match.
+- The adjacent-operand locator in user Function calls skips `NOT` (`G(Not X, Abs(X Y))`; reasoned
+  from the code, no reference probe).
+- Gates (`scratch/r68/gates/`): fixture audit 0 differing; 63,382 passed, 311 skipped, 1,259
+  strict xfail; server 163 passed; CI saved replay 2,633 exact, no regression; four-profile
+  difftest and GEUS 66/66 unchanged; both `verify.py` backends pass. No hardware tests. A further
+  Codex review to sign off M1/M2 has not been run.
 
 **Round 67** (M1/M2 Codex final review). The Codex `gpt-6.1-sol` read-only review of rounds
 64-66 (`scratch/r65/codex/final-review.log`, local only) did not sign off: it found a false-reject

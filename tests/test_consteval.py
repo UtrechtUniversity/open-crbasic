@@ -67,6 +67,35 @@ def test_is_constant_true_and_false():
     assert not consteval.is_constant(undefined, env)
 
 
+@pytest.mark.parametrize("sign", [1, -1])
+def test_huge_integer_is_not_foldable_as_float(sign):
+    with pytest.raises(consteval.NotConstant):
+        consteval._num(sign * 10**309)
+
+
+@pytest.mark.parametrize("expr", [
+    "+H", "-H", "Not H", "Chr(H)", "Abs(H)", "Int(H)", "Sqr(H)",
+    'H & ""', 'H + ""', "1 To H", "H + 1", "H - 1", "H * 1", "H / 1",
+    "H \\ 1", "H ^ 1", "H Mod 1", "H << 1", "H >> 1", "H And 1", "H Or 1",
+    "H Xor 1", "H Eqv 1", "H Imp 1", "H = 1",
+])
+def test_huge_integer_numeric_callers_stop_folding(expr):
+    prog, diags = parser.parse_text(f"Const H = {'1' + '0' * 309}\nConst R = {expr}\n", "t.cr6")
+    assert not diags.errors
+    assert "R" not in prog.consts
+    env = consteval.Env(profiles.get("cr6"), prog.consts)
+    decl = prog.statements[-1]
+    assert isinstance(decl, S.ConstDecl)
+    with pytest.raises(consteval.NotConstant):
+        consteval.value_of(decl.value, env)
+
+
+@pytest.mark.parametrize("sign", ["", "+", "-"])
+def test_huge_integer_directive_truth_does_not_raise(sign):
+    _, diags = parser.parse_text(f"#If {sign}{'1' + '0' * 309}\n#EndIf\n", "t.cr6")
+    assert diags.errors
+
+
 def test_section_only_bound_inside_includesection(tmp_path):
     # Referencing `Section` outside an `IncludeSection()` is an ordinary undefined-symbol error
     # (confirmed with the oracle: `Invalid symbol in expression: Section = "Foo" .`).

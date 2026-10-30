@@ -105,7 +105,12 @@ def _num(v: object) -> float:
     if isinstance(v, bool):
         return -1.0 if v else 0.0
     if isinstance(v, (int, float)):
-        return float(v)
+        try:
+            return float(v)
+        except OverflowError as exc:
+            # Huge integer literals have no recorded oracle value; stop folding rather than
+            # crash (round-67 FTPClient review, docs/checker.md#round-67-review-fixes).
+            raise NotConstant("number outside float range") from exc
     raise NotConstant("expected a number")
 
 

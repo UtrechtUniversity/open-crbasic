@@ -9457,10 +9457,16 @@ two defects and several open first errors; all were probed on all four profiles
 - **A huge `FTPClient` PutGetOption** literal raised `OverflowError` in the checker. The value now
   follows the reference: above the float32 range 2147483647 (`Invalid PutGetOption: 2147483647`),
   below the Long range accepted (`-2147483649` and `-1e39` compile, a false reject before).
+  Integer-to-float overflow in the shared constant evaluator now stops folding with
+  `NotConstant`, including unary signs and directive truth tests. The 309-zero literal has no
+  recorded reference verdict; its regression checks only for implementation exceptions.
 - **Adjacent operands in a nested one-argument built-in inside a user Function call**
   (`N = F(Abs(X Y))`): `Incomplete expression: <statement>.` when it is in the Function's last
   argument, `Call argument required.` and the fallback in an earlier one (`G(Abs(X Y), 1)`). A
   nested `Sin(X Y)` keeps `No Matching` and `Round(X Y, 1)` keeps `Expression expects ,`.
+  The adjacent-operand locator skips unary `Not` (as parsed by `parser._parse_not`), so an earlier
+  valid `Not X` cannot select the malformed argument. The mixed form `G(Not X, Abs(X Y))` has
+  no recorded reference diagnostic; this is a locator correction, not a new oracle observation.
 - **A quote right after a user Function call** (`F("abc")"`, `N = F("abc")"`) is `String without
   end quote` then `Incomplete expression: <statement>.`; with an operator before it
   (`F("abc") + "x`) the fallback. A Sub call keeps `Invalid or malformed function argument.`
@@ -9484,8 +9490,10 @@ two defects and several open first errors; all were probed on all four profiles
   to the next comma or `=`, so a sized String pointer `Dim P As String * 16!` is `Incomplete
   expression: 16!.` and `As String * 16 X` is `Invalid symbol in expression: 16 X.` on CR6/CR1000X
   (both were false accepts; the trailing tokens were dropped like those after a complete `As`
-  clause). `As String!` compiles. A sized String parameter followed by `!` keeps the generic
-  fallback instead (verdict equal, not modelled).
+  clause). `As String!` compiles. In Sub/Function parameters, a size followed by `!` is also a
+  pass-1 `Incomplete expression: <size text to the next comma or )>.` on CR6/CR1000X
+  (`string-size-junk-087-cr6` / `-cr1000x`). Other parameter junk and CR300/CR350 keep their
+  existing behavior.
 ## opencrbasic checks OCB002-OCB005 (M3)
 ## opencrbasic checks OCB002-OCB006 (M3)
 
