@@ -1,0 +1,641 @@
+{
+  "observation_date": "2026-10-30",
+  "cases": [
+    {
+      "id": "bad_first-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "bad_first-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "bad_first-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  Definitions.\nline 6: Sub S not defined.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "bad_first-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  Definitions.\nline 6: Sub S not defined.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "bad_between-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "bad_between-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "bad_between-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Warning: Cannot open include file  Definitions.\nline 6: Sub S not defined.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "bad_between-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Warning: Cannot open include file  Definitions.\nline 6: Sub S not defined.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "bad_last-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib2.crb> line 6: Invalid symbol in expression: RangeX.\nline 3: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "bad_last-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<Lib2.crb> line 6: Invalid symbol in expression: RangeX.\nline 3: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "bad_last-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:Lib2.crb> line 6: RangeX is not defined.\n<CPU:Lib2.crb> line 6: Variable illegal in Parameter: RangeX.\nline 3: Warning: Cannot open include file  Definitions.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "bad_last-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib2.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:Lib2.crb> line 6: RangeX is not defined.\n<CPU:Lib2.crb> line 6: Variable illegal in Parameter: RangeX.\nline 3: Warning: Cannot open include file  Definitions.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "clean_later-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib3.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib3.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n    V = 2\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "clean_later-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib3.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib3.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n    V = 2\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "clean_later-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib3.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib3.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n    V = 2\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  Definitions.\nline 7: V is not defined.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "clean_later-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib3.crb\")\r\nIncludeSection(\"Funcs\", \"CPU:Lib3.crb\")\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n    V = 2\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  Definitions.\nline 7: V is not defined.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "const_after-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension.\nline 6: Invalid symbol in expression: RangeK."
+    },
+    {
+      "id": "const_after-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension.\nline 6: Invalid symbol in expression: RangeK."
+    },
+    {
+      "id": "const_after-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  Definitions.\nline 6: RangeK is not defined.\nline 6: Variable illegal in Parameter: RangeK.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "const_after-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  Definitions.\nline 6: RangeK is not defined.\nline 6: Variable illegal in Parameter: RangeK.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "const_before-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "const_before-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "const_before-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:Lib4.crb> line 2: mV200 is not defined.\nline 2: Warning: Cannot open include file  Definitions.\nline 5: Too many parameters:  Sec.\nline 6: V is not defined.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "const_before-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:Lib4.crb> line 2: mV200 is not defined.\nline 2: Warning: Cannot open include file  Definitions.\nline 5: Too many parameters:  Sec.\nline 6: V is not defined.\nline 6: Too many parameters:  1."
+    },
+    {
+      "id": "plain_bad-cr6",
+      "logger": "cr6",
+      "source": "Include \"Lib.txt\"\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Lib.txt must have valid program file extension."
+    },
+    {
+      "id": "plain_bad-cr1000x",
+      "logger": "cr1000x",
+      "source": "Include \"Lib.txt\"\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Lib.txt must have valid program file extension."
+    },
+    {
+      "id": "plain_bad-cr300",
+      "logger": "cr300",
+      "source": "Include \"Lib.txt\"\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Lib.txt must have valid program file extension.\n<CPU:Lib4.crb> line 2: mV200 is not defined.\nline 5: Too many parameters:  Sec.\nline 6: V is not defined.\nline 6: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "plain_bad-cr350",
+      "logger": "cr350",
+      "source": "Include \"Lib.txt\"\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Lib.txt must have valid program file extension.\n<CPU:Lib4.crb> line 2: mV200 is not defined.\nline 5: Too many parameters:  Sec.\nline 6: V is not defined.\nline 6: Too many parameters:  1.",
+      "not_modelled": "CR300/CR350 best effort: their include resolution (`CPU:` prefixes, section names read as files) is not modelled here."
+    },
+    {
+      "id": "missing_after-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Nope.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension.\nline 2: Warning: Cannot open include file  Nope.crb.",
+      "not_modelled": "A later missing-include warning is printed before the earlier include error (warnings first); later-diagnostic order only."
+    },
+    {
+      "id": "missing_after-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Nope.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension.\nline 2: Warning: Cannot open include file  Nope.crb.",
+      "not_modelled": "A later missing-include warning is printed before the earlier include error (warnings first); later-diagnostic order only."
+    },
+    {
+      "id": "missing_after-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Nope.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions.\nline 2: Warning: Cannot open include file  CPU:Nope.crb."
+    },
+    {
+      "id": "missing_after-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Defs\", \"CPU:Nope.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions.\nline 2: Warning: Cannot open include file  CPU:Nope.crb."
+    },
+    {
+      "id": "two_bad-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Lib.crb\",\"Other\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension.\nline 2: Include file Other must have valid program file extension."
+    },
+    {
+      "id": "two_bad-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Lib.crb\",\"Other\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension.\nline 2: Include file Other must have valid program file extension."
+    },
+    {
+      "id": "two_bad-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Lib.crb\",\"Other\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions.\nline 2: Warning: Cannot open include file  Other."
+    },
+    {
+      "id": "two_bad-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nIncludeSection(\"Lib.crb\",\"Other\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions.\nline 2: Warning: Cannot open include file  Other."
+    },
+    {
+      "id": "inactive_bad-cr6",
+      "logger": "cr6",
+      "source": "#If 0 Then\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\n#EndIf\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid channel 1, must use U1..U12."
+    },
+    {
+      "id": "inactive_bad-cr1000x",
+      "logger": "cr1000x",
+      "source": "#If 0 Then\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\n#EndIf\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "inactive_bad-cr300",
+      "logger": "cr300",
+      "source": "#If 0 Then\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\n#EndIf\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:Lib4.crb> line 2: mV200 is not defined.\nline 7: Too many parameters:  Sec.\nline 8: V is not defined.\nline 8: Too many parameters:  1."
+    },
+    {
+      "id": "inactive_bad-cr350",
+      "logger": "cr350",
+      "source": "#If 0 Then\r\nIncludeSection(\"Lib.crb\",\"Definitions\")\r\n#EndIf\r\nIncludeSection(\"Defs\", \"CPU:Lib4.crb\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltDiff(V,1,RangeK,1,True,0,250,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:Lib4.crb> line 2: mV200 is not defined.\nline 7: Too many parameters:  Sec.\nline 8: V is not defined.\nline 8: Too many parameters:  1."
+    },
+    {
+      "id": "plain_after-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nInclude \"CPU:Lib.crb\"\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = Q\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "plain_after-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nInclude \"CPU:Lib.crb\"\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = Q\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "plain_after-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nInclude \"CPU:Lib.crb\"\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = Q\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "plain_after-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nInclude \"CPU:Lib.crb\"\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = Q\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "swapped_only-cr6",
+      "logger": "cr6",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "swapped_only-cr1000x",
+      "logger": "cr1000x",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file Definitions must have valid program file extension."
+    },
+    {
+      "id": "swapped_only-cr300",
+      "logger": "cr300",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions."
+    },
+    {
+      "id": "swapped_only-cr350",
+      "logger": "cr350",
+      "source": "IncludeSection(\"Lib.crb\",\"Definitions\")\r\nPublic V\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    V = 1\r\n  NextScan\r\nEndProg\r\n",
+      "files": {
+        "Lib.crb": "Public Q\r\n",
+        "Lib2.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  VoltDiff(V,1,RangeX,1,True,0,250,1.0,0)\r\nEndSub\r\n#EndIf\r\n",
+        "Lib3.crb": "#If Section = \"Defs\" Then\r\nPublic V\r\n#EndIf\r\n#If Section = \"Funcs\" Then\r\nSub S\r\n  V = 1\r\nEndSub\r\n#EndIf\r\n",
+        "Lib4.crb": "#If Section = \"Defs\" Then\r\nConst RangeK = mV200\r\n#EndIf\r\n"
+      },
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  Definitions."
+    }
+  ]
+}

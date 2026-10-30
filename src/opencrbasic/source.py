@@ -22,6 +22,7 @@ Quirks verified against the real compiler (`tools/oracle.py`); see `docs/fronten
   file is not loaded (`_nested_include`; oracle, 2026-10-12, `docs/frontend.md`).
 """
 
+import dataclasses
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -106,6 +107,7 @@ class LogicalLine:
     pieces: tuple[Piece, ...] = ()   # where each character of `text` came from, in order
     phys: tuple[int, int] | None = None  # physical lines (first, last) the statement spans
     occurrence: int = 0              # `Occurrence.id` of the load this line belongs to
+    stops_includes: bool = False     # an `IncludeSection` extension error (`parser`, round 66)
 
 
 def _split_physical_lines(raw: str) -> list[str]:
@@ -455,7 +457,8 @@ class _Loader:
         if m:
             name, spec = m.group(1), m.group(2)
             if self._bad_extension(spec):
-                return [self._extension_error(spec, line, filename, section)]
+                return [dataclasses.replace(self._extension_error(spec, line, filename, section),
+                                            stops_includes=True)]
             target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory, self.source)
             if target is None:
                 return [self._missing(spec, line, filename, section)]

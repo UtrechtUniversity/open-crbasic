@@ -172,7 +172,7 @@ calibration warning). First-error differences and their scope decision:
 
 | Reproducer | Edit | Decision |
 |---|---|---|
-| CR6 `6b414530e683` | `IncludeSection` arguments swapped, plus a typo | realistic: the swap alone differs (an include error stops later includes); open for round 66 |
+| CR6 `6b414530e683` | `IncludeSection` arguments swapped, plus a typo | realistic: the swap alone differed (an include error stops later includes); fixed in round 66 |
 | CR6 `15c21b705919` | statement inserted and arguments swapped | two edits |
 | CR6 `d6ad808bb722` | `!poi  nter_float` | token split |
 | CR6 `ecedd69cfed8` | `(1+2)` as a parameter name | fuzz argument |

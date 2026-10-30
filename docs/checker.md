@@ -9429,3 +9429,17 @@ zero interval keeps `Invalid time specified.` CR300/CR350 accept all of these. B
 this was a false accept; the realistic mistake is a swapped `Delay(Sec,10,1)` (round-60 fuzz
 `9abdc4c03311`). Profile data: `measure.json` `delay.sdm_slow_sequence`. Observations:
 `r64_sdm_delay.json` (108, all four profiles).
+
+## Includes after an IncludeSection error (round 66)
+
+On CR6/CR1000X, once an `IncludeSection` reports `Include file <name> must have valid program
+file extension.` in active code, no later `Include` or `IncludeSection` is loaded: their
+definitions are missing (`IncludeSection("Defs", "Lib4.crb")` after the error leaves `RangeK`
+undefined) and their own errors are not reported. Earlier includes are unaffected. A later
+missing file still warns and a later bad extension still reports, after the earlier include error
+(the warning is printed first: not modelled, later-diagnostic order only). A bad plain `Include`
+stops nothing, nor does a bad `IncludeSection` in an inactive `#If`. CR300/CR350 resolve include
+names differently and are not changed. This is the realistic shape of fuzz `6b414530e683`
+(`IncludeSection("CPU:ShuntLib.crb","Definitions")`, the arguments swapped). The parser skips the
+later include blocks as it does inside an inactive `#If`. Observations:
+`r66_include_stop.json` (48, all four profiles, sibling files included).

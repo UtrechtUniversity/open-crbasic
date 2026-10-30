@@ -666,6 +666,7 @@ class _Parser:
             probe.run(lines, name)
             self.function_names = probe.function_names
         skipped_include_depth = 0
+        includes_stopped = False
         todo = collections.deque(lines)
         unshift: dict[str, int] = {}  # per file: physical lines of unread (inactive) initializer pulls given back
         while todo:
@@ -684,7 +685,7 @@ class _Parser:
                     skipped_include_depth -= 1
                 continue
             if ll.kind == "include_begin":
-                if not self._active():
+                if not self._active() or includes_stopped:
                     skipped_include_depth = 1
                 continue
             if ll.kind == "include_end":
@@ -695,6 +696,10 @@ class _Parser:
                         ll.line, ll.text, ll.file)
                     if ll.kind == "include_error":  # (CR300/CR350 cascade trigger, `cr3xx`)
                         self.program.include_error_at.append(len(self.program.statements))
+                    # CR6/CR1000X: after an `IncludeSection` extension error no later include is
+                    # loaded; a plain `Include` error stops nothing (oracle, round 66,
+                    # docs/checker.md#includes-after-an-includesection-error-round-66)
+                    includes_stopped |= ll.stops_includes and not self.profile.single_pass
                 continue
             if ll.kind == "overflow":
                 self.diags.error(ll.line, "Line exceeds max characters of 512.", ll.file)
