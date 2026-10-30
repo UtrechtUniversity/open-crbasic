@@ -117,6 +117,7 @@ class Stmt(Node, _StatementMetadata):
 
 class _DeclarationMetadata:
     size_missing: int | None
+    size_junk: tuple[int, str] | None
 
 
 @dataclass

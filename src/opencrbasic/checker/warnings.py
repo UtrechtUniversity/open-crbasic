@@ -45,6 +45,8 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE":
             name = _table_arg_name(stmt)
             if name:
+                from .instr_data import _const_table_name
+                name = _const_table_name(name, program)
                 declared[name.upper()] = name
 
     # "Called" is deliberately not just `CallTable`: `AcceptDataRecords`' own TableName argument
@@ -53,12 +55,15 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
     # enumerate every instruction with a table-name argument, any bare-name argument anywhere
     # that matches a declared table counts as a use -- a table name is not reused as an ordinary
     # variable, so this is a safe superset of the real "called" set.
+    from .instr_data import _const_table_name
     called = {
-        arg.name.upper()
+        name
         for stmt in _with_inline_branches(program.statements)
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() != "DATATABLE"
-        for arg in stmt.args
-        if isinstance(arg, S.Name) and arg.name.upper() in declared
+        for arg in stmt.args if isinstance(arg, S.Name)
+        # (a String `Const` names the table its value spells, round 67)
+        for name in (arg.name.upper(), _const_table_name(arg.name, program).upper())
+        if name in declared
     }
     for key, name in declared.items():
         if key not in called:

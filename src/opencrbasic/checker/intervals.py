@@ -34,6 +34,7 @@ _MODE_RE = re.compile(r"(?i)\b(IfTime|TimeIntoInterval|Timer|SerialOpen|HTTPPut|
 _LITERAL_RE = re.compile(r"\"[^\"]*\"|'.*$")
 NOT_INTEGRAL = "Parameter must be integral."
 _INT_MIN, _INT_MAX = -2**31, 2**31 - 1
+_F32_MAX = 3.4028234663852886e38
 
 
 def gate_text(stmt) -> str | None:
@@ -121,17 +122,24 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
 
 def _put_get_option(call, env: consteval.Env) -> int | None:
     """CR6/CR1000X: an `FTPClient` constant PutGetOption outside -29..29 after truncation, as the
-    Long the message prints (a value outside the Long range is -2147483648); None when valid or
-    not a numeric constant (oracle, round 65, docs/instructions.md#ftpclient-putgetoption)."""
+    Long the message prints (above the Long range -2147483648, above float32 2147483647; below the
+    Long range it compiles); None when valid or not a numeric constant (oracle, rounds 65 and 67,
+    docs/instructions.md#ftpclient-putgetoption)."""
     if len(call.args) < 6:
         return None
     try:
         value = consteval.value_of(call.args[5], env)
     except consteval.NotConstant:
         return None
-    if isinstance(value, (bool, str)) or not isinstance(value, (int, float)) or not math.isfinite(value):
-        return None
-    option = int(value) if _INT_MIN <= value <= _INT_MAX else _INT_MIN
+    if isinstance(value, (bool, str)) or not isinstance(value, (int, float)) or (
+            isinstance(value, float) and not math.isfinite(value)):
+        return None   # (a huge integer literal is a Python int: `math.isfinite` would overflow)
+    if value < _INT_MIN:
+        return None   # below the Long range: compiles (`-2147483649`, `-1e39`; oracle, round 67)
+    if value > _F32_MAX:
+        option = _INT_MAX   # beyond float32 (+inf): 2147483647 (oracle, round 67)
+    else:
+        option = int(value) if value <= _INT_MAX else _INT_MIN
     return option if abs(option) >= 30 else None
 
 

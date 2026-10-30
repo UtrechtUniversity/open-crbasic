@@ -164,6 +164,57 @@ The moved-continuation CR1000X `53f4ed873761` remains the next candidate from th
 isolate its expression and argument boundaries before extending the parser. M2 remains open,
 and no saved replay baseline or realism decisions were changed.
 
+## Round-67 ledger completion
+
+The Codex final review (round 67) found 13 fresh first-error differences of seeds 467-469 with no
+recorded decision. Each, as classified on the round-67 code:
+
+| Reproducer | Edit | Decision |
+|---|---|---|
+| CR6 `dede628da127` | `Th  en` and a changed `Scan` interval | token split, two edits |
+| CR6 `577e3a89b4d8` | an argument dropped from a nested `FormatFloat` in a long continued `LogDebug` | same cause (`Expression expects ,`); echo truncation only |
+| CR6 `8c7734871273` | `#  EndIf` and a renamed `Const` | token split, two edits |
+| CR6 `23197499038b` | `Tr  ue` and two lines swapped | token split |
+| CR6 `dbcde3baad4a` | `Sample("fuzz",PTep,...)` | fuzz argument and a typo, two edits |
+| CR6 `80ee6ffab4e1` | `P As2 Long` in a Function header | token mutation (as `6be023dd77b2`) |
+| CR6 `b2c0bb7a941b` | a declaration deleted and a line duplicated: `@floatArr` undeclared | two edits |
+| CR1000X `ef572ee0393c` | `Sample(2,status.ProgName,String)` | same location and cause (Reps); the reference's message echoes uninitialised memory and cannot be reproduced |
+| CR1000X `301007b4ed1a` | `BrHalf4W` Reps `999999999999` | realistic: fixed in round 67 (first error); later cascade lines differ |
+| CR1000X `e92b4a4889c5` | `PrevDayDe  cisionV` and `LogDebugX` | token split; same first error, echo truncation |
+| CR1000X `c9199e5b744a` | a misspelled table-name `Const` | realistic: fixed in round 67 |
+| CR1000X `5f721020065f` | `Alias GPSstring(7,"fuzz")` and two lines swapped | fuzz argument |
+| CR6 `52aee6b321bb` | a duplicated line and a typo | same first error; echo truncation only |
+
+Seeds 471 (CR6) and 472 (CR1000X), run on the round-66 code: no verdict or mode difference (three
+warning-only rows). Their first-error differences, classified on the round-67 code:
+
+| Reproducer | Edit | Decision |
+|---|---|---|
+| CR6 `8f8d26aa672d` | a duplicated `For` line | realistic: fixed in round 67 |
+| CR1000X `033235c3b25f` | a deleted `If ... Then` line inside a `Select` | realistic: fixed in round 67 |
+| CR1000X `f2576817cb9b` | a deleted `EndSub` (and a comment's case) | realistic: fixed in round 67 |
+| CR1000X `5231a9a68e91` | a duplicated `Sample` in a table named by a `Const` | realistic: fixed in round 67 |
+| CR6 `0b81d9ba89fb`, CR1000X `ac501a7d7825` | an undeclared fuzz name added as an argument | fuzz name |
+| CR6 `16cac6ef5444` | a continuation inserted into a `SplitStr` call and two lines swapped | two edits |
+| CR6 `b27d6fd62b85`, `ba2e239da8ab` | a statement inserted into a continuation or table | two edits, foreign statement |
+| CR6 `1b7a0233a467`, `cce3eba26c56`, `f9440491bdbe`; CR1000X `338608066cf9`, `69ca947f6861`, `edacd28d75ec` | a blank inside a name or number | token split |
+| CR1000X `1b9dcbcc82e8` | a typo and an argument dropped | two edits |
+| CR1000X `a581b285ce6c` | arguments swapped across a string's comma (`","+CIEV:1,4`) | string fragment |
+| CR1000X `f5916ae2ecd1` | two identifiers renamed (`_Mut`, `_Fz`) | token mutation |
+
+Seeds 473 (CR6) and 474 (CR1000X), run on the round-67 code before its last fix: no verdict or
+mode difference. One first-error difference was a false accept in disguise:
+
+| Reproducer | Edit | Decision |
+|---|---|---|
+| CR1000X `2648699c4f46` | a pointer declaration changed to `As String * 16!` | realistic: the sized String pointer was a false accept, fixed in round 67 |
+| CR6 `87720055fe70` | `Dim rt4((1+2))` | fuzz argument |
+| CR6 `96a296f9613a` | a deleted `Public` line | same cause; echo truncation only |
+| CR1000X `3862e9087530`, `812a22359922`, `eec3292bd876` | two edits each (string fragment, `AsX`, fuzz name) | two edits |
+
+The other nine rows have the same first error. With round 67, every first-error difference of the
+round-60 and later fresh batches has a recorded decision; the realistic ones are fixed.
+
 ## Round-65 fresh inputs
 
 CR6 seed 469 and CR1000X seed 470, 1,000 `--relevant` mutants each on the round-65 code (`scratch/r65/`,
@@ -226,9 +277,10 @@ dimension; the realistic `Alias A(16,2) = X` matches), `04f6730e62aa` (`Sub S  t
 `9abdc4c03311` (two edits; the realistic `Delay` swap is fixed above) and `b74e610652da` (same
 cause, truncated echo): none is a realistic single mistake under the 2026-10-29 scope.
 
-Also not modelled, found while probing: a one-argument built-in with adjacent operands
-(`Abs(X Y)`), a quote after a call's closing parenthesis (`F("abc")"`) and `WindVector`
-Reps 2147483647 (`Out of memory.`); all are strict gaps in the round-64 fixtures.
+Also found while probing: a one-argument built-in with adjacent operands inside a user Function
+call (`Abs(X Y)`) and a quote after a call's closing parenthesis (`F("abc")"`), both fixed in round
+67, and `WindVector` Reps 2147483647, which is the allocation `Out of memory.` cascade that PLAN
+flags with a coverage notice (scope: flagged, `windvector-reps-048-*` in `r64_windvector_reps.json`).
 
 ## Round-59 realism triage
 

@@ -9437,9 +9437,52 @@ file extension.` in active code, no later `Include` or `IncludeSection` is loade
 definitions are missing (`IncludeSection("Defs", "Lib4.crb")` after the error leaves `RangeK`
 undefined) and their own errors are not reported. Earlier includes are unaffected. A later
 missing file still warns and a later bad extension still reports, after the earlier include error
-(the warning is printed first: not modelled, later-diagnostic order only). A bad plain `Include`
+(the reference prints the earlier extension error first; opencrbasic prints the warning first: not
+modelled, later-diagnostic order only). A bad plain `Include`
 stops nothing, nor does a bad `IncludeSection` in an inactive `#If`. CR300/CR350 resolve include
 names differently and are not changed. This is the realistic shape of fuzz `6b414530e683`
 (`IncludeSection("CPU:ShuntLib.crb","Definitions")`, the arguments swapped). The parser skips the
 later include blocks as it does inside an inactive `#If`. Observations:
 `r66_include_stop.json` (48, all four profiles, sibling files included).
+
+## Round-67 review fixes
+
+The Codex final review of rounds 64-66 (`scratch/r65/codex/final-review.log`, local only) found
+two defects and several open first errors; all were probed on all four profiles
+(`tests/fixtures/r67_*.json`, 224 observations).
+
+- **`CType` is not always a String.** Round 65 typed every `kind` 312 function as String, so
+  `X = CType("3",Long) * 2` was a false reject. `CType` has the type its second argument names:
+  only `CType(Y,String)` is a String operand (all four loggers).
+- **A huge `FTPClient` PutGetOption** literal raised `OverflowError` in the checker. The value now
+  follows the reference: above the float32 range 2147483647 (`Invalid PutGetOption: 2147483647`),
+  below the Long range accepted (`-2147483649` and `-1e39` compile, a false reject before).
+- **Adjacent operands in a nested one-argument built-in inside a user Function call**
+  (`N = F(Abs(X Y))`): `Incomplete expression: <statement>.` when it is in the Function's last
+  argument, `Call argument required.` and the fallback in an earlier one (`G(Abs(X Y), 1)`). A
+  nested `Sin(X Y)` keeps `No Matching` and `Round(X Y, 1)` keeps `Expression expects ,`.
+- **A quote right after a user Function call** (`F("abc")"`, `N = F("abc")"`) is `String without
+  end quote` then `Incomplete expression: <statement>.`; with an operator before it
+  (`F("abc") + "x`) the fallback. A Sub call keeps `Invalid or malformed function argument.`
+- **Measurement `Reps` outside the Long range** (`BrHalf4W(R,999999999999,...)`, CR1000X fuzz
+  `301007b4ed1a`) reads as -2147483648: `Invalid reps -2147483648, must be > 0` first. The later
+  excitation-channel and scan-interval lines are not modelled.
+- **A String `Const` as a table name** (`Const TN = "T1"`, `CallTable TN`) names the table its
+  value spells, in `DataTable` and `CallTable` and for the never-called warning; an unknown one is
+  `Could not find DataTable T1.` (all four loggers, CR1000X fuzz `c9199e5b744a`). `CallTable TN`
+  of an existing `T1` was a false reject. The TDF table and its duplicate-field message use the
+  value too (`5231a9a68e91`).
+- **Block structure** (seeds 471/472, all realistic single edits, all four loggers): an unclosed
+  `For`/`Do` ends with its `Sub`, so the next `Sub` is not "declared in the middle of an
+  executing sequence" and only `FOR without NEXT.`/`DO without LOOP.` is reported at the end
+  (`8f8d26aa672d`, a duplicated `For` line); a plain `Case` with no open block (after a stray
+  `EndIf` closed its `Select`) is `Case with no Select.` like `ElseIf` (`033235c3b25f`, a deleted
+  `If` line), while an unparsable `Select Case Nope +` still opens its block; a `PulseCount` in a
+  `Scan` is inside a `Scan` even when an earlier `Sub` was left open (`f2576817cb9b`, a deleted
+  `EndSub`: only `Sub ... EndSub not matched.`).
+- **Junk after a String size** (seed 474, `2648699c4f46`): the size of `As String * n` is read up
+  to the next comma or `=`, so a sized String pointer `Dim P As String * 16!` is `Incomplete
+  expression: 16!.` and `As String * 16 X` is `Invalid symbol in expression: 16 X.` on CR6/CR1000X
+  (both were false accepts; the trailing tokens were dropped like those after a complete `As`
+  clause). `As String!` compiles. A sized String parameter followed by `!` keeps the generic
+  fallback instead (verdict equal, not modelled).

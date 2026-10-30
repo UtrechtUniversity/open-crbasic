@@ -636,16 +636,14 @@
       "logger": "cr6",
       "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1).",
-      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Call argument required.`; not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)."
     },
     {
       "id": "function-args-086-cr1000x",
       "logger": "cr1000x",
       "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1).",
-      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Call argument required.`; not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)."
     },
     {
       "id": "function-args-086-cr300",
@@ -814,16 +812,14 @@
       "logger": "cr6",
       "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y)).",
-      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Incomplete expression`; not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))."
     },
     {
       "id": "function-args-092-cr1000x",
       "logger": "cr1000x",
       "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y)).",
-      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Incomplete expression`; not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))."
     },
     {
       "id": "function-args-092-cr300",

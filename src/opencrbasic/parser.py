@@ -2363,6 +2363,7 @@ class _Parser:
         empty_type_dims = empty_type_init = False
         init: list[S.Expr | None] | None = None
         size_missing = None
+        size_junk: tuple[int, str] | None = None
         if p.is_ident("AS"):
             p.next()
             type_tok = p.expect_ident()
@@ -2390,7 +2391,12 @@ class _Parser:
                         dims.append(self._parse_dim(p, line, file))
                     self._close_dims_or_raise(p, name_tok)
                 else:
+                    size_col = p.peek().col
                     strsize = self._parse_expr(p, line, file)
+                    if p.is_op("!") or p.peek().kind == "IDENT":
+                        # `As String * 16!`, `As String * 16 X`: reported by `structure.py` (a
+                        # number there is already `Incomplete expression`, round 7)
+                        size_junk = (size_col, "bang" if p.is_op("!") else "word")
             elif not dims and p.is_op("("):
                 # `Public floatArr As Float(5) = {...}`: the dimension can follow the type
                 # instead of the variable name. Confirmed valid CRBasic by corpus testing
@@ -2461,6 +2467,7 @@ class _Parser:
         decl = S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
                          dim0_span=dim0_span, paren_dim=paren_dim, junk_dims=junk_dims)
         decl.size_missing = size_missing  # column just after the `*`, or None
+        decl.size_junk = size_junk  # (column of the String size, kind of what follows it), or None
         decl.empty_type_init = empty_type_init  # `As Float() = ...`, reported by structure.py
         return decl
 

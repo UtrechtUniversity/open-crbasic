@@ -1015,6 +1015,8 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             reps = 0 if profile.single_pass else -2147483648
         if reps is None:
             continue
+        if not profile.single_pass and not -2**31 <= reps < 2**31:
+            reps = -2147483648   # outside the Long range (oracle, CR1000X, round 67)
         if profile.single_pass:
             # before this line's other diagnostics, e.g. its fnotch warning (oracle, CR300, fuzz
             # `84bd80cc420c`); destination bounds: rounds 30-31

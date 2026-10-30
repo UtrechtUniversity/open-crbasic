@@ -1,0 +1,275 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "ctype-typing-000-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(\"3\",Long) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-000-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(\"3\",Long) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-000-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(\"3\",Long) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-000-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(\"3\",Long) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-001-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Float) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-001-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Float) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-001-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Float) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-001-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Float) / 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-002-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Double) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-002-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Double) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-002-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Double) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-002-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Double) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-003-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-003-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-003-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-003-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-004-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Boolean) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal type"
+    },
+    {
+      "id": "ctype-typing-004-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Boolean) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal type"
+    },
+    {
+      "id": "ctype-typing-004-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Boolean) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal type"
+    },
+    {
+      "id": "ctype-typing-004-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Boolean) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal type"
+    },
+    {
+      "id": "ctype-typing-005-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(Y,String)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-005-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(Y,String)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-005-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(Y,String)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-005-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(Y,String)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Illegal String operand"
+    },
+    {
+      "id": "ctype-typing-006-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(\"3\",Long)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-006-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(\"3\",Long)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-006-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(\"3\",Long)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-006-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = (1 + CType(\"3\",Long)) * 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-007-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Long) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-007-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Long) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ctype-typing-007-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Long) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-007-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,Long) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "ctype-typing-008-cr6",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "ctype-typing-008-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "ctype-typing-008-cr300",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    },
+    {
+      "id": "ctype-typing-008-cr350",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Y\r\nPublic S As String * 32, A(6), T(3) As String * 8\r\nConst CS = \"ab\"\r\nFunction FS(V) As String\r\n  Return \"x\"\r\nEndFunction\r\nFunction FN(V) As Float\r\n  Return 1\r\nEndFunction\r\nFunction FU(V)\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = CType(Y,String) AND 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String is illegal here"
+    }
+  ]
+}

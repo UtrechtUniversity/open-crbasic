@@ -185,6 +185,8 @@ def unknown_calltables(program: S.Program):
         kw = stmt.keyword.upper()
         if kw == "DATATABLE":
             name = _table_name(stmt)
+            if name:
+                name = _const_table_name(name, program)
             if not name and stmt.args and isinstance(stmt.args[0], S.String):
                 name = stmt.args[0].value  # `DataTable ("HIST4D",1,100)`, histogram4d_1.CR6
             if name:
@@ -211,13 +213,21 @@ def _with_inline(stmts):
             yield from _with_inline(stmt.inline_else or [])
 
 
+def _const_table_name(name: str, program: S.Program) -> str:
+    """A table name that is a String `Const` names the table its value spells, both in `DataTable`
+    and in `CallTable` (`Const TN = "T1"`: `CallTable TN` calls `T1`, and an unknown one is `Could
+    not find DataTable T1.`; oracle, all four loggers, round 67)."""
+    value = program.consts.get(name.upper(), program.consts.get(name)) if program.consts else None
+    return value if isinstance(value, str) and value else name
+
+
 def _calltable_names(program: S.Program):
     for stmt in _with_inline(program.statements):
         if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CALLTABLE"):
             continue
         target = stmt.args[0] if stmt.args else None
         if isinstance(target, S.Name):
-            name = target.name
+            name = _const_table_name(target.name, program)
         elif isinstance(target, S.String):
             name = target.value
         elif isinstance(target, S.Binary) and stmt.arg_spans and stmt.arg_spans[0]:
@@ -575,6 +585,8 @@ def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> No
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE":
             name = _table_name(stmt)
+            if name:
+                name = _const_table_name(name, program)   # (as `tables.py` names it, round 67)
             if name and name.upper() not in user_tables:
                 user_tables.append(name.upper())
     by_upper = {t.name.upper(): t for t in tables}

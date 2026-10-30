@@ -1,0 +1,198 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "measurement-reps-044-cr6",
+      "logger": "cr6",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,999999999999,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Vx1."
+    },
+    {
+      "id": "measurement-reps-044-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,999999999999,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds.\nline 4: Excitation channel exceeds Vx4.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-044-cr300",
+      "logger": "cr300",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,999999999999,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-044-cr350",
+      "logger": "cr350",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,999999999999,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-045-cr6",
+      "logger": "cr6",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,2147483648,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Vx1."
+    },
+    {
+      "id": "measurement-reps-045-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,2147483648,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds.\nline 4: Excitation channel exceeds Vx4.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-045-cr300",
+      "logger": "cr300",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,2147483648,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-045-cr350",
+      "logger": "cr350",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,2147483648,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-046-cr6",
+      "logger": "cr6",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,-2147483649,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Vx1."
+    },
+    {
+      "id": "measurement-reps-046-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,-2147483649,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds.\nline 4: Excitation channel exceeds Vx4.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-046-cr300",
+      "logger": "cr300",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,-2147483649,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-046-cr350",
+      "logger": "cr350",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,-2147483649,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-047-cr6",
+      "logger": "cr6",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,999999999999,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable V out of bounds.\nline 4: Invalid channel 1, must use U1..U12.\nline 5: Scan interval too short for measurement by -2148 Sec.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-047-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,999999999999,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable V out of bounds.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-047-cr300",
+      "logger": "cr300",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,999999999999,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV5000 is not defined.\nline 4: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "measurement-reps-047-cr350",
+      "logger": "cr350",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,999999999999,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV5000 is not defined.\nline 4: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "measurement-reps-048-cr6",
+      "logger": "cr6",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,2147483647,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable V out of bounds.\nline 4: Invalid channel 1, must use U1..U12."
+    },
+    {
+      "id": "measurement-reps-048-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,2147483647,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable V out of bounds.\nline 4: Channel 17 exceeds number of valid channels.\nline 5: Scan interval too short for measurement by -2148 Sec.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-048-cr300",
+      "logger": "cr300",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,2147483647,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV5000 is not defined.\nline 4: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "measurement-reps-048-cr350",
+      "logger": "cr350",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    VoltSe(V,2147483647,mV5000,1,1,0,15000,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mV5000 is not defined.\nline 4: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "measurement-reps-049-cr6",
+      "logger": "cr6",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,5,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Vx1."
+    },
+    {
+      "id": "measurement-reps-049-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,5,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds.\nline 4: Invalid channel, must use Vx1..Vx4.\nline 4: Channel 9 exceeds number of valid channels.",
+      "not_modelled": "Later diagnostics only: the channel/excitation and scan-interval lines after an overflowing measurement Reps are not modelled; the first error matches."
+    },
+    {
+      "id": "measurement-reps-049-cr300",
+      "logger": "cr300",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,5,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    },
+    {
+      "id": "measurement-reps-049-cr350",
+      "logger": "cr350",
+      "source": "Public R(4), V(4), X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    BrHalf4W(R,5,mv200C,mv200C,1,Vx1,1,2100,False,True,0,60,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: mv200C is not defined.\nline 4: Variable illegal in Parameter: mv200C."
+    }
+  ]
+}

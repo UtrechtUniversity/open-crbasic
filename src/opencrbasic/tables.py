@@ -390,6 +390,9 @@ def _scan_program(program: S.Program) -> _Scanned:
         if isinstance(s, S.Instruction) and (kw == "DATATABLE"):
             args = s.args
             name = args[0].name if args and isinstance(args[0], S.Name) else ""
+            value = (program.consts or {}).get(name.upper()) if name else None
+            if isinstance(value, str) and value:
+                name = value   # a String `Const` names the table its value spells (oracle, round 67)
             trig = args[1] if len(args) > 1 else None
             size_expr = args[2] if len(args) > 2 else None
             j = i + 1

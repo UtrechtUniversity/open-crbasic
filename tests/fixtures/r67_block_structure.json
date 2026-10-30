@@ -1,0 +1,557 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "block-structure-058-cr6",
+      "logger": "cr6",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-058-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-058-cr300",
+      "logger": "cr300",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-058-cr350",
+      "logger": "cr350",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-059-cr6",
+      "logger": "cr6",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-059-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-059-cr300",
+      "logger": "cr300",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-059-cr350",
+      "logger": "cr350",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-060-cr6",
+      "logger": "cr6",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-060-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-060-cr300",
+      "logger": "cr300",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-060-cr350",
+      "logger": "cr350",
+      "source": "Public X, I\r\nSub A\r\n  For I = 1 To 3\r\n  For I = 1 To 3\r\n    X = 1\r\n  Next I\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: FOR without NEXT."
+    },
+    {
+      "id": "block-structure-061-cr6",
+      "logger": "cr6",
+      "source": "Public X, I\r\nSub A\r\n  If X Then\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+    },
+    {
+      "id": "block-structure-061-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, I\r\nSub A\r\n  If X Then\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+    },
+    {
+      "id": "block-structure-061-cr300",
+      "logger": "cr300",
+      "source": "Public X, I\r\nSub A\r\n  If X Then\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+    },
+    {
+      "id": "block-structure-061-cr350",
+      "logger": "cr350",
+      "source": "Public X, I\r\nSub A\r\n  If X Then\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+    },
+    {
+      "id": "block-structure-062-cr6",
+      "logger": "cr6",
+      "source": "Public X, I\r\nSub A\r\n  X = 1\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call B\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+    },
+    {
+      "id": "block-structure-062-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, I\r\nSub A\r\n  X = 1\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call B\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+    },
+    {
+      "id": "block-structure-062-cr300",
+      "logger": "cr300",
+      "source": "Public X, I\r\nSub A\r\n  X = 1\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call B\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+    },
+    {
+      "id": "block-structure-062-cr350",
+      "logger": "cr350",
+      "source": "Public X, I\r\nSub A\r\n  X = 1\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call B\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+    },
+    {
+      "id": "block-structure-063-cr6",
+      "logger": "cr6",
+      "source": "Public X, I\r\nSub A\r\n  Do\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: DO without LOOP."
+    },
+    {
+      "id": "block-structure-063-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, I\r\nSub A\r\n  Do\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: DO without LOOP."
+    },
+    {
+      "id": "block-structure-063-cr300",
+      "logger": "cr300",
+      "source": "Public X, I\r\nSub A\r\n  Do\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: DO without LOOP."
+    },
+    {
+      "id": "block-structure-063-cr350",
+      "logger": "cr350",
+      "source": "Public X, I\r\nSub A\r\n  Do\r\n    X = 1\r\nEndSub\r\nSub B\r\n  X = 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call A\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: DO without LOOP."
+    },
+    {
+      "id": "block-structure-064-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case 2\r\n        Y = 2\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case with no Select."
+    },
+    {
+      "id": "block-structure-064-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case 2\r\n        Y = 2\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case with no Select."
+    },
+    {
+      "id": "block-structure-064-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case 2\r\n        Y = 2\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case with no Select."
+    },
+    {
+      "id": "block-structure-064-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case 2\r\n        Y = 2\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case with no Select."
+    },
+    {
+      "id": "block-structure-065-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Else with no If."
+    },
+    {
+      "id": "block-structure-065-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Else with no If."
+    },
+    {
+      "id": "block-structure-065-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Else with no If."
+    },
+    {
+      "id": "block-structure-065-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n      Case Else\r\n        Y = 3\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Else with no If."
+    },
+    {
+      "id": "block-structure-066-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 8: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-066-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 8: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-066-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 8: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-066-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      EndIf\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 8: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-067-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      Next\r\n      Case 2\r\n        Y = 2\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NEXT without FOR.\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+    },
+    {
+      "id": "block-structure-067-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      Next\r\n      Case 2\r\n        Y = 2\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NEXT without FOR.\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+    },
+    {
+      "id": "block-structure-067-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      Next\r\n      Case 2\r\n        Y = 2\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NEXT without FOR.\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+    },
+    {
+      "id": "block-structure-067-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Select Case X\r\n      Case 1\r\n        Y = 1\r\n      Next\r\n      Case 2\r\n        Y = 2\r\n    EndSelect\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: NEXT without FOR.\nline 10: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+    },
+    {
+      "id": "block-structure-068-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Y = 1\r\n    EndSelect\r\n    Y = 2\r\n    Else\r\n      Y = 3\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select"
+    },
+    {
+      "id": "block-structure-068-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Y = 1\r\n    EndSelect\r\n    Y = 2\r\n    Else\r\n      Y = 3\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select"
+    },
+    {
+      "id": "block-structure-068-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Y = 1\r\n    EndSelect\r\n    Y = 2\r\n    Else\r\n      Y = 3\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select"
+    },
+    {
+      "id": "block-structure-068-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Y = 1\r\n    EndSelect\r\n    Y = 2\r\n    Else\r\n      Y = 3\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select"
+    },
+    {
+      "id": "block-structure-069-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n    EndIf\r\n    Y = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-069-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n    EndIf\r\n    Y = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-069-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n    EndIf\r\n    Y = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-069-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n    EndIf\r\n    Y = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+    },
+    {
+      "id": "block-structure-070-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Case 1\r\n      Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+    },
+    {
+      "id": "block-structure-070-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Case 1\r\n      Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+    },
+    {
+      "id": "block-structure-070-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Case 1\r\n      Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+    },
+    {
+      "id": "block-structure-070-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Case 1\r\n      Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+    },
+    {
+      "id": "block-structure-071-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Case 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Case outside Select."
+    },
+    {
+      "id": "block-structure-071-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Case 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Case outside Select."
+    },
+    {
+      "id": "block-structure-071-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Case 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Case outside Select."
+    },
+    {
+      "id": "block-structure-071-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X Then\r\n      Case 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Case outside Select."
+    },
+    {
+      "id": "block-structure-072-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y\r\nSub S\r\n  Case 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Case outside Select."
+    },
+    {
+      "id": "block-structure-072-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y\r\nSub S\r\n  Case 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Case outside Select."
+    },
+    {
+      "id": "block-structure-072-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y\r\nSub S\r\n  Case 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Case outside Select.\nline 6: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350 best effort: later diagnostics after a stray block word are not modelled."
+    },
+    {
+      "id": "block-structure-072-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y\r\nSub S\r\n  Case 2\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Y = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Case outside Select.\nline 6: Too many parameters:  Sec.",
+      "not_modelled": "CR300/CR350 best effort: later diagnostics after a stray block word are not modelled."
+    },
+    {
+      "id": "block-structure-073-cr6",
+      "logger": "cr6",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PulseCount(W,1,P1,5,1,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: P1."
+    },
+    {
+      "id": "block-structure-073-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PulseCount(W,1,P1,5,1,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub ... EndSub not matched."
+    },
+    {
+      "id": "block-structure-073-cr300",
+      "logger": "cr300",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PulseCount(W,1,P1,5,1,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: P1 is not defined.\nline 6: Variable illegal in Parameter: P1."
+    },
+    {
+      "id": "block-structure-073-cr350",
+      "logger": "cr350",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PulseCount(W,1,P1,5,1,1.0,0)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: P1 is not defined.\nline 6: Variable illegal in Parameter: P1."
+    },
+    {
+      "id": "block-structure-074-cr6",
+      "logger": "cr6",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: P1."
+    },
+    {
+      "id": "block-structure-074-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PulseCount must be used within a Scan...NextScan."
+    },
+    {
+      "id": "block-structure-074-cr300",
+      "logger": "cr300",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: P1 is not defined.\nline 5: Variable illegal in Parameter: P1.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "block-structure-074-cr350",
+      "logger": "cr350",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: P1 is not defined.\nline 5: Variable illegal in Parameter: P1.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "block-structure-075-cr6",
+      "logger": "cr6",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub ... EndSub not matched."
+    },
+    {
+      "id": "block-structure-075-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub ... EndSub not matched."
+    },
+    {
+      "id": "block-structure-075-cr300",
+      "logger": "cr300",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub ... EndSub not matched."
+    },
+    {
+      "id": "block-structure-075-cr350",
+      "logger": "cr350",
+      "source": "Public X, W\r\nSub S\r\n  X = 1\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub ... EndSub not matched."
+    },
+    {
+      "id": "block-structure-076-cr6",
+      "logger": "cr6",
+      "source": "Public X, W\r\nSub S\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: P1."
+    },
+    {
+      "id": "block-structure-076-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, W\r\nSub S\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: PulseCount must be used within a Scan...NextScan."
+    },
+    {
+      "id": "block-structure-076-cr300",
+      "logger": "cr300",
+      "source": "Public X, W\r\nSub S\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: P1 is not defined.\nline 3: Variable illegal in Parameter: P1.\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "block-structure-076-cr350",
+      "logger": "cr350",
+      "source": "Public X, W\r\nSub S\r\n  PulseCount(W,1,P1,5,1,1.0,0)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call S\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: P1 is not defined.\nline 3: Variable illegal in Parameter: P1.\nline 6: Too many parameters:  Sec."
+    }
+  ]
+}

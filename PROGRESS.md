@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-30 after development round 66** (round-51
+Current compiler state and handoff, updated **2026-10-30 after development round 67** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66). Use Git to check publication
+error, round 66; Codex final-review fixes, round 67). Use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -91,6 +91,28 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 67** (M1/M2 Codex final review). The Codex `gpt-6.1-sol` read-only review of rounds
+64-66 (`scratch/r65/codex/final-review.log`, local only) did not sign off: it found a false-reject
+regression, a reachable implementation exception, realistic first-error gaps and 13 fresh
+identities without a decision, and two overstated verification claims. All addressed, probed on
+all four profiles (`tests/fixtures/r67_*.json`, 308 observations; CR6/CR1000X all match except the
+later cascade lines after an overflowing measurement Reps), rules in
+[checker notes](docs/checker.md#round-67-review-fixes):
+- **False rejects fixed:** `CType(...,Long) * 2` (round 65 typed every `CType` as String);
+  `FTPClient(...,-2147483649)`; `CallTable TN` with `Const TN = "T1"` naming an existing table.
+- **Implementation exception fixed:** a PutGetOption literal of hundreds of digits
+  (`OverflowError`; the reference itself gives no verdict there).
+- **First errors fixed:** adjacent operands in a nested built-in inside a user Function call; a
+  quote right after a user Function call; an overflowing measurement Reps (`301007b4ed1a`); a
+  misspelled table-name `Const` (`c9199e5b744a`, `5231a9a68e91`); a duplicated `For` line, a
+  deleted `If` line and a deleted `EndSub` (seeds 471/472).
+- **False accept fixed:** a sized String pointer `Dim P As String * 16!` (seed 474), and junk
+  after a String size in general.
+- Every first-error difference of the fresh batches since round 60 now has a recorded decision
+  ([review](docs/first-error-review.md#round-67-ledger-completion)). Fresh seeds 471/472 (round-66
+  code) and 473/474 (round-67 code before the String-size fix) had no verdict or mode difference
+  apart from that false accept, which their first-error triage exposed.
+
 **Round 66** (M2, single agent). The realistic first-error candidate left by seeds 469/470: a swapped
 `IncludeSection("CPU:ShuntLib.crb","Definitions")` (`6b414530e683`). On CR6/CR1000X an
 `IncludeSection` extension error in active code stops every later include, so their definitions
@@ -100,7 +122,9 @@ loaded the later sections and reported an error inside them first. The parser sk
 include blocks as it does in an inactive `#If`. Fixture `r66_include_stop.json` (48 observations
 with sibling files, all four profiles; CR6/CR1000X all match except the order of a later missing-file
 warning; CR300/CR350 unchanged, their include resolution is not modelled here).
-- Gates: fixture audit 0 differing; full and server suites pass; CI saved replay 2,631 exact (+1)
+- Gates: the fixture audit ran on `r65_string_operands.json` only, by mistake; the round-66 fixture
+  was checked by pytest only (36 passed, 12 strict xfail; correction from the round-67 Codex
+  review). Full and server suites pass; CI saved replay 2,631 exact (+1)
   with no regression; four-profile difftest and GEUS 66/66 unchanged; the fresh replay of rounds
   60/64/65 makes `6b414530e683` exact; both `verify.py` backends pass. No hardware tests. Logs:
   `scratch/r66/gates/`.
@@ -138,8 +162,9 @@ and the four sections after it.
   explicit `Call F(...)`; unterminated strings in user Function calls (`LogDebug("abc)`). Ten
   round-62 strict gaps now match.
 - The remaining round-60 inputs and the 31 fresh differences are classified in the
-  [first-error review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification);
-  none left open is a realistic single mistake.
+  [first-error review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification).
+  That review's claim that none left open was realistic was too strong: the Codex review found
+  realistic gaps and unrecorded identities, fixed or recorded in round 67.
 - Seeds 467/468, run on the round-64 code: two new false accepts, `FTPClient` PutGetOption
   (`3b789efdd145`) and a `GetRecord` destination smaller than the record (`ca5b1677129c`). While
   probing M3 candidates, a third family was found: String-returning functions and a `+` with a
@@ -147,8 +172,10 @@ and the four sections after it.
   All three were fixed in round 65.
 - Gates: fixture audit 0 differing; full and server suites pass; CI saved replay 2,630 exact with
   no regression; four-profile difftest and GEUS 66/66 unchanged; fresh replay of rounds 60/64
-  improves by 16 exact; both `verify.py` backends pass. Codex review of the diff was cut short by
-  its usage limit before findings. No hardware tests. Commands and logs: `scratch/r64/gates/`.
+  improves by 16 exact. Both `verify.py` backends **failed** at gate time on one Pyrefly
+  annotation (`scratch/r64/gates/verify-*.log`); after the fix both passed on a manual rerun whose
+  output was not saved (correction from the round-67 Codex review). Codex review of the diff was
+  cut short by its usage limit before findings. No hardware tests. Commands and logs: `scratch/r64/gates/`.
 
 **Round 63** (M2, single agent). Round 62 was committed separately as `1aad02c9` after its seven
 files matched the validated checkpoint and the focused r61/r62 suites passed again (236 passed,

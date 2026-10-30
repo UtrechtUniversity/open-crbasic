@@ -1,0 +1,349 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "string-size-junk-077-cr6",
+      "logger": "cr6",
+      "source": "Dim P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-077-cr1000x",
+      "logger": "cr1000x",
+      "source": "Dim P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-077-cr300",
+      "logger": "cr300",
+      "source": "Dim P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-077-cr350",
+      "logger": "cr350",
+      "source": "Dim P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-078-cr6",
+      "logger": "cr6",
+      "source": "Dim P As String!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-size-junk-078-cr1000x",
+      "logger": "cr1000x",
+      "source": "Dim P As String!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-size-junk-078-cr300",
+      "logger": "cr300",
+      "source": "Dim P As String!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-size-junk-078-cr350",
+      "logger": "cr350",
+      "source": "Dim P As String!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-size-junk-079-cr6",
+      "logger": "cr6",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-079-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-079-cr300",
+      "logger": "cr300",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-079-cr350",
+      "logger": "cr350",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-080-cr6",
+      "logger": "cr6",
+      "source": "Dim P As String * 16 !\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16 !."
+    },
+    {
+      "id": "string-size-junk-080-cr1000x",
+      "logger": "cr1000x",
+      "source": "Dim P As String * 16 !\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16 !."
+    },
+    {
+      "id": "string-size-junk-080-cr300",
+      "logger": "cr300",
+      "source": "Dim P As String * 16 !\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16 !.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-080-cr350",
+      "logger": "cr350",
+      "source": "Dim P As String * 16 !\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16 !.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-081-cr6",
+      "logger": "cr6",
+      "source": "Dim P As Long!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-size-junk-081-cr1000x",
+      "logger": "cr1000x",
+      "source": "Dim P As Long!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-size-junk-081-cr300",
+      "logger": "cr300",
+      "source": "Dim P As Long!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-size-junk-081-cr350",
+      "logger": "cr350",
+      "source": "Dim P As Long!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-size-junk-082-cr6",
+      "logger": "cr6",
+      "source": "Dim P As String * 16 X\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: 16 X."
+    },
+    {
+      "id": "string-size-junk-082-cr1000x",
+      "logger": "cr1000x",
+      "source": "Dim P As String * 16 X\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: 16 X."
+    },
+    {
+      "id": "string-size-junk-082-cr300",
+      "logger": "cr300",
+      "source": "Dim P As String * 16 X\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: X is not defined.\nline 1: Incomplete expression: 16 X.\nline 1: Variable illegal in Parameter: 16 X.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-082-cr350",
+      "logger": "cr350",
+      "source": "Dim P As String * 16 X\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: X is not defined.\nline 1: Incomplete expression: 16 X.\nline 1: Variable illegal in Parameter: 16 X.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-083-cr6",
+      "logger": "cr6",
+      "source": "Public P As String * 16 = \"a\"\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-size-junk-083-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16 = \"a\"\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "string-size-junk-083-cr300",
+      "logger": "cr300",
+      "source": "Public P As String * 16 = \"a\"\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-size-junk-083-cr350",
+      "logger": "cr350",
+      "source": "Public P As String * 16 = \"a\"\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "string-size-junk-084-cr6",
+      "logger": "cr6",
+      "source": "Public P As String * 16!, Y\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-084-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16!, Y\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-084-cr300",
+      "logger": "cr300",
+      "source": "Public P As String * 16!, Y\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-084-cr350",
+      "logger": "cr350",
+      "source": "Public P As String * 16!, Y\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-085-cr6",
+      "logger": "cr6",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-085-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-085-cr300",
+      "logger": "cr300",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.\nline 5: Q is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-085-cr350",
+      "logger": "cr350",
+      "source": "Public P As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.\nline 5: Q is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-086-cr6",
+      "logger": "cr6",
+      "source": "Public P(3) As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-086-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public P(3) As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!."
+    },
+    {
+      "id": "string-size-junk-086-cr300",
+      "logger": "cr300",
+      "source": "Public P(3) As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-086-cr350",
+      "logger": "cr350",
+      "source": "Public P(3) As String * 16!\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 4: Too many parameters:  Sec.\nline 5: X is not defined.",
+      "not_modelled": "CR300/CR350 best effort: junk after a String size is not modelled."
+    },
+    {
+      "id": "string-size-junk-087-cr6",
+      "logger": "cr6",
+      "source": "Sub S(A As String * 16!)\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.",
+      "not_modelled": "A sized String parameter followed by `!` keeps the fallback instead of `Incomplete expression: 16!.` (the verdict matches); not modelled."
+    },
+    {
+      "id": "string-size-junk-087-cr1000x",
+      "logger": "cr1000x",
+      "source": "Sub S(A As String * 16!)\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.",
+      "not_modelled": "A sized String parameter followed by `!` keeps the fallback instead of `Incomplete expression: 16!.` (the verdict matches); not modelled."
+    },
+    {
+      "id": "string-size-junk-087-cr300",
+      "logger": "cr300",
+      "source": "Sub S(A As String * 16!)\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 5: Too many parameters:  Sec.\nline 6: X is not defined.",
+      "not_modelled": "A sized String parameter followed by `!` keeps the fallback instead of `Incomplete expression: 16!.` (the verdict matches); not modelled."
+    },
+    {
+      "id": "string-size-junk-087-cr350",
+      "logger": "cr350",
+      "source": "Sub S(A As String * 16!)\r\nEndSub\r\nPublic X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 16!.\nline 5: Too many parameters:  Sec.\nline 6: X is not defined.",
+      "not_modelled": "A sized String parameter followed by `!` keeps the fallback instead of `Incomplete expression: 16!.` (the verdict matches); not modelled."
+    }
+  ]
+}

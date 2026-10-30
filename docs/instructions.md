@@ -959,7 +959,8 @@ Same module (fixture cases `*-sdmcd16-*`, `*-snmpvariable-*`, `*-menurecompile-*
 
 Same module (fixture cases `*-string-operand-*`, all four loggers). A String-typed operand (variable,
 element, string `Const`/literal, a String-returning built-in such as `Mid`, `FormatFloat`, `Chr`,
-`Hex`, `Trim` or `UpperCase` (function `kind` 312, `docs/binary.md`), a `Function ... As String`, an
+`Hex`, `Trim` or `UpperCase` (function `kind` 312, `docs/binary.md`; `CType` only with `String` as its
+second argument, round 67), a `Function ... As String`, an
 `IIF` with a String second argument, or a `+`/`&` with a String on either side) in
 `AND OR XOR IMP EQV << >>` gives `String is illegal here`; in `* / \ MOD` the left String gives
 `Illegal String operand`, the right one `Illegal operand of type STRING` (both when both). `+ - & ^`,
@@ -2343,7 +2344,9 @@ a missing argument) keep their own parse messages, which are still not matched o
 
 CR6/CR1000X: a constant `PutGetOption` (sixth argument) is truncated to a Long and must lie in
 -29..29; otherwise `Invalid PutGetOption: <value>` (`30`, `-30`, `&HFF` as 255, `2147483648` and
-`999999999999` as -2147483648). `29.9` and `-29.9` compile; a variable or a String is not checked.
+`999999999999` as -2147483648). Above the float32 range (`1e39`) the value is 2147483647; below the
+Long range (`-2147483649`, `-1e39`) it compiles (round 67). `29.9` and `-29.9` compile; a variable or
+a String is not checked. A literal of hundreds of digits gives no usable reference verdict.
 CR300/CR350 accept every value. Round 65, `r65_ftpclient_option.json` (316 observations); found by
 fuzz `3b789efdd145` (seed 467). The CHM lists fewer options than the compiler accepts.
 

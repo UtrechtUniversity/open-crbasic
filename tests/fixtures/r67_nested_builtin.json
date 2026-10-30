@@ -1,0 +1,595 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "nested-builtin-018-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y)."
+    },
+    {
+      "id": "nested-builtin-018-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y)."
+    },
+    {
+      "id": "nested-builtin-018-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y)\n."
+    },
+    {
+      "id": "nested-builtin-018-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y)\n."
+    },
+    {
+      "id": "nested-builtin-019-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y) + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y) + 1."
+    },
+    {
+      "id": "nested-builtin-019-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y) + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y) + 1."
+    },
+    {
+      "id": "nested-builtin-019-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y) + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y) + 1\n."
+    },
+    {
+      "id": "nested-builtin-019-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X Y) + 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X Y) + 1\n."
+    },
+    {
+      "id": "nested-builtin-020-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Sin(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     X = Sin(X Y)."
+    },
+    {
+      "id": "nested-builtin-020-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Sin(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     X = Sin(X Y)."
+    },
+    {
+      "id": "nested-builtin-020-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Sin(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     X = Sin(X Y)\n."
+    },
+    {
+      "id": "nested-builtin-020-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Sin(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     X = Sin(X Y)\n."
+    },
+    {
+      "id": "nested-builtin-021-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 + Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = 1 + Abs(X Y)."
+    },
+    {
+      "id": "nested-builtin-021-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 + Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = 1 + Abs(X Y)."
+    },
+    {
+      "id": "nested-builtin-021-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 + Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = 1 + Abs(X Y)\n."
+    },
+    {
+      "id": "nested-builtin-021-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1 + Abs(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = 1 + Abs(X Y)\n."
+    },
+    {
+      "id": "nested-builtin-022-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-022-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-022-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-022-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-023-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)."
+    },
+    {
+      "id": "nested-builtin-023-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)."
+    },
+    {
+      "id": "nested-builtin-023-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-023-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-024-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y), 1)."
+    },
+    {
+      "id": "nested-builtin-024-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y), 1)."
+    },
+    {
+      "id": "nested-builtin-024-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-024-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-025-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-025-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-025-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-025-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-026-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     F(Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-026-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     F(Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-026-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     F(Abs(X Y))\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-026-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     F(Abs(X Y))\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-027-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Round(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     X = Round(X Y, 1)."
+    },
+    {
+      "id": "nested-builtin-027-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Round(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     X = Round(X Y, 1)."
+    },
+    {
+      "id": "nested-builtin-027-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Round(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     X = Round(X Y, 1)\n."
+    },
+    {
+      "id": "nested-builtin-027-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Round(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     X = Round(X Y, 1)\n."
+    },
+    {
+      "id": "nested-builtin-028-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X 1)."
+    },
+    {
+      "id": "nested-builtin-028-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X 1)."
+    },
+    {
+      "id": "nested-builtin-028-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X 1)\n."
+    },
+    {
+      "id": "nested-builtin-028-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(X 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(X 1)\n."
+    },
+    {
+      "id": "nested-builtin-029-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(\"a\" Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(\"a\" Y)."
+    },
+    {
+      "id": "nested-builtin-029-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(\"a\" Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(\"a\" Y)."
+    },
+    {
+      "id": "nested-builtin-029-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(\"a\" Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(\"a\" Y)\n."
+    },
+    {
+      "id": "nested-builtin-029-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = Abs(\"a\" Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     X = Abs(\"a\" Y)\n."
+    },
+    {
+      "id": "nested-builtin-030-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Abs(X Y) > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Abs(X Y) > 1 ."
+    },
+    {
+      "id": "nested-builtin-030-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Abs(X Y) > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Abs(X Y) > 1 ."
+    },
+    {
+      "id": "nested-builtin-030-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Abs(X Y) > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Abs(X Y) > 1 ."
+    },
+    {
+      "id": "nested-builtin-030-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If Abs(X Y) > 1 Then X = 1\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Abs(X Y) > 1 ."
+    },
+    {
+      "id": "nested-builtin-031-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     G(Abs(X Y), 1)."
+    },
+    {
+      "id": "nested-builtin-031-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     G(Abs(X Y), 1)."
+    },
+    {
+      "id": "nested-builtin-031-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     G(Abs(X Y), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-031-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     G(Abs(X Y), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-032-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = G(1, Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-032-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = G(1, Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-032-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = G(1, Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-032-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = G(1, Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-033-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     G(1, Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-033-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     G(1, Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-033-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     G(1, Abs(X Y))\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-033-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(1, Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     G(1, Abs(X Y))\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-034-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Sin(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(Sin(X Y))."
+    },
+    {
+      "id": "nested-builtin-034-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Sin(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(Sin(X Y))."
+    },
+    {
+      "id": "nested-builtin-034-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Sin(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(Sin(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-034-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Sin(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(Sin(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-035-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Round(X Y, 1))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     N = F(Round(X Y, 1))."
+    },
+    {
+      "id": "nested-builtin-035-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Round(X Y, 1))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     N = F(Round(X Y, 1))."
+    },
+    {
+      "id": "nested-builtin-035-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Round(X Y, 1))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     N = F(Round(X Y, 1))\n."
+    },
+    {
+      "id": "nested-builtin-035-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(Round(X Y, 1))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     N = F(Round(X Y, 1))\n."
+    },
+    {
+      "id": "nested-builtin-036-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(1 + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(1 + Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-036-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(1 + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(1 + Abs(X Y))."
+    },
+    {
+      "id": "nested-builtin-036-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(1 + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(1 + Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-036-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(1 + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(1 + Abs(X Y))\n."
+    },
+    {
+      "id": "nested-builtin-037-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y) + 1, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y) + 1, 1)."
+    },
+    {
+      "id": "nested-builtin-037-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y) + 1, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y) + 1, 1)."
+    },
+    {
+      "id": "nested-builtin-037-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y) + 1, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y) + 1, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    },
+    {
+      "id": "nested-builtin-037-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(Abs(X Y) + 1, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(Abs(X Y) + 1, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: adjacent operands in a nested built-in inside a user Function call are not modelled."
+    }
+  ]
+}

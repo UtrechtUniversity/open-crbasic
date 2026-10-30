@@ -149,7 +149,8 @@ def _function_call_string(text: str, functions: frozenset[str] | set[str]) -> st
     """CR6/CR1000X: a user Function call (`F("abc)`, `N = G("a", "b)`) whose unterminated string
     opens inside its parentheses: `"function"`, or `"function_arg"` when the string follows a
     top-level comma (`Call argument required.` before the fallback; oracle, round 64,
-    docs/checker.md#unterminated-strings-in-user-function-calls-round-64)."""
+    docs/checker.md#unterminated-strings-in-user-function-calls-round-64); `"function_tail"` when
+    it directly follows the call (round 67)."""
     m = _FUNCTION_CALL_RE.match(text)
     if not m or m.group(1).upper() not in functions:
         return None
@@ -165,7 +166,12 @@ def _function_call_string(text: str, functions: frozenset[str] | set[str]) -> st
         depth += c == "("
         depth -= c == ")"
         if depth == 0:
-            return None  # the quote follows the call (`F("abc")"`): not modelled
+            # the unterminated quote follows the call: `F("abc")"` reads it as an adjacent operand
+            # (`Incomplete expression`), `F("abc") + "x` as the fallback (oracle, round 67)
+            rest = text[i + 1:]
+            if rest.count('"') != 1:
+                return None
+            return "function" if rest[:rest.index('"')].strip() else "function_tail"
         comma |= c == "," and depth == 1
         i += 1
     return None
@@ -212,12 +218,12 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
             diags.error(stmt.line, f"Too many parameters:  {shape[len('too_many:'):]}.", stmt.file)
         elif shape == "call":
             diags.error(stmt.line, "Invalid or malformed function argument.", stmt.file)
-        elif shape in ("function", "function_arg"):
+        elif shape in ("function", "function_arg", "function_tail"):
             diags.error(stmt.line, "String without end quote", stmt.file)
             if shape == "function_arg":
                 diags.error(stmt.line, "Call argument required.", stmt.file)
-            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
-                        stmt.file)
+            diags.error(stmt.line, f"Incomplete expression: {stmt.text}." if shape == "function_tail"
+                        else structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
         elif shape == "many":
             diags.error(stmt.line, structure._no_matching(profile, stmt.text, stmt.at_eol), stmt.file)
         elif shape == "assignment":

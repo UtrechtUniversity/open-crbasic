@@ -383,7 +383,9 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef | S.If, list[str]]
             routines.add(stmt.name.upper())
             open_sub = True
         elif _ends_sub(stmt, kw):
-            open_sub, conditional_depth = False, 0
+            # an unclosed `For`/`Do` ends with its routine too: only `FOR without NEXT.` at the end
+            # (oracle, all four loggers, round 67, docs/checker.md#round-67-review-fixes)
+            open_sub, conditional_depth, for_do_depth = False, 0, 0
         elif kw == "BEGINPROG":
             before_sequence = True
         elif kw == "ENDPROG":
@@ -805,9 +807,11 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
             elif opens:
                 message = "If without EndIf inside of Sub."  # one per Sub end (oracle, 2026-10-11)
             in_sub = False
-        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)) \
+                or isinstance(stmt, S.Unparsed) and re.match(r"\s*SELECT\b", stmt.text, re.I):
+            # (an unparsable `Select Case Nope +` still opens its block; round 67)
             elses.append(False)
-            opens.append("SELECT" if kw == "SELECT" else "IF")
+            opens.append("IF" if kw == "IF" else "SELECT")
         elif (kw == "ENDSELECT" or (kw == "END" and word == "SELECT")) and not in_sub \
                 and not seen_beginprog and "SELECT" in opens:
             # a `Select` left open by an earlier Sub end, closed before `BeginProg` (oracle, 2026-10-11)
@@ -824,7 +828,9 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
                 message = "If statement with duplicate Else."
             else:
                 elses[-1] = True
-        elif kw == "ELSEIF" and not elses:
+        elif (kw == "ELSEIF" or isinstance(stmt, S.Case)) and not elses:
+            # a plain `Case` after a stray `EndIf` closed its `Select` (oracle, CR6/CR1000X, round
+            # 67, docs/checker.md#round-67-review-fixes)
             message, stops = "Case with no Select.", True
         elif kw in ("DO", "FOR", "WHILE"):
             loops["FOR" if kw == "FOR" else "DO"] += 1
@@ -869,7 +875,6 @@ def scan_only_outside(program: S.Program) -> dict[int, str]:
     """`id(stmt) -> message` for a `SCAN_ONLY` measurement outside any `Scan`."""
     found: dict[int, str] = {}
     scans = 0
-    in_sub = False
     statements: list[S.Stmt] = []
     for stmt in program.statements:   # a one-line `If`'s statements count too (oracle, 2026-10-12)
         statements.append(stmt)
@@ -877,15 +882,13 @@ def scan_only_outside(program: S.Program) -> dict[int, str]:
             statements.extend((stmt.inline or []) + (stmt.inline_else or []))
     for stmt in statements:
         kw = _keyword(stmt)
-        if isinstance(stmt, S.SubDef):
-            in_sub = True
-        elif S.ends_routine(stmt):
-            in_sub = False
-        elif kw == "SCAN":
+        if kw == "SCAN":
             scans += 1
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             scans = max(0, scans - 1)
-        elif kw in SCAN_ONLY and isinstance(stmt, S.Instruction) and (in_sub or scans == 0):
+        elif kw in SCAN_ONLY and isinstance(stmt, S.Instruction) and scans == 0:
+            # (a `Scan` inside a `Sub` left open is a `Scan`: only `Sub ... EndSub not matched.`
+            # follows; oracle, CR1000X, round 67)
             found[id(stmt)] = f"{SCAN_ONLY[kw]} must be used within a Scan...NextScan."
     return found
 
@@ -1377,6 +1380,14 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     if not (profile.single_pass and any(
                             d.message == "Size of string missing." for d in diags.items)):
                         diags.error(stmt.line, message, stmt.file)
+                    break
+                if (junk := getattr(v, "size_junk", None)) is not None and not profile.single_pass:
+                    # `As String * 16!` (a sized String pointer) or `As String * 16 X`: the size is
+                    # read to the next comma (oracle, CR6/CR1000X, round 67,
+                    # docs/checker.md#round-67-review-fixes)
+                    echo = stmt.text[junk[0]:].split(",", 1)[0].rstrip()
+                    diags.error(stmt.line, f"Incomplete expression: {echo}." if junk[1] == "bang"
+                                else f"Invalid symbol in expression: {echo}.", stmt.file)
                     break
         if profile.known_first_word_pass1 and isinstance(stmt, S.Unparsed) and stmt.reason != _FOR_MISSING \
                 and re.match(r"\s*For\s+\w+\s*=", stmt.text, re.I) and not re.search(r"\bTo\b", stmt.text, re.I):
@@ -3220,6 +3231,26 @@ def _function_syntax_findings(stmt: S.Unparsed, program: S.Program, profile) -> 
             return []
         if not own:
             return [f"Expression expects , : {stmt.text}."]
+    elif verdict == ("pass1", "incomplete") and not profile.single_pass:
+        # adjacent operands in a nested one-argument built-in (`F(Abs(X Y))`): `Incomplete
+        # expression` in the Function's last argument, else `Call argument required.` and the
+        # fallback (oracle, CR6/CR1000X, round 67, docs/checker.md#user-function-calls-of-any-arity-round-64)
+        depth, before, after, found = 0, 0, 0, False
+        for prev, tok in zip(toks, toks[1:]):
+            if prev.kind == "OP" and prev.text in ("(", ")"):
+                depth += 1 if prev.text == "(" else -1
+            elif prev.kind == "OP" and prev.text == "," and depth == 1:
+                after += found
+                before += not found
+            if not found and (prev.kind in ("IDENT", "NUMBER", "STRING") or prev.text == ")") and (
+                    tok.kind in ("NUMBER", "STRING")
+                    or tok.kind == "IDENT" and tok.upper not in _BINARY_WORDS):
+                found = True
+        if not found:
+            return []
+        if after:
+            return ["Call argument required.", _out_of_place(profile, stmt.text, stmt.at_eol)]
+        return [f"Incomplete expression: {stmt.text}."]
     elif verdict != ("pass1", "no_matching"):
         return []
     messages = []

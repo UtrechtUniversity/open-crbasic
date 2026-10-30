@@ -17,10 +17,11 @@ from ..diagnostics import Diagnostics
 from . import symbols
 
 _NUMERIC = ("FLOAT", "LONG")
-# built-in functions returning a String (`kind` 312, docs/binary.md), the same on all four loggers
+# built-in functions returning a String (`kind` 312, docs/binary.md), the same on all four loggers;
+# `CType` returns the type its second argument names (oracle, round 67)
 _STRING_FUNCTIONS = frozenset(
     f["name"] for f in json.loads((Path(__file__).resolve().parents[1] / "data" / "functions.json")
-                                  .read_text()) if f.get("kind") == 312)
+                                  .read_text()) if f.get("kind") == 312) - {"CTYPE"}
 
 
 def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
@@ -72,7 +73,9 @@ class _Typer:
             # four loggers, round 65, docs/instructions.md#string-operands)
             name = expr.name.upper()
             if name in _STRING_FUNCTIONS or self.function_types.get(name) == "STRING" or (
-                    name == "IIF" and len(expr.args) > 1 and self.of(expr.args[1], depth + 1) == "STRING"):
+                    name == "IIF" and len(expr.args) > 1 and self.of(expr.args[1], depth + 1) == "STRING") or (
+                    name == "CTYPE" and len(expr.args) > 1 and isinstance(expr.args[1], S.Name)
+                    and expr.args[1].name.upper() == "STRING"):
                 return "STRING"
         if isinstance(expr, S.Name):
             if expr.name.upper() in ("TRUE", "FALSE"):

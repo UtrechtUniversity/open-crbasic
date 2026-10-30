@@ -262,16 +262,14 @@
       "logger": "cr6",
       "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc\")\"\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\".",
-      "not_modelled": "A quote after the call's closing parenthesis (`F(\"abc\")\"`) is trailing junk; not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\"."
     },
     {
       "id": "function-string-105-cr1000x",
       "logger": "cr1000x",
       "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc\")\"\r\n  NextScan\r\nEndProg\r\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\".",
-      "not_modelled": "A quote after the call's closing parenthesis (`F(\"abc\")\"`) is trailing junk; not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\"."
     },
     {
       "id": "function-string-105-cr300",
