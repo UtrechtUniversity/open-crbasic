@@ -9266,3 +9266,26 @@ Additional probes are in `scratch/r60-m2-20261030/` (local only). UINT1-backed a
 pre-existing alias-layout/warning differences, and direct UINT1-array overruns can have an extra
 generic bounds line. Those neighboring rules are not changed here. The fixture retains accepted
 even-count controls and the reference's complete diagnostic text.
+
+## Malformed Sub arguments (round 61)
+
+For a declared `Sub`, a missing comma between two operands belongs to the argument expression,
+not the whole call: `S("a" "b")`, `S(1 2)` and `S(X X)` report
+`Incomplete expression: <argument>.` on CR6, CR1000X, CR300 and CR350. The expression echo
+keeps internal and trailing whitespace and omits the outer call parentheses. Valid calls and
+ordinary argument-count errors retain their existing behavior.
+
+Decompilation trail: CR6 `FUN_004baf00`, case `0xc`, reaches `LAB_004bd36a`, reads individual
+arguments with `FUN_004b9700` and sends each to `FUN_004b5c50` with flags `0x180`.
+`FUN_004b9700` tracks nested parentheses/braces and splits at a top-level comma or closing
+parenthesis. `FUN_004b5c50` passes the argument to `FUN_00493b10` and formats the expression
+error against that argument's text. `tools/builder_map.py FUN_004b5c50` confirms these callers;
+the decompiled implementation is not copied into the checker.
+
+The checker reuses its expression scanner for parenthesized calls to declared Subs, with no
+trailing statement text and with names that resolve. It reports adjacent operands at pass 1;
+CR300/CR350 then suppress the whole-call fallback that would otherwise follow. Unknown-name
+ordering, nested function syntax, inline calls, and unfinished continuations are separate paths
+and remain excluded unless covered by existing behavior. Four-profile boundary observations
+and controls are retained in `tests/fixtures/r61_sub_arguments.json`; remaining differences
+are strict expected failures. Scratch evidence and exact commands are in `scratch/r61/` (local).

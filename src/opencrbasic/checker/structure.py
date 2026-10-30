@@ -1487,6 +1487,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             pass
         elif isinstance(stmt, S.Unparsed) and _logical_assign_accepted(stmt, program, profile):
             pass  # compiles (`X AND Y = 1`); only its string operands are reported, in pass 2
+        elif isinstance(stmt, S.Unparsed) and (messages := _routine_arg_findings(stmt, program, profile)):
+            for message in messages:
+                diags.error(stmt.line, message, stmt.file)
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags, program, profile)
             for message in _junk_init_findings(stmt, profile):
@@ -2127,6 +2130,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
+            if _routine_arg_findings(stmt, program, profile):
+                continue  # the argument's pass-1 error already owns this call
             if before_bp and not in_body_block and not in_table and not in_decl_block and \
                     _before_beginprog_name(stmt, "UNPARSED", profile, set()):
                 diags.error(stmt.line, "ESSInitialize illegally occurs before BeginProg.", stmt.file)
@@ -3099,6 +3104,57 @@ class _Everything:
     """A name set that contains every name: `_scan_expr` then reports syntax problems only."""
     def __contains__(self, item) -> bool:
         return True
+
+
+def _routine_arg_findings(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:
+    """Adjacent operands in a declared Sub's arguments (round 61).
+
+    The routine reader splits arguments before the expression reporter sees them. Keep this
+    bounded to parenthesized calls without a tail; other malformed call forms retain their
+    existing diagnostics. See docs/checker.md#malformed-sub-arguments-round-61.
+    """
+    try:
+        toks = [t for t in lexer.tokenize(stmt.text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return []
+    if toks and toks[0].upper == "CALL":
+        toks = toks[1:]
+    routines = {st.name.upper() for st in program.statements
+                if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
+    if (len(toks) < 4 or toks[0].kind != "IDENT" or toks[0].upper not in routines
+            or toks[1].text != "("):
+        return []
+    args = []
+    depth, start = 0, 2
+    for i, tok in enumerate(toks[2:], 2):
+        if tok.kind == "OP" and tok.text == "(":
+            depth += 1
+        elif tok.kind == "OP" and tok.text == ")":
+            if depth == 0:
+                if i != len(toks) - 1:
+                    return []
+                args.append((toks[start:i], stmt.text[toks[start - 1].col + 1:tok.col].lstrip()))
+                break
+            depth -= 1
+        elif tok.kind == "OP" and tok.text == "," and depth == 0:
+            args.append((toks[start:i], stmt.text[toks[start - 1].col + 1:tok.col].lstrip()))
+            start = i + 1
+    else:
+        return []
+    messages = []
+    operands = pass1_operands(program, profile)
+    for tokens, text in args:
+        if not tokens:
+            continue
+        if any(t.kind == "IDENT" and t.upper not in operands and t.upper not in profile.functions
+               and t.upper not in _BINARY_WORDS and t.upper != "NOT" for t in tokens):
+            return []  # unresolved-name ordering is a separate profile-dependent path
+        verdict = _scan_expr(tokens, 0, operands, profile.functions, assign=True, start_operand=False)
+        if verdict == ("pass1", "incomplete"):
+            messages.append(f"Incomplete expression: {text}.")
+        elif verdict is not None:
+            return []
+    return messages
 
 
 def _instruction_arg_findings(text: str, operands: set[str], profile,

@@ -121,6 +121,19 @@ them before deciding whether they fall under the M2 fix scope. The accepted-prog
 `9d5b78fd0b36` is a missing reachability warning after deleting `SlowSequence`; both compilers
 choose PipelineMode, so it is not a mode difference.
 
+## Round-61 bounded Sub-call follow-up
+
+The minimal missing-comma family from round 60 is fixed for parenthesized calls to declared
+Subs, including explicit `Call`, literal/declared-variable operands and multiple malformed
+arguments. The argument expression now owns the diagnostic on all four profiles. The strict
+fixture `r61_sub_arguments.json` retains neighboring forms and valid-call/arity controls;
+[the checker notes](checker.md#malformed-sub-arguments-round-61) identify the bounded rule.
+
+This does not close the interrupted-continuation family: `a31a74073f76`, `15bc1b5cb20a`,
+`e816abac4b12` and `53f4ed873761` remain candidates. Unknown-name ordering, nested function
+syntax, inline calls and trailing tokens remain separate paths. No realism decision or saved
+replay baseline was changed. M2 remains open.
+
 ## Round-59 realism triage
 
 Human decision 2026-10-29 ([PLAN](../PLAN.md#v10-milestones)): M2 fixes only mistakes a programmer
