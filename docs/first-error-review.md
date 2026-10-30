@@ -164,6 +164,54 @@ The moved-continuation CR1000X `53f4ed873761` remains the next candidate from th
 isolate its expression and argument boundaries before extending the parser. M2 remains open,
 and no saved replay baseline or realism decisions were changed.
 
+## Round-64 fresh inputs and round-60 classification
+
+On 2026-10-30, CR6 seed 465 and CR1000X seed 466 each generated 1,000 `--relevant` mutants
+without shrinking (`scratch/r64/fuzz-465`, `fuzz-466`, local only). Seed 465: 987 exact, 13
+message differences, no verdict or mode difference. Seed 466: 975 exact, 18 message
+differences, one false accept and one warning-only difference.
+
+Fixed in round 64 ([checker notes](checker.md#leading-plus-before-an-assignment-round-64) and
+the four sections after it):
+
+- false accept `9f6e9f17660e` (CR1000X): an overflowing `WindVector` Reps;
+- false accept found while isolating round-60 `9abdc4c03311`: an SDM `Delay` after
+  `SlowSequence` (`Delay(Sec,10,1)`);
+- false reject found while isolating `53f4ed873761`: `+ X = 1` compiles on all four loggers;
+- first errors: a statement starting with `+`/`-` (`53f4ed873761`, a continuation moved below
+  its call), user Function calls of any arity and unknown names in them (the realistic forms
+  of `72bdefe62a70`, `c714fdb4123a`, `0401490eb4b4`, `977954b9e182`), and unterminated strings
+  in user Function calls (`28e7e2792d84`).
+
+Remaining fresh round-64 differences and their scope decision:
+
+| Reproducer | Edit | Decision |
+|---|---|---|
+| CR6 `4766e9bf8f62` | fuzz argument `(1+2)` added inside `AND(...)` | fuzz argument |
+| CR6 `6be023dd77b2` | `As2 Boolean` plus a numeric change | two edits; token mutation |
+| CR6 `7c1363851149` | continuation inserted and line duplicated | continuation noise |
+| CR6 `83af3f066a32` | dropped argument plus a changed number | two edits |
+| CR6 `c02281bcfee9`, `cad5a5f07cbc` | `(1+2)` as a parameter name | fuzz argument |
+| CR1000X `2e8850943606` | `SWVX` (outside the relevant set) plus a fuzz name | outside the set |
+| CR1000X `50df788549ce` | two argument edits on one `If` line | two edits |
+| CR1000X `56aeb71f5975` | `Case_Mut` | token mutation |
+| CR1000X `5cdbe6d87d43` | `VoltDiff(True ,...)`: our echo drops the blank before `.` | wording, same cause |
+| CR1000X `c040fe436921` | continuation inserted and line deleted | continuation noise |
+| CR1000X `effff7c28b0b` | `SerialOpen` with swapped variable arguments: a missing `CommsMode Option 0 not supported on Com310` warning; both compilers choose SequentialMode | warning only |
+
+Round-60 inputs without a decision until now: CR6 `fd7e1a3c87c5` (a comment inserted into a
+continuation and a fuzz name), `cde4bf39c14b` (a statement inserted into a continuation and an
+overflowing `Const`), `63ad67153e0f` (`_X` after a continuation and swapped arguments),
+`5819ebfc0297` (`End  Prog`), `36a0db0a73f4`, `1822097cb726` and CR1000X `dce5f0264db1`
+(statements inserted into continuations), CR1000X `042b1b41474a` (a fuzz string as an `Alias`
+dimension; the realistic `Alias A(16,2) = X` matches), `04f6730e62aa` (`Sub S  tationInit`),
+`9abdc4c03311` (two edits; the realistic `Delay` swap is fixed above) and `b74e610652da` (same
+cause, truncated echo): none is a realistic single mistake under the 2026-10-29 scope.
+
+Also not modelled, found while probing: a one-argument built-in with adjacent operands
+(`Abs(X Y)`), a quote after a call's closing parenthesis (`F("abc")"`) and `WindVector`
+Reps 2147483647 (`Out of memory.`); all are strict gaps in the round-64 fixtures.
+
 ## Round-59 realism triage
 
 Human decision 2026-10-29 ([PLAN](../PLAN.md#v10-milestones)): M2 fixes only mistakes a programmer

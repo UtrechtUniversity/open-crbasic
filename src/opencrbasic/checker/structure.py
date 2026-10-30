@@ -2135,6 +2135,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif isinstance(stmt, S.Unparsed):
             if _routine_arg_findings(stmt, program, profile) or _function_syntax_findings(stmt, program, profile):
                 continue  # the argument's pass-1 error already owns this call
+            if (message := _function_symbol_finding(stmt, program, profile)) is not None:
+                diags.error(stmt.line, message, stmt.file)
+                continue
             if before_bp and not in_body_block and not in_table and not in_decl_block and \
                     _before_beginprog_name(stmt, "UNPARSED", profile, set()):
                 diags.error(stmt.line, "ESSInitialize illegally occurs before BeginProg.", stmt.file)
@@ -2171,7 +2174,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                    for d in diags.items[:pass1_count]):
                 continue  # a missing-parameter leftover or `Data` line, reported in pass 1
             if instr_rules.unterminated_string_shape(stmt, profile, subs,
-                                                     pass1_operands(program, profile)):
+                                                     pass1_operands(program, profile),
+                                                     instr_rules.user_functions(program)):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
             if _junk_init_findings(stmt, profile):
                 continue  # reported in pass 1 (`_junk_init_findings`)
@@ -2745,7 +2749,14 @@ def _pass1_scan(text: str, operands: Container[str], profile) -> tuple[str, str]
         # error whatever follows (oracle, CR6/CR1000X, 2026-10-08)
         return ("pass1", "fallback")
     elif first.kind == "OP" and len(toks) > 1 and first.text in ("+", "-"):
-        return _scan_expr(toks, 1, operands, functions, assign=False, start_operand=False)
+        signed = _signed_target(toks, operands, functions, profile)
+        if signed == "bad":
+            return ("pass1", "invalid_assignment")
+        verdict = _scan_expr(toks, 1, operands, functions, assign=False, start_operand=False)
+        # `+ X Y`, `+ "b" _` joined to the next statement: no `Incomplete expression` unless the
+        # value of a `+ X = ...` assignment is incomplete (oracle, all four loggers, round 64)
+        return ("pass1", "fallback") if verdict == ("pass1", "incomplete") and signed is None \
+            else verdict
     else:
         return None
     if i == len(toks):
@@ -2795,6 +2806,36 @@ def _assigns_user_const(stmt: S.Assignment, program: S.Program) -> bool:
 
 
 _LOGICAL_WORDS = ("AND", "OR", "XOR", "IMP", "EQV")
+
+
+def _signed_target(toks, operands, functions, profile) -> str | None:
+    """A statement of leading `+`/`-` signs and a top-level `=`, every name defined: `"bad"` when
+    the target is not a variable (`- X = 1`, `+ 1 = X`, `+ Abs(X) = 1`: `Invalid assignment in
+    expression`), `"ok"` when it is a `+`-signed variable (`+ X = 1 2`), None otherwise (oracle,
+    all four loggers, round 64, docs/checker.md#leading-plus-before-an-assignment-round-64)."""
+    k = 0
+    while k < len(toks) and toks[k].kind == "OP" and toks[k].text in ("+", "-"):
+        k += 1
+    depth, eq = 0, None
+    for j, t in enumerate(toks):
+        if t.kind == "OP" and t.text in ("(", ")"):
+            depth += 1 if t.text == "(" else -1
+        elif t.kind == "OP" and t.text == "=" and depth == 0:
+            eq = j
+            break
+    if eq is None or eq == k or any(t.kind == "STRING" for t in toks) or any(
+            t.kind == "IDENT" and t.upper not in operands and t.upper not in functions
+            and t.upper not in _BINARY_WORDS for t in toks):
+        return None
+    seg = toks[k:eq]
+    indexed = len(seg) > 2 and seg[0].kind == "IDENT" and seg[1].text == "(" and seg[-1].text == ")"
+    if seg[0].kind == "IDENT" and seg[0].upper in functions and seg[0].upper not in operands:
+        return "bad" if indexed else None
+    if len(seg) == 1 and seg[0].kind == "NUMBER":
+        return "bad"
+    if seg[0].kind == "IDENT" and (len(seg) == 1 or indexed and not profile.single_pass):
+        return "bad" if any(t.text == "-" for t in toks[:k]) else "ok"
+    return None
 
 
 def _logical_bad_target(toks, operands, functions) -> bool:
@@ -3109,31 +3150,77 @@ class _Everything:
         return True
 
 
-def _function_syntax_findings(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:
-    """A one-parameter user Function is read as an expression, even as a statement (round 62).
-
-    Unlike a Sub argument, an adjacent operand in its last slot names the whole expression
-    as unmatched. Keep other arities and explicit Call on their existing paths.
-    """
+def _function_call_scan(stmt: S.Unparsed, program: S.Program, profile):
+    """`(tokens, operands, functions, verdict)` of `_scan_expr` over a statement that is a user
+    Function call (`F(...)` or `N = F(...)`), or None for any other statement."""
     functions = {}
     for st in program.statements:
         if profile.single_pass and st is stmt:
             break
-        if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION" and len(st.params) == 1:
-            functions[st.name.upper()] = {"nargs": 1}
+        if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION":
+            functions[st.name.upper()] = {"nargs": len(st.params)}
     if not functions:
-        return []
+        return None
     try:
         toks = [t for t in lexer.tokenize(stmt.text, 0) if t.kind != "EOF"]
     except lexer.LexError:
-        return []
+        return None
     start = 2 if len(toks) > 2 and toks[0].kind == "IDENT" and toks[1].text == "=" else 0
     if (len(toks) <= start + 1 or toks[start].kind != "IDENT"
             or toks[start].upper not in functions or toks[start + 1].text != "("):
-        return []
+        return None
     operands = pass1_operands(program, profile)
     functions = {**profile.functions, **functions}
-    if _scan_expr(toks, 0, operands, functions, assign=True, start_operand=False) != ("pass1", "no_matching"):
+    return toks, operands, functions, _scan_expr(toks, 0, operands, functions, assign=True,
+                                                 start_operand=False)
+
+
+def _function_symbol_finding(stmt: S.Unparsed, program: S.Program, profile) -> str | None:
+    """CR6/CR1000X: an unknown name in a malformed user Function call statement comes first, as
+    pass 2's `Invalid symbol in expression` (`F("a" + Q R)`; oracle, round 64,
+    docs/checker.md#user-function-calls-of-any-arity-round-64)."""
+    if profile.single_pass:
+        return None
+    scan = _function_call_scan(stmt, program, profile)
+    if scan is None or scan[3] != ("pass2", "symbol"):
+        return None
+    toks, operands, functions, _verdict = scan
+    unknown = [k for k, t in enumerate(toks) if t.kind == "IDENT" and t.upper not in operands
+               and t.upper not in functions and t.upper not in _BINARY_WORDS and t.upper != "NOT"]
+    if not unknown or unknown[0] == 0:
+        return None  # an undeclared assignment target keeps the fallback (`Y=F(1 2)`, round 62)
+    return f"Invalid symbol in expression: {stmt.text}."
+
+
+def _function_syntax_findings(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:
+    """A user Function is read as an expression, even as a statement (round 62; any arity since
+    round 64).
+
+    Unlike a Sub argument, an adjacent operand in its last slot names the whole expression
+    as unmatched. Keep explicit Call on its existing path.
+    """
+    scan = _function_call_scan(stmt, program, profile)
+    if scan is None:
+        return []
+    toks, operands, functions, verdict = scan
+    if verdict == ("pass1", "expects_comma") and not profile.single_pass:
+        # adjacent operands directly in the user Function's own arguments are `No Matching`
+        # (`G("a" + X Y, 1)`); inside a nested built-in they keep `Expression expects ,` (oracle,
+        # CR6/CR1000X, round 64, docs/checker.md#user-function-calls-of-any-arity-round-64)
+        depth, own = 0, None
+        for prev, tok in zip(toks, toks[1:]):
+            if prev.kind == "OP" and prev.text in ("(", ")"):
+                depth += 1 if prev.text == "(" else -1
+            if (prev.kind in ("IDENT", "NUMBER", "STRING") or prev.text == ")") and (
+                    tok.kind in ("NUMBER", "STRING")
+                    or tok.kind == "IDENT" and tok.upper not in _BINARY_WORDS):
+                own = depth == 1
+                break
+        if own is None:
+            return []
+        if not own:
+            return [f"Expression expects , : {stmt.text}."]
+    elif verdict != ("pass1", "no_matching"):
         return []
     messages = []
     if profile.single_pass:
@@ -3156,10 +3243,12 @@ def _routine_arg_findings(stmt: S.Unparsed, program: S.Program, profile) -> list
         toks = [t for t in lexer.tokenize(stmt.text, 0) if t.kind != "EOF"]
     except lexer.LexError:
         return []
-    if toks and toks[0].upper == "CALL":
+    explicit = bool(toks) and toks[0].upper == "CALL"
+    if explicit:
         toks = toks[1:]
-    routines = {st.name.upper() for st in program.statements
-                if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
+    # `Call F(...)` reads a Function's arguments like a Sub's (oracle, CR6/CR1000X, round 64)
+    routines = {st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and (
+        st.keyword.upper() == "SUB" or explicit and not profile.single_pass)}
     if (len(toks) < 4 or toks[0].kind != "IDENT" or toks[0].upper not in routines
             or toks[1].text != "("):
         return []

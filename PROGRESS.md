@@ -1,12 +1,13 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-30 after development round 63** (round-51
+Current compiler state and handoff, updated **2026-10-30 after development round 64** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
 relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-error review, round
 58; M2 fix scope decision and realistic first errors, round 59; packed-output Reps and fresh M2
-candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63). Use Git to check publication
+candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
+two false accepts, a false reject and four first-error families, round 64). Use Git to check publication
 state and inspect `git status` before editing.
 
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
@@ -25,19 +26,21 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 4 -m 'not server'` | 61,710 passed, 311 skipped, 1,086 strict xfail (round 63, `-n 4`) |
-| `pytest -q -m server` | 163 passed (round 63) |
+| `pytest -q -n 8 -m 'not server'` | 62,142 passed, 311 skipped, 1,202 strict xfail (round 64) |
+| `pytest -q -m server` | 163 passed (round 64) |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-59 fixture audit (`r59_*` and the four edited fixtures) | 0 differing, 0 without verdict |
 | Round-60 fixture audit (`r60_packed_table_reps.json`) | 176 cases, 0 differing, 0 without verdict |
 | Round-61 fixture audit (`r61_sub_arguments.json`) | 116 cases, 0 differing, 0 without verdict; round-62 promotion: 64 passed, 52 strict xfail |
 | Round-62 fixture audit (`r62_function_syntax.json`) | 312 cases, 0 differing, 0 without verdict; focused tests: 172 passed, 140 strict xfail |
 | Round-63 fixture audits (`r63_iif_missing_arm.json`, `r36_relevant_seeds.json`) | 168 + 2,414 cases, 0 differing, 0 without verdict; new fixture: 142 passed, 26 strict xfail |
-| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 63) | 3,338 inputs: 2,628 exact (round 58: 2,596); CR6/CR1000X: 13 first-error misses (19), 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
-| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 63) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
+| Round-64 fixture audit (`r64_*.json`, `r62_function_syntax.json`) | 548 + 312 cases, 0 differing, 0 without verdict; new fixtures: 422 passed, 126 strict xfail (CR6/CR1000X: 8, all listed) |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 64) | 3,338 inputs: 2,630 exact (round 63: 2,628; round 58: 2,596); CR6/CR1000X: 13 first-error misses (19), 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 64) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
+| Fresh fuzz, seeds 465/466 and 467/468 (round 64, `--relevant`, 1,000 each, CR6 odd / CR1000X even) | 465/466: 1 false accept (fixed), 31 message differences ([review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification)). 467/468, run after the round-64 fixes: 2 false accepts (`FTPClient` PutGetOption, `GetRecord` destination size), open for round 65; no mode difference (three warning-only rows). Raw output in `scratch/r64/` |
 | Fresh fuzz, seeds 461/463 (round 60, `--relevant`, 1,000 each, CR6/CR1000X) | No verdict or execution-mode differences on usable results. Three packed-output first errors fixed; malformed-call candidates remain open ([review](docs/first-error-review.md#round-60-fresh-relevant-inputs)). Faults/timeouts excluded; raw summaries in `scratch/r60-m2-20261030/` |
 | Fresh fuzz, seeds 453-460 (round 58, `--relevant`, 1,000 mutants each, CR6 odd / CR1000X even) | 453-456: 7 false accepts, 2 false rejects, 1 implementation exception; 457/458: none; 459/460: 1 false accept each. All fixed; the 8,000 mutants now replay with no verdict difference (`fuzz_replay.py --recorded scratch/r58/fuzz-4*/*/*/*.CR6`). Raw output in `scratch/r58/` (git-ignored) |
-| First-error rate on reference-rejected replay cases (M2, `tools/first_error_rate.py`, round 63; unchanged from round 62) | on the 3,158 reproducers shared with round 30: CR6 94.2% (round 58: 93.4%; round 30: 88.1%), CR1000X 91.8% (89.2%; 78.1%), CR300 92.7% (92.2%; 91.7%), CR350 92.0% (92.0%; 91.3%). The round-30 report is `scratch/r30_replay_candidate.json` (local only) |
+| First-error rate on reference-rejected replay cases (M2, `tools/first_error_rate.py`, round 64; unchanged from round 62) | on the 3,158 reproducers shared with round 30: CR6 94.2% (round 58: 93.4%; round 30: 88.1%), CR1000X 91.8% (89.2%; 78.1%), CR300 92.7% (92.2%; 91.7%), CR350 92.0% (92.0%; 91.3%). The round-30 report is `scratch/r30_replay_candidate.json` (local only) |
 | `tools/timingtest.py` (round 31, by the integration worker) | repository 19/19 on all four profiles; help examples CR6 506/507, CR1000X 505 + one documented mismatch (`covspa_1`), CR300/CR350 505/507 |
 | CR6 TDF and table-list corpus comparison (round 22) | Both 210/210 byte-identical; 308 reference rejections, six missing expected artifacts and one reference fault |
 
@@ -52,7 +55,7 @@ CR6/CR1000X since round 34.
 GEUS corpus: the reference CR1000X compiler accepts all 66 GEUS `.CR1X` programs; since round 33
 opencrbasic matches all 66 exactly ([details](PLAN.md#where-v10-starts-round-30-measurement)).
 
-Four-profile diagnostic comparison, rerun in round 63 and unchanged from round 28
+Four-profile diagnostic comparison, rerun in round 64 and unchanged from round 28
 (`tools/difftest.py --group all`):
 
 | Profile | Repository `.CR6` programs: exact / same verdict, different text | Help examples: exact / reference failures |
@@ -68,11 +71,11 @@ help-corpus failures are `pointervariable_2.CR6` on all four profiles and `strco
 CR300/CR350. The differential gates exit 1 while reference verdicts are missing; compare individual
 valid results and keep failures separate.
 
-Repository verification passed in round 63 both with the reference compiler and with
+Repository verification passed in round 64 both with the reference compiler and with
 `CR6COMP=opencrbasic`:
 
 ```text
-BUILD  Pyrefly 498 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
+BUILD  Pyrefly 499 files pass | host tests 148 pass | CRBasic 20/20 compiled, 6 warning(s) | repository pass
 ```
 
 Expected warnings are owned by [repository build status](../STATUS.md#build). Compilation and host tests do
@@ -83,6 +86,31 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 64** (M1/M2, single agent). Fresh `--relevant` seeds 465 (CR6) and 466 (CR1000X), then the
+open round-60 candidates. All rules were probed on all four profiles (548 observations,
+`tests/fixtures/r64_*.json`); rules and boundaries in [checker notes](docs/checker.md#leading-plus-before-an-assignment-round-64)
+and the four sections after it.
+- **False accepts fixed:** an overflowing `WindVector` Reps (`9f6e9f17660e`, seed 466); an SDM
+  `Delay` (option 2) after `SlowSequence` (the realistic core of round-60 `9abdc4c03311`).
+- **False reject fixed:** `+ X = 1` compiles on all four loggers; `- X = 1`, `+ 1 = X` and
+  `+ Abs(X) = 1` are `Invalid assignment in expression` on CR6/CR1000X.
+- **First errors:** a statement starting with `+`/`-` is never `Incomplete expression`
+  (`53f4ed873761`); user Function call statements of any arity, unknown names in them and
+  explicit `Call F(...)`; unterminated strings in user Function calls (`LogDebug("abc)`). Ten
+  round-62 strict gaps now match.
+- The remaining round-60 inputs and the 31 fresh differences are classified in the
+  [first-error review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification);
+  none left open is a realistic single mistake.
+- Seeds 467/468, run on the round-64 code: two new false accepts, `FTPClient` PutGetOption
+  (`3b789efdd145`) and a `GetRecord` destination smaller than the record (`ca5b1677129c`). While
+  probing M3 candidates, a third family was found: String-returning functions and a `+` with a
+  String operand are String-typed operands (`X = Mid(S,1,2) * 2` is `Illegal String operand`).
+  All three are open for round 65; M1 is not closed.
+- Gates: fixture audit 0 differing; full and server suites pass; CI saved replay 2,630 exact with
+  no regression; four-profile difftest and GEUS 66/66 unchanged; fresh replay of rounds 60/64
+  improves by 16 exact; both `verify.py` backends pass. Codex review of the diff was cut short by
+  its usage limit before findings. No hardware tests. Commands and logs: `scratch/r64/gates/`.
 
 **Round 63** (M2, single agent). Round 62 was committed separately as `1aad02c9` after its seven
 files matched the validated checkpoint and the focused r61/r62 suites passed again (236 passed,
@@ -101,7 +129,7 @@ The saved CI replay stays at 2,628 exact with no regression; the round-60 fresh 
 `d6479ed3f595` exactly (10/31 exact). First-error rates on the saved CI replay are unchanged.
 M2 remains open for the moved-continuation case and other candidates. Raw observations, exact
 gate commands and the next resume point are under `scratch/r63/RESUME.md` (local only).
-Round 63 is uncommitted; no push or hardware test was performed.
+Round 63 was committed as `fdac7e6b`; no push or hardware test was performed.
 
 
 **Round 62** (M2, single agent). Round 61 was committed separately as `56336637` after checking
@@ -365,21 +393,16 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    `52138d7bd179` (`CDM_PulsePort`), `577a59ecb08c` (`AVW200` destination), `778ea45e64b7`
    (`CDM_BrFull6W` settling clamp), `9c6367a2c598` (`MenuRecompile`), `ecc509dd06de`/`f61f825392f2`
    (`TableFile`), `fa923ecef6f4` (`MenuPick`). Coverage notices for them wait for M4. The CR300/CR350
-   false accepts are best effort. Fresh seeds are converging (453-456: 12 verdict-level findings,
-   457-460: 2, all fixed in round 58); **next:** another batch of `--relevant` seeds to close M1.
+   false accepts are best effort. Fresh seeds: 453-456: 12 verdict-level findings, 457-460: 2,
+   465/466: 1 (all fixed); 467/468: 2 open (round 64). **Next:** fix the three round-65 families
+   (FTPClient PutGetOption, GetRecord destination size, String-typed operands), then another
+   `--relevant` batch to close M1.
    After any `crbasic/` change run `fuzz_replay.py --rerecord-stale` first.
-5. **M2, status after round 63.** The round-59 review's realistic cases were fixed, but the fresh
-   batch found more realistic first-error candidates. Continue from the
-   [round-60 list](docs/first-error-review.md#round-60-fresh-relevant-inputs), rather than claiming
-   M2 complete from the previous review. The 53 round-59 rows still differing on their whole seed
-   program retain their recorded scope decisions
-   ([realism triage](docs/first-error-review.md#round-59-realism-triage)). Not modelled, later
-   diagnostics only: CR1000X `Minimum Excitation is 20mV.` between the bridge `Range` lines, the
-   `TDR100` bounds line after Points. The balanced missing-comma Sub-call family is fixed in round 61; round 62 fixes the
-   one-parameter Function-expression family, including `a31a74073f76`; round 63 fixes the
-   omitted-IIF-arm candidate `d6479ed3f595`. Continue with the other
-   realistic malformed-call candidates under the same
-   2026-10-29 scope, then rerun the M2 gates.
+5. **M2, status after round 64.** Every round-60 and round-64 fresh first-error difference now has a
+   scope decision ([review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification));
+   the realistic ones are fixed. The 53 round-59 rows keep their recorded decisions
+   ([realism triage](docs/first-error-review.md#round-59-realism-triage)). Remaining before closing M2:
+   the round-65 fresh batch's first errors, then the Codex final review the human asked for.
 6. **Open candidates from rounds 44-51:**
    - PipeLine Mode placement is still unprobed for `CDM_BridgeFilt`, `CDM_CalRead`, `CDM_CANOutCfg`,
      `CDM_FactCal`, `CDM_FFTFilt`, `CDM_OffsetRd`, `CDM_VoltFilt`, `CDM_VW300*`, `SDMTrigger`, `TGA`;

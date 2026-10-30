@@ -28,16 +28,18 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     sequential: bool | None = None
     from .instr_data import _with_inline
     # a one-line If's statement too (oracle, CR6/CR1000X, round 58, docs/checker.md#one-line-if-statements-in-tier-c-round-58)
+    slow = False
     for stmt in _with_inline(program.statements):
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
+        slow = kw == "SLOWSEQUENCE" or slow and kw != "ENDPROG"
         if kw == "SW12" and "sw12_ports" in measure:
             _check_sw12(stmt, measure, env, diags)
         if kw == "DELAY" and "delay" in measure:
             if sequential is None:
                 sequential = is_sequential(program, profile, env)
-            _check_delay(stmt, measure["delay"], env, diags, sequential)
+            _check_delay(stmt, measure["delay"], env, diags, sequential, slow)
         if kw == "EXCITEV" and measure.get("delay", {}).get("task_memory") and len(stmt.args) == 3:
             delay = _int_value(stmt.args[2], env)
             if delay is not None and scan_time.task_memory_overflow(
@@ -578,7 +580,7 @@ def _task_memory_full(stmt: S.Instruction, diags: Diagnostics) -> None:
 
 
 def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics,
-                 sequential: bool = False) -> None:
+                 sequential: bool = False, slow: bool = False) -> None:
     args = stmt.args
     option_arg = args[0] if len(args) > 0 else None
     interval_arg = args[1] if len(args) > 1 else None
@@ -624,6 +626,11 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
         elif interval_value == 0 and cfg.get("option0_limit"):   # (CR6/CR1000X data only)
             # `Delay(2,0,Sec)` (oracle, CR6/CR1000X, 2026-10-25, round 35; 1 and -1 compile)
             diags.error(stmt.line, "Invalid time specified.", stmt.file)
+        elif slow and cfg.get("sdm_slow_sequence"):
+            # written after `SlowSequence` in the program body, also in SequentialMode and in a
+            # one-line If; a Sub it calls is not checked (oracle, CR6/CR1000X, round 64,
+            # docs/checker.md#sdm-delay-in-a-slow-sequence-round-64)
+            diags.error(stmt.line, "SDM Delay Not Allowed in Slow Sequence.", stmt.file)
 
 
 def _delay_interval_us(interval_arg, units_arg, env: consteval.Env) -> float | None:

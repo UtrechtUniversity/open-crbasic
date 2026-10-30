@@ -1,0 +1,1345 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "leading-op-000-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\") _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")     Else."
+    },
+    {
+      "id": "leading-op-000-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\") _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")     Else."
+    },
+    {
+      "id": "leading-op-000-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\") _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Else is not defined.\nline 10: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")     Else\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-000-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\") _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Else is not defined.\nline 10: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")     Else\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-001-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\")\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")."
+    },
+    {
+      "id": "leading-op-001-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\")\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")."
+    },
+    {
+      "id": "leading-op-001-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\")\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")\n."
+    },
+    {
+      "id": "leading-op-001-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      Call P(\"a\")\r\n      + \" m=\" + FormatLong(X, \"%d\")\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \" m=\" + FormatLong(X, \"%d\")\n."
+    },
+    {
+      "id": "leading-op-002-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"."
+    },
+    {
+      "id": "leading-op-002-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"."
+    },
+    {
+      "id": "leading-op-002-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"\n."
+    },
+    {
+      "id": "leading-op-002-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"\n."
+    },
+    {
+      "id": "leading-op-003-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"."
+    },
+    {
+      "id": "leading-op-003-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"."
+    },
+    {
+      "id": "leading-op-003-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"\n."
+    },
+    {
+      "id": "leading-op-003-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\"\n."
+    },
+    {
+      "id": "leading-op-004-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X."
+    },
+    {
+      "id": "leading-op-004-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X."
+    },
+    {
+      "id": "leading-op-004-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X\n."
+    },
+    {
+      "id": "leading-op-004-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X\n."
+    },
+    {
+      "id": "leading-op-005-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X."
+    },
+    {
+      "id": "leading-op-005-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X."
+    },
+    {
+      "id": "leading-op-005-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X\n."
+    },
+    {
+      "id": "leading-op-005-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X\n."
+    },
+    {
+      "id": "leading-op-006-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X."
+    },
+    {
+      "id": "leading-op-006-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X."
+    },
+    {
+      "id": "leading-op-006-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X\n."
+    },
+    {
+      "id": "leading-op-006-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X\n."
+    },
+    {
+      "id": "leading-op-007-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"     Else."
+    },
+    {
+      "id": "leading-op-007-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"     Else."
+    },
+    {
+      "id": "leading-op-007-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Else is not defined.\nline 9: Invalid, or out of place expression:       + \"b\"     Else\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-007-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n    Else\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Else is not defined.\nline 9: Invalid, or out of place expression:       + \"b\"     Else\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-008-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"       X = 1."
+    },
+    {
+      "id": "leading-op-008-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"       X = 1."
+    },
+    {
+      "id": "leading-op-008-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"       X = 1\n."
+    },
+    {
+      "id": "leading-op-008-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"       X = 1\n."
+    },
+    {
+      "id": "leading-op-009-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      S = \"a\"\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"."
+    },
+    {
+      "id": "leading-op-009-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      S = \"a\"\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"."
+    },
+    {
+      "id": "leading-op-009-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      S = \"a\"\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"\n."
+    },
+    {
+      "id": "leading-op-009-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      S = \"a\"\r\n      + \"b\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"\n."
+    },
+    {
+      "id": "leading-op-010-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\")\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + P(\"a\")."
+    },
+    {
+      "id": "leading-op-010-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\")\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + P(\"a\")."
+    },
+    {
+      "id": "leading-op-010-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\")\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: P is not defined.\nline 8: Invalid, or out of place expression:       + P(\"a\")\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-010-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\")\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: P is not defined.\nline 8: Invalid, or out of place expression:       + P(\"a\")\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-011-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 + 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 + 2."
+    },
+    {
+      "id": "leading-op-011-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 + 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 + 2."
+    },
+    {
+      "id": "leading-op-011-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 + 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 + 2\n."
+    },
+    {
+      "id": "leading-op-011-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 + 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 + 2\n."
+    },
+    {
+      "id": "leading-op-012-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      AND X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       AND X."
+    },
+    {
+      "id": "leading-op-012-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      AND X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       AND X."
+    },
+    {
+      "id": "leading-op-012-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      AND X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       AND X\n."
+    },
+    {
+      "id": "leading-op-012-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      AND X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       AND X\n."
+    },
+    {
+      "id": "leading-op-013-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       = X."
+    },
+    {
+      "id": "leading-op-013-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       = X."
+    },
+    {
+      "id": "leading-op-013-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       = X\n."
+    },
+    {
+      "id": "leading-op-013-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       = X\n."
+    },
+    {
+      "id": "leading-op-014-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + FormatLong(X, \"%d\") _\r\n      + \"c\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + FormatLong(X, \"%d\")       + \"c\"."
+    },
+    {
+      "id": "leading-op-014-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + FormatLong(X, \"%d\") _\r\n      + \"c\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + FormatLong(X, \"%d\")       + \"c\"."
+    },
+    {
+      "id": "leading-op-014-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + FormatLong(X, \"%d\") _\r\n      + \"c\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + FormatLong(X, \"%d\")       + \"c\"\n."
+    },
+    {
+      "id": "leading-op-014-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + FormatLong(X, \"%d\") _\r\n      + \"c\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + FormatLong(X, \"%d\")       + \"c\"\n."
+    },
+    {
+      "id": "leading-op-015-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X Y."
+    },
+    {
+      "id": "leading-op-015-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X Y."
+    },
+    {
+      "id": "leading-op-015-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       + X Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-015-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       + X Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-016-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 2."
+    },
+    {
+      "id": "leading-op-016-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 2."
+    },
+    {
+      "id": "leading-op-016-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 2\n."
+    },
+    {
+      "id": "leading-op-016-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + 1 2\n."
+    },
+    {
+      "id": "leading-op-017-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X Y."
+    },
+    {
+      "id": "leading-op-017-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X Y."
+    },
+    {
+      "id": "leading-op-017-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       - X Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-017-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       - X Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-018-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - 1 2."
+    },
+    {
+      "id": "leading-op-018-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - 1 2."
+    },
+    {
+      "id": "leading-op-018-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - 1 2\n."
+    },
+    {
+      "id": "leading-op-018-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - 1 2\n."
+    },
+    {
+      "id": "leading-op-019-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      -1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       -1 2."
+    },
+    {
+      "id": "leading-op-019-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      -1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       -1 2."
+    },
+    {
+      "id": "leading-op-019-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      -1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       -1 2\n."
+    },
+    {
+      "id": "leading-op-019-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      -1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       -1 2\n."
+    },
+    {
+      "id": "leading-op-020-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\" X."
+    },
+    {
+      "id": "leading-op-020-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\" X."
+    },
+    {
+      "id": "leading-op-020-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\" X\n."
+    },
+    {
+      "id": "leading-op-020-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + \"b\" X\n."
+    },
+    {
+      "id": "leading-op-021-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - \"b\" X."
+    },
+    {
+      "id": "leading-op-021-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - \"b\" X."
+    },
+    {
+      "id": "leading-op-021-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - \"b\" X\n."
+    },
+    {
+      "id": "leading-op-021-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - \"b\" X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - \"b\" X\n."
+    },
+    {
+      "id": "leading-op-022-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-022-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-022-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-022-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-023-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       - X = 1."
+    },
+    {
+      "id": "leading-op-023-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       - X = 1."
+    },
+    {
+      "id": "leading-op-023-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       - X = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-023-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       - X = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-024-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + (X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + (X) Y."
+    },
+    {
+      "id": "leading-op-024-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + (X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + (X) Y."
+    },
+    {
+      "id": "leading-op-024-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + (X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       + (X) Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-024-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + (X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       + (X) Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-025-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X,."
+    },
+    {
+      "id": "leading-op-025-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X,."
+    },
+    {
+      "id": "leading-op-025-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X,\n."
+    },
+    {
+      "id": "leading-op-025-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X,\n."
+    },
+    {
+      "id": "leading-op-026-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X,."
+    },
+    {
+      "id": "leading-op-026-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X,."
+    },
+    {
+      "id": "leading-op-026-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X,\n."
+    },
+    {
+      "id": "leading-op-026-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X,\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X,\n."
+    },
+    {
+      "id": "leading-op-027-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X)."
+    },
+    {
+      "id": "leading-op-027-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X)."
+    },
+    {
+      "id": "leading-op-027-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X)\n."
+    },
+    {
+      "id": "leading-op-027-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X)\n."
+    },
+    {
+      "id": "leading-op-028-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - Abs(X) Y."
+    },
+    {
+      "id": "leading-op-028-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - Abs(X) Y."
+    },
+    {
+      "id": "leading-op-028-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       - Abs(X) Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-028-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       - Abs(X) Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-029-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + Abs(X) Y."
+    },
+    {
+      "id": "leading-op-029-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + Abs(X) Y."
+    },
+    {
+      "id": "leading-op-029-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       + Abs(X) Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-029-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) Y\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Y is not defined.\nline 8: Invalid, or out of place expression:       + Abs(X) Y\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-030-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X Q."
+    },
+    {
+      "id": "leading-op-030-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X Q."
+    },
+    {
+      "id": "leading-op-030-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 8: Invalid, or out of place expression:       + X Q\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-030-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 8: Invalid, or out of place expression:       + X Q\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-031-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Q X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + Q X."
+    },
+    {
+      "id": "leading-op-031-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Q X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + Q X."
+    },
+    {
+      "id": "leading-op-031-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Q X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 8: Invalid, or out of place expression:       + Q X\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-031-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Q X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 8: Invalid, or out of place expression:       + Q X\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-032-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X Q."
+    },
+    {
+      "id": "leading-op-032-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X Q."
+    },
+    {
+      "id": "leading-op-032-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 8: Invalid, or out of place expression:       - X Q\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-032-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 8: Invalid, or out of place expression:       - X Q\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-033-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      Q = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"       Q = 1."
+    },
+    {
+      "id": "leading-op-033-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      Q = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       + \"b\"       Q = 1."
+    },
+    {
+      "id": "leading-op-033-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      Q = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Q is not defined.\nline 9: Invalid, or out of place expression:       + \"b\"       Q = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-033-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + \"b\" _\r\n      Q = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Q is not defined.\nline 9: Invalid, or out of place expression:       + \"b\"       Q = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-034-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      +X=1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-034-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      +X=1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-034-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      +X=1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-034-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      +X=1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-035-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-035-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-035-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X(1) = 1\n."
+    },
+    {
+      "id": "leading-op-035-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + X(1) = 1\n."
+    },
+    {
+      "id": "leading-op-036-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:       + X = Q."
+    },
+    {
+      "id": "leading-op-036-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:       + X = Q."
+    },
+    {
+      "id": "leading-op-036-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+    },
+    {
+      "id": "leading-op-036-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = Q\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+    },
+    {
+      "id": "leading-op-037-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:       + X = 1 2."
+    },
+    {
+      "id": "leading-op-037-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:       + X = 1 2."
+    },
+    {
+      "id": "leading-op-037-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:       + X = 1 2\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-037-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:       + X = 1 2\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-038-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + S = \"a\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-038-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + S = \"a\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-038-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + S = \"a\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-038-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + S = \"a\"\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-039-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-039-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "leading-op-039-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-039-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + + X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "leading-op-040-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + 1 = X."
+    },
+    {
+      "id": "leading-op-040-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + 1 = X."
+    },
+    {
+      "id": "leading-op-040-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + 1 = X\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-040-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + 1 = X\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + 1 = X\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-041-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + Abs(X) = 1."
+    },
+    {
+      "id": "leading-op-041-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + Abs(X) = 1."
+    },
+    {
+      "id": "leading-op-041-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + Abs(X) = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-041-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + Abs(X) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       + Abs(X) = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-042-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       - X(1) = 1."
+    },
+    {
+      "id": "leading-op-042-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:       - X(1) = 1."
+    },
+    {
+      "id": "leading-op-042-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X(1) = 1\n."
+    },
+    {
+      "id": "leading-op-042-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      - X(1) = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       - X(1) = 1\n."
+    },
+    {
+      "id": "leading-op-043-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X = 1."
+    },
+    {
+      "id": "leading-op-043-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X = 1."
+    },
+    {
+      "id": "leading-op-043-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X = 1\n."
+    },
+    {
+      "id": "leading-op-043-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      * X = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       * X = 1\n."
+    },
+    {
+      "id": "leading-op-044-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\") = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + P(\"a\") = 1."
+    },
+    {
+      "id": "leading-op-044-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\") = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:       + P(\"a\") = 1."
+    },
+    {
+      "id": "leading-op-044-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\") = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: P is not defined.\nline 8: Invalid, or out of place expression:       + P(\"a\") = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-044-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + P(\"a\") = 1\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: P is not defined.\nline 8: Invalid, or out of place expression:       + P(\"a\") = 1\n.",
+      "not_modelled": "CR300/CR350 best effort: the unresolved-name and assignment messages of leading-operator statements are not modelled."
+    },
+    {
+      "id": "leading-op-045-cr6",
+      "logger": "cr6",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n      Q = 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       Q = 2."
+    },
+    {
+      "id": "leading-op-045-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n      Q = 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:       Q = 2."
+    },
+    {
+      "id": "leading-op-045-cr300",
+      "logger": "cr300",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n      Q = 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Q is not defined."
+    },
+    {
+      "id": "leading-op-045-cr350",
+      "logger": "cr350",
+      "source": "Public X As Long\r\nPublic S As String * 32\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    If X = 1 Then\r\n      + X = 1\r\n      Q = 2\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Q is not defined."
+    }
+  ]
+}

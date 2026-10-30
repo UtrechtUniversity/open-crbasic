@@ -9347,3 +9347,85 @@ excess arguments, unparsed unclosed calls and the reserved-name declaration casc
 outside this change. The 168-case `r63_iif_missing_arm.json` fixture preserves those gaps and
 accepted full-arity controls. Original CR6 `d6479ed3f595` now matches exactly; full observations
 and the targeted replay are under `scratch/r63/` (local only).
+
+## Leading plus before an assignment (round 64)
+
+A statement made of one or more leading `+` signs and an assignment compiles on all four
+loggers: `+ X = 1`, `+X=1`, `+ + X = 1` and `+ S = "a"` (CR6/CR1000X: PipelineMode). An
+indexed target (`+ X(1) = 1`) compiles on CR6/CR1000X only; CR300/CR350 give the fallback.
+Unresolved names follow the logical-prefixed assignment rules: `+ X = Q` is `Invalid symbol in
+expression: <statement>.` on CR6/CR1000X and `Q is not defined.` on CR300/CR350. Before round
+64 opencrbasic rejected all of these (a false reject). Whether the logger evaluates the sign
+is not observed; the statement is parsed as the assignment without it. The parser reads the
+statement as a `LOGICAL_ASSIGN`, so `_logical_assign_state` decides the verdict and messages.
+
+A target that is not a `+`-signed variable is `Invalid assignment in expression: <statement>.`
+on CR6/CR1000X when every name is defined: `- X = 1`, `- X(1) = 1`, `+ 1 = X`, `+ Abs(X) = 1`.
+`+ P("a") = 1` with `P` a Sub keeps the fallback. The value of a `+ X = ...` assignment is read
+as usual (`+ X = 1 2` is `Incomplete expression`).
+
+Otherwise a statement that starts with `+` or `-` reports the fallback `Invalid, or out of
+place expression`, never `Incomplete expression`: `+ X Y`, `- "b" X`, `+ (X) Y`,
+`+ Abs(X) Y`. This is the realistic shape of CR1000X `53f4ed873761`: a continuation line moved
+below the closing line of a call, so `+ " momsn=" + FormatLong(...) _` joins the following
+`Else`. An undefined name still moves the statement to pass 2, as before. Observations:
+`r64_leading_op.json` (184, all four profiles); CR300/CR350 unresolved-name and assignment
+messages remain strict gaps.
+
+## Overflowing WindVector Reps (round 64)
+
+A `WindVector` Reps outside the 32-bit range, or a String, reads as -2147483648 like every other
+table-output Reps (`_reps_value`). It then reports the direction variable's bounds before the
+Reps error: `WindVector (2147483648,WS,WD,...)` is `Variable WD out of bounds.` then `Illegal
+Reps -2147483648` on CR6/CR1000X, whatever the direction array size or the last option. Before
+round 64 this was a false accept (CR1000X fuzz `9f6e9f17660e`, seed 466, a GEUS WATSON program
+with an extra-digit count). `WindVector (2147483647,...)` is an allocation `Out of memory.`
+cascade and stays unmodelled. Observations: `r64_windvector_reps.json` (76).
+
+## User Function calls of any arity (round 64)
+
+The round-62 rule for a user Function call statement (`F(...)` or `N = F(...)`) now applies
+to every arity on CR6/CR1000X:
+
+- adjacent operands directly in the Function's own arguments, in any slot, are
+  `No Matching, or out of place ) in expression: <statement>.` (`G("a", X Y)`,
+  `G("a" + X Y, 1)`);
+- adjacent operands inside a nested built-in keep the built-in's `Expression expects , :
+  <statement>.` (`F("a" + FormatFloat(X Y, "%.1f"))`);
+- an unknown name comes first as pass 2's `Invalid symbol in expression: <statement>.`
+  (`F("a" + Q R)`, `F("a" + Fo rmatFloat(X, "%.1f"))`), unless the unknown name is the
+  assignment target (`Z = F("a" + Q R)` keeps the fallback, as round 62's `Y=F(1 2)`);
+- `Call F(...)` reads its arguments like a Sub's (round 61): `Call F("a" + X Y)` is
+  `Incomplete expression: "a" + X Y.`
+
+The fresh round-64 inputs that led here split a name with blanks (`ShuntResist  anceOhms`),
+which the realism triage treats as noise; the missing-operator and missing-comma variants
+above are the realistic mistakes. A built-in with one argument and adjacent operands
+(`Abs(X Y)`) reports `Call argument required.` or `Incomplete expression` and is not modelled.
+CR300/CR350 keep round 62's one-parameter behaviour. Observations: `r64_function_args.json`
+(128); ten round-62 strict gaps now match.
+
+## Unterminated strings in user Function calls (round 64)
+
+A user Function call statement whose unterminated string opens inside its parentheses is
+`String without end quote`, then `Call argument required.` when the string follows a top-level
+comma of the call, then the fallback echoing the statement (CR6/CR1000X):
+`F("abc)`, `N = F("abc)`, `F(X + "abc)`, `F("abc) 'comment`, `G("a", "b)`, `H("a", "b", "c)`.
+A Sub call (`P("abc)`) and an explicit `Call F("abc)` keep `Invalid or malformed function
+argument.`; an undeclared name keeps the fallback alone. A quote after the closing parenthesis
+(`F("abc")"`, `Incomplete expression`) is not modelled. This is the realistic shape of fuzz
+`28e7e2792d84` (`LogDebug(" ... )`). Observations: `r64_function_string.json` (52).
+
+## SDM Delay in a slow sequence (round 64)
+
+`Delay` with option 2 (the SDM delay, after the unsigned-byte reading of the option; `Sec`
+and `2.0` also give 2) and a constant non-zero interval is `SDM Delay Not Allowed in Slow
+Sequence.` on CR6/CR1000X when it is written after `SlowSequence` in the program body: in a
+slow-sequence `Scan`, directly after `SlowSequence`, in a block or one-line `If`, in a later
+slow sequence, and in SequentialMode. It is reported in line order with pass 2's other
+findings, once per statement. A Sub called from the slow sequence is not checked, the main
+scan accepts it, a non-constant interval keeps `SDM Delay interval must be constant.` and a
+zero interval keeps `Invalid time specified.` CR300/CR350 accept all of these. Before round 64
+this was a false accept; the realistic mistake is a swapped `Delay(Sec,10,1)` (round-60 fuzz
+`9abdc4c03311`). Profile data: `measure.json` `delay.sdm_slow_sequence`. Observations:
+`r64_sdm_delay.json` (108, all four profiles).

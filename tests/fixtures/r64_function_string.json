@@ -1,0 +1,409 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "function-string-097-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     G(\"a)."
+    },
+    {
+      "id": "function-string-097-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     G(\"a)."
+    },
+    {
+      "id": "function-string-097-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     G(\"a)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-097-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     G(\"a)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-098-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     G(\"a\", \"b)."
+    },
+    {
+      "id": "function-string-098-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     G(\"a\", \"b)."
+    },
+    {
+      "id": "function-string-098-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     G(\"a\", \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-098-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     G(\"a\", \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-099-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b)."
+    },
+    {
+      "id": "function-string-099-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b)."
+    },
+    {
+      "id": "function-string-099-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-099-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-100-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b\", \"c)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b\", \"c)."
+    },
+    {
+      "id": "function-string-100-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b\", \"c)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b\", \"c)."
+    },
+    {
+      "id": "function-string-100-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b\", \"c)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b\", \"c)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-100-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a\", \"b\", \"c)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     H(\"a\", \"b\", \"c)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-101-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     H(\"a)."
+    },
+    {
+      "id": "function-string-101-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     H(\"a)."
+    },
+    {
+      "id": "function-string-101-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     H(\"a)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-101-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    H(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     H(\"a)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-102-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     N = G(\"a\", \"b)."
+    },
+    {
+      "id": "function-string-102-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     N = G(\"a\", \"b)."
+    },
+    {
+      "id": "function-string-102-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     N = G(\"a\", \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-102-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Call argument required.\nline 15: Invalid, or out of place expression:     N = G(\"a\", \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-103-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     N = G(\"a)."
+    },
+    {
+      "id": "function-string-103-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     N = G(\"a)."
+    },
+    {
+      "id": "function-string-103-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     N = G(\"a)\n."
+    },
+    {
+      "id": "function-string-103-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     N = G(\"a)\n."
+    },
+    {
+      "id": "function-string-104-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"a\" + \"b)."
+    },
+    {
+      "id": "function-string-104-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"a\" + \"b)."
+    },
+    {
+      "id": "function-string-104-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"a\" + \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-104-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + \"b)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"a\" + \"b)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-105-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc\")\"\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\".",
+      "not_modelled": "A quote after the call's closing parenthesis (`F(\"abc\")\"`) is trailing junk; not modelled."
+    },
+    {
+      "id": "function-string-105-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc\")\"\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\".",
+      "not_modelled": "A quote after the call's closing parenthesis (`F(\"abc\")\"`) is trailing junk; not modelled."
+    },
+    {
+      "id": "function-string-105-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc\")\"\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\"\n.",
+      "not_modelled": "A quote after the call's closing parenthesis (`F(\"abc\")\"`) is trailing junk; not modelled."
+    },
+    {
+      "id": "function-string-105-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc\")\"\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Incomplete expression:     F(\"abc\")\"\n.",
+      "not_modelled": "A quote after the call's closing parenthesis (`F(\"abc\")\"`) is trailing junk; not modelled."
+    },
+    {
+      "id": "function-string-106-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X + \"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(X + \"abc)."
+    },
+    {
+      "id": "function-string-106-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X + \"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(X + \"abc)."
+    },
+    {
+      "id": "function-string-106-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X + \"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(X + \"abc)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-106-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X + \"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(X + \"abc)\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-107-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    P(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Invalid or malformed function argument."
+    },
+    {
+      "id": "function-string-107-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    P(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Invalid or malformed function argument."
+    },
+    {
+      "id": "function-string-107-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    P(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Invalid or malformed function argument."
+    },
+    {
+      "id": "function-string-107-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    P(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Invalid or malformed function argument."
+    },
+    {
+      "id": "function-string-108-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Q(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Invalid, or out of place expression:     Q(\"abc)."
+    },
+    {
+      "id": "function-string-108-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Q(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Invalid, or out of place expression:     Q(\"abc)."
+    },
+    {
+      "id": "function-string-108-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Q(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Q is not defined.\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     Q(\"abc)\n."
+    },
+    {
+      "id": "function-string-108-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Q(\"abc)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Q is not defined.\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     Q(\"abc)\n."
+    },
+    {
+      "id": "function-string-109-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc) 'comment\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"abc) 'comment."
+    },
+    {
+      "id": "function-string-109-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc) 'comment\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"abc) 'comment."
+    },
+    {
+      "id": "function-string-109-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc) 'comment\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"abc) 'comment\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    },
+    {
+      "id": "function-string-109-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction H(A As String, B As String, C As String) As Long\r\n  Return 1\r\nEndFunction\r\nSub P(A As String)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"abc) 'comment\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: String without end quote\nline 15: Invalid, or out of place expression:     F(\"abc) 'comment\n.",
+      "not_modelled": "CR300/CR350 best effort: unterminated strings in user Function calls are not modelled."
+    }
+  ]
+}

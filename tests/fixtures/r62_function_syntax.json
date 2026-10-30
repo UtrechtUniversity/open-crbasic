@@ -1872,16 +1872,14 @@
       "logger": "cr6",
       "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(FormatFloat(X \"%f\")\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\").",
-      "not_modelled": "Nested built-in syntax expects-comma echo is not modelled by this rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\")."
     },
     {
       "id": "function-nested_missing_comma-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nFunction F(A As String * 40)\nEndFunction\nSub T(A As String * 40,B)\nEndSub\nBeginProg\nF(FormatFloat(X \"%f\")\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\").",
-      "not_modelled": "Nested built-in syntax expects-comma echo is not modelled by this rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Expression expects , : F(FormatFloat(X \"%f\")."
     },
     {
       "id": "function-nested_missing_comma-cr300",
@@ -2134,16 +2132,14 @@
       "logger": "cr6",
       "source": "Public X\nFunction F(A,B)\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)."
     },
     {
       "id": "control-arity_two-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nFunction F(A,B)\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)."
     },
     {
       "id": "control-arity_two-cr300",
@@ -2166,48 +2162,42 @@
       "logger": "cr6",
       "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)."
     },
     {
       "id": "control-arity_zero-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2).",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)."
     },
     {
       "id": "control-arity_zero-cr300",
       "logger": "cr300",
       "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n.",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n."
     },
     {
       "id": "control-arity_zero-cr350",
       "logger": "cr350",
       "source": "Public X\nFunction F()\nEndFunction\nBeginProg\nF(1 2)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n.",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: F(1 2)\n."
     },
     {
       "id": "control-unknown_first-cr6",
       "logger": "cr6",
       "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(Nope 1)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: F(Nope 1).",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: F(Nope 1)."
     },
     {
       "id": "control-unknown_first-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nFunction F(A)\nEndFunction\nBeginProg\nF(Nope 1)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: F(Nope 1).",
-      "not_modelled": "Other Function arities or complex unresolved-name ordering remain outside the narrow rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: F(Nope 1)."
     },
     {
       "id": "control-unknown_first-cr300",

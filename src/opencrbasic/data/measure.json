@@ -17,7 +17,8 @@
  "delay": {
   "option0_limit": 3600000000,
   "option1_limit": 86400000000,
-  "task_memory": true
+  "task_memory": true,
+  "sdm_slow_sequence": true
  },
  "cs616_min_reps_pos": 2,
  "excite_magnitude_pos": 2,

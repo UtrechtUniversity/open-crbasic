@@ -105,7 +105,8 @@ _DECLARATION_WORDS = frozenset({"PUBLIC", "DIM", "STATIC", "CONST", "ALIAS", "UN
 
 
 def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
-                              operands: set[str] | None = None) -> str | None:
+                              operands: set[str] | None = None,
+                              functions: frozenset[str] | set[str] = frozenset()) -> str | None:
     """How a line cut short by an unterminated string is reported (oracle, all four loggers,
     2026-09-28, `docs/checker.md` "Unterminated strings"): `"if"` (a one-line `If`), `"call"` (a
     `Sub` call), `"instruction"`, `"assignment"`, or `None` (left to the generic fallback)."""
@@ -115,6 +116,9 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
     word = m.group(1).upper() if m else ""
     if word == "IF":
         return "if" if re.search(r"(?i)\bThen\b\s*\S", stmt.text) else None
+    if word != "CALL" and not profile.single_pass and (
+            shape := _function_call_string(stmt.text, functions)):
+        return shape
     if word == "CALL" or word in subs:
         return "call"
     record = profile.instructions.get(word)
@@ -136,6 +140,41 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
         if reached:
             return "assignment" if reached == "reached" else "many"
     return None
+
+
+_FUNCTION_CALL_RE = re.compile(r"\s*(?:[A-Za-z_]\w*\s*=\s*)?([A-Za-z_]\w*)\s*\(")
+
+
+def _function_call_string(text: str, functions: frozenset[str] | set[str]) -> str | None:
+    """CR6/CR1000X: a user Function call (`F("abc)`, `N = G("a", "b)`) whose unterminated string
+    opens inside its parentheses: `"function"`, or `"function_arg"` when the string follows a
+    top-level comma (`Call argument required.` before the fallback; oracle, round 64,
+    docs/checker.md#unterminated-strings-in-user-function-calls-round-64)."""
+    m = _FUNCTION_CALL_RE.match(text)
+    if not m or m.group(1).upper() not in functions:
+        return None
+    depth, comma, i = 0, False, m.end() - 1
+    while i < len(text):
+        c = text[i]
+        if c == '"':
+            close = text.find('"', i + 1)
+            if close < 0:
+                return "function_arg" if comma else "function"
+            i = close + 1
+            continue
+        depth += c == "("
+        depth -= c == ")"
+        if depth == 0:
+            return None  # the quote follows the call (`F("abc")"`): not modelled
+        comma |= c == "," and depth == 1
+        i += 1
+    return None
+
+
+def user_functions(program: S.Program) -> set[str]:
+    """The upper-cased names of the program's `Function` routines."""
+    return {st.name.upper() for st in program.statements
+            if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"}
 
 
 def _past_last_param(text: str, count: int) -> str | None:
@@ -164,14 +203,21 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
     from . import structure, symbols
     subs = symbols.declared_subs(program)
     operands = structure.pass1_operands(program, profile)
+    functions = user_functions(program)
     for stmt in program.statements:
-        shape = unterminated_string_shape(stmt, profile, subs, operands)
+        shape = unterminated_string_shape(stmt, profile, subs, operands, functions)
         if shape == "instruction":
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
         elif shape and shape.startswith("too_many:"):
             diags.error(stmt.line, f"Too many parameters:  {shape[len('too_many:'):]}.", stmt.file)
         elif shape == "call":
             diags.error(stmt.line, "Invalid or malformed function argument.", stmt.file)
+        elif shape in ("function", "function_arg"):
+            diags.error(stmt.line, "String without end quote", stmt.file)
+            if shape == "function_arg":
+                diags.error(stmt.line, "Call argument required.", stmt.file)
+            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
+                        stmt.file)
         elif shape == "many":
             diags.error(stmt.line, structure._no_matching(profile, stmt.text, stmt.at_eol), stmt.file)
         elif shape == "assignment":

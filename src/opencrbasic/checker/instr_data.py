@@ -1209,9 +1209,14 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if destinations and in_table and kw in _TABLE_OUTPUT and sources_ok:
             from .structure import _undefined_table_source
             sources_ok = _undefined_table_source(st, profile, known) is None
+        wind_reps = _reps_value(st.args[0], env) if kw == "WINDVECTOR" and st.args else None
+        if wind_reps == _INT32_MIN:
+            # an overflowing count: the direction bounds, then `Illegal Reps -2147483648` (oracle,
+            # CR6/CR1000X, round 64, docs/checker.md#overflowing-windvector-reps-round-64)
+            wind_reps = 2**31
         wind = kw == "WINDVECTOR" and destinations and in_table and len(st.args) >= 3 and \
-            isinstance(st.args[1], (S.Name, S.Index)) and (_reps_value(st.args[0], env) or 0) >= 1
-        if wind and _short_array(st.args[2], _reps_value(st.args[0], env) or 0, dims, env):
+            isinstance(st.args[1], (S.Name, S.Index)) and (wind_reps or 0) >= 1
+        if wind and _short_array(st.args[2], wind_reps or 0, dims, env):
             # the direction first, one line (oracle, round 56, docs/checker.md#round-56-fuzz-rules)
             diags.error(st.line, f"Variable {getattr(st.args[2], 'name', '')} out of bounds.", st.file)
         if (kw in _TABLE_OUTPUT or wind) and len(st.args) >= 2 and sources_ok and (in_table or not destinations):

@@ -18,7 +18,8 @@
  "delay": {
   "option0_limit": 3600000000,
   "option1_limit": 86400000000,
-  "task_memory": true
+  "task_memory": true,
+  "sdm_slow_sequence": true
  },
  "gps": {
   "ports": [1, 9, 10, 11, 12],

@@ -1308,6 +1308,10 @@ class _Parser:
                         stmt.target, (S.Name, S.Index, S.Member)):
                     return stmt
                 p.i = start
+            if first.kind == "OP" and first.text == "+" and (
+                    result := self._try_plus_assign(p, start, line, file)) is not None:
+                return result  # `+ X = 1`
+            p.i = start
             if first.kind in ("NUMBER", "STRING") or (first.kind == "OP" and first.text in ("(", "-", "+")):
                 if (result := self._try_logical_assign(p, start, line, file)) is not None:
                     return result  # `1 And Y = 1`, `-X And Y = 1`
@@ -1596,6 +1600,29 @@ class _Parser:
             return S.Unparsed(line, file, text="", reason=LOGICAL_ASSIGN, expr=expr)
         p.toks = saved
         return None
+
+    def _try_plus_assign(self, p: _TokStream, start: int, line: int, file: str) -> S.Stmt | None:
+        """`+ X = 1`, `+ + X = 1`: leading `+` signs before an assignment target are ignored and
+        the statement compiles as a `LOGICAL_ASSIGN` (an indexed target only on CR6/CR1000X; oracle,
+        all four loggers, round 64, docs/checker.md#leading-plus-before-an-assignment-round-64)."""
+        p.i = start
+        while p.is_op("+"):
+            p.next()
+        if not self._at_assign_target(p) or p.is_op("(") or (
+                self.profile.single_pass and not p.is_op("=", 1)):
+            return None
+        try:
+            target = self._parse_atom(p, line, file)
+            if not p.is_op("="):
+                return None
+            p.next()
+            value = self._parse_expr(p, line, file)
+        except _ParseError:
+            return None
+        if not p.at_end():
+            return None
+        return S.Unparsed(line, file, text="", reason=LOGICAL_ASSIGN,
+                          expr=S.Binary(line, file, "ASSIGN", target, value))
 
     def _parse_assignment_or_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         # An lvalue only (never a full expression): `=` is also the relational operator, so

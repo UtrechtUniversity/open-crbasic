@@ -1,0 +1,779 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "sdm-delay-110-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-110-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-110-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-110-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,T,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-111-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-111-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-111-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-111-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-112-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-112-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-112-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-112-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-113-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(0,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Measurement delay must have constant interval."
+    },
+    {
+      "id": "sdm-delay-113-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(0,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Measurement delay must have constant interval."
+    },
+    {
+      "id": "sdm-delay-113-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(0,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-113-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(0,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-114-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-114-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-114-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-114-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-115-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(3,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-115-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(3,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-115-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(3,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-115-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(3,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-116-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-116-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-116-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-116-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-117-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(4,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 4"
+    },
+    {
+      "id": "sdm-delay-117-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(4,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 4"
+    },
+    {
+      "id": "sdm-delay-117-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(4,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 4"
+    },
+    {
+      "id": "sdm-delay-117-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(4,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 4"
+    },
+    {
+      "id": "sdm-delay-118-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-118-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-118-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-118-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Sec,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-119-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(mSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-119-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(mSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-119-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(mSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-119-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(mSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-120-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(uSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-120-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(uSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-120-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(uSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-120-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(uSec,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-121-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Min,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-121-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Min,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-121-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Min,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-121-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(Min,10,1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 3"
+    },
+    {
+      "id": "sdm-delay-122-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-122-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-122-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-122-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,mSec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-123-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(-1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 255"
+    },
+    {
+      "id": "sdm-delay-123-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(-1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 255"
+    },
+    {
+      "id": "sdm-delay-123-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(-1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 255"
+    },
+    {
+      "id": "sdm-delay-123-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(-1,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Illegal option 255"
+    },
+    {
+      "id": "sdm-delay-124-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2.0,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-124-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2.0,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-124-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2.0,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-124-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2.0,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-125-cr6",
+      "logger": "cr6",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-125-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-125-cr300",
+      "logger": "cr300",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-125-cr350",
+      "logger": "cr350",
+      "source": "Public X, A(20), T As Long\r\nPublic S As String * 20\r\n\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,T,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SDM Delay interval must be constant."
+    },
+    {
+      "id": "sdm-delay-126-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-126-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "sdm-delay-126-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-126-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-127-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n    Delay(2,10,Sec)\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-127-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n    Delay(2,10,Sec)\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-127-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n    Delay(2,10,Sec)\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-127-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n    Delay(2,10,Sec)\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-128-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nSub P\r\n  Delay(2,10,Sec)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Call P\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "sdm-delay-128-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nSub P\r\n  Delay(2,10,Sec)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Call P\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "sdm-delay-128-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nSub P\r\n  Delay(2,10,Sec)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Call P\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-128-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nSub P\r\n  Delay(2,10,Sec)\r\nEndSub\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Call P\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-129-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then\r\n      Delay(2,10,Sec)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-129-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then\r\n      Delay(2,10,Sec)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-129-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then\r\n      Delay(2,10,Sec)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-129-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then\r\n      Delay(2,10,Sec)\r\n    EndIf\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-130-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-130-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-130-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-130-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    If X Then Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-131-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n    Delay(2,10,Sec)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SDM Delay Not Allowed in Slow Sequence.\nline 9: SDM Delay Not Allowed in Slow Sequence.\nline 10: Invalid symbol in expression:     X = Q."
+    },
+    {
+      "id": "sdm-delay-131-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n    Delay(2,10,Sec)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SDM Delay Not Allowed in Slow Sequence.\nline 9: SDM Delay Not Allowed in Slow Sequence.\nline 10: Invalid symbol in expression:     X = Q."
+    },
+    {
+      "id": "sdm-delay-131-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n    Delay(2,10,Sec)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Q is not defined."
+    },
+    {
+      "id": "sdm-delay-131-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n    Delay(2,10,Sec)\r\n    X = Q\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Q is not defined."
+    },
+    {
+      "id": "sdm-delay-132-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = Q\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     X = Q.\nline 9: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-132-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = Q\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     X = Q.\nline 9: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-132-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = Q\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 9: Too many parameters:  10."
+    },
+    {
+      "id": "sdm-delay-132-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = Q\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 9: Too many parameters:  10."
+    },
+    {
+      "id": "sdm-delay-133-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid time specified."
+    },
+    {
+      "id": "sdm-delay-133-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid time specified."
+    },
+    {
+      "id": "sdm-delay-133-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-133-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,0,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-134-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  SequentialMode\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-134-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  SequentialMode\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-134-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  SequentialMode\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-134-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  SequentialMode\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-135-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(20,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-135-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(20,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: SDM Delay Not Allowed in Slow Sequence."
+    },
+    {
+      "id": "sdm-delay-135-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(20,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-135-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(10,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\n  SlowSequence\r\n  Scan(20,Sec,0,0)\r\n    Delay(2,10,Sec)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-136-cr6",
+      "logger": "cr6",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SubScan(100,mSec,2)\r\n      Delay(2,10,mSec)\r\n    NextSubScan\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Measurements in SubScan."
+    },
+    {
+      "id": "sdm-delay-136-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SubScan(100,mSec,2)\r\n      Delay(2,10,mSec)\r\n    NextSubScan\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Measurements in SubScan."
+    },
+    {
+      "id": "sdm-delay-136-cr300",
+      "logger": "cr300",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SubScan(100,mSec,2)\r\n      Delay(2,10,mSec)\r\n    NextSubScan\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "sdm-delay-136-cr350",
+      "logger": "cr350",
+      "source": "Public X, T\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SubScan(100,mSec,2)\r\n      Delay(2,10,mSec)\r\n    NextSubScan\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

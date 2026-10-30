@@ -1,0 +1,963 @@
+{
+  "observation_date": "2026-10-30",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "function-args-065-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y)."
+    },
+    {
+      "id": "function-args-065-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y)."
+    },
+    {
+      "id": "function-args-065-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y)\n."
+    },
+    {
+      "id": "function-args-065-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y)\n."
+    },
+    {
+      "id": "function-args-066-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Fo rmatFloat(X, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     F(\"a\" + Fo rmatFloat(X, \"%.1f\"))."
+    },
+    {
+      "id": "function-args-066-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Fo rmatFloat(X, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     F(\"a\" + Fo rmatFloat(X, \"%.1f\"))."
+    },
+    {
+      "id": "function-args-066-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Fo rmatFloat(X, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Fo is not defined.\nline 11: rmatFloat is not defined.\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + Fo rmatFloat(X, \"%.1f\"))\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-066-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Fo rmatFloat(X, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Fo is not defined.\nline 11: rmatFloat is not defined.\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + Fo rmatFloat(X, \"%.1f\"))\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-067-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     F(\"a\" + FormatFloat(X Y, \"%.1f\"))."
+    },
+    {
+      "id": "function-args-067-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     F(\"a\" + FormatFloat(X Y, \"%.1f\"))."
+    },
+    {
+      "id": "function-args-067-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     F(\"a\" + FormatFloat(X Y, \"%.1f\"))\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-067-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     F(\"a\" + FormatFloat(X Y, \"%.1f\"))\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-068-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y + \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y + \"b\")."
+    },
+    {
+      "id": "function-args-068-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y + \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y + \"b\")."
+    },
+    {
+      "id": "function-args-068-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y + \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y + \"b\")\n."
+    },
+    {
+      "id": "function-args-068-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + X Y + \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + X Y + \"b\")\n."
+    },
+    {
+      "id": "function-args-069-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(X Y)."
+    },
+    {
+      "id": "function-args-069-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(X Y)."
+    },
+    {
+      "id": "function-args-069-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(X Y)\n."
+    },
+    {
+      "id": "function-args-069-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(X Y)\n."
+    },
+    {
+      "id": "function-args-070-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" \"b\")."
+    },
+    {
+      "id": "function-args-070-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" \"b\")."
+    },
+    {
+      "id": "function-args-070-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" \"b\")\n."
+    },
+    {
+      "id": "function-args-070-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" \"b\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     F(\"a\" \"b\")\n."
+    },
+    {
+      "id": "function-args-071-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(\"a\" + X Y)."
+    },
+    {
+      "id": "function-args-071-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(\"a\" + X Y)."
+    },
+    {
+      "id": "function-args-071-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(\"a\" + X Y)\n."
+    },
+    {
+      "id": "function-args-071-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = F(\"a\" + X Y)\n."
+    },
+    {
+      "id": "function-args-072-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" + X Y."
+    },
+    {
+      "id": "function-args-072-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" + X Y."
+    },
+    {
+      "id": "function-args-072-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" + X Y.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-072-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\" + X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" + X Y.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-073-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\" + X Y, 1)."
+    },
+    {
+      "id": "function-args-073-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\" + X Y, 1)."
+    },
+    {
+      "id": "function-args-073-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\" + X Y, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-073-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\" + X Y, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-074-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", X Y)."
+    },
+    {
+      "id": "function-args-074-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", X Y)."
+    },
+    {
+      "id": "function-args-074-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", X Y)\n."
+    },
+    {
+      "id": "function-args-074-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", X Y)\n."
+    },
+    {
+      "id": "function-args-075-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     F(\"a\" + Q)."
+    },
+    {
+      "id": "function-args-075-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     F(\"a\" + Q)."
+    },
+    {
+      "id": "function-args-075-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+    },
+    {
+      "id": "function-args-075-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+    },
+    {
+      "id": "function-args-076-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     F(\"a\" + Q R)."
+    },
+    {
+      "id": "function-args-076-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     F(\"a\" + Q R)."
+    },
+    {
+      "id": "function-args-076-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-076-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     F(\"a\" + Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-077-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X, \"%.1f\") _\r\n      + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid symbol in expression:     F(\"a\" + FormatFloat(X, \"%.1f\")       + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))."
+    },
+    {
+      "id": "function-args-077-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X, \"%.1f\") _\r\n      + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid symbol in expression:     F(\"a\" + FormatFloat(X, \"%.1f\")       + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))."
+    },
+    {
+      "id": "function-args-077-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X, \"%.1f\") _\r\n      + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Fo is not defined.\nline 12: rmatFloat is not defined.\nline 12: No Matching, or out of place ) in expression:     F(\"a\" + FormatFloat(X, \"%.1f\")       + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-077-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    F(\"a\" + FormatFloat(X, \"%.1f\") _\r\n      + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Fo is not defined.\nline 12: rmatFloat is not defined.\nline 12: No Matching, or out of place ) in expression:     F(\"a\" + FormatFloat(X, \"%.1f\")       + \" b=\" + Fo rmatFloat(Y, \"%.1f\"))\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-078-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(X Y, 1)."
+    },
+    {
+      "id": "function-args-078-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(X Y, 1)."
+    },
+    {
+      "id": "function-args-078-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(X Y, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-078-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(X Y, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-079-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = G(\"a\" + X Y, 1)."
+    },
+    {
+      "id": "function-args-079-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = G(\"a\" + X Y, 1)."
+    },
+    {
+      "id": "function-args-079-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = G(\"a\" + X Y, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-079-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + X Y, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     N = G(\"a\" + X Y, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-080-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)."
+    },
+    {
+      "id": "function-args-080-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)."
+    },
+    {
+      "id": "function-args-080-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-080-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Expression expects , :     G(\"a\" + FormatFloat(X Y, \"%.1f\"), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-081-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)."
+    },
+    {
+      "id": "function-args-081-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)."
+    },
+    {
+      "id": "function-args-081-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-081-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(FormatFloat(X, \"%.1f\") FormatFloat(Y, \"%.1f\"), 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-082-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", 1 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", 1 2)."
+    },
+    {
+      "id": "function-args-082-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", 1 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", 1 2)."
+    },
+    {
+      "id": "function-args-082-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", 1 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", 1 2)\n."
+    },
+    {
+      "id": "function-args-082-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", 1 2)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:     G(\"a\", 1 2)\n."
+    },
+    {
+      "id": "function-args-083-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     G(\"a\" + Q, 1)."
+    },
+    {
+      "id": "function-args-083-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     G(\"a\" + Q, 1)."
+    },
+    {
+      "id": "function-args-083-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+    },
+    {
+      "id": "function-args-083-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+    },
+    {
+      "id": "function-args-084-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q R, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     G(\"a\" + Q R, 1)."
+    },
+    {
+      "id": "function-args-084-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q R, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     G(\"a\" + Q R, 1)."
+    },
+    {
+      "id": "function-args-084-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q R, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     G(\"a\" + Q R, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-084-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\" + Q R, 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     G(\"a\" + Q R, 1)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-085-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     G(\"a\", Q R)."
+    },
+    {
+      "id": "function-args-085-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     G(\"a\", Q R)."
+    },
+    {
+      "id": "function-args-085-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     G(\"a\", Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-085-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     G(\"a\", Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-086-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1).",
+      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Call argument required.`; not modelled."
+    },
+    {
+      "id": "function-args-086-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1).",
+      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Call argument required.`; not modelled."
+    },
+    {
+      "id": "function-args-086-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)\n.",
+      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Call argument required.`; not modelled."
+    },
+    {
+      "id": "function-args-086-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\" + Abs(X Y), 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Call argument required.\nline 11: Invalid, or out of place expression:     N = G(\"a\" + Abs(X Y), 1)\n.",
+      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Call argument required.`; not modelled."
+    },
+    {
+      "id": "function-args-087-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y."
+    },
+    {
+      "id": "function-args-087-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y."
+    },
+    {
+      "id": "function-args-087-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-087-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-088-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\" \"b\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+    },
+    {
+      "id": "function-args-088-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\" \"b\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+    },
+    {
+      "id": "function-args-088-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\" \"b\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-088-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\" \"b\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-089-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y."
+    },
+    {
+      "id": "function-args-089-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y."
+    },
+    {
+      "id": "function-args-089-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-089-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: X Y.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-090-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nF is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-090-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nF is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-090-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nF is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-090-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call F(\"a\")\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nF is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-091-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nG is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-091-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nG is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-091-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nG is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-091-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Call G(\"a\", 1)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nG is not declared as a Subroutine."
+    },
+    {
+      "id": "function-args-092-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y)).",
+      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Incomplete expression`; not modelled."
+    },
+    {
+      "id": "function-args-092-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y)).",
+      "not_modelled": "Adjacent operands inside a nested one-argument built-in (`Abs(X Y)`) report `Incomplete expression`; not modelled."
+    },
+    {
+      "id": "function-args-092-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))\n."
+    },
+    {
+      "id": "function-args-092-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Abs(X Y))\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression:     N = F(\"a\" + Abs(X Y))\n."
+    },
+    {
+      "id": "function-args-093-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     N = F(\"a\" + Q R)."
+    },
+    {
+      "id": "function-args-093-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     N = F(\"a\" + Q R)."
+    },
+    {
+      "id": "function-args-093-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     N = F(\"a\" + Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-093-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     N = F(\"a\" + Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-094-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     N = G(\"a\", Q R)."
+    },
+    {
+      "id": "function-args-094-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression:     N = G(\"a\", Q R)."
+    },
+    {
+      "id": "function-args-094-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     N = G(\"a\", Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-094-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    N = G(\"a\", Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     N = G(\"a\", Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-095-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:     Z = F(\"a\" + Q R)."
+    },
+    {
+      "id": "function-args-095-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:     Z = F(\"a\" + Q R)."
+    },
+    {
+      "id": "function-args-095-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Z is not defined.\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     Z = F(\"a\" + Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-095-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = F(\"a\" + Q R)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Z is not defined.\nline 11: Q is not defined.\nline 11: R is not defined.\nline 11: No Matching, or out of place ) in expression:     Z = F(\"a\" + Q R)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-096-cr6",
+      "logger": "cr6",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:     Z = G(\"a\", X Y)."
+    },
+    {
+      "id": "function-args-096-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:     Z = G(\"a\", X Y)."
+    },
+    {
+      "id": "function-args-096-cr300",
+      "logger": "cr300",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Z is not defined.\nline 11: No Matching, or out of place ) in expression:     Z = G(\"a\", X Y)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    },
+    {
+      "id": "function-args-096-cr350",
+      "logger": "cr350",
+      "source": "Public X, Y, N As Long\r\nPublic S As String * 32\r\nFunction F(A As String) As Long\r\n  Return 1\r\nEndFunction\r\nFunction G(A As String, B As Long) As Long\r\n  Return 1\r\nEndFunction\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    Z = G(\"a\", X Y)\r\n  NextScan\r\nEndProg\r\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Z is not defined.\nline 11: No Matching, or out of place ) in expression:     Z = G(\"a\", X Y)\n.",
+      "not_modelled": "CR300/CR350 best effort: multi-argument user Function call syntax is not modelled."
+    }
+  ]
+}
