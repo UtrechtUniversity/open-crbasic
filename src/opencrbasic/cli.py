@@ -10,10 +10,11 @@ Public/Dim/Sub-or-Function-parameter, and for an uncalled Sub; `checker/unused.p
 accepted (matching the exe's own option set) but has no implemented effect: oracle-confirmed to
 have none observable from the CLI either. Extra long options: --logger
 {cr6,cr1000x,cr300,cr350} (default: from the file extension, else cr6) and --no-message-file (do
-not write CR6cmple.xxx), --strict (opencrbasic checks, `checks.py`, on stderr only), --report FILE
+not write the message file), --strict (opencrbasic checks, `checks.py`, on stderr only), --report FILE
 (JSON report, `docs/checker.md` "Check configuration and report file"), --config FILE and
 --check CODE=SEVERITY (check configuration; both only act together with --strict or --report).
-Output goes to stdout and to the message file (CR6cmple.xxx by default, CRLF line endings);
+Output goes to stdout and to the message file (`<LOGGER>cmple.xxx` by default, e.g. CR6cmple.xxx;
+CRLF line endings);
 exit status 0 on success, 1 on failure, and with --strict 3 when the program compiles but a
 check reports an error, 4 when it compiles but the check configuration is invalid.
 """
@@ -202,7 +203,9 @@ def main(argv: list[str] | None = None) -> int:
             return 0
     if len(positional) > 2:
         return 1
-    message_path = Path(positional[1]) if len(positional) == 2 else Path("CR6cmple.xxx")
+    # each compiler names its own message file: CR6cmple.xxx, CR1000Xcmple.xxx, ... (artifact matrix, M5)
+    message_path = Path(positional[1]) if len(positional) == 2 else Path(
+        f"{(profile or profiles.get('cr6')).name.upper()}cmple.xxx")
     if not positional:
         lines = [" -- Compile Failed!", "", "No Program File"]
         print("\n".join(lines))
@@ -211,7 +214,10 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     program = Path(positional[0])
-    profile = profile or profiles.for_file(program)
+    if profile is None:
+        profile = profiles.for_file(program)
+        if len(positional) < 2:
+            message_path = Path(f"{profile.name.upper()}cmple.xxx")
     if not program.is_file():
         lines = [f"{positional[0]} -- Compile Failed!", "", "No Program File"]
         print("\n".join(lines))
@@ -223,19 +229,20 @@ def main(argv: list[str] | None = None) -> int:
                 program.name, profile.name, opts["strict"]))
         return 1
 
-    if opts["p"]:
-        from . import preprocess
-        try:
-            Path(opts["p"]).write_bytes(
-                preprocess.preprocess(program, profile, expand_includes=opts["i"])
-            )
-        except OSError:
-            pass
-
     result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"],
                           provenance=False)
+    if opts["p"]:
+        from . import preprocess
+        from .compiler import dropped_message
+        dropped = dropped_message(result) if result.pass1_errors else None
+        stop = None if dropped is None or not dropped.line else (
+            re.sub(r"^[A-Za-z]+:", "", dropped.file or program.name).replace("\\", "/").rsplit("/", 1)[-1],
+            dropped.line)
+        try:
+            Path(opts["p"]).write_bytes(preprocess.preprocess(program, profile, expand_includes=opts["i"], stop=stop))
+        except OSError:
+            pass
     lines = result.result_lines(show_signature=opts["s"])
-    print("\n".join(lines))
 
     # `-t` (`[Times]`) and `-b` (CDM image) both need the parsed program; re-parsed once, shared,
     # only when asked for (docs/cli.md: this does not affect `result`, which already parsed its
@@ -269,9 +276,12 @@ def main(argv: list[str] | None = None) -> int:
             Path(opts["b"]).write_bytes(b"")  # the image format itself is not implemented
         except OSError:
             pass
-        if not uses_cdm:
+        if not uses_cdm or result.pass1_errors:
+            # a pass-1 error stops the compile before any CDM device is registered (oracle, CR6,
+            # round 74, `docs/artifacts.md`)
             cdm_message = "No CDM devices used in this program "
-            print(cdm_message)
+            print(cdm_message)   # before the result, as in the message file (artifact matrix, M5)
+    print("\n".join(lines))
 
     if opts["message_file"]:
         body = b""
@@ -287,6 +297,9 @@ def main(argv: list[str] | None = None) -> int:
         body += _message_bytes(lines)
         Path(message_path).write_bytes(body)
 
+    if not result.ok and opts["z"]:
+        # a failed compile still writes the TDF version byte, and no table list (`docs/artifacts.md`)
+        Path(opts["z"]).write_bytes(b"\x01")
     if result.ok:
         if opts["z"] and result.tables:
             from . import tdf

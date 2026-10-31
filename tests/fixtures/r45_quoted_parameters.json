@@ -322,32 +322,28 @@
       "logger": "cr6",
       "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number."
     },
     {
       "id": "cr1000x-number",
       "logger": "cr1000x",
       "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number."
     },
     {
       "id": "cr300-number",
       "logger": "cr300",
       "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined."
     },
     {
       "id": "cr350-number",
       "logger": "cr350",
       "source": "Public X\nSub S(1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined."
     },
     {
       "id": "cr6-decimal",
@@ -418,32 +414,28 @@
       "logger": "cr6",
       "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number."
     },
     {
       "id": "cr1000x-number-second",
       "logger": "cr1000x",
       "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number."
     },
     {
       "id": "cr300-number-second",
       "logger": "cr300",
       "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined."
     },
     {
       "id": "cr350-number-second",
       "logger": "cr350",
       "source": "Public X\nSub S(R, 1)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined.",
-      "not_modelled": "Numeric parameter names need the declaration-name diagnostic."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable name 1 illegal, starts with a number.\nline 3: Q is not defined."
     },
     {
       "id": "cr6-missing-first",

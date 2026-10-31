@@ -170,6 +170,18 @@ class CompileResult:
         return lines
 
 
+def dropped_message(result: CompileResult):
+    """The first error the 4096-byte message buffer cannot hold, or None. The reference stops
+    compiling there, and `-p`/`-i` output ends at its line (artifact matrix, round 74,
+    `docs/artifacts.md`)."""
+    if result.ok:
+        return None
+    ordered = sorted(result.diagnostics.items, key=result._sort_key)
+    kept = len(_bounded_by_message_buffer([d.cr6comp(result.program, result.profile.include_drive_prefix)
+                                           for d in ordered]))
+    return ordered[kept] if kept < len(ordered) else None
+
+
 def compile_file(path: Path, profile: Profile | None = None, display_name: str | None = None,
                   warn_unused: bool = False, source: SourceProvider | None = None,
                   signature: bool = True, provenance: bool = True) -> CompileResult:

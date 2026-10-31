@@ -1,0 +1,1272 @@
+{
+ "observation_date": "2026-10-31",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-plain-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr6-message-file-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "P",
+    "msg.txt"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "msg.txt": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr6-signature-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-s",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr6-timing-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-t",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXWZhaWxfZGVjbC5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAxOiBWYXJpYWJsZSBuYW1lIDFiYWQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo="
+   }
+  },
+  {
+   "id": "cr6-unused-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-u",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr6-tables-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-z",
+    "o.tdf",
+    "-l",
+    "o.lst",
+    "-c",
+    "o.cl",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg==",
+    "o.tdf": "AQ=="
+   }
+  },
+  {
+   "id": "cr6-preprocess-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg==",
+    "o.pre": "UHVibGljIDFiYWQNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgTmV4dFNjYW4NCkVuZFByb2cNCg=="
+   }
+  },
+  {
+   "id": "cr6-include-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9kZWNsLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg==",
+    "o.inc": "UHVibGljIDFiYWQNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgTmV4dFNjYW4NCkVuZFByb2cNCg=="
+   }
+  },
+  {
+   "id": "cr6-cdm-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-b",
+    "o.cdm",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "No CDM devices used in this program \nfail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "Tm8gQ0RNIGRldmljZXMgdXNlZCBpbiB0aGlzIHByb2dyYW0gDQpmYWlsX2RlY2wuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgMTogVmFyaWFibGUgbmFtZSAxYmFkIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0K",
+    "o.cdm": ""
+   }
+  },
+  {
+   "id": "cr6-combined-fail_decl",
+   "logger": "cr6",
+   "args": [
+    "-st",
+    "-z",
+    "o.tdf",
+    "P"
+   ],
+   "program": "fail_decl.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_decl.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXWZhaWxfZGVjbC5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAxOiBWYXJpYWJsZSBuYW1lIDFiYWQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo=",
+    "o.tdf": "AQ=="
+   }
+  },
+  {
+   "id": "cr6-plain-fail_table",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K"
+   }
+  },
+  {
+   "id": "cr6-message-file-fail_table",
+   "logger": "cr6",
+   "args": [
+    "P",
+    "msg.txt"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "msg.txt": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K"
+   }
+  },
+  {
+   "id": "cr6-signature-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-s",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K"
+   }
+  },
+  {
+   "id": "cr6-timing-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-t",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXWZhaWxfdGFibGUuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgMzogSW52YWxpZCBzeW1ib2wgaW4gZXhwcmVzc2lvbjogTm9wZS4NCg=="
+   }
+  },
+  {
+   "id": "cr6-unused-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-u",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K"
+   }
+  },
+  {
+   "id": "cr6-tables-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-z",
+    "o.tdf",
+    "-l",
+    "o.lst",
+    "-c",
+    "o.cl",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K",
+    "o.tdf": "AQ=="
+   }
+  },
+  {
+   "id": "cr6-preprocess-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K",
+    "o.pre": "UHVibGljIFgNCkRhdGFUYWJsZShULFRydWUsLTEpDQogIFNhbXBsZSgxLE5vcGUsRlAyKQ0KRW5kVGFibGUNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgICBDYWxsVGFibGUgVA0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-include-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF90YWJsZS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkIHN5bWJvbCBpbiBleHByZXNzaW9uOiBOb3BlLg0K",
+    "o.inc": "UHVibGljIFgNCkRhdGFUYWJsZShULFRydWUsLTEpDQogIFNhbXBsZSgxLE5vcGUsRlAyKQ0KRW5kVGFibGUNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgICBDYWxsVGFibGUgVA0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-cdm-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-b",
+    "o.cdm",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "No CDM devices used in this program \nfail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "Tm8gQ0RNIGRldmljZXMgdXNlZCBpbiB0aGlzIHByb2dyYW0gDQpmYWlsX3RhYmxlLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDM6IEludmFsaWQgc3ltYm9sIGluIGV4cHJlc3Npb246IE5vcGUuDQo=",
+    "o.cdm": ""
+   }
+  },
+  {
+   "id": "cr6-combined-fail_table",
+   "logger": "cr6",
+   "args": [
+    "-st",
+    "-z",
+    "o.tdf",
+    "P"
+   ],
+   "program": "fail_table.CR6",
+   "source": "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_table.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXWZhaWxfdGFibGUuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgMzogSW52YWxpZCBzeW1ib2wgaW4gZXhwcmVzc2lvbjogTm9wZS4NCg==",
+    "o.tdf": "AQ=="
+   }
+  },
+  {
+   "id": "cr6-plain-fail_include",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo="
+   }
+  },
+  {
+   "id": "cr6-message-file-fail_include",
+   "logger": "cr6",
+   "args": [
+    "P",
+    "msg.txt"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "msg.txt": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo="
+   }
+  },
+  {
+   "id": "cr6-signature-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-s",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nProgSignature =  44283.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpQcm9nU2lnbmF0dXJlID0gIDQ0MjgzLg0KbGluZSAxOiBXYXJuaW5nOiBDYW5ub3Qgb3BlbiBpbmNsdWRlIGZpbGUgIG1pc3NpbmcuY3JiLg0K"
+   }
+  },
+  {
+   "id": "cr6-timing-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-t",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXQ0KbGluZSAzOiBTY2FuOiAwDQpmYWlsX2luY2x1ZGUuQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NCmxpbmUgMTogV2FybmluZzogQ2Fubm90IG9wZW4gaW5jbHVkZSBmaWxlICBtaXNzaW5nLmNyYi4NCg=="
+   }
+  },
+  {
+   "id": "cr6-unused-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-u",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo="
+   }
+  },
+  {
+   "id": "cr6-tables-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-z",
+    "o.tdf",
+    "-l",
+    "o.lst",
+    "-c",
+    "o.cl",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.cl": "",
+    "o.lst": "",
+    "o.tdf": "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"
+   }
+  },
+  {
+   "id": "cr6-preprocess-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.pre": "SW5jbHVkZSAiQ1BVOm1pc3NpbmcuY3JiIg0K"
+   }
+  },
+  {
+   "id": "cr6-include-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9pbmNsdWRlLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.inc": "SW5jbHVkZSAiQ1BVOm1pc3NpbmcuY3JiIg0KQmVnaW5Qcm9nDQogIFNjYW4oMSxTZWMsMCwwKQ0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-cdm-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-b",
+    "o.cdm",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "No CDM devices used in this program \nfail_include.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "Tm8gQ0RNIGRldmljZXMgdXNlZCBpbiB0aGlzIHByb2dyYW0gDQpmYWlsX2luY2x1ZGUuQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NCmxpbmUgMTogV2FybmluZzogQ2Fubm90IG9wZW4gaW5jbHVkZSBmaWxlICBtaXNzaW5nLmNyYi4NCg==",
+    "o.cdm": ""
+   }
+  },
+  {
+   "id": "cr6-combined-fail_include",
+   "logger": "cr6",
+   "args": [
+    "-st",
+    "-z",
+    "o.tdf",
+    "P"
+   ],
+   "program": "fail_include.CR6",
+   "source": "Include \"CPU:missing.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_include.CR6 -- Compiled in PipelineMode.\nProgSignature =  44283.\nline 1: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXQ0KbGluZSAzOiBTY2FuOiAwDQpmYWlsX2luY2x1ZGUuQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NClByb2dTaWduYXR1cmUgPSAgNDQyODMuDQpsaW5lIDE6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.tdf": "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"
+   }
+  },
+  {
+   "id": "cr6-plain-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg=="
+   }
+  },
+  {
+   "id": "cr6-message-file-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "P",
+    "msg.txt"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "msg.txt": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg=="
+   }
+  },
+  {
+   "id": "cr6-signature-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-s",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg=="
+   }
+  },
+  {
+   "id": "cr6-timing-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-t",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXWZhaWxfc2Nhbi5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSA0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogICAgIFggPSAuDQo="
+   }
+  },
+  {
+   "id": "cr6-unused-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-u",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg=="
+   }
+  },
+  {
+   "id": "cr6-tables-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-z",
+    "o.tdf",
+    "-l",
+    "o.lst",
+    "-c",
+    "o.cl",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg==",
+    "o.tdf": "AQ=="
+   }
+  },
+  {
+   "id": "cr6-preprocess-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg==",
+    "o.pre": "UHVibGljIFgNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgICBYID0gDQpFbmRQcm9nDQo="
+   }
+  },
+  {
+   "id": "cr6-include-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zY2FuLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiAgICAgWCA9IC4NCg==",
+    "o.inc": "UHVibGljIFgNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgICBYID0gDQpFbmRQcm9nDQo="
+   }
+  },
+  {
+   "id": "cr6-cdm-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-b",
+    "o.cdm",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "No CDM devices used in this program \nfail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "Tm8gQ0RNIGRldmljZXMgdXNlZCBpbiB0aGlzIHByb2dyYW0gDQpmYWlsX3NjYW4uQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246ICAgICBYID0gLg0K",
+    "o.cdm": ""
+   }
+  },
+  {
+   "id": "cr6-combined-fail_scan",
+   "logger": "cr6",
+   "args": [
+    "-st",
+    "-z",
+    "o.tdf",
+    "P"
+   ],
+   "program": "fail_scan.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "fail_scan.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = .",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXWZhaWxfc2Nhbi5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSA0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogICAgIFggPSAuDQo=",
+    "o.tdf": "AQ=="
+   }
+  },
+  {
+   "id": "cr6-plain-fail_section",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo="
+   }
+  },
+  {
+   "id": "cr6-message-file-fail_section",
+   "logger": "cr6",
+   "args": [
+    "P",
+    "msg.txt"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "msg.txt": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo="
+   }
+  },
+  {
+   "id": "cr6-signature-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-s",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nProgSignature =  15158.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpQcm9nU2lnbmF0dXJlID0gIDE1MTU4Lg0KbGluZSAyOiBXYXJuaW5nOiBDYW5ub3Qgb3BlbiBpbmNsdWRlIGZpbGUgIG1pc3NpbmcuY3JiLg0K"
+   }
+  },
+  {
+   "id": "cr6-timing-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-t",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXQ0KbGluZSA0OiBTY2FuOiAwDQpmYWlsX3NlY3Rpb24uQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NCmxpbmUgMjogV2FybmluZzogQ2Fubm90IG9wZW4gaW5jbHVkZSBmaWxlICBtaXNzaW5nLmNyYi4NCg=="
+   }
+  },
+  {
+   "id": "cr6-unused-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-u",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.\nline 1: Warning: X declared but not used.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQpsaW5lIDE6IFdhcm5pbmc6IFggZGVjbGFyZWQgYnV0IG5vdCB1c2VkLg0K"
+   }
+  },
+  {
+   "id": "cr6-tables-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-z",
+    "o.tdf",
+    "-l",
+    "o.lst",
+    "-c",
+    "o.cl",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.cl": "LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KVGFibGU6IFB1YmxpYw0KRmllbGRzOg0KIFgNCg0K",
+    "o.lst": "LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KVGFibGU6IFB1YmxpYw0KRmllbGRzOg0KIFgNCg0K",
+    "o.tdf": "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"
+   }
+  },
+  {
+   "id": "cr6-preprocess-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.pre": "UHVibGljIFgNCkluY2x1ZGVTZWN0aW9uKCJEZWZzIiwiQ1BVOm1pc3NpbmcuY3JiIikNCg=="
+   }
+  },
+  {
+   "id": "cr6-include-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "ZmFpbF9zZWN0aW9uLkNSNiAtLSBDb21waWxlZCBpbiBQaXBlbGluZU1vZGUuDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.inc": "UHVibGljIFgNCkluY2x1ZGVTZWN0aW9uKCJEZWZzIiwiQ1BVOm1pc3NpbmcuY3JiIikNCkJlZ2luUHJvZw0KICBTY2FuKDEsU2VjLDAsMCkNCiAgTmV4dFNjYW4NCkVuZFByb2cNCg=="
+   }
+  },
+  {
+   "id": "cr6-cdm-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-b",
+    "o.cdm",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "No CDM devices used in this program \nfail_section.CR6 -- Compiled in PipelineMode.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "Tm8gQ0RNIGRldmljZXMgdXNlZCBpbiB0aGlzIHByb2dyYW0gDQpmYWlsX3NlY3Rpb24uQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NCmxpbmUgMjogV2FybmluZzogQ2Fubm90IG9wZW4gaW5jbHVkZSBmaWxlICBtaXNzaW5nLmNyYi4NCg==",
+    "o.cdm": ""
+   }
+  },
+  {
+   "id": "cr6-combined-fail_section",
+   "logger": "cr6",
+   "args": [
+    "-st",
+    "-z",
+    "o.tdf",
+    "P"
+   ],
+   "program": "fail_section.CR6",
+   "source": "Public X\nIncludeSection(\"Defs\",\"CPU:missing.crb\")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "fail_section.CR6 -- Compiled in PipelineMode.\nProgSignature =  15158.\nline 2: Warning: Cannot open include file  missing.crb.",
+   "expected_files": {
+    "CR6cmple.xxx": "W1RpbWVzXQ0KbGluZSA0OiBTY2FuOiAwDQpmYWlsX3NlY3Rpb24uQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NClByb2dTaWduYXR1cmUgPSAgMTUxNTguDQpsaW5lIDI6IFdhcm5pbmc6IENhbm5vdCBvcGVuIGluY2x1ZGUgZmlsZSAgbWlzc2luZy5jcmIuDQo=",
+    "o.tdf": "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"
+   }
+  },
+  {
+   "id": "cr6-cdm-pass1-error",
+   "logger": "cr6",
+   "args": [
+    "-b",
+    "o.cdm",
+    "P"
+   ],
+   "program": "cdm_early.CR6",
+   "source": "Public H\nPublic 1bad\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_SW5(CDM_A108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "No CDM devices used in this program \ncdm_early.CR6 -- Compile Failed!\n\nline 2: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "Tm8gQ0RNIGRldmljZXMgdXNlZCBpbiB0aGlzIHByb2dyYW0gDQpjZG1fZWFybHkuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgMjogVmFyaWFibGUgbmFtZSAxYmFkIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0K",
+    "o.cdm": ""
+   }
+  },
+  {
+   "id": "cr6-preprocess-message-buffer-full",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "many.CR6",
+   "source": "Public X\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "many.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = = 0.\nline 3: Invalid, or out of place expression: X = = 1.\nline 4: Invalid, or out of place expression: X = = 2.\nline 5: Invalid, or out of place expression: X = = 3.\nline 6: Invalid, or out of place expression: X = = 4.\nline 7: Invalid, or out of place expression: X = = 5.\nline 8: Invalid, or out of place expression: X = = 6.\nline 9: Invalid, or out of place expression: X = = 7.\nline 10: Invalid, or out of place expression: X = = 8.\nline 11: Invalid, or out of place expression: X = = 9.\nline 12: Invalid, or out of place expression: X = = 10.\nline 13: Invalid, or out of place expression: X = = 11.\nline 14: Invalid, or out of place expression: X = = 12.\nline 15: Invalid, or out of place expression: X = = 13.\nline 16: Invalid, or out of place expression: X = = 14.\nline 17: Invalid, or out of place expression: X = = 15.\nline 18: Invalid, or out of place expression: X = = 16.\nline 19: Invalid, or out of place expression: X = = 17.\nline 20: Invalid, or out of place expression: X = = 18.\nline 21: Invalid, or out of place expression: X = = 19.\nline 22: Invalid, or out of place expression: X = = 20.\nline 23: Invalid, or out of place expression: X = = 21.\nline 24: Invalid, or out of place expression: X = = 22.\nline 25: Invalid, or out of place expression: X = = 23.\nline 26: Invalid, or out of place expression: X = = 24.\nline 27: Invalid, or out of place expression: X = = 25.\nline 28: Invalid, or out of place expression: X = = 26.\nline 29: Invalid, or out of place expression: X = = 27.\nline 30: Invalid, or out of place expression: X = = 28.\nline 31: Invalid, or out of place expression: X = = 29.\nline 32: Invalid, or out of place expression: X = = 30.\nline 33: Invalid, or out of place expression: X = = 31.\nline 34: Invalid, or out of place expression: X = = 32.\nline 35: Invalid, or out of place expression: X = = 33.\nline 36: Invalid, or out of place expression: X = = 34.\nline 37: Invalid, or out of place expression: X = = 35.\nline 38: Invalid, or out of place expression: X = = 36.\nline 39: Invalid, or out of place expression: X = = 37.\nline 40: Invalid, or out of place expression: X = = 38.\nline 41: Invalid, or out of place expression: X = = 39.\nline 42: Invalid, or out of place expression: X = = 40.\nline 43: Invalid, or out of place expression: X = = 41.\nline 44: Invalid, or out of place expression: X = = 42.\nline 45: Invalid, or out of place expression: X = = 43.\nline 46: Invalid, or out of place expression: X = = 44.\nline 47: Invalid, or out of place expression: X = = 45.\nline 48: Invalid, or out of place expression: X = = 46.\nline 49: Invalid, or out of place expression: X = = 47.\nline 50: Invalid, or out of place expression: X = = 48.\nline 51: Invalid, or out of place expression: X = = 49.\nline 52: Invalid, or out of place expression: X = = 50.\nline 53: Invalid, or out of place expression: X = = 51.\nline 54: Invalid, or out of place expression: X = = 52.\nline 55: Invalid, or out of place expression: X = = 53.\nline 56: Invalid, or out of place expression: X = = 54.\nline 57: Invalid, or out of place expression: X = = 55.\nline 58: Invalid, or out of place expression: X = = 56.\nline 59: Invalid, or out of place expression: X = = 57.\nline 60: Invalid, or out of place expression: X = = 58.\nline 61: Invalid, or out of place expression: X = = 59.\nline 62: Invalid, or out of place expression: X = = 60.\nline 63: Invalid, or out of place expression: X = = 61.\nline 64: Invalid, or out of place expression: X = = 62.\nline 65: Invalid, or out of place expression: X = = 63.\nline 66: Invalid, or out of place expression: X = = 64.\nline 67: Invalid, or out of place expression: X = = 65.\nline 68: Invalid, or out of place expression: X = = 66.\nline 69: Invalid, or out of place expression: X = = 67.\nline 70: Invalid, or out of place expression: X = = 68.\nline 71: Invalid, or out of place expression: X = = 69.\nline 72: Invalid, or out of place expression: X = = 70.\nline 73: Invalid, or out of place expression: X = = 71.",
+   "expected_files": {
+    "CR6cmple.xxx": "bWFueS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMC4NCmxpbmUgMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEuDQpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KbGluZSA1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMy4NCmxpbmUgNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQuDQpsaW5lIDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KbGluZSA4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNi4NCmxpbmUgOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcuDQpsaW5lIDEwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOC4NCmxpbmUgMTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA5Lg0KbGluZSAxMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEwLg0KbGluZSAxMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDExLg0KbGluZSAxNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEyLg0KbGluZSAxNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEzLg0KbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE0Lg0KbGluZSAxNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE1Lg0KbGluZSAxODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE2Lg0KbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE3Lg0KbGluZSAyMDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE4Lg0KbGluZSAyMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE5Lg0KbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIwLg0KbGluZSAyMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIxLg0KbGluZSAyNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIyLg0KbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIzLg0KbGluZSAyNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI0Lg0KbGluZSAyNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI1Lg0KbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI2Lg0KbGluZSAyOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI3Lg0KbGluZSAzMDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI4Lg0KbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI5Lg0KbGluZSAzMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMwLg0KbGluZSAzMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMxLg0KbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMyLg0KbGluZSAzNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMzLg0KbGluZSAzNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM0Lg0KbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM1Lg0KbGluZSAzODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM2Lg0KbGluZSAzOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM3Lg0KbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM4Lg0KbGluZSA0MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM5Lg0KbGluZSA0MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQwLg0KbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQxLg0KbGluZSA0NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQyLg0KbGluZSA0NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQzLg0KbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ0Lg0KbGluZSA0NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ1Lg0KbGluZSA0ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ2Lg0KbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ3Lg0KbGluZSA1MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ4Lg0KbGluZSA1MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ5Lg0KbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUwLg0KbGluZSA1MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUxLg0KbGluZSA1NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUyLg0KbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUzLg0KbGluZSA1NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU0Lg0KbGluZSA1NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU1Lg0KbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU2Lg0KbGluZSA1OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU3Lg0KbGluZSA2MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU4Lg0KbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU5Lg0KbGluZSA2MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYwLg0KbGluZSA2MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYxLg0KbGluZSA2NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYyLg0KbGluZSA2NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYzLg0KbGluZSA2NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY0Lg0KbGluZSA2NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY1Lg0KbGluZSA2ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY2Lg0KbGluZSA2OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY3Lg0KbGluZSA3MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY4Lg0KbGluZSA3MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY5Lg0KbGluZSA3MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcwLg0KbGluZSA3MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcxLg0K",
+    "o.pre": "UHVibGljIFgNClggPSA9IDANClggPSA9IDENClggPSA9IDINClggPSA9IDMNClggPSA9IDQNClggPSA9IDUNClggPSA9IDYNClggPSA9IDcNClggPSA9IDgNClggPSA9IDkNClggPSA9IDEwDQpYID0gPSAxMQ0KWCA9ID0gMTINClggPSA9IDEzDQpYID0gPSAxNA0KWCA9ID0gMTUNClggPSA9IDE2DQpYID0gPSAxNw0KWCA9ID0gMTgNClggPSA9IDE5DQpYID0gPSAyMA0KWCA9ID0gMjENClggPSA9IDIyDQpYID0gPSAyMw0KWCA9ID0gMjQNClggPSA9IDI1DQpYID0gPSAyNg0KWCA9ID0gMjcNClggPSA9IDI4DQpYID0gPSAyOQ0KWCA9ID0gMzANClggPSA9IDMxDQpYID0gPSAzMg0KWCA9ID0gMzMNClggPSA9IDM0DQpYID0gPSAzNQ0KWCA9ID0gMzYNClggPSA9IDM3DQpYID0gPSAzOA0KWCA9ID0gMzkNClggPSA9IDQwDQpYID0gPSA0MQ0KWCA9ID0gNDINClggPSA9IDQzDQpYID0gPSA0NA0KWCA9ID0gNDUNClggPSA9IDQ2DQpYID0gPSA0Nw0KWCA9ID0gNDgNClggPSA9IDQ5DQpYID0gPSA1MA0KWCA9ID0gNTENClggPSA9IDUyDQpYID0gPSA1Mw0KWCA9ID0gNTQNClggPSA9IDU1DQpYID0gPSA1Ng0KWCA9ID0gNTcNClggPSA9IDU4DQpYID0gPSA1OQ0KWCA9ID0gNjANClggPSA9IDYxDQpYID0gPSA2Mg0KWCA9ID0gNjMNClggPSA9IDY0DQpYID0gPSA2NQ0KWCA9ID0gNjYNClggPSA9IDY3DQpYID0gPSA2OA0KWCA9ID0gNjkNClggPSA9IDcwDQpYID0gPSA3MQ0KWCA9ID0gNzINCg=="
+   }
+  },
+  {
+   "id": "cr6-include-message-buffer-full",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "many.CR6",
+   "source": "Public X\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "many.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = = 0.\nline 3: Invalid, or out of place expression: X = = 1.\nline 4: Invalid, or out of place expression: X = = 2.\nline 5: Invalid, or out of place expression: X = = 3.\nline 6: Invalid, or out of place expression: X = = 4.\nline 7: Invalid, or out of place expression: X = = 5.\nline 8: Invalid, or out of place expression: X = = 6.\nline 9: Invalid, or out of place expression: X = = 7.\nline 10: Invalid, or out of place expression: X = = 8.\nline 11: Invalid, or out of place expression: X = = 9.\nline 12: Invalid, or out of place expression: X = = 10.\nline 13: Invalid, or out of place expression: X = = 11.\nline 14: Invalid, or out of place expression: X = = 12.\nline 15: Invalid, or out of place expression: X = = 13.\nline 16: Invalid, or out of place expression: X = = 14.\nline 17: Invalid, or out of place expression: X = = 15.\nline 18: Invalid, or out of place expression: X = = 16.\nline 19: Invalid, or out of place expression: X = = 17.\nline 20: Invalid, or out of place expression: X = = 18.\nline 21: Invalid, or out of place expression: X = = 19.\nline 22: Invalid, or out of place expression: X = = 20.\nline 23: Invalid, or out of place expression: X = = 21.\nline 24: Invalid, or out of place expression: X = = 22.\nline 25: Invalid, or out of place expression: X = = 23.\nline 26: Invalid, or out of place expression: X = = 24.\nline 27: Invalid, or out of place expression: X = = 25.\nline 28: Invalid, or out of place expression: X = = 26.\nline 29: Invalid, or out of place expression: X = = 27.\nline 30: Invalid, or out of place expression: X = = 28.\nline 31: Invalid, or out of place expression: X = = 29.\nline 32: Invalid, or out of place expression: X = = 30.\nline 33: Invalid, or out of place expression: X = = 31.\nline 34: Invalid, or out of place expression: X = = 32.\nline 35: Invalid, or out of place expression: X = = 33.\nline 36: Invalid, or out of place expression: X = = 34.\nline 37: Invalid, or out of place expression: X = = 35.\nline 38: Invalid, or out of place expression: X = = 36.\nline 39: Invalid, or out of place expression: X = = 37.\nline 40: Invalid, or out of place expression: X = = 38.\nline 41: Invalid, or out of place expression: X = = 39.\nline 42: Invalid, or out of place expression: X = = 40.\nline 43: Invalid, or out of place expression: X = = 41.\nline 44: Invalid, or out of place expression: X = = 42.\nline 45: Invalid, or out of place expression: X = = 43.\nline 46: Invalid, or out of place expression: X = = 44.\nline 47: Invalid, or out of place expression: X = = 45.\nline 48: Invalid, or out of place expression: X = = 46.\nline 49: Invalid, or out of place expression: X = = 47.\nline 50: Invalid, or out of place expression: X = = 48.\nline 51: Invalid, or out of place expression: X = = 49.\nline 52: Invalid, or out of place expression: X = = 50.\nline 53: Invalid, or out of place expression: X = = 51.\nline 54: Invalid, or out of place expression: X = = 52.\nline 55: Invalid, or out of place expression: X = = 53.\nline 56: Invalid, or out of place expression: X = = 54.\nline 57: Invalid, or out of place expression: X = = 55.\nline 58: Invalid, or out of place expression: X = = 56.\nline 59: Invalid, or out of place expression: X = = 57.\nline 60: Invalid, or out of place expression: X = = 58.\nline 61: Invalid, or out of place expression: X = = 59.\nline 62: Invalid, or out of place expression: X = = 60.\nline 63: Invalid, or out of place expression: X = = 61.\nline 64: Invalid, or out of place expression: X = = 62.\nline 65: Invalid, or out of place expression: X = = 63.\nline 66: Invalid, or out of place expression: X = = 64.\nline 67: Invalid, or out of place expression: X = = 65.\nline 68: Invalid, or out of place expression: X = = 66.\nline 69: Invalid, or out of place expression: X = = 67.\nline 70: Invalid, or out of place expression: X = = 68.\nline 71: Invalid, or out of place expression: X = = 69.\nline 72: Invalid, or out of place expression: X = = 70.\nline 73: Invalid, or out of place expression: X = = 71.",
+   "expected_files": {
+    "CR6cmple.xxx": "bWFueS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMC4NCmxpbmUgMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEuDQpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KbGluZSA1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMy4NCmxpbmUgNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQuDQpsaW5lIDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KbGluZSA4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNi4NCmxpbmUgOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcuDQpsaW5lIDEwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOC4NCmxpbmUgMTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA5Lg0KbGluZSAxMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEwLg0KbGluZSAxMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDExLg0KbGluZSAxNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEyLg0KbGluZSAxNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEzLg0KbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE0Lg0KbGluZSAxNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE1Lg0KbGluZSAxODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE2Lg0KbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE3Lg0KbGluZSAyMDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE4Lg0KbGluZSAyMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE5Lg0KbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIwLg0KbGluZSAyMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIxLg0KbGluZSAyNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIyLg0KbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIzLg0KbGluZSAyNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI0Lg0KbGluZSAyNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI1Lg0KbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI2Lg0KbGluZSAyOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI3Lg0KbGluZSAzMDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI4Lg0KbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI5Lg0KbGluZSAzMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMwLg0KbGluZSAzMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMxLg0KbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMyLg0KbGluZSAzNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMzLg0KbGluZSAzNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM0Lg0KbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM1Lg0KbGluZSAzODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM2Lg0KbGluZSAzOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM3Lg0KbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM4Lg0KbGluZSA0MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM5Lg0KbGluZSA0MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQwLg0KbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQxLg0KbGluZSA0NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQyLg0KbGluZSA0NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQzLg0KbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ0Lg0KbGluZSA0NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ1Lg0KbGluZSA0ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ2Lg0KbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ3Lg0KbGluZSA1MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ4Lg0KbGluZSA1MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ5Lg0KbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUwLg0KbGluZSA1MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUxLg0KbGluZSA1NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUyLg0KbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUzLg0KbGluZSA1NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU0Lg0KbGluZSA1NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU1Lg0KbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU2Lg0KbGluZSA1OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU3Lg0KbGluZSA2MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU4Lg0KbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU5Lg0KbGluZSA2MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYwLg0KbGluZSA2MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYxLg0KbGluZSA2NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYyLg0KbGluZSA2NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYzLg0KbGluZSA2NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY0Lg0KbGluZSA2NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY1Lg0KbGluZSA2ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY2Lg0KbGluZSA2OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY3Lg0KbGluZSA3MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY4Lg0KbGluZSA3MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY5Lg0KbGluZSA3MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcwLg0KbGluZSA3MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcxLg0K",
+    "o.inc": "UHVibGljIFgNClggPSA9IDANClggPSA9IDENClggPSA9IDINClggPSA9IDMNClggPSA9IDQNClggPSA9IDUNClggPSA9IDYNClggPSA9IDcNClggPSA9IDgNClggPSA9IDkNClggPSA9IDEwDQpYID0gPSAxMQ0KWCA9ID0gMTINClggPSA9IDEzDQpYID0gPSAxNA0KWCA9ID0gMTUNClggPSA9IDE2DQpYID0gPSAxNw0KWCA9ID0gMTgNClggPSA9IDE5DQpYID0gPSAyMA0KWCA9ID0gMjENClggPSA9IDIyDQpYID0gPSAyMw0KWCA9ID0gMjQNClggPSA9IDI1DQpYID0gPSAyNg0KWCA9ID0gMjcNClggPSA9IDI4DQpYID0gPSAyOQ0KWCA9ID0gMzANClggPSA9IDMxDQpYID0gPSAzMg0KWCA9ID0gMzMNClggPSA9IDM0DQpYID0gPSAzNQ0KWCA9ID0gMzYNClggPSA9IDM3DQpYID0gPSAzOA0KWCA9ID0gMzkNClggPSA9IDQwDQpYID0gPSA0MQ0KWCA9ID0gNDINClggPSA9IDQzDQpYID0gPSA0NA0KWCA9ID0gNDUNClggPSA9IDQ2DQpYID0gPSA0Nw0KWCA9ID0gNDgNClggPSA9IDQ5DQpYID0gPSA1MA0KWCA9ID0gNTENClggPSA9IDUyDQpYID0gPSA1Mw0KWCA9ID0gNTQNClggPSA9IDU1DQpYID0gPSA1Ng0KWCA9ID0gNTcNClggPSA9IDU4DQpYID0gPSA1OQ0KWCA9ID0gNjANClggPSA9IDYxDQpYID0gPSA2Mg0KWCA9ID0gNjMNClggPSA9IDY0DQpYID0gPSA2NQ0KWCA9ID0gNjYNClggPSA9IDY3DQpYID0gPSA2OA0KWCA9ID0gNjkNClggPSA9IDcwDQpYID0gPSA3MQ0KWCA9ID0gNzINCg=="
+   }
+  },
+  {
+   "id": "cr6-plain-message-buffer-full",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "many.CR6",
+   "source": "Public X\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nPublic Y\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "many.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = = 0.\nline 3: Invalid, or out of place expression: X = = 1.\nline 4: Invalid, or out of place expression: X = = 2.\nline 5: Invalid, or out of place expression: X = = 3.\nline 6: Invalid, or out of place expression: X = = 4.\nline 7: Invalid, or out of place expression: X = = 5.\nline 8: Invalid, or out of place expression: X = = 6.\nline 9: Invalid, or out of place expression: X = = 7.\nline 10: Invalid, or out of place expression: X = = 8.\nline 11: Invalid, or out of place expression: X = = 9.\nline 12: Invalid, or out of place expression: X = = 10.\nline 13: Invalid, or out of place expression: X = = 11.\nline 14: Invalid, or out of place expression: X = = 12.\nline 15: Invalid, or out of place expression: X = = 13.\nline 16: Invalid, or out of place expression: X = = 14.\nline 17: Invalid, or out of place expression: X = = 15.\nline 18: Invalid, or out of place expression: X = = 16.\nline 19: Invalid, or out of place expression: X = = 17.\nline 20: Invalid, or out of place expression: X = = 18.\nline 21: Invalid, or out of place expression: X = = 19.\nline 22: Invalid, or out of place expression: X = = 20.\nline 23: Invalid, or out of place expression: X = = 21.\nline 24: Invalid, or out of place expression: X = = 22.\nline 25: Invalid, or out of place expression: X = = 23.\nline 26: Invalid, or out of place expression: X = = 24.\nline 27: Invalid, or out of place expression: X = = 25.\nline 28: Invalid, or out of place expression: X = = 26.\nline 29: Invalid, or out of place expression: X = = 27.\nline 30: Invalid, or out of place expression: X = = 28.\nline 31: Invalid, or out of place expression: X = = 29.\nline 32: Invalid, or out of place expression: X = = 30.\nline 33: Invalid, or out of place expression: X = = 31.\nline 34: Invalid, or out of place expression: X = = 32.\nline 35: Invalid, or out of place expression: X = = 33.\nline 36: Invalid, or out of place expression: X = = 34.\nline 37: Invalid, or out of place expression: X = = 35.\nline 38: Invalid, or out of place expression: X = = 36.\nline 39: Invalid, or out of place expression: X = = 37.\nline 40: Invalid, or out of place expression: X = = 38.\nline 41: Invalid, or out of place expression: X = = 39.\nline 42: Invalid, or out of place expression: X = = 40.\nline 43: Invalid, or out of place expression: X = = 41.\nline 44: Invalid, or out of place expression: X = = 42.\nline 45: Invalid, or out of place expression: X = = 43.\nline 46: Invalid, or out of place expression: X = = 44.\nline 47: Invalid, or out of place expression: X = = 45.\nline 48: Invalid, or out of place expression: X = = 46.\nline 49: Invalid, or out of place expression: X = = 47.\nline 50: Invalid, or out of place expression: X = = 48.\nline 51: Invalid, or out of place expression: X = = 49.\nline 52: Invalid, or out of place expression: X = = 50.\nline 53: Invalid, or out of place expression: X = = 51.\nline 54: Invalid, or out of place expression: X = = 52.\nline 55: Invalid, or out of place expression: X = = 53.\nline 56: Invalid, or out of place expression: X = = 54.\nline 57: Invalid, or out of place expression: X = = 55.\nline 58: Invalid, or out of place expression: X = = 56.\nline 59: Invalid, or out of place expression: X = = 57.\nline 60: Invalid, or out of place expression: X = = 58.\nline 61: Invalid, or out of place expression: X = = 59.\nline 62: Invalid, or out of place expression: X = = 60.\nline 63: Invalid, or out of place expression: X = = 61.\nline 64: Invalid, or out of place expression: X = = 62.\nline 65: Invalid, or out of place expression: X = = 63.\nline 66: Invalid, or out of place expression: X = = 64.\nline 67: Invalid, or out of place expression: X = = 65.\nline 68: Invalid, or out of place expression: X = = 66.\nline 69: Invalid, or out of place expression: X = = 67.\nline 70: Invalid, or out of place expression: X = = 68.\nline 71: Invalid, or out of place expression: X = = 69.\nline 72: Invalid, or out of place expression: X = = 70.\nline 73: Invalid, or out of place expression: X = = 71.",
+   "expected_files": {
+    "CR6cmple.xxx": "bWFueS5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMC4NCmxpbmUgMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEuDQpsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KbGluZSA1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMy4NCmxpbmUgNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQuDQpsaW5lIDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KbGluZSA4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNi4NCmxpbmUgOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcuDQpsaW5lIDEwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOC4NCmxpbmUgMTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA5Lg0KbGluZSAxMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEwLg0KbGluZSAxMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDExLg0KbGluZSAxNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEyLg0KbGluZSAxNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEzLg0KbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE0Lg0KbGluZSAxNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE1Lg0KbGluZSAxODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE2Lg0KbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE3Lg0KbGluZSAyMDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE4Lg0KbGluZSAyMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE5Lg0KbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIwLg0KbGluZSAyMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIxLg0KbGluZSAyNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIyLg0KbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIzLg0KbGluZSAyNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI0Lg0KbGluZSAyNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI1Lg0KbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI2Lg0KbGluZSAyOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI3Lg0KbGluZSAzMDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI4Lg0KbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI5Lg0KbGluZSAzMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMwLg0KbGluZSAzMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMxLg0KbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMyLg0KbGluZSAzNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMzLg0KbGluZSAzNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM0Lg0KbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM1Lg0KbGluZSAzODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM2Lg0KbGluZSAzOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM3Lg0KbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM4Lg0KbGluZSA0MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM5Lg0KbGluZSA0MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQwLg0KbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQxLg0KbGluZSA0NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQyLg0KbGluZSA0NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQzLg0KbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ0Lg0KbGluZSA0NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ1Lg0KbGluZSA0ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ2Lg0KbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ3Lg0KbGluZSA1MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ4Lg0KbGluZSA1MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ5Lg0KbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUwLg0KbGluZSA1MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUxLg0KbGluZSA1NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUyLg0KbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUzLg0KbGluZSA1NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU0Lg0KbGluZSA1NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU1Lg0KbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU2Lg0KbGluZSA1OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU3Lg0KbGluZSA2MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU4Lg0KbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU5Lg0KbGluZSA2MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYwLg0KbGluZSA2MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYxLg0KbGluZSA2NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYyLg0KbGluZSA2NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYzLg0KbGluZSA2NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY0Lg0KbGluZSA2NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY1Lg0KbGluZSA2ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY2Lg0KbGluZSA2OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY3Lg0KbGluZSA3MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY4Lg0KbGluZSA3MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDY5Lg0KbGluZSA3MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcwLg0KbGluZSA3MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDcxLg0K"
+   }
+  },
+  {
+   "id": "cr6-plain-message-file-name",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "small.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "small.CR6 -- Compiled in PipelineMode.",
+   "expected_files": {
+    "CR6cmple.xxx": "c21hbGwuQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NCg=="
+   }
+  },
+  {
+   "id": "cr1000x-plain-message-file-name",
+   "logger": "cr1000x",
+   "args": [
+    "P"
+   ],
+   "program": "small.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "small.CR6 -- Compiled in PipelineMode.",
+   "expected_files": {
+    "CR1000Xcmple.xxx": "c21hbGwuQ1I2IC0tIENvbXBpbGVkIGluIFBpcGVsaW5lTW9kZS4NCg=="
+   }
+  },
+  {
+   "id": "cr300-plain-message-file-name",
+   "logger": "cr300",
+   "args": [
+    "P"
+   ],
+   "program": "small.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "small.CR6 -- Compiled OK.",
+   "expected_files": {
+    "CR300cmple.xxx": "c21hbGwuQ1I2IC0tIENvbXBpbGVkIE9LLg0K"
+   }
+  },
+  {
+   "id": "cr350-plain-message-file-name",
+   "logger": "cr350",
+   "args": [
+    "P"
+   ],
+   "program": "small.CR6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "small.CR6 -- Compiled OK.",
+   "expected_files": {
+    "CR350cmple.xxx": "c21hbGwuQ1I2IC0tIENvbXBpbGVkIE9LLg0K"
+   }
+  },
+  {
+   "id": "cr6-plain-numeric-name-0",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr6-plain-numeric-name-1",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Dim X, 1bad(3) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr6-plain-numeric-name-2",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Public 1bad, 2bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.\nline 1: Variable name 2bad illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCmxpbmUgMTogVmFyaWFibGUgbmFtZSAyYmFkIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0K"
+   }
+  },
+  {
+   "id": "cr6-plain-numeric-name-3",
+   "logger": "cr6",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Public X\nSub S(1p)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 2: Variable name 1p illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDI6IFZhcmlhYmxlIG5hbWUgMXAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo="
+   }
+  },
+  {
+   "id": "cr1000x-plain-numeric-name-0",
+   "logger": "cr1000x",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR1000Xcmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr1000x-plain-numeric-name-1",
+   "logger": "cr1000x",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Dim X, 1bad(3) As Long\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.",
+   "expected_files": {
+    "CR1000Xcmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCg=="
+   }
+  },
+  {
+   "id": "cr1000x-plain-numeric-name-2",
+   "logger": "cr1000x",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Public 1bad, 2bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 1: Variable name 1bad illegal, starts with a number.\nline 1: Variable name 2bad illegal, starts with a number.",
+   "expected_files": {
+    "CR1000Xcmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IFZhcmlhYmxlIG5hbWUgMWJhZCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCmxpbmUgMTogVmFyaWFibGUgbmFtZSAyYmFkIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0K"
+   }
+  },
+  {
+   "id": "cr1000x-plain-numeric-name-3",
+   "logger": "cr1000x",
+   "args": [
+    "P"
+   ],
+   "program": "num.CR6",
+   "source": "Public X\nSub S(1p)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "num.CR6 -- Compile Failed!\n\nline 2: Variable name 1p illegal, starts with a number.",
+   "expected_files": {
+    "CR1000Xcmple.xxx": "bnVtLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDI6IFZhcmlhYmxlIG5hbWUgMXAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo="
+   }
+  },
+  {
+   "id": "cr6-preprocess-pass2-buffer-full-if",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "ifcut.CR6",
+   "source": "Public X\nBeginProg\n#If 1 Then\nBadName0 = 1\nBadName1 = 1\nBadName2 = 1\nBadName3 = 1\nBadName4 = 1\nBadName5 = 1\nBadName6 = 1\nBadName7 = 1\nBadName8 = 1\nBadName9 = 1\nBadName10 = 1\nBadName11 = 1\nBadName12 = 1\nBadName13 = 1\nBadName14 = 1\nBadName15 = 1\nBadName16 = 1\nBadName17 = 1\nBadName18 = 1\nBadName19 = 1\nBadName20 = 1\nBadName21 = 1\nBadName22 = 1\nBadName23 = 1\nBadName24 = 1\nBadName25 = 1\nBadName26 = 1\nBadName27 = 1\nBadName28 = 1\nBadName29 = 1\nBadName30 = 1\nBadName31 = 1\nBadName32 = 1\nBadName33 = 1\nBadName34 = 1\nBadName35 = 1\nBadName36 = 1\nBadName37 = 1\nBadName38 = 1\nBadName39 = 1\nBadName40 = 1\nBadName41 = 1\nBadName42 = 1\nBadName43 = 1\nBadName44 = 1\nBadName45 = 1\nBadName46 = 1\nBadName47 = 1\nBadName48 = 1\nBadName49 = 1\nBadName50 = 1\nBadName51 = 1\nBadName52 = 1\nBadName53 = 1\nBadName54 = 1\nBadName55 = 1\nBadName56 = 1\nBadName57 = 1\nBadName58 = 1\nBadName59 = 1\nBadName60 = 1\nBadName61 = 1\nBadName62 = 1\nBadName63 = 1\nBadName64 = 1\nBadName65 = 1\nBadName66 = 1\nBadName67 = 1\nBadName68 = 1\nBadName69 = 1\nBadName70 = 1\nBadName71 = 1\nBadName72 = 1\nBadName73 = 1\nBadName74 = 1\nBadName75 = 1\nBadName76 = 1\nBadName77 = 1\nBadName78 = 1\nBadName79 = 1\nBadName80 = 1\nBadName81 = 1\nBadName82 = 1\nBadName83 = 1\nBadName84 = 1\nBadName85 = 1\nBadName86 = 1\nBadName87 = 1\nBadName88 = 1\nBadName89 = 1\nBadName90 = 1\nBadName91 = 1\nBadName92 = 1\nBadName93 = 1\nBadName94 = 1\nBadName95 = 1\nBadName96 = 1\nBadName97 = 1\nBadName98 = 1\nBadName99 = 1\nBadName100 = 1\nBadName101 = 1\nBadName102 = 1\nBadName103 = 1\nBadName104 = 1\nBadName105 = 1\nBadName106 = 1\nBadName107 = 1\nBadName108 = 1\nBadName109 = 1\nBadName110 = 1\nBadName111 = 1\nBadName112 = 1\nBadName113 = 1\nBadName114 = 1\nBadName115 = 1\nBadName116 = 1\nBadName117 = 1\nBadName118 = 1\nBadName119 = 1\nBadName120 = 1\nBadName121 = 1\nBadName122 = 1\nBadName123 = 1\nBadName124 = 1\nBadName125 = 1\nBadName126 = 1\nBadName127 = 1\nBadName128 = 1\nBadName129 = 1\nBadName130 = 1\nBadName131 = 1\nBadName132 = 1\nBadName133 = 1\nBadName134 = 1\nBadName135 = 1\nBadName136 = 1\nBadName137 = 1\nBadName138 = 1\nBadName139 = 1\nBadName140 = 1\nBadName141 = 1\nBadName142 = 1\nBadName143 = 1\nBadName144 = 1\nBadName145 = 1\nBadName146 = 1\nBadName147 = 1\nBadName148 = 1\nBadName149 = 1\nBadName150 = 1\nBadName151 = 1\nBadName152 = 1\nBadName153 = 1\nBadName154 = 1\nBadName155 = 1\nBadName156 = 1\nBadName157 = 1\nBadName158 = 1\nBadName159 = 1\n#EndIf\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "ifcut.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: BadName0 = 1.\nline 5: Invalid, or out of place expression: BadName1 = 1.\nline 6: Invalid, or out of place expression: BadName2 = 1.\nline 7: Invalid, or out of place expression: BadName3 = 1.\nline 8: Invalid, or out of place expression: BadName4 = 1.\nline 9: Invalid, or out of place expression: BadName5 = 1.\nline 10: Invalid, or out of place expression: BadName6 = 1.\nline 11: Invalid, or out of place expression: BadName7 = 1.\nline 12: Invalid, or out of place expression: BadName8 = 1.\nline 13: Invalid, or out of place expression: BadName9 = 1.\nline 14: Invalid, or out of place expression: BadName10 = 1.\nline 15: Invalid, or out of place expression: BadName11 = 1.\nline 16: Invalid, or out of place expression: BadName12 = 1.\nline 17: Invalid, or out of place expression: BadName13 = 1.\nline 18: Invalid, or out of place expression: BadName14 = 1.\nline 19: Invalid, or out of place expression: BadName15 = 1.\nline 20: Invalid, or out of place expression: BadName16 = 1.\nline 21: Invalid, or out of place expression: BadName17 = 1.\nline 22: Invalid, or out of place expression: BadName18 = 1.\nline 23: Invalid, or out of place expression: BadName19 = 1.\nline 24: Invalid, or out of place expression: BadName20 = 1.\nline 25: Invalid, or out of place expression: BadName21 = 1.\nline 26: Invalid, or out of place expression: BadName22 = 1.\nline 27: Invalid, or out of place expression: BadName23 = 1.\nline 28: Invalid, or out of place expression: BadName24 = 1.\nline 29: Invalid, or out of place expression: BadName25 = 1.\nline 30: Invalid, or out of place expression: BadName26 = 1.\nline 31: Invalid, or out of place expression: BadName27 = 1.\nline 32: Invalid, or out of place expression: BadName28 = 1.\nline 33: Invalid, or out of place expression: BadName29 = 1.\nline 34: Invalid, or out of place expression: BadName30 = 1.\nline 35: Invalid, or out of place expression: BadName31 = 1.\nline 36: Invalid, or out of place expression: BadName32 = 1.\nline 37: Invalid, or out of place expression: BadName33 = 1.\nline 38: Invalid, or out of place expression: BadName34 = 1.\nline 39: Invalid, or out of place expression: BadName35 = 1.\nline 40: Invalid, or out of place expression: BadName36 = 1.\nline 41: Invalid, or out of place expression: BadName37 = 1.\nline 42: Invalid, or out of place expression: BadName38 = 1.\nline 43: Invalid, or out of place expression: BadName39 = 1.\nline 44: Invalid, or out of place expression: BadName40 = 1.\nline 45: Invalid, or out of place expression: BadName41 = 1.\nline 46: Invalid, or out of place expression: BadName42 = 1.\nline 47: Invalid, or out of place expression: BadName43 = 1.\nline 48: Invalid, or out of place expression: BadName44 = 1.\nline 49: Invalid, or out of place expression: BadName45 = 1.\nline 50: Invalid, or out of place expression: BadName46 = 1.\nline 51: Invalid, or out of place expression: BadName47 = 1.\nline 52: Invalid, or out of place expression: BadName48 = 1.\nline 53: Invalid, or out of place expression: BadName49 = 1.\nline 54: Invalid, or out of place expression: BadName50 = 1.\nline 55: Invalid, or out of place expression: BadName51 = 1.\nline 56: Invalid, or out of place expression: BadName52 = 1.\nline 57: Invalid, or out of place expression: BadName53 = 1.\nline 58: Invalid, or out of place expression: BadName54 = 1.\nline 59: Invalid, or out of place expression: BadName55 = 1.\nline 60: Invalid, or out of place expression: BadName56 = 1.\nline 61: Invalid, or out of place expression: BadName57 = 1.\nline 62: Invalid, or out of place expression: BadName58 = 1.\nline 63: Invalid, or out of place expression: BadName59 = 1.\nline 64: Invalid, or out of place expression: BadName60 = 1.\nline 65: Invalid, or out of place expression: BadName61 = 1.\nline 66: Invalid, or out of place expression: BadName62 = 1.\nline 67: Invalid, or out of place expression: BadName63 = 1.\nline 68: Invalid, or out of place expression: BadName64 = 1.\nline 69: Invalid, or out of place expression: BadName65 = 1.",
+   "expected_files": {
+    "CR6cmple.xxx": "aWZjdXQuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUwID0gMS4NCmxpbmUgNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxID0gMS4NCmxpbmUgNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyID0gMS4NCmxpbmUgNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzID0gMS4NCmxpbmUgODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0ID0gMS4NCmxpbmUgOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1ID0gMS4NCmxpbmUgMTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNiA9IDEuDQpsaW5lIDExOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTcgPSAxLg0KbGluZSAxMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU4ID0gMS4NCmxpbmUgMTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lOSA9IDEuDQpsaW5lIDE0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTEwID0gMS4NCmxpbmUgMTU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMTEgPSAxLg0KbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxMiA9IDEuDQpsaW5lIDE3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTEzID0gMS4NCmxpbmUgMTg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMTQgPSAxLg0KbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxNSA9IDEuDQpsaW5lIDIwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTE2ID0gMS4NCmxpbmUgMjE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMTcgPSAxLg0KbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxOCA9IDEuDQpsaW5lIDIzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTE5ID0gMS4NCmxpbmUgMjQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjAgPSAxLg0KbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyMSA9IDEuDQpsaW5lIDI2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTIyID0gMS4NCmxpbmUgMjc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjMgPSAxLg0KbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyNCA9IDEuDQpsaW5lIDI5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTI1ID0gMS4NCmxpbmUgMzA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjYgPSAxLg0KbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyNyA9IDEuDQpsaW5lIDMyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTI4ID0gMS4NCmxpbmUgMzM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjkgPSAxLg0KbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzMCA9IDEuDQpsaW5lIDM1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTMxID0gMS4NCmxpbmUgMzY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMzIgPSAxLg0KbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzMyA9IDEuDQpsaW5lIDM4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTM0ID0gMS4NCmxpbmUgMzk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMzUgPSAxLg0KbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzNiA9IDEuDQpsaW5lIDQxOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTM3ID0gMS4NCmxpbmUgNDI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMzggPSAxLg0KbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzOSA9IDEuDQpsaW5lIDQ0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQwID0gMS4NCmxpbmUgNDU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNDEgPSAxLg0KbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0MiA9IDEuDQpsaW5lIDQ3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQzID0gMS4NCmxpbmUgNDg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNDQgPSAxLg0KbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0NSA9IDEuDQpsaW5lIDUwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQ2ID0gMS4NCmxpbmUgNTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNDcgPSAxLg0KbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0OCA9IDEuDQpsaW5lIDUzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQ5ID0gMS4NCmxpbmUgNTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTAgPSAxLg0KbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1MSA9IDEuDQpsaW5lIDU2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTUyID0gMS4NCmxpbmUgNTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTMgPSAxLg0KbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1NCA9IDEuDQpsaW5lIDU5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTU1ID0gMS4NCmxpbmUgNjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTYgPSAxLg0KbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1NyA9IDEuDQpsaW5lIDYyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTU4ID0gMS4NCmxpbmUgNjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTkgPSAxLg0KbGluZSA2NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU2MCA9IDEuDQpsaW5lIDY1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTYxID0gMS4NCmxpbmUgNjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNjIgPSAxLg0KbGluZSA2NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU2MyA9IDEuDQpsaW5lIDY4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTY0ID0gMS4NCmxpbmUgNjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNjUgPSAxLg0K",
+    "o.pre": "UHVibGljIFgNCkJlZ2luUHJvZw0KQmFkTmFtZTAgPSAxDQpCYWROYW1lMSA9IDENCkJhZE5hbWUyID0gMQ0KQmFkTmFtZTMgPSAxDQpCYWROYW1lNCA9IDENCkJhZE5hbWU1ID0gMQ0KQmFkTmFtZTYgPSAxDQpCYWROYW1lNyA9IDENCkJhZE5hbWU4ID0gMQ0KQmFkTmFtZTkgPSAxDQpCYWROYW1lMTAgPSAxDQpCYWROYW1lMTEgPSAxDQpCYWROYW1lMTIgPSAxDQpCYWROYW1lMTMgPSAxDQpCYWROYW1lMTQgPSAxDQpCYWROYW1lMTUgPSAxDQpCYWROYW1lMTYgPSAxDQpCYWROYW1lMTcgPSAxDQpCYWROYW1lMTggPSAxDQpCYWROYW1lMTkgPSAxDQpCYWROYW1lMjAgPSAxDQpCYWROYW1lMjEgPSAxDQpCYWROYW1lMjIgPSAxDQpCYWROYW1lMjMgPSAxDQpCYWROYW1lMjQgPSAxDQpCYWROYW1lMjUgPSAxDQpCYWROYW1lMjYgPSAxDQpCYWROYW1lMjcgPSAxDQpCYWROYW1lMjggPSAxDQpCYWROYW1lMjkgPSAxDQpCYWROYW1lMzAgPSAxDQpCYWROYW1lMzEgPSAxDQpCYWROYW1lMzIgPSAxDQpCYWROYW1lMzMgPSAxDQpCYWROYW1lMzQgPSAxDQpCYWROYW1lMzUgPSAxDQpCYWROYW1lMzYgPSAxDQpCYWROYW1lMzcgPSAxDQpCYWROYW1lMzggPSAxDQpCYWROYW1lMzkgPSAxDQpCYWROYW1lNDAgPSAxDQpCYWROYW1lNDEgPSAxDQpCYWROYW1lNDIgPSAxDQpCYWROYW1lNDMgPSAxDQpCYWROYW1lNDQgPSAxDQpCYWROYW1lNDUgPSAxDQpCYWROYW1lNDYgPSAxDQpCYWROYW1lNDcgPSAxDQpCYWROYW1lNDggPSAxDQpCYWROYW1lNDkgPSAxDQpCYWROYW1lNTAgPSAxDQpCYWROYW1lNTEgPSAxDQpCYWROYW1lNTIgPSAxDQpCYWROYW1lNTMgPSAxDQpCYWROYW1lNTQgPSAxDQpCYWROYW1lNTUgPSAxDQpCYWROYW1lNTYgPSAxDQpCYWROYW1lNTcgPSAxDQpCYWROYW1lNTggPSAxDQpCYWROYW1lNTkgPSAxDQpCYWROYW1lNjAgPSAxDQpCYWROYW1lNjEgPSAxDQpCYWROYW1lNjIgPSAxDQpCYWROYW1lNjMgPSAxDQpCYWROYW1lNjQgPSAxDQpCYWROYW1lNjUgPSAxDQpCYWROYW1lNjYgPSAxDQpCYWROYW1lNjcgPSAxDQpCYWROYW1lNjggPSAxDQpCYWROYW1lNjkgPSAxDQpCYWROYW1lNzAgPSAxDQpCYWROYW1lNzEgPSAxDQpCYWROYW1lNzIgPSAxDQpCYWROYW1lNzMgPSAxDQpCYWROYW1lNzQgPSAxDQpCYWROYW1lNzUgPSAxDQpCYWROYW1lNzYgPSAxDQpCYWROYW1lNzcgPSAxDQpCYWROYW1lNzggPSAxDQpCYWROYW1lNzkgPSAxDQpCYWROYW1lODAgPSAxDQpCYWROYW1lODEgPSAxDQpCYWROYW1lODIgPSAxDQpCYWROYW1lODMgPSAxDQpCYWROYW1lODQgPSAxDQpCYWROYW1lODUgPSAxDQpCYWROYW1lODYgPSAxDQpCYWROYW1lODcgPSAxDQpCYWROYW1lODggPSAxDQpCYWROYW1lODkgPSAxDQpCYWROYW1lOTAgPSAxDQpCYWROYW1lOTEgPSAxDQpCYWROYW1lOTIgPSAxDQpCYWROYW1lOTMgPSAxDQpCYWROYW1lOTQgPSAxDQpCYWROYW1lOTUgPSAxDQpCYWROYW1lOTYgPSAxDQpCYWROYW1lOTcgPSAxDQpCYWROYW1lOTggPSAxDQpCYWROYW1lOTkgPSAxDQpCYWROYW1lMTAwID0gMQ0KQmFkTmFtZTEwMSA9IDENCkJhZE5hbWUxMDIgPSAxDQpCYWROYW1lMTAzID0gMQ0KQmFkTmFtZTEwNCA9IDENCkJhZE5hbWUxMDUgPSAxDQpCYWROYW1lMTA2ID0gMQ0KQmFkTmFtZTEwNyA9IDENCkJhZE5hbWUxMDggPSAxDQpCYWROYW1lMTA5ID0gMQ0KQmFkTmFtZTExMCA9IDENCkJhZE5hbWUxMTEgPSAxDQpCYWROYW1lMTEyID0gMQ0KQmFkTmFtZTExMyA9IDENCkJhZE5hbWUxMTQgPSAxDQpCYWROYW1lMTE1ID0gMQ0KQmFkTmFtZTExNiA9IDENCkJhZE5hbWUxMTcgPSAxDQpCYWROYW1lMTE4ID0gMQ0KQmFkTmFtZTExOSA9IDENCkJhZE5hbWUxMjAgPSAxDQpCYWROYW1lMTIxID0gMQ0KQmFkTmFtZTEyMiA9IDENCkJhZE5hbWUxMjMgPSAxDQpCYWROYW1lMTI0ID0gMQ0KQmFkTmFtZTEyNSA9IDENCkJhZE5hbWUxMjYgPSAxDQpCYWROYW1lMTI3ID0gMQ0KQmFkTmFtZTEyOCA9IDENCkJhZE5hbWUxMjkgPSAxDQpCYWROYW1lMTMwID0gMQ0KQmFkTmFtZTEzMSA9IDENCkJhZE5hbWUxMzIgPSAxDQpCYWROYW1lMTMzID0gMQ0KQmFkTmFtZTEzNCA9IDENCkJhZE5hbWUxMzUgPSAxDQpCYWROYW1lMTM2ID0gMQ0KQmFkTmFtZTEzNyA9IDENCkJhZE5hbWUxMzggPSAxDQpCYWROYW1lMTM5ID0gMQ0KQmFkTmFtZTE0MCA9IDENCkJhZE5hbWUxNDEgPSAxDQpCYWROYW1lMTQyID0gMQ0KQmFkTmFtZTE0MyA9IDENCkJhZE5hbWUxNDQgPSAxDQpCYWROYW1lMTQ1ID0gMQ0KQmFkTmFtZTE0NiA9IDENCkJhZE5hbWUxNDcgPSAxDQpCYWROYW1lMTQ4ID0gMQ0KQmFkTmFtZTE0OSA9IDENCkJhZE5hbWUxNTAgPSAxDQpCYWROYW1lMTUxID0gMQ0KQmFkTmFtZTE1MiA9IDENCkJhZE5hbWUxNTMgPSAxDQpCYWROYW1lMTU0ID0gMQ0KQmFkTmFtZTE1NSA9IDENCkJhZE5hbWUxNTYgPSAxDQpCYWROYW1lMTU3ID0gMQ0KQmFkTmFtZTE1OCA9IDENCkJhZE5hbWUxNTkgPSAxDQogIFNjYW4oMSxTZWMsMCwwKQ0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-include-pass2-buffer-full-if",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "ifcut.CR6",
+   "source": "Public X\nBeginProg\n#If 1 Then\nBadName0 = 1\nBadName1 = 1\nBadName2 = 1\nBadName3 = 1\nBadName4 = 1\nBadName5 = 1\nBadName6 = 1\nBadName7 = 1\nBadName8 = 1\nBadName9 = 1\nBadName10 = 1\nBadName11 = 1\nBadName12 = 1\nBadName13 = 1\nBadName14 = 1\nBadName15 = 1\nBadName16 = 1\nBadName17 = 1\nBadName18 = 1\nBadName19 = 1\nBadName20 = 1\nBadName21 = 1\nBadName22 = 1\nBadName23 = 1\nBadName24 = 1\nBadName25 = 1\nBadName26 = 1\nBadName27 = 1\nBadName28 = 1\nBadName29 = 1\nBadName30 = 1\nBadName31 = 1\nBadName32 = 1\nBadName33 = 1\nBadName34 = 1\nBadName35 = 1\nBadName36 = 1\nBadName37 = 1\nBadName38 = 1\nBadName39 = 1\nBadName40 = 1\nBadName41 = 1\nBadName42 = 1\nBadName43 = 1\nBadName44 = 1\nBadName45 = 1\nBadName46 = 1\nBadName47 = 1\nBadName48 = 1\nBadName49 = 1\nBadName50 = 1\nBadName51 = 1\nBadName52 = 1\nBadName53 = 1\nBadName54 = 1\nBadName55 = 1\nBadName56 = 1\nBadName57 = 1\nBadName58 = 1\nBadName59 = 1\nBadName60 = 1\nBadName61 = 1\nBadName62 = 1\nBadName63 = 1\nBadName64 = 1\nBadName65 = 1\nBadName66 = 1\nBadName67 = 1\nBadName68 = 1\nBadName69 = 1\nBadName70 = 1\nBadName71 = 1\nBadName72 = 1\nBadName73 = 1\nBadName74 = 1\nBadName75 = 1\nBadName76 = 1\nBadName77 = 1\nBadName78 = 1\nBadName79 = 1\nBadName80 = 1\nBadName81 = 1\nBadName82 = 1\nBadName83 = 1\nBadName84 = 1\nBadName85 = 1\nBadName86 = 1\nBadName87 = 1\nBadName88 = 1\nBadName89 = 1\nBadName90 = 1\nBadName91 = 1\nBadName92 = 1\nBadName93 = 1\nBadName94 = 1\nBadName95 = 1\nBadName96 = 1\nBadName97 = 1\nBadName98 = 1\nBadName99 = 1\nBadName100 = 1\nBadName101 = 1\nBadName102 = 1\nBadName103 = 1\nBadName104 = 1\nBadName105 = 1\nBadName106 = 1\nBadName107 = 1\nBadName108 = 1\nBadName109 = 1\nBadName110 = 1\nBadName111 = 1\nBadName112 = 1\nBadName113 = 1\nBadName114 = 1\nBadName115 = 1\nBadName116 = 1\nBadName117 = 1\nBadName118 = 1\nBadName119 = 1\nBadName120 = 1\nBadName121 = 1\nBadName122 = 1\nBadName123 = 1\nBadName124 = 1\nBadName125 = 1\nBadName126 = 1\nBadName127 = 1\nBadName128 = 1\nBadName129 = 1\nBadName130 = 1\nBadName131 = 1\nBadName132 = 1\nBadName133 = 1\nBadName134 = 1\nBadName135 = 1\nBadName136 = 1\nBadName137 = 1\nBadName138 = 1\nBadName139 = 1\nBadName140 = 1\nBadName141 = 1\nBadName142 = 1\nBadName143 = 1\nBadName144 = 1\nBadName145 = 1\nBadName146 = 1\nBadName147 = 1\nBadName148 = 1\nBadName149 = 1\nBadName150 = 1\nBadName151 = 1\nBadName152 = 1\nBadName153 = 1\nBadName154 = 1\nBadName155 = 1\nBadName156 = 1\nBadName157 = 1\nBadName158 = 1\nBadName159 = 1\n#EndIf\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "ifcut.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: BadName0 = 1.\nline 5: Invalid, or out of place expression: BadName1 = 1.\nline 6: Invalid, or out of place expression: BadName2 = 1.\nline 7: Invalid, or out of place expression: BadName3 = 1.\nline 8: Invalid, or out of place expression: BadName4 = 1.\nline 9: Invalid, or out of place expression: BadName5 = 1.\nline 10: Invalid, or out of place expression: BadName6 = 1.\nline 11: Invalid, or out of place expression: BadName7 = 1.\nline 12: Invalid, or out of place expression: BadName8 = 1.\nline 13: Invalid, or out of place expression: BadName9 = 1.\nline 14: Invalid, or out of place expression: BadName10 = 1.\nline 15: Invalid, or out of place expression: BadName11 = 1.\nline 16: Invalid, or out of place expression: BadName12 = 1.\nline 17: Invalid, or out of place expression: BadName13 = 1.\nline 18: Invalid, or out of place expression: BadName14 = 1.\nline 19: Invalid, or out of place expression: BadName15 = 1.\nline 20: Invalid, or out of place expression: BadName16 = 1.\nline 21: Invalid, or out of place expression: BadName17 = 1.\nline 22: Invalid, or out of place expression: BadName18 = 1.\nline 23: Invalid, or out of place expression: BadName19 = 1.\nline 24: Invalid, or out of place expression: BadName20 = 1.\nline 25: Invalid, or out of place expression: BadName21 = 1.\nline 26: Invalid, or out of place expression: BadName22 = 1.\nline 27: Invalid, or out of place expression: BadName23 = 1.\nline 28: Invalid, or out of place expression: BadName24 = 1.\nline 29: Invalid, or out of place expression: BadName25 = 1.\nline 30: Invalid, or out of place expression: BadName26 = 1.\nline 31: Invalid, or out of place expression: BadName27 = 1.\nline 32: Invalid, or out of place expression: BadName28 = 1.\nline 33: Invalid, or out of place expression: BadName29 = 1.\nline 34: Invalid, or out of place expression: BadName30 = 1.\nline 35: Invalid, or out of place expression: BadName31 = 1.\nline 36: Invalid, or out of place expression: BadName32 = 1.\nline 37: Invalid, or out of place expression: BadName33 = 1.\nline 38: Invalid, or out of place expression: BadName34 = 1.\nline 39: Invalid, or out of place expression: BadName35 = 1.\nline 40: Invalid, or out of place expression: BadName36 = 1.\nline 41: Invalid, or out of place expression: BadName37 = 1.\nline 42: Invalid, or out of place expression: BadName38 = 1.\nline 43: Invalid, or out of place expression: BadName39 = 1.\nline 44: Invalid, or out of place expression: BadName40 = 1.\nline 45: Invalid, or out of place expression: BadName41 = 1.\nline 46: Invalid, or out of place expression: BadName42 = 1.\nline 47: Invalid, or out of place expression: BadName43 = 1.\nline 48: Invalid, or out of place expression: BadName44 = 1.\nline 49: Invalid, or out of place expression: BadName45 = 1.\nline 50: Invalid, or out of place expression: BadName46 = 1.\nline 51: Invalid, or out of place expression: BadName47 = 1.\nline 52: Invalid, or out of place expression: BadName48 = 1.\nline 53: Invalid, or out of place expression: BadName49 = 1.\nline 54: Invalid, or out of place expression: BadName50 = 1.\nline 55: Invalid, or out of place expression: BadName51 = 1.\nline 56: Invalid, or out of place expression: BadName52 = 1.\nline 57: Invalid, or out of place expression: BadName53 = 1.\nline 58: Invalid, or out of place expression: BadName54 = 1.\nline 59: Invalid, or out of place expression: BadName55 = 1.\nline 60: Invalid, or out of place expression: BadName56 = 1.\nline 61: Invalid, or out of place expression: BadName57 = 1.\nline 62: Invalid, or out of place expression: BadName58 = 1.\nline 63: Invalid, or out of place expression: BadName59 = 1.\nline 64: Invalid, or out of place expression: BadName60 = 1.\nline 65: Invalid, or out of place expression: BadName61 = 1.\nline 66: Invalid, or out of place expression: BadName62 = 1.\nline 67: Invalid, or out of place expression: BadName63 = 1.\nline 68: Invalid, or out of place expression: BadName64 = 1.\nline 69: Invalid, or out of place expression: BadName65 = 1.",
+   "expected_files": {
+    "CR6cmple.xxx": "aWZjdXQuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCmxpbmUgNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUwID0gMS4NCmxpbmUgNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxID0gMS4NCmxpbmUgNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyID0gMS4NCmxpbmUgNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzID0gMS4NCmxpbmUgODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0ID0gMS4NCmxpbmUgOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1ID0gMS4NCmxpbmUgMTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNiA9IDEuDQpsaW5lIDExOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTcgPSAxLg0KbGluZSAxMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU4ID0gMS4NCmxpbmUgMTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lOSA9IDEuDQpsaW5lIDE0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTEwID0gMS4NCmxpbmUgMTU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMTEgPSAxLg0KbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxMiA9IDEuDQpsaW5lIDE3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTEzID0gMS4NCmxpbmUgMTg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMTQgPSAxLg0KbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxNSA9IDEuDQpsaW5lIDIwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTE2ID0gMS4NCmxpbmUgMjE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMTcgPSAxLg0KbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUxOCA9IDEuDQpsaW5lIDIzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTE5ID0gMS4NCmxpbmUgMjQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjAgPSAxLg0KbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyMSA9IDEuDQpsaW5lIDI2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTIyID0gMS4NCmxpbmUgMjc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjMgPSAxLg0KbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyNCA9IDEuDQpsaW5lIDI5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTI1ID0gMS4NCmxpbmUgMzA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjYgPSAxLg0KbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUyNyA9IDEuDQpsaW5lIDMyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTI4ID0gMS4NCmxpbmUgMzM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMjkgPSAxLg0KbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzMCA9IDEuDQpsaW5lIDM1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTMxID0gMS4NCmxpbmUgMzY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMzIgPSAxLg0KbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzMyA9IDEuDQpsaW5lIDM4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTM0ID0gMS4NCmxpbmUgMzk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMzUgPSAxLg0KbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzNiA9IDEuDQpsaW5lIDQxOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTM3ID0gMS4NCmxpbmUgNDI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMzggPSAxLg0KbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWUzOSA9IDEuDQpsaW5lIDQ0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQwID0gMS4NCmxpbmUgNDU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNDEgPSAxLg0KbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0MiA9IDEuDQpsaW5lIDQ3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQzID0gMS4NCmxpbmUgNDg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNDQgPSAxLg0KbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0NSA9IDEuDQpsaW5lIDUwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQ2ID0gMS4NCmxpbmUgNTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNDcgPSAxLg0KbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU0OCA9IDEuDQpsaW5lIDUzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTQ5ID0gMS4NCmxpbmUgNTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTAgPSAxLg0KbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1MSA9IDEuDQpsaW5lIDU2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTUyID0gMS4NCmxpbmUgNTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTMgPSAxLg0KbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1NCA9IDEuDQpsaW5lIDU5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTU1ID0gMS4NCmxpbmUgNjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTYgPSAxLg0KbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU1NyA9IDEuDQpsaW5lIDYyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTU4ID0gMS4NCmxpbmUgNjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNTkgPSAxLg0KbGluZSA2NDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU2MCA9IDEuDQpsaW5lIDY1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTYxID0gMS4NCmxpbmUgNjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNjIgPSAxLg0KbGluZSA2NzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IEJhZE5hbWU2MyA9IDEuDQpsaW5lIDY4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogQmFkTmFtZTY0ID0gMS4NCmxpbmUgNjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lNjUgPSAxLg0K",
+    "o.inc": "UHVibGljIFgNCkJlZ2luUHJvZw0KQmFkTmFtZTAgPSAxDQpCYWROYW1lMSA9IDENCkJhZE5hbWUyID0gMQ0KQmFkTmFtZTMgPSAxDQpCYWROYW1lNCA9IDENCkJhZE5hbWU1ID0gMQ0KQmFkTmFtZTYgPSAxDQpCYWROYW1lNyA9IDENCkJhZE5hbWU4ID0gMQ0KQmFkTmFtZTkgPSAxDQpCYWROYW1lMTAgPSAxDQpCYWROYW1lMTEgPSAxDQpCYWROYW1lMTIgPSAxDQpCYWROYW1lMTMgPSAxDQpCYWROYW1lMTQgPSAxDQpCYWROYW1lMTUgPSAxDQpCYWROYW1lMTYgPSAxDQpCYWROYW1lMTcgPSAxDQpCYWROYW1lMTggPSAxDQpCYWROYW1lMTkgPSAxDQpCYWROYW1lMjAgPSAxDQpCYWROYW1lMjEgPSAxDQpCYWROYW1lMjIgPSAxDQpCYWROYW1lMjMgPSAxDQpCYWROYW1lMjQgPSAxDQpCYWROYW1lMjUgPSAxDQpCYWROYW1lMjYgPSAxDQpCYWROYW1lMjcgPSAxDQpCYWROYW1lMjggPSAxDQpCYWROYW1lMjkgPSAxDQpCYWROYW1lMzAgPSAxDQpCYWROYW1lMzEgPSAxDQpCYWROYW1lMzIgPSAxDQpCYWROYW1lMzMgPSAxDQpCYWROYW1lMzQgPSAxDQpCYWROYW1lMzUgPSAxDQpCYWROYW1lMzYgPSAxDQpCYWROYW1lMzcgPSAxDQpCYWROYW1lMzggPSAxDQpCYWROYW1lMzkgPSAxDQpCYWROYW1lNDAgPSAxDQpCYWROYW1lNDEgPSAxDQpCYWROYW1lNDIgPSAxDQpCYWROYW1lNDMgPSAxDQpCYWROYW1lNDQgPSAxDQpCYWROYW1lNDUgPSAxDQpCYWROYW1lNDYgPSAxDQpCYWROYW1lNDcgPSAxDQpCYWROYW1lNDggPSAxDQpCYWROYW1lNDkgPSAxDQpCYWROYW1lNTAgPSAxDQpCYWROYW1lNTEgPSAxDQpCYWROYW1lNTIgPSAxDQpCYWROYW1lNTMgPSAxDQpCYWROYW1lNTQgPSAxDQpCYWROYW1lNTUgPSAxDQpCYWROYW1lNTYgPSAxDQpCYWROYW1lNTcgPSAxDQpCYWROYW1lNTggPSAxDQpCYWROYW1lNTkgPSAxDQpCYWROYW1lNjAgPSAxDQpCYWROYW1lNjEgPSAxDQpCYWROYW1lNjIgPSAxDQpCYWROYW1lNjMgPSAxDQpCYWROYW1lNjQgPSAxDQpCYWROYW1lNjUgPSAxDQpCYWROYW1lNjYgPSAxDQpCYWROYW1lNjcgPSAxDQpCYWROYW1lNjggPSAxDQpCYWROYW1lNjkgPSAxDQpCYWROYW1lNzAgPSAxDQpCYWROYW1lNzEgPSAxDQpCYWROYW1lNzIgPSAxDQpCYWROYW1lNzMgPSAxDQpCYWROYW1lNzQgPSAxDQpCYWROYW1lNzUgPSAxDQpCYWROYW1lNzYgPSAxDQpCYWROYW1lNzcgPSAxDQpCYWROYW1lNzggPSAxDQpCYWROYW1lNzkgPSAxDQpCYWROYW1lODAgPSAxDQpCYWROYW1lODEgPSAxDQpCYWROYW1lODIgPSAxDQpCYWROYW1lODMgPSAxDQpCYWROYW1lODQgPSAxDQpCYWROYW1lODUgPSAxDQpCYWROYW1lODYgPSAxDQpCYWROYW1lODcgPSAxDQpCYWROYW1lODggPSAxDQpCYWROYW1lODkgPSAxDQpCYWROYW1lOTAgPSAxDQpCYWROYW1lOTEgPSAxDQpCYWROYW1lOTIgPSAxDQpCYWROYW1lOTMgPSAxDQpCYWROYW1lOTQgPSAxDQpCYWROYW1lOTUgPSAxDQpCYWROYW1lOTYgPSAxDQpCYWROYW1lOTcgPSAxDQpCYWROYW1lOTggPSAxDQpCYWROYW1lOTkgPSAxDQpCYWROYW1lMTAwID0gMQ0KQmFkTmFtZTEwMSA9IDENCkJhZE5hbWUxMDIgPSAxDQpCYWROYW1lMTAzID0gMQ0KQmFkTmFtZTEwNCA9IDENCkJhZE5hbWUxMDUgPSAxDQpCYWROYW1lMTA2ID0gMQ0KQmFkTmFtZTEwNyA9IDENCkJhZE5hbWUxMDggPSAxDQpCYWROYW1lMTA5ID0gMQ0KQmFkTmFtZTExMCA9IDENCkJhZE5hbWUxMTEgPSAxDQpCYWROYW1lMTEyID0gMQ0KQmFkTmFtZTExMyA9IDENCkJhZE5hbWUxMTQgPSAxDQpCYWROYW1lMTE1ID0gMQ0KQmFkTmFtZTExNiA9IDENCkJhZE5hbWUxMTcgPSAxDQpCYWROYW1lMTE4ID0gMQ0KQmFkTmFtZTExOSA9IDENCkJhZE5hbWUxMjAgPSAxDQpCYWROYW1lMTIxID0gMQ0KQmFkTmFtZTEyMiA9IDENCkJhZE5hbWUxMjMgPSAxDQpCYWROYW1lMTI0ID0gMQ0KQmFkTmFtZTEyNSA9IDENCkJhZE5hbWUxMjYgPSAxDQpCYWROYW1lMTI3ID0gMQ0KQmFkTmFtZTEyOCA9IDENCkJhZE5hbWUxMjkgPSAxDQpCYWROYW1lMTMwID0gMQ0KQmFkTmFtZTEzMSA9IDENCkJhZE5hbWUxMzIgPSAxDQpCYWROYW1lMTMzID0gMQ0KQmFkTmFtZTEzNCA9IDENCkJhZE5hbWUxMzUgPSAxDQpCYWROYW1lMTM2ID0gMQ0KQmFkTmFtZTEzNyA9IDENCkJhZE5hbWUxMzggPSAxDQpCYWROYW1lMTM5ID0gMQ0KQmFkTmFtZTE0MCA9IDENCkJhZE5hbWUxNDEgPSAxDQpCYWROYW1lMTQyID0gMQ0KQmFkTmFtZTE0MyA9IDENCkJhZE5hbWUxNDQgPSAxDQpCYWROYW1lMTQ1ID0gMQ0KQmFkTmFtZTE0NiA9IDENCkJhZE5hbWUxNDcgPSAxDQpCYWROYW1lMTQ4ID0gMQ0KQmFkTmFtZTE0OSA9IDENCkJhZE5hbWUxNTAgPSAxDQpCYWROYW1lMTUxID0gMQ0KQmFkTmFtZTE1MiA9IDENCkJhZE5hbWUxNTMgPSAxDQpCYWROYW1lMTU0ID0gMQ0KQmFkTmFtZTE1NSA9IDENCkJhZE5hbWUxNTYgPSAxDQpCYWROYW1lMTU3ID0gMQ0KQmFkTmFtZTE1OCA9IDENCkJhZE5hbWUxNTkgPSAxDQogIFNjYW4oMSxTZWMsMCwwKQ0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-preprocess-pass2-buffer-full-include",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "inccut.CR6",
+   "source": "Public X\nInclude \"CPU:lib.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {
+    "lib.crb": "BadName0 = 1\nBadName1 = 1\nBadName2 = 1\nBadName3 = 1\nBadName4 = 1\nBadName5 = 1\nBadName6 = 1\nBadName7 = 1\nBadName8 = 1\nBadName9 = 1\nBadName10 = 1\nBadName11 = 1\nBadName12 = 1\nBadName13 = 1\nBadName14 = 1\nBadName15 = 1\nBadName16 = 1\nBadName17 = 1\nBadName18 = 1\nBadName19 = 1\nBadName20 = 1\nBadName21 = 1\nBadName22 = 1\nBadName23 = 1\nBadName24 = 1\nBadName25 = 1\nBadName26 = 1\nBadName27 = 1\nBadName28 = 1\nBadName29 = 1\nBadName30 = 1\nBadName31 = 1\nBadName32 = 1\nBadName33 = 1\nBadName34 = 1\nBadName35 = 1\nBadName36 = 1\nBadName37 = 1\nBadName38 = 1\nBadName39 = 1\nBadName40 = 1\nBadName41 = 1\nBadName42 = 1\nBadName43 = 1\nBadName44 = 1\nBadName45 = 1\nBadName46 = 1\nBadName47 = 1\nBadName48 = 1\nBadName49 = 1\nBadName50 = 1\nBadName51 = 1\nBadName52 = 1\nBadName53 = 1\nBadName54 = 1\nBadName55 = 1\nBadName56 = 1\nBadName57 = 1\nBadName58 = 1\nBadName59 = 1\nBadName60 = 1\nBadName61 = 1\nBadName62 = 1\nBadName63 = 1\nBadName64 = 1\nBadName65 = 1\nBadName66 = 1\nBadName67 = 1\nBadName68 = 1\nBadName69 = 1\nBadName70 = 1\nBadName71 = 1\nBadName72 = 1\nBadName73 = 1\nBadName74 = 1\nBadName75 = 1\nBadName76 = 1\nBadName77 = 1\nBadName78 = 1\nBadName79 = 1\nBadName80 = 1\nBadName81 = 1\nBadName82 = 1\nBadName83 = 1\nBadName84 = 1\nBadName85 = 1\nBadName86 = 1\nBadName87 = 1\nBadName88 = 1\nBadName89 = 1\nBadName90 = 1\nBadName91 = 1\nBadName92 = 1\nBadName93 = 1\nBadName94 = 1\nBadName95 = 1\nBadName96 = 1\nBadName97 = 1\nBadName98 = 1\nBadName99 = 1\nBadName100 = 1\nBadName101 = 1\nBadName102 = 1\nBadName103 = 1\nBadName104 = 1\nBadName105 = 1\nBadName106 = 1\nBadName107 = 1\nBadName108 = 1\nBadName109 = 1\nBadName110 = 1\nBadName111 = 1\nBadName112 = 1\nBadName113 = 1\nBadName114 = 1\nBadName115 = 1\nBadName116 = 1\nBadName117 = 1\nBadName118 = 1\nBadName119 = 1\nBadName120 = 1\nBadName121 = 1\nBadName122 = 1\nBadName123 = 1\nBadName124 = 1\nBadName125 = 1\nBadName126 = 1\nBadName127 = 1\nBadName128 = 1\nBadName129 = 1\nBadName130 = 1\nBadName131 = 1\nBadName132 = 1\nBadName133 = 1\nBadName134 = 1\nBadName135 = 1\nBadName136 = 1\nBadName137 = 1\nBadName138 = 1\nBadName139 = 1\nBadName140 = 1\nBadName141 = 1\nBadName142 = 1\nBadName143 = 1\nBadName144 = 1\nBadName145 = 1\nBadName146 = 1\nBadName147 = 1\nBadName148 = 1\nBadName149 = 1\nBadName150 = 1\nBadName151 = 1\nBadName152 = 1\nBadName153 = 1\nBadName154 = 1\nBadName155 = 1\nBadName156 = 1\nBadName157 = 1\nBadName158 = 1\nBadName159 = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "inccut.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: BadName0 = 1.\nline 1: Expr illegally occurs before BeginProg.",
+   "expected_files": {
+    "CR6cmple.xxx": "aW5jY3V0LkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMCA9IDEuDQpsaW5lIDE6IEV4cHIgaWxsZWdhbGx5IG9jY3VycyBiZWZvcmUgQmVnaW5Qcm9nLg0K",
+    "o.pre": "UHVibGljIFgNCkluY2x1ZGUgIkNQVTpsaWIuY3JiIg0KQmVnaW5Qcm9nDQogIFNjYW4oMSxTZWMsMCwwKQ0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-include-pass2-buffer-full-include",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "inccut.CR6",
+   "source": "Public X\nInclude \"CPU:lib.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {
+    "lib.crb": "BadName0 = 1\nBadName1 = 1\nBadName2 = 1\nBadName3 = 1\nBadName4 = 1\nBadName5 = 1\nBadName6 = 1\nBadName7 = 1\nBadName8 = 1\nBadName9 = 1\nBadName10 = 1\nBadName11 = 1\nBadName12 = 1\nBadName13 = 1\nBadName14 = 1\nBadName15 = 1\nBadName16 = 1\nBadName17 = 1\nBadName18 = 1\nBadName19 = 1\nBadName20 = 1\nBadName21 = 1\nBadName22 = 1\nBadName23 = 1\nBadName24 = 1\nBadName25 = 1\nBadName26 = 1\nBadName27 = 1\nBadName28 = 1\nBadName29 = 1\nBadName30 = 1\nBadName31 = 1\nBadName32 = 1\nBadName33 = 1\nBadName34 = 1\nBadName35 = 1\nBadName36 = 1\nBadName37 = 1\nBadName38 = 1\nBadName39 = 1\nBadName40 = 1\nBadName41 = 1\nBadName42 = 1\nBadName43 = 1\nBadName44 = 1\nBadName45 = 1\nBadName46 = 1\nBadName47 = 1\nBadName48 = 1\nBadName49 = 1\nBadName50 = 1\nBadName51 = 1\nBadName52 = 1\nBadName53 = 1\nBadName54 = 1\nBadName55 = 1\nBadName56 = 1\nBadName57 = 1\nBadName58 = 1\nBadName59 = 1\nBadName60 = 1\nBadName61 = 1\nBadName62 = 1\nBadName63 = 1\nBadName64 = 1\nBadName65 = 1\nBadName66 = 1\nBadName67 = 1\nBadName68 = 1\nBadName69 = 1\nBadName70 = 1\nBadName71 = 1\nBadName72 = 1\nBadName73 = 1\nBadName74 = 1\nBadName75 = 1\nBadName76 = 1\nBadName77 = 1\nBadName78 = 1\nBadName79 = 1\nBadName80 = 1\nBadName81 = 1\nBadName82 = 1\nBadName83 = 1\nBadName84 = 1\nBadName85 = 1\nBadName86 = 1\nBadName87 = 1\nBadName88 = 1\nBadName89 = 1\nBadName90 = 1\nBadName91 = 1\nBadName92 = 1\nBadName93 = 1\nBadName94 = 1\nBadName95 = 1\nBadName96 = 1\nBadName97 = 1\nBadName98 = 1\nBadName99 = 1\nBadName100 = 1\nBadName101 = 1\nBadName102 = 1\nBadName103 = 1\nBadName104 = 1\nBadName105 = 1\nBadName106 = 1\nBadName107 = 1\nBadName108 = 1\nBadName109 = 1\nBadName110 = 1\nBadName111 = 1\nBadName112 = 1\nBadName113 = 1\nBadName114 = 1\nBadName115 = 1\nBadName116 = 1\nBadName117 = 1\nBadName118 = 1\nBadName119 = 1\nBadName120 = 1\nBadName121 = 1\nBadName122 = 1\nBadName123 = 1\nBadName124 = 1\nBadName125 = 1\nBadName126 = 1\nBadName127 = 1\nBadName128 = 1\nBadName129 = 1\nBadName130 = 1\nBadName131 = 1\nBadName132 = 1\nBadName133 = 1\nBadName134 = 1\nBadName135 = 1\nBadName136 = 1\nBadName137 = 1\nBadName138 = 1\nBadName139 = 1\nBadName140 = 1\nBadName141 = 1\nBadName142 = 1\nBadName143 = 1\nBadName144 = 1\nBadName145 = 1\nBadName146 = 1\nBadName147 = 1\nBadName148 = 1\nBadName149 = 1\nBadName150 = 1\nBadName151 = 1\nBadName152 = 1\nBadName153 = 1\nBadName154 = 1\nBadName155 = 1\nBadName156 = 1\nBadName157 = 1\nBadName158 = 1\nBadName159 = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "inccut.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: BadName0 = 1.\nline 1: Expr illegally occurs before BeginProg.",
+   "expected_files": {
+    "CR6cmple.xxx": "aW5jY3V0LkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgpsaW5lIDE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBCYWROYW1lMCA9IDEuDQpsaW5lIDE6IEV4cHIgaWxsZWdhbGx5IG9jY3VycyBiZWZvcmUgQmVnaW5Qcm9nLg0K",
+    "o.inc": "UHVibGljIFgNCkJhZE5hbWUwID0gMQ0KQmFkTmFtZTEgPSAxDQpCYWROYW1lMiA9IDENCkJhZE5hbWUzID0gMQ0KQmFkTmFtZTQgPSAxDQpCYWROYW1lNSA9IDENCkJhZE5hbWU2ID0gMQ0KQmFkTmFtZTcgPSAxDQpCYWROYW1lOCA9IDENCkJhZE5hbWU5ID0gMQ0KQmFkTmFtZTEwID0gMQ0KQmFkTmFtZTExID0gMQ0KQmFkTmFtZTEyID0gMQ0KQmFkTmFtZTEzID0gMQ0KQmFkTmFtZTE0ID0gMQ0KQmFkTmFtZTE1ID0gMQ0KQmFkTmFtZTE2ID0gMQ0KQmFkTmFtZTE3ID0gMQ0KQmFkTmFtZTE4ID0gMQ0KQmFkTmFtZTE5ID0gMQ0KQmFkTmFtZTIwID0gMQ0KQmFkTmFtZTIxID0gMQ0KQmFkTmFtZTIyID0gMQ0KQmFkTmFtZTIzID0gMQ0KQmFkTmFtZTI0ID0gMQ0KQmFkTmFtZTI1ID0gMQ0KQmFkTmFtZTI2ID0gMQ0KQmFkTmFtZTI3ID0gMQ0KQmFkTmFtZTI4ID0gMQ0KQmFkTmFtZTI5ID0gMQ0KQmFkTmFtZTMwID0gMQ0KQmFkTmFtZTMxID0gMQ0KQmFkTmFtZTMyID0gMQ0KQmFkTmFtZTMzID0gMQ0KQmFkTmFtZTM0ID0gMQ0KQmFkTmFtZTM1ID0gMQ0KQmFkTmFtZTM2ID0gMQ0KQmFkTmFtZTM3ID0gMQ0KQmFkTmFtZTM4ID0gMQ0KQmFkTmFtZTM5ID0gMQ0KQmFkTmFtZTQwID0gMQ0KQmFkTmFtZTQxID0gMQ0KQmFkTmFtZTQyID0gMQ0KQmFkTmFtZTQzID0gMQ0KQmFkTmFtZTQ0ID0gMQ0KQmFkTmFtZTQ1ID0gMQ0KQmFkTmFtZTQ2ID0gMQ0KQmFkTmFtZTQ3ID0gMQ0KQmFkTmFtZTQ4ID0gMQ0KQmFkTmFtZTQ5ID0gMQ0KQmFkTmFtZTUwID0gMQ0KQmFkTmFtZTUxID0gMQ0KQmFkTmFtZTUyID0gMQ0KQmFkTmFtZTUzID0gMQ0KQmFkTmFtZTU0ID0gMQ0KQmFkTmFtZTU1ID0gMQ0KQmFkTmFtZTU2ID0gMQ0KQmFkTmFtZTU3ID0gMQ0KQmFkTmFtZTU4ID0gMQ0KQmFkTmFtZTU5ID0gMQ0KQmFkTmFtZTYwID0gMQ0KQmFkTmFtZTYxID0gMQ0KQmFkTmFtZTYyID0gMQ0KQmFkTmFtZTYzID0gMQ0KQmFkTmFtZTY0ID0gMQ0KQmFkTmFtZTY1ID0gMQ0KQmFkTmFtZTY2ID0gMQ0KQmFkTmFtZTY3ID0gMQ0KQmFkTmFtZTY4ID0gMQ0KQmFkTmFtZTY5ID0gMQ0KQmFkTmFtZTcwID0gMQ0KQmFkTmFtZTcxID0gMQ0KQmFkTmFtZTcyID0gMQ0KQmFkTmFtZTczID0gMQ0KQmFkTmFtZTc0ID0gMQ0KQmFkTmFtZTc1ID0gMQ0KQmFkTmFtZTc2ID0gMQ0KQmFkTmFtZTc3ID0gMQ0KQmFkTmFtZTc4ID0gMQ0KQmFkTmFtZTc5ID0gMQ0KQmFkTmFtZTgwID0gMQ0KQmFkTmFtZTgxID0gMQ0KQmFkTmFtZTgyID0gMQ0KQmFkTmFtZTgzID0gMQ0KQmFkTmFtZTg0ID0gMQ0KQmFkTmFtZTg1ID0gMQ0KQmFkTmFtZTg2ID0gMQ0KQmFkTmFtZTg3ID0gMQ0KQmFkTmFtZTg4ID0gMQ0KQmFkTmFtZTg5ID0gMQ0KQmFkTmFtZTkwID0gMQ0KQmFkTmFtZTkxID0gMQ0KQmFkTmFtZTkyID0gMQ0KQmFkTmFtZTkzID0gMQ0KQmFkTmFtZTk0ID0gMQ0KQmFkTmFtZTk1ID0gMQ0KQmFkTmFtZTk2ID0gMQ0KQmFkTmFtZTk3ID0gMQ0KQmFkTmFtZTk4ID0gMQ0KQmFkTmFtZTk5ID0gMQ0KQmFkTmFtZTEwMCA9IDENCkJhZE5hbWUxMDEgPSAxDQpCYWROYW1lMTAyID0gMQ0KQmFkTmFtZTEwMyA9IDENCkJhZE5hbWUxMDQgPSAxDQpCYWROYW1lMTA1ID0gMQ0KQmFkTmFtZTEwNiA9IDENCkJhZE5hbWUxMDcgPSAxDQpCYWROYW1lMTA4ID0gMQ0KQmFkTmFtZTEwOSA9IDENCkJhZE5hbWUxMTAgPSAxDQpCYWROYW1lMTExID0gMQ0KQmFkTmFtZTExMiA9IDENCkJhZE5hbWUxMTMgPSAxDQpCYWROYW1lMTE0ID0gMQ0KQmFkTmFtZTExNSA9IDENCkJhZE5hbWUxMTYgPSAxDQpCYWROYW1lMTE3ID0gMQ0KQmFkTmFtZTExOCA9IDENCkJhZE5hbWUxMTkgPSAxDQpCYWROYW1lMTIwID0gMQ0KQmFkTmFtZTEyMSA9IDENCkJhZE5hbWUxMjIgPSAxDQpCYWROYW1lMTIzID0gMQ0KQmFkTmFtZTEyNCA9IDENCkJhZE5hbWUxMjUgPSAxDQpCYWROYW1lMTI2ID0gMQ0KQmFkTmFtZTEyNyA9IDENCkJhZE5hbWUxMjggPSAxDQpCYWROYW1lMTI5ID0gMQ0KQmFkTmFtZTEzMCA9IDENCkJhZE5hbWUxMzEgPSAxDQpCYWROYW1lMTMyID0gMQ0KQmFkTmFtZTEzMyA9IDENCkJhZE5hbWUxMzQgPSAxDQpCYWROYW1lMTM1ID0gMQ0KQmFkTmFtZTEzNiA9IDENCkJhZE5hbWUxMzcgPSAxDQpCYWROYW1lMTM4ID0gMQ0KQmFkTmFtZTEzOSA9IDENCkJhZE5hbWUxNDAgPSAxDQpCYWROYW1lMTQxID0gMQ0KQmFkTmFtZTE0MiA9IDENCkJhZE5hbWUxNDMgPSAxDQpCYWROYW1lMTQ0ID0gMQ0KQmFkTmFtZTE0NSA9IDENCkJhZE5hbWUxNDYgPSAxDQpCYWROYW1lMTQ3ID0gMQ0KQmFkTmFtZTE0OCA9IDENCkJhZE5hbWUxNDkgPSAxDQpCYWROYW1lMTUwID0gMQ0KQmFkTmFtZTE1MSA9IDENCkJhZE5hbWUxNTIgPSAxDQpCYWROYW1lMTUzID0gMQ0KQmFkTmFtZTE1NCA9IDENCkJhZE5hbWUxNTUgPSAxDQpCYWROYW1lMTU2ID0gMQ0KQmFkTmFtZTE1NyA9IDENCkJhZE5hbWUxNTggPSAxDQpCYWROYW1lMTU5ID0gMQ0KQmVnaW5Qcm9nDQogIFNjYW4oMSxTZWMsMCwwKQ0KICBOZXh0U2Nhbg0KRW5kUHJvZw0K"
+   }
+  },
+  {
+   "id": "cr6-preprocess-pass1-buffer-full-if",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "p1if.CR6",
+   "source": "Public X\n#If 1 Then\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nX = = 80\nX = = 81\nX = = 82\nX = = 83\nX = = 84\nX = = 85\nX = = 86\nX = = 87\nX = = 88\nX = = 89\nX = = 90\nX = = 91\nX = = 92\nX = = 93\nX = = 94\nX = = 95\nX = = 96\nX = = 97\nX = = 98\nX = = 99\nX = = 100\nX = = 101\nX = = 102\nX = = 103\nX = = 104\nX = = 105\nX = = 106\nX = = 107\nX = = 108\nX = = 109\nX = = 110\nX = = 111\nX = = 112\nX = = 113\nX = = 114\nX = = 115\nX = = 116\nX = = 117\nX = = 118\nX = = 119\n#EndIf\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "p1if.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X = = 0.\nline 4: Invalid, or out of place expression: X = = 1.\nline 5: Invalid, or out of place expression: X = = 2.\nline 6: Invalid, or out of place expression: X = = 3.\nline 7: Invalid, or out of place expression: X = = 4.\nline 8: Invalid, or out of place expression: X = = 5.\nline 9: Invalid, or out of place expression: X = = 6.\nline 10: Invalid, or out of place expression: X = = 7.\nline 11: Invalid, or out of place expression: X = = 8.\nline 12: Invalid, or out of place expression: X = = 9.\nline 13: Invalid, or out of place expression: X = = 10.\nline 14: Invalid, or out of place expression: X = = 11.\nline 15: Invalid, or out of place expression: X = = 12.\nline 16: Invalid, or out of place expression: X = = 13.\nline 17: Invalid, or out of place expression: X = = 14.\nline 18: Invalid, or out of place expression: X = = 15.\nline 19: Invalid, or out of place expression: X = = 16.\nline 20: Invalid, or out of place expression: X = = 17.\nline 21: Invalid, or out of place expression: X = = 18.\nline 22: Invalid, or out of place expression: X = = 19.\nline 23: Invalid, or out of place expression: X = = 20.\nline 24: Invalid, or out of place expression: X = = 21.\nline 25: Invalid, or out of place expression: X = = 22.\nline 26: Invalid, or out of place expression: X = = 23.\nline 27: Invalid, or out of place expression: X = = 24.\nline 28: Invalid, or out of place expression: X = = 25.\nline 29: Invalid, or out of place expression: X = = 26.\nline 30: Invalid, or out of place expression: X = = 27.\nline 31: Invalid, or out of place expression: X = = 28.\nline 32: Invalid, or out of place expression: X = = 29.\nline 33: Invalid, or out of place expression: X = = 30.\nline 34: Invalid, or out of place expression: X = = 31.\nline 35: Invalid, or out of place expression: X = = 32.\nline 36: Invalid, or out of place expression: X = = 33.\nline 37: Invalid, or out of place expression: X = = 34.\nline 38: Invalid, or out of place expression: X = = 35.\nline 39: Invalid, or out of place expression: X = = 36.\nline 40: Invalid, or out of place expression: X = = 37.\nline 41: Invalid, or out of place expression: X = = 38.\nline 42: Invalid, or out of place expression: X = = 39.\nline 43: Invalid, or out of place expression: X = = 40.\nline 44: Invalid, or out of place expression: X = = 41.\nline 45: Invalid, or out of place expression: X = = 42.\nline 46: Invalid, or out of place expression: X = = 43.\nline 47: Invalid, or out of place expression: X = = 44.\nline 48: Invalid, or out of place expression: X = = 45.\nline 49: Invalid, or out of place expression: X = = 46.\nline 50: Invalid, or out of place expression: X = = 47.\nline 51: Invalid, or out of place expression: X = = 48.\nline 52: Invalid, or out of place expression: X = = 49.\nline 53: Invalid, or out of place expression: X = = 50.\nline 54: Invalid, or out of place expression: X = = 51.\nline 55: Invalid, or out of place expression: X = = 52.\nline 56: Invalid, or out of place expression: X = = 53.\nline 57: Invalid, or out of place expression: X = = 54.\nline 58: Invalid, or out of place expression: X = = 55.\nline 59: Invalid, or out of place expression: X = = 56.\nline 60: Invalid, or out of place expression: X = = 57.\nline 61: Invalid, or out of place expression: X = = 58.\nline 62: Invalid, or out of place expression: X = = 59.\nline 63: Invalid, or out of place expression: X = = 60.\nline 64: Invalid, or out of place expression: X = = 61.\nline 65: Invalid, or out of place expression: X = = 62.\nline 66: Invalid, or out of place expression: X = = 63.\nline 67: Invalid, or out of place expression: X = = 64.\nline 68: Invalid, or out of place expression: X = = 65.\nline 69: Invalid, or out of place expression: X = = 66.\nline 70: Invalid, or out of place expression: X = = 67.\nline 71: Invalid, or out of place expression: X = = 68.\nline 72: Invalid, or out of place expression: X = = 69.\nline 73: Invalid, or out of place expression: X = = 70.\nline 74: Invalid, or out of place expression: X = = 71.",
+   "expected_files": {
+    "CR6cmple.xxx": "cDFpZi5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMC4NCmxpbmUgNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEuDQpsaW5lIDU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KbGluZSA2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMy4NCmxpbmUgNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQuDQpsaW5lIDg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KbGluZSA5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNi4NCmxpbmUgMTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA3Lg0KbGluZSAxMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDguDQpsaW5lIDEyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOS4NCmxpbmUgMTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMC4NCmxpbmUgMTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMS4NCmxpbmUgMTU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMi4NCmxpbmUgMTY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMy4NCmxpbmUgMTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNC4NCmxpbmUgMTg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNS4NCmxpbmUgMTk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNi4NCmxpbmUgMjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNy4NCmxpbmUgMjE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxOC4NCmxpbmUgMjI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxOS4NCmxpbmUgMjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMC4NCmxpbmUgMjQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMS4NCmxpbmUgMjU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMi4NCmxpbmUgMjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMy4NCmxpbmUgMjc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNC4NCmxpbmUgMjg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNS4NCmxpbmUgMjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNi4NCmxpbmUgMzA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNy4NCmxpbmUgMzE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyOC4NCmxpbmUgMzI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyOS4NCmxpbmUgMzM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMC4NCmxpbmUgMzQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMS4NCmxpbmUgMzU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMi4NCmxpbmUgMzY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMy4NCmxpbmUgMzc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNC4NCmxpbmUgMzg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNS4NCmxpbmUgMzk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNi4NCmxpbmUgNDA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNy4NCmxpbmUgNDE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzOC4NCmxpbmUgNDI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzOS4NCmxpbmUgNDM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0MC4NCmxpbmUgNDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0MS4NCmxpbmUgNDU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Mi4NCmxpbmUgNDY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0My4NCmxpbmUgNDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0NC4NCmxpbmUgNDg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0NS4NCmxpbmUgNDk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Ni4NCmxpbmUgNTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Ny4NCmxpbmUgNTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0OC4NCmxpbmUgNTI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0OS4NCmxpbmUgNTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1MC4NCmxpbmUgNTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1MS4NCmxpbmUgNTU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Mi4NCmxpbmUgNTY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1My4NCmxpbmUgNTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1NC4NCmxpbmUgNTg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1NS4NCmxpbmUgNTk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Ni4NCmxpbmUgNjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Ny4NCmxpbmUgNjE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1OC4NCmxpbmUgNjI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1OS4NCmxpbmUgNjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2MC4NCmxpbmUgNjQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2MS4NCmxpbmUgNjU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2Mi4NCmxpbmUgNjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2My4NCmxpbmUgNjc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2NC4NCmxpbmUgNjg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2NS4NCmxpbmUgNjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2Ni4NCmxpbmUgNzA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2Ny4NCmxpbmUgNzE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2OC4NCmxpbmUgNzI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2OS4NCmxpbmUgNzM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA3MC4NCmxpbmUgNzQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA3MS4NCg==",
+    "o.pre": "UHVibGljIFgNClggPSA9IDANClggPSA9IDENClggPSA9IDINClggPSA9IDMNClggPSA9IDQNClggPSA9IDUNClggPSA9IDYNClggPSA9IDcNClggPSA9IDgNClggPSA9IDkNClggPSA9IDEwDQpYID0gPSAxMQ0KWCA9ID0gMTINClggPSA9IDEzDQpYID0gPSAxNA0KWCA9ID0gMTUNClggPSA9IDE2DQpYID0gPSAxNw0KWCA9ID0gMTgNClggPSA9IDE5DQpYID0gPSAyMA0KWCA9ID0gMjENClggPSA9IDIyDQpYID0gPSAyMw0KWCA9ID0gMjQNClggPSA9IDI1DQpYID0gPSAyNg0KWCA9ID0gMjcNClggPSA9IDI4DQpYID0gPSAyOQ0KWCA9ID0gMzANClggPSA9IDMxDQpYID0gPSAzMg0KWCA9ID0gMzMNClggPSA9IDM0DQpYID0gPSAzNQ0KWCA9ID0gMzYNClggPSA9IDM3DQpYID0gPSAzOA0KWCA9ID0gMzkNClggPSA9IDQwDQpYID0gPSA0MQ0KWCA9ID0gNDINClggPSA9IDQzDQpYID0gPSA0NA0KWCA9ID0gNDUNClggPSA9IDQ2DQpYID0gPSA0Nw0KWCA9ID0gNDgNClggPSA9IDQ5DQpYID0gPSA1MA0KWCA9ID0gNTENClggPSA9IDUyDQpYID0gPSA1Mw0KWCA9ID0gNTQNClggPSA9IDU1DQpYID0gPSA1Ng0KWCA9ID0gNTcNClggPSA9IDU4DQpYID0gPSA1OQ0KWCA9ID0gNjANClggPSA9IDYxDQpYID0gPSA2Mg0KWCA9ID0gNjMNClggPSA9IDY0DQpYID0gPSA2NQ0KWCA9ID0gNjYNClggPSA9IDY3DQpYID0gPSA2OA0KWCA9ID0gNjkNClggPSA9IDcwDQpYID0gPSA3MQ0KWCA9ID0gNzINCg=="
+   }
+  },
+  {
+   "id": "cr6-include-pass1-buffer-full-if",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "p1if.CR6",
+   "source": "Public X\n#If 1 Then\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nX = = 80\nX = = 81\nX = = 82\nX = = 83\nX = = 84\nX = = 85\nX = = 86\nX = = 87\nX = = 88\nX = = 89\nX = = 90\nX = = 91\nX = = 92\nX = = 93\nX = = 94\nX = = 95\nX = = 96\nX = = 97\nX = = 98\nX = = 99\nX = = 100\nX = = 101\nX = = 102\nX = = 103\nX = = 104\nX = = 105\nX = = 106\nX = = 107\nX = = 108\nX = = 109\nX = = 110\nX = = 111\nX = = 112\nX = = 113\nX = = 114\nX = = 115\nX = = 116\nX = = 117\nX = = 118\nX = = 119\n#EndIf\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "p1if.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: X = = 0.\nline 4: Invalid, or out of place expression: X = = 1.\nline 5: Invalid, or out of place expression: X = = 2.\nline 6: Invalid, or out of place expression: X = = 3.\nline 7: Invalid, or out of place expression: X = = 4.\nline 8: Invalid, or out of place expression: X = = 5.\nline 9: Invalid, or out of place expression: X = = 6.\nline 10: Invalid, or out of place expression: X = = 7.\nline 11: Invalid, or out of place expression: X = = 8.\nline 12: Invalid, or out of place expression: X = = 9.\nline 13: Invalid, or out of place expression: X = = 10.\nline 14: Invalid, or out of place expression: X = = 11.\nline 15: Invalid, or out of place expression: X = = 12.\nline 16: Invalid, or out of place expression: X = = 13.\nline 17: Invalid, or out of place expression: X = = 14.\nline 18: Invalid, or out of place expression: X = = 15.\nline 19: Invalid, or out of place expression: X = = 16.\nline 20: Invalid, or out of place expression: X = = 17.\nline 21: Invalid, or out of place expression: X = = 18.\nline 22: Invalid, or out of place expression: X = = 19.\nline 23: Invalid, or out of place expression: X = = 20.\nline 24: Invalid, or out of place expression: X = = 21.\nline 25: Invalid, or out of place expression: X = = 22.\nline 26: Invalid, or out of place expression: X = = 23.\nline 27: Invalid, or out of place expression: X = = 24.\nline 28: Invalid, or out of place expression: X = = 25.\nline 29: Invalid, or out of place expression: X = = 26.\nline 30: Invalid, or out of place expression: X = = 27.\nline 31: Invalid, or out of place expression: X = = 28.\nline 32: Invalid, or out of place expression: X = = 29.\nline 33: Invalid, or out of place expression: X = = 30.\nline 34: Invalid, or out of place expression: X = = 31.\nline 35: Invalid, or out of place expression: X = = 32.\nline 36: Invalid, or out of place expression: X = = 33.\nline 37: Invalid, or out of place expression: X = = 34.\nline 38: Invalid, or out of place expression: X = = 35.\nline 39: Invalid, or out of place expression: X = = 36.\nline 40: Invalid, or out of place expression: X = = 37.\nline 41: Invalid, or out of place expression: X = = 38.\nline 42: Invalid, or out of place expression: X = = 39.\nline 43: Invalid, or out of place expression: X = = 40.\nline 44: Invalid, or out of place expression: X = = 41.\nline 45: Invalid, or out of place expression: X = = 42.\nline 46: Invalid, or out of place expression: X = = 43.\nline 47: Invalid, or out of place expression: X = = 44.\nline 48: Invalid, or out of place expression: X = = 45.\nline 49: Invalid, or out of place expression: X = = 46.\nline 50: Invalid, or out of place expression: X = = 47.\nline 51: Invalid, or out of place expression: X = = 48.\nline 52: Invalid, or out of place expression: X = = 49.\nline 53: Invalid, or out of place expression: X = = 50.\nline 54: Invalid, or out of place expression: X = = 51.\nline 55: Invalid, or out of place expression: X = = 52.\nline 56: Invalid, or out of place expression: X = = 53.\nline 57: Invalid, or out of place expression: X = = 54.\nline 58: Invalid, or out of place expression: X = = 55.\nline 59: Invalid, or out of place expression: X = = 56.\nline 60: Invalid, or out of place expression: X = = 57.\nline 61: Invalid, or out of place expression: X = = 58.\nline 62: Invalid, or out of place expression: X = = 59.\nline 63: Invalid, or out of place expression: X = = 60.\nline 64: Invalid, or out of place expression: X = = 61.\nline 65: Invalid, or out of place expression: X = = 62.\nline 66: Invalid, or out of place expression: X = = 63.\nline 67: Invalid, or out of place expression: X = = 64.\nline 68: Invalid, or out of place expression: X = = 65.\nline 69: Invalid, or out of place expression: X = = 66.\nline 70: Invalid, or out of place expression: X = = 67.\nline 71: Invalid, or out of place expression: X = = 68.\nline 72: Invalid, or out of place expression: X = = 69.\nline 73: Invalid, or out of place expression: X = = 70.\nline 74: Invalid, or out of place expression: X = = 71.",
+   "expected_files": {
+    "CR6cmple.xxx": "cDFpZi5DUjYgLS0gQ29tcGlsZSBGYWlsZWQhDQoKbGluZSAzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMC4NCmxpbmUgNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDEuDQpsaW5lIDU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KbGluZSA2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMy4NCmxpbmUgNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQuDQpsaW5lIDg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KbGluZSA5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNi4NCmxpbmUgMTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA3Lg0KbGluZSAxMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDguDQpsaW5lIDEyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOS4NCmxpbmUgMTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMC4NCmxpbmUgMTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMS4NCmxpbmUgMTU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMi4NCmxpbmUgMTY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMy4NCmxpbmUgMTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNC4NCmxpbmUgMTg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNS4NCmxpbmUgMTk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNi4NCmxpbmUgMjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNy4NCmxpbmUgMjE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxOC4NCmxpbmUgMjI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxOS4NCmxpbmUgMjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMC4NCmxpbmUgMjQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMS4NCmxpbmUgMjU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMi4NCmxpbmUgMjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMy4NCmxpbmUgMjc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNC4NCmxpbmUgMjg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNS4NCmxpbmUgMjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNi4NCmxpbmUgMzA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNy4NCmxpbmUgMzE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyOC4NCmxpbmUgMzI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyOS4NCmxpbmUgMzM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMC4NCmxpbmUgMzQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMS4NCmxpbmUgMzU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMi4NCmxpbmUgMzY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMy4NCmxpbmUgMzc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNC4NCmxpbmUgMzg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNS4NCmxpbmUgMzk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNi4NCmxpbmUgNDA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNy4NCmxpbmUgNDE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzOC4NCmxpbmUgNDI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzOS4NCmxpbmUgNDM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0MC4NCmxpbmUgNDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0MS4NCmxpbmUgNDU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Mi4NCmxpbmUgNDY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0My4NCmxpbmUgNDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0NC4NCmxpbmUgNDg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0NS4NCmxpbmUgNDk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Ni4NCmxpbmUgNTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Ny4NCmxpbmUgNTE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0OC4NCmxpbmUgNTI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0OS4NCmxpbmUgNTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1MC4NCmxpbmUgNTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1MS4NCmxpbmUgNTU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Mi4NCmxpbmUgNTY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1My4NCmxpbmUgNTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1NC4NCmxpbmUgNTg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1NS4NCmxpbmUgNTk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Ni4NCmxpbmUgNjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Ny4NCmxpbmUgNjE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1OC4NCmxpbmUgNjI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1OS4NCmxpbmUgNjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2MC4NCmxpbmUgNjQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2MS4NCmxpbmUgNjU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2Mi4NCmxpbmUgNjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2My4NCmxpbmUgNjc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2NC4NCmxpbmUgNjg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2NS4NCmxpbmUgNjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2Ni4NCmxpbmUgNzA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2Ny4NCmxpbmUgNzE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2OC4NCmxpbmUgNzI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA2OS4NCmxpbmUgNzM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA3MC4NCmxpbmUgNzQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA3MS4NCg==",
+    "o.inc": "UHVibGljIFgNClggPSA9IDANClggPSA9IDENClggPSA9IDINClggPSA9IDMNClggPSA9IDQNClggPSA9IDUNClggPSA9IDYNClggPSA9IDcNClggPSA9IDgNClggPSA9IDkNClggPSA9IDEwDQpYID0gPSAxMQ0KWCA9ID0gMTINClggPSA9IDEzDQpYID0gPSAxNA0KWCA9ID0gMTUNClggPSA9IDE2DQpYID0gPSAxNw0KWCA9ID0gMTgNClggPSA9IDE5DQpYID0gPSAyMA0KWCA9ID0gMjENClggPSA9IDIyDQpYID0gPSAyMw0KWCA9ID0gMjQNClggPSA9IDI1DQpYID0gPSAyNg0KWCA9ID0gMjcNClggPSA9IDI4DQpYID0gPSAyOQ0KWCA9ID0gMzANClggPSA9IDMxDQpYID0gPSAzMg0KWCA9ID0gMzMNClggPSA9IDM0DQpYID0gPSAzNQ0KWCA9ID0gMzYNClggPSA9IDM3DQpYID0gPSAzOA0KWCA9ID0gMzkNClggPSA9IDQwDQpYID0gPSA0MQ0KWCA9ID0gNDINClggPSA9IDQzDQpYID0gPSA0NA0KWCA9ID0gNDUNClggPSA9IDQ2DQpYID0gPSA0Nw0KWCA9ID0gNDgNClggPSA9IDQ5DQpYID0gPSA1MA0KWCA9ID0gNTENClggPSA9IDUyDQpYID0gPSA1Mw0KWCA9ID0gNTQNClggPSA9IDU1DQpYID0gPSA1Ng0KWCA9ID0gNTcNClggPSA9IDU4DQpYID0gPSA1OQ0KWCA9ID0gNjANClggPSA9IDYxDQpYID0gPSA2Mg0KWCA9ID0gNjMNClggPSA9IDY0DQpYID0gPSA2NQ0KWCA9ID0gNjYNClggPSA9IDY3DQpYID0gPSA2OA0KWCA9ID0gNjkNClggPSA9IDcwDQpYID0gPSA3MQ0KWCA9ID0gNzINCg=="
+   }
+  },
+  {
+   "id": "cr6-preprocess-pass1-buffer-full-include",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "p1inc.CR6",
+   "source": "Public X\nInclude \"CPU:lib.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {
+    "lib.crb": "Public X\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nX = = 80\nX = = 81\nX = = 82\nX = = 83\nX = = 84\nX = = 85\nX = = 86\nX = = 87\nX = = 88\nX = = 89\nX = = 90\nX = = 91\nX = = 92\nX = = 93\nX = = 94\nX = = 95\nX = = 96\nX = = 97\nX = = 98\nX = = 99\nX = = 100\nX = = 101\nX = = 102\nX = = 103\nX = = 104\nX = = 105\nX = = 106\nX = = 107\nX = = 108\nX = = 109\nX = = 110\nX = = 111\nX = = 112\nX = = 113\nX = = 114\nX = = 115\nX = = 116\nX = = 117\nX = = 118\nX = = 119\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "p1inc.CR6 -- Compile Failed!\n\n<lib.crb> line 1: X already declared as a variable.\n<lib.crb> line 2: Invalid, or out of place expression: X = = 0.\n<lib.crb> line 3: Invalid, or out of place expression: X = = 1.\n<lib.crb> line 4: Invalid, or out of place expression: X = = 2.\n<lib.crb> line 5: Invalid, or out of place expression: X = = 3.\n<lib.crb> line 6: Invalid, or out of place expression: X = = 4.\n<lib.crb> line 7: Invalid, or out of place expression: X = = 5.\n<lib.crb> line 8: Invalid, or out of place expression: X = = 6.\n<lib.crb> line 9: Invalid, or out of place expression: X = = 7.\n<lib.crb> line 10: Invalid, or out of place expression: X = = 8.\n<lib.crb> line 11: Invalid, or out of place expression: X = = 9.\n<lib.crb> line 12: Invalid, or out of place expression: X = = 10.\n<lib.crb> line 13: Invalid, or out of place expression: X = = 11.\n<lib.crb> line 14: Invalid, or out of place expression: X = = 12.\n<lib.crb> line 15: Invalid, or out of place expression: X = = 13.\n<lib.crb> line 16: Invalid, or out of place expression: X = = 14.\n<lib.crb> line 17: Invalid, or out of place expression: X = = 15.\n<lib.crb> line 18: Invalid, or out of place expression: X = = 16.\n<lib.crb> line 19: Invalid, or out of place expression: X = = 17.\n<lib.crb> line 20: Invalid, or out of place expression: X = = 18.\n<lib.crb> line 21: Invalid, or out of place expression: X = = 19.\n<lib.crb> line 22: Invalid, or out of place expression: X = = 20.\n<lib.crb> line 23: Invalid, or out of place expression: X = = 21.\n<lib.crb> line 24: Invalid, or out of place expression: X = = 22.\n<lib.crb> line 25: Invalid, or out of place expression: X = = 23.\n<lib.crb> line 26: Invalid, or out of place expression: X = = 24.\n<lib.crb> line 27: Invalid, or out of place expression: X = = 25.\n<lib.crb> line 28: Invalid, or out of place expression: X = = 26.\n<lib.crb> line 29: Invalid, or out of place expression: X = = 27.\n<lib.crb> line 30: Invalid, or out of place expression: X = = 28.\n<lib.crb> line 31: Invalid, or out of place expression: X = = 29.\n<lib.crb> line 32: Invalid, or out of place expression: X = = 30.\n<lib.crb> line 33: Invalid, or out of place expression: X = = 31.\n<lib.crb> line 34: Invalid, or out of place expression: X = = 32.\n<lib.crb> line 35: Invalid, or out of place expression: X = = 33.\n<lib.crb> line 36: Invalid, or out of place expression: X = = 34.\n<lib.crb> line 37: Invalid, or out of place expression: X = = 35.\n<lib.crb> line 38: Invalid, or out of place expression: X = = 36.\n<lib.crb> line 39: Invalid, or out of place expression: X = = 37.\n<lib.crb> line 40: Invalid, or out of place expression: X = = 38.\n<lib.crb> line 41: Invalid, or out of place expression: X = = 39.\n<lib.crb> line 42: Invalid, or out of place expression: X = = 40.\n<lib.crb> line 43: Invalid, or out of place expression: X = = 41.\n<lib.crb> line 44: Invalid, or out of place expression: X = = 42.\n<lib.crb> line 45: Invalid, or out of place expression: X = = 43.\n<lib.crb> line 46: Invalid, or out of place expression: X = = 44.\n<lib.crb> line 47: Invalid, or out of place expression: X = = 45.\n<lib.crb> line 48: Invalid, or out of place expression: X = = 46.\n<lib.crb> line 49: Invalid, or out of place expression: X = = 47.\n<lib.crb> line 50: Invalid, or out of place expression: X = = 48.\n<lib.crb> line 51: Invalid, or out of place expression: X = = 49.\n<lib.crb> line 52: Invalid, or out of place expression: X = = 50.\n<lib.crb> line 53: Invalid, or out of place expression: X = = 51.\n<lib.crb> line 54: Invalid, or out of place expression: X = = 52.\n<lib.crb> line 55: Invalid, or out of place expression: X = = 53.\n<lib.crb> line 56: Invalid, or out of place expression: X = = 54.\n<lib.crb> line 57: Invalid, or out of place expression: X = = 55.\n<lib.crb> line 58: Invalid, or out of place expression: X = = 56.\n<lib.crb> line 59: Invalid, or out of place expression: X = = 57.\n<lib.crb> line 60: Invalid, or out of place expression: X = = 58.\n<lib.crb> line 61: Invalid, or out of place expression: X = = 59.",
+   "expected_files": {
+    "CR6cmple.xxx": "cDFpbmMuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCjxsaWIuY3JiPiBsaW5lIDE6IFggYWxyZWFkeSBkZWNsYXJlZCBhcyBhIHZhcmlhYmxlLg0KPGxpYi5jcmI+IGxpbmUgMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDAuDQo8bGliLmNyYj4gbGluZSAzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMS4NCjxsaWIuY3JiPiBsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KPGxpYi5jcmI+IGxpbmUgNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMuDQo8bGliLmNyYj4gbGluZSA2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNC4NCjxsaWIuY3JiPiBsaW5lIDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KPGxpYi5jcmI+IGxpbmUgODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYuDQo8bGliLmNyYj4gbGluZSA5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNy4NCjxsaWIuY3JiPiBsaW5lIDEwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOC4NCjxsaWIuY3JiPiBsaW5lIDExOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOS4NCjxsaWIuY3JiPiBsaW5lIDEyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTAuDQo8bGliLmNyYj4gbGluZSAxMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDExLg0KPGxpYi5jcmI+IGxpbmUgMTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMi4NCjxsaWIuY3JiPiBsaW5lIDE1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTMuDQo8bGliLmNyYj4gbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE0Lg0KPGxpYi5jcmI+IGxpbmUgMTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNS4NCjxsaWIuY3JiPiBsaW5lIDE4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTYuDQo8bGliLmNyYj4gbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE3Lg0KPGxpYi5jcmI+IGxpbmUgMjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxOC4NCjxsaWIuY3JiPiBsaW5lIDIxOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTkuDQo8bGliLmNyYj4gbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIwLg0KPGxpYi5jcmI+IGxpbmUgMjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMS4NCjxsaWIuY3JiPiBsaW5lIDI0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMjIuDQo8bGliLmNyYj4gbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIzLg0KPGxpYi5jcmI+IGxpbmUgMjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNC4NCjxsaWIuY3JiPiBsaW5lIDI3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMjUuDQo8bGliLmNyYj4gbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI2Lg0KPGxpYi5jcmI+IGxpbmUgMjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNy4NCjxsaWIuY3JiPiBsaW5lIDMwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMjguDQo8bGliLmNyYj4gbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI5Lg0KPGxpYi5jcmI+IGxpbmUgMzI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMC4NCjxsaWIuY3JiPiBsaW5lIDMzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMzEuDQo8bGliLmNyYj4gbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMyLg0KPGxpYi5jcmI+IGxpbmUgMzU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMy4NCjxsaWIuY3JiPiBsaW5lIDM2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMzQuDQo8bGliLmNyYj4gbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM1Lg0KPGxpYi5jcmI+IGxpbmUgMzg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNi4NCjxsaWIuY3JiPiBsaW5lIDM5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMzcuDQo8bGliLmNyYj4gbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM4Lg0KPGxpYi5jcmI+IGxpbmUgNDE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzOS4NCjxsaWIuY3JiPiBsaW5lIDQyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDAuDQo8bGliLmNyYj4gbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQxLg0KPGxpYi5jcmI+IGxpbmUgNDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Mi4NCjxsaWIuY3JiPiBsaW5lIDQ1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDMuDQo8bGliLmNyYj4gbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ0Lg0KPGxpYi5jcmI+IGxpbmUgNDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0NS4NCjxsaWIuY3JiPiBsaW5lIDQ4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDYuDQo8bGliLmNyYj4gbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ3Lg0KPGxpYi5jcmI+IGxpbmUgNTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0OC4NCjxsaWIuY3JiPiBsaW5lIDUxOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDkuDQo8bGliLmNyYj4gbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUwLg0KPGxpYi5jcmI+IGxpbmUgNTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1MS4NCjxsaWIuY3JiPiBsaW5lIDU0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNTIuDQo8bGliLmNyYj4gbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUzLg0KPGxpYi5jcmI+IGxpbmUgNTY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1NC4NCjxsaWIuY3JiPiBsaW5lIDU3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNTUuDQo8bGliLmNyYj4gbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU2Lg0KPGxpYi5jcmI+IGxpbmUgNTk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Ny4NCjxsaWIuY3JiPiBsaW5lIDYwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNTguDQo8bGliLmNyYj4gbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU5Lg0K",
+    "o.pre": "UHVibGljIFgNCkluY2x1ZGUgIkNQVTpsaWIuY3JiIg0K"
+   }
+  },
+  {
+   "id": "cr6-include-pass1-buffer-full-include",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "p1inc.CR6",
+   "source": "Public X\nInclude \"CPU:lib.crb\"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "siblings": {
+    "lib.crb": "Public X\nX = = 0\nX = = 1\nX = = 2\nX = = 3\nX = = 4\nX = = 5\nX = = 6\nX = = 7\nX = = 8\nX = = 9\nX = = 10\nX = = 11\nX = = 12\nX = = 13\nX = = 14\nX = = 15\nX = = 16\nX = = 17\nX = = 18\nX = = 19\nX = = 20\nX = = 21\nX = = 22\nX = = 23\nX = = 24\nX = = 25\nX = = 26\nX = = 27\nX = = 28\nX = = 29\nX = = 30\nX = = 31\nX = = 32\nX = = 33\nX = = 34\nX = = 35\nX = = 36\nX = = 37\nX = = 38\nX = = 39\nX = = 40\nX = = 41\nX = = 42\nX = = 43\nX = = 44\nX = = 45\nX = = 46\nX = = 47\nX = = 48\nX = = 49\nX = = 50\nX = = 51\nX = = 52\nX = = 53\nX = = 54\nX = = 55\nX = = 56\nX = = 57\nX = = 58\nX = = 59\nX = = 60\nX = = 61\nX = = 62\nX = = 63\nX = = 64\nX = = 65\nX = = 66\nX = = 67\nX = = 68\nX = = 69\nX = = 70\nX = = 71\nX = = 72\nX = = 73\nX = = 74\nX = = 75\nX = = 76\nX = = 77\nX = = 78\nX = = 79\nX = = 80\nX = = 81\nX = = 82\nX = = 83\nX = = 84\nX = = 85\nX = = 86\nX = = 87\nX = = 88\nX = = 89\nX = = 90\nX = = 91\nX = = 92\nX = = 93\nX = = 94\nX = = 95\nX = = 96\nX = = 97\nX = = 98\nX = = 99\nX = = 100\nX = = 101\nX = = 102\nX = = 103\nX = = 104\nX = = 105\nX = = 106\nX = = 107\nX = = 108\nX = = 109\nX = = 110\nX = = 111\nX = = 112\nX = = 113\nX = = 114\nX = = 115\nX = = 116\nX = = 117\nX = = 118\nX = = 119\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "p1inc.CR6 -- Compile Failed!\n\n<lib.crb> line 1: X already declared as a variable.\n<lib.crb> line 2: Invalid, or out of place expression: X = = 0.\n<lib.crb> line 3: Invalid, or out of place expression: X = = 1.\n<lib.crb> line 4: Invalid, or out of place expression: X = = 2.\n<lib.crb> line 5: Invalid, or out of place expression: X = = 3.\n<lib.crb> line 6: Invalid, or out of place expression: X = = 4.\n<lib.crb> line 7: Invalid, or out of place expression: X = = 5.\n<lib.crb> line 8: Invalid, or out of place expression: X = = 6.\n<lib.crb> line 9: Invalid, or out of place expression: X = = 7.\n<lib.crb> line 10: Invalid, or out of place expression: X = = 8.\n<lib.crb> line 11: Invalid, or out of place expression: X = = 9.\n<lib.crb> line 12: Invalid, or out of place expression: X = = 10.\n<lib.crb> line 13: Invalid, or out of place expression: X = = 11.\n<lib.crb> line 14: Invalid, or out of place expression: X = = 12.\n<lib.crb> line 15: Invalid, or out of place expression: X = = 13.\n<lib.crb> line 16: Invalid, or out of place expression: X = = 14.\n<lib.crb> line 17: Invalid, or out of place expression: X = = 15.\n<lib.crb> line 18: Invalid, or out of place expression: X = = 16.\n<lib.crb> line 19: Invalid, or out of place expression: X = = 17.\n<lib.crb> line 20: Invalid, or out of place expression: X = = 18.\n<lib.crb> line 21: Invalid, or out of place expression: X = = 19.\n<lib.crb> line 22: Invalid, or out of place expression: X = = 20.\n<lib.crb> line 23: Invalid, or out of place expression: X = = 21.\n<lib.crb> line 24: Invalid, or out of place expression: X = = 22.\n<lib.crb> line 25: Invalid, or out of place expression: X = = 23.\n<lib.crb> line 26: Invalid, or out of place expression: X = = 24.\n<lib.crb> line 27: Invalid, or out of place expression: X = = 25.\n<lib.crb> line 28: Invalid, or out of place expression: X = = 26.\n<lib.crb> line 29: Invalid, or out of place expression: X = = 27.\n<lib.crb> line 30: Invalid, or out of place expression: X = = 28.\n<lib.crb> line 31: Invalid, or out of place expression: X = = 29.\n<lib.crb> line 32: Invalid, or out of place expression: X = = 30.\n<lib.crb> line 33: Invalid, or out of place expression: X = = 31.\n<lib.crb> line 34: Invalid, or out of place expression: X = = 32.\n<lib.crb> line 35: Invalid, or out of place expression: X = = 33.\n<lib.crb> line 36: Invalid, or out of place expression: X = = 34.\n<lib.crb> line 37: Invalid, or out of place expression: X = = 35.\n<lib.crb> line 38: Invalid, or out of place expression: X = = 36.\n<lib.crb> line 39: Invalid, or out of place expression: X = = 37.\n<lib.crb> line 40: Invalid, or out of place expression: X = = 38.\n<lib.crb> line 41: Invalid, or out of place expression: X = = 39.\n<lib.crb> line 42: Invalid, or out of place expression: X = = 40.\n<lib.crb> line 43: Invalid, or out of place expression: X = = 41.\n<lib.crb> line 44: Invalid, or out of place expression: X = = 42.\n<lib.crb> line 45: Invalid, or out of place expression: X = = 43.\n<lib.crb> line 46: Invalid, or out of place expression: X = = 44.\n<lib.crb> line 47: Invalid, or out of place expression: X = = 45.\n<lib.crb> line 48: Invalid, or out of place expression: X = = 46.\n<lib.crb> line 49: Invalid, or out of place expression: X = = 47.\n<lib.crb> line 50: Invalid, or out of place expression: X = = 48.\n<lib.crb> line 51: Invalid, or out of place expression: X = = 49.\n<lib.crb> line 52: Invalid, or out of place expression: X = = 50.\n<lib.crb> line 53: Invalid, or out of place expression: X = = 51.\n<lib.crb> line 54: Invalid, or out of place expression: X = = 52.\n<lib.crb> line 55: Invalid, or out of place expression: X = = 53.\n<lib.crb> line 56: Invalid, or out of place expression: X = = 54.\n<lib.crb> line 57: Invalid, or out of place expression: X = = 55.\n<lib.crb> line 58: Invalid, or out of place expression: X = = 56.\n<lib.crb> line 59: Invalid, or out of place expression: X = = 57.\n<lib.crb> line 60: Invalid, or out of place expression: X = = 58.\n<lib.crb> line 61: Invalid, or out of place expression: X = = 59.",
+   "expected_files": {
+    "CR6cmple.xxx": "cDFpbmMuQ1I2IC0tIENvbXBpbGUgRmFpbGVkIQ0KCjxsaWIuY3JiPiBsaW5lIDE6IFggYWxyZWFkeSBkZWNsYXJlZCBhcyBhIHZhcmlhYmxlLg0KPGxpYi5jcmI+IGxpbmUgMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDAuDQo8bGliLmNyYj4gbGluZSAzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMS4NCjxsaWIuY3JiPiBsaW5lIDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyLg0KPGxpYi5jcmI+IGxpbmUgNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMuDQo8bGliLmNyYj4gbGluZSA2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNC4NCjxsaWIuY3JiPiBsaW5lIDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Lg0KPGxpYi5jcmI+IGxpbmUgODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDYuDQo8bGliLmNyYj4gbGluZSA5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNy4NCjxsaWIuY3JiPiBsaW5lIDEwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOC4NCjxsaWIuY3JiPiBsaW5lIDExOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gOS4NCjxsaWIuY3JiPiBsaW5lIDEyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTAuDQo8bGliLmNyYj4gbGluZSAxMzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDExLg0KPGxpYi5jcmI+IGxpbmUgMTQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxMi4NCjxsaWIuY3JiPiBsaW5lIDE1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTMuDQo8bGliLmNyYj4gbGluZSAxNjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE0Lg0KPGxpYi5jcmI+IGxpbmUgMTc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxNS4NCjxsaWIuY3JiPiBsaW5lIDE4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTYuDQo8bGliLmNyYj4gbGluZSAxOTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDE3Lg0KPGxpYi5jcmI+IGxpbmUgMjA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAxOC4NCjxsaWIuY3JiPiBsaW5lIDIxOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMTkuDQo8bGliLmNyYj4gbGluZSAyMjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIwLg0KPGxpYi5jcmI+IGxpbmUgMjM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyMS4NCjxsaWIuY3JiPiBsaW5lIDI0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMjIuDQo8bGliLmNyYj4gbGluZSAyNTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDIzLg0KPGxpYi5jcmI+IGxpbmUgMjY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNC4NCjxsaWIuY3JiPiBsaW5lIDI3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMjUuDQo8bGliLmNyYj4gbGluZSAyODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI2Lg0KPGxpYi5jcmI+IGxpbmUgMjk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAyNy4NCjxsaWIuY3JiPiBsaW5lIDMwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMjguDQo8bGliLmNyYj4gbGluZSAzMTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDI5Lg0KPGxpYi5jcmI+IGxpbmUgMzI6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMC4NCjxsaWIuY3JiPiBsaW5lIDMzOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMzEuDQo8bGliLmNyYj4gbGluZSAzNDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDMyLg0KPGxpYi5jcmI+IGxpbmUgMzU6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzMy4NCjxsaWIuY3JiPiBsaW5lIDM2OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMzQuDQo8bGliLmNyYj4gbGluZSAzNzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM1Lg0KPGxpYi5jcmI+IGxpbmUgMzg6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzNi4NCjxsaWIuY3JiPiBsaW5lIDM5OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gMzcuDQo8bGliLmNyYj4gbGluZSA0MDogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDM4Lg0KPGxpYi5jcmI+IGxpbmUgNDE6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSAzOS4NCjxsaWIuY3JiPiBsaW5lIDQyOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDAuDQo8bGliLmNyYj4gbGluZSA0MzogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQxLg0KPGxpYi5jcmI+IGxpbmUgNDQ6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0Mi4NCjxsaWIuY3JiPiBsaW5lIDQ1OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDMuDQo8bGliLmNyYj4gbGluZSA0NjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ0Lg0KPGxpYi5jcmI+IGxpbmUgNDc6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0NS4NCjxsaWIuY3JiPiBsaW5lIDQ4OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDYuDQo8bGliLmNyYj4gbGluZSA0OTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDQ3Lg0KPGxpYi5jcmI+IGxpbmUgNTA6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA0OC4NCjxsaWIuY3JiPiBsaW5lIDUxOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNDkuDQo8bGliLmNyYj4gbGluZSA1MjogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUwLg0KPGxpYi5jcmI+IGxpbmUgNTM6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1MS4NCjxsaWIuY3JiPiBsaW5lIDU0OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNTIuDQo8bGliLmNyYj4gbGluZSA1NTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDUzLg0KPGxpYi5jcmI+IGxpbmUgNTY6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1NC4NCjxsaWIuY3JiPiBsaW5lIDU3OiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNTUuDQo8bGliLmNyYj4gbGluZSA1ODogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU2Lg0KPGxpYi5jcmI+IGxpbmUgNTk6IEludmFsaWQsIG9yIG91dCBvZiBwbGFjZSBleHByZXNzaW9uOiBYID0gPSA1Ny4NCjxsaWIuY3JiPiBsaW5lIDYwOiBJbnZhbGlkLCBvciBvdXQgb2YgcGxhY2UgZXhwcmVzc2lvbjogWCA9ID0gNTguDQo8bGliLmNyYj4gbGluZSA2MTogSW52YWxpZCwgb3Igb3V0IG9mIHBsYWNlIGV4cHJlc3Npb246IFggPSA9IDU5Lg0K",
+    "o.inc": "UHVibGljIFgNClB1YmxpYyBYDQpYID0gPSAwDQpYID0gPSAxDQpYID0gPSAyDQpYID0gPSAzDQpYID0gPSA0DQpYID0gPSA1DQpYID0gPSA2DQpYID0gPSA3DQpYID0gPSA4DQpYID0gPSA5DQpYID0gPSAxMA0KWCA9ID0gMTENClggPSA9IDEyDQpYID0gPSAxMw0KWCA9ID0gMTQNClggPSA9IDE1DQpYID0gPSAxNg0KWCA9ID0gMTcNClggPSA9IDE4DQpYID0gPSAxOQ0KWCA9ID0gMjANClggPSA9IDIxDQpYID0gPSAyMg0KWCA9ID0gMjMNClggPSA9IDI0DQpYID0gPSAyNQ0KWCA9ID0gMjYNClggPSA9IDI3DQpYID0gPSAyOA0KWCA9ID0gMjkNClggPSA9IDMwDQpYID0gPSAzMQ0KWCA9ID0gMzINClggPSA9IDMzDQpYID0gPSAzNA0KWCA9ID0gMzUNClggPSA9IDM2DQpYID0gPSAzNw0KWCA9ID0gMzgNClggPSA9IDM5DQpYID0gPSA0MA0KWCA9ID0gNDENClggPSA9IDQyDQpYID0gPSA0Mw0KWCA9ID0gNDQNClggPSA9IDQ1DQpYID0gPSA0Ng0KWCA9ID0gNDcNClggPSA9IDQ4DQpYID0gPSA0OQ0KWCA9ID0gNTANClggPSA9IDUxDQpYID0gPSA1Mg0KWCA9ID0gNTMNClggPSA9IDU0DQpYID0gPSA1NQ0KWCA9ID0gNTYNClggPSA9IDU3DQpYID0gPSA1OA0KWCA9ID0gNTkNClggPSA9IDYwDQo="
+   }
+  },
+  {
+   "id": "cr6-preprocess-pass1-buffer-full-second-section",
+   "logger": "cr6",
+   "args": [
+    "-p",
+    "o.pre",
+    "P"
+   ],
+   "program": "sec.CR6",
+   "source": "IncludeSection(\"Safe\",\"CPU:lib.crb\")\nIncludeSection(\"Bad\",\"CPU:lib.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "lib.crb": "#If Section = \"Bad\"\nPublic 1bad0\nPublic 1bad1\nPublic 1bad2\nPublic 1bad3\nPublic 1bad4\nPublic 1bad5\nPublic 1bad6\nPublic 1bad7\nPublic 1bad8\nPublic 1bad9\nPublic 1bad10\nPublic 1bad11\nPublic 1bad12\nPublic 1bad13\nPublic 1bad14\nPublic 1bad15\nPublic 1bad16\nPublic 1bad17\nPublic 1bad18\nPublic 1bad19\nPublic 1bad20\nPublic 1bad21\nPublic 1bad22\nPublic 1bad23\nPublic 1bad24\nPublic 1bad25\nPublic 1bad26\nPublic 1bad27\nPublic 1bad28\nPublic 1bad29\nPublic 1bad30\nPublic 1bad31\nPublic 1bad32\nPublic 1bad33\nPublic 1bad34\nPublic 1bad35\nPublic 1bad36\nPublic 1bad37\nPublic 1bad38\nPublic 1bad39\nPublic 1bad40\nPublic 1bad41\nPublic 1bad42\nPublic 1bad43\nPublic 1bad44\nPublic 1bad45\nPublic 1bad46\nPublic 1bad47\nPublic 1bad48\nPublic 1bad49\nPublic 1bad50\nPublic 1bad51\nPublic 1bad52\nPublic 1bad53\nPublic 1bad54\nPublic 1bad55\nPublic 1bad56\nPublic 1bad57\nPublic 1bad58\nPublic 1bad59\nPublic 1bad60\nPublic 1bad61\nPublic 1bad62\nPublic 1bad63\nPublic 1bad64\nPublic 1bad65\nPublic 1bad66\nPublic 1bad67\nPublic 1bad68\nPublic 1bad69\nPublic 1bad70\nPublic 1bad71\nPublic 1bad72\nPublic 1bad73\nPublic 1bad74\nPublic 1bad75\nPublic 1bad76\nPublic 1bad77\nPublic 1bad78\nPublic 1bad79\nPublic 1bad80\nPublic 1bad81\nPublic 1bad82\nPublic 1bad83\nPublic 1bad84\nPublic 1bad85\nPublic 1bad86\nPublic 1bad87\nPublic 1bad88\nPublic 1bad89\nPublic 1bad90\nPublic 1bad91\nPublic 1bad92\nPublic 1bad93\nPublic 1bad94\nPublic 1bad95\nPublic 1bad96\nPublic 1bad97\nPublic 1bad98\nPublic 1bad99\nPublic 1bad100\nPublic 1bad101\nPublic 1bad102\nPublic 1bad103\nPublic 1bad104\nPublic 1bad105\nPublic 1bad106\nPublic 1bad107\nPublic 1bad108\nPublic 1bad109\nPublic 1bad110\nPublic 1bad111\nPublic 1bad112\nPublic 1bad113\nPublic 1bad114\nPublic 1bad115\nPublic 1bad116\nPublic 1bad117\nPublic 1bad118\nPublic 1bad119\nPublic 1bad120\nPublic 1bad121\nPublic 1bad122\nPublic 1bad123\nPublic 1bad124\nPublic 1bad125\nPublic 1bad126\nPublic 1bad127\nPublic 1bad128\nPublic 1bad129\nPublic 1bad130\nPublic 1bad131\nPublic 1bad132\nPublic 1bad133\nPublic 1bad134\nPublic 1bad135\nPublic 1bad136\nPublic 1bad137\nPublic 1bad138\nPublic 1bad139\nPublic 1bad140\nPublic 1bad141\nPublic 1bad142\nPublic 1bad143\nPublic 1bad144\nPublic 1bad145\nPublic 1bad146\nPublic 1bad147\nPublic 1bad148\nPublic 1bad149\nPublic 1bad150\nPublic 1bad151\nPublic 1bad152\nPublic 1bad153\nPublic 1bad154\nPublic 1bad155\nPublic 1bad156\nPublic 1bad157\nPublic 1bad158\nPublic 1bad159\n#EndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "sec.CR6 -- Compile Failed!\n\n<lib.crb> line 2: Variable name 1bad0 illegal, starts with a number.\n<lib.crb> line 3: Variable name 1bad1 illegal, starts with a number.\n<lib.crb> line 4: Variable name 1bad2 illegal, starts with a number.\n<lib.crb> line 5: Variable name 1bad3 illegal, starts with a number.\n<lib.crb> line 6: Variable name 1bad4 illegal, starts with a number.\n<lib.crb> line 7: Variable name 1bad5 illegal, starts with a number.\n<lib.crb> line 8: Variable name 1bad6 illegal, starts with a number.\n<lib.crb> line 9: Variable name 1bad7 illegal, starts with a number.\n<lib.crb> line 10: Variable name 1bad8 illegal, starts with a number.\n<lib.crb> line 11: Variable name 1bad9 illegal, starts with a number.\n<lib.crb> line 12: Variable name 1bad10 illegal, starts with a number.\n<lib.crb> line 13: Variable name 1bad11 illegal, starts with a number.\n<lib.crb> line 14: Variable name 1bad12 illegal, starts with a number.\n<lib.crb> line 15: Variable name 1bad13 illegal, starts with a number.\n<lib.crb> line 16: Variable name 1bad14 illegal, starts with a number.\n<lib.crb> line 17: Variable name 1bad15 illegal, starts with a number.\n<lib.crb> line 18: Variable name 1bad16 illegal, starts with a number.\n<lib.crb> line 19: Variable name 1bad17 illegal, starts with a number.\n<lib.crb> line 20: Variable name 1bad18 illegal, starts with a number.\n<lib.crb> line 21: Variable name 1bad19 illegal, starts with a number.\n<lib.crb> line 22: Variable name 1bad20 illegal, starts with a number.\n<lib.crb> line 23: Variable name 1bad21 illegal, starts with a number.\n<lib.crb> line 24: Variable name 1bad22 illegal, starts with a number.\n<lib.crb> line 25: Variable name 1bad23 illegal, starts with a number.\n<lib.crb> line 26: Variable name 1bad24 illegal, starts with a number.\n<lib.crb> line 27: Variable name 1bad25 illegal, starts with a number.\n<lib.crb> line 28: Variable name 1bad26 illegal, starts with a number.\n<lib.crb> line 29: Variable name 1bad27 illegal, starts with a number.\n<lib.crb> line 30: Variable name 1bad28 illegal, starts with a number.\n<lib.crb> line 31: Variable name 1bad29 illegal, starts with a number.\n<lib.crb> line 32: Variable name 1bad30 illegal, starts with a number.\n<lib.crb> line 33: Variable name 1bad31 illegal, starts with a number.\n<lib.crb> line 34: Variable name 1bad32 illegal, starts with a number.\n<lib.crb> line 35: Variable name 1bad33 illegal, starts with a number.\n<lib.crb> line 36: Variable name 1bad34 illegal, starts with a number.\n<lib.crb> line 37: Variable name 1bad35 illegal, starts with a number.\n<lib.crb> line 38: Variable name 1bad36 illegal, starts with a number.\n<lib.crb> line 39: Variable name 1bad37 illegal, starts with a number.\n<lib.crb> line 40: Variable name 1bad38 illegal, starts with a number.\n<lib.crb> line 41: Variable name 1bad39 illegal, starts with a number.\n<lib.crb> line 42: Variable name 1bad40 illegal, starts with a number.\n<lib.crb> line 43: Variable name 1bad41 illegal, starts with a number.\n<lib.crb> line 44: Variable name 1bad42 illegal, starts with a number.\n<lib.crb> line 45: Variable name 1bad43 illegal, starts with a number.\n<lib.crb> line 46: Variable name 1bad44 illegal, starts with a number.\n<lib.crb> line 47: Variable name 1bad45 illegal, starts with a number.\n<lib.crb> line 48: Variable name 1bad46 illegal, starts with a number.\n<lib.crb> line 49: Variable name 1bad47 illegal, starts with a number.\n<lib.crb> line 50: Variable name 1bad48 illegal, starts with a number.\n<lib.crb> line 51: Variable name 1bad49 illegal, starts with a number.\n<lib.crb> line 52: Variable name 1bad50 illegal, starts with a number.\n<lib.crb> line 53: Variable name 1bad51 illegal, starts with a number.\n<lib.crb> line 54: Variable name 1bad52 illegal, starts with a number.\n<lib.crb> line 55: Variable name 1bad53 illegal, starts with a number.\n<lib.crb> line 56: Variable name 1bad54 illegal, starts with a number.\n<lib.crb> line 57: Variable name 1bad55 illegal, starts with a number.\n<lib.crb> line 58: Variable name 1bad56 illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "c2VjLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgo8bGliLmNyYj4gbGluZSAyOiBWYXJpYWJsZSBuYW1lIDFiYWQwIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgMzogVmFyaWFibGUgbmFtZSAxYmFkMSBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCjxsaWIuY3JiPiBsaW5lIDQ6IFZhcmlhYmxlIG5hbWUgMWJhZDIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1OiBWYXJpYWJsZSBuYW1lIDFiYWQzIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgNjogVmFyaWFibGUgbmFtZSAxYmFkNCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCjxsaWIuY3JiPiBsaW5lIDc6IFZhcmlhYmxlIG5hbWUgMWJhZDUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA4OiBWYXJpYWJsZSBuYW1lIDFiYWQ2IGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgOTogVmFyaWFibGUgbmFtZSAxYmFkNyBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCjxsaWIuY3JiPiBsaW5lIDEwOiBWYXJpYWJsZSBuYW1lIDFiYWQ4IGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgMTE6IFZhcmlhYmxlIG5hbWUgMWJhZDkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxMjogVmFyaWFibGUgbmFtZSAxYmFkMTAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxMzogVmFyaWFibGUgbmFtZSAxYmFkMTEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNDogVmFyaWFibGUgbmFtZSAxYmFkMTIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNTogVmFyaWFibGUgbmFtZSAxYmFkMTMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNjogVmFyaWFibGUgbmFtZSAxYmFkMTQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNzogVmFyaWFibGUgbmFtZSAxYmFkMTUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxODogVmFyaWFibGUgbmFtZSAxYmFkMTYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxOTogVmFyaWFibGUgbmFtZSAxYmFkMTcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMDogVmFyaWFibGUgbmFtZSAxYmFkMTggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMTogVmFyaWFibGUgbmFtZSAxYmFkMTkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMjogVmFyaWFibGUgbmFtZSAxYmFkMjAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMzogVmFyaWFibGUgbmFtZSAxYmFkMjEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNDogVmFyaWFibGUgbmFtZSAxYmFkMjIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNTogVmFyaWFibGUgbmFtZSAxYmFkMjMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNjogVmFyaWFibGUgbmFtZSAxYmFkMjQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNzogVmFyaWFibGUgbmFtZSAxYmFkMjUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyODogVmFyaWFibGUgbmFtZSAxYmFkMjYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyOTogVmFyaWFibGUgbmFtZSAxYmFkMjcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMDogVmFyaWFibGUgbmFtZSAxYmFkMjggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMTogVmFyaWFibGUgbmFtZSAxYmFkMjkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMjogVmFyaWFibGUgbmFtZSAxYmFkMzAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMzogVmFyaWFibGUgbmFtZSAxYmFkMzEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNDogVmFyaWFibGUgbmFtZSAxYmFkMzIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNTogVmFyaWFibGUgbmFtZSAxYmFkMzMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNjogVmFyaWFibGUgbmFtZSAxYmFkMzQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNzogVmFyaWFibGUgbmFtZSAxYmFkMzUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzODogVmFyaWFibGUgbmFtZSAxYmFkMzYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzOTogVmFyaWFibGUgbmFtZSAxYmFkMzcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MDogVmFyaWFibGUgbmFtZSAxYmFkMzggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MTogVmFyaWFibGUgbmFtZSAxYmFkMzkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MjogVmFyaWFibGUgbmFtZSAxYmFkNDAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MzogVmFyaWFibGUgbmFtZSAxYmFkNDEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NDogVmFyaWFibGUgbmFtZSAxYmFkNDIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NTogVmFyaWFibGUgbmFtZSAxYmFkNDMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NjogVmFyaWFibGUgbmFtZSAxYmFkNDQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NzogVmFyaWFibGUgbmFtZSAxYmFkNDUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0ODogVmFyaWFibGUgbmFtZSAxYmFkNDYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0OTogVmFyaWFibGUgbmFtZSAxYmFkNDcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MDogVmFyaWFibGUgbmFtZSAxYmFkNDggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MTogVmFyaWFibGUgbmFtZSAxYmFkNDkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MjogVmFyaWFibGUgbmFtZSAxYmFkNTAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MzogVmFyaWFibGUgbmFtZSAxYmFkNTEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NDogVmFyaWFibGUgbmFtZSAxYmFkNTIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NTogVmFyaWFibGUgbmFtZSAxYmFkNTMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NjogVmFyaWFibGUgbmFtZSAxYmFkNTQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NzogVmFyaWFibGUgbmFtZSAxYmFkNTUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1ODogVmFyaWFibGUgbmFtZSAxYmFkNTYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo=",
+    "o.pre": "SW5jbHVkZVNlY3Rpb24oIlNhZmUiLCJDUFU6bGliLmNyYiIpDQpJbmNsdWRlU2VjdGlvbigiQmFkIiwiQ1BVOmxpYi5jcmIiKQ0K"
+   }
+  },
+  {
+   "id": "cr6-include-pass1-buffer-full-second-section",
+   "logger": "cr6",
+   "args": [
+    "-i",
+    "o.inc",
+    "P"
+   ],
+   "program": "sec.CR6",
+   "source": "IncludeSection(\"Safe\",\"CPU:lib.crb\")\nIncludeSection(\"Bad\",\"CPU:lib.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "lib.crb": "#If Section = \"Bad\"\nPublic 1bad0\nPublic 1bad1\nPublic 1bad2\nPublic 1bad3\nPublic 1bad4\nPublic 1bad5\nPublic 1bad6\nPublic 1bad7\nPublic 1bad8\nPublic 1bad9\nPublic 1bad10\nPublic 1bad11\nPublic 1bad12\nPublic 1bad13\nPublic 1bad14\nPublic 1bad15\nPublic 1bad16\nPublic 1bad17\nPublic 1bad18\nPublic 1bad19\nPublic 1bad20\nPublic 1bad21\nPublic 1bad22\nPublic 1bad23\nPublic 1bad24\nPublic 1bad25\nPublic 1bad26\nPublic 1bad27\nPublic 1bad28\nPublic 1bad29\nPublic 1bad30\nPublic 1bad31\nPublic 1bad32\nPublic 1bad33\nPublic 1bad34\nPublic 1bad35\nPublic 1bad36\nPublic 1bad37\nPublic 1bad38\nPublic 1bad39\nPublic 1bad40\nPublic 1bad41\nPublic 1bad42\nPublic 1bad43\nPublic 1bad44\nPublic 1bad45\nPublic 1bad46\nPublic 1bad47\nPublic 1bad48\nPublic 1bad49\nPublic 1bad50\nPublic 1bad51\nPublic 1bad52\nPublic 1bad53\nPublic 1bad54\nPublic 1bad55\nPublic 1bad56\nPublic 1bad57\nPublic 1bad58\nPublic 1bad59\nPublic 1bad60\nPublic 1bad61\nPublic 1bad62\nPublic 1bad63\nPublic 1bad64\nPublic 1bad65\nPublic 1bad66\nPublic 1bad67\nPublic 1bad68\nPublic 1bad69\nPublic 1bad70\nPublic 1bad71\nPublic 1bad72\nPublic 1bad73\nPublic 1bad74\nPublic 1bad75\nPublic 1bad76\nPublic 1bad77\nPublic 1bad78\nPublic 1bad79\nPublic 1bad80\nPublic 1bad81\nPublic 1bad82\nPublic 1bad83\nPublic 1bad84\nPublic 1bad85\nPublic 1bad86\nPublic 1bad87\nPublic 1bad88\nPublic 1bad89\nPublic 1bad90\nPublic 1bad91\nPublic 1bad92\nPublic 1bad93\nPublic 1bad94\nPublic 1bad95\nPublic 1bad96\nPublic 1bad97\nPublic 1bad98\nPublic 1bad99\nPublic 1bad100\nPublic 1bad101\nPublic 1bad102\nPublic 1bad103\nPublic 1bad104\nPublic 1bad105\nPublic 1bad106\nPublic 1bad107\nPublic 1bad108\nPublic 1bad109\nPublic 1bad110\nPublic 1bad111\nPublic 1bad112\nPublic 1bad113\nPublic 1bad114\nPublic 1bad115\nPublic 1bad116\nPublic 1bad117\nPublic 1bad118\nPublic 1bad119\nPublic 1bad120\nPublic 1bad121\nPublic 1bad122\nPublic 1bad123\nPublic 1bad124\nPublic 1bad125\nPublic 1bad126\nPublic 1bad127\nPublic 1bad128\nPublic 1bad129\nPublic 1bad130\nPublic 1bad131\nPublic 1bad132\nPublic 1bad133\nPublic 1bad134\nPublic 1bad135\nPublic 1bad136\nPublic 1bad137\nPublic 1bad138\nPublic 1bad139\nPublic 1bad140\nPublic 1bad141\nPublic 1bad142\nPublic 1bad143\nPublic 1bad144\nPublic 1bad145\nPublic 1bad146\nPublic 1bad147\nPublic 1bad148\nPublic 1bad149\nPublic 1bad150\nPublic 1bad151\nPublic 1bad152\nPublic 1bad153\nPublic 1bad154\nPublic 1bad155\nPublic 1bad156\nPublic 1bad157\nPublic 1bad158\nPublic 1bad159\n#EndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "sec.CR6 -- Compile Failed!\n\n<lib.crb> line 2: Variable name 1bad0 illegal, starts with a number.\n<lib.crb> line 3: Variable name 1bad1 illegal, starts with a number.\n<lib.crb> line 4: Variable name 1bad2 illegal, starts with a number.\n<lib.crb> line 5: Variable name 1bad3 illegal, starts with a number.\n<lib.crb> line 6: Variable name 1bad4 illegal, starts with a number.\n<lib.crb> line 7: Variable name 1bad5 illegal, starts with a number.\n<lib.crb> line 8: Variable name 1bad6 illegal, starts with a number.\n<lib.crb> line 9: Variable name 1bad7 illegal, starts with a number.\n<lib.crb> line 10: Variable name 1bad8 illegal, starts with a number.\n<lib.crb> line 11: Variable name 1bad9 illegal, starts with a number.\n<lib.crb> line 12: Variable name 1bad10 illegal, starts with a number.\n<lib.crb> line 13: Variable name 1bad11 illegal, starts with a number.\n<lib.crb> line 14: Variable name 1bad12 illegal, starts with a number.\n<lib.crb> line 15: Variable name 1bad13 illegal, starts with a number.\n<lib.crb> line 16: Variable name 1bad14 illegal, starts with a number.\n<lib.crb> line 17: Variable name 1bad15 illegal, starts with a number.\n<lib.crb> line 18: Variable name 1bad16 illegal, starts with a number.\n<lib.crb> line 19: Variable name 1bad17 illegal, starts with a number.\n<lib.crb> line 20: Variable name 1bad18 illegal, starts with a number.\n<lib.crb> line 21: Variable name 1bad19 illegal, starts with a number.\n<lib.crb> line 22: Variable name 1bad20 illegal, starts with a number.\n<lib.crb> line 23: Variable name 1bad21 illegal, starts with a number.\n<lib.crb> line 24: Variable name 1bad22 illegal, starts with a number.\n<lib.crb> line 25: Variable name 1bad23 illegal, starts with a number.\n<lib.crb> line 26: Variable name 1bad24 illegal, starts with a number.\n<lib.crb> line 27: Variable name 1bad25 illegal, starts with a number.\n<lib.crb> line 28: Variable name 1bad26 illegal, starts with a number.\n<lib.crb> line 29: Variable name 1bad27 illegal, starts with a number.\n<lib.crb> line 30: Variable name 1bad28 illegal, starts with a number.\n<lib.crb> line 31: Variable name 1bad29 illegal, starts with a number.\n<lib.crb> line 32: Variable name 1bad30 illegal, starts with a number.\n<lib.crb> line 33: Variable name 1bad31 illegal, starts with a number.\n<lib.crb> line 34: Variable name 1bad32 illegal, starts with a number.\n<lib.crb> line 35: Variable name 1bad33 illegal, starts with a number.\n<lib.crb> line 36: Variable name 1bad34 illegal, starts with a number.\n<lib.crb> line 37: Variable name 1bad35 illegal, starts with a number.\n<lib.crb> line 38: Variable name 1bad36 illegal, starts with a number.\n<lib.crb> line 39: Variable name 1bad37 illegal, starts with a number.\n<lib.crb> line 40: Variable name 1bad38 illegal, starts with a number.\n<lib.crb> line 41: Variable name 1bad39 illegal, starts with a number.\n<lib.crb> line 42: Variable name 1bad40 illegal, starts with a number.\n<lib.crb> line 43: Variable name 1bad41 illegal, starts with a number.\n<lib.crb> line 44: Variable name 1bad42 illegal, starts with a number.\n<lib.crb> line 45: Variable name 1bad43 illegal, starts with a number.\n<lib.crb> line 46: Variable name 1bad44 illegal, starts with a number.\n<lib.crb> line 47: Variable name 1bad45 illegal, starts with a number.\n<lib.crb> line 48: Variable name 1bad46 illegal, starts with a number.\n<lib.crb> line 49: Variable name 1bad47 illegal, starts with a number.\n<lib.crb> line 50: Variable name 1bad48 illegal, starts with a number.\n<lib.crb> line 51: Variable name 1bad49 illegal, starts with a number.\n<lib.crb> line 52: Variable name 1bad50 illegal, starts with a number.\n<lib.crb> line 53: Variable name 1bad51 illegal, starts with a number.\n<lib.crb> line 54: Variable name 1bad52 illegal, starts with a number.\n<lib.crb> line 55: Variable name 1bad53 illegal, starts with a number.\n<lib.crb> line 56: Variable name 1bad54 illegal, starts with a number.\n<lib.crb> line 57: Variable name 1bad55 illegal, starts with a number.\n<lib.crb> line 58: Variable name 1bad56 illegal, starts with a number.",
+   "expected_files": {
+    "CR6cmple.xxx": "c2VjLkNSNiAtLSBDb21waWxlIEZhaWxlZCENCgo8bGliLmNyYj4gbGluZSAyOiBWYXJpYWJsZSBuYW1lIDFiYWQwIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgMzogVmFyaWFibGUgbmFtZSAxYmFkMSBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCjxsaWIuY3JiPiBsaW5lIDQ6IFZhcmlhYmxlIG5hbWUgMWJhZDIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1OiBWYXJpYWJsZSBuYW1lIDFiYWQzIGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgNjogVmFyaWFibGUgbmFtZSAxYmFkNCBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCjxsaWIuY3JiPiBsaW5lIDc6IFZhcmlhYmxlIG5hbWUgMWJhZDUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA4OiBWYXJpYWJsZSBuYW1lIDFiYWQ2IGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgOTogVmFyaWFibGUgbmFtZSAxYmFkNyBpbGxlZ2FsLCBzdGFydHMgd2l0aCBhIG51bWJlci4NCjxsaWIuY3JiPiBsaW5lIDEwOiBWYXJpYWJsZSBuYW1lIDFiYWQ4IGlsbGVnYWwsIHN0YXJ0cyB3aXRoIGEgbnVtYmVyLg0KPGxpYi5jcmI+IGxpbmUgMTE6IFZhcmlhYmxlIG5hbWUgMWJhZDkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxMjogVmFyaWFibGUgbmFtZSAxYmFkMTAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxMzogVmFyaWFibGUgbmFtZSAxYmFkMTEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNDogVmFyaWFibGUgbmFtZSAxYmFkMTIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNTogVmFyaWFibGUgbmFtZSAxYmFkMTMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNjogVmFyaWFibGUgbmFtZSAxYmFkMTQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxNzogVmFyaWFibGUgbmFtZSAxYmFkMTUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxODogVmFyaWFibGUgbmFtZSAxYmFkMTYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAxOTogVmFyaWFibGUgbmFtZSAxYmFkMTcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMDogVmFyaWFibGUgbmFtZSAxYmFkMTggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMTogVmFyaWFibGUgbmFtZSAxYmFkMTkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMjogVmFyaWFibGUgbmFtZSAxYmFkMjAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyMzogVmFyaWFibGUgbmFtZSAxYmFkMjEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNDogVmFyaWFibGUgbmFtZSAxYmFkMjIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNTogVmFyaWFibGUgbmFtZSAxYmFkMjMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNjogVmFyaWFibGUgbmFtZSAxYmFkMjQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyNzogVmFyaWFibGUgbmFtZSAxYmFkMjUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyODogVmFyaWFibGUgbmFtZSAxYmFkMjYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAyOTogVmFyaWFibGUgbmFtZSAxYmFkMjcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMDogVmFyaWFibGUgbmFtZSAxYmFkMjggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMTogVmFyaWFibGUgbmFtZSAxYmFkMjkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMjogVmFyaWFibGUgbmFtZSAxYmFkMzAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzMzogVmFyaWFibGUgbmFtZSAxYmFkMzEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNDogVmFyaWFibGUgbmFtZSAxYmFkMzIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNTogVmFyaWFibGUgbmFtZSAxYmFkMzMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNjogVmFyaWFibGUgbmFtZSAxYmFkMzQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzNzogVmFyaWFibGUgbmFtZSAxYmFkMzUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzODogVmFyaWFibGUgbmFtZSAxYmFkMzYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSAzOTogVmFyaWFibGUgbmFtZSAxYmFkMzcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MDogVmFyaWFibGUgbmFtZSAxYmFkMzggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MTogVmFyaWFibGUgbmFtZSAxYmFkMzkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MjogVmFyaWFibGUgbmFtZSAxYmFkNDAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0MzogVmFyaWFibGUgbmFtZSAxYmFkNDEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NDogVmFyaWFibGUgbmFtZSAxYmFkNDIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NTogVmFyaWFibGUgbmFtZSAxYmFkNDMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NjogVmFyaWFibGUgbmFtZSAxYmFkNDQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0NzogVmFyaWFibGUgbmFtZSAxYmFkNDUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0ODogVmFyaWFibGUgbmFtZSAxYmFkNDYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA0OTogVmFyaWFibGUgbmFtZSAxYmFkNDcgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MDogVmFyaWFibGUgbmFtZSAxYmFkNDggaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MTogVmFyaWFibGUgbmFtZSAxYmFkNDkgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MjogVmFyaWFibGUgbmFtZSAxYmFkNTAgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1MzogVmFyaWFibGUgbmFtZSAxYmFkNTEgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NDogVmFyaWFibGUgbmFtZSAxYmFkNTIgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NTogVmFyaWFibGUgbmFtZSAxYmFkNTMgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NjogVmFyaWFibGUgbmFtZSAxYmFkNTQgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1NzogVmFyaWFibGUgbmFtZSAxYmFkNTUgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo8bGliLmNyYj4gbGluZSA1ODogVmFyaWFibGUgbmFtZSAxYmFkNTYgaWxsZWdhbCwgc3RhcnRzIHdpdGggYSBudW1iZXIuDQo=",
+    "o.inc": "UHVibGljIDFiYWQwDQpQdWJsaWMgMWJhZDENClB1YmxpYyAxYmFkMg0KUHVibGljIDFiYWQzDQpQdWJsaWMgMWJhZDQNClB1YmxpYyAxYmFkNQ0KUHVibGljIDFiYWQ2DQpQdWJsaWMgMWJhZDcNClB1YmxpYyAxYmFkOA0KUHVibGljIDFiYWQ5DQpQdWJsaWMgMWJhZDEwDQpQdWJsaWMgMWJhZDExDQpQdWJsaWMgMWJhZDEyDQpQdWJsaWMgMWJhZDEzDQpQdWJsaWMgMWJhZDE0DQpQdWJsaWMgMWJhZDE1DQpQdWJsaWMgMWJhZDE2DQpQdWJsaWMgMWJhZDE3DQpQdWJsaWMgMWJhZDE4DQpQdWJsaWMgMWJhZDE5DQpQdWJsaWMgMWJhZDIwDQpQdWJsaWMgMWJhZDIxDQpQdWJsaWMgMWJhZDIyDQpQdWJsaWMgMWJhZDIzDQpQdWJsaWMgMWJhZDI0DQpQdWJsaWMgMWJhZDI1DQpQdWJsaWMgMWJhZDI2DQpQdWJsaWMgMWJhZDI3DQpQdWJsaWMgMWJhZDI4DQpQdWJsaWMgMWJhZDI5DQpQdWJsaWMgMWJhZDMwDQpQdWJsaWMgMWJhZDMxDQpQdWJsaWMgMWJhZDMyDQpQdWJsaWMgMWJhZDMzDQpQdWJsaWMgMWJhZDM0DQpQdWJsaWMgMWJhZDM1DQpQdWJsaWMgMWJhZDM2DQpQdWJsaWMgMWJhZDM3DQpQdWJsaWMgMWJhZDM4DQpQdWJsaWMgMWJhZDM5DQpQdWJsaWMgMWJhZDQwDQpQdWJsaWMgMWJhZDQxDQpQdWJsaWMgMWJhZDQyDQpQdWJsaWMgMWJhZDQzDQpQdWJsaWMgMWJhZDQ0DQpQdWJsaWMgMWJhZDQ1DQpQdWJsaWMgMWJhZDQ2DQpQdWJsaWMgMWJhZDQ3DQpQdWJsaWMgMWJhZDQ4DQpQdWJsaWMgMWJhZDQ5DQpQdWJsaWMgMWJhZDUwDQpQdWJsaWMgMWJhZDUxDQpQdWJsaWMgMWJhZDUyDQpQdWJsaWMgMWJhZDUzDQpQdWJsaWMgMWJhZDU0DQpQdWJsaWMgMWJhZDU1DQpQdWJsaWMgMWJhZDU2DQpQdWJsaWMgMWJhZDU3DQo="
+   }
+  }
+ ]
+}

@@ -145,6 +145,7 @@ def _walk_file(
     expand_includes: bool,
     in_include: bool,
     seen: frozenset[str],
+    stop: dict | None = None,          # {"at": (file name lower, line), "hit": bool}
 ) -> list[str]:
     out: list[str] = []
     for g in groups:
@@ -160,12 +161,41 @@ def _walk_file(
             continue
         if not parser_instance._active():
             continue
+        if stop is not None and stop["at"] == (filename.lower(), g.line):
+            # the reference stops preprocessing with the pass-1 error its message buffer cannot hold,
+            # at its first active occurrence (oracle, CR6, round 74, `docs/artifacts.md`)
+            out.append(g.raw)
+            parser_instance._done = stop["hit"] = True
+            break
         if _fold_consts_and_check_endprog(g.eval, g.line, filename, parser_instance):
             out.append(g.raw)
             parser_instance._done = True
             break
         m_sec = source._INCLUDE_SECTION_RE.match(g.eval)
         m_inc = None if m_sec else source._INCLUDE_RE.match(g.eval)
+        if (m_sec or m_inc) and not expand_includes:
+            # `-p` ends its output after an include whose file is missing (oracle, CR6, round 74,
+            # artifact matrix `fail_include`/`fail_section`)
+            spec = m_sec.group(2) if m_sec else m_inc.group(1) if m_inc else ""
+            out.append(g.raw)
+            target = source._resolve_include_path(spec, directory)
+            if target is None:
+                parser_instance._done = True
+                break
+            key = str(target.resolve())
+            if key not in seen and not (m_inc and in_include):
+                # not written, but its `Const`s still decide later `#If`s (`Main.CR6`'s
+                # `#If BatteryTempSensor > 0` with the Const in an included `StationConfig.crb`)
+                try:
+                    child = _read_groups(_split_physical(target.read_bytes().decode("latin-1")))
+                except OSError:
+                    continue
+                _walk_file(child, target.name, m_sec.group(1) if m_sec else None, target.parent,
+                           parser_instance, False, in_include or bool(m_inc), seen | {key}, stop)
+                if stop is not None and stop["hit"]:
+                    break
+                parser_instance._done = False   # an `EndProg` in the include does not end this file
+            continue
         if (m_sec or m_inc) and expand_includes:
             if m_sec:
                 spec = m_sec.group(2)
@@ -179,7 +209,8 @@ def _walk_file(
                 new_section, new_in_include = None, True
             target = source._resolve_include_path(spec, directory)
             if target is None:
-                continue  # matches source.py: a missing include contributes nothing
+                out.append(g.raw)   # `-i` keeps a missing include as written (oracle, CR6, round 74)
+                continue
             key = str(target.resolve())
             if key in seen:
                 out.append(g.raw)
@@ -191,7 +222,7 @@ def _walk_file(
             child_groups = _read_groups(_split_physical(data.decode("latin-1")))
             out.extend(_walk_file(
                 child_groups, target.name, new_section, target.parent, parser_instance,
-                expand_includes, new_in_include, seen | {key},
+                expand_includes, new_in_include, seen | {key}, stop,
             ))
             if parser_instance._done:
                 break
@@ -200,9 +231,11 @@ def _walk_file(
     return out
 
 
-def preprocess(path: Path, profile: Profile, *, expand_includes: bool) -> bytes:
+def preprocess(path: Path, profile: Profile, *, expand_includes: bool,
+               stop: tuple[str, int] | None = None) -> bytes:
     """The `-p` (`expand_includes=False`) or `-i` (`expand_includes=True`) output bytes for
-    `path`: CRLF, one trailing CRLF, `latin-1`."""
+    `path`: CRLF, one trailing CRLF, `latin-1`. With `stop` (file name, line), the output ends with
+    that statement: where a dropped pass-1 error ends the reference compile."""
     path = Path(path)
     data = path.read_bytes()
     groups = _read_groups(_split_physical(data.decode("latin-1")))
@@ -210,5 +243,6 @@ def preprocess(path: Path, profile: Profile, *, expand_includes: bool) -> bytes:
     lines = _walk_file(
         groups, path.name, None, path.parent, parser_instance,
         expand_includes, False, frozenset({str(path.resolve())}),
+        None if stop is None else {"at": (stop[0].lower(), stop[1]), "hit": False},
     )
     return ("\r\n".join(lines) + "\r\n").encode("latin-1", "replace")

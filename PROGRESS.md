@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-31 after development round 73; M1-M4 and M6 done** (round-51
+Current compiler state and handoff, updated **2026-10-31 after development round 74; M1-M6 done** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73; M5 artifact matrix, round 74). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,31 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 74: M5 done** (single agent; Codex `gpt-6.1-sol` review in `scratch/m5/`, local only).
+`tools/artifact_matrix.py` compares every output of the reference compiler and `crbc` (exit,
+stdout, message file, `-z`/`-l`/`-c`/`-p`/`-i`/`-b` files, written, missing or empty) over 76
+programs and 10 option sets per profile ([artifacts](docs/artifacts.md)); baseline
+`tests/artifact_baseline.json` (all four profiles), gate `--gate no-regressions`, saved runs for CI
+in `tests/fixtures/m5_artifacts.json` (76). The matrix found and round 74 fixed:
+- `crbc` wrote `CR6cmple.xxx` for every profile (each compiler writes `<LOGGER>cmple.xxx`);
+- `-z` on a failed compile writes the version byte `0x01`; `-b` prints its message before the
+  result, also when a pass-1 error stops a CDM program;
+- `-p` ends after a missing include and reads the `Const`s of an existing one for `#If`; `-i` keeps
+  a missing include as written; a dropped pass-1 error (full message buffer) ends `-p`/`-i` output
+  at its statement;
+- first error: `Public 1bad` / `Sub S(1p)` is `Variable name 1bad illegal, starts with a number.`
+  (all four loggers; 8 round-45 strict xfails promoted).
+- Result on CR6: 757 of 760 cells exact; CR1000X 685 (the TDF Status table is CR6's: best
+  effort). Remaining cases are listed in the doc.
+- Codex review fixes: the gate pins output fingerprints and fails on new cells, reference
+  failures and a missing baseline; the `-p`/`-i` cut follows the dropped error's own file and line
+  and only for pass-1 errors (four new probes); stdout compared as bytes on both sides; one staged
+  manifest for staging and the cache key.
+- Gates (`scratch/m5/gates*.log`, `replay.log`): 63,948 passed, 311 skipped, 1,283 strict xfail
+  (8 round-45 xfails promoted); server 174 passed; fixture audit 0 differing; CI saved replay 2,634
+  exact, no regression; four-profile difftest unchanged, GEUS 66/66; matrix gate exit 0 on CR6 and
+  CR1000X; both `verify.py` backends pass (21/21). No hardware tests.
 
 **Round 73: M6 done** (single agent; Codex `gpt-6.1-sol` reviews in `scratch/m6/codex-review*.log`, local only).
 The opencrbasic checks and coverage notices reach the editor:
@@ -633,8 +658,10 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    M6 (editor).
 8. **M6: done (round 73).** The language server publishes the checks (`opencrbasic (check)`, code,
    evidence link) and, with `coverageNotices`, the notices; `opencrbasic.checks` and
-   `opencrbasic.toml` configure them; quick fixes match by `data`. Next: M5 (artifacts), then M7.
-9. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
+   `opencrbasic.toml` configure them; quick fixes match by `data`.
+9. **M5: done (round 74)** ([artifacts](docs/artifacts.md)). Open: per-profile Status tables for
+   the CR1000X/CR300/CR350 TDF (best effort now). Next: M7 (internal release).
+10. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
    are kept in the round-30 snapshot in `git show 2612abad:opencrbasic/docs/progress-history.md`.
    Re-rank each under the fix, flag or accept rule before working on it.
 

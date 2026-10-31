@@ -1929,12 +1929,16 @@ class _Parser:
         if p.is_op("("):
             p.next()
             if not p.is_op(")") and not p.at_end():
-                params.append(self._parse_param(p, line, file, errors))
-                while p.is_op(","):
+                while True:
+                    if bad := self._numeric_name(p):   # (oracle, all four loggers, round 74: `Sub S(1p)`)
+                        errors.append(f"Variable name {bad} illegal, starts with a number.")
+                    else:
+                        params.append(self._parse_param(p, line, file, errors))
+                    if not p.is_op(","):
+                        break
                     p.next()
                     if p.at_end():
                         break  # a header cut off at a comma is accepted (oracle, 2026-10-12)
-                    params.append(self._parse_param(p, line, file, errors))
             p.expect_close(")")
         return_type = None
         if which == "FUNCTION" and p.is_ident("AS"):
@@ -2293,18 +2297,39 @@ class _Parser:
             # message instead of the generic "not a valid statement" fallback an `Unparsed` would
             # get.
             return S.Declaration(line, file, kind=kind, vars=[])
-        vars_ = [self._parse_vardecl(p, line, file)]
-        while p.is_op(","):
+        vars_: list[S.VarDecl] = []
+        while True:
+            if kind in ("PUBLIC", "DIM") and (bad := self._numeric_name(p)):
+                # (oracle, all four loggers, round 74: `Public 1bad`, `Dim X, 1bad(3) As Long`)
+                self.diags.error(line, f"Variable name {bad} illegal, starts with a number.", file)
+            else:
+                vars_.append(self._parse_vardecl(p, line, file))
+            if not p.is_op(","):
+                break
             p.next()
             if p.at_end():
                 # A trailing comma that runs off the end of the line: confirmed valid CRBasic
                 # (stddevrun_3.CR6, `Public Counter As Long,` with nothing further) -- tolerated
                 # the same way as an unclosed paren (`expect_close`). See docs/frontend.md.
                 break
-            vars_.append(self._parse_vardecl(p, line, file))
         if p.is_op(")") or p.is_op("}"):
             p.i = len(p.toks) - 1   # an unmatched `)`/`}` ends the declaration (oracle, round 14)
+        if not vars_:   # every name started with a digit: those errors are all (round 74)
+            return S.Unparsed(line, file, text=p.seg_text or "", reason="empty statement")
         return S.Declaration(line, file, kind=kind, vars=vars_)
+
+    @staticmethod
+    def _numeric_name(p: _TokStream) -> str | None:
+        """A declared name that starts with a digit (`1bad`), consumed with the rest of its item up
+        to a comma at depth 0; None (nothing consumed) for any other item."""
+        if p.peek().kind != "NUMBER":
+            return None
+        m = re.match(r"\d\w*", p.seg_text[p.peek().col:] if p.seg_text else p.peek().text)
+        depth = 0
+        while not p.at_end() and not (depth == 0 and (p.is_op(",") or p.is_op(")"))):
+            depth += p.is_op("(") - p.is_op(")")
+            p.next()
+        return m.group(0) if m else p.peek().text
 
     def _close_dims_or_raise(self, p: _TokStream, name_tok: Token) -> None:
         """A `Public`/`Dim`/`Static` dimension list's own closing `)`, unlike an instruction's
