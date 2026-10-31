@@ -1,17 +1,62 @@
 # opencrbasic
 
-An incomplete open-source, native re-implementation of Campbell Scientific's CRBasic
-pre-compilers for the CR6, CR1000X, CR300 and CR350 dataloggers (`CR6Comp.exe`,
-`cr1000xcomp.exe`, `cr300comp.exe`, `cr350comp.exe`). It runs on Linux, macOS and Windows with
-only Python 3.15+, no Wine and no Windows binaries. It aims to reproduce the logger compilers'
-checks, diagnostics and output artefacts, but known differences remain. Current differential
-results report normalized diagnostic output agreement; only outputs explicitly identified as
-byte-identical in `PROGRESS.md` have full byte parity. It can already replace the exe for this
-repository's supported build checks and gives future tooling (linters, simulators, automated
-tests) a parsed, checked program to work from.
+A native re-implementation of Campbell Scientific's CRBasic pre-compilers for the CR6, CR1000X,
+CR300 and CR350 dataloggers (`CR6Comp.exe`, `cr1000xcomp.exe`, `cr300comp.exe`, `cr350comp.exe`),
+with a language server and a VS Code client. It runs on Linux, macOS and Windows with only Python
+3.15+, no Wine and no Windows binaries. **Version 1.0** ([release record](docs/release-1.0.md)) is
+for internal use only and is not published or redistributed ([legal notes](docs/legal.md)).
 
-Status, measured against the real compilers: `PROGRESS.md`. Design, remaining-work strategy and
-parity exit criteria: [`PLAN.md`](PLAN.md#remaining-work-strategy).
+Status, measured against the real compilers: `PROGRESS.md`. Design and the v1.0 milestones:
+[`PLAN.md`](PLAN.md#v10-milestones).
+
+## Scope
+
+- **Gated profiles: CR6 and CR1000X.** On these, v1.0 gates the reference verdict in the relevant
+  area (the FirnMelt/GEUS instruction set and language constructs), the execution mode, and the
+  first error for realistic mistakes on relevant rules, measured on the repository programs, the 507
+  CRBasic help examples, the 66 GEUS programs, the saved fuzz replay and fresh `--relevant` fuzz
+  seeds. One relevant-area false accept is known: a `Sub` name that is also another routine's
+  parameter, used as a value. CR300 and CR350 are best effort: measured and kept, not gated (human
+  decision 2026-10-24).
+- **Outputs.** stdout, the message file, `-s`, `-u`, `-p`/`-i`, `-l`/`-c` and the CR6 TDF (`-z`) are
+  compared byte for byte by the [artifact matrix](docs/artifacts.md), which also lists what is best
+  effort per profile. `-t` covers the oracle-fitted instruction set (`docs/cli.md`).
+- **Excluded:** the CDM binary image of `-b` ([PLAN](PLAN.md#explicit-exclusions-from-parity)).
+- Known remaining cases (false accepts outside the relevant set, first-error decisions, matrix
+  differences) are listed in the release record.
+
+## Three channels
+
+Every finding belongs to one channel ([PLAN](PLAN.md#three-diagnostic-channels)):
+
+1. **Reference diagnostics**: what the reference compiler reports. Default `crbc` stdout, the message
+   file and the exit status carry only these, so `crbc` stays a drop-in.
+2. **opencrbasic checks** (`OCB001`-`OCB007`): likely defects the reference accepts, each with
+   evidence, controls and a default severity; `crbc --strict` (stderr, exit 3 on a check error),
+   `--report`, `opencrbasic.toml`, and the editor (source `opencrbasic (check)`). See
+   `docs/checker.md` "opencrbasic checks OCB002-OCB007 (M3)".
+3. **Coverage notices**: CR6 reference rules opencrbasic is known not to model, from the
+   [evidence inventory](docs/inventory.md); `--report` and, when enabled, editor hints. Information,
+   never a verdict.
+
+## Accepted differences
+
+In the differential tools, equal means equal exit status and equal stdout after whitespace
+normalization (line endings, trailing spaces); the artifact matrix compares bytes. By the human decision of 2026-10-24, differences in the order,
+wording or cascade of diagnostics after the first error are accepted and do not block a release;
+differences in the first error are fixed when they come from a realistic mistake and otherwise
+recorded in [`docs/first-error-review.md`](docs/first-error-review.md). Runner failures and
+reference crashes are never counted as verdicts.
+
+## Versions
+
+- The package version (`pyproject.toml`), `opencrbasic.__version__` and the VS Code extension
+  (`vscode/package.json`) are one number, released together (`tests/test_versions.py`). Major: a
+  change to the drop-in contract or a gated verdict policy; minor: new checks, notices or features;
+  patch: fixes.
+- `analysis.API_VERSION` (now 2) versions the editor facade; the language server refuses to start
+  with another (`docs/lsp-api.md`). `checks.SCHEMA_VERSION` (now 2) versions the `--report` JSON.
+  Each is bumped only on an incompatible change.
 
 ## Use
 
@@ -38,7 +83,7 @@ crbc [options] program [messagefile]
   -v / -d       print version (then compile / and exit)
   --logger L    cr6 | cr1000x | cr300 | cr350 (default: from the file extension
                 .CR6/.CR1X/.CR300/.CR350, else cr6)
-  --no-message-file   do not write CR6cmple.xxx
+  --no-message-file   do not write the message file (CR6cmple.xxx, CR1000Xcmple.xxx, ...)
   --strict      also run opencrbasic checks (likely defects the reference accepts) on stderr;
                 exit 3 when the program compiles but a check reports an error
                 (exit 4: invalid opencrbasic.toml)
@@ -51,7 +96,8 @@ Check configuration and the report schema: `docs/checker.md` "Check configuratio
 
 Output follows the exe's format: `Program.CR6 -- Compiled in SequentialMode.` (CR300/CR350:
 `-- Compiled OK.`), `Warning: ...` lines, or `-- Compile Failed!` followed by `line N: message`
-lines; the same text goes to `CR6cmple.xxx` with CRLF line endings; exit status 0 or 1.
+lines; the same text goes to `<LOGGER>cmple.xxx` (for example `CR6cmple.xxx`) with CRLF line
+endings; exit status 0 or 1.
 
 As a library:
 
@@ -78,9 +124,10 @@ setting selects the CR6 profile (default) or CR1000X, CR300 or CR350. It reports
 diagnostics and offers hover, completion, signature help, outline, folding, go to definition,
 references, highlighting, rename, formatting and quick fixes. Its highlighting names are the CR6 ones.
 A small VS Code client is in [`vscode/`](vscode/README.md). Setup, settings, feature limits and the
-host-tested status are in [`docs/lsp-user-guide.md`](docs/lsp-user-guide.md). Only macOS has been
-tested in VS Code so far, and the rename, formatting, quick-fix and file-watching features have not
-been run in an editor yet.
+host-tested status are in [`docs/lsp-user-guide.md`](docs/lsp-user-guide.md). It also shows the
+opencrbasic checks and, with `opencrbasic.coverageNotices`, the coverage notices. The editor features
+were host-tested in VS Code on macOS (T-01 to T-18, `LSP_TO_BE_TESTED.md`); the check and notice display
+(M6) has not been host-tested yet, and Windows and Linux are not claimed.
 
 ## How it was built
 
@@ -95,6 +142,8 @@ everything is checked differentially:
 | `tools/difftest.py --logger L` | normalized output vs the exe over repository programs and 507 CHM help examples |
 | `tools/tdftest.py` | `-z` TDF and `-l` table list, byte for byte |
 | `tools/fuzz.py`, `tools/fuzz_replay.py` | mutated programs, differential; reproducers in `tests/corpus/fuzz/` |
+| `tools/artifact_matrix.py` | every output file per profile and option set, with a baseline gate |
+| `tools/inventory.py` | the CR6 evidence inventory and the coverage-notice table |
 | `uv run pytest -q` | unit tests, corpus parse tests, TDF fixtures |
 
 Differential and replay runs default to reporting differences without failing on known gaps. Use

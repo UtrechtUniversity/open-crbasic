@@ -2785,7 +2785,7 @@
   },
   "include|FinApp_tester.CR6": {
    "CR300cmple.xxx differs": "63166d654f90439c",
-   "o.inc differs": "5f0bfd8caea2b841",
+   "o.inc differs": "f9fd9b25715de1f6",
    "stdout": "92270238be4cf7fe"
   },
   "include|Freezer_tester.CR6": {
@@ -2794,13 +2794,13 @@
    "stdout": "7e0474f2d93eeeb6"
   },
   "include|GPS_tester.CR6": {
-   "o.inc differs": "13b501fb40bf17ec"
+   "exact": ""
   },
   "include|InStrHeaderFilterTest.CR6": {
    "exact": ""
   },
   "include|Main.CR6": {
-   "o.inc differs": "a97a6e865731f5b1"
+   "exact": ""
   },
   "include|PT1000_tester.CR6": {
    "CR300cmple.xxx differs": "7070cd991d810b45",
@@ -2812,7 +2812,6 @@
   },
   "include|PowerBudget_tester.CR6": {
    "CR300cmple.xxx differs": "e3814f13f93482f9",
-   "o.inc differs": "baabfffd90af80cf",
    "stdout": "0aac21cc57c558b6"
   },
   "include|PowerProfile_tester.CR6": {
@@ -2820,7 +2819,6 @@
   },
   "include|Preflight_tester.CR6": {
    "CR300cmple.xxx differs": "271ca64b0b16cbc1",
-   "o.inc differs": "7dd3bec208ddd7cb",
    "stdout": "3631fc47938f1769"
   },
   "include|RailsOff.CR6": {
@@ -2828,11 +2826,11 @@
   },
   "include|SBD_tester.CR6": {
    "CR300cmple.xxx differs": "515c30823036dad3",
-   "o.inc differs": "6bf9250d6d05eed0",
+   "o.inc differs": "127123de6acd78d5",
    "stdout": "1d314594dd76c5bf"
   },
   "include|SbdPayload_tester.CR6": {
-   "o.inc differs": "553d8d65b5415c9a"
+   "o.inc differs": "77391f56af963e76"
   },
   "include|ScanSyncTest.CR6": {
    "exact": ""
@@ -2848,7 +2846,7 @@
   },
   "include|SnowVue_tester.CR6": {
    "CR300cmple.xxx differs": "ee45bc33bd20df1a",
-   "o.inc differs": "cf333ec74bce4692",
+   "o.inc differs": "e4e5ce30bc9b1cad",
    "stdout": "1dfb10230a44268b"
   },
   "include|TDRAcceptance.CR6": {
@@ -2861,7 +2859,7 @@
   },
   "include|TString_tester.CR6": {
    "CR300cmple.xxx differs": "9d32caef7f84a404",
-   "o.inc differs": "bdd261122e089c32",
+   "o.inc differs": "2c896892f1de4e96",
    "stdout": "fa3a31069efed80a"
   },
   "include|acpower_1.CR6": {
@@ -3512,7 +3510,6 @@
   },
   "preprocess|FinApp_tester.CR6": {
    "CR300cmple.xxx differs": "63166d654f90439c",
-   "o.pre differs": "f13da5d5a05a86c2",
    "stdout": "92270238be4cf7fe"
   },
   "preprocess|Freezer_tester.CR6": {
@@ -3521,13 +3518,13 @@
    "stdout": "7e0474f2d93eeeb6"
   },
   "preprocess|GPS_tester.CR6": {
-   "o.pre differs": "a54479120a838e82"
+   "exact": ""
   },
   "preprocess|InStrHeaderFilterTest.CR6": {
    "exact": ""
   },
   "preprocess|Main.CR6": {
-   "o.pre differs": "15d28954c723b386"
+   "exact": ""
   },
   "preprocess|PT1000_tester.CR6": {
    "CR300cmple.xxx differs": "7070cd991d810b45",
@@ -3539,7 +3536,6 @@
   },
   "preprocess|PowerBudget_tester.CR6": {
    "CR300cmple.xxx differs": "e3814f13f93482f9",
-   "o.pre differs": "2be1ff0dde772cb6",
    "stdout": "0aac21cc57c558b6"
   },
   "preprocess|PowerProfile_tester.CR6": {
@@ -3547,7 +3543,6 @@
   },
   "preprocess|Preflight_tester.CR6": {
    "CR300cmple.xxx differs": "271ca64b0b16cbc1",
-   "o.pre differs": "6184baba4b35f791",
    "stdout": "3631fc47938f1769"
   },
   "preprocess|RailsOff.CR6": {
@@ -3555,11 +3550,10 @@
   },
   "preprocess|SBD_tester.CR6": {
    "CR300cmple.xxx differs": "515c30823036dad3",
-   "o.pre differs": "d1b323ab7e8c2019",
    "stdout": "1d314594dd76c5bf"
   },
   "preprocess|SbdPayload_tester.CR6": {
-   "o.pre differs": "f0e02d2d82865c55"
+   "o.pre differs": "372aa198342552bc"
   },
   "preprocess|ScanSyncTest.CR6": {
    "exact": ""
@@ -3575,7 +3569,6 @@
   },
   "preprocess|SnowVue_tester.CR6": {
    "CR300cmple.xxx differs": "ee45bc33bd20df1a",
-   "o.pre differs": "95fca8a0fa75b719",
    "stdout": "1dfb10230a44268b"
   },
   "preprocess|TDRAcceptance.CR6": {
@@ -3588,7 +3581,6 @@
   },
   "preprocess|TString_tester.CR6": {
    "CR300cmple.xxx differs": "9d32caef7f84a404",
-   "o.pre differs": "e9cb25f61861ed8c",
    "stdout": "fa3a31069efed80a"
   },
   "preprocess|acpower_1.CR6": {
@@ -5247,13 +5239,13 @@
    "stdout": "9a095e914c0c7e02"
   },
   "include|GPS_tester.CR6": {
-   "o.inc differs": "4109cb1d1e03383c"
+   "exact": ""
   },
   "include|InStrHeaderFilterTest.CR6": {
    "exact": ""
   },
   "include|Main.CR6": {
-   "o.inc differs": "2cc78b15b095956e"
+   "exact": ""
   },
   "include|PT1000_tester.CR6": {
    "CR350cmple.xxx differs": "7070cd991d810b45",
@@ -5265,7 +5257,6 @@
   },
   "include|PowerBudget_tester.CR6": {
    "CR350cmple.xxx differs": "6c15361d6359edaf",
-   "o.inc differs": "9cbea3868b8f1ab8",
    "stdout": "2f2a7ad5926f4e68"
   },
   "include|PowerProfile_tester.CR6": {
@@ -5273,7 +5264,6 @@
   },
   "include|Preflight_tester.CR6": {
    "CR350cmple.xxx differs": "24b2a914674a3c51",
-   "o.inc differs": "7dd3bec208ddd7cb",
    "stdout": "9f145dcf58754d40"
   },
   "include|RailsOff.CR6": {
@@ -5281,11 +5271,11 @@
   },
   "include|SBD_tester.CR6": {
    "CR350cmple.xxx differs": "054b1d2764b2c0c3",
-   "o.inc differs": "8679ec547230a15d",
+   "o.inc differs": "095d25011a8eb608",
    "stdout": "8e8801fb6928faca"
   },
   "include|SbdPayload_tester.CR6": {
-   "o.inc differs": "553d8d65b5415c9a"
+   "o.inc differs": "77391f56af963e76"
   },
   "include|ScanSyncTest.CR6": {
    "exact": ""
@@ -5301,7 +5291,7 @@
   },
   "include|SnowVue_tester.CR6": {
    "CR350cmple.xxx differs": "ee45bc33bd20df1a",
-   "o.inc differs": "cf333ec74bce4692",
+   "o.inc differs": "e4e5ce30bc9b1cad",
    "stdout": "1dfb10230a44268b"
   },
   "include|TDRAcceptance.CR6": {
@@ -5314,7 +5304,7 @@
   },
   "include|TString_tester.CR6": {
    "CR350cmple.xxx differs": "9d32caef7f84a404",
-   "o.inc differs": "bdd261122e089c32",
+   "o.inc differs": "2c896892f1de4e96",
    "stdout": "fa3a31069efed80a"
   },
   "include|acpower_1.CR6": {
@@ -5970,13 +5960,13 @@
    "stdout": "9a095e914c0c7e02"
   },
   "preprocess|GPS_tester.CR6": {
-   "o.pre differs": "a54479120a838e82"
+   "exact": ""
   },
   "preprocess|InStrHeaderFilterTest.CR6": {
    "exact": ""
   },
   "preprocess|Main.CR6": {
-   "o.pre differs": "15d28954c723b386"
+   "exact": ""
   },
   "preprocess|PT1000_tester.CR6": {
    "CR350cmple.xxx differs": "7070cd991d810b45",
@@ -5988,7 +5978,6 @@
   },
   "preprocess|PowerBudget_tester.CR6": {
    "CR350cmple.xxx differs": "6c15361d6359edaf",
-   "o.pre differs": "2be1ff0dde772cb6",
    "stdout": "2f2a7ad5926f4e68"
   },
   "preprocess|PowerProfile_tester.CR6": {
@@ -5996,7 +5985,6 @@
   },
   "preprocess|Preflight_tester.CR6": {
    "CR350cmple.xxx differs": "24b2a914674a3c51",
-   "o.pre differs": "6184baba4b35f791",
    "stdout": "9f145dcf58754d40"
   },
   "preprocess|RailsOff.CR6": {
@@ -6004,11 +5992,10 @@
   },
   "preprocess|SBD_tester.CR6": {
    "CR350cmple.xxx differs": "054b1d2764b2c0c3",
-   "o.pre differs": "d1b323ab7e8c2019",
    "stdout": "8e8801fb6928faca"
   },
   "preprocess|SbdPayload_tester.CR6": {
-   "o.pre differs": "f0e02d2d82865c55"
+   "o.pre differs": "372aa198342552bc"
   },
   "preprocess|ScanSyncTest.CR6": {
    "exact": ""
@@ -6024,7 +6011,6 @@
   },
   "preprocess|SnowVue_tester.CR6": {
    "CR350cmple.xxx differs": "ee45bc33bd20df1a",
-   "o.pre differs": "95fca8a0fa75b719",
    "stdout": "1dfb10230a44268b"
   },
   "preprocess|TDRAcceptance.CR6": {
@@ -6037,7 +6023,6 @@
   },
   "preprocess|TString_tester.CR6": {
    "CR350cmple.xxx differs": "9d32caef7f84a404",
-   "o.pre differs": "e9cb25f61861ed8c",
    "stdout": "fa3a31069efed80a"
   },
   "preprocess|acpower_1.CR6": {

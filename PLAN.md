@@ -358,7 +358,7 @@ evidence and remaining listed cases are in `PROGRESS.md` ("Round 69") and the
 [first-error review](docs/first-error-review.md). **M3 done (round 70)**: checks
 `OCB001`-`OCB007` meet the exit criterion, signed off by a Codex `gpt-6.1-sol` read-only review
 (`scratch/m3b/codex-review3.log`, local only); see `PROGRESS.md` "Round 70". **M4 done (round 72)** for CR6: `tools/inventory.py` writes the pinned
-[evidence inventory](docs/inventory.md) and the coverage-notice table; see `PROGRESS.md` "Round 72". **M6 done (round 73)**: checks and notices reach the language server with channel, code and evidence link; see `PROGRESS.md` "Round 73". **M5 done (round 74)**: the [artifact matrix](docs/artifacts.md) is gated on CR6 and every other output is marked supported or best effort; see `PROGRESS.md` "Round 74". M7 not started.
+[evidence inventory](docs/inventory.md) and the coverage-notice table; see `PROGRESS.md` "Round 72". **M6 done (round 73)**: checks and notices reach the language server with channel, code and evidence link; see `PROGRESS.md` "Round 73". **M5 done (round 74)**: the [artifact matrix](docs/artifacts.md) is gated on CR6 and every other output is marked supported or best effort; see `PROGRESS.md` "Round 74". **M7 done (round 75)**: opencrbasic 1.0.0, tag `opencrbasic-v1.0.0`, [release record](docs/release-1.0.md). The v1.0 roadmap is complete.
 
 Total: about 12–22 rounds, against an open-ended 20–40+ for full parity.
 

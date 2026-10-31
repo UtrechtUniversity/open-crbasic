@@ -22,8 +22,9 @@ cell is `exact`, or lists each output that differs (`exit`, `stdout`, `<file> di
 `<file> missing`: the reference wrote it, `crbc` did not; `<file> extra`), each with a fingerprint
 of opencrbasic's bytes. The baseline, `tests/artifact_baseline.json`, holds every cell of all four
 profiles. `--gate no-regressions` needs a baseline that has the profile and fails on a cell not in
-it, a reference failure, a baseline cell not run, or any change in a cell's differences or
-fingerprints other than becoming exact (reported as `NOW EXACT`: refresh the baseline). Wine is
+it, a baseline cell not run, or a difference, output fingerprint or reference failure that the
+cell's baseline does not have. A cell that only loses differences is reported as `IMPROVED`
+(refresh the baseline). Wine is
 needed, so CI runs the saved reference results in `tests/fixtures/m5_artifacts.json` (76 runs,
 `tests/test_m5_artifacts.py`) instead.
 

@@ -195,19 +195,18 @@ def main() -> int:
         if args.logger not in everything:
             ap.error(f"{args.baseline} has no {args.logger} cells")
         base = everything[args.logger]
-        # a regression: a cell not in the baseline, a reference failure, or any change from the
-        # baseline's classes and output fingerprints other than becoming exact
+        # a regression: a cell not in the baseline, or a difference (with its output fingerprint)
+        # or a reference failure the baseline does not have; losing a difference is an improvement
         regressions = [k for k, classes in table.items()
-                       if k not in base or "reference failure" in classes
-                       or ("exact" not in classes and classes != base[k])]
+                       if k not in base or ("exact" not in classes and not classes.items() <= base[k].items())]
         missing = sorted(set(base) - set(table))
-        improved = [k for k, classes in table.items() if k in base and "exact" in classes and base[k] != classes]
+        improved = [k for k, classes in table.items() if k in base and k not in regressions and classes != base[k]]
         for k in regressions:
             print(f"  REGRESSION {k}: {base.get(k, 'not in the baseline')} -> {table[k]}")
         for k in missing:
             print(f"  NOT RUN {k}")
         for k in improved:
-            print(f"  NOW EXACT {k} (refresh the baseline)")
+            print(f"  IMPROVED {k}: {base[k]} -> {table[k]} (refresh the baseline)")
         if args.gate == "no-regressions" and (regressions or missing):
             status = 1
     return status

@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-31 after development round 74; M1-M6 done** (round-51
+Current compiler state and handoff, updated **2026-10-31 after development round 75; v1.0 released internally (M0-M7 done)** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73; M5 artifact matrix, round 74). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73; M5 artifact matrix, round 74; M7 internal release 1.0.0, round 75). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,18 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 75: M7 done, opencrbasic 1.0.0** (single agent; Codex `gpt-6.1-sol` review in `scratch/m7/`,
+local only). Version 1.0.0 for the package, `__version__` and the VS Code extension
+(`tests/test_versions.py`; policy in README "Versions"); README rewritten for scope, the three
+channels and the accepted differences; `tools/release_manifest.py` pins compilers, corpora and
+baselines; the [release record](docs/release-1.0.md) holds the configuration, hashes, every gate
+command with its result, the known failures and the exclusions; local annotated tag
+`opencrbasic-v1.0.0`. The matrix gate now treats a cell that only loses differences as improved,
+not regressed; the CR300/CR350 baselines were refreshed after the last round-74 fix (23 improvements,
+11 still-differing `-i`/`-p` cells with new bytes). The one stale replay recording, `75f68395c4e8`,
+cannot be refreshed: the reference crashes on it (exit 5). One relevant-area false accept is an
+exception to the M1 gate (a `Sub` name that is also another routine's parameter, round 71).
 
 **Round 74: M5 done** (single agent; Codex `gpt-6.1-sol` review in `scratch/m5/`, local only).
 `tools/artifact_matrix.py` compares every output of the reference compiler and `crbc` (exit,
@@ -626,7 +638,8 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    same-name `Const`) is fixed in round 71. The language server does not run checks yet: that is M6
    (call `checks.analyze` with its settings, put the configuration in the cache key); done in round 73.
 4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X except a `Sub` name
-   that is also another routine's parameter, used as a value (round 71, unrealistic); the 25 replay
+   that is also another routine's parameter, used as a value (round 71; an exception recorded in the
+   1.0 release record); the 25 replay
    false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
    `51f39a5f2393`, `7b4b2177d56b`, `870ca9a9562e`, `e8c854e3493d`, `a0b2b0b059b3`, `ec6b11bc3176`,
    `022d98dd3efc`, `4156d89a014d`, `6ac24bd775f1`, `72f95eac103f`, `77636b10567c`, `7f9efa8af42c`,
@@ -660,8 +673,11 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    evidence link) and, with `coverageNotices`, the notices; `opencrbasic.checks` and
    `opencrbasic.toml` configure them; quick fixes match by `data`.
 9. **M5: done (round 74)** ([artifacts](docs/artifacts.md)). Open: per-profile Status tables for
-   the CR1000X/CR300/CR350 TDF (best effort now). Next: M7 (internal release).
-10. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
+   the CR1000X/CR300/CR350 TDF (best effort now). 
+10. **M7: done (round 75)**: 1.0.0, [release record](docs/release-1.0.md). Further work is
+   post-1.0: per-profile TDF Status tables, the open first-error candidates (item 6), host tests of
+   the M6 editor display.
+11. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
    are kept in the round-30 snapshot in `git show 2612abad:opencrbasic/docs/progress-history.md`.
    Re-rank each under the fix, flag or accept rule before working on it.
 
