@@ -336,7 +336,7 @@
     ]
    },
    "observations": {
-    "count": 16213,
+    "count": 16280,
     "refs": [
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-0",
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-1",
@@ -929,7 +929,7 @@
     ]
    },
    "observations": {
-    "count": 1676,
+    "count": 1682,
     "refs": [
      "tests/fixtures/block_keyword_call.json#cr6-block_keyword_call-0",
      "tests/fixtures/block_keyword_call.json#cr6-block_keyword_call-1",
@@ -1074,7 +1074,7 @@
     ]
    },
    "observations": {
-    "count": 18748,
+    "count": 18817,
     "refs": [
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-0",
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-1",
@@ -1109,7 +1109,7 @@
    "unresolved_calls": [],
    "state": "partially tested",
    "python": {
-    "count": 48,
+    "count": 49,
     "sites": [
      "opencrbasic/catalog.py:27",
      "opencrbasic/checker/__init__.py:22",
@@ -1134,7 +1134,7 @@
     ]
    },
    "observations": {
-    "count": 18554,
+    "count": 18623,
     "refs": [
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-0",
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-1",
@@ -1169,7 +1169,7 @@
    "unresolved_calls": [],
    "state": "partially tested",
    "python": {
-    "count": 139,
+    "count": 140,
     "sites": [
      "opencrbasic/bindings.py:689",
      "opencrbasic/catalog.py:25",
@@ -1401,7 +1401,7 @@
    "unresolved_calls": [],
    "state": "partially tested",
    "python": {
-    "count": 30,
+    "count": 34,
     "sites": [
      "opencrbasic/checker/__init__.py:29",
      "opencrbasic/checker/__init__.py:257",
@@ -2700,7 +2700,7 @@
     "count": 4,
     "sites": [
      "opencrbasic/checker/expressions.py:207",
-     "opencrbasic/cli.py:265",
+     "opencrbasic/cli.py:272",
      "opencrbasic/tables.py:440",
      "opencrbasic/tables.py:636"
     ]
@@ -5200,7 +5200,7 @@
     ]
    },
    "observations": {
-    "count": 114,
+    "count": 115,
     "refs": [
      "tests/fixtures/cdm_port_and_type.json#cr6-cdm_port_and_type-0",
      "tests/fixtures/cdm_port_and_type.json#cr6-cdm_port_and_type-1",
@@ -5216,12 +5216,12 @@
      "tests/fixtures/cdm_port_and_type.json#cr6-cdm_port_and_type-11",
      "tests/fixtures/instruction_resources.json#cdm-address-cr6-sw5-clash",
      "tests/fixtures/instruction_resources.json#cdm-null-cr6-SW5",
+     "tests/fixtures/m5_artifacts.json#cr6-cdm-pass1-error",
      "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-78",
      "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-79",
      "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-80",
      "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-81",
-     "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-82",
-     "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-83"
+     "tests/fixtures/r15_cdm_ports.json#cr6-r15_cdm_ports-82"
     ]
    }
   },
@@ -7048,7 +7048,7 @@
      "line": 40369,
      "via": "thunk_FUN_004b6540",
      "state": "partially tested",
-     "implemented": "opencrbasic/parser.py:2057",
+     "implemented": "opencrbasic/parser.py:2061",
      "observed": []
     },
     {
@@ -12559,7 +12559,7 @@
     ]
    },
    "observations": {
-    "count": 3799,
+    "count": 3809,
     "refs": [
      "tests/fixtures/brace_statement.json#cr6-brace_statement-0",
      "tests/fixtures/brace_statement.json#cr6-brace_statement-1",
@@ -13303,7 +13303,7 @@
     ]
    },
    "observations": {
-    "count": 204,
+    "count": 218,
     "refs": [
      "tests/fixtures/hash_cutoff.json#cr6-hash_cutoff-5",
      "tests/fixtures/hash_cutoff.json#cr6-hash_cutoff-6",
@@ -13324,7 +13324,7 @@
      "tests/fixtures/include_warning_pre.json#cr6-include_warning_pre-4",
      "tests/fixtures/include_warning_pre.json#cr6-include_warning_pre-5",
      "tests/fixtures/include_warning_pre.json#cr6-include_warning_pre-6",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-1-dup-var-include"
+     "tests/fixtures/m5_artifacts.json#cr6-plain-fail_include"
     ]
    }
   },
@@ -13363,8 +13363,20 @@
     ]
    },
    "observations": {
-    "count": 201,
+    "count": 213,
     "refs": [
+     "tests/fixtures/m5_artifacts.json#cr6-plain-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-message-file-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-signature-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-timing-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-unused-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-tables-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-preprocess-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-include-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-cdm-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-combined-fail_section",
+     "tests/fixtures/m5_artifacts.json#cr6-preprocess-pass1-buffer-full-second-section",
+     "tests/fixtures/m5_artifacts.json#cr6-include-pass1-buffer-full-second-section",
      "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-0-dup-var",
      "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-2-dup-var-main-too",
      "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-3-dup-var-use",
@@ -13372,19 +13384,7 @@
      "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-5-dup-const",
      "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-6-dup-dim-dim",
      "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-7-dup-pub-dim",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-8-dup-array",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-9-dup-alias",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-10-dup-undef-use",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-11-dup-main-var-after",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-12-dup-table",
-     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-13-dup-sub",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-0-sec-sec",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-2-inc-sec",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-3-sec-inc",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-4-three-levels",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-5-self-section",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-8-line3",
-     "tests/fixtures/r13_include_nesting.json#cr6-r13_include_nesting-9-twice"
+     "tests/fixtures/r13_include_dupdecl.json#cr6-include_dupdecl-8-dup-array"
     ]
    }
   },
@@ -13934,7 +13934,7 @@
    "unresolved_calls": [],
    "state": "partially tested",
    "python": {
-    "count": 105,
+    "count": 106,
     "sites": [
      "opencrbasic/bindings.py:36",
      "opencrbasic/bindings.py:243",
@@ -13959,7 +13959,7 @@
     ]
    },
    "observations": {
-    "count": 1073,
+    "count": 1074,
     "refs": [
      "tests/fixtures/bounds_whole_array_subcall.json#cr6-bounds_whole_array_subcall-0",
      "tests/fixtures/bounds_whole_array_subcall.json#cr6-bounds_whole_array_subcall-1",
@@ -13994,7 +13994,7 @@
    "unresolved_calls": [],
    "state": "partially tested",
    "python": {
-    "count": 124,
+    "count": 125,
     "sites": [
      "opencrbasic/bindings.py:32",
      "opencrbasic/bindings.py:36",
@@ -14019,7 +14019,7 @@
     ]
    },
    "observations": {
-    "count": 17999,
+    "count": 18057,
     "refs": [
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-0",
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-1",
@@ -16038,7 +16038,7 @@
     ]
    },
    "observations": {
-    "count": 908,
+    "count": 914,
     "refs": [
      "tests/fixtures/block_closer_suppression.json#cr6-block_closer_suppression-0",
      "tests/fixtures/block_closer_suppression.json#cr6-block_closer_suppression-2",
@@ -16473,7 +16473,7 @@
     ]
    },
    "observations": {
-    "count": 4143,
+    "count": 4153,
     "refs": [
      "tests/fixtures/brace_statement.json#cr6-brace_statement-0",
      "tests/fixtures/brace_statement.json#cr6-brace_statement-1",
@@ -17325,7 +17325,7 @@
     ]
    },
    "observations": {
-    "count": 16176,
+    "count": 16233,
     "refs": [
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-0",
      "tests/fixtures/acpower_channels.json#cr6-acpower_channels-1",
@@ -17641,7 +17641,7 @@
     ]
    },
    "observations": {
-    "count": 4131,
+    "count": 4141,
     "refs": [
      "tests/fixtures/brace_statement.json#cr6-brace_statement-0",
      "tests/fixtures/brace_statement.json#cr6-brace_statement-1",
@@ -17802,7 +17802,7 @@
     ]
    },
    "observations": {
-    "count": 3775,
+    "count": 3785,
     "refs": [
      "tests/fixtures/brace_statement.json#cr6-brace_statement-0",
      "tests/fixtures/brace_statement.json#cr6-brace_statement-1",
@@ -18326,7 +18326,7 @@
     ]
    },
    "observations": {
-    "count": 1841,
+    "count": 1842,
     "refs": [
      "tests/fixtures/avgrun_subparam.json#cr6-avgrun_subparam-0",
      "tests/fixtures/avgrun_subparam.json#cr6-avgrun_subparam-1",
@@ -18412,7 +18412,7 @@
     ]
    },
    "observations": {
-    "count": 1816,
+    "count": 1817,
     "refs": [
      "tests/fixtures/avgrun_subparam.json#cr6-avgrun_subparam-0",
      "tests/fixtures/avgrun_subparam.json#cr6-avgrun_subparam-1",
@@ -18761,7 +18761,7 @@
      "opencrbasic/checker/structure.py:897",
      "opencrbasic/checker/structure.py:1245",
      "opencrbasic/checker/structure.py:3422",
-     "opencrbasic/lsp/server.py:673",
+     "opencrbasic/lsp/server.py:679",
      "opencrbasic/parser.py:20",
      "opencrbasic/parser.py:1397"
     ]
@@ -20956,7 +20956,7 @@
      "opencrbasic/checker/instr_rules.py:1257",
      "opencrbasic/checker/structure.py:2003",
      "opencrbasic/checker/var_types.py:386",
-     "opencrbasic/cli.py:146"
+     "opencrbasic/cli.py:147"
     ]
    },
    "observations": {
@@ -30902,9 +30902,9 @@
      "state": "tested",
      "implemented": "opencrbasic/checker/instr_rules.py:811",
      "observed": [
-      "tests/fixtures/r15_snmp_oid.json#cr6-r15_snmp_oid-4",
-      "tests/fixtures/r45_quoted_parameters.json#cr6-number",
-      "tests/fixtures/r45_quoted_parameters.json#cr6-decimal"
+      "tests/fixtures/m5_artifacts.json#cr6-plain-fail_decl",
+      "tests/fixtures/m5_artifacts.json#cr6-message-file-fail_decl",
+      "tests/fixtures/m5_artifacts.json#cr6-signature-fail_decl"
      ]
     },
     {
