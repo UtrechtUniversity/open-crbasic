@@ -226,12 +226,15 @@ def test_report(tmp_path):
     assert (run.returncode, run.stderr) == (0, "")                  # --report alone: no stderr, no exit 3
     report = json.loads((tmp_path / "r.json").read_text())
     assert report == {
-        "schema_version": 1, "program": "t.CR6", "logger": "cr6",
+        "schema_version": 2, "program": "t.CR6", "logger": "cr6",
         "reference": {"ok": True, "mode": "Pipeline", "diagnostics": []},
         "strict": False, "config": {"file": None, "error": None},
         "findings": [{"code": "OCB001", "severity": "error", "file": "t.CR6", "line": 2,
                       "message": "Alias name Status is also the Status system table; choose another name."}],
         "suppressed": [],
+        "notices": [{"file": "t.CR6", "line": 4, "instruction": "SCAN",
+                     "rules": json.loads((Path(checks.__file__).parent / "data" / "notices_cr6.json")
+                                         .read_text())["missing"]["SCAN"]}],
     }
     (tmp_path / checkconfig.FILE_NAME).write_text(
         '[[suppress]]\ncode = "OCB001"\nfile = "t.CR6"\nreason = "kept"\n')

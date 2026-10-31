@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-31 after development round 71; M1-M3 done** (round-51
+Current compiler state and handoff, updated **2026-10-31 after development round 72; M1-M4 done** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,27 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 72: M4 done** (single agent; Codex `gpt-6.1-sol` reviewed three times, `scratch/m4/codex-review*.log`,
+local only). `tools/inventory.py` generates the CR6 [evidence inventory](docs/inventory.md)
+(`docs/inventory-cr6.json`) and the coverage-notice table (`src/opencrbasic/data/notices_cr6.json`),
+both pinned to the SHA-256 of `CR6Comp.exe`, the decompile and `instructions.json`:
+- per instruction: builder, the messages of its reporters (`FUN_005089c0`, `FUN_00508a00`,
+  `FUN_0049ce10`) in the builder and its own helpers with decompile lines, helper call sites, shared
+  helpers, indirect-call sites, linked `module:line` sites and observation refs, and a state
+  (`tested`, `partially tested`, `unknown`); unresolved reporter arguments are kept as `unknown`;
+- a message is implemented when an opencrbasic template or rule string produces it, its literal
+  pieces occur in the sources, or opencrbasic prints it on a saved program where the reference did;
+- `checks.notices` names, at the first use of a CR6 instruction in an accepted program, its
+  messages that are not implemented; `crbc --report` writes them (schema 2); stdout, `--strict`
+  stderr and exit codes are unchanged. 9 of the 17 listed CR6 replay false accepts get a notice
+  naming their rule (`tests/test_inventory.py`); the other eight stay listed by identity.
+- Codex review fixes: five false notices for templated messages (regression tests), reporter
+  wrappers and string symbols with punctuation or commas, evidence links, the shared-helper rule,
+  bare statement uses, warning prefixes, per-case fixture identity with sibling files.
+- Gates (`scratch/m4/gates3.log`): 63,864 passed, 311 skipped, 1,291 strict xfail; server 163 passed;
+  both `verify.py` backends pass (21/21). The reference channel is unchanged (no checker change), so
+  difftest and replay were not rerun. No hardware tests.
 
 **Round 71** (M1, single agent; Codex `gpt-6.1-sol` reviewed four times, `scratch/r71/codex-review*.log`,
 local only). The round-70 false accept (a `Delay` unit parameter with a later same-name `Const`) was one
@@ -582,8 +603,11 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 `f67f1e2a1258` (unterminated string in a call), `522ddaa3d29c`
      (warning only); numeric routine-parameter declaration diagnostics, quoted-Then condition
      boundary and malformed one-line ElseIf (strict fixture gaps).
-7. **M3/M4** can start after M0, in parallel with M1/M2: the check framework, and the CR6 evidence
-   inventory from `tools/builder_map.py` and `tools/message_catalog.py`.
+7. **M4: done (round 72)** for CR6 ([inventory](docs/inventory.md)). Regenerate with
+   `uv run python tools/inventory.py` after changing checker messages, fixtures or the replay corpus;
+   `tests/test_inventory.py` fails when the binary or instruction table changes. Not done: a CR1000X inventory
+   (the PLAN scopes M4 to CR6), notices in the language server (M6). Next: M5 (artifact matrix) or
+   M6 (editor).
 8. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
    are kept in the round-30 snapshot in `git show 2612abad:opencrbasic/docs/progress-history.md`.
    Re-rank each under the fix, flag or accept rule before working on it.

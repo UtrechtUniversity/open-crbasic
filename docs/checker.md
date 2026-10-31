@@ -8671,14 +8671,15 @@ is recorded in the report; stdout, `CR6cmple.xxx` and the 0/1 verdict are unchan
 `--strict` an accepted program then exits 4. That exit code is a decision of this round, not in
 PLAN: a CI gate must not read an unreadable policy as clean.
 
-**Report schema (`schema_version` 1).** One JSON object: `program`, `logger`;
+**Report schema (`schema_version` 2; 2 added `notices`, M4).** One JSON object: `program`, `logger`;
 `reference` = `{ok, mode, diagnostics: [{severity, file, line, message}]}` (all reference
 diagnostics, errors and warnings); `strict` (whether `--strict` was given); `config` =
 `{file, error}`; `findings` = `[{code, severity, file, line, message}]` after severity and
 suppression; `suppressed` = the same plus `reason`. `file` is the entry's name, or the included name
-as written. A rejected program has empty `findings`.
+as written; `notices` = `[{file, line, instruction, rules}]`, the CR6 coverage notices
+([inventory](inventory.md#coverage-notices)). A rejected program has empty `findings` and `notices`.
 
-Not done: coverage notices and the config-aware LSP wiring (M6). A missing entry file returns before the report is written, so an older report file stays in place. A configuration file on another Windows drive than the entry matches no entry or suppression glob (absolute paths are compared).
+Not done: the config-aware LSP wiring and notices in the editor (M6). A missing entry file returns before the report is written, so an older report file stays in place. A configuration file on another Windows drive than the entry matches no entry or suppression glob (absolute paths are compared).
 
 ## Foldable builtins with the wrong argument count in a Const (round 52)
 

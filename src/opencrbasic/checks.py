@@ -1,6 +1,8 @@
 """opencrbasic checks: likely defects the reference compiler accepts (`PLAN.md` "Three diagnostic
 channels"). Findings never enter `Diagnostics`; `crbc --strict` prints them on stderr."""
 
+import functools
+import json
 import os
 import re
 from dataclasses import dataclass, replace
@@ -13,7 +15,7 @@ from .checker import symbols, var_types
 # Built-in default severity per check code; also the code set the configuration validates against.
 DEFAULT_SEVERITY = {"OCB001": "error", "OCB002": "warning", "OCB003": "warning", "OCB004": "warning",
                     "OCB005": "info", "OCB006": "info", "OCB007": "warning"}
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2   # 2: `notices` (M4)
 
 
 @dataclass
@@ -339,6 +341,24 @@ def analyze(result, entry: Path, config: checkconfig.Config | None = None,
             result.findings.append(f)
 
 
+@functools.cache
+def _missing_rules(logger: str) -> dict[str, list[str]]:
+    path = Path(__file__).resolve().parent / "data" / f"notices_{logger}.json"
+    return json.loads(path.read_text(encoding="utf-8"))["missing"] if path.exists() else {}
+
+
+def notices(program: S.Program | None, profile) -> list[dict]:
+    """Coverage notices: at the first use of each instruction, the reference rules of its builder
+    that opencrbasic does not model, from the evidence inventory (`docs/inventory.md`). CR6 only;
+    information, never a verdict."""
+    missing, out, seen = _missing_rules(profile.name), [], set()
+    for st in _statements(program) if program is not None else ():
+        if isinstance(st, S.Instruction) and (kw := st.keyword.upper()) in missing and kw not in seen:
+            seen.add(kw)
+            out.append({"file": st.file, "line": st.line, "instruction": st.keyword, "rules": missing[kw]})
+    return out
+
+
 def report(result, program: str, strict: bool, config_file: Path | None, config_error: str | None) -> dict:
     """The `crbc --report` document (`docs/checker.md` "Check configuration and report file")."""
 
@@ -360,6 +380,8 @@ def report(result, program: str, strict: bool, config_file: Path | None, config_
         "config": {"file": str(config_file) if config_file else None, "error": config_error},
         "findings": [item(f) for f in result.findings],
         "suppressed": [{**item(f), "reason": f.reason} for f in result.suppressed],
+        "notices": [{**n, "file": n["file"] or program}
+                    for n in (notices(result.program_ast, result.profile) if result.ok else [])],
     }
 
 
@@ -377,4 +399,5 @@ def missing_program_report(program: str, logger: str, strict: bool) -> dict:
         "config": {"file": None, "error": None},
         "findings": [],
         "suppressed": [],
+        "notices": [],
     }

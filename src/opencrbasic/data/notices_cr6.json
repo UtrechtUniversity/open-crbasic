@@ -1,0 +1,890 @@
+{
+ "binary": {
+  "exe": "CR6Comp.exe",
+  "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+ },
+ "decompile": {
+  "file": "scratch/re/CR6Comp.decomp.c",
+  "sha256": "b0471fda09b71a2e43fd677a57a8910aca9351b314f22354c2db9900f83459ee"
+ },
+ "generator": "tools/inventory.py",
+ "instructions_json_sha256": "6b8754dc14aee6cd42382cb805b9d6c0921bc35a01c06e501c01656784826fdd",
+ "missing": {
+  "ACCEPTDATARECORDS": [
+   "Cannot CallTable %s that is Scan Interval driven from Scans with different intervals.",
+   "Duplicate source address and data table ID.",
+   "Illegal table number %d.",
+   "Invalid reference to DataTable: %s.",
+   "When using AcceptData or GetDateRecord, TableFile must be declared at the bottom of DataTable, just prior to EndTable."
+  ],
+  "ACPOWER": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Invalid Gain Option, use 0..3: %d.",
+   "Invalid cycles %d Max = 65534.",
+   "Invalid timeout %d.",
+   "Legal line frequency is 50 or 60 or lowest measurable frequency limited to 2..20 Hz.",
+   "Timeout: %d exceeds maximum of 1000msec.",
+   "Too many reps on same channel, max = 65535.",
+   "Voffset Exceeds specified range."
+  ],
+  "AM25T": [
+   "AM25T not allowed in Slow Sequence SubScan in PipeLine Mode.",
+   "Invalid AM25T channel.",
+   "Invalid combination (reps=0 and xchan=0).",
+   "Invalid excitation channel."
+  ],
+  "ARGOSDATA": [
+   "%d is too many bytes to send, limit is 255",
+   "Data Format must be constant string.",
+   "Illegal parameter %d, range is %d..%d",
+   "With this data format, all data types must be of type %s"
+  ],
+  "ARGOSDATAREPEAT": [
+   "Illegal parameter %d, range is %d..%d"
+  ],
+  "ARGOSSETUP": [
+   "Illegal frequency, neareast legal is %d",
+   "Illegal frequency.",
+   "Illegal parameter %d, range is %d..%d"
+  ],
+  "ARGOSTRANSMIT": [
+   "Illegal parameter %d, range is %d..%d"
+  ],
+  "AVGSPA": [
+   "CovSpa must use Float type source."
+  ],
+  "AVW200": [
+   "All instances of AVW200 to the same interface must scan at the same interval",
+   "Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "Illegal Thermister integration; must be _60Hz, _50Hz, or 0",
+   "Scan interval for AVW200 must be integral number of seconds",
+   "Threshold minimum is .01 mv"
+  ],
+  "BRFULL": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "BRFULL6W": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "BRHALF": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "BRHALF3W": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "BRHALF4W": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "CALFILE": [
+   "CalFile invalid drive: %s."
+  ],
+  "CALL": [
+   "Cannot Call a Subroutine or Function with measurements from within a SubScan.",
+   "Sub %s calls a Table, and should not be called from multiple sequences.",
+   "Sub %s contains (or calls) Scan..NextScan. Scan must be called from the sequence in which it was declared.",
+   "Variable type mismatch"
+  ],
+  "CALLTABLE": [
+   "Cannot CallTable %s that is Scan Interval driven from Scans with different intervals.",
+   "Invalid reference to DataTable: %s."
+  ],
+  "CARDOUT": [
+   "Maximum CardOut() is %d.",
+   "TOB3 TableFile output not allowed with CardOut."
+  ],
+  "CDM_ACPOWER": [
+   "Current input channel: %d, out of range (1 - %d).",
+   "Current input cycles beyond last channel!",
+   "Legal CDM_ACPower configuration is 1..3",
+   "Line frequency must be 2-20, 50, or 60.",
+   "Voltage and current channels overlap!",
+   "Voltage input channel: %d, out of range (1 - %d).",
+   "Voltage input cycles beyond last channel!"
+  ],
+  "CDM_BRIDGEFILT": [
+   "%s must be used in Scan/NextScan.",
+   "%s not allowed in Sequential Mode.",
+   "%s not allowed in slow sequence.",
+   "Cannot mix output rates in a single Spectrum Module.",
+   "Invalid Excitation option, must be 0...3.",
+   "Minimum Scan Interval for Spectrum Data is 1mSec, use SubScan for faster output rates.",
+   "SubScan iterations times interval must equal the Scan interval.",
+   "Unrecognized Filter Option!",
+   "Unrecognized input range!"
+  ],
+  "CDM_CANOUTCFG": [
+   "Base ID out of range. Must be 0 - 2,047 (&h0000 - &h7FFF)",
+   "Base ID out of range. Must be 0 - 536,870,911 (&h00000000 - &h1FFFFFFF)",
+   "Invalid ID length specificed. Set to 11 or 29",
+   "Unsupported baud rate specified. Set to 1000, 500, 250, 125, or 50"
+  ],
+  "CDM_DELAY": [
+   "Max Delay is 24 Hours."
+  ],
+  "CDM_EXCITEI": [
+   "Delay time: %d, out of range (0 - %d).",
+   "Excitation channel: %d, out of range (1 - %d).",
+   "Excitation magnitude: %d exceeds %d.",
+   "Unrecognized excitation instruction.",
+   "Variable indexing error."
+  ],
+  "CDM_EXCITEV": [
+   "Delay time: %d, out of range (0 - %d).",
+   "Excitation channel: %d, out of range (1 - %d).",
+   "Excitation magnitude: %d exceeds %d.",
+   "Unrecognized excitation instruction.",
+   "Variable indexing error."
+  ],
+  "CDM_FACTCAL": [
+   "CDM_FactCal Incorrect Security Code",
+   "CDM_FactCal not allowed in slow sequence",
+   "Calibration type %d not supported by module %s.",
+   "This program will erase factory stored Calibration values from the module at CPI address %d"
+  ],
+  "CDM_FFTFILT": [
+   "%s not allowed in Sequential Mode.",
+   "%s not allowed in slow sequence.",
+   "All CDM_FFTFilts must use the same sample rate.",
+   "CDM_FFTFilt not allowed in SubScan.",
+   "ILow must be less than IHigh.",
+   "Illegal spectral binning.",
+   "Invalid Excitation option, must be 0...4.",
+   "Invalid FFT length %d.",
+   "Invalid SpectOption %d.",
+   "Maximum IHigh is %d.",
+   "Minimum ILow is %d.",
+   "Minimum Scan Interval for Spectrum Data is 1mSec, use SubScan for faster output rates.",
+   "Scan interval must be at least %d usec for FFT length of %d.",
+   "Unrecognized Filter Option!",
+   "Unrecognized input range!"
+  ],
+  "CDM_MUXSELECT": [
+   "Clock and Reset ports must be unique!",
+   "MuxSelect ClockPW: %d, out of range (1 - %d).",
+   "Variable indexing error."
+  ],
+  "CDM_PULSEPORT": [
+   "Delay: %d, out of range (0 - %d)."
+  ],
+  "CDM_SW12": [
+   "Variable indexing error."
+  ],
+  "CDM_SW5": [
+   "Variable indexing error."
+  ],
+  "CDM_SWPOWER": [
+   "Variable indexing error."
+  ],
+  "CDM_TCCOMP": [
+   "Thermocouple type unsupported by module %s."
+  ],
+  "CDM_VOLTFILT": [
+   "%s must be used in Scan/NextScan.",
+   "%s not allowed in Sequential Mode.",
+   "%s not allowed in slow sequence.",
+   "Cannot mix output rates in a single Spectrum Module.",
+   "Invalid Excitation option, must be 0...3.",
+   "Minimum Scan Interval for Spectrum Data is 1mSec, use SubScan for faster output rates.",
+   "SubScan iterations times interval must equal the Scan interval.",
+   "Unrecognized Filter Option!",
+   "Unrecognized input range!"
+  ],
+  "CDM_VW300CONFIG": [
+   "%s must use either 13 or 19 parameters.",
+   "RainFlow size exceeds size of 65536 by %d."
+  ],
+  "CDM_VW300DYNAMIC": [
+   "%s must run in Main Scan..NextScan.",
+   "%s must run within a If..Endif statement.",
+   "%s not allowed in Sequential Mode.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "No CDM_VW300Config for CPI address %d.",
+   "No Configure instruction for CPI Address: %d.",
+   "Scan interval %d mSec not supported by CDM-VW300."
+  ],
+  "CDM_VW300RAINFLOW": [
+   "No CDM_VW300Config for CPI address %d.",
+   "No Configure instruction for CPI Address: %d.",
+   "VW305 must have 8 Dest. parameters."
+  ],
+  "CDM_VW300STATIC": [
+   "%s must run in Main Scan..NextScan.",
+   "%s must run within a If..Endif statement.",
+   "%s not allowed in Sequential Mode.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "No CDM_VW300Config for CPI address %d.",
+   "No Configure instruction for CPI Address: %d.",
+   "Scan interval %d mSec not supported by CDM-VW300."
+  ],
+  "CH400SENDOS": [
+   "Filename is too long, (max is %d)",
+   "Filename must be a constant"
+  ],
+  "CH400STATUS": [
+   "CH400Status can only be declared once in a program.",
+   "CH400Status cannot be declared inside a scan.",
+   "CH400Status update interval must be 1 day or less."
+  ],
+  "CLOCKSET": [
+   "Boolean type is not allowed.",
+   "Wrong type"
+  ],
+  "COVARIANCE": [
+   "Number of covariances %d too large for number of source %d."
+  ],
+  "COVSPA": [
+   "CovSpa must use Float type source."
+  ],
+  "CPIADDMODULE": [
+   "Duplicate CPI Address %d.",
+   "Duplicate CPI module.",
+   "Max number of CPI modules is %d.",
+   "Unrecognized module type %d."
+  ],
+  "CPIFILESEND": [
+   "CPIFileSend not allowed with other CPI Instructions."
+  ],
+  "CS616": [
+   "Invalid MeasPerPort.",
+   "Reps and measperport exceed valid %c channels.",
+   "Reps exceed valid channels."
+  ],
+  "CS7500": [
+   "%s Invalid mode."
+  ],
+  "CSAT3B": [
+   "%s must be within Scan/NextScan.",
+   "%s not allowed in the main scan in PipelineMode.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "Invalid output option, must be 0, 5, 10, 20, or 25.",
+   "Invalid output option, must be 5, 10, or 25.",
+   "Scan interval must be 10 mS."
+  ],
+  "CSAT3BMONITOR": [
+   "%s must be within Scan/NextScan.",
+   "%s not allowed in the main scan in PipelineMode.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "Invalid output option, must be 0, 5, 10, 20, or 25.",
+   "Invalid output option, must be 5, 10, or 25.",
+   "Scan interval must be 10 mS."
+  ],
+  "CURRENTSE": [
+   "Open detect range invalid in %s.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "CWB100ROUTES": [
+   "Routes destination must be known at compile time"
+  ],
+  "DATAEVENT": [
+   "DataEvent already declared for this Data Table."
+  ],
+  "DATAGRAM": [
+   "Illegal COM"
+  ],
+  "DATATABLE": [
+   "Duplicate table name %s.",
+   "Maximum number of tables of %d exceeded."
+  ],
+  "DIALSEQUENCE": [
+   "Duplicate DialSequence(%d).",
+   "Missing EndDialSequence().",
+   "PakBus address range is 1..4095."
+  ],
+  "DISPLAYLINE": [
+   "Cannot use DataTable value as a MenuItem, use DisplayValue."
+  ],
+  "DISPLAYMENU": [
+   "DisplayMenu title %s is %d chars too long.",
+   "Only one DisplayMenu allowed."
+  ],
+  "DISPLAYVALUE": [
+   "Cannot use DataTable value as a MenuItem, use DisplayValue."
+  ],
+  "DNPMASTER": [
+   "Illegal destination parameter."
+  ],
+  "DNPUPDATE": [
+   "Maximum number of sessions %d exceeded"
+  ],
+  "DNPVARIABLE": [
+   "DNP Variable must be Public or Dim",
+   "Flag paramter must be of type LONG",
+   "Group %d upper boundary is out of range.",
+   "group 32, variation 6 not supported."
+  ],
+  "EC100": [
+   "Invalid output option; range 0..3."
+  ],
+  "EC100CONFIGURE": [
+   "Invalid command for SequentialMode and Slow Sequences."
+  ],
+  "EDITTABLE": [
+   "Cannot CallTable %s that is Scan Interval driven from Scans with different intervals.",
+   "Invalid reference to DataTable: %s."
+  ],
+  "END": [
+   "END ???",
+   "EndTable without DataTable or nested DataTables.",
+   "Invalid table name %s. Table name is required for MQTTPublishObservation",
+   "MQTTPublishTable already used in table %s.",
+   "MQTTPublishTable must contain latitude parameter in table %s.",
+   "MQTTPublishTable must contain longitude parameter in table %s.",
+   "Maximum number of tables of %d exceeded."
+  ],
+  "ENDMODEMHANGUP": [
+   "BeginProg within a ModemHangup sequence."
+  ],
+  "ENDPROCHIPRI": [
+   "EndProcHiPri with no ProcHiPri."
+  ],
+  "ENDTABLE": [
+   "EndTable without DataTable or nested DataTables.",
+   "Invalid table name %s. Table name is required for MQTTPublishObservation",
+   "MQTTPublishTable already used in table %s.",
+   "MQTTPublishTable must contain latitude parameter in table %s.",
+   "MQTTPublishTable must contain longitude parameter in table %s.",
+   "Maximum number of tables of %d exceeded."
+  ],
+  "ENVIROSATSTATUS": [
+   "Result array must be of type LONG"
+  ],
+  "ESSINITIALIZE": [
+   "Community Names parameter is of type string"
+  ],
+  "EXIT": [
+   "EXIT ???"
+  ],
+  "FACTCAL": [
+   "FactCal Incorrect Security Code",
+   "FactCal not allowed in slow sequence",
+   "This program will erase factory stored Calibration values."
+  ],
+  "FFT": [
+   "FFT N must be a non-zero power of 2.",
+   "FFTSpa() is not a DataTable instruction."
+  ],
+  "FFTSPA": [
+   "FFT N must be a non-zero power of 2.",
+   "FFTSpa() is not a DataTable instruction."
+  ],
+  "FIELDCAL": [
+   "%s must be type Float in FieldCal.",
+   "%s used as a Mode variable for FieldCal with a different function.",
+   "Multi-dimensioned Aliases not allowed with FieldCal."
+  ],
+  "FIELDCALSTRAIN": [
+   "%s must be type Float in FieldCal.",
+   "%s used as a Mode variable for FieldCal with a different function.",
+   "Multi-dimensioned Aliases not allowed with FieldCal."
+  ],
+  "FUNCTION": [
+   "Cannot Call a Subroutine or Function with measurements from within a SubScan.",
+   "Sub %s calls a Table, and should not be called from multiple sequences.",
+   "Sub %s contains (or calls) Scan..NextScan. Scan must be called from the sequence in which it was declared.",
+   "Variable type mismatch"
+  ],
+  "GETDATARECORD": [
+   "%d number of tables illegal.",
+   "Cannot CallTable %s that is Scan Interval driven from Scans with different intervals.",
+   "Illegal table number %d.",
+   "Invalid reference to DataTable: %s.",
+   "Max records parameter must be a constant of type long, and not = 0.",
+   "Maximum number of tables of %d exceeded.",
+   "Result array not large enough, must be at least %d",
+   "When using AcceptData or GetDateRecord, TableFile must be declared at the bottom of DataTable, just prior to EndTable."
+  ],
+  "GETRECORD": [
+   "Public and DataTableInfo illegal variable table names for GetRecord.",
+   "Structure destination not the same type as the data table",
+   "Unable to find Dest variable."
+  ],
+  "GOESFIELD": [
+   "Max width is 13"
+  ],
+  "GPS": [
+   "Data type of %s must be float or double",
+   "Illegal multiple GPS instructions."
+  ],
+  "I2CREAD": [
+   "I2COpen must precede %s."
+  ],
+  "I2CWRITE": [
+   "I2COpen must precede %s."
+  ],
+  "INSATDATA": [
+   "%d values in DataTable illegal; must be 24.",
+   "Data must be stored as type LONG."
+  ],
+  "INSATSTATUS": [
+   "Result array must be of type LONG"
+  ],
+  "IRGASON2": [
+   "%s not allowed in the main scan in PipelineMode.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d."
+  ],
+  "IRGASON2MONITOR": [
+   "%s not allowed in the main scan in PipelineMode.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d."
+  ],
+  "LI7200": [
+   "%s Invalid mode."
+  ],
+  "LI7700": [
+   "%s Invalid mode."
+  ],
+  "MAXSPA": [
+   "CovSpa must use Float type source."
+  ],
+  "MENUITEM": [
+   "Cannot use DataTable value as a MenuItem, use DisplayValue."
+  ],
+  "MENUPICK": [
+   "Constant string too long, increase variable size by %d.",
+   "MenuPick parameter list too long by %d chars."
+  ],
+  "MENURECOMPILE": [
+   "Cannot use DataTable value as a MenuItem, use DisplayValue."
+  ],
+  "MINSPA": [
+   "CovSpa must use Float type source."
+  ],
+  "MODBUSCLIENT": [
+   "If function is variable or is 1..4 then ModBus variable cannot be constant.",
+   "Illegal Coils Variable type, must be Boolean",
+   "ModBus address cannot be 189 or > 255.",
+   "Optional parameter must be of type long.",
+   "String parameter must be a variable and not variably indexed."
+  ],
+  "MODBUSMASTER": [
+   "If function is variable or is 1..4 then ModBus variable cannot be constant.",
+   "Illegal Coils Variable type, must be Boolean",
+   "ModBus address cannot be 189 or > 255.",
+   "Optional parameter must be of type long.",
+   "String parameter must be a variable and not variably indexed."
+  ],
+  "MODBUSSERVER": [
+   "If function is variable or is 1..4 then ModBus variable cannot be constant.",
+   "Illegal Coils Variable type, must be Boolean",
+   "ModBus address cannot be 189 or > 255.",
+   "Optional parameter must be of type long.",
+   "String parameter must be a variable and not variably indexed."
+  ],
+  "MODBUSSLAVE": [
+   "If function is variable or is 1..4 then ModBus variable cannot be constant.",
+   "Illegal Coils Variable type, must be Boolean",
+   "ModBus address cannot be 189 or > 255.",
+   "Optional parameter must be of type long.",
+   "String parameter must be a variable and not variably indexed."
+  ],
+  "MODEMCALLBACK": [
+   "%d retry interval is illegal; must be >= 30 seconds",
+   "%d timeout is illegal; range 10..120 seconds",
+   "Com310 is an illegal comport",
+   "Comport %d illegal."
+  ],
+  "MODEMHANGUP": [
+   "Missing EndModemHangup().",
+   "ModemHangup(%d) previously declared.",
+   "ModemHangup() declared after BeginProg."
+  ],
+  "MOMENT": [
+   "Moment order %d illegal, 2..5 is legal"
+  ],
+  "MQTTPUBLISHCONSTTABLE": [
+   "Only MQTT Quality of Service levels 0 or 1 supported"
+  ],
+  "MQTTPUBLISHPUBLICTABLE": [
+   "Only MQTT Quality of Service levels 0 or 1 supported"
+  ],
+  "MQTTPUBLISHTABLE": [
+   "Invalid table name %s. Table name is required for MQTTPublishObservation",
+   "MQTTPublishTable already used in table %s.",
+   "MQTTPublishTable must contain latitude parameter in table %s.",
+   "MQTTPublishTable must contain longitude parameter in table %s."
+  ],
+  "MUXSELECT": [
+   "%s not allowed in Subscan.",
+   "Mux chan must be a constant in PipeLine Mode."
+  ],
+  "NETWORK": [
+   "Address array must be type LONG",
+   "Overlapping node addresses in Network() instructions."
+  ],
+  "NEWFIELDNAMES": [
+   "Multiple instances of NewFieldNames is illegal.",
+   "NewNames() cannot execute since generic name is aliased.",
+   "Variable array name must be known at compile time."
+  ],
+  "NEWFILE": [
+   "FileName parameter must be type String.",
+   "Filename %s illegal, cannot find drive."
+  ],
+  "NEXT": [
+   "Empty FOR .. NEXT.",
+   "Too many measurements in SubScan."
+  ],
+  "NEXTSUBSCAN": [
+   "Too many measurements in SubScan."
+  ],
+  "PANELTEMP": [
+   "Invalid chan, must be 1 or 2",
+   "Invalid reps, must be 1 or 2"
+  ],
+  "PANELTEMP2": [
+   "Invalid chan, must be 1 or 2",
+   "Invalid reps, must be 1 or 2"
+  ],
+  "PERIODAVG": [
+   "Invalid Gain Option, use 0..3: %d.",
+   "Invalid cycles %d Max = 65534.",
+   "Invalid timeout %d.",
+   "Timeout: %d exceeds maximum of 1000msec.",
+   "Voffset Exceeds specified range."
+  ],
+  "PORTBRIDGE": [
+   "Enable parameter must be of type Boolean."
+  ],
+  "PORTGET": [
+   "PortGet not allowed in Slow Scan."
+  ],
+  "PROCHIPRI": [
+   "ProcHiPri only allowed inside main Scan..NextScan in PipeLine Mode.",
+   "ProcHiPri without EndProcHiPri."
+  ],
+  "PRT": [
+   "Invalid type %d, must be 0..6."
+  ],
+  "PRTCALC": [
+   "Invalid type %d, must be 0..6."
+  ],
+  "PULSECOUNT": [
+   "%s not allowed in Slow Sequence",
+   "Invalid low level AC pulse channel U%d.",
+   "Low Level AC Pulse count only allowed on even U channels.",
+   "PulseCount cannot be used within a SubScan."
+  ],
+  "PULSECOUNTRESET": [
+   "PulseCount Reset not allowed in slow sequence"
+  ],
+  "PULSEPORT": [
+   "Delay %d too long, max is 35000"
+  ],
+  "PWM": [
+   "Units must be uSec, mSec, or Sec."
+  ],
+  "QUADRATURE": [
+   "%s cannot be used within a SubScan.",
+   "%s must use C1,C3, or U1,U3..U11",
+   "Option must be 0-2."
+  ],
+  "RAINFLOWSAMPLE": [
+   "RainFlowSample(%s) cannot find the source CDMVW300RainFlow()",
+   "RainFlowSample(%s) cannot have a variable array index"
+  ],
+  "RESISTANCE": [
+   "Burst mode not allowed with %s.",
+   "Current Excitation must be within +/-2500.",
+   "ExChan must be U1-U12.",
+   "Open detect range invalid in %s.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "RESISTANCE2W": [
+   "Burst mode not allowed with %s.",
+   "Current Excitation must be within +/-2500.",
+   "ExChan must be U1-U12.",
+   "Open detect range invalid in %s.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "RESISTANCE3W": [
+   "Burst mode not allowed with %s.",
+   "Current Excitation must be within +/-2500.",
+   "ExChan must be U1-U12.",
+   "Open detect range invalid in %s.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "RMSSPA": [
+   "CovSpa must use Float type source."
+  ],
+  "SAMPLE": [
+   "Cannot Sample Bool8 type into Bool8 type directly",
+   "Sample type %s not the same as the source structure type %s"
+  ],
+  "SCAN": [
+   "Cannot have scan in subroutine in a slow sequence."
+  ],
+  "SDI12RECORDER": [
+   "Cannot CallTable %s that is Scan Interval driven from Scans with different intervals.",
+   "Cannot use a variable index on a string parameter with more than one rep",
+   "Invalid reference to DataTable: %s.",
+   "SDI12 command string too long, (max is %d)",
+   "When using AcceptData or GetDateRecord, TableFile must be declared at the bottom of DataTable, just prior to EndTable."
+  ],
+  "SDI12SENSORRESPONSE": [
+   "%s must be preceeded by %s."
+  ],
+  "SDI12SENSORSETUP": [
+   "Invalid Reps, must be 1..999.",
+   "Invalid response time, must be 1..999."
+  ],
+  "SDMAO4A": [
+   "Invalid reps.",
+   "Option must be 0..4.",
+   "StartChan must be 1..4."
+  ],
+  "SDMBEGINPORT": [
+   "%s must occur before BeginProg."
+  ],
+  "SDMCAN": [
+   "%d is too many bytes for CANBus datatype 64+, max 255.",
+   "All CANBus instructions using Block Mode must be grouped together.",
+   "CANBus Datatype %d illegal.",
+   "CANBus block mode not allowed in Slow Sequence.",
+   "CANBus number of bits illegal.",
+   "CanBus block mode can only be used within a Scan...NextScan.",
+   "Too many values for CANBus datatype 64+, max is 255."
+  ],
+  "SDMCD16AC": [
+   "TimedControl must use PipeLineMode.",
+   "TimedControl only allowed within main scan.",
+   "When using TimedControl reps must be 1.",
+   "When using TimedControl source type must be LONG."
+  ],
+  "SDMCD16MASK": [
+   "TimedControl must use PipeLineMode.",
+   "TimedControl only allowed within main scan.",
+   "When using TimedControl reps must be 1.",
+   "When using TimedControl source type must be LONG."
+  ],
+  "SDMGENERIC": [
+   "Destination out of bounds",
+   "Legal bytes per value are 1,2 or 4",
+   "Source for SDMGeneric must be determined at compile time"
+  ],
+  "SDMINT8": [
+   "INT8 destination must be a variable.",
+   "INT8 destination not dimensioned large enough.",
+   "INT8 multiplier and offset must be constants.",
+   "INT8 sample parameter %d must be in the range -32767..32768."
+  ],
+  "SDMSW8A": [
+   "Invalid function option in SDMSW8A."
+  ],
+  "SENDDATA": [
+   "%s not allowed with hidden table."
+  ],
+  "SENDTABLEDEF": [
+   "%s not allowed with hidden table."
+  ],
+  "SETSETTING": [
+   "%s is read only."
+  ],
+  "SETSTATUS": [
+   "%s is read only."
+  ],
+  "SHUTDOWNBEGIN": [
+   "Duplicate ShutdownBegin."
+  ],
+  "SHUTDOWNEND": [
+   "Missing ShutdownBegin."
+  ],
+  "SMSSEND": [
+   "Message must be of type String.",
+   "PhoneNumber must be of type String."
+  ],
+  "SORTSPA": [
+   "Dimension must be a constant 1,2 or 3",
+   "Illegal N parameter"
+  ],
+  "SPLITSTR": [
+   "Justify option (option >= 10) is illegal when spliting into a structure"
+  ],
+  "STATICROUTE": [
+   "Illegal com port %d, range 1..9"
+  ],
+  "STATIONNAME": [
+   "Const must be type ASCII.",
+   "Limit StationName to %d characters."
+  ],
+  "STDDEVSPA": [
+   "CovSpa must use Float type source."
+  ],
+  "SUB": [
+   "Cannot Call a Subroutine or Function with measurements from within a SubScan.",
+   "Sub %s calls a Table, and should not be called from multiple sequences.",
+   "Sub %s contains (or calls) Scan..NextScan. Scan must be called from the sequence in which it was declared.",
+   "Variable type mismatch"
+  ],
+  "SUBMENU": [
+   "SubMenu string %s is %d chars too long."
+  ],
+  "SUBSCAN": [
+   "Interval resolution is 100 usec, sub scan interval is %d usec",
+   "Maximum number of scans for SubScan is 65535.",
+   "Product of SubScan interval and iterations must be less than Main Scan interval.",
+   "SubScan interval must be a multiple of %d mS.",
+   "SubScan interval must be at least 100 usec.",
+   "SubScan must have >0 number of scans.",
+   "Subscans in Slow Sequence must have zero interval."
+  ],
+  "TABLEFILE": [
+   "Invalid filename.",
+   "Invalid parameter type, STRING type required.",
+   "Maximum CardOut() is %d.",
+   "String variable declared too small for file name by %d characters.",
+   "TOB3 TableFile output not allowed with CardOut.",
+   "TableFile already used in table %s."
+  ],
+  "TCCALC": [
+   "Invalid type %d, must be 0..7."
+  ],
+  "TCDIFF": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "TCPSYC": [
+   "%s not allowed in Slow Sequence in PipeLine Mode.",
+   "Burst mode not allowed with %s.",
+   "CoolIx must be within -9000..-4000.",
+   "Invalid cooling time %d, must be %d..%dSec",
+   "Invalid heating time %d, must be 0..%dSec",
+   "Invalid sample option %d, must be 0..8",
+   "Measure time must be 5..60.",
+   "Option must be 0 or 1."
+  ],
+  "TCSE": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "TDR100": [
+   "%s not allowed in PipeLine Mode.",
+   "Algorithm must be 0, 1, or 2.",
+   "Filter level above 15 is not recommended.",
+   "Filter level must be 0-99.",
+   "Fnotch must be 50, 60, or 0.",
+   "Invalid TDR option:%d."
+  ],
+  "TDR200": [
+   "%s not allowed in PipeLine Mode.",
+   "Algorithm must be 0, 1, or 2.",
+   "Filter level above 15 is not recommended.",
+   "Filter level must be 0-99.",
+   "Fnotch must be 50, 60, or 0.",
+   "Invalid TDR option:%d."
+  ],
+  "TGA": [
+   "TGA Invalid data list; range 1..5.",
+   "TGA Invalid scan mode; range 1..3."
+  ],
+  "TGA300": [
+   "%s must be within Scan/NextScan.",
+   "%s must run in PipeLineMode.",
+   "%s with no TGA300.",
+   "Dest/Src must be type float.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "Invalid group option %d."
+  ],
+  "TGA300CONFIG": [
+   "%s must be within Scan/NextScan.",
+   "%s must run in PipeLineMode.",
+   "%s with no TGA300.",
+   "Dest/Src must be type float.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "Invalid group option %d."
+  ],
+  "TGA300MONITOR": [
+   "%s must be within Scan/NextScan.",
+   "%s must run in PipeLineMode.",
+   "%s with no TGA300.",
+   "Dest/Src must be type float.",
+   "Insufficient Scan buffers to read CPI data, minimum is %d.",
+   "Invalid group option %d."
+  ],
+  "THERMISTOR": [
+   "Channel: %d exceeds 12.",
+   "Must specify A, B, and C for Thermistor.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "TIMEDCONTROL": [
+   "%s must be declared as type Long.",
+   "%s within BeginProg..EndProg, without a matching declaration before BeginProg.",
+   "Default value data type differs from source array.",
+   "Invalid %s mode, must be 1..%d."
+  ],
+  "TIMERINPUT": [
+   "%s cannot be used within a SubScan.",
+   "Invalid TimerInput function: %d for channel %c%d.",
+   "Invalid edge specified.",
+   "Invalid function for TimerInput port 1.",
+   "TimerInput not allowed in slow sequence",
+   "TimerInput with no functions enabled.",
+   "Too many function digits specified, maximum is %d."
+  ],
+  "TRIGGERSEQUENCE": [
+   "Illegal EVT, 1..4 are legal"
+  ],
+  "VIBRATINGWIRE": [
+   "%s already declared as a function.",
+   "%s already declared as a structure variable.",
+   "Channel: %d exceeds 12.",
+   "EndFreq %d exceeds max. of 6500.",
+   "Invalid excitation option: %d.",
+   "Must specify A, B, and C for Thermistor.",
+   "StartFreq %d too slow (min. is 100).",
+   "StartFreq must be less than EndFreq.",
+   "Too many reps on same channel, max = 65535.",
+   "Variable frequencies only allowed in SequentialMode."
+  ],
+  "VOICEBEG": [
+   "Voice sequence already declared"
+  ],
+  "VOICEPHRASES": [
+   "COM310 word list cannot be a variable.",
+   "Maximum number of words is %d"
+  ],
+  "VOLTDIFF": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "VOLTSE": [
+   "Cannot Autorange with MeasOffset.",
+   "ExChan must be U1-U12.",
+   "Too many reps on same channel, max = 65535."
+  ],
+  "WAITDIGTRIG": [
+   "Only one %s allowed in Scan..NextScan.",
+   "WaitDigTrig in Scan..NextScan not allowed within a loop or conditional."
+  ],
+  "WAITTRIGGERSEQUENCE": [
+   "WaitSequenceTrigger() must be in a SlowSequence and cannot be inside Scan()/NextScan."
+  ],
+  "WEBPAGEBEGIN": [
+   "Cannot nest web pages",
+   "Dest must be defined as a string",
+   "Dest must have a constant index.",
+   "Webpage name must be a constant and cannot be greater than %d characters."
+  ],
+  "WEBPAGEEND": [
+   "WebPageEnd without WebPageBegin"
+  ],
+  "WORSTCASE": [
+   "%d WorstCase events is illegal; legal is 1..99.",
+   "DataTable %s must have DataEvent() to work with WorstCase.",
+   "Out of memory; unable to allocate WorstCase Table.",
+   "WorstCase(%s,...) is illegal with CardOut."
+  ]
+ }
+}

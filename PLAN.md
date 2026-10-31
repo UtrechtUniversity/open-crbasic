@@ -243,7 +243,7 @@ is unchanged. With `crbc --strict`:
 - the exit status keeps 0/1 for the reference verdict and is 3 for "reference accepted, strict
   error";
 - `--report FILE` writes a JSON report (round 52, `docs/checker.md` "Check configuration and report
-  file"); coverage notices are not implemented yet (M4).
+  file"); since M4 it also holds the CR6 coverage notices ([inventory](docs/inventory.md)).
 
 `openloggernet/src/openloggernet/cr6comp.py` judges success from the output text, so strict findings must never appear in
 stdout. `--strict` does not imply `-u`; the language server enables `-u`-equivalent unused warnings
@@ -357,7 +357,8 @@ read-only review of round 68 (M2 complete; `scratch/r68/codex-signoff.log`, loca
 evidence and remaining listed cases are in `PROGRESS.md` ("Round 69") and the
 [first-error review](docs/first-error-review.md). **M3 done (round 70)**: checks
 `OCB001`-`OCB007` meet the exit criterion, signed off by a Codex `gpt-6.1-sol` read-only review
-(`scratch/m3b/codex-review3.log`, local only); see `PROGRESS.md` "Round 70". M4-M7 not started.
+(`scratch/m3b/codex-review3.log`, local only); see `PROGRESS.md` "Round 70". **M4 done (round 72)** for CR6: `tools/inventory.py` writes the pinned
+[evidence inventory](docs/inventory.md) and the coverage-notice table; see `PROGRESS.md` "Round 72". M5-M7 not started.
 
 Total: about 12–22 rounds, against an open-ended 20–40+ for full parity.
 
