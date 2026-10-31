@@ -8679,7 +8679,7 @@ suppression; `suppressed` = the same plus `reason`. `file` is the entry's name, 
 as written; `notices` = `[{file, line, instruction, rules}]`, the CR6 coverage notices
 ([inventory](inventory.md#coverage-notices)). A rejected program has empty `findings` and `notices`.
 
-Not done: the config-aware LSP wiring and notices in the editor (M6). A missing entry file returns before the report is written, so an older report file stays in place. A configuration file on another Windows drive than the entry matches no entry or suppression glob (absolute paths are compared).
+The language server runs the same checks with the same `opencrbasic.toml` (M6, [LSP API](lsp-api.md#analysis-facade-api_version-2)). A missing entry file returns before the report is written, so an older report file stays in place. A configuration file on another Windows drive than the entry matches no entry or suppression glob (absolute paths are compared).
 
 ## Foldable builtins with the wrong argument count in a Const (round 52)
 

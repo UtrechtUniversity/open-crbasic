@@ -341,6 +341,12 @@ def analyze(result, entry: Path, config: checkconfig.Config | None = None,
             result.findings.append(f)
 
 
+# Where each check's evidence is (`AnalysisFinding.link`); repository-relative.
+EVIDENCE = {"OCB001": "docs/checker.md#alias-names-that-are-crbasic-names-round-33",
+            **{f"OCB00{n}": "docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3" for n in range(2, 8)},
+            "notice": "docs/inventory.md#coverage-notices"}
+
+
 @functools.cache
 def _missing_rules(logger: str) -> dict[str, list[str]]:
     path = Path(__file__).resolve().parent / "data" / f"notices_{logger}.json"

@@ -78,9 +78,16 @@ def parse_overrides(items: list[str], codes) -> dict[str, str]:
 
 def load(path: Path, codes) -> Config:
     try:
-        data = tomllib.loads(path.read_text(encoding="utf-8"))
+        text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeDecodeError) as e:
         raise ConfigError(f"{path}: cannot read: {e}") from None
+    return loads(text, path, codes)
+
+
+def loads(text: str, path: Path, codes) -> Config:
+    """`load` of a file's text already read (the language server reads it through its sources)."""
+    try:
+        data = tomllib.loads(text)
     except tomllib.TOMLDecodeError as e:
         raise ConfigError(f"{path}: {e}") from None
     name = str(path)

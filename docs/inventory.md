@@ -78,7 +78,8 @@ builder and own helpers that are not implemented: reference rules opencrbasic do
 evidence above. `checks.notices` computes them for the CR6 profile only (the inventory is CR6) when
 the reference accepts the program; they are information, never a verdict. `crbc --report` writes
 them as `notices: [{file, line, instruction, rules}]` (report schema 2); default stdout, `--strict`
-stderr and the exit status are unchanged. The language server does not show them yet (M6).
+stderr and the exit status are unchanged. The language server publishes them as hints with
+`opencrbasic.coverageNotices` (default off: nearly every program has one, M6).
 
 ## Coverage of the listed false accepts
 

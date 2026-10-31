@@ -21,10 +21,11 @@ from pathlib import Path
 from typing import Any, BinaryIO
 from collections.abc import Iterator
 
-EXPECTED_API_VERSION = 1       # the `analysis.API_VERSION` this server was written for
+EXPECTED_API_VERSION = 2       # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"
 WATCH_ID = "opencrbasic-watch"
 DELETE_PATTERN = "**/*"         # VS Code reports a deleted folder only as its own URI
+CHECKS_PATTERN = "**/opencrbasic.toml"   # the check configuration (`checkconfig.FILE_NAME`)
 CONFIG_PULL_TIMEOUT = 10.0
 COMMAND_COMPILER_OUTPUT = "opencrbasic.showCompilerOutput"
 COMMAND_TABLE_FIELDS = "opencrbasic.showTableFields"
@@ -89,14 +90,17 @@ def build_server():
                             text_document_sync_kind=types.TextDocumentSyncKind.Full)
     severities = {"error": types.DiagnosticSeverity.Error,
                   "warning": types.DiagnosticSeverity.Warning,
-                  "information": types.DiagnosticSeverity.Information}
+                  "information": types.DiagnosticSeverity.Information,
+                  "hint": types.DiagnosticSeverity.Hint}
 
     def publish(uri: str, version: int | None, diags: list[Diag]) -> None:
         server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
             uri=uri, version=version,
             diagnostics=[types.Diagnostic(
                 range=types.Range(types.Position(d.line, 0), types.Position(d.end_line, d.end)),
-                message=d.message, severity=severities[d.severity], source=d.source)
+                message=d.message, severity=severities[d.severity], source=d.source,
+                code=d.code, code_description=types.CodeDescription(d.link) if d.link else None,
+                data=dict(d.data) if d.data else None)
                 for d in diags]))
 
     session = Session(publish)
@@ -191,6 +195,7 @@ def build_server():
                     id=WATCH_ID, method=types.WORKSPACE_DID_CHANGE_WATCHED_FILES,
                     register_options=types.DidChangeWatchedFilesRegistrationOptions(
                         watchers=[types.FileSystemWatcher(glob_pattern=watch_pattern()),
+                                  types.FileSystemWatcher(glob_pattern=CHECKS_PATTERN),
                                   types.FileSystemWatcher(glob_pattern=DELETE_PATTERN,
                                                           kind=types.WatchKind.Delete)]))])),
                 CONFIG_PULL_TIMEOUT)
@@ -529,16 +534,17 @@ def build_server():
         entries = session.fresh_contributors(path)
         sources = []
         for entry in entries:
-            result = await session.load(entry.analysed)
-            if result is not None:
-                sources.append((entry.path.name, result))
+            analysed = entry.analysed
+            result = await session.load(analysed)
+            if result is not None and analysed is not None:
+                sources.append((entry.path, analysed.token, result))
         if not sources or [id(e) for e in session.fresh_contributors(path)] != [id(e) for e in entries]:
             return []
         doc = session.docs.get(path)
         ctx = context_now()
         return await asyncio.to_thread(
             locked, entries, features.code_actions, ctx, sources, path,
-            list(params.context.diagnostics), doc.version if doc else None, session.display)
+            list(params.context.diagnostics), doc.version if doc else None)
 
     def refresh(supported, send) -> None:
         if supported and not state.get("shutdown"):

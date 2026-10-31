@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-31 after development round 72; M1-M4 done** (round-51
+Current compiler state and handoff, updated **2026-10-31 after development round 73; M1-M4 and M6 done** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,29 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 73: M6 done** (single agent; Codex `gpt-6.1-sol` reviews in `scratch/m6/codex-review*.log`, local only).
+The opencrbasic checks and coverage notices reach the editor:
+- facade API_VERSION 2 ([LSP API](docs/lsp-api.md#analysis-facade-api_version-2)): `findings`
+  (channel, code, severity, evidence link, path, span) and `config_error` when the reference accepts
+  the program; `opencrbasic.toml` read through the source provider, so it is a dependency and unsaved
+  text counts; request `checks` (LSP severities), `notices`, `config_root`;
+- worker and session carry them; published with source `opencrbasic (check)` / `opencrbasic (coverage)`,
+  `code`, `codeDescription` and the configured severity, merged and versioned per entry like compiler
+  diagnostics; compiler diagnostics carry `data` `{entry, result, index}` and quick fixes match on it;
+- settings `opencrbasic.checks` and `opencrbasic.coverageNotices` (default off: nearly every program
+  has a notice), both in the analysis key; a `**/opencrbasic.toml` watcher; the configuration is
+  searched only up to the entry's workspace folder; entries re-run when that root changes;
+- Codex review fixes: a stale diagnostic picked a newer result's fix (result token), ancestor
+  configurations outside the watched folder, and a race where the first analysis ran before the
+  folders arrived. Not done on purpose: syncing an open toml from VS Code (it would route CRBasic
+  features to the toml); an edit applies on save.
+- Tests: `tests/lsp/test_m6_server.py` (11: channels, unsaved include, two entries, settings and toml
+  changes, stale versions and results, programs with errors, formatting with a check error, `data`
+  quick fixes, config above the folder, notices).
+- Gates (`scratch/m6/gates2.log`): 63,864 passed, 311 skipped, 1,291 strict xfail; server 174 passed;
+  both `verify.py` backends pass (21/21). The reference channel is unchanged. No VS Code host test
+  and no hardware tests.
 
 **Round 72: M4 done** (single agent; Codex `gpt-6.1-sol` reviewed three times, `scratch/m4/codex-review*.log`,
 local only). `tools/inventory.py` generates the CR6 [evidence inventory](docs/inventory.md)
@@ -576,7 +599,7 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    need a reference probe first, value or flow analysis, or (the constant index past the declared
    storage) alias, flattened and String-index handling. The round-70 reference-channel false accept (a `Delay` unit parameter with a later
    same-name `Const`) is fixed in round 71. The language server does not run checks yet: that is M6
-   (call `checks.analyze` with its settings, put the configuration in the cache key).
+   (call `checks.analyze` with its settings, put the configuration in the cache key); done in round 73.
 4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X except a `Sub` name
    that is also another routine's parameter, used as a value (round 71, unrealistic); the 25 replay
    false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
@@ -608,7 +631,10 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    `tests/test_inventory.py` fails when the binary or instruction table changes. Not done: a CR1000X inventory
    (the PLAN scopes M4 to CR6), notices in the language server (M6). Next: M5 (artifact matrix) or
    M6 (editor).
-8. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
+8. **M6: done (round 73).** The language server publishes the checks (`opencrbasic (check)`, code,
+   evidence link) and, with `coverageNotices`, the notices; `opencrbasic.checks` and
+   `opencrbasic.toml` configure them; quick fixes match by `data`. Next: M5 (artifacts), then M7.
+9. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
    are kept in the round-30 snapshot in `git show 2612abad:opencrbasic/docs/progress-history.md`.
    Re-rank each under the fix, flag or accept rule before working on it.
 

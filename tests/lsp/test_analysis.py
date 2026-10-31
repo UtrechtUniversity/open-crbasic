@@ -38,7 +38,7 @@ def _check_equal(entry, logger, overlays, memo):
     for ov in ({}, overlays):
         request = AnalysisRequest(entry, logger, ov, warn_unused=True, signature=True)
         res = analyze(request) if ov else memo(request)
-        assert res.api_version == API_VERSION == 1
+        assert res.api_version == API_VERSION == 2
         assert (res.ok, res.mode, [_key(d) for d in res.diagnostics], list(res.rendered_lines)) == (
             ok, mode, diags, lines), entry
 

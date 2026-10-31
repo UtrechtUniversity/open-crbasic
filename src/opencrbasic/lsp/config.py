@@ -25,10 +25,12 @@ class Config:
     max_queued_jobs: int = 64           # entries with an analysis task at once; the rest wait
     max_cache_mb: int = 256             # parsed programs kept for the language features
     inlay_parameter_names: bool = True  # `inlayHints.parameterNames`
+    checks: tuple[tuple[str, str], ...] = ()   # `checks`: severity per check code (LSP layer)
+    coverage_notices: bool = False      # `coverageNotices`: publish coverage notices as hints
 
-    def analysis_key(self) -> tuple[str, str, int]:
+    def analysis_key(self) -> tuple[str, str, int, tuple[tuple[str, str], ...], bool]:
         """What changes every entry's analysis input or outcome."""
-        return (self.logger, self.encoding, self.max_file_bytes)
+        return (self.logger, self.encoding, self.max_file_bytes, self.checks, self.coverage_notices)
 
     def entry_suffixes(self) -> frozenset[str]:
         """Extensions (lower case) that make an opened file an entry program."""
@@ -102,6 +104,18 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
             changes["inlay_parameter_names"] = value
         else:
             warnings.append("ignoring 'inlayHints.parameterNames': expected a boolean")
+    if "checks" in options:
+        from .. import checkconfig, checks
+        try:
+            changes["checks"] = tuple(sorted(checkconfig._severities(
+                options["checks"], checks.DEFAULT_SEVERITY, "'checks'").items()))
+        except checkconfig.ConfigError as e:
+            warnings.append(f"ignoring {e}")
+    if "coverageNotices" in options:
+        if isinstance(options["coverageNotices"], bool):
+            changes["coverage_notices"] = options["coverageNotices"]
+        else:
+            warnings.append("ignoring 'coverageNotices': expected a boolean")
     if "helpDirectory" in options:
         value = options["helpDirectory"]
         if value is None or isinstance(value, str):

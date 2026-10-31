@@ -3,7 +3,7 @@
 Contracts for editor tooling on top of the compiler. Specification history: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-00.md`
 ("Contracts for LSP-01"). The server section is "Language server (LSP-01)" below.
 
-## Analysis facade (API_VERSION 1)
+## Analysis facade (API_VERSION 2)
 
 `opencrbasic.analysis` runs the CLI's own compile driver (`compiler.compile_file`) over a program
 whose files may have unsaved edits. There is no second pipeline: `analyze` is `compile_file` plus
@@ -36,10 +36,13 @@ resolved to (`display name as written, stripped -> Path`) and exposes it as
 
 ```python
 analyze(AnalysisRequest(entry, logger="cr6", overlays={}, warn_unused=False, signature=False,
-                        max_file_bytes=None))
+                        max_file_bytes=None, checks={}, notices=False))
     -> AnalysisResult(api_version, request, ok, mode, diagnostics, rendered_lines,
-                      implementation_failures, dependencies, program)
+                      implementation_failures, dependencies, program, findings, config_error)
 ```
+
+API_VERSION 2 (M6) added `checks`, `notices`, `findings` and `config_error`; every earlier field is
+unchanged.
 
 - `logger` is a profile name (`profiles.get`); it is never inferred from the extension. An
   unknown name raises `ValueError`.
@@ -60,6 +63,19 @@ analyze(AnalysisRequest(entry, logger="cr6", overlays={}, warn_unused=False, sig
   file of this analysis over the limit (path -> size); such a file is not read and appears as a
   `None` read (LSP-R3c). Without it `oversized` is empty and nothing changes.
 - `program`: the parsed AST (`None` when parsing failed). Opaque and unstable.
+- `findings` (only when `ok`: a check on a program the reference rejects is not sound):
+  `AnalysisFinding(channel, code, severity, message, line, file, path, link, span)`, never in
+  `diagnostics` ([PLAN](../PLAN.md#three-diagnostic-channels)). Channel `check`: the opencrbasic
+  checks (`checks.analyze`, codes `OCB...`, severity `error`/`warning`/`info`) after
+  `opencrbasic.toml` and the `checks` severity map (the LSP layer of `checkconfig.severity`) and
+  suppressions; channel `notice` (with `notices=True`): the CR6 coverage notices (`checks.notices`,
+  code `notice`, severity `hint`; [inventory](inventory.md#coverage-notices)). `file`, `path` and `span`
+  follow the diagnostics' rules; `link` is the URL of the evidence (`checks.EVIDENCE`).
+- `opencrbasic.toml` is found as `crbc` finds it (`checkconfig.find`: the nearest ancestor of the
+  entry), but not above `config_root` when that is given, and read through the source provider:
+  unsaved text is used and every probed path, found or missing, is a dependency, so creating,
+  changing or deleting the file makes the result stale. An invalid file gives `config_error` and no
+  check findings, as `crbc` runs no checks then (notices, when requested, still appear).
 
 ### Encoding
 
@@ -330,7 +346,7 @@ The revision comes from `git -C <package dir> rev-parse --show-toplevel --short 
 reported only when the package directory is that checkout's `src/opencrbasic` or
 `opencrbasic/src/opencrbasic`; a wheel installed inside another repository, or any failure, gives
 `git=unknown` (LSP-R3c). The
-server was written for `analysis.API_VERSION == 1`; any other value prints
+server was written for `analysis.API_VERSION == 2`; any other value prints
 `opencrbasic-lsp: refusing to start: ...` and exits with status 2. Exit status after `shutdown` +
 `exit` is 0; `exit` without `shutdown` (or stdin closing) is 1. Everything the server logs goes to
 stderr; stdout carries only protocol frames.
@@ -366,7 +382,7 @@ no pull diagnostics) is advertised.
 
 Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
 `exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
-`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `helpDirectory` (`""`: no help text), `inlayHints.parameterNames` (`true`; a nested object `{"inlayHints": {"parameterNames": false}}` or the flat key; "Inlay hints and commands (LSP-09c)") and `featureWaitMs` (1500, see
+`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `checks` (`{}`: a severity per check code, `error`/`warning`/`info`/`off`, above `opencrbasic.toml`; an invalid map is ignored with a log line), `coverageNotices` (`false`), `helpDirectory` (`""`: no help text), `inlayHints.parameterNames` (`true`; a nested object `{"inlayHints": {"parameterNames": false}}` or the flat key; "Inlay hints and commands (LSP-09c)") and `featureWaitMs` (1500, see
 "Language features"). The VS Code extension contributes every key except `featureWaitMs`, with the
 same defaults (`vscode/package.json`, checked by `test_vscode_contributes_server_tuning_keys`);
 `featureWaitMs` is internal and set only by a client that sends it. Sources, in order: `initializationOptions`, then, when the client
@@ -379,7 +395,7 @@ disappeared from the settings returns to its default (or its initialization-opti
 reload with no settings (a pull that failed, or a notification without settings from a client that
 cannot be pulled) keeps the current configuration. An invalid value is ignored with a log line and
 that key keeps its default or initialization-option value. Changing `logger` or `encoding`
-re-analyzes every entry; changing `entries`/`exclude` re-discovers (entries that drop out have
+re-analyzes every entry, and so does changing `checks` or `coverageNotices`; changing `entries`/`exclude` re-discovers (entries that drop out have
 their diagnostics cleared); `debounceMs` and `analysisTimeoutMs` apply to later jobs.
 
 Entry discovery globs the workspace folders (`entries` minus `exclude`; workspace-relative,
@@ -392,9 +408,10 @@ extension `.CR6` (case-insensitive; additionally the extension of the configured
 
 - **Watched files.** After `initialized`, when the client declares
   `workspace.didChangeWatchedFiles.dynamicRegistration`, the server registers
-  `workspace/didChangeWatchedFiles` with two watchers: `config.watch_pattern()`, `**/*.{...}` over
+  `workspace/didChangeWatchedFiles` with three watchers: `config.watch_pattern()`, `**/*.{...}` over
   `crb` and the program extensions of every logger profile, each in lower and upper case (a
-  mixed-case extension is not watched), and `**/*` with `WatchKind.Delete` only (host finding H-07:
+  mixed-case extension is not watched), `**/opencrbasic.toml` (M6: an event re-analyses the entries
+  that probed that path), and `**/*` with `WatchKind.Delete` only (host finding H-07:
   VS Code reports a deleted folder only as the folder's URI, which the first glob does not match). Without client support one stderr line says so and closed-file changes
   are noticed only through save/open/close. Handling (`Session.files_changed`): events for an open
   document are ignored (its text wins; closing restores the disk state); other events re-analyse
@@ -495,7 +512,20 @@ the disk file for every analysis. When replacement happened the document gets on
   configured `encoding` (`Session.display`, `session.display_text`); a message with a character above
   U+00FF (not compiler text) and a codec that does not exist are left unchanged, and the server's own
   messages and the internal-error markers are never re-decoded. Display only: `analysis`, the CLI and
-  the structured results are unchanged, and quick fixes match on the raw compiler text.
+  the structured results are unchanged, and quick fixes match on the published `data`, not the text.
+- Channels (M6): compiler diagnostics keep source `opencrbasic` and carry `data` (`{"entry",
+  "result", "index"}`, for quick fixes; only from a result whose program the features can use). opencrbasic checks are published with source `opencrbasic (check)`,
+  `code` (`OCB...`), `codeDescription.href` (the evidence) and the configured severity (`info` ->
+  Information); coverage notices, only with `coverageNotices`, with source `opencrbasic (coverage)`,
+  code `notice` and severity Hint. Both are merged, versioned and prefixed per entry like compiler
+  diagnostics, and none of them changes formatting or rename refusals, which look at compiler
+  errors only. An invalid `opencrbasic.toml` is a warning with source `opencrbasic (server)` at
+  line 0 of each entry it applies to.
+- Check configuration (M6): the server searches `opencrbasic.toml` from the entry up to the
+  workspace folder that holds it (`config_root`), the part the `**/opencrbasic.toml` watcher covers;
+  `crbc` also looks above it. An entry outside every folder searches every ancestor, unwatched, like
+  its includes. The VS Code client does not send the toml document, so an edit applies when it is
+  saved; a client that opens it as a document gets its unsaved text and no "not an entry" note.
 - Known limit: ranges are whole physical lines, not token spans; the only column is the line end,
   counted in the negotiated position encoding (utf-16 by default). A file loaded twice (two occurrences) gets the union of its spans, which can cover
   more lines than one occurrence.
@@ -644,9 +674,10 @@ current, or `formatting.format_refusal` of any entry that reads the file says th
 Note this includes errors in other files of that entry.
 
 **`textDocument/codeAction`** (kind `quickfix`; a request whose `only` excludes it answers `[]`): for each
-diagnostic of the request context with source `opencrbasic`, the analysis diagnostic with the same
-displayed text (with the optional `[Entry] ` prefix) and the same first line is passed to
-`quickfix.code_actions`, for every entry whose published diagnostics for the file are from the current
+diagnostic of the request context with source `opencrbasic`, the analysis diagnostic its `data`
+names (`{"entry": <entry path>, "result": <token of the applied result>, "index": <position in that
+result's diagnostics>}`, M6) is passed to `quickfix.code_actions`. A diagnostic of an older result,
+or one without `data`, gets no fix. This is done for every entry whose published diagnostics for the file are from the current
 program. Each action carries the originating diagnostic and a `WorkspaceEdit` with one versioned
 `TextDocumentEdit` (the open document's version). The same fix from several entries is offered once;
 edits outside the requested file are dropped.

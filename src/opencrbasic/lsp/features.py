@@ -474,33 +474,27 @@ def rename_edit(ctx: Ctx, results: list, path: Path, position: types.Position, n
 # ---- quick fixes (LSP-07-wire) ----------------------------------------------------------------
 
 
-def _first_line(diag: Any) -> int:
-    if diag.span:
-        return max(diag.span[0] - 1, 0)
-    return max(diag.line - 1, 0) if diag.line > 0 else 0
-
-
-def code_actions(ctx: Ctx, sources: list[tuple[str, Any]], path: Path,
-                 diagnostics: list[types.Diagnostic], version: int | None,
-                 display: Callable[[str], str]) -> list[types.CodeAction]:
+def code_actions(ctx: Ctx, sources: list[tuple[Path, int, Any]], path: Path,
+                 diagnostics: list[types.Diagnostic], version: int | None) -> list[types.CodeAction]:
     """Quick fixes for the diagnostics of the request that this server published. `sources`:
-    (entry file name, `AnalysisResult`) of the entries that contributed diagnostics to `path`.
-    A request diagnostic is matched to an analysis diagnostic by the displayed text (with the
-    `[Entry] ` prefix the merge may add) and the first line; the same fix from several entries is
-    offered once."""
+    (entry path, result token, `AnalysisResult`) of the entries that contributed diagnostics to
+    `path`. A request diagnostic names its analysis diagnostic in `data` (`{"entry", "result",
+    "index"}`, M6); one from another result, or without `data`, gets no fix. The same fix from
+    several entries is offered once."""
     actions: list[types.CodeAction] = []
     seen: set = set()
     for lsp_diag in diagnostics:
-        if lsp_diag.source != "opencrbasic":
+        data = lsp_diag.data if isinstance(lsp_diag.data, dict) else {}
+        if lsp_diag.source != "opencrbasic" or not data:
             continue
-        for name, result in sources:
-            for diag in result.diagnostics:
-                if diag.path is None or not _same(diag.path, path):
-                    continue
-                shown = display(diag.message)
-                if _first_line(diag) != lsp_diag.range.start.line or not (
-                        lsp_diag.message == shown or lsp_diag.message == f"[{name}] {shown}"):
-                    continue
+        for entry, token, result in sources:
+            if data.get("entry") != str(entry) or data.get("result") != token:
+                continue
+            index = data.get("index")
+            if not isinstance(index, int) or not 0 <= index < len(result.diagnostics):
+                continue
+            diag = result.diagnostics[index]
+            if diag.path is not None and _same(diag.path, path):
                 for act in quickfix.code_actions(result, path, diag, ctx.profile):
                     if any(not _same(e.path, path) for e in act.edits):
                         continue

@@ -94,6 +94,8 @@ Names and defaults come from `vscode/package.json`. "Applied" says how a change 
 | `opencrbasic.encoding` | `utf-8` | Encoding for unsaved text and for files | sent; every entry is re-analysed |
 | `opencrbasic.debounceMs` | `300` | Quiet time after an edit before analysis (minimum 0) | sent; later jobs |
 | `opencrbasic.analysisTimeoutMs` | `10000` | Limit for one analysis (minimum 1) | sent; later jobs |
+| `opencrbasic.checks` | `{}` | Severity per opencrbasic check code (`error`, `warning`, `info`, `off`), above `opencrbasic.toml`; checks show with source `opencrbasic (check)` and a link to their evidence | sent; every entry re-analysed |
+| `opencrbasic.coverageNotices` | `false` | Hints naming the reference compiler rules opencrbasic does not model, at the first use of a CR6 instruction (source `opencrbasic (coverage)`) | sent; every entry re-analysed |
 | `opencrbasic.helpDirectory` | `""` | Folder of the extracted CRBasic help (section 6) | sent; indexed in the background |
 | `opencrbasic.inlayHints.parameterNames` | `true` | Parameter names before call arguments (section 5.11); needs `helpDirectory` | sent; hints refresh |
 | `opencrbasic.trace.server` | `off` | `messages` or `verbose` trace in the `opencrbasic` output channel | applied at once |

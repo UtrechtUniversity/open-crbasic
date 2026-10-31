@@ -23,13 +23,17 @@ from pathlib import Path
 from collections.abc import Callable
 from urllib.parse import quote
 
-from .. import positions
+from .. import checkconfig, positions
 from .config import Config, discover
 from .worker import JobResult, OutputResult, run_analysis, run_compiler_output
 
 SRC_COMPILE = "opencrbasic"
 SRC_INTERNAL = "opencrbasic (internal)"
 SRC_SERVER = "opencrbasic (server)"
+SRC_CHECK = "opencrbasic (check)"          # opencrbasic checks (`OCB...`): the reference accepts these
+SRC_COVERAGE = "opencrbasic (coverage)"    # coverage notices: reference rules opencrbasic does not model
+_CHANNELS = {"check": SRC_CHECK, "notice": SRC_COVERAGE}
+_SEVERITIES = {"info": "information"}     # check severity -> LSP severity name, where they differ
 MARKERS = ("Internal error: unable to compile program.", "Internal error: unable to parse program.")
 INFO_UNINCLUDED = ("No configured entry program includes this file; diagnostics come from the "
                    "entry programs that include it.")
@@ -45,9 +49,12 @@ class Diag:
     line: int            # 0-based LSP line where the range starts; the range starts at character 0
     end_line: int        # 0-based LSP line where the range ends (== line for one physical line)
     end: int             # end character (negotiated position-encoding units) of end_line
-    severity: str        # "error" | "warning" | "information"
+    severity: str        # "error" | "warning" | "information" | "hint"
     message: str
     source: str
+    code: str | None = None
+    link: str | None = None                       # `codeDescription.href`
+    data: tuple[tuple[str, object], ...] = ()     # `data`: the entry and the diagnostic's index (quick fixes)
 
 
 # publish(uri, version or None, diagnostics)
@@ -70,6 +77,10 @@ class Raw:
     line: int            # compiler line (0: none)
     internal: bool = False
     span: tuple[int, int] | None = None   # physical (first, last) line in the target file
+    source: str = SRC_COMPILE
+    code: str | None = None
+    link: str | None = None
+    index: int | None = None              # position in the job's diagnostics (quick fixes)
 
 
 class Analysed:
@@ -80,6 +91,7 @@ class Analysed:
     def __init__(self, entry: Path, logger: str, overlays: tuple[tuple[str, bytes], ...],
                  versions: dict[Path, int], blob: bytes, job: JobResult | None = None):
         self.entry = entry
+        self.token = 0                      # set by `Session._apply`: which applied result this is
         self.ok = True if job is None else job.ok
         self.failures = () if job is None else job.failures
         self.reads = {} if job is None else {Path(p): h for p, h in job.reads}
@@ -165,6 +177,7 @@ class Entry:
     evicted: bool = False                       # its program was dropped by the cache budget
     analysed: Analysed | None = None            # newest program that was parsed, for features
     analysed_current: bool = False              # the newest applied analysis produced it
+    root_used: tuple[str | None] | None = None  # (config root,) its last job searched; None: no job yet
 
 
 @dataclass
@@ -175,6 +188,8 @@ class Snapshot:
     timeout: float
     max_file_bytes: int | None = None
     kind: str = "analysis"              # the worker job: "analysis" or "compiler_output"
+    checks: tuple[tuple[str, str], ...] = ()   # LSP check severities (analysis only)
+    notices: bool = False                      # coverage notices (analysis only)
 
 
 class ServerError(Exception):
@@ -262,6 +277,7 @@ class Session:
         self._deferred: dict[Path, Entry] = {}     # entries waiting for a task slot
         self._discover_lock: asyncio.Lock | None = None
         self._use = itertools.count(1)
+        self._tokens = itertools.count(1)
         self._noticed: set[str] = set()
         self.on_message: Callable[[str], None] | None = None   # server message (limits)
 
@@ -342,7 +358,10 @@ class Session:
         trees: list[Path] = []
         for path, kind in events:
             path = path.absolute()
-            if path.suffix.lower() in known:
+            if path.name.lower() == checkconfig.FILE_NAME:   # the entries that probed it are re-analysed
+                if path not in self.docs:
+                    files.append(path)
+            elif path.suffix.lower() in known:
                 if kind != CHANGED:
                     rediscover = rediscover or path.suffix.lower() != ".crb"
                 if path not in self.docs:
@@ -371,6 +390,11 @@ class Session:
             names += [*entry.reads, *entry.dirs, _key(entry.path)]
         return any(n == key or n.startswith(below) for n in names)
 
+    def _config_root(self, path: Path) -> str | None:
+        """The workspace folder holding `path`: the check configuration is searched no higher,
+        which is the part the `**/opencrbasic.toml` watcher covers."""
+        return next((str(f) for f in self.folders if f == path or f in path.parents), None)
+
     def _wanted_entries(self) -> set[Path]:
         suffixes = self.config.entry_suffixes()
         return set(self.discovered) | {p for p in self.docs if p.suffix.lower() in suffixes}
@@ -391,8 +415,8 @@ class Session:
             if entry is None:
                 entry = self.entries[path] = Entry(path)
                 self._request(entry, 0.0)
-            elif force:
-                self._request(entry, 0.0)
+            elif force or (entry.root_used is not None and entry.root_used != (self._config_root(path),)):
+                self._request(entry, 0.0)       # (folders arrived or changed: another config root)
         self._publish(touched | self._open_non_entry_paths())
 
     # ---- document events -----------------------------------------------------------------
@@ -508,7 +532,8 @@ class Session:
         return Snapshot(tuple((str(p), d.data) for p, d in self.docs.items()),
                         {p: d.version for p, d in self.docs.items()},
                         self.config.logger, self.config.analysis_timeout_ms / 1000,
-                        self.config.max_file_bytes)
+                        self.config.max_file_bytes, checks=self.config.checks,
+                        notices=self.config.coverage_notices)
 
     async def _entry_loop(self, entry: Entry) -> None:
         loop = asyncio.get_running_loop()
@@ -641,12 +666,18 @@ class Session:
         if self._closed:
             return ServerError("server is shutting down")
         loop = asyncio.get_running_loop()
-        job = run_analysis if snap.kind == "analysis" else run_compiler_output
         label = "Analysis" if snap.kind == "analysis" else "Compilation"
         pool, gen = self._get_pool()
         try:
-            future = loop.run_in_executor(pool, job, str(entry.path), snap.logger, snap.overlays,
-                                          snap.max_file_bytes)
+            if snap.kind == "analysis":
+                root = self._config_root(entry.path)
+                entry.root_used = (root,)
+                future = loop.run_in_executor(pool, run_analysis, str(entry.path), snap.logger,
+                                              snap.overlays, snap.max_file_bytes, snap.checks, snap.notices,
+                                              root)
+            else:
+                future = loop.run_in_executor(pool, run_compiler_output, str(entry.path), snap.logger,
+                                              snap.overlays, snap.max_file_bytes)
             return await asyncio.wait_for(future, snap.timeout)
         except TimeoutError:
             self._reset_pool(gen)
@@ -691,6 +722,7 @@ class Session:
             if program is not None:
                 entry.analysed = Analysed(entry.path, snap.logger, snap.overlays, snap.versions,
                                           program, outcome)
+                entry.analysed.token = next(self._tokens)   # names this result in quick-fix `data`
                 entry.used = next(self._use)
                 entry.evicted = False
                 installed = True
@@ -729,7 +761,7 @@ class Session:
         out: dict[Path, list[Raw]] = {}
         failures = "\n".join(result.failures)
         attached = False
-        for severity, message, line, path, file, span in result.diagnostics:
+        for index, (severity, message, line, path, file, span) in enumerate(result.diagnostics):
             target = Path(path) if path else entry.path
             if not path:
                 message = f"{file}:{line}: {message}" if file else message
@@ -737,7 +769,18 @@ class Session:
             internal = message in MARKERS
             if internal and failures and not attached:
                 message, attached = f"{message}\n{failures}", True
-            out.setdefault(target, []).append(Raw(severity, message, line, internal, span))
+            out.setdefault(target, []).append(Raw(severity, message, line, internal, span, index=index))
+        for channel, code, severity, message, line, path, file, span, link in result.findings:
+            target = Path(path) if path else entry.path
+            if not path:
+                message = f"{file}:{line}: {message}" if file else message
+                line, span = 0, None
+            out.setdefault(target, []).append(Raw(_SEVERITIES.get(severity, severity), message, line,
+                                                  span=span, source=_CHANNELS[channel], code=code, link=link))
+        if result.config_error:
+            out.setdefault(entry.path, []).append(Raw(
+                "warning", f"Check configuration ignored, no checks ran: {result.config_error}", 0,
+                source=SRC_SERVER))
         if failures and not attached:
             out.setdefault(entry.path, []).append(
                 Raw("error", f"Internal error in the compiler:\n{failures}", 0, True))
@@ -769,14 +812,17 @@ class Session:
         last_idx = len(lines) - 1
 
         def make(line: int, severity: str, message: str, source: str,
-                 span: tuple[int, int] | None = None) -> Diag:
+                 span: tuple[int, int] | None = None, raw: Raw | None = None, entry: Path | None = None,
+                 token: int | None = None) -> Diag:
             if span is not None:
                 first = min(max(span[0] - 1, 0), last_idx)
                 last = min(max(span[1] - 1, first), last_idx)
             else:
                 first = last = min(max(line - 1, 0), last_idx) if line > 0 else 0
+            data = () if raw is None or raw.index is None or token is None else (
+                ("entry", str(entry)), ("result", token), ("index", raw.index))
             return Diag(first, last, positions.units(lines[last], self.position_encoding),
-                        severity, message, source)
+                        severity, message, source, raw.code if raw else None, raw.link if raw else None, data)
 
         contributors = [e for e in self.entries.values()
                         if e.contrib.get(path) and e.versions.get(path) == current]
@@ -786,8 +832,9 @@ class Session:
             for raw in e.contrib[path]:
                 text = raw.message if raw.internal else self.display(raw.message)
                 message = f"[{e.path.name}] {text}" if prefix else text
+                token = e.analysed.token if e.analysed is not None and e.analysed_current else None
                 out.append(make(raw.line, raw.severity, message,
-                                SRC_INTERNAL if raw.internal else SRC_COMPILE, raw.span))
+                                SRC_INTERNAL if raw.internal else raw.source, raw.span, raw, e.path, token))
         for e in self.entries.values():
             if e.error and e.path == path:
                 out.append(make(0, "warning", e.error, SRC_SERVER) if e.error_limit
@@ -798,6 +845,7 @@ class Session:
                             f"configured encoding {self.config.encoding!r} and were replaced "
                             "in the text sent to the compiler.", SRC_SERVER))
         if doc is not None and path not in self.entries and self._ready \
+                and path.name.lower() != checkconfig.FILE_NAME \
                 and all(e.settled for e in self.entries.values()) \
                 and not any(_key(path) in e.reads for e in self.entries.values()):
             out.append(make(0, "information",

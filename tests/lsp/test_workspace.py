@@ -60,9 +60,9 @@ def test_registers_watched_files_when_the_client_supports_it(make_client, tmp_pa
     (registration,) = request["params"]["registrations"]
     assert registration["method"] == "workspace/didChangeWatchedFiles"
     watchers = registration["registerOptions"]["watchers"]
-    assert [w["globPattern"] for w in watchers] == [watch_pattern(), "**/*"]
-    assert "kind" not in watchers[0]
-    assert watchers[1]["kind"] == 4                        # WatchKind.Delete only (H-07)
+    assert [w["globPattern"] for w in watchers] == [watch_pattern(), "**/opencrbasic.toml", "**/*"]
+    assert "kind" not in watchers[0] and "kind" not in watchers[1]
+    assert watchers[2]["kind"] == 4                        # WatchKind.Delete only (H-07)
     assert client.shutdown() == 0
 
 

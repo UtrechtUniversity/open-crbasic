@@ -109,7 +109,7 @@ def test_lifecycle_and_capabilities(make_client, tmp_path):
     assert result["serverInfo"]["name"] == "opencrbasic"
     assert client.shutdown() == 0
     assert "opencrbasic-lsp: opencrbasic=" in client.stderr_text
-    assert "api_version=1" in client.stderr_text and str(SRC) in client.stderr_text
+    assert "api_version=2" in client.stderr_text and str(SRC) in client.stderr_text
 
 
 def test_startup_banner_is_also_an_info_log_message(make_client, tmp_path):
@@ -144,6 +144,7 @@ SERVER_KEY_ATTRS = {
     "featureWaitMs": "feature_wait_ms", "maxFileBytes": "max_file_bytes",
     "maxQueuedJobs": "max_queued_jobs", "maxCacheMb": "max_cache_mb",
     "helpDirectory": "help_directory", "inlayHints.parameterNames": "inlay_parameter_names",
+    "checks": "checks", "coverageNotices": "coverage_notices",
 }
 INTERNAL_SERVER_KEYS = {"featureWaitMs"}
 
@@ -160,7 +161,7 @@ def test_vscode_contributes_server_tuning_keys():
     for key in server_keys:
         prop = contributed[key]
         default = getattr(defaults, SERVER_KEY_ATTRS[key])
-        expected = list(default) if isinstance(default, tuple) else default
+        expected = dict(default) if key == "checks" else list(default) if isinstance(default, tuple) else default
         assert prop["default"] == expected, key
         _, warnings = lsp_config.parse_config({key: prop["default"]})
         assert warnings == [], key               # the contributed default is a value the server accepts
