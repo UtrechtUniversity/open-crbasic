@@ -9539,3 +9539,49 @@ analysis.
 
 `crbc --report` also writes the report when the entry file does not exist: the reference's `No
 Program File` failure with `line` null and no findings (M3, `test_report_of_a_missing_program`).
+
+## Constants declared after their use (round 71)
+
+A `Const` is visible from its declaration on, and a routine parameter is a variable inside its own
+body (oracle, all four loggers, 2026-10-31, `tests/fixtures/r71_const_order.json`, 368
+observations). CR6/CR1000X resolve runtime positions (assignments, `If` conditions, a `Delay`
+interval) after the whole file, so only pass-1 constant positions see the order:
+
+- A `Const` named before its declaration in a `Dim`/`Public` size or initializer, a `DataTable`
+  size, a `Scan` interval or a constant-family argument (`Delay` unit, `PanelTemp` fnotch) is
+  `Invalid symbol in expression: K.`, also inside a `Sub` (`Sub Q` / `Delay(1,1,U)` / `EndSub` /
+  `Const U=Sec`). CR300/CR350 print `K is not defined.` there and at every other position.
+- A parameter named like a later global `Const` is a variable inside its body: `Sub P(U As Long)` /
+  `Delay(1,-0.9,U)` / `EndSub` / `Const U=Sec` is `Variable illegal in Parameter: U.`; as an `AvgRun`
+  instance count it is `Optional number of distinct instances must be a constant of type long.`;
+  as a local `Dim` size `Variable illegal in Parameter: K.`. After `EndSub` the name is the `Const`
+  again (the round-10 `sub_param_const.json` controls); in another routine before the `Const` it is
+  undefined.
+- A parameter named like an *earlier* `Const` is `U is already declared as a CONST.` and nothing
+  else on CR6/CR1000X.
+- An `Alias` subscript naming a later `Const` (`Alias A(K)=Y` / `Const K=2`) is `Invalid symbol in
+  expression: K.` too.
+- A predefined name stays predefined before its own `Const`: `Public A(IEEE4)` / `Const IEEE4=1`
+  compiles on CR6/CR1000X (CR300/CR350: `IEEE4 is a predefined CONST.`).
+- `AvgRun`'s instance count (CR6/CR1000X) must be literals and numeric `Const`s under operators
+  (`3`, `2+1`, `K*2`, `&H3`, `3.5`, `Sec`, `K\1`, `3 MOD 2` compile). A variable, alias or field
+  anywhere in it (`V+0`, `W+0` for `Alias V=W`, `Public.V+0`, `Status.SkippedScan+0`), a function call
+  (`INT(3)`, `Len("ab")`) or a String `Const` is `Optional number of distinct instances must be a
+  constant of type long.`; only the storage visible at the statement counts (`symbols.scoped_view`
+  with `publics`): a `Dim K` or a local `Alias A=K` in another routine leaves a global `Const K`
+  constant, while a `Public K` declared inside another routine is global and counts. A negative constant, including `True` or a Boolean
+  `Const`, is `Out of memory.` (the cascade it ends is not modelled). All of these were false
+  accepts before round 71 except the parameter cases.
+- A `Sub` name is no value on CR6/CR1000X: `X = V`, `If V Then`, `Delay(1,V,mSec)` and
+  `AvgRun(...,V+0,1)` for `Sub V` are `Invalid symbol in expression` (`Function` names are values).
+  Not modelled: a `Sub` name that is also another routine's parameter. First error only (verdict
+  equal): `Alias X=V` before `Sub V` is `V already declared as a variable.` on the `Sub` line, and
+  `Sec()` as the instance count is `Incomplete expression: Sec().`.
+
+Found by the three Codex `gpt-6.1-sol` reviews (`scratch/r71/codex-review*.log`, local only) and the probes that followed them.
+
+Implemented by `symbols.statement_scopes` (per statement: the enclosing routine's parameters and
+the `Const` names still to come), used by `check_const_family_args`, the declaration-expression
+check and `Alias` subscripts in `structure.check_pass1`, the `AvgRun` instance rule and, on CR300/CR350, the general
+argument check. Not modelled on CR300/CR350 (best effort, 8 strict xfails): an assignment or `If`
+before the `Const` it names, and a parameter in a `Dim` initializer.

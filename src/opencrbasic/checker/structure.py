@@ -1192,7 +1192,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     alias_parameters: S.Declaration | None = None
     alias_parameter_names: set[str] = set()
     global_alias_state = (alias_declarations, seen_alias_names, seen_alias_sources)
-    known: set[str] | None = None
+    known: expressions.KnownNames | None = None
     operands: set[str] = set()
     in_sub = False
     in_struct = False
@@ -1215,6 +1215,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     all_known: set[str] | None = None   # (kept apart from `known`, which the loop gates on)
     seen_consts: set[str] = set()
     first_declared: dict[str, int] = {}
+    scopes = symbols.statement_scopes(program, profile)
     alias_spans: dict[str, list[list[int]]] = {}  # alias -> [from, to] statement positions seeing it
     routine_spans: list[list[int]] = []
     for pos, stmt in enumerate(program.statements):
@@ -1441,6 +1442,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
                 length_scope = None
+                params, later = scopes[id(stmt)]
+                here = known.without(later - params - decl_variables)
                 # an alias is a variable from its `Alias` on, a routine's only up to its end
                 seen = {name for name, spans in alias_spans.items()
                         if any(lo < pos <= hi for lo, hi in spans)}
@@ -1459,7 +1462,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     dims_diags, names_diags = Diagnostics(), Diagnostics()
                     earlier_errors = any(d.severity == "error" for d in diags.items)
                     dim_at = _check_array_dims(stmt, dims_diags, env, profile)
-                    name_at = _check_decl_exprs(stmt, known, decl_variables, profile, names_diags,
+                    name_at = _check_decl_exprs(stmt, here, decl_variables | params, profile, names_diags,
                                                 struct_types, dim_at, length_scope)
                     bad_at = name_at if name_at is not None else dim_at
                     own_items = names_diags.items if name_at is not None else \
@@ -1491,7 +1494,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 else:
                     _check_array_dims(stmt, diags, env, profile)
                     # CR6/CR1000X: a visible alias is a variable too (`Public B(Vy)`, round 35)
-                    _check_decl_exprs(stmt, known, decl_variables | seen, profile, diags, struct_types,
+                    _check_decl_exprs(stmt, here, decl_variables | seen | params, profile, diags, struct_types,
                                       length_scope=length_scope)
                 _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
@@ -1592,7 +1595,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 # `Alias CD16(29) = 3`, pass 1, all four loggers (oracle, 2026-09-27)
                 diags.error(stmt.line, f"Variable name {stmt.args[1].text} illegal, starts with a "
                             "number.", stmt.file)
-            elif not _check_alias_index_names(stmt, known, decl_variables | alias_parameter_names,
+            elif not _check_alias_index_names(stmt, known.without(scopes[id(stmt)][1] - decl_variables),
+                                             decl_variables | alias_parameter_names,
                                              profile, diags, check_variables=isinstance(src, S.Index)
                                              and src.name.upper() in alias_parameter_names):
                 # Only preceding declarations in this scope participate in source lookup.

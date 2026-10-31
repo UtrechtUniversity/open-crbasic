@@ -1473,6 +1473,15 @@ _RUNNING_AVG = frozenset({"AVGRUN", "TOTALRUN", "MINRUN", "MAXRUN", "STDDEVRUN"}
 _INSTANCES_AT = {"AVGRUN": 6, "TOTALRUN": 6, "STDDEVRUN": 6, "MINRUN": 5, "MAXRUN": 5}
 
 
+def _operator_tree(expr: S.Expr | None) -> bool:
+    """Whether `expr` holds only literals and names under operators (no call, element or field)."""
+    if isinstance(expr, S.Unary):
+        return _operator_tree(expr.operand)
+    if isinstance(expr, S.Binary):
+        return _operator_tree(expr.left) and _operator_tree(expr.right)
+    return isinstance(expr, (S.Number, S.String, S.Name))
+
+
 def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                          env: consteval.Env) -> None:
     """`AvgRun`'s optional arguments after `ResetVar` (decompiled AvgRun compile function; oracle,
@@ -1491,11 +1500,13 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
     toward zero, a string or anything outside Long range gives `-2147483648`."""
     if not _RUNNING_AVG & profile.instructions.keys():
         return
-    types = symbols.declared_variable_types(program)
-    variable_names = symbols.declared_variable_names(program)    # includes `Sub` parameters
+    scopes = symbols.statement_scopes(program, profile)   # its own routine's parameters, also named like a later `Const`
+    from .expressions import _alias_names, _has_dotted_field
 
-    def variable_type(arg: S.Expr | None) -> str | None:
-        return types.get(arg.name.upper()) if isinstance(arg, (S.Name, S.Index)) else None
+    def variable_type(arg: S.Expr | None, view: S.Program) -> str | None:
+        if not isinstance(arg, (S.Name, S.Index)):
+            return None
+        return symbols.declared_variable_types(view).get(arg.name.upper())
 
     from . import longconv
     names = longconv.float_names(program.statements)
@@ -1518,20 +1529,32 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
             continue
         kw = stmt.keyword.upper()
         args = list(stmt.args) + [None] * (8 - len(stmt.args))
+        view = symbols.scoped_view(program, stmt, publics=True)   # the storage visible here (round 71)
         if kw in ("TOTALRUN", "STDDEVRUN") and args[4] is not None \
-                and variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
+                and variable_type(args[5], view) in _AVGRUN_TYPE_ERROR:
             # same Count message as `AvgRun` (oracle, CR6 and CR300, 2026-10-08)
             diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
-        if kw == "AVGRUN" and args[4] is not None and variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
+        if kw == "AVGRUN" and args[4] is not None and variable_type(args[5], view) in _AVGRUN_TYPE_ERROR:
             diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
         at = _INSTANCES_AT.get(kw)
         if at is not None and args[4] is not None and args[at] is not None \
                 and len(profile.instructions[kw]["params"]) > at + 1:
-            instances = number(args[at])
-            if instances is not None and instances < 0:
-                continue  # (`-1` -> `Out of memory.`, not modelled)
-            if variable_type(args[at]) is not None or instances == 0 or (
-                    isinstance(instance_arg := args[at], S.Name) and instance_arg.name.upper() in variable_names):
+            # a variable, alias or field anywhere in it: its own routine's parameters (also named
+            # like a later `Const`) and locals, but no other routine's (`N+0`, round 71)
+            visible = symbols.declared_variable_names(view) | _alias_names(view) | scopes[id(stmt)][0]
+            variable = bool(_variable_refs(args[at], visible)) or _has_dotted_field(args[at])
+            # only literals and numeric `Const`s under operators: a function call or a String
+            # `Const` is the instances error too; `True` is -1 (round 71)
+            try:
+                value = consteval.value_of(args[at], env)
+            except consteval.NotConstant:
+                value = None
+            constant = not variable and not isinstance(value, str) and _operator_tree(args[at])
+            instances = -int(value) if isinstance(value, bool) else number(args[at])
+            if constant and instances is not None and instances < 0:
+                diags.error(stmt.line, "Out of memory.", stmt.file)  # (ends the compile, not modelled)
+                continue
+            if not constant or variable_type(args[at], view) is not None or instances == 0:
                 diags.error(stmt.line, "Optional number of distinct instances must be a "
                             "constant of type long.", stmt.file)
             if args[at + 1] is None:

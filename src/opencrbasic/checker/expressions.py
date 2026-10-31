@@ -970,6 +970,11 @@ def _known_names(program: S.Program, profile) -> KnownNames:
                     failed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Index)} - registered
         # a Const keeps its own binding (round 30 review, `Alias X = K(2)` with `Const K`)
         known -= failed - valid - set(program.consts)
+    if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+        # a `Sub` is no value (`X = V`, `If V Then`, `Delay(1,V,mSec)`; oracle, CR6/CR1000X, round 71)
+        known -= {st.name.upper() for st in program.statements
+                  if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"} - \
+            symbols.declared_variable_names(program) - set(program.consts) - set(profile.symbols)
     return KnownNames(known, tables=_value_less_tables(program, profile),
                       dotted_tables=profile.single_pass,
                       out_of_scope=symbols.out_of_scope_nodes(program, resolvable))
@@ -1004,6 +1009,9 @@ class KnownNames(set[str]):
         self.out_of_scope = out_of_scope  # `symbols.out_of_scope_nodes`: ids of other-routine `Dim` uses
         self.tables = tables
         self.dotted_tables = dotted_tables  # CR300/CR350: `Undeclared.member` names a table
+
+    def without(self, names) -> "KnownNames":
+        return KnownNames(self - names, self.tables, self.dotted_tables, self.out_of_scope) if names else self
 
 
 def _alias_names(program: S.Program) -> set[str]:
@@ -1585,6 +1593,7 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
     variable_names = {name for name in symbols.declared_variable_names(program)
                       if not symbols.is_reserved_predefined_name(name, profile)} | {
         name for name in _alias_names(program) if name not in profile.symbols}
+    scopes = symbols.statement_scopes(program, profile)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -1597,8 +1606,9 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
             continue  # a parse error inside an argument owns the statement (`check_function_arity`)
         positions = _position_kinds(record["params"], stmt.keyword, profile)
         if positions:
-            _report_statement(stmt, positions, known, variable_names, profile, diags,
-                              families="const")
+            params, later = scopes[id(stmt)]
+            _report_statement(stmt, positions, known.without(later - params - variable_names), variable_names | params,
+                              profile, diags, families="const")
 
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
@@ -1628,6 +1638,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     ds = program_dims(program, profile, known)
     dim_counts = symbols.declared_dim_counts(
         program, strings=True)
+    scopes = symbols.statement_scopes(program, profile)
 
     seen_avw200 = False
     for stmt in program.statements:
@@ -1656,7 +1667,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             reported = len(diags.items)
-            _report_statement(stmt, positions, known, variable_names, profile, diags,
+            here, here_variables = known, variable_names
+            if profile.single_pass:   # every position sees only earlier `Const`s (round 71)
+                params, later = scopes[id(stmt)]
+                here, here_variables = known.without(later - params - variable_names), variable_names | params
+            _report_statement(stmt, positions, here, here_variables, profile, diags,
                               families="general", dim_counts=dim_counts, ds=ds)
             if stmt.keyword.upper() == "MATRIX" and profile.name in ("cr6", "cr1000x") and \
                     len(diags.items) > reported and all(

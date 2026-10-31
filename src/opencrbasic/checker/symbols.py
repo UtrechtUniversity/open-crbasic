@@ -280,6 +280,28 @@ def declared_variable_names(program: S.Program) -> set[str]:
     return names
 
 
+def statement_scopes(program: S.Program, profile) -> dict[int, tuple[frozenset[str], frozenset[str]]]:
+    """`id(stmt)` -> (the parameters of the routine whose body holds it, the `Const` names not yet
+    declared there). Inside its own body a parameter is a variable even when a later `Const` has
+    its name, and a pass-1 constant position sees only earlier `Const`s (oracle, all four loggers,
+    round 71, `docs/checker.md` "Constants declared after their use"). A predefined name stays
+    predefined before its own `Const` (`Public A(IEEE4)` / `Const IEEE4=1`)."""
+    consts = {st.name.upper() for st in program.statements if isinstance(st, S.ConstDecl)} - set(profile.symbols)
+    pending = set(consts)
+    params: frozenset[str] = frozenset()
+    out = {}
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            # (a parameter named like an earlier `Const` is `already declared as a CONST`)
+            params = frozenset(p.name.upper() for p in st.params) - (consts - pending)
+        elif S.ends_routine(st):
+            params = frozenset()
+        elif isinstance(st, S.ConstDecl):
+            pending.discard(st.name.upper())
+        out[id(st)] = (params, frozenset(pending))
+    return out
+
+
 def declared_dim0_sizes(program: S.Program, env: consteval.Env) -> dict[str, int]:
     """Every `Public`/`Dim`/`Static` variable's own upper-case name -> its *first* dimension's own
     declared constant size, for `structure.py`'s `Illegally dimensioned aliased name` check
@@ -343,10 +365,11 @@ class DimCounts(dict):
     strings: frozenset = frozenset()
 
 
-def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
+def scoped_view(program: S.Program, stmt: S.Stmt, publics: bool = False) -> S.Program:
     """`program` restricted to the declarations visible at `stmt`: everything outside `Sub`/`Function`
     bodies plus `stmt`'s own routine's body. Other routines' local `Dim`s are dropped, and the
-    routine's own sit later in the list so a local shadows a global (last declaration wins)."""
+    routine's own sit later in the list so a local shadows a global (last declaration wins). With
+    `publics`, another routine's `Public` stays (it is global, `public.htm`), first in the list."""
     tagged, owner, cur = [], None, None
     for st in program.statements:
         if isinstance(st, S.SubDef):
@@ -356,7 +379,10 @@ def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
         if st is stmt:
             owner = cur
         tagged.append((st, cur))
-    stmts = [st for st, c in tagged if c is None] + [st for st, c in tagged if c is not None and c is owner]
+    stmts: list[S.Stmt] = [st for st, c in tagged if c is None] + [st for st, c in tagged if c is not None and c is owner]
+    if publics:
+        stmts = [st for st, c in tagged if c is not None and c is not owner and isinstance(st, S.Declaration)
+                 and st.kind == "PUBLIC"] + stmts
     return S.Program("", stmts)
 
 

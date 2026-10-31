@@ -1,0 +1,2631 @@
+{
+ "observation_date": "2026-10-31",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-after_in_sub",
+   "logger": "cr6",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr1000x-after_in_sub",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr300-after_in_sub",
+   "logger": "cr300",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-after_in_sub",
+   "logger": "cr350",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-before_in_sub",
+   "logger": "cr6",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-before_in_sub",
+   "logger": "cr1000x",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST."
+  },
+  {
+   "id": "cr300-before_in_sub",
+   "logger": "cr300",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST.\nline 4: Too many parameters:  1.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-before_in_sub",
+   "logger": "cr350",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST.\nline 4: Too many parameters:  1.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-after_in_main",
+   "logger": "cr6",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-after_in_main",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-after_in_main",
+   "logger": "cr300",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-after_in_main",
+   "logger": "cr350",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-before_in_main",
+   "logger": "cr6",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-before_in_main",
+   "logger": "cr1000x",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST."
+  },
+  {
+   "id": "cr300-before_in_main",
+   "logger": "cr300",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST.\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-before_in_main",
+   "logger": "cr350",
+   "source": "Public X\nConst U=Sec\nSub P(U As Long)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is already declared as a CONST.\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-other_sub",
+   "logger": "cr6",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr1000x-other_sub",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr300-other_sub",
+   "logger": "cr300",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U is not defined.\nline 5: Variable illegal in Parameter: U.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-other_sub",
+   "logger": "cr350",
+   "source": "Public X\nSub P(U As Long)\nEndSub\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U is not defined.\nline 5: Variable illegal in Parameter: U.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-local_dim",
+   "logger": "cr6",
+   "source": "Public X\nSub P(V As Long)\n  Dim U As Long\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr1000x-local_dim",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(V As Long)\n  Dim U As Long\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr300-local_dim",
+   "logger": "cr300",
+   "source": "Public X\nSub P(V As Long)\n  Dim U As Long\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: U.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-local_dim",
+   "logger": "cr350",
+   "source": "Public X\nSub P(V As Long)\n  Dim U As Long\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: U.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avgrun_in_sub",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-avgrun_in_sub",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-avgrun_in_sub",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avgrun_in_sub",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-frac_delay",
+   "logger": "cr6",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,-0.9,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr1000x-frac_delay",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,-0.9,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr300-frac_delay",
+   "logger": "cr300",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,-0.9,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-frac_delay",
+   "logger": "cr350",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,-0.9,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-func_in_body",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(U As Long) As Long\n  Delay(1,1,U)\n  Return 1\nEndFunction\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr1000x-func_in_body",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(U As Long) As Long\n  Delay(1,1,U)\n  Return 1\nEndFunction\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr300-func_in_body",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(U As Long) As Long\n  Delay(1,1,U)\n  Return 1\nEndFunction\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-func_in_body",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(U As Long) As Long\n  Delay(1,1,U)\n  Return 1\nEndFunction\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: U.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-const_late_sub",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr1000x-const_late_sub",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr300-const_late_sub",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is not defined.\nline 3: Variable illegal in Parameter: U.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-const_late_sub",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is not defined.\nline 3: Variable illegal in Parameter: U.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-const_late_main",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\nConst U=Sec\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr1000x-const_late_main",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\nConst U=Sec\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr300-const_late_main",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\nConst U=Sec\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: U is not defined.\nline 4: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr350-const_late_main",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\nConst U=Sec\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: U is not defined.\nline 4: Variable illegal in Parameter: U."
+  },
+  {
+   "id": "cr6-const_late_assign",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  X = K\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const_late_assign",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  X = K\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const_late_assign",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  X = K\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-const_late_assign",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  X = K\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-const_late_dim",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr1000x-const_late_dim",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr300-const_late_dim",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Variable illegal in Parameter: K.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-const_late_dim",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Variable illegal in Parameter: K.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-top_dim",
+   "logger": "cr6",
+   "source": "Public A(K)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr1000x-top_dim",
+   "logger": "cr1000x",
+   "source": "Public A(K)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr300-top_dim",
+   "logger": "cr300",
+   "source": "Public A(K)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-top_dim",
+   "logger": "cr350",
+   "source": "Public A(K)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-top_delay_seq",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-top_delay_seq",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-top_delay_seq",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-top_delay_seq",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-sub_after_const",
+   "logger": "cr6",
+   "source": "Public X\nConst U=Sec\nSub Q\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_after_const",
+   "logger": "cr1000x",
+   "source": "Public X\nConst U=Sec\nSub Q\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sub_after_const",
+   "logger": "cr300",
+   "source": "Public X\nConst U=Sec\nSub Q\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-sub_after_const",
+   "logger": "cr350",
+   "source": "Public X\nConst U=Sec\nSub Q\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-sub_late_scan_arg",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Delay(1,K,Sec)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_late_scan_arg",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Delay(1,K,Sec)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sub_late_scan_arg",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Delay(1,K,Sec)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Too many parameters:  Sec.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-sub_late_scan_arg",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Delay(1,K,Sec)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Too many parameters:  Sec.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-sub_late_general",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  PanelTemp(X,K)\nEndSub\nConst K=15000\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr1000x-sub_late_general",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  PanelTemp(X,K)\nEndSub\nConst K=15000\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr300-sub_late_general",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  PanelTemp(X,K)\nEndSub\nConst K=15000\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Variable illegal in Parameter: K.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub_late_general",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  PanelTemp(X,K)\nEndSub\nConst K=15000\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Variable illegal in Parameter: K.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sub_late_if",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  If X > K Then X = 0\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sub_late_if",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  If X > K Then X = 0\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sub_late_if",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  If X > K Then X = 0\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-sub_late_if",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  If X > K Then X = 0\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-top_init",
+   "logger": "cr6",
+   "source": "Public X = K\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-top_init",
+   "logger": "cr1000x",
+   "source": "Public X = K\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-top_init",
+   "logger": "cr300",
+   "source": "Public X = K\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 1: Variable initialization of X has bad syntax.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-top_init",
+   "logger": "cr350",
+   "source": "Public X = K\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 1: Variable initialization of X has bad syntax.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-top_init_arr",
+   "logger": "cr6",
+   "source": "Public X(2) = {K,1}\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-top_init_arr",
+   "logger": "cr1000x",
+   "source": "Public X(2) = {K,1}\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-top_init_arr",
+   "logger": "cr300",
+   "source": "Public X(2) = {K,1}\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 1: Variable initialization of X has bad syntax.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-top_init_arr",
+   "logger": "cr350",
+   "source": "Public X(2) = {K,1}\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K.\nline 1: Variable initialization of X has bad syntax.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-top_dim_before",
+   "logger": "cr6",
+   "source": "Const K=3\nPublic A(K)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-top_dim_before",
+   "logger": "cr1000x",
+   "source": "Const K=3\nPublic A(K)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-top_dim_before",
+   "logger": "cr300",
+   "source": "Const K=3\nPublic A(K)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-top_dim_before",
+   "logger": "cr350",
+   "source": "Const K=3\nPublic A(K)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-top_dim_expr",
+   "logger": "cr6",
+   "source": "Public A(K+1)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+1."
+  },
+  {
+   "id": "cr1000x-top_dim_expr",
+   "logger": "cr1000x",
+   "source": "Public A(K+1)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: K+1."
+  },
+  {
+   "id": "cr300-top_dim_expr",
+   "logger": "cr300",
+   "source": "Public A(K+1)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+1.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-top_dim_expr",
+   "logger": "cr350",
+   "source": "Public A(K+1)\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: K is not defined.\nline 1: Variable illegal in Parameter: K+1.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-sub_param_dim",
+   "logger": "cr6",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K."
+  },
+  {
+   "id": "cr1000x-sub_param_dim",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K."
+  },
+  {
+   "id": "cr300-sub_param_dim",
+   "logger": "cr300",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sub_param_dim",
+   "logger": "cr350",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-const_chain",
+   "logger": "cr6",
+   "source": "Const A=B+1\nConst B=2\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B+1."
+  },
+  {
+   "id": "cr1000x-const_chain",
+   "logger": "cr1000x",
+   "source": "Const A=B+1\nConst B=2\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: B+1."
+  },
+  {
+   "id": "cr300-const_chain",
+   "logger": "cr300",
+   "source": "Const A=B+1\nConst B=2\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-const_chain",
+   "logger": "cr350",
+   "source": "Const A=B+1\nConst B=2\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: B is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-dt_size",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,K)\n  Sample(1,X,FP2)\nEndTable\nConst K=10\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr1000x-dt_size",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,K)\n  Sample(1,X,FP2)\nEndTable\nConst K=10\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr300-dt_size",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(T,1,K)\n  Sample(1,X,FP2)\nEndTable\nConst K=10\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 3: Too many parameters:  X.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-dt_size",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(T,1,K)\n  Sample(1,X,FP2)\nEndTable\nConst K=10\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 3: Too many parameters:  X.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-scan_late",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(K,Sec,0,0)\n  NextScan\nEndProg\nConst K=1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr1000x-scan_late",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(K,Sec,0,0)\n  NextScan\nEndProg\nConst K=1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr300-scan_late",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(K,Sec,0,0)\n  NextScan\nEndProg\nConst K=1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Variable illegal in Parameter: K."
+  },
+  {
+   "id": "cr350-scan_late",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(K,Sec,0,0)\n  NextScan\nEndProg\nConst K=1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Variable illegal in Parameter: K."
+  },
+  {
+   "id": "cr6-param_dim_noconst",
+   "logger": "cr6",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K."
+  },
+  {
+   "id": "cr1000x-param_dim_noconst",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K."
+  },
+  {
+   "id": "cr300-param_dim_noconst",
+   "logger": "cr300",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-param_dim_noconst",
+   "logger": "cr350",
+   "source": "Public X\nSub P(K As Long)\n  Dim A(K)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-param_init_noconst",
+   "logger": "cr6",
+   "source": "Public X\nSub P(K As Long)\n  Dim A = K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 3: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr1000x-param_init_noconst",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(K As Long)\n  Dim A = K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 3: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr300-param_init_noconst",
+   "logger": "cr300",
+   "source": "Public X\nSub P(K As Long)\n  Dim A = K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 3: Variable initialization of A has bad syntax.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-param_init_noconst",
+   "logger": "cr350",
+   "source": "Public X\nSub P(K As Long)\n  Dim A = K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 3: Variable initialization of A has bad syntax.\nline 6: Too many parameters:  Sec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-param_strlen_noconst",
+   "logger": "cr6",
+   "source": "Public X\nSub P(K As Long)\n  Dim S As String * K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 9: Out of memory."
+  },
+  {
+   "id": "cr1000x-param_strlen_noconst",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(K As Long)\n  Dim S As String * K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 9: Out of memory."
+  },
+  {
+   "id": "cr300-param_strlen_noconst",
+   "logger": "cr300",
+   "source": "Public X\nSub P(K As Long)\n  Dim S As String * K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 6: Too many parameters:  Sec.\nline 9: Out of memory."
+  },
+  {
+   "id": "cr350-param_strlen_noconst",
+   "logger": "cr350",
+   "source": "Public X\nSub P(K As Long)\n  Dim S As String * K\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: K.\nline 6: Too many parameters:  Sec.\nline 9: Out of memory."
+  },
+  {
+   "id": "cr6-param_dim_other_sub",
+   "logger": "cr6",
+   "source": "Public X\nSub P(K As Long)\nEndSub\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr1000x-param_dim_other_sub",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(K As Long)\nEndSub\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: K."
+  },
+  {
+   "id": "cr300-param_dim_other_sub",
+   "logger": "cr300",
+   "source": "Public X\nSub P(K As Long)\nEndSub\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: K is not defined.\nline 5: Variable illegal in Parameter: K.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-param_dim_other_sub",
+   "logger": "cr350",
+   "source": "Public X\nSub P(K As Long)\nEndSub\nSub Q\n  Dim A(K)\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    P(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: K is not defined.\nline 5: Variable illegal in Parameter: K.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-consttable_late",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConstTable(CT)\n  Const U=Sec\nEndConstTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr1000x-consttable_late",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConstTable(CT)\n  Const U=Sec\nEndConstTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: U."
+  },
+  {
+   "id": "cr300-consttable_late",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConstTable(CT)\n  Const U=Sec\nEndConstTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is not defined.\nline 3: Variable illegal in Parameter: U.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-consttable_late",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Delay(1,1,U)\nEndSub\nConstTable(CT)\n  Const U=Sec\nEndConstTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: U is not defined.\nline 3: Variable illegal in Parameter: U.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-const_in_sub",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Const U=Sec\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const_in_sub",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Const U=Sec\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const_in_sub",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Const U=Sec\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const_in_sub",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Const U=Sec\n  Delay(1,1,U)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-const_in_sub_late_main",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Const U=Sec\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-const_in_sub_late_main",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Const U=Sec\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-const_in_sub_late_main",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Const U=Sec\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-const_in_sub_late_main",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Const U=Sec\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-param_twice_const_later",
+   "logger": "cr6",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,mSec)\nEndSub\nSub R(U As Long)\n  X = U\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-param_twice_const_later",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,mSec)\nEndSub\nSub R(U As Long)\n  X = U\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-param_twice_const_later",
+   "logger": "cr300",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,mSec)\nEndSub\nSub R(U As Long)\n  X = U\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-param_twice_const_later",
+   "logger": "cr350",
+   "source": "Public X\nSub P(U As Long)\n  Delay(1,1,mSec)\nEndSub\nSub R(U As Long)\n  X = U\nEndSub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-endsub_two_word",
+   "logger": "cr6",
+   "source": "Public X\nSub P(U As Long)\n  X = U\nEnd Sub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-endsub_two_word",
+   "logger": "cr1000x",
+   "source": "Public X\nSub P(U As Long)\n  X = U\nEnd Sub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-endsub_two_word",
+   "logger": "cr300",
+   "source": "Public X\nSub P(U As Long)\n  X = U\nEnd Sub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-endsub_two_word",
+   "logger": "cr350",
+   "source": "Public X\nSub P(U As Long)\n  X = U\nEnd Sub\nConst U=Sec\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,1,U)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-func_param_late",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(N As Long) As Long\n  Return N\nEndFunction\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(1)\n    Delay(1,1,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-func_param_late",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(N As Long) As Long\n  Return N\nEndFunction\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(1)\n    Delay(1,1,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-func_param_late",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(N As Long) As Long\n  Return N\nEndFunction\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(1)\n    Delay(1,1,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-func_param_late",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(N As Long) As Long\n  Return N\nEndFunction\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    X = F(1)\n    Delay(1,1,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ieee4_dim",
+   "logger": "cr6",
+   "source": "Public A(IEEE4)\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ieee4_dim",
+   "logger": "cr1000x",
+   "source": "Public A(IEEE4)\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ieee4_dim",
+   "logger": "cr300",
+   "source": "Public A(IEEE4)\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-ieee4_dim",
+   "logger": "cr350",
+   "source": "Public A(IEEE4)\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 is a predefined CONST.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-ieee4_delay",
+   "logger": "cr6",
+   "source": "Public X\nSub Q\n  Delay(1,1,IEEE4)\nEndSub\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ieee4_delay",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Q\n  Delay(1,1,IEEE4)\nEndSub\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ieee4_delay",
+   "logger": "cr300",
+   "source": "Public X\nSub Q\n  Delay(1,1,IEEE4)\nEndSub\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IEEE4 is a predefined CONST.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-ieee4_delay",
+   "logger": "cr350",
+   "source": "Public X\nSub Q\n  Delay(1,1,IEEE4)\nEndSub\nConst IEEE4=1\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: IEEE4 is a predefined CONST.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avgrun_neg",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=-1\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-avgrun_neg",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=-1\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-avgrun_neg",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=-1\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avgrun_neg",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N,1)\nEndSub\nConst N=-1\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avgrun_expr",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-avgrun_expr",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-avgrun_expr",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N+0.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avgrun_expr",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nConst N=2\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N+0.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avgrun_expr_noconst",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-avgrun_expr_noconst",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-avgrun_expr_noconst",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N+0.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-avgrun_expr_noconst",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P(N As Long)\n  AvgRun(Y,1,X,10,False,3,N+0,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    P(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  N+0.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-avgrun_var_expr",
+   "logger": "cr6",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-avgrun_var_expr",
+   "logger": "cr1000x",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-avgrun_var_expr",
+   "logger": "cr300",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  V+0."
+  },
+  {
+   "id": "cr350-avgrun_var_expr",
+   "logger": "cr350",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  V+0."
+  },
+  {
+   "id": "cr6-alias_late",
+   "logger": "cr6",
+   "source": "Public A(4)\nAlias A(K)=Y\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K.\nline 2: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr1000x-alias_late",
+   "logger": "cr1000x",
+   "source": "Public A(4)\nAlias A(K)=Y\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: K.\nline 2: Alias is illegally dimensioned."
+  },
+  {
+   "id": "cr300-alias_late",
+   "logger": "cr300",
+   "source": "Public A(4)\nAlias A(K)=Y\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 2: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_late",
+   "logger": "cr350",
+   "source": "Public A(4)\nAlias A(K)=Y\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: K is not defined.\nline 2: Variable illegal in Parameter: K.\nline 2: Alias is illegally dimensioned.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-local_dim_global_const",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-local_dim_global_const",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-local_dim_global_const",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr350-local_dim_global_const",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr6-local_strdim_global_len",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P\n  Dim K As String * 8\nEndSub\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-local_strdim_global_len",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P\n  Dim K As String * 8\nEndSub\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-local_strdim_global_len",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P\n  Dim K As String * 8\nEndSub\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  Len."
+  },
+  {
+   "id": "cr350-local_strdim_global_len",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P\n  Dim K As String * 8\nEndSub\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  Len."
+  },
+  {
+   "id": "cr6-alias_expr",
+   "logger": "cr6",
+   "source": "Public X,Y,V As Long\nAlias V=W\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,W+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-alias_expr",
+   "logger": "cr1000x",
+   "source": "Public X,Y,V As Long\nAlias V=W\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,W+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-alias_expr",
+   "logger": "cr300",
+   "source": "Public X,Y,V As Long\nAlias V=W\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,W+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  W+0."
+  },
+  {
+   "id": "cr350-alias_expr",
+   "logger": "cr350",
+   "source": "Public X,Y,V As Long\nAlias V=W\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,W+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  W+0."
+  },
+  {
+   "id": "cr6-public_field_expr",
+   "logger": "cr6",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Public.V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-public_field_expr",
+   "logger": "cr1000x",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Public.V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-public_field_expr",
+   "logger": "cr300",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Public.V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Public.V+0."
+  },
+  {
+   "id": "cr350-public_field_expr",
+   "logger": "cr350",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Public.V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Public.V+0."
+  },
+  {
+   "id": "cr6-status_field_expr",
+   "logger": "cr6",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Status.SkippedScan+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-status_field_expr",
+   "logger": "cr1000x",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Status.SkippedScan+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-status_field_expr",
+   "logger": "cr300",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Status.SkippedScan+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Status.SkippedScan+0."
+  },
+  {
+   "id": "cr350-status_field_expr",
+   "logger": "cr350",
+   "source": "Public X,Y,V As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Status.SkippedScan+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Status.SkippedScan+0."
+  },
+  {
+   "id": "cr6-sub_name_collision",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P(V As Long)\nEndSub\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: V+0.\nline 8: Optional number of distinct instances must be a constant of type long.",
+   "not_modelled": "a Sub name that is also another routine's parameter, used as a value"
+  },
+  {
+   "id": "cr1000x-sub_name_collision",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P(V As Long)\nEndSub\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: V+0.\nline 8: Optional number of distinct instances must be a constant of type long.",
+   "not_modelled": "a Sub name that is also another routine's parameter, used as a value"
+  },
+  {
+   "id": "cr300-sub_name_collision",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P(V As Long)\nEndSub\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  V+0."
+  },
+  {
+   "id": "cr350-sub_name_collision",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P(V As Long)\nEndSub\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  V+0."
+  },
+  {
+   "id": "cr6-param_other_routine_expr",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P(K As Long)\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-param_other_routine_expr",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P(K As Long)\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-param_other_routine_expr",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P(K As Long)\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr350-param_other_routine_expr",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P(K As Long)\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr6-len_literal",
+   "logger": "cr6",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(\"ab\"),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-len_literal",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(\"ab\"),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-len_literal",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(\"ab\"),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Len."
+  },
+  {
+   "id": "cr350-len_literal",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(\"ab\"),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Len."
+  },
+  {
+   "id": "cr6-len_const",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-len_const",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-len_const",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  Len."
+  },
+  {
+   "id": "cr350-len_const",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Len(K),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  Len."
+  },
+  {
+   "id": "cr6-abs_literal",
+   "logger": "cr6",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,ABS(2),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-abs_literal",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,ABS(2),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-abs_literal",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,ABS(2),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  ABS."
+  },
+  {
+   "id": "cr350-abs_literal",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,ABS(2),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  ABS."
+  },
+  {
+   "id": "cr6-str_const",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-str_const",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-str_const",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  K."
+  },
+  {
+   "id": "cr350-str_const",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=\"ab\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  K."
+  },
+  {
+   "id": "cr6-sub_name_value",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V+0.\nline 6: Optional number of distinct instances must be a constant of type long.",
+   "not_modelled": "later diagnostic: the instances line after an undefined name is not printed"
+  },
+  {
+   "id": "cr1000x-sub_name_value",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V+0.\nline 6: Optional number of distinct instances must be a constant of type long.",
+   "not_modelled": "later diagnostic: the instances line after an undefined name is not printed"
+  },
+  {
+   "id": "cr300-sub_name_value",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  V+0."
+  },
+  {
+   "id": "cr350-sub_name_value",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Too many parameters:  V+0."
+  },
+  {
+   "id": "cr6-sub_name_assign",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     X = V+0."
+  },
+  {
+   "id": "cr1000x-sub_name_assign",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     X = V+0."
+  },
+  {
+   "id": "cr300-sub_name_assign",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-sub_name_assign",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-f0",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f0",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f0",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3."
+  },
+  {
+   "id": "cr350-f0",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3."
+  },
+  {
+   "id": "cr6-f1",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2+1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f1",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2+1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f1",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2+1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  2+1."
+  },
+  {
+   "id": "cr350-f1",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2+1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  2+1."
+  },
+  {
+   "id": "cr6-f2",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f2",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f2",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K."
+  },
+  {
+   "id": "cr350-f2",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K."
+  },
+  {
+   "id": "cr6-f3",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K*2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f3",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K*2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f3",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K*2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K*2."
+  },
+  {
+   "id": "cr350-f3",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K*2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K*2."
+  },
+  {
+   "id": "cr6-f4",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f4",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f4",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3."
+  },
+  {
+   "id": "cr350-f4",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3."
+  },
+  {
+   "id": "cr6-f5",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,-(-3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f5",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,-(-3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f5",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,-(-3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  -."
+  },
+  {
+   "id": "cr350-f5",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,-(-3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  -."
+  },
+  {
+   "id": "cr6-f6",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,&H3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f6",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,&H3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f6",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,&H3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  &H3."
+  },
+  {
+   "id": "cr350-f6",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,&H3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  &H3."
+  },
+  {
+   "id": "cr6-f7",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3.5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f7",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3.5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f7",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3.5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3.5."
+  },
+  {
+   "id": "cr350-f7",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3.5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3.5."
+  },
+  {
+   "id": "cr6-f8",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f8",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f8",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  F."
+  },
+  {
+   "id": "cr350-f8",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  F."
+  },
+  {
+   "id": "cr6-f9",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-f9",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr300-f9",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  B."
+  },
+  {
+   "id": "cr350-f9",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  B."
+  },
+  {
+   "id": "cr6-f10",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,True,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr1000x-f10",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,True,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Out of memory."
+  },
+  {
+   "id": "cr300-f10",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,True,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  True."
+  },
+  {
+   "id": "cr350-f10",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,True,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  True."
+  },
+  {
+   "id": "cr6-f11",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,KS,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-f11",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,KS,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-f11",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,KS,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  KS."
+  },
+  {
+   "id": "cr350-f11",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,KS,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  KS."
+  },
+  {
+   "id": "cr6-f12",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K\\1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f12",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K\\1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f12",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K\\1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K\\1."
+  },
+  {
+   "id": "cr350-f12",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K\\1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K\\1."
+  },
+  {
+   "id": "cr6-f13",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3 MOD 2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f13",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3 MOD 2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f13",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3 MOD 2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3."
+  },
+  {
+   "id": "cr350-f13",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,3 MOD 2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  3."
+  },
+  {
+   "id": "cr6-f14",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K AND 3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f14",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K AND 3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f14",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K AND 3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K."
+  },
+  {
+   "id": "cr350-f14",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K AND 3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K."
+  },
+  {
+   "id": "cr6-f15",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2^2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f15",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2^2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f15",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2^2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  2^2."
+  },
+  {
+   "id": "cr350-f15",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,2^2,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  2^2."
+  },
+  {
+   "id": "cr6-f16",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,INT(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-f16",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,INT(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-f16",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,INT(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  INT."
+  },
+  {
+   "id": "cr350-f16",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,INT(3),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  INT."
+  },
+  {
+   "id": "cr6-f17",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f17",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f17",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-f17",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-f18",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,1e1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f18",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,1e1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f18",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,1e1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  1e1."
+  },
+  {
+   "id": "cr350-f18",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,1e1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  1e1."
+  },
+  {
+   "id": "cr6-f19",
+   "logger": "cr6",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,300000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-f19",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,300000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-f19",
+   "logger": "cr300",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,300000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  300000."
+  },
+  {
+   "id": "cr350-f19",
+   "logger": "cr350",
+   "source": "Public X,Y\nConst K=2\nConst F=2.5\nConst B=True\nConst KS=\"3\"\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,300000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  300000."
+  },
+  {
+   "id": "cr6-s0",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     X = V."
+  },
+  {
+   "id": "cr1000x-s0",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     X = V."
+  },
+  {
+   "id": "cr300-s0",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-s0",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-s1",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     X = V+0."
+  },
+  {
+   "id": "cr1000x-s1",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     X = V+0."
+  },
+  {
+   "id": "cr300-s1",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-s1",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-s2",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1+V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     X = 1+V."
+  },
+  {
+   "id": "cr1000x-s2",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1+V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     X = 1+V."
+  },
+  {
+   "id": "cr300-s2",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1+V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-s2",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1+V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-s3",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    If V Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: V ."
+  },
+  {
+   "id": "cr1000x-s3",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    If V Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: V ."
+  },
+  {
+   "id": "cr300-s3",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    If V Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-s3",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    If V Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-s4",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-s4",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-s4",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-s4",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-s5",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-s5",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-s5",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-s5",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-s6",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G()+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-s6",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G()+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-s6",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G()+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-s6",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = G()+0\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-s7",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,V,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: V."
+  },
+  {
+   "id": "cr1000x-s7",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,V,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: V."
+  },
+  {
+   "id": "cr300-s7",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,V,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.\nline 9: Too many parameters:  mSec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr350-s7",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,V,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.\nline 9: Too many parameters:  mSec.",
+   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+  },
+  {
+   "id": "cr6-b1_bare_local_type",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-b1_bare_local_type",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-b1_bare_local_type",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K."
+  },
+  {
+   "id": "cr350-b1_bare_local_type",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P\n  Dim K As Long\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  K."
+  },
+  {
+   "id": "cr6-b2_local_alias",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P\n  Dim A\n  Alias A=K\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-b2_local_alias",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P\n  Dim A\n  Alias A=K\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-b2_local_alias",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P\n  Dim A\n  Alias A=K\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr350-b2_local_alias",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P\n  Dim A\n  Alias A=K\nEndSub\nConst K=2\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr6-b3_public_in_sub",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-b3_public_in_sub",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-b3_public_in_sub",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr350-b3_public_in_sub",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K+0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  K+0."
+  },
+  {
+   "id": "cr6-b3_public_in_sub_bare",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr1000x-b3_public_in_sub_bare",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Optional number of distinct instances must be a constant of type long."
+  },
+  {
+   "id": "cr300-b3_public_in_sub_bare",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  K."
+  },
+  {
+   "id": "cr350-b3_public_in_sub_bare",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub P\n  Public K As Long\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,K,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  K."
+  },
+  {
+   "id": "cr6-alias_sub_collision",
+   "logger": "cr6",
+   "source": "Public X,Y\nAlias X=V\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Y=V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: V already declared as a variable.",
+   "not_modelled": "first error only: an unrealistic name collision or `Sec()` call"
+  },
+  {
+   "id": "cr1000x-alias_sub_collision",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nAlias X=V\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Y=V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: V already declared as a variable.",
+   "not_modelled": "first error only: an unrealistic name collision or `Sec()` call"
+  },
+  {
+   "id": "cr300-alias_sub_collision",
+   "logger": "cr300",
+   "source": "Public X,Y\nAlias X=V\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Y=V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: V already declared as a variable.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-alias_sub_collision",
+   "logger": "cr350",
+   "source": "Public X,Y\nAlias X=V\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    Y=V\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: V already declared as a variable.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-trigger_sub",
+   "logger": "cr6",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    TriggerSequence(V,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V."
+  },
+  {
+   "id": "cr1000x-trigger_sub",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    TriggerSequence(V,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V."
+  },
+  {
+   "id": "cr300-trigger_sub",
+   "logger": "cr300",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    TriggerSequence(V,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.\nline 6: Variable illegal in Parameter: V.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr350-trigger_sub",
+   "logger": "cr350",
+   "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    TriggerSequence(V,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.\nline 6: Variable illegal in Parameter: V.",
+   "not_modelled": "CR300/CR350 best effort"
+  },
+  {
+   "id": "cr6-sec_call",
+   "logger": "cr6",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec(),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Sec().",
+   "not_modelled": "first error only: an unrealistic name collision or `Sec()` call"
+  },
+  {
+   "id": "cr1000x-sec_call",
+   "logger": "cr1000x",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec(),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Sec().",
+   "not_modelled": "first error only: an unrealistic name collision or `Sec()` call"
+  },
+  {
+   "id": "cr300-sec_call",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec(),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-sec_call",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec(),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}

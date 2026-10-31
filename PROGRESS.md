@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-30 after development round 70; M1 and M2 done** (round-51
+Current compiler state and handoff, updated **2026-10-31 after development round 71; M1-M3 done** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -91,6 +91,29 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 71** (M1, single agent; Codex `gpt-6.1-sol` reviewed four times, `scratch/r71/codex-review*.log`,
+local only). The round-70 false accept (a `Delay` unit parameter with a later same-name `Const`) was one
+case of a wider rule, probed on all four loggers (`tests/fixtures/r71_const_order.json`, 368
+observations; [checker notes](docs/checker.md#constants-declared-after-their-use-round-71)):
+- **False accepts fixed (CR6/CR1000X):** a `Const` used before its declaration in a pass-1 constant
+  position (`Dim`/`Public` size, `Alias` subscript, `Delay` unit, `PanelTemp` fnotch), also inside a
+  `Sub`; a routine parameter named like a later `Const`, used as a constant inside its own body; an
+  `AvgRun` instance count holding a variable, alias, field, function call or String `Const` anywhere
+  (`V+0`, `INT(3)`), or a negative constant (`True` -> `Out of memory.`); a `Sub` name used as a value
+  (`X = V`, `If V Then`, `Delay(1,V,mSec)`). All but the parameter cases predate round 71.
+- **False rejects avoided** (Codex reviews, confirmed on the reference): `Public A(IEEE4)` before
+  `Const IEEE4=1`; another routine's `Dim K` or local `Alias` making a global `Const K` a variable.
+- Implemented by `symbols.statement_scopes` (per statement: own parameters, `Const`s still to come)
+  and a `publics` option of `symbols.scoped_view` (a `Public` in another routine stays global).
+- **Not modelled, listed** (strict xfails): 26 CR300/CR350 cases (assignments and `If` before a
+  `Const`, Sub names as values); on CR6/CR1000X a `Sub` name that is also another routine's
+  parameter (false accept, unrealistic) and two first-error-only collisions (`Alias X=V` before
+  `Sub V`, `Sec()`).
+- Gates (`scratch/r71/gates/gates4.log`): fixture audit 0 differing; 63,844 passed, 311 skipped, 1,291
+  strict xfail; server 163 passed; CI saved replay 2,634 exact (round 70: 2,633), no regression;
+  four-profile difftest unchanged, GEUS 66/66; both `verify.py` backends pass (21/21). No hardware
+  tests.
 
 **Round 70: M3 done** (single agent; Codex `gpt-6.1-sol` sign-off after two fix rounds,
 `scratch/m3b/codex-review3.log`). Each shipped check was re-checked against the
@@ -530,11 +553,11 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
 3. **M3: done (round 70).** Checks `OCB001`-`OCB007` ship with the framework (codes, severities,
    `opencrbasic.toml`, `--strict`, `--report`, `CompileResult.findings`). Remaining PLAN candidates
    need a reference probe first, value or flow analysis, or (the constant index past the declared
-   storage) alias, flattened and String-index handling. Open reference-channel false accept from
-   round 70: a parameter used as a `Delay` unit with a later same-name global `Const`. The language server does not run checks yet: that is M6
+   storage) alias, flattened and String-index handling. The round-70 reference-channel false accept (a `Delay` unit parameter with a later
+   same-name `Const`) is fixed in round 71. The language server does not run checks yet: that is M6
    (call `checks.analyze` with its settings, put the configuration in the cache key).
-4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X except the
-   round-70 `Delay` unit shadowed by a later `Const` (item 3, found after sign-off); the 25 replay
+4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X except a `Sub` name
+   that is also another routine's parameter, used as a value (round 71, unrealistic); the 25 replay
    false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
    `51f39a5f2393`, `7b4b2177d56b`, `870ca9a9562e`, `e8c854e3493d`, `a0b2b0b059b3`, `ec6b11bc3176`,
    `022d98dd3efc`, `4156d89a014d`, `6ac24bd775f1`, `72f95eac103f`, `77636b10567c`, `7f9efa8af42c`,
